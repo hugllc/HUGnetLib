@@ -59,8 +59,9 @@ class plog {
         return @$this->_sqlite->query($query);
     }
 
-    function get($where) {
+    function get($where, $limit=0, $start=0) {
         $query = "SELECT * FROM '".$this->table."' WHERE ".$where;
+        if ($limit > 0) $query .= " limit ".$start.", ".$limit;
         $res = $this->_sqlite->query($query);
         if (is_object($res)) {
             $ret = $res->fetchAll(PDO::FETCH_ASSOC);
@@ -126,11 +127,8 @@ class plog {
 
 
 
-    function getAll() {
-        $query = " SELECT * FROM '".$this->table."'; ";
-        $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
-        return $ret;
+    function getAll($limit=0, $start=0) {
+        return $this->get(1, $limit, $start);
     }
 
     function remove($info) {
