@@ -17,7 +17,7 @@
 */
 
 
-define("HUGNET_BACKEND_VERSION", "0.6.4");	
+define("HUGNET_BACKEND_VERSION", "0.6.5");	
 
 /** The base path to all the files included for HUGnet */
 define("HUGNET_INCLUDE_PATH", dirname(__FILE__));	
