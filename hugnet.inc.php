@@ -16,7 +16,6 @@
 		This page generated from @ref hugnet.inc.php
 */
 
-
 define("HUGNET_BACKEND_VERSION", "0.6.5");	
 
 /** The base path to all the files included for HUGnet */
@@ -38,19 +37,22 @@ ini_set('include_path', $inc);
 require_once(HUGNET_INCLUDE_PATH."/gateway.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/driver.inc.php");
 
-function get_temp_dir() {
-   // Try to use system's temporary directory
-   // as random name shouldn't exist
-   $temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
-   if ( $temp_file )
-   {
-       $temp_dir = realpath( dirname($temp_file) );
-       unlink( $temp_file );
-       return $temp_dir;
-   }
-   else
-   {
-       return FALSE;
+if (!function_exists("get_temp_dir")) {
+   function get_temp_dir() {
+      // Try to use system's temporary directory
+      // as random name shouldn't exist
+      $temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
+      if ( $temp_file )
+      {
+          $temp_dir = realpath( dirname($temp_file) );
+          unlink( $temp_file );
+          return $temp_dir;
+      }
+      else
+      {
+          return FALSE;
+      }
    }
 }
+
 ?>
