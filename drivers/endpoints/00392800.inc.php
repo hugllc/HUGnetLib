@@ -11,6 +11,7 @@ require_once(HUGNET_INCLUDE_PATH."/sensors/moisture.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/capacitive.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/light.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/voltage.inc.php");
+require_once(HUGNET_INCLUDE_PATH."/sensors/winddirection.inc.php");
 
 
 if (!class_exists("e00392800")) {
@@ -440,7 +441,7 @@ print "\n".$rawval." - ".$ohms."\n";
 			$this->Light = new lightSensor(65536, 65536, 1<<6, 1023);
 			$this->Moisture = new moistureSensor();
 			$this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
-			$this->windDir = new windDirSensor();
+			$this->windDir = new windDirectionSensor();
 		}
 
 

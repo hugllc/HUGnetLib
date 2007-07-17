@@ -67,10 +67,10 @@ class windDirectionSensor
 	function getReading($val, $type) 
 	{
 	    $output = 0;
-        if ($type == "0x6F") {
-            $output = $this->maximumIncSensor($val);
-        }   
-        return($output);
+            if ($type == "0x6F") {
+                $output = $this->maximumIncSensor($val);
+            }   
+            return($output);
 	}
 
     function maximumIncSensor($ndir) {
@@ -98,11 +98,14 @@ class windDirectionSensor
         if ($ndir & (1<<7)) $dir2 .= 315;    //NW
 
 
-        if (!is_null($dir1) && is_null($dir2)) {
+        if (!is_null($dir1) && is_null($dir2)) 
+        {
             $dir = $dir1;
-        } else if (is_null($dir1) && !is_null($dir2)) {
-            $dir = $dir2
-        } else {
+        } else if (is_null($dir1) && !is_null($dir2)) 
+        {
+            $dir = $dir2;
+        } else 
+        {
             if ($dir1 == 0) {
                 if ($dir2 == 45) {
                     $dir = 22.5;
