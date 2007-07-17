@@ -171,7 +171,7 @@ class unitConversion {
     */
 	function numDirtoDir($ndir, $time, $type) {
 
-        return $dir;
+        return $ndir;
 	}
 
 }
