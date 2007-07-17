@@ -395,7 +395,9 @@ print "\n".$rawval." - ".$ohms."\n";
 									$volts = $this->V->getVoltage($rawval, $return["TimeConstant"], 1.1);
 									$return["Data".$rawkey] = $volts * 100;
 									break;
-
+								case 0x6F:
+									$return["Data".$rawkey] = $this->windDir->getReading($rawval, 0x6F);
+									break;
 								case 0x20:
 									$farads = $this->C->getCapacitance($rawval, $return["TimeConstant"], 10000, 1);
 		//							$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
@@ -422,8 +424,6 @@ print "\n".$rawval." - ".$ohms."\n";
 		
 			return($ret);
 		}
-	
-
 
 		/**
 			@brief Constructor
@@ -440,6 +440,7 @@ print "\n".$rawval." - ".$ohms."\n";
 			$this->Light = new lightSensor(65536, 65536, 1<<6, 1023);
 			$this->Moisture = new moistureSensor();
 			$this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
+			$this->windDir = new windDirSensor();
 		}
 
 
