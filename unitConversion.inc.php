@@ -171,20 +171,6 @@ class unitConversion {
     */
 	function numDirtoDir($ndir, $time, $type) {
 
-        $dir = "";
-
-        if ($ndir & (1<<0)) $dir .= "N";
-        if ($ndir & (1<<2)) $dir .= "E";
-        if ($ndir & (1<<4)) $dir .= "S";
-        if ($ndir & (1<<6)) $dir .= "W";
-
-        if ($ndir & (1<<1)) $dir .= "NE";
-        if ($ndir & (1<<3)) $dir .= "SE";
-        if ($ndir & (1<<5)) $dir .= "SW";
-        if ($ndir & (1<<7)) $dir .= "NW";
-
-//        $dir = dechex($ndir);
-//        return $dir." (".dechex($ndir).")";
         return $dir;
 	}
 
