@@ -130,9 +130,11 @@ class driver {
                  ", ROUND(STD(PollInterval/AveragePollTime), 2) as PollDensitySTD " . 
                  ", ROUND(MIN(PollInterval/AveragePollTime), 2) as PollDensityMIN " . 
                  ", ROUND(MAX(PollInterval/AveragePollTime), 2) as PollDensityMAX " . 
+                 ", '1.0' as PollDensitySET " . 
                  ", SUM(Powerups) as Powerups " .
                  ", SUM(Reconfigs) as Reconfigs " .
                  ", ROUND(SUM(Polls) / ".$days.") as DailyPolls ".
+                 ", ROUND(1440 / AVG(PollInterval)) as DailyPollsSET ".
                  " ";
         $query .= " FROM " . $this->analysis_table;
 
