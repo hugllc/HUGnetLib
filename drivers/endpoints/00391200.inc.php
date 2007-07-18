@@ -131,9 +131,9 @@ define("e00391102B_SENSORS", 9);
 		    0x73 => 'Pulse Counter',
 		    );  //!< Default labels for the sensor inputs
 		var $units = array(
-		    0 => "&deg;C", 
+		    0 => "&#176;C", 
 		    1 => "%", 
-		    2 => "&deg;C", 
+		    2 => "&#176;C", 
 		    0x10 => "%", 
 		    0x20 => "pF", 
 		    0x30 => "W/m^2", 

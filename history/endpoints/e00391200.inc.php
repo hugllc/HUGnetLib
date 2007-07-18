@@ -7,7 +7,7 @@
 
 	$Log: e00391200.inc.php,v $
 	Revision 1.12  2005/09/26 01:08:20  prices
-	It now doesn't convert pulse counters to "&deg;F" units.  ;)
+	It now doesn't convert pulse counters to "&#176;F" units.  ;)
 	
 	Revision 1.11  2005/09/26 01:02:53  prices
 	It was forcing the units on the first side of the graph to be deg F.
@@ -111,7 +111,7 @@
 	$table = array();
 
 //	$Label1 = "Temperature";
-//	$Units1 = "&deg;C";
+//	$Units1 = "&#176;C";
 	$Label1 = NULL;
 	$Units1 = NULL;
 
@@ -136,7 +136,7 @@
 				}
 				if ($Units1 == "Counts") $decimal_places = 0;
 				if (trim(strtoupper($devInfo["Units"][$i])) == strtoupper($Units1)) {
-					if ($Units1 == "&deg;C") {
+					if ($Units1 == "&#176;C") {
 						$d = CtoF($hist["Data".$i]);
 					} else {
 						$d = $hist["Data".$i];
@@ -194,7 +194,7 @@
 		$count++;
 	}
 
-	if ($Units1 == "&deg;C") $Units1 = "&deg;F";
+	if ($Units1 == "&#176;C") $Units1 = "&#176;F";
 
 
 	if ($Show != 'table') {

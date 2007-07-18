@@ -74,7 +74,7 @@ class windDirectionSensor
 	}
 
     function maximumIncSensor($ndir) {
-        
+        $dir = NULL;        
 /*
         if ($ndir & (1<<0)) $dir .= "N";
         if ($ndir & (1<<2)) $dir .= "E";
@@ -92,12 +92,13 @@ class windDirectionSensor
         if ($ndir & (1<<4)) $dir1 = 180; //S
         if ($ndir & (1<<6)) $dir1 = 270; //W
 
-        if ($ndir & (1<<1)) $dir2 .= 45;    //NE
-        if ($ndir & (1<<3)) $dir2 .= 135;    //SE
-        if ($ndir & (1<<5)) $dir2 .= 225;    //SW
-        if ($ndir & (1<<7)) $dir2 .= 315;    //NW
+        if ($ndir & (1<<1)) $dir2 = 45;    //NE
+        if ($ndir & (1<<3)) $dir2 = 135;    //SE
+        if ($ndir & (1<<5)) $dir2 = 225;    //SW
+        if ($ndir & (1<<7)) $dir2 = 315;    //NW
 
-
+        // This code encompances all posible good values.  It is safe
+        // in that respect.  It could probably be speeded up, though.  ;)
         if (!is_null($dir1) && is_null($dir2)) 
         {
             $dir = $dir1;
@@ -109,11 +110,27 @@ class windDirectionSensor
             if ($dir1 == 0) {
                 if ($dir2 == 45) {
                     $dir = 22.5;
-                } else {
+                } else if ($dir2 == 315) {
                     $dir = 337.5;
                 }
-            } else {
-                $dir = ($dir1 + $dir2) / 2;
+            } else if ($dir1 == 90) {
+                if ($dir2 == 45) {
+                    $dir = 67.5;
+                } else if ($dir2 == 135) {
+                    $dir = 112.5;
+                }
+            } else if ($dir1 == 180) {
+                if ($dir2 == 135) {
+                    $dir = 157.5;
+                } else if ($dir2 == 225){
+                    $dir = 202.5;
+                }
+            } else if ($dir1 == 270) {
+                if ($dir2 == 225) {
+                    $dir = 247.5;
+                } else if ($dir2 == 315) {
+                    $dir = 292.5;
+                }
             }
         }
         

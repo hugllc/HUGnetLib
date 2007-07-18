@@ -45,7 +45,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		"DEFAULT" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
     	);
     	var $units = array(
-    		"DEFAULT" => array("V", "A", "&deg;C", "V", "A", "&deg;C"),
+    		"DEFAULT" => array("V", "A", "&#176;C", "V", "A", "&#176;C"),
     	);
     
     	var $deflocation = array(

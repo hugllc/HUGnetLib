@@ -48,7 +48,7 @@ class driver {
     );
     
     var $_defUnits = array(
-        '&deg;C' => '&deg;F',
+        '&#176;C' => '&#176;F',
         'Revs' => 'RPM',
         'HalfRevs' => 'MPH',
         'numDir' => 'Direction',
