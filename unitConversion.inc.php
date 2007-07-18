@@ -5,11 +5,11 @@
 class unitConversion {
 
     var $units = array(
-        '&deg;C' => array(
-            '&deg;F' => 'CtoF',
+        '&#176;C' => array(
+            '&#176;F' => 'CtoF',
         ),
-        '&deg;F' => array(
-            '&deg;C' => 'FtoC',
+        '&#176;F' => array(
+            '&#176;C' => 'FtoC',
         ),
         'A' => array(
             'mA' => 'toMilli',

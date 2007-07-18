@@ -93,14 +93,14 @@ if (!class_exists("e00392800")) {
 		    0x70 => "Pulse Counter", 
 		    );  //!< Default labels for the sensor inputs
 		var $units = array(
-		    0 => "&deg;C", 
+		    0 => "&#176;C", 
 		    1 => "% Moisture", 
-		    2 => "&deg;C", 
+		    2 => "&#176;C", 
 		    3 => "k Ohms", 
 		    0x10 => "%", 
 		    0x20 => "pF", 
 		    0x30 => "W/m^2", 
-		    0x6F => 'numDir',
+		    0x6F => '&#176;',
 		    0x70 => "counts", 
 		); //!< Default units for the sensor inputs
 
