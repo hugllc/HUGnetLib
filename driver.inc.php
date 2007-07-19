@@ -754,7 +754,11 @@ class driver {
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         switch(trim(strtolower($type[$i]))) {
                         case 'diff':
-                            $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
+                            if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
+                                $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
+                            } else {
+                                unset($history[$key]["Data".$i]);
+                            }
                             break;
                         default:
                              // Do nothing by default
