@@ -1,5 +1,5 @@
 <?php
-/** $Id: log.inc.php 52 2006-05-14 20:51:23Z prices $
+/** $Id$
 	@file log.inc.php
 	@author Scott L. Price (prices@dflytech.com)
 	@date 04/09/2004

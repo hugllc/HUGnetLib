@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: hugnet.inc.php 686 2007-04-02 21:36:53Z prices $
+	$Id$
 
 	@file hugnet.inc.php
 	@brief Includes all the files needed for HUGnet on other web pages.

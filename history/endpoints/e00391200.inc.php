@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: e00391200.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file history/history_e00391200.inc.php
 	@brief History include that goes with the e00391200.inc.php driver.
 

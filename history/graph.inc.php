@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: graph.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file history/graph.inc.php
 	@brief Prints out a graph using the graphing applet.
 	

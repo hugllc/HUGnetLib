@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: table.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 
 	@file history/table.inc.php
 	@brief Prints out a data table.

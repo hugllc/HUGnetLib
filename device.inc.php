@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: device.inc.php 659 2007-02-21 23:07:09Z prices $
+	$Id$
 
 	@file device.inc.php
 	@brief Class for manipulating the device database

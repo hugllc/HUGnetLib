@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: endpoint.inc.php 53 2006-05-14 20:57:54Z prices $
+	$Id$
 
 	@file endpoint.inc.php
 	@brief Class for talking with endpoints through hugnetd.

@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: control.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 
 	@file control/control.inc.php
 	@brief File that should be included if you want to print out the history graph/table.

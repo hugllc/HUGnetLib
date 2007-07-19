@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: functions.inc.php 52 2006-05-14 20:51:23Z prices $
+ * $Id$
  *	@file functions.inc.php
  *	@par Copyright:
  *		&copy 2002-2005 Dragonfly Technologies, Inc. http://www.dflytech.com

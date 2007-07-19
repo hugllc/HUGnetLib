@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: plog.inc.php 641 2007-02-19 19:11:54Z prices $
+	$Id$
 */
 
 class plog {

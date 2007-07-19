@@ -2,7 +2,7 @@
 /**
 
 	@internal
-	$Id: forms.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file lib/forms.inc.php
 
 	@verbatim

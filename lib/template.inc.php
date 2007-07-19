@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: template.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@brief A class for using templates.
 
 	@par References	

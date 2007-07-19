@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: voltage.inc.php 69 2006-05-18 02:43:16Z prices $
+	$Id$
 	@file sensors/resistive.inc.php
 	@brief Class for dealing with resistive sensors
 	

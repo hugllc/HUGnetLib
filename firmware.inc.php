@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: firmware.inc.php 673 2007-03-01 02:59:11Z prices $
+	$Id$
 
 	@file firmware.inc.php
 	@brief Class for talking with endpoints
