@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: driver.inc.php 684 2007-04-02 21:24:35Z prices $
+	$Id$
     
 	@file driver.inc.php
 	@brief This is the kingpin of the files for talking with endpoints

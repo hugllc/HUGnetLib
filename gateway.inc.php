@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: gateway.inc.php 659 2007-02-21 23:07:09Z prices $
+	$Id$
 
 	@file gateway.inc.php
 	@brief Class for manipulating the gateway database information

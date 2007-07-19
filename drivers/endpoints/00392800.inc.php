@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: 00391200.inc.php 152 2006-07-26 15:43:08Z prices $
+	$Id$
 	@file drivers/endpoints/00391200.inc.php
 	@brief Driver for the 0039-12-XX boards.
 		

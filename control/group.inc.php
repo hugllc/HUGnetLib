@@ -1,6 +1,6 @@
 <?php
 	/**
-		$Id: group.inc.php 52 2006-05-14 20:51:23Z prices $
+		$Id$
 		@file control/group.inc.php	
 
 		$Log: group.inc.php,v $

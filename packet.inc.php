@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: packet.inc.php 670 2007-02-27 04:07:46Z prices $
+	$Id$
 
 	@file packet.inc.php
 	@brief Class for talking with endpoints

@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: 00390304.inc.php 53 2006-05-14 20:57:54Z prices $
+	$Id$
 	@file drivers/endpoints/00390304.inc.php
 	@brief Drivers for the 0039-03-04 hardware
 	@deprecated

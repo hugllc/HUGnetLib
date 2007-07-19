@@ -1,6 +1,6 @@
 <?php
 /**
-    $Id: unitConversion.inc.php 268 2006-10-13 20:38:43Z prices $    
+    $Id$    
 */
 class unitConversion {
 

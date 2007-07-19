@@ -1,7 +1,7 @@
 <?php
 
 /**
-	$Id: sensors.inc.php 53 2006-05-14 20:57:54Z prices $
+	$Id$
 	
 */
 

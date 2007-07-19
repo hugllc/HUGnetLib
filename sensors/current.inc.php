@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: current.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file sensors/resistive.inc.php
 	@brief Class for dealing with resistive sensors
 	

@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: analysis.inc.php 53 2006-05-14 20:57:54Z prices $
+	$Id$
 
 	@file analysis.inc.php
 	@brief Class for talking with endpoints

@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: socket.inc.php 53 2006-05-14 20:57:54Z prices $
+	$Id$
 
 	@file socket.inc.php
 	@brief Class for talking with seriald

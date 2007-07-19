@@ -18,7 +18,7 @@
 // |          Alexey Borzov <avb@php.net>                                 |
 // +----------------------------------------------------------------------+
 //
-// $Id: Menu.php 52 2006-05-14 20:51:23Z prices $
+// $Id$
 //
 
 // Types of the menu entries, instead of former magic numbers

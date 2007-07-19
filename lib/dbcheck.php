@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php
 /**
-	$Id: dbcheck.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file dbcheck.php
 	@brief Script to maintain databases
 	@author Scott L. Price (prices@dflytech.com)

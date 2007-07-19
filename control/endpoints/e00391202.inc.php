@@ -1,6 +1,6 @@
 <?php
 	/**
-		$Id: e00391202.inc.php 52 2006-05-14 20:51:23Z prices $
+		$Id$
 		@file control/endpoints/e00391201.inc.php	
 
 		$Log: e00391202.inc.php,v $

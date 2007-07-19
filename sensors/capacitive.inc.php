@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: capacitive.inc.php 52 2006-05-14 20:51:23Z prices $
+	$Id$
 	@file sensors/capacitive.inc.php
 	@brief Class for dealing with resistive sensors
 	

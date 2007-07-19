@@ -1,6 +1,6 @@
 <?php
 /**
-	$Id: plugins.inc.php 63 2006-05-16 22:01:17Z prices $
+	$Id$
 	@file plugins.inc.php
 	@author Scott L. Price (prices@dflytech.com)
 	@date 09/24/02

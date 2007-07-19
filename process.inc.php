@@ -1,7 +1,7 @@
 <?php
 
 /**
-	$Id: process.inc.php 680 2007-03-23 21:40:02Z prices $
+	$Id$
 
 	@file process.inc.php
 	@brief Class for making sure that processes don't overlap
