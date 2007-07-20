@@ -85,8 +85,8 @@ define("e00391201_SENSORS", 9);
 		);
 		
 		var $deflocation = array(
-			"0039-20-04-C" => array('Fan 1', 'Fan 2', 'Fan 3', 'Fan 4'),		
-			'DEFAULT' => array("Out 1", "Out 2", "Out 3", "Out 4"),
+			'0039-20-04-C' => array("Fan 1", "Fan 1", "Fan 2", "Fan 2", "Fan 3", "Fan 3", "Fan 4", "Fan 4", "Main"),
+			'DEFAULT' => array("Out 1 Current", "Out 1 Voltage", "Out 2 Current", "Out 2 Voltage", "Out 3 Current", "Out 3 Voltage", "Out 4 Current", "Out 4 Voltage", "Main Voltage"),
 		);
 
 		var $config = array(
