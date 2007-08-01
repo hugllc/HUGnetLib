@@ -279,6 +279,12 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		$return = TRUE;
 			if (is_array($Info['subDevices'])) {
 				foreach($Info['subDevices'] as $index => $devList) {
+                    $where = implode("' OR DeviceID='", $devList);
+                    $where = " DeviceID='".$where."'";
+                    $query = "UPDATE devices SET ControllerKey=".$Info['DeviceKey'].", ControllerIndex=".$index." WHERE ".$where;
+		            $return = $this->driver->db->query($query);
+                    
+/*
 					foreach($devList as $dev) {
                         $res = $this->driver->getDevice($dev, "ID");
 						if (is_array($res)) {
@@ -289,6 +295,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
 		            	    $return = $this->driver->db->AutoExecute($this->driver->device_table, $update, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
 						}
 					}
+*/
 				}
 				$update = array(
 					'ControllerKey' => 0,

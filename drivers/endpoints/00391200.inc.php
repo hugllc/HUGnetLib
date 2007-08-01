@@ -119,9 +119,9 @@ define("e00391102B_SENSORS", 9);
 			1 => array(0 => 65472, 5 => 65408, 10 => 65152, 15 => 64256, 20 => 61120, 25 => 51712, 30 => 32768, 35 => 13760, 40 => 4352, 45 => 1216, 50 => 320, 55 => 64),
 			);
 		var $labels = array(
-		    0 => "Temperature", 
+		    0 => "Temp", 
 		    1 => "Moisture", 
-		    2 => "Temperature", 
+		    2 => "Temp", 
 		    0x10 => "Relative Humidity", 
 		    0x20 => "Capacitance", 
 		    0x30 => "Light", 
