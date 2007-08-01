@@ -82,9 +82,9 @@ if (!class_exists("e00392800")) {
 			1 => array(0 => 65472, 5 => 65408, 10 => 65152, 15 => 64256, 20 => 61120, 25 => 51712, 30 => 32768, 35 => 13760, 40 => 4352, 45 => 1216, 50 => 320, 55 => 64),
 			);
 		var $labels = array(
-		    0 => "Temperature", 
+		    0 => "Temp", 
 		    1 => "Moisture", 
-		    2 => "Temperature", 
+		    2 => "Temp", 
 		    3 => "Moisture", 
 		    0x10 => "Relative Humidity", 
 		    0x20 => "Capacitance", 
@@ -389,7 +389,7 @@ if (!class_exists("e00392800")) {
 									break;
 								case 0x3:
 									$ohms = $this->R->getResistance($rawval, 1, 1000, 1, 1, 64);
-print "\n".$rawval." - ".$ohms."\n";
+//print "\n".$rawval." - ".$ohms."\n";
 									$return["Data".$rawkey] = $ohms;
 									break;
 								case 0x10:

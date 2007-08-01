@@ -115,6 +115,12 @@ class driver {
             $start = strtotime($start);
         }
         $end = $start - (86400 * $days);
+        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->device_table." ";
+        $cquery .= " WHERE PollInterval > 0 ";
+        if (!empty($where)) $cquery .= " AND ".$where;
+        $res = $this->db->getArray($cquery);
+        $count = $res[0]['count'];
+        if (empty($count)) $count = 1;
         
         $query = " SELECT " .
                  "  ROUND(AVG(AverageReplyTime), 2) as ReplyTime " .
@@ -134,7 +140,7 @@ class driver {
                  ", SUM(Powerups) as Powerups " .
                  ", SUM(Reconfigs) as Reconfigs " .
                  ", ROUND(SUM(Polls) / ".$days.") as DailyPolls ".
-                 ", ROUND(1440 / AVG(PollInterval)) as DailyPollsSET ".
+                 ", ROUND((1440 / AVG(PollInterval)) * ".$count.") as DailyPollsSET ".
                  " ";
         $query .= " FROM " . $this->analysis_table;
 
@@ -172,7 +178,7 @@ class driver {
 			if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
 			
 			if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))){
-                $problem[] = "Last Poll ".$this->get_ydhms($timelag)."s ago\n";
+                $problem[] = "Last Poll ".$this->get_ydhms($timelag)." ago\n";
 			}
 			if ($pollhistory > 1800) {
                 $problem[] = "History ".$this->get_ydhms($pollhistory)." old\n";
@@ -754,7 +760,9 @@ class driver {
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         switch(trim(strtolower($type[$i]))) {
                         case 'diff':
-                            if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
+                            if (($lastRecord["Data".$i] < $val["Data".$i]) && ($devInfo['Units'][$i] == "counts")) {
+                                unset($history[$key]["Data".$i]);
+                            } else if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
                                 $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
                             } else {
                                 unset($history[$key]["Data".$i]);

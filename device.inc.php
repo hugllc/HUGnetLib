@@ -192,6 +192,9 @@ class device {
 		return($return);					
 	}
 
+    function isController(&$info) {
+        return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
+    }
 }
 
 
