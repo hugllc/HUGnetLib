@@ -25,12 +25,9 @@ class unitConversion {
         
     );
     var $unitsDiff = array(
-        'Revs' => array(
+        'counts' => array(
             'RPM' => 'CnttoRPM',
-        ),
-        'HalfRevs' => array(
-            'RPM' => 'hCnttoRPM',
-            'MPH' => 'hCnttoMPH',
+            'MPH' => 'CnttoMPH',
         ),
     );
     
@@ -56,13 +53,14 @@ class unitConversion {
                 $ret[$f][$t] = $t;
             }
         }
-        if ($type == 'diff') {
+        if (($type == 'diff') || ($type == 'all')) {
             foreach($this->unitsDiff as $f => $to) {
                 foreach($to as $t => $func) {
                     $ret[$f][$t] = $t;
                 }
             }
-        } else {
+        }
+        if (($type != 'diff') || ($type == 'all')) {
             foreach($this->unitsNonDiff as $f => $to) {
                 foreach($to as $t => $func) {
                     $ret[$f][$t] = $t;
@@ -121,27 +119,13 @@ class unitConversion {
     @brief
     @param
     @return
-    */
-    function hCnttoRPM ($cnt, $time, $type) {
-        if ($type == 'diff') {
-            $rpm = (($cnt/2)/$time)*60;
-            return($rpm);
-        } else {
-            return(NULL);        
-        }    
-    }
-
-    /**
-    @brief
-    @param
-    @return
 
     AC Freq = (MPH + 0.1) / 1.6965
     
     MPH = ACFreq * 1.6965 - 0.1    
     
     */
-    function hCnttoMPH ($cnt, $time, $type) {
+    function CnttoMPH ($cnt, $time, $type) {
         if ($type == 'diff') {
             $ACFreq = $cnt/$time;
             $MPH = ($ACFreq * 1.6965) - 0.1;
@@ -170,8 +154,23 @@ class unitConversion {
     
     */
 	function numDirtoDir($ndir, $time, $type) {
-
-        return $ndir;
+        if ($ndir <= 0) return "N";
+        if ($ndir <= 22.5) return "NNE";
+        if ($ndir <= 45) return "NE";
+        if ($ndir <= 67.5) return "ENE";
+        if ($ndir <= 90) return "E";
+        if ($ndir <= 112.5) return "ESE";
+        if ($ndir <= 135) return "SE";
+        if ($ndir <= 157.5) return "SSE";
+        if ($ndir <= 180) return "S";
+        if ($ndir <= 202.5) return "SSW";
+        if ($ndir <= 225) return "SW";
+        if ($ndir <= 247.5) return "WSW";
+        if ($ndir <= 270) return "W";
+        if ($ndir <= 292.5) return "WNW";
+        if ($ndir <= 315) return "NW";
+        if ($ndir <= 337.5) return "NNW";
+        return "N";
 	}
 
 }
