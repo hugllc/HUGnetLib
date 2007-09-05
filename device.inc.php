@@ -60,6 +60,8 @@ class device {
         if (is_array($devInfo)) {
            	$devInfo = $devInfo[0];
             $devInfo = $this->_driver->DriverInfo($devInfo);
+
+/*
             $query = "select * from ".$this->_driver->getLocationTable($devInfo)." where DeviceKey='".$id."'";
 
             $loc = $this->db->getArray($query);
@@ -77,6 +79,8 @@ class device {
                     }
                 }
             }
+
+*/
             $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
 
             $cal = $this->db->getArray($query);
@@ -91,6 +95,9 @@ class device {
             if (is_array($gw)) {
                 $devInfo['Gateway'] = $gw[0];
             }
+
+            $devInfo["params"] = $this->decodeParams($devInfo["params"]);
+
             $this->_devCache[$id] = $devInfo;
         }
 	    return($devInfo);
@@ -192,9 +199,33 @@ class device {
 		return($return);					
 	}
 
+	function setParams($DeviceKey, $params) {
+	    $params = $this->db->qstr($this->encodeParams($params));
+        $this->db->debug = TRUE;
+        $return = $this->db->Execute("UPDATE ".$this->table." SET params = ".$params." WHERE DeviceKey=".$DeviceKey);
+		if (!$return) {
+			$this->Errno = $this->db->MetaError();
+			$this->Error = $this->db->MetaErrorMsg($this->Errno);
+		}
+        return $return;
+    }
+
     function isController(&$info) {
         return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
     }
+
+    function encodeParams($params) {
+        $params = serialize($params);
+        $params = base64_encode($params);
+        return $params;
+    }
+
+    function decodeParams($params) {
+        $params = base64_decode($params);
+        $params = unserialize($params);
+        return $params;    
+    }
+
 }
 
 
@@ -382,6 +413,7 @@ class deviceCache {
         }
     
     }
+    
 	
 }
 
