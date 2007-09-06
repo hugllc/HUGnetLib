@@ -17,21 +17,37 @@ class unitConversion {
         'V' => array(
             'mV' => 'toMilli',
         ),
-        'numDir' => array(
-            'Direction' => 'numDirtoDir',
-        ),
     );
     var $unitsNonDiff = array(
-        
+        '&#176;' => array(
+            'Direction' => 'numDirtoDir',
+        ),        
     );
     var $unitsDiff = array(
         'counts' => array(
             'RPM' => 'CnttoRPM',
             'MPH' => 'CnttoMPH',
+            'Inches Rain' => 'fromCenti',
         ),
     );
+    function checkDataTypes(&$units, &$dTypes) {
+        if (!is_array($units)) return FALSE;
+        foreach($params['Units'] as $key => $val) {
+            $dTypes[$key] = $this->getDataType($units[$key], $val, $dTypes[$key]);
+        }
+        return TRUE;        
+    }    
     
-
+    function getDataType($from, $to, $default = 'all') {
+        if (trim(strtolower($default)) == 'ignore') return $default;
+        if (isset($this->unitsDiff[$from][$to])) {
+            return 'diff';
+        }
+        if (isset($this->unitsNonDiff[$from][$to])) {
+            return 'raw';
+        }
+        return $default;
+    }
 
     function getConvFunct($from, $to, $type) {
         if ($to == $from) return NULL;
@@ -106,9 +122,10 @@ class unitConversion {
     @param
     @return
     */
-    function CnttoRPM ($cnt, $time, $type) {
+    function CnttoRPM ($cnt, $time, $type, $cntPerRev=1) {
+        if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
-            $rpm = ($cnt/$time)*60;
+            $rpm = ($cnt/$time/$cntPerRev)*60;
             return($rpm);
         } else {
             return(NULL);        
@@ -125,9 +142,10 @@ class unitConversion {
     MPH = ACFreq * 1.6965 - 0.1    
     
     */
-    function CnttoMPH ($cnt, $time, $type) {
+    function CnttoMPH ($cnt, $time, $type, $cntPerRev=1) {
+        if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
-            $ACFreq = $cnt/$time;
+            $ACFreq = $cnt/$time/$cntPerRev;
             $MPH = ($ACFreq * 1.6965) - 0.1;
             if ($MPH < 0) $MPH = 0;
             return($MPH);
@@ -145,6 +163,16 @@ class unitConversion {
     */
 	function toMilli($V, $time, $type) {
 		return($V*1000);
+	}
+
+    /**
+    @brief
+    @param
+    @return
+    
+    */
+	function fromCenti($V, $time, $type) {
+		return($V/100);
 	}
 
    /**
