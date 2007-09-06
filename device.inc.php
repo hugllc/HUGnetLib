@@ -72,15 +72,15 @@ class device {
                     $key = trim($key);
                     if (strtolower(substr($key, 0, 3)) == "loc") {
                         if (!empty($tLoc)) {
-                            $devInfo["Location"][$key] = $tLoc;
+                            $devInfo["OldLocation"][$key] = $tLoc;
                             $nKey = (int) substr($key, 3);
-                            $devInfo["Location"][$nKey] = $tLoc;
+                            $devInfo["OldLocation"][$nKey] = $tLoc;
                         }
                     }
                 }
             }
-
 */
+
             $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
 
             $cal = $this->db->getArray($query);

@@ -750,6 +750,7 @@ class driver {
 
                 }
             }
+            $extra[$i] = $devInfo['params']['Extra'][$i];
         }
         $lastRecord = NULL;
         if (!is_array($history)) $history = array();
@@ -768,6 +769,9 @@ class driver {
                                 unset($history[$key]["Data".$i]);
                             }
                             break;
+                        case 'ignore':
+                            unset($history[$key]["Data".$i]);
+                            break;
                         default:
                              // Do nothing by default
                             break;
@@ -785,7 +789,7 @@ class driver {
 
                             $from = $devInfo['Units'][$i];
     
-                            $func = $this->unit->getConvFunct($from, $to, $type[$i]);
+                            $func = $this->unit->getConvFunct($from, $to, $type[$i], $extra[$i]);
 
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
 //                                $devInfo['Units'][$i] = $to;
