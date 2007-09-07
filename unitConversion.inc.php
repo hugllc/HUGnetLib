@@ -27,13 +27,23 @@ class unitConversion {
         'counts' => array(
             'RPM' => 'CnttoRPM',
             'MPH' => 'CnttoMPH',
-            'Inches Rain' => 'fromCenti',
+            '&#34;' => 'fromCenti',
         ),
     );
-    function checkDataTypes(&$units, &$dTypes) {
-        if (!is_array($units)) return FALSE;
-        foreach($params['Units'] as $key => $val) {
-            $dTypes[$key] = $this->getDataType($units[$key], $val, $dTypes[$key]);
+    
+    var $notGraphable = array(
+        'Direction' => TRUE,
+    );
+    function graphable($units) {
+        $units = trim($units);
+        return !isset($this->notGraphable[$units]);
+    }    
+    
+    function checkDataTypes(&$unitsFrom, &$unitsTo, &$dTypes) {
+        if (!is_array($unitsFrom)) return FALSE;
+        if (!is_array($unitsTo)) return FALSE;
+        foreach($unitsTo as $key => $val) {
+            $dTypes[$key] = $this->getDataType($unitsFrom[$key], $val, $dTypes[$key]);
         }
         return TRUE;        
     }    
