@@ -789,12 +789,12 @@ class driver {
 
                             $from = $devInfo['Units'][$i];
     
-                            $func = $this->unit->getConvFunct($from, $to, $type[$i], $extra[$i]);
+                            $func = $this->unit->getConvFunct($from, $to, $type[$i]);
 
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
 //                                $devInfo['Units'][$i] = $to;
                                 
-                                $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i]);
+                                $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
                             }
                         }
                     }

@@ -132,7 +132,7 @@ class unitConversion {
     @param
     @return
     */
-    function CnttoRPM ($cnt, $time, $type, $cntPerRev=1) {
+    function CnttoRPM ($cnt, $time, $type, $cntPerRev) {
         if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
             $rpm = ($cnt/$time/$cntPerRev)*60;
@@ -152,7 +152,7 @@ class unitConversion {
     MPH = ACFreq * 1.6965 - 0.1    
     
     */
-    function CnttoMPH ($cnt, $time, $type, $cntPerRev=1) {
+    function CnttoMPH ($cnt, $time, $type, $cntPerRev) {
         if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
             $ACFreq = $cnt/$time/$cntPerRev;
