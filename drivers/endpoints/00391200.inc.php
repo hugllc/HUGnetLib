@@ -424,8 +424,13 @@ define("e00391102B_SENSORS", 9);
 									$return["Data".$rawkey] = $farads;
 									break;
 								case 0x30:					
-									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
+//									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
+									$light = $this->Light->getReading($rawval, $Info["Types"][$rawkey], NULL, $return["TimeConstant"]);
 									$return["Data".$rawkey] = $light;
+                                    if (is_null($return['Units'][$rawkey]))
+                                    {
+                                        $return['Units'][$rawkey] = $this->Light->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                                    }
 									break;
 								case 0x70:
 								case 0x71:

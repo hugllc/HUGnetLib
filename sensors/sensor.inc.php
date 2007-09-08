@@ -18,7 +18,15 @@ class sensor_base
 	*/
 	var $Am = 1023;
 	/**
-		The D value from @ref vSensors_final_formula
+		The Tf value from @ref lightSensors_final_formula
+	*/
+	var $Tf = 65536;
+	/**
+		The D value from @ref lightSensors_final_formula
+	*/
+	var $D = 65536;
+	/**
+		The s value from @ref vSensors_final_formula
 	*/
 	var $s = 64;
 	/**
@@ -29,12 +37,22 @@ class sensor_base
         This defines all of the sensors that this driver deals with...
     */
     var $sensors = array();
+    /**
+        This is the default sensor if no sensor is defined...
+    */
+    var $defaultSensors = array();
     
 	/**
 		Constructor.
 	*/
-	function __construct($s=FALSE, $Am=FALSE, $Vcc=FALSE)
+	function __construct($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
 	{
+		if (is_numeric($Tf)) {
+			$this->Tf = $Tf;
+		}
+		if (is_numeric($Vcc)) {
+			$this->D = $D;
+		}
 		if (is_numeric($Am)) {
 			$this->Am = $Am;
 		}
@@ -58,15 +76,20 @@ class sensor_base
 
 	
 	*/
-	function getReading($val, $type, $sensor) 
+	function getReading($val, $type, $sensor=NULL) 
 	{
         $stuff = $this->sensors[$type][$sensor];
-        if (is_null($stuff)) return $val;  // If we don't know how to deal with it return the original value sent
+        if (is_null($stuff)) $stuff = $this->sensors[$type][$this->defaultSensor];
+
 
         if (isset($stuff['mult'])) $val *= $stuff['mult'];
         if (isset($stuff['function'])) {
             if (method_exists($this, $stuff['function'])) {
-                $val = call_user_func(array(&$this, $stuff['function']), $val);
+                $fct = array(&$this, $stuff['function']);
+                $args = func_get_args();
+                unset($args[1]); // Remove the $type
+                unset($args[2]); // Remove the $sensor
+                $val = call_user_func_array($fct, $args);
             }
         }
         return($val);
@@ -75,24 +98,24 @@ class sensor_base
     /**
         Returns the default units for this type of sensor
     */
-	function getUnit($type, $sensor) 
+	function getUnits($type, $sensor) 
 	{
-		return($this->sensors[$type][$sensor]['defaultUnit']);
+print $type." => ".$sensor." => ".$this->defaultSensor."\n";
+        $return = $this->sensors[$type][$sensor]['defaultUnits'];
+        if (is_null($return)) $return = $this->sensors[$type][$this->defaultSensor]['defaultUnits'];
+		return $return;
 	}
 
     /**
         Returns all possible units for this type of sensor
     */
-	function getUnit($type, $sensor) 
+	function getAllUnits($type, $sensor) 
 	{
-		return($this->sensors[$type][$sensor]['validUnits']);
+        $return = $this->sensors[$type][$sensor]['validUnits'];
+        if (is_null($return)) $return = $this->sensors[$type][$this->defaultSensor]['validUnits'];
+		return $return;
 	}
 
-
-
 }
-
-
-
 
 ?>
