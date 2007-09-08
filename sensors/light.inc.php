@@ -6,48 +6,26 @@
 	
 	
 */
-
+require_once("sensor.inc.php");
 /**
 	@brief class for dealing with resistive sensors.
 */
-class lightSensor
+class lightSensor extends sensor_base
 {
-
-	/**
-		The maximum value for the AtoD convertor from @ref lightSensors_final_formula
-	*/
-	var $Am = 1023;
-	/**
-		The Tf value from @ref lightSensors_final_formula
-	*/
-	var $Tf = 65536;
-	/**
-		The D value from @ref lightSensors_final_formula
-	*/
-	var $D = 65536;
-	/**
-		The D value from @ref lightSensors_final_formula
-	*/
-	var $s = 64;
-
-	/**
-		Constructor.
-	*/
-	function lightSensor($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE)
-	{
-		if (is_numeric($Am)) {
-			$this->Am = $Am;
-		}
-		if (is_numeric($s)) {
-			$this->s = $s;
-		}
-		if (is_numeric($D)) {
-			$this->D = $D;
-		}
-		if (is_numeric($Tf)) {
-			$this->Tf = $Tf;
-		}
-	}
+    var $defaultSensor = 'OSRAM BPW-34';
+    /**
+        This defines all of the sensors that this driver deals with...
+    */
+    var $sensors = array(
+        0x30 => array(
+            'OSRAM BPW-34' => array(
+                "longName" =>  "OSRAM BPW-34 Photodiode",
+                "validUnits" => array("W/m^2"),
+                "defaultUnits" =>  "W/m^2",
+                "function" => "OSRAMBPW34",
+            ),
+        ),
+    );
 
 	/**
 		@public
@@ -94,56 +72,16 @@ class lightSensor
 		return($L);
 	}
 	
-	/**
-		@public
-		@brief Converts resistance to temperature for BC Components #2322 640 66103 10K thermistor.
-		@param $R Float The current resistance of the thermistor
-		@param $type Int The type of sensor.
-		@return Sensor value	
-	
-		@par Introduction
-		This function 
+    function OSRAMBPW34($A, $TC) {
 
-	
-		@par Thermistors available:
-		
-		-# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor 0 in the type code.				
-			- R0 10
-			- A 3.354016e-3
-			- B 2.569355e-4
-			- C 2.626311e-6
-			- D 0.675278e-7
-	*/
-	function getReading($R, $type) 
-	{
-		switch($type) {
-			default:
-				$Read = $this->getLight($R);
-				break;
-		}
-		return($Read);
-	}
-	/**
-		@public
-		@brief Gets the units for a sensor
-		@param $type Int The type of sensor.
-		@return The units for a particular sensor type
-	
-		@par Introduction
-	*/
-	function getUnit($type) 
-	{
-		switch($type) {
-			default:
-				$U = "W/m^2";
-				break;
-		}
-		return($T);
-	}
+		$den = $this->Am*$this->s*$this->D; 
+		if ($den == 0) return(1500);
+		$L = (-1500)*$A * $this->Tf * $TC;
+		$L = $L / $den;
+		$L += 1500;
 
-
-
-
+		return($L);    
+    }
 }
 
 

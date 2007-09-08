@@ -6,86 +6,30 @@
 	
 	
 */
-
+require_once("sensor.inc.php");
 /**
 	@brief class for dealing with resistive sensors.
 */
-class windDirectionSensor
+class windDirectionSensor extends sensor_base
 {
 
-	/**
-		The maximum value for the AtoD convertor from @ref vSensors_final_formula
-	*/
-	var $Am = 1023;
-	/**
-		The Tf value from @ref vSensors_final_formula
-	*/
-	var $Tf = 65536;
-	/**
-		The D value from @ref vSensors_final_formula
-	*/
-	var $D = 65536;
-	/**
-		The D value from @ref vSensors_final_formula
-	*/
-	var $s = 64;
+    /**
+        This defines all of the sensors that this driver deals with...
+    */
+    var $sensors = array(
+        0x6F => array(
+            'maximum-inc' => array(
+                "longName" => "Maximum Inc wind direction sensor",
+                "validUnits" => array('&#176;', 'Direction'),
+                "defaultUnits" =>  '&#176;',
+                "function" => "maximumIncSensor",
+            ),
+        ),
+    );
 
-	/**
-		Constructor.
-	*/
-	function windDirectionSensors($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
-	{
-		if (is_numeric($Am)) {
-			$this->Am = $Am;
-		}
-		if (is_numeric($Vcc)) {
-			$this->Vcc = $Vcc;
-		}
-		if (is_numeric($s)) {
-			$this->s = $s;
-		}
-		if (is_numeric($D)) {
-			$this->D = $D;
-		}
-		if (is_numeric($Tf)) {
-			$this->Tf = $Tf;
-		}
-	}
-
-	/**
-		@public
-		@brief Return the voltage
-		@param $R Float The current resistance of the thermistor
-		@param $type Int The type of sensor.
-		@return Sensor value	
-	
-		@par Introduction
-		This function 
-
-	
-	*/
-	function getReading($val, $type) 
-	{
-	    $output = 0;
-            if ($type == "0x6F") {
-                $output = $this->maximumIncSensor($val);
-            }   
-            return($output);
-	}
 
     function maximumIncSensor($ndir) {
         $dir = NULL;        
-/*
-        if ($ndir & (1<<0)) $dir .= "N";
-        if ($ndir & (1<<2)) $dir .= "E";
-        if ($ndir & (1<<4)) $dir .= "S";
-        if ($ndir & (1<<6)) $dir .= "W";
-
-        if ($ndir & (1<<1)) $dir .= "NE";
-        if ($ndir & (1<<3)) $dir .= "SE";
-        if ($ndir & (1<<5)) $dir .= "SW";
-        if ($ndir & (1<<7)) $dir .= "NW";
-*/
 
         if ($ndir & (1<<0)) $dir1 = 0;   //N
         if ($ndir & (1<<2)) $dir1 = 90;  //E
@@ -136,22 +80,6 @@ class windDirectionSensor
         
         return $dir;
     }
-
-	/**
-		@public
-		@brief Gets the units for a sensor
-		@param $type Int The type of sensor.
-		@return The units for a particular sensor type
-	
-		@par Introduction
-	*/
-	function getUnit($type) 
-	{
-		return('&#179;');
-	}
-
-
-
 }
 
 

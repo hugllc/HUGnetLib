@@ -12,7 +12,7 @@ require_once(HUGNET_INCLUDE_PATH."/sensors/capacitive.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/light.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/voltage.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors/winddirection.inc.php");
-
+require_once(HUGNET_INCLUDE_PATH."/sensors/pulse.inc.php");
 
 if (!class_exists("e00392800")) {
 
@@ -405,10 +405,21 @@ if (!class_exists("e00392800")) {
 									$return["Data".$rawkey] = $farads;
 									break;
 								case 0x30:					
-									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
+//									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
+									$light = $this->Light->getReading($rawval, $Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $return["TimeConstant"]);
 									$return["Data".$rawkey] = $light;
+                                    if (is_null($return['Units'][$rawkey]))
+                                    {
+                                        $return['Units'][$rawkey] = $this->Light->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                                    }
 									break;
 								case 0x70:
+									$return["Data".$rawkey] = $this->Pulse->getReading($rawval, $Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $return["TimeConstant"]);
+                                    if (is_null($return['Units'][$rawkey]))
+                                    {
+                                        $return['Units'][$rawkey] = $this->Pulse->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                                    }
+                                    break;
 								default:
 									$return["Data".$rawkey] = $rawval;
 									break;
@@ -442,6 +453,7 @@ if (!class_exists("e00392800")) {
 			$this->Moisture = new moistureSensor();
 			$this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
 			$this->windDir = new windDirectionSensor();
+			$this->Pulse = new pulseCounter();
 		}
 
 
