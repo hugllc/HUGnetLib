@@ -30,6 +30,7 @@ define("eDEFAULT_SETGROUP", "5B");
 
 
 require_once(HUGNET_INCLUDE_PATH."/packet.inc.php");
+require_once(HUGNET_INCLUDE_PATH."/sensors.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/device.inc.php");
 require_once(HUGNET_INCLUDE_PATH."/unitConversion.inc.php");
 
@@ -880,6 +881,9 @@ class driver {
 			if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
 			$plugins = new plugins(dirname(__FILE__)."/drivers/", "inc.php");
 		}
+        // This has to go after the plugin registrations about
+        $this->sensors = new sensor($plugins);
+
 		foreach($plugins->plugins["Generic"]["driver"] as $driver) {
 			if (class_exists($driver["Class"])) {
 				$class = $driver["Class"];

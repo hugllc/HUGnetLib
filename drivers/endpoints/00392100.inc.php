@@ -8,9 +8,6 @@
 	
 */
 require_once HUGNET_INCLUDE_PATH.'/firmware.inc.php';
-require_once(HUGNET_INCLUDE_PATH."/sensors/resistive.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/voltage.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/current.inc.php");
 
 if (!class_exists("e00392100")) {
 
@@ -405,23 +402,31 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     							Output 4: HUGnet2 Current
     							Output 5: HUGnet2 Temp
     						*/		
-    						$vLow = $this->V->getReading($ret['raw'][5], 180, 27, 1);
-    						$vHigh = $this->V->getReading($ret['raw'][4], 180, 27, 1);
+    						$vLow = $this->V->getDividerVoltage($ret['raw'][5], 180, 27, 1);
+    						$vHigh = $this->V->getDividerVoltage($ret['raw'][4], 180, 27, 1);
     						$ret["Data0"] = $vHigh - $vLow;
     						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$ret["Data1"] = $this->I->getReading($ret['raw'][7], 0.5, $gain, 1);
-    						$ohms = $this->R->getResistance($ret['raw'][6], 1, 100);
-    						$ret["Data2"] = $this->R->getReading($ohms, 0);
+    						$ret["Data1"] = $this->I->getCurrent($ret['raw'][7], 0.5, $gain, 1);
+    						$ret["Data2"] = $this->R->BCTherm2381_640_66103($ret['raw'][6], 1, 10);
+//    						$ohms = $this->R->getResistance($ret['raw'][6], 1, 100);
+//    						$ret["Data2"] = $this->R->getReading($ohms, 0);
     
     
-    						$vLow = $this->V->getReading($ret['raw'][2], 180, 27, 1);
-    						$vHigh = $this->V->getReading($ret['raw'][3], 180, 27, 1);
+    						$vLow = $this->V->getDividerVoltage($ret['raw'][2], 180, 27, 1);
+    						$vHigh = $this->V->getDividerVoltage($ret['raw'][3], 180, 27, 1);
     						$ret["Data3"] = $vHigh - $vLow;
     						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$ret["Data4"] = $this->I->getReading($ret['raw'][0], 0.5, $gain, 1);
-    						$ohms = $this->R->getResistance($ret['raw'][1], 1, 100);
-    						$ret["Data5"] = $this->R->getReading($ohms, 0);
+    						$ret["Data4"] = $this->I->getCurrent($ret['raw'][0], 0.5, $gain, 1);
+    						$ret["Data5"] = $this->R->BCTherm2381_640_66103($ret['raw'][1], 1, 10);
+
+
+                            $ret["unitType"] = array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature");
+                            $ret["Units"] = array("V", "A", "&#176; C", "V", "A", "&#176; C");
+                            
+//    						$ohms = $this->R->getResistance($ret['raw'][1], 1, 100);
+//    						$ret["Data5"] = $this->R->getReading($ohms, 0);
     						break;
+
     				}
     				$ret = $this->CheckRecord($Info, $ret);
     				$return[] = $ret;
