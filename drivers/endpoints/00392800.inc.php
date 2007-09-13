@@ -5,14 +5,6 @@
 	@brief Driver for the 0039-12-XX boards.
 		
 */
-require_once(HUGNET_INCLUDE_PATH."/sensors/resistive.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/light.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/moisture.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/capacitive.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/light.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/voltage.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/winddirection.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors/pulse.inc.php");
 
 if (!class_exists("e00392800")) {
 
@@ -371,7 +363,14 @@ if (!class_exists("e00392800")) {
 						foreach($return["raw"] as $rawkey => $rawval) {
 							unset($lastkey);
 							if (!is_array($cal[$Info["Types"][$rawkey]])) $cal[$Info["Types"][$rawkey]] = array();
-//print $rawval." => ".$Info["Types"][$rawkey]."\n";
+							$return["Data".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info["Sensors"][$rawkey], $return["TimeConstant"]);
+                            if (is_null($return['Units'][$rawkey]))
+                            {
+                                $return['Units'][$rawkey] = $this->driver->sensors->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                            }
+                            $return['unitType'][$rawkey] = $this->driver->sensors->getUnitType($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+
+/*
 							switch($Info["Types"][$rawkey]) {
 								case 0x0:
 									$ohms = $this->R->getResistance($rawval, $return["TimeConstant"], 100);
@@ -425,7 +424,7 @@ if (!class_exists("e00392800")) {
 									break;
 							}
 //print $return["Data".$rawkey]."\n";
-		
+*/		
 							$return["data"][$rawkey] = $return["Data".$rawkey];
 						}
 					}

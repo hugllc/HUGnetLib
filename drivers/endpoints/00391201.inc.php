@@ -386,8 +386,12 @@ define("e00391201_SENSORS", 9);
 							
 								$MainV = $return["cal"][$this->config[$Info["FWPartNum"]]["MainV"]];
 								$tdata = $MainV - $calval;
+								$return['Units'][$calkey] = "V";
+								$return['unitType'][$calkey] = "Voltage";
 							} else {
 								$tdata = $calval;
+								$return['Units'][$calkey] = "A";
+								$return['unitType'][$calkey] = "Current";
 							}
 							//$data = number_format($data, 3);
 							$return["cal"][$calkey] = $calval;
@@ -395,6 +399,8 @@ define("e00391201_SENSORS", 9);
 							$return["Data".$calkey] = $tdata;
 		
 						}
+						$return['Units'][8] = "V";
+						$return['unitType'][8] = "Voltage";
 					}
 					$return = $this->CheckRecord($Info, $return);
 					$ret[] = $return;

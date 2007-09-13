@@ -135,113 +135,68 @@
 
 
 */
+if (!class_exists('voltageSensor')) {
+    $this->add_generic(array("Name" => "voltageSensor", "Type" => "sensor", "Class" => "voltageSensor"));
 
-/**
-	@brief class for dealing with resistive sensors.
-*/
-class voltageSensor
-{
+    /**
+    	@brief class for dealing with resistive sensors.
+    */
+    class voltageSensor extends sensor_base
+    {
+            /**
+                This defines all of the sensors that this driver deals with...
+            */
+            var $sensors = array(
+                0x10 => array(
+                    'CHSMSS' => array(
+                        "longName" => "TDK CHS-MSS ",
+                        "unitType" => "Relative Humidity",
+                        "validUnits" => array('%'),
+                        "defaultUnits" =>  '%',
+                        "function" => "CHSMSS",
+                    ),
+                ),
+            );
+    
+        function getDividerVoltage($A, $R1, $R2, $T)
+        {
+                $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
+                if ($denom == 0) return 0;
+                $numer = $A * $this->D * $this->Vcc * ($R1 + $R2);
 
-	/**
-		The maximum value for the AtoD convertor from @ref vSensors_final_formula
-	*/
-	var $Am = 1023;
-	/**
-		The Tf value from @ref vSensors_final_formula
-	*/
-	var $Tf = 65536;
-	/**
-		The D value from @ref vSensors_final_formula
-	*/
-	var $D = 65536;
-	/**
-		The D value from @ref vSensors_final_formula
-	*/
-	var $s = 64;
+                $Read = $numer/$denom;
+                return($Read);
+        }
 
-	/**
-		The Vc value from @ref vSensors_final_formula
-	*/
-	var $Vcc = 5;
-
-	/**
-		Constructor.
-	*/
-	function voltageSensors($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
-	{
-		if (is_numeric($Am)) {
-			$this->Am = $Am;
-		}
-		if (is_numeric($Vcc)) {
-			$this->Vcc = $Vcc;
-		}
-		if (is_numeric($s)) {
-			$this->s = $s;
-		}
-		if (is_numeric($D)) {
-			$this->D = $D;
-		}
-		if (is_numeric($Tf)) {
-			$this->Tf = $Tf;
-		}
-	}
-
-	/**
-		@public
-		@brief Return the voltage
-		@param $R Float The current resistance of the thermistor
-		@param $type Int The type of sensor.
-		@return Sensor value	
-	
-		@par Introduction
-		This function 
-
-	
-	*/
-	function getReading($A, $R1, $R2, $T) 
-	{
-		$denom = $this->s * $T * $this->Tf * $this->Am * $R2;
-		if ($denom == 0) return 0;
-		$numer = $A * $this->D * $this->Vcc * ($R1 + $R2);
-
-		$Read = $numer/$denom;
-		return($Read);
-	}
-
-	/**
-		@public
-		@brief Gets the units for a sensor
-		@param $type Int The type of sensor.
-		@return The units for a particular sensor type
-	
-		@par Introduction
-	*/
-	function getVoltage($A, $T, $Vref) 
-	{
-		$denom = $T * $this->Tf * $this->Am * $this->s;
-		if ($denom == 0) return 0;
-		$num = $A * $this->D * $Vref;
-	    
-	    $volts = $num / $denom;
-		return $volts;
-	}
-
-
-	/**
-		@public
-		@brief Gets the units for a sensor
-		@param $type Int The type of sensor.
-		@return The units for a particular sensor type
-	
-		@par Introduction
-	*/
-	function getUnit($type) 
-	{
-		return('Volts');
-	}
-
-
-
+    
+    	/**
+    		@public
+    		@brief Gets the units for a sensor
+    		@param $type Int The type of sensor.
+    		@return The units for a particular sensor type
+    	
+    		@par Introduction
+    	*/
+    	function getVoltage($A, $T, $Vref) 
+    	{
+    		$denom = $T * $this->Tf * $this->Am * $this->s;
+    		if ($denom == 0) return 0;
+    		$num = $A * $this->D * $Vref;
+    	    
+    	    $volts = $num / $denom;
+    		return $volts;
+    	}
+    
+    
+        /**
+            This sensor returns us 10mV / % humidity
+        */
+        function CHSMSS($A, $T, $Vref=NULL) {
+            if ($Vref == NULL) $Vref = 1.1;
+            $volts = $this->getVoltage($A, $T, $Vref);
+            return $volts * 100;
+        }
+    }
 }
 
 

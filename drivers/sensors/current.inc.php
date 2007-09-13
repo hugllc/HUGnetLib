@@ -143,104 +143,43 @@
 
 
 */
+if (!class_exists('currentSensor')) {
+    $this->add_generic(array("Name" => "currentSensor", "Type" => "sensor", "Class" => "currentSensor"));
 
-/**
-	@brief class for dealing with resistive sensors.
-*/
-class currentSensor
-{
-
-	/**
-		The maximum value for the AtoD convertor from @ref iSensors_final_formula
-	*/
-	var $Am = 1023;
-	/**
-		The Tf value from @ref iSensors_final_formula
-	*/
-	var $Tf = 65536;
-	/**
-		The D value from @ref iSensors_final_formula
-	*/
-	var $D = 65536;
-	/**
-		The D value from @ref iSensors_final_formula
-	*/
-	var $s = 64;
-
-	/**
-		The Vc value from @ref iSensors_final_formula
-	*/
-	var $Vcc = 5;
-
-	/**
-		Constructor.
-	*/
-	function voltageSensors($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
-	{
-		if (is_numeric($Am)) {
-			$this->Am = $Am;
-		}
-		if (is_numeric($Vcc)) {
-			$this->Vcc = $Vcc;
-		}
-		if (is_numeric($s)) {
-			$this->s = $s;
-		}
-		if (is_numeric($D)) {
-			$this->D = $D;
-		}
-		if (is_numeric($Tf)) {
-			$this->Tf = $Tf;
-		}
-	}
-
-	/**
-		@public
-		@brief Return the voltage
-		@param $R Float The current resistance of the thermistor
-		@param $type Int The type of sensor.
-		@return Sensor value	
-	
-		@par Introduction
-		This function 
-
-	
-		@par Thermistors available:
-		
-		-# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor 0 in the type code.				
-			- R0 10
-			- A 3.354016e-3
-			- B 2.569355e-4
-			- C 2.626311e-6
-			- D 0.675278e-7
-	*/
-	function getReading($A, $R, $G, $T) 
-	{
-		$denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
-		if ($denom == 0) return 0;
-		$numer = $A * $this->D * $this->Vcc;
-
-		$Read = $numer/$denom;
-		return($Read);
-	}
-	/**
-		@public
-		@brief Gets the units for a sensor
-		@param $type Int The type of sensor.
-		@return The units for a particular sensor type
-	
-		@par Introduction
-	*/
-	function getUnit($type) 
-	{
-		return('Volts');
-	}
-
-
-
-
+    /**
+    	@brief class for dealing with resistive sensors.
+    */
+    class currentSensor extends sensor_base
+    {
+    
+    	/**
+    		@public
+    		@brief Return the voltage
+    		@param $R Float The current resistance of the thermistor
+    		@param $type Int The type of sensor.
+    		@return Sensor value	
+    	
+    		@par Introduction
+    		This function 
+    
+    	
+    		@par Thermistors available:
+    		
+    	*/
+    	function getCurrent($A, $R, $G, $T) 
+    	{
+    		$denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
+    		if ($denom == 0) return 0;
+    		$numer = $A * $this->D * $this->Vcc;
+    
+    		$Read = $numer/$denom;
+    		return($Read);
+    	}
+    
+    
+    
+    }
 }
-
 
 
 
