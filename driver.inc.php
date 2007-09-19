@@ -737,19 +737,13 @@ class driver {
     
     */
     function modifyUnits(&$history, &$devInfo, &$dPlaces, $type=NULL, $units=NULL) {
-
         // This uses defaults if nothing exists for a particular sensor
         for ($i = 0; $i < $devInfo['ActiveSensors']; $i++) {
             if (!isset($units[$i])) {
-                if (isset($this->_defUnits[$devInfo['Units'][$i]])) {
-                    $units[$i] = $this->_defUnits[$devInfo['Units'][$i]];
-                }            
+                $units[$i] = $this->sensors->getUnits($devInfo['Types'][$i], $devInfo['params']['sensorType'][$i]); //$this->_defUnits[$devInfo['Units'][$i]];
             }        
             if (!isset($type[$i])) {
-                if (isset($this->_defType[$units[$i]])) {
-                    $type[$i] = $this->_defType[$units[$i]];
-
-                }
+                $type[$i] = $this->sensors->getUnitDefMode($devInfo['Types'][$i], $devInfo['params']['sensorType'][$i], $units[$i]);
             }
             $extra[$i] = $devInfo['params']['Extra'][$i];
         }
@@ -789,12 +783,10 @@ class driver {
                             $to = $units[$i];
 
                             $from = $devInfo['Units'][$i];
-    
                             $func = $this->unit->getConvFunct($from, $to, $type[$i]);
 
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
 //                                $devInfo['Units'][$i] = $to;
-                                
                                 $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
                             }
                         }

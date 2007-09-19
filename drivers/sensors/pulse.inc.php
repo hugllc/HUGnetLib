@@ -19,26 +19,42 @@ if (!class_exists('pulseCounter')) {
         /**
             This defines all of the sensors that this driver deals with...
         */
+        // PPM = Pulses per minute
         var $sensors = array(
             0x70 => array(
                 'generic' => array(
                     "longName" => "Generic Pulse Counter",
                     "unitType" => "Pulses",
-                    "validUnits" => array('counts'),
-                    "defaultUnits" =>  'counts',
+                    "validUnits" => array('PPM', 'counts'),
+                    "defaultUnits" =>  'PPM',
+                    "unitModes" => array(
+                        'PPM' => 'diff',
+                        'counts' => 'raw,diff',
+                    ),
+
                 ),
                 'genericRevolver' => array(
                     "longName" => "Generic Revolving Thingy",
                     "unitType" => "Revolutional Speed",
-                    "validUnits" => array('counts', 'RPM'),
-                    "defaultUnits" =>  'RPM',
-                    "extra" => "Counts per Revolution"
+                    "validUnits" => array('PPM', 'counts', 'RPM'),
+                    "defaultUnits" =>  'PPM',
+                    "unitModes" => array(
+                        'PPM' => 'diff',
+                        'RPM' => 'diff',
+                        'counts' => 'raw,diff',
+                    ),
+                    "extraText" => "Counts per Revolution"
                 ),
                 'maximumAnemometer' => array(
-                    "longName" => "Maximum Inc type #41 Anemometer",
+                    "longName" => "Maximum Inc type Hall Effect Anemometer",
                     "unitType" => "Wind Speed",
                     "validUnits" => array('RPM', 'MPH', 'counts'),
                     "defaultUnits" =>  'MPH',
+                    "unitModes" => array(
+                        'MPH' => 'diff',
+                        'RPM' => 'diff',
+                        'counts' => 'raw,diff',
+                    ),
                     "mult" => 0.5,
                 ),
                 'maximumRainGauge' => array(
@@ -46,11 +62,13 @@ if (!class_exists('pulseCounter')) {
                     "unitType" => "Rain Fall",
                     "validUnits" => array('&#34;'),
                     "defaultUnits" =>  '&#34;',
-                    "mult" => .01,
+                    "unitModes" => array(
+                        '&#34;' => 'diff',
+                    ),
+                    "mult" => 0.01,
                 ),
             ),
         );
-        var $defaultSensor = "generic";
     
     }
     

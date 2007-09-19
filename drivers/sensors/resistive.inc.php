@@ -152,22 +152,24 @@ if (!class_exists('windDirectionSensor')) {
     */
     class resistiveSensor extends sensor_base
     {
-    
-                /**
-                    This defines all of the sensors that this driver deals with...
-                */
-                var $sensors = array(
-                    0x02 => array(
-                        'BCTherm2322640' => array(
-                            "longName" => "BC Components Thermistor #2322640 ",
-                            "unitType" => "Temperature",
-                            "validUnits" => array('&#176; C', '&#176; F'),
-                            "defaultUnits" =>  '&#176; C',
-                            "function" => "BCTherm2381_640_66103",
-                        ),
+
+        /**
+            This defines all of the sensors that this driver deals with...
+        */
+        var $sensors = array(
+            0x02 => array(
+                'BCTherm2322640' => array(
+                    "longName" => "BC Components Thermistor #2322640 ",
+                    "unitType" => "Temperature",
+                    "validUnits" => array('&#176;F', '&#176;C'),
+                    "function" => "BCTherm2381_640_66103",
+                    "unitModes" => array(
+                        '&#176;C' => 'raw,diff',                        
+                        '&#176;F' => 'raw,diff',
                     ),
-                );
-                var $defaultSensor = 'maximum-inc';    
+                ),
+            ),
+        );
     
     	/**
     		@public
