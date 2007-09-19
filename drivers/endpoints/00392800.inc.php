@@ -289,6 +289,7 @@ if (!class_exists("e00392800")) {
 			$Info = $this->InterpConfig($Info);
 			$ret = array();
 
+            unset($lastPacket);
 			foreach($Packets as $key => $data) {
 				$data = $this->checkDataArray($data);
 				if(isset($data['RawData'])) {
@@ -314,6 +315,7 @@ if (!class_exists("e00392800")) {
 					}
 					$return["DeviceKey"] = $Info["DeviceKey"];
 					$return["Types"] = $Info["Types"];
+                    $return['params'] = $Info['params'];
 
 					if (is_array($data["Data"])) {
 						for ($i = 0; $i < $Info["NumSensors"]; $i++) {
@@ -363,74 +365,34 @@ if (!class_exists("e00392800")) {
 						foreach($return["raw"] as $rawkey => $rawval) {
 							unset($lastkey);
 							if (!is_array($cal[$Info["Types"][$rawkey]])) $cal[$Info["Types"][$rawkey]] = array();
-							$return["Data".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info["Sensors"][$rawkey], $return["TimeConstant"]);
+
                             if (is_null($return['Units'][$rawkey]))
                             {
-                                $return['Units'][$rawkey] = $this->driver->sensors->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                                $return['Units'][$rawkey] = $this->driver->sensors->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $Info['params']['Units'][$rawkey]);
                             }
+                            $return['dType'][$rawkey] = $this->driver->sensors->getUnitMode($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $Info['params']['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
                             $return['unitType'][$rawkey] = $this->driver->sensors->getUnitType($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-
-/*
-							switch($Info["Types"][$rawkey]) {
-								case 0x0:
-									$ohms = $this->R->getResistance($rawval, $return["TimeConstant"], 100);
-	//								$return["Data".$rawkey] = $ohms;
-									$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									break;
-								case 0x1:
-									$ohms = $this->R->getResistance($rawval, 1, 100);
-									$M = $this->Moisture->getMoisture($ohms);
-									$return["Data".$rawkey] = $M;
-									break;
-								case 0x2:
-									$ohms = $this->R->getResistance($rawval, $return["TimeConstant"], 10);
-									$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									break;
-								case 0x3:
-									$ohms = $this->R->getResistance($rawval, 1, 1000, 1, 1, 64);
-//print "\n".$rawval." - ".$ohms."\n";
-									$return["Data".$rawkey] = $ohms;
-									break;
-								case 0x10:
-									$volts = $this->V->getVoltage($rawval, $return["TimeConstant"], 1.1);
-									$return["Data".$rawkey] = $volts * 100;
-									break;
-								case 0x6F:
-									$return["Data".$rawkey] = $this->windDir->getReading($rawval, 0x6F);
-									break;
-								case 0x20:
-									$farads = $this->C->getCapacitance($rawval, $return["TimeConstant"], 10000, 1);
-		//							$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									$return["Data".$rawkey] = $farads;
-									break;
-								case 0x30:					
-//									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
-									$light = $this->Light->getReading($rawval, $Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $return["TimeConstant"]);
-									$return["Data".$rawkey] = $light;
-                                    if (is_null($return['Units'][$rawkey]))
-                                    {
-                                        $return['Units'][$rawkey] = $this->Light->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-                                    }
-									break;
-								case 0x70:
-									$return["Data".$rawkey] = $this->Pulse->getReading($rawval, $Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $return["TimeConstant"]);
-                                    if (is_null($return['Units'][$rawkey]))
-                                    {
-                                        $return['Units'][$rawkey] = $this->Pulse->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-                                    }
-                                    break;
-								default:
-									$return["Data".$rawkey] = $rawval;
-									break;
-							}
-//print $return["Data".$rawkey]."\n";
-*/		
+                            if ($return['dType'][$rawkey] == 'diff') {
+                                if (isset($lastPacket)) {
+        							$return["Data".$rawkey] = $lastPacket["DiffData".$rawkey] - $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
+                                    if (!isset($return['deltaT'])) $return['deltaT'] = (strtotime($lastPacket['Date']) - strtotime($return['Date']));
+                                } else {
+        							$return["Data".$rawkey] = NULL;
+                                }
+       							$return["DiffData".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
+                            } else {
+    							$return["Data".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
+                            }
 							$return["data"][$rawkey] = $return["Data".$rawkey];
 						}
 					}
 					$return = $this->CheckRecord($Info, $return);
 					$ret[] = $return;
+					if ($return['Status'] == "GOOD") {
+					    $lastPacket = $return;
+                    }
 				}
+				
 			}
 		
 			return($ret);

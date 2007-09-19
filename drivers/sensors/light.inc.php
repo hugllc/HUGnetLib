@@ -25,6 +25,10 @@ if (!class_exists('lightSensor')) {
                     "validUnits" => array("W/m^2"),
                     "defaultUnits" =>  "W/m^2",
                     "function" => "OSRAMBPW34",
+                    "unitModes" => array(
+                        'W/m^2' => 'raw,diff',
+                    ),
+                    
                 ),
             ),
         );

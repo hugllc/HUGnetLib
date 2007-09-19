@@ -26,8 +26,7 @@ class unitConversion {
     var $unitsDiff = array(
         'counts' => array(
             'RPM' => 'CnttoRPM',
-            'MPH' => 'CnttoMPH',
-            '&#34;' => 'fromCenti',
+            'PPM' => 'CnttoRPM',
         ),
     );
     
@@ -64,6 +63,10 @@ class unitConversion {
         
         $ret = $this->units[$from][$to];
         if ($ret !== NULL) return $ret;
+        if (isset($this->units[$from][$to])) {
+print "HERE";
+            return $this->units[$from][$to];
+        }
         if ($type == 'diff') {
             return $this->unitsDiff[$from][$to];
         } else {

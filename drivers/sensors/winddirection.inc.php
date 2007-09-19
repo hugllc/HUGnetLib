@@ -26,6 +26,10 @@ if (!class_exists('windDirectionSensor')) {
                     "validUnits" => array('&#176;', 'Direction'),
                     "defaultUnits" =>  '&#176;',
                     "function" => "maximumIncSensor",
+                    "unitModes" => array(
+                        '&#176;' => 'raw',
+                        'Direction' => 'raw'
+                    ),
                 ),
             ),
         );

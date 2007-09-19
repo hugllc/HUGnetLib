@@ -90,12 +90,17 @@ class sensor {
     /**
         Returns the default units for this type of sensor
     */
-	function getUnits($type, $sensor) 
+	function getUnits($type, $sensor, $unit = FALSE) 
 	{
         $return = NULL;
 	    $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
-            $return = $class->sensors[$type][$sensor]['defaultUnits'];
+            if (array_search($unit, $class->sensors[$type][$sensor]['validUnits']) !== FALSE) {
+                $return = $unit;
+            } else {
+                reset($class->sensors[$type][$sensor]['validUnits']);
+                $return = current($class->sensors[$type][$sensor]['validUnits']);
+            }
         }
 		return $return;
 	}
@@ -111,6 +116,45 @@ class sensor {
         }
 		return $return;
 	}
+    /**
+        Returns the default units for this type of sensor
+    */
+    
+	function getUnitMode($type, $sensor, $unit=NULL, $mode=FALSE) 
+	{
+        $return = array();
+	    $class = $this->getClass($type, $sensor);
+        if (is_object($class)) {
+            if (is_null($unit)) {
+                $return = $class->sensors[$type][$sensor]['unitModes'];
+                if (is_array($return)) {
+                    foreach($return as $key => $val) {
+                        $return[$key] = explode(",", $val);
+                    }
+                }
+            } else {
+                $return = $class->sensors[$type][$sensor]['unitModes'][$unit];
+                $return = explode(",", $return);
+                if ($mode !== FALSE) {
+                    if (array_search($mode, $return) !== FALSE) {
+                        $return = $mode;
+                    } else {
+                        $return = $return[0];
+                    }
+                }
+            }
+        }
+		return $return;
+	}
+    /**
+        Returns the default units for this type of sensor
+    */
+    
+	function getUnitDefMode($type, $sensor, $unit) 
+	{
+        $return = $this->getUnitMode($type, $sensor, $unit);
+		return $return[0];
+	}
 
     /**
         Returns all possible units for this type of sensor
@@ -125,6 +169,26 @@ class sensor {
 		return $return;
 	}
 
+
+    /**
+        Returns the class
+    */
+    function getAllSensors($type) {
+        $type = (int)$type;
+        $sensors = array();
+        $done = array();
+        if (is_array($this->dev[$type])) {
+            foreach($this->dev[$type] as $key => $class) {
+                if ($done[$class] !== TRUE) {
+                    $s = $this->sensors[$class]->sensors[$type];
+                    if (is_array($s)) $sensors = array_merge($sensors, $s);
+                    $done[$class] = TRUE;
+                }
+            }
+        }    
+
+        return $sensors;
+    }
 
 }
 

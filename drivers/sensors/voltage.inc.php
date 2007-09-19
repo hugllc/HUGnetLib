@@ -143,20 +143,23 @@ if (!class_exists('voltageSensor')) {
     */
     class voltageSensor extends sensor_base
     {
-            /**
-                This defines all of the sensors that this driver deals with...
-            */
-            var $sensors = array(
-                0x10 => array(
-                    'CHSMSS' => array(
-                        "longName" => "TDK CHS-MSS ",
-                        "unitType" => "Relative Humidity",
-                        "validUnits" => array('%'),
-                        "defaultUnits" =>  '%',
-                        "function" => "CHSMSS",
+        /**
+            This defines all of the sensors that this driver deals with...
+        */
+        var $sensors = array(
+            0x10 => array(
+                'CHSMSS' => array(
+                    "longName" => "TDK CHS-MSS ",
+                    "unitType" => "Relative Humidity",
+                    "validUnits" => array('%'),
+                    "defaultUnits" =>  '%',
+                    "function" => "CHSMSS",
+                    "unitModes" => array(
+                        '%' => 'raw,diff',
                     ),
                 ),
-            );
+            ),
+        );
     
         function getDividerVoltage($A, $R1, $R2, $T)
         {
