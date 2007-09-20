@@ -69,6 +69,30 @@ if (!class_exists('pulseCounter')) {
                     "checkFunction" => "diffCheck",
                     "doTotal" => TRUE,
                 ),
+                'bravo3motion' => array(
+                    "longName" => "DSC Bravo 3 Motion Sensor",
+                    "unitType" => "Counts",
+                    "validUnits" => array('counts'),
+                    "storageUnit" =>  'counts',
+                    "unitModes" => array(
+                        'counts' => 'diff,raw',
+                    ),
+                    "checkFunction" => "diffCheck",
+                    "doTotal" => TRUE,
+                ),
+                'bravo3motion' => array(
+                    "longName" => "CCS WattNode Pulse Output Power Meter",
+                    "unitType" => "Power",
+                    "validUnits" => array('kWh'),
+                    "storageUnit" =>  'kWh',
+                    "function" => "WattNode",
+                    "unitModes" => array(
+                        'kWh' => 'raw,diff',
+                    ),
+                    "extraText" => "Watt Hours / Pulse",
+                    "extraDefault" => 5,
+                    "doTotal" => TRUE,
+                ),
             ),
         );
     
@@ -93,6 +117,14 @@ if (!class_exists('pulseCounter')) {
             if ($value < 0) return FALSE;
             return TRUE;
         }
+
+        function WattNode($val, $TC, $extra, $deltaT=NULL) {
+            if (empty($deltaT) || ($deltaT < 0)) return NULL;
+            $Wh = $val * $extra;
+            return $Wh / 1000;
+        }
+
+
     }
     
 }
