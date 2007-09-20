@@ -72,15 +72,16 @@ if (!class_exists('pulseCounter')) {
                 'bravo3motion' => array(
                     "longName" => "DSC Bravo 3 Motion Sensor",
                     "unitType" => "Counts",
-                    "validUnits" => array('counts'),
+                    "validUnits" => array('counts', 'PPM'),
                     "storageUnit" =>  'counts',
                     "unitModes" => array(
                         'counts' => 'diff,raw',
+                        'PPM' => 'diff',
                     ),
                     "checkFunction" => "diffCheck",
                     "doTotal" => TRUE,
                 ),
-                'bravo3motion' => array(
+                'wattnode' => array(
                     "longName" => "CCS WattNode Pulse Output Power Meter",
                     "unitType" => "Power",
                     "validUnits" => array('kWh'),
