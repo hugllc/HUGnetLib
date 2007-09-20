@@ -162,7 +162,7 @@ if (!class_exists('resistiveSensor')) {
                     "longName" => "BC Components Thermistor #2322640 ",
                     "unitType" => "Temperature",
                     "validUnits" => array('&#176;F', '&#176;C'),
-                    "function" => "BCTherm2381_640_66103",
+                    "function" => "BCTherm2381_640_66103_alt",
                     "storageUnit" => '&#176;C',
                     "unitModes" => array(
                         '&#176;C' => 'raw,diff',                        
@@ -277,6 +277,11 @@ if (!class_exists('resistiveSensor')) {
             if ($T > 150) return FALSE;
             if ($T < -40) return FALSE;
             return TRUE;
+        }
+        function BCTherm2381_640_66103_alt($A, $TC, $Bias=10) {
+            if (empty($Bias)) $Bias = $this->sensors[0x00]['BCTherm2322640']['extraDefault'];
+    		$ohms = $this->getResistance($A, $TC, $Bias);
+    		return $this->BCTherm2322640Interpolate($ohms, $Bias, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
         }
     
     	/**
