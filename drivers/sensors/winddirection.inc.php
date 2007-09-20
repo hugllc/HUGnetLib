@@ -24,8 +24,8 @@ if (!class_exists('windDirectionSensor')) {
                     "longName" => "Maximum Inc wind direction sensor",
                     "unitType" => "Wind Direction",
                     "validUnits" => array('&#176;', 'Direction'),
-                    "defaultUnits" =>  '&#176;',
                     "function" => "maximumIncSensor",
+                    "storageUnit" => '&#176;',
                     "unitModes" => array(
                         '&#176;' => 'raw',
                         'Direction' => 'raw'

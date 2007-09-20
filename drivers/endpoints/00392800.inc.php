@@ -148,10 +148,9 @@ if (!class_exists("e00392800")) {
             }
     		return($return);
     	}
-            
-    	function CheckRecord($Info, $Rec) {
+
+    	function CheckRecord($Info, &$Rec) {
     	
-    //	print get_stuff($Rec);
     		$Rec['StatusOld'] = $Rec['Status'];
     		if (empty($Rec['RawData'])) {
     			$Rec["Status"] = 'BAD';
@@ -160,39 +159,10 @@ if (!class_exists("e00392800")) {
     			$Rec["Status"] = 'GOOD';
     		}
     		$Bad = 0;
-    		// This checks if the data is in range.
-    		if (is_array($Rec["data"])) {
-    			foreach($Rec["data"] as $key => $value) {
-    				if ($key < $Rec["ActiveSensors"]) {
-    					switch ($Info["Types"][$key]) {
-    						case 1:
-    							break;											
-    						case 2:		// These thermistors only go from -40 to +150
-    						case 0:		// These thermistors only go from -40 to +150
-    							if (($value > 150) || ($value < -40)) {
-    								$Bad++;
-    								$Rec['Data'.$key] = NULL;
-    							}
-    							break;
-    					    case 0x10:
-    							if (($value > 105) || ($value < 0)) {
-    								$Bad++;
-    								$Rec['Data'.$key] = NULL;
-    							} else if ($value > 100) {
-    								$Rec['Data'.$key] = 100;
-    							}
-    							break;					        
-    						default:
-    							break;
-    					}
-    				} else {
-    					$Rec['Data'.$key] = NULL;
-    				}
-    			}
-    		}
+
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-    			if ($Rec['Data'.$i] != 0) {
+    			if (is_null($Rec['Data'.$i])) {
     				$zero = FALSE;
     				break;
     			}
@@ -200,7 +170,7 @@ if (!class_exists("e00392800")) {
     
     		if ($zero && ($i > 3)) {
     			$Rec["Status"] = "BAD";
-    			$Rec["StatusCode"] = " All Zero";		
+    			$Rec["StatusCode"] = " All Bad";		
     		}
     
     		if ($Rec["TimeConstant"] == 0) {
@@ -211,8 +181,7 @@ if (!class_exists("e00392800")) {
     			$Rec["Status"] = "BAD";
     			$Rec["StatusCode"] = "All Bad Readings";
     		}
-    		
-    		return($Rec);	
+
     	}
 	
 		
@@ -292,107 +261,53 @@ if (!class_exists("e00392800")) {
             unset($lastPacket);
 			foreach($Packets as $key => $data) {
 				$data = $this->checkDataArray($data);
+                $index = 0; 
 				if(isset($data['RawData'])) {
+            		$data['NumSensors'] = $Info['NumSensors'];
+            		$data["ActiveSensors"] = $Info["ActiveSensors"];
+            		$data["Driver"] = $Info["Driver"];
+            		$data["DeviceKey"] = $Info["DeviceKey"];
+            		$data["Types"] = $Info["Types"];
+                    $data['params'] = $Info['params'];
+            		$data["DataIndex"] = $data["Data"][$index++];
+            		$oldtc = $data["Data"][$index++];  // There is nothing here.
+            		$data["TimeConstant"] = $data["Data"][$index++];
+        	    	if ($data["TimeConstant"] == 0) $data["TimeConstant"] = $oldtc;
 
-	//				$data = $this->InterpConfig($data);
-					$return = $data;
-					$index = 0; 
-					$return["ReplyTime"] = $data["ReplyTime"];
-					$return["RawData"] = $data["RawData"];
-					$return['sendCommand'] = $data['sendCommand'];
-					$return['NumSensors'] = $Info['NumSensors'];
-					$return["DataIndex"] = $data["Data"][$index++];
-		//			$return["TimeConstant"] = $data["data"][$index++];
-					$oldtc = $data["Data"][$index++];  // There is nothing here.
-					$return["TimeConstant"] = $data["Data"][$index++];
-					$return["ActiveSensors"] = $Info["ActiveSensors"];
-					$return["Driver"] = $Info["Driver"];
-					if ($return["TimeConstant"] == 0) $return["TimeConstant"] = $oldtc;
-					if (!isset($data["Date"])) {
-						$return["Date"] = date("Y-m-d H:i:s");
-					} else {
-						$return["Date"] = $data["Date"];
-					}
-					$return["DeviceKey"] = $Info["DeviceKey"];
-					$return["Types"] = $Info["Types"];
-                    $return['params'] = $Info['params'];
-
-					if (is_array($data["Data"])) {
-						for ($i = 0; $i < $Info["NumSensors"]; $i++) {
-							$key = $this->getOrder($Info, $i, TRUE);
+            		if (is_array($data["Data"])) {
+            			for ($i = 0; $i < $Info["NumSensors"]; $i++) {
+            				$key = $this->getOrder($Info, $i, TRUE);
 
                             if (isset($data["Data"][$index])) {
-    							switch ($Info["Types"][$key]) {
-    								case 0x6F:
-    									$d = $data["Data"][$index];
-    //									$d = $d ^ 0xF0;  // invert the top half of the value.
-    									$return["raw"][$key] = $d;
-    									$index += 3;
-    									break;											
-    								case 2:
-    								case 0:
-    								case 0x30:
-    								case 0x70:
-    								case 0x71:
-    								case 0x10:
-    								default:
-    									$return["raw"][$key] = $data["Data"][$index++];
-    									$return["raw"][$key] += $data["Data"][$index++] << 8;
-    									$return["raw"][$key] += $data["Data"][$index++] << 16;
-    									break;											
-    		
-    							}					
+            					switch ($Info["Types"][$key]) {
+            						case 0x6F:
+            							$d = $data["Data"][$index];
+            //									$d = $d ^ 0xF0;  // invert the top half of the value.
+            							$data["raw"][$key] = $d;
+            							$index += 3;
+            							break;											
+            						case 2:
+            						case 0:
+            						case 0x30:
+            						case 0x70:
+            						case 0x71:
+            						case 0x10:
+            						default:
+            							$data["raw"][$key] = $data["Data"][$index++];
+            							$data["raw"][$key] += $data["Data"][$index++] << 8;
+            							$data["raw"][$key] += $data["Data"][$index++] << 16;
+            							break;											
+            
+            					}					
                             }		
-						}
-						
-					}
-					if (is_array($return["raw"])) {
-						/* This sets up what we should see from the double poll averager */
-		
-						foreach($this->caldata as $type => $val) {
-							foreach ($val as $key => $value) {
-								switch($type) {
-									case 1:
-										$cal[$type][$key] = (int) $value;
-										break;
-									default:
-										$cal[$type][$key] = (int)($value * ($return["TimeConstant"]/256));
-										break;
-								}
-							}
-							$cal[$type] = array_flip($cal[$type]);
-						}
-						foreach($return["raw"] as $rawkey => $rawval) {
-							unset($lastkey);
-							if (!is_array($cal[$Info["Types"][$rawkey]])) $cal[$Info["Types"][$rawkey]] = array();
+            			}
+            			
+            		}
 
-                            if (is_null($return['Units'][$rawkey]))
-                            {
-                                $return['Units'][$rawkey] = $this->driver->sensors->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $Info['params']['Units'][$rawkey]);
-                            }
-                            $return['dType'][$rawkey] = $this->driver->sensors->getUnitMode($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $Info['params']['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
-                            $return['unitType'][$rawkey] = $this->driver->sensors->getUnitType($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-                            if ($return['dType'][$rawkey] == 'diff') {
-                                if (isset($lastPacket)) {
-        							$return["Data".$rawkey] = $lastPacket["DiffData".$rawkey] - $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
-                                    if (!isset($return['deltaT'])) $return['deltaT'] = (strtotime($lastPacket['Date']) - strtotime($return['Date']));
-                                } else {
-        							$return["Data".$rawkey] = NULL;
-                                }
-       							$return["DiffData".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
-                            } else {
-    							$return["Data".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $return["TimeConstant"]);
-                            }
-							$return["data"][$rawkey] = $return["Data".$rawkey];
-						}
-					}
-					$return = $this->CheckRecord($Info, $return);
-					$ret[] = $return;
-					if ($return['Status'] == "GOOD") {
-					    $lastPacket = $return;
-                    }
+    				$this->driver->sensors->decodeData($data);
+                    $this->checkRecord($Info, $data);
+    				$ret[] = $data;
 				}
-				
 			}
 		
 			return($ret);
