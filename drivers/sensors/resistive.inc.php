@@ -144,7 +144,7 @@
 
 
 */
-if (!class_exists('windDirectionSensor')) {
+if (!class_exists('resistiveSensor')) {
     $this->add_generic(array("Name" => "resistiveSensor", "Type" => "sensor", "Class" => "resistiveSensor"));
 
     /**
@@ -163,10 +163,12 @@ if (!class_exists('windDirectionSensor')) {
                     "unitType" => "Temperature",
                     "validUnits" => array('&#176;F', '&#176;C'),
                     "function" => "BCTherm2381_640_66103",
+                    "storageUnit" => '&#176;C',
                     "unitModes" => array(
                         '&#176;C' => 'raw,diff',                        
                         '&#176;F' => 'raw,diff',
                     ),
+                    "checkFunction" => "BCTherm2381_640_66103_check",
                 ),
             ),
         );
@@ -236,8 +238,14 @@ if (!class_exists('windDirectionSensor')) {
     	}
 */    
         function BCTherm2381_640_66103($A, $TC, $Bias=10) {
+            if (empty($Bias)) $Bias = 10;
     		$ohms = $this->getResistance($A, $TC, $Bias);
     		return $this->BCTherm2322640Interpolate($ohms, $Bias, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
+        }
+        function BCTherm2381_640_66103_check($T) {
+            if ($T > 150) return FALSE;
+            if ($T < -40) return FALSE;
+            return TRUE;
         }
     
     	/**

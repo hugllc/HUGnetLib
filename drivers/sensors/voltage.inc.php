@@ -154,6 +154,8 @@ if (!class_exists('voltageSensor')) {
                     "validUnits" => array('%'),
                     "defaultUnits" =>  '%',
                     "function" => "CHSMSS",
+                    "storageUnit" => '%',
+                    "checkFunction" => "CHSMSS_check",
                     "unitModes" => array(
                         '%' => 'raw,diff',
                     ),
@@ -199,6 +201,12 @@ if (!class_exists('voltageSensor')) {
             $volts = $this->getVoltage($A, $T, $Vref);
             return $volts * 100;
         }
+        function CHSMSS_check($humidity, $units) {
+            if ($humidity > 100) return FALSE;
+            if ($humidity < 0) return FALSE;
+            return TRUE;
+        }
+
     }
 }
 

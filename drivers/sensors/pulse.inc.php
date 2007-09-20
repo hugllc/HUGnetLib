@@ -26,50 +26,74 @@ if (!class_exists('pulseCounter')) {
                     "longName" => "Generic Pulse Counter",
                     "unitType" => "Pulses",
                     "validUnits" => array('PPM', 'counts'),
-                    "defaultUnits" =>  'PPM',
+                    "storageUnit" =>  'PPM',
                     "unitModes" => array(
                         'PPM' => 'diff',
                         'counts' => 'raw,diff',
                     ),
+                    "checkFunction" => "pulseCheck",
 
                 ),
                 'genericRevolver' => array(
                     "longName" => "Generic Revolving Thingy",
                     "unitType" => "Revolutional Speed",
                     "validUnits" => array('PPM', 'counts', 'RPM'),
-                    "defaultUnits" =>  'PPM',
+                    "storageUnits" =>  'PPM',
                     "unitModes" => array(
                         'PPM' => 'diff',
                         'RPM' => 'diff',
                         'counts' => 'raw,diff',
                     ),
-                    "extraText" => "Counts per Revolution"
+                    "extraText" => "Counts per Revolution",
+                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumAnemometer' => array(
                     "longName" => "Maximum Inc type Hall Effect Anemometer",
                     "unitType" => "Wind Speed",
                     "validUnits" => array('RPM', 'MPH', 'counts'),
-                    "defaultUnits" =>  'MPH',
+                    "storageUnit" =>  'MPH',
                     "unitModes" => array(
                         'MPH' => 'diff',
                         'RPM' => 'diff',
                         'counts' => 'raw,diff',
                     ),
-                    "mult" => 0.5,
+                    "function" => "maximumAnemometer",
+                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
                     "unitType" => "Rain Fall",
                     "validUnits" => array('&#34;'),
-                    "defaultUnits" =>  '&#34;',
+                    "storageUnit" =>  '&#34;',
                     "unitModes" => array(
                         '&#34;' => 'diff',
                     ),
                     "mult" => 0.01,
+                    "checkFunction" => "pulseCheck",
                 ),
             ),
         );
     
+
+        /**
+            This implements the function:
+                Freq = (Speed + 0.1)/1.6965
+            or:
+                Speed = (Freq * 1.6965) - 0.1
+            
+            Freq = Pulses/Time
+        */
+        function maximumAnemometer($val, $TC, $extra, $deltaT=NULL) {
+            if (empty($deltaT) || ($deltaT < 0)) return NULL;
+            if ($val <= 0) return 0;
+            $speed = (($val / $deltaT) * 1.6965) - 0.1;
+            return $speed;
+        }
+        
+        function diffCheck($value, $units) {
+            if ($value < 0) return FALSE;
+            return TRUE;
+        }
     }
     
 }

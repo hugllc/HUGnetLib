@@ -23,7 +23,7 @@ if (!class_exists('lightSensor')) {
                 'OSRAM BPW-34' => array(
                     "longName" =>  "OSRAM BPW-34 Photodiode",
                     "validUnits" => array("W/m^2"),
-                    "defaultUnits" =>  "W/m^2",
+                    "storageUnit" =>  "W/m^2",
                     "function" => "OSRAMBPW34",
                     "unitModes" => array(
                         'W/m^2' => 'raw,diff',
