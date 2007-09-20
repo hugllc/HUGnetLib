@@ -177,45 +177,18 @@ define("e00391102B_SENSORS", 9);
 		}
 
 		
-	function CheckRecord($Info, $Rec) {
+	function CheckRecord($Info, &$Rec) {
 	
 //	print get_stuff($Rec);
 		$Rec['StatusOld'] = $Rec['Status'];
 		if (empty($Rec['RawData'])) {
 			$Rec["Status"] = 'BAD';
-			return $Rec;
+			return;
 		} else {
 			$Rec["Status"] = 'GOOD';
 		}
 		$Bad = 0;
-		// This checks if the data is in range.
-		if (is_array($Rec["data"])) {
-			foreach($Rec["data"] as $key => $value) {
-				if ($key < $Rec["ActiveSensors"]) {
-					switch ($Info["Types"][$key]) {
-						case 1:
-							break;											
-						case 2:		// These thermistors only go from -40 to +150
-						case 0:		// These thermistors only go from -40 to +150
-							if (($value > 150) || ($value < -40)) {
-								$Bad++;
-								$Rec['Data'.$key] = NULL;
-							}
-							break;
-					    case 0x10:
-							if (($value > 100) || ($value < 0)) {
-								$Bad++;
-								$Rec['Data'.$key] = NULL;
-							}
-							break;					        
-						default:
-							break;
-					}
-				} else {
-					$Rec['Data'.$key] = NULL;
-				}
-			}
-		}
+
 		$zero = TRUE;
 		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
 			if ($Rec['Data'.$i] != 0) {
@@ -238,7 +211,7 @@ define("e00391102B_SENSORS", 9);
 			$Rec["StatusCode"] = "All Bad Readings";
 		}
 		
-		return($Rec);	
+		return;	
 	}
 	
 		
@@ -271,6 +244,8 @@ define("e00391102B_SENSORS", 9);
 			$Info["Types"] = array();
 			$Info["Labels"] = array();
 			$Info["Units"] = array();
+            $Info['params'] = device::decodeParams($Info['params']);
+
 
 			switch(trim(strtoupper($Info["FWPartNum"]))) {
 			case "0039-20-12-C":
@@ -290,8 +265,10 @@ define("e00391102B_SENSORS", 9);
 						$Info["Types"][$i] = 0;
 					}
 				}
-				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
+//				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
+                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 				$Info["Units"][$i] = $this->units[$Info["Types"][$i]];	
+                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 
 			}
 			return($Info);
@@ -316,28 +293,18 @@ define("e00391102B_SENSORS", 9);
 			foreach($Packets as $key => $data) {
 				$data = $this->checkDataArray($data);
 				if(isset($data['RawData'])) {
+				    $index = 0;
+            		$data['NumSensors'] = $Info['NumSensors'];
+            		$data["ActiveSensors"] = $Info["ActiveSensors"];
+            		$data["Driver"] = $Info["Driver"];
+            		$data["DeviceKey"] = $Info["DeviceKey"];
+            		$data["Types"] = $Info["Types"];
+                    $data['params'] = $Info['params'];
+            		$data["DataIndex"] = $data["Data"][$index++];
+            		$oldtc = $data["Data"][$index++];  // There is nothing here.
+            		$data["TimeConstant"] = $data["Data"][$index++];
+        	    	if ($data["TimeConstant"] == 0) $data["TimeConstant"] = $oldtc;
 
-	//				$data = $this->InterpConfig($data);
-					$return = $data;
-					$index = 0; 
-					$return["ReplyTime"] = $data["ReplyTime"];
-					$return["RawData"] = $data["RawData"];
-					$return['sendCommand'] = $data['sendCommand'];
-					$return['NumSensors'] = $Info['NumSensors'];
-					$return["DataIndex"] = $data["Data"][$index++];
-		//			$return["TimeConstant"] = $data["data"][$index++];
-					$oldtc = $data["Data"][$index++];  // There is nothing here.
-					$return["TimeConstant"] = $data["Data"][$index++];
-					$return["ActiveSensors"] = $Info["ActiveSensors"];
-					$return["Driver"] = $Info["Driver"];
-					if ($return["TimeConstant"] == 0) $return["TimeConstant"] = $oldtc;
-					if (!isset($data["Date"])) {
-						$return["Date"] = date("Y-m-d H:i:s");
-					} else {
-						$return["Date"] = $data["Date"];
-					}
-					$return["DeviceKey"] = $Info["DeviceKey"];
-					$return["Types"] = $Info["Types"];
 
 					if (is_array($data["Data"])) {
 						for ($i = 0; $i < $Info["NumSensors"]; $i++) {
@@ -345,13 +312,13 @@ define("e00391102B_SENSORS", 9);
 
 							switch ($Info["Types"][$key]) {
 								case 1:
-									$return["raw"][$key] = $data["Data"][$index++];
-									$return["raw"][$key] += $data["Data"][$index++] << 8;
+									$data["raw"][$key] = $data["Data"][$index++];
+									$data["raw"][$key] += $data["Data"][$index++] << 8;
 									break;											
 								case 0x72:
 									$d = $data["Data"][$index++];
 									$d = $d ^ 0xF0;  // invert the top half of the value.
-									$return["raw"][$key] = $d;
+									$data["raw"][$key] = $d;
 									break;											
 								case 2:
 								case 0:
@@ -360,9 +327,9 @@ define("e00391102B_SENSORS", 9);
 								case 0x71:
 								case 0x10:
 								default:
-									$return["raw"][$key] = $data["Data"][$index++];
-									$return["raw"][$key] += $data["Data"][$index++] << 8;
-									$return["raw"][$key] += $data["Data"][$index++] << 16;
+									$data["raw"][$key] = $data["Data"][$index++];
+									$data["raw"][$key] += $data["Data"][$index++] << 8;
+									$data["raw"][$key] += $data["Data"][$index++] << 16;
 									break;											
 		
 							}					
@@ -370,83 +337,9 @@ define("e00391102B_SENSORS", 9);
 						}
 						
 					}
-					if (is_array($return["raw"])) {
-						/* This sets up what we should see from the double poll averager */
-		
-						foreach($this->caldata as $type => $val) {
-							foreach ($val as $key => $value) {
-								switch($type) {
-									case 1:
-										$cal[$type][$key] = (int) $value;
-										break;
-									default:
-										$cal[$type][$key] = (int)($value * ($return["TimeConstant"]/256));
-										break;
-								}
-							}
-							$cal[$type] = array_flip($cal[$type]);
-						}
-						foreach($return["raw"] as $rawkey => $rawval) {
-							unset($lastkey);
-							if (!is_array($cal[$Info["Types"][$rawkey]])) $cal[$Info["Types"][$rawkey]] = array();
-//print $rawval." => ".$Info["Types"][$rawkey]."\n";
-							$return["Data".$rawkey] = $this->driver->sensors->getReading($rawval, $Info["Types"][$rawkey], NULL, $return["TimeConstant"]);
-                            if (is_null($return['Units'][$rawkey]))
-                            {
-                                $return['Units'][$rawkey] = $this->driver->sensors->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-                            }
-
-/*
-							switch($Info["Types"][$rawkey]) {
-								case 0:
-									$ohms = $this->R->getResistance($rawval, $return["TimeConstant"], 100);
-	//								$return["Data".$rawkey] = $ohms;
-									$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									break;
-								case 1:
-									$ohms = $this->R->getResistance($rawval, 1, 100);
-									$M = $this->Moisture->getMoisture($ohms);
-									$return["Data".$rawkey] = $M;
-									break;
-								case 2:
-									$ohms = $this->R->getResistance($rawval, $return["TimeConstant"], 10);
-	//print $ohms."\r\n";
-	//								$return["Data".$rawkey] = $ohms;
-									$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									break;
-								case 0x10:
-									$volts = $this->V->getVoltage($rawval, $return["TimeConstant"], 1.1);
-									$return["Data".$rawkey] = $volts * 100;
-									break;
-
-								case 0x20:
-									$farads = $this->C->getCapacitance($rawval, $return["TimeConstant"], 10000, 1);
-		//							$return["Data".$rawkey] = $this->R->getReading($ohms, $data["Types"][$rawkey]);
-									$return["Data".$rawkey] = $farads;
-									break;
-								case 0x30:					
-//									$light = $this->Light->getLight($rawval, $return["TimeConstant"]);
-									$light = $this->Light->getReading($rawval, $Info["Types"][$rawkey], NULL, $return["TimeConstant"]);
-									$return["Data".$rawkey] = $light;
-                                    if (is_null($return['Units'][$rawkey]))
-                                    {
-                                        $return['Units'][$rawkey] = $this->Light->getUnits($Info["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
-                                    }
-									break;
-								case 0x70:
-								case 0x71:
-								case 0x72:
-								default:
-									$return["Data".$rawkey] = $rawval;
-									break;
-							}
-//print $return["Data".$rawkey]."\n";
-*/		
-							$return["data"][$rawkey] = $return["Data".$rawkey];
-						}
-					}
-					$return = $this->CheckRecord($Info, $return);
-					$ret[] = $return;
+    				$this->driver->sensors->decodeData($data);
+                    $this->checkRecord($Info, $data);
+    				$ret[] = $data;
 				}
 			}
 		

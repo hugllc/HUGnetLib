@@ -216,6 +216,7 @@ if (!class_exists("e00392800")) {
 			$Info["Types"] = array();
 			$Info["Labels"] = array();
 			$Info["Units"] = array();
+            $Info['params'] = device::decodeParams($Info['params']);
 
 			switch(trim(strtoupper($Info["FWPartNum"]))) {
 			case "0039-20-12-C":
@@ -235,9 +236,10 @@ if (!class_exists("e00392800")) {
 						$Info["Types"][$i] = 0;
 					}
 				}
-				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
+//				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
+                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 				$Info["Units"][$i] = $this->units[$Info["Types"][$i]];	
-
+                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 			}
 			return($Info);
 		}

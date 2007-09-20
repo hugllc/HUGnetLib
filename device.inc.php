@@ -214,15 +214,19 @@ class device {
         return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
     }
 
-    function encodeParams($params) {
-        $params = serialize($params);
-        $params = base64_encode($params);
+    function encodeParams(&$params) {
+        if (is_array($params)) {
+            $params = serialize($params);
+            $params = base64_encode($params);
+        }
         return $params;
     }
 
-    function decodeParams($params) {
-        $params = base64_decode($params);
-        $params = unserialize($params);
+    function decodeParams(&$params) {
+        if (is_string($params)) {
+            $params = base64_decode($params);
+            $params = unserialize($params);
+        }
         return $params;    
     }
 
@@ -259,6 +263,7 @@ class deviceCache {
             "LastAnalysis" => "datetime",
             "MinAverage" => "varcar(16)",
             "CurrentGatewayKey" => "int(11)",
+            "params" => "text",
         );
 	/**
 		@brief Constructor
@@ -315,6 +320,7 @@ class deviceCache {
                       `LastAnalysis` datetime NOT NULL default '0000-00-00 00:00:00',
                       `MinAverage` varcar(16) NOT NULL default '15MIN',
                       `CurrentGatewayKey` int(11) NOT NULL default '0',
+                      `params` text NOT NULL,
                       PRIMARY KEY  (`DeviceKey`)
                     );
                     ";
@@ -344,7 +350,12 @@ class deviceCache {
             foreach($this->fields as $key => $val) {
                 if (isset($info[$key])) {
                     $fields .= $div.$key;
-                    $values .= $div.$this->_sqlite->quote($info[$key]);
+                    if ($key == "params") {
+                        $info[$key] = device::encodeParams($info[$key]);
+                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                    } else {
+                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                    }
                     $div = ", ";
                 }
             }
@@ -367,7 +378,12 @@ class deviceCache {
             foreach($this->fields as $key => $val) {
                 if (isset($info[$key])) {
                     $fields .= $div.$key;
-                    $values .= $div.$this->_sqlite->quote($info[$key]);
+                    if ($key == "params") {
+                        $info[$key] = device::encodeParams($info[$key]);
+                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                    } else {
+                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                    }
                     $div = ", ";
                 }
             }
@@ -385,6 +401,9 @@ class deviceCache {
         $query = " SELECT * FROM '".$this->table."'; ";
         $ret = $this->_sqlite->query($query);
         if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
+        foreach($ret as $key => $val) {
+            $ret[$key]["params"] = device::decodeParams($ret[$key]["params"]);
+        }
         return $ret;
     }
 

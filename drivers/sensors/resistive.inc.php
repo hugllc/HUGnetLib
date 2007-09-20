@@ -169,6 +169,8 @@ if (!class_exists('resistiveSensor')) {
                         '&#176;F' => 'raw,diff',
                     ),
                     "checkFunction" => "BCTherm2381_640_66103_check",
+                    "extraText" => "Bias Resistor in k Ohms",
+                    "extraDefault" => 10,
                 ),
             ),
         );

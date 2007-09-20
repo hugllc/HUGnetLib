@@ -45,20 +45,17 @@ if (!class_exists('pulseCounter')) {
                         'counts' => 'raw,diff',
                     ),
                     "extraText" => "Counts per Revolution",
-                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumAnemometer' => array(
                     "longName" => "Maximum Inc type Hall Effect Anemometer",
                     "unitType" => "Wind Speed",
-                    "validUnits" => array('RPM', 'MPH', 'counts'),
+                    "validUnits" => array('MPH'),
                     "storageUnit" =>  'MPH',
                     "unitModes" => array(
                         'MPH' => 'diff',
-                        'RPM' => 'diff',
-                        'counts' => 'raw,diff',
                     ),
                     "function" => "maximumAnemometer",
-                    "checkFunction" => "pulseCheck",
+                    "checkFunction" => "diffCheck",
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
@@ -69,7 +66,8 @@ if (!class_exists('pulseCounter')) {
                         '&#34;' => 'diff',
                     ),
                     "mult" => 0.01,
-                    "checkFunction" => "pulseCheck",
+                    "checkFunction" => "diffCheck",
+                    "doTotal" => TRUE,
                 ),
             ),
         );
@@ -87,6 +85,7 @@ if (!class_exists('pulseCounter')) {
             if (empty($deltaT) || ($deltaT < 0)) return NULL;
             if ($val <= 0) return 0;
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
+            if ($speed < 0) $speed = 0;
             return $speed;
         }
         

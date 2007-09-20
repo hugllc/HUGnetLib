@@ -50,7 +50,7 @@ class sensor {
             $args = func_get_args();
             unset($args[1]); // Remove the $type
             unset($args[2]); // Remove the $sensor
-
+            $args = array_merge($args);
             $stuff = $class->sensors[$type][$sensor];
             if (!is_array($stuff)) $stuff = $class->sensors[$type][$class->defaultSensor];
             if (isset($stuff['mult'])) $val *= $stuff['mult'];
@@ -64,7 +64,7 @@ class sensor {
         Returns the class
         $return is the default sent to it.
     */
-    function runFunction(&$class, $function, $args, $return = NULL) {
+    function runFunction(&$class, $function, &$args, $return = NULL) {
         if (isset($function)) {
             if (method_exists($class, $function)) {
                 $fct = array(&$class, $function);
@@ -110,12 +110,44 @@ class sensor {
     /**
         Returns the default units for this type of sensor
     */
+	function getExtra($type, $sensor) 
+	{
+        $return = array();
+	    $class = $this->getClass($type, $sensor);
+        if (is_object($class)) {
+            if (is_array($class->sensors[$type][$sensor]['extraTest'])) {
+                foreach($class->sensors[$type][$sensor]['extraTest'] as $key => $val) {
+                    $return[$key]['text'] = $val;
+                    $return[$key]['default'] = $class->sensors[$type][$sensor]['extraDefault'][$key];
+                }
+            } else if (isset($class->sensors[$type][$sensor]['extraText'])) {
+                $return[0]['text'] = $class->sensors[$type][$sensor]['extraText'];
+                $return[0]['default'] = $class->sensors[$type][$sensor]['extraDefault'];
+            }
+        }
+		return $return;
+	}
+    /**
+        Returns the default units for this type of sensor
+    */
 	function getUnitType($type, $sensor) 
 	{
         $return = NULL;
 	    $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $return = $class->sensors[$type][$sensor]['unitType'];
+        }
+		return $return;
+	}
+    /**
+        Returns the default units for this type of sensor
+    */
+	function doTotal($type, $sensor) 
+	{
+        $return = NULL;
+	    $class = $this->getClass($type, $sensor);
+        if (is_object($class)) {
+            $return = (bool) $class->sensors[$type][$sensor]['doTotal'];
         }
 		return $return;
 	}
@@ -201,27 +233,26 @@ class sensor {
                 {
                     $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]);
                 }
-                $data['dType'][$rawkey] = $this->getUnitMode($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey], $data['params']['Units'][$rawkey], $data['params']['dType'][$rawkey]);
+                $data['dType'][$rawkey] = $this->getUnitMode($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $data['params']['dType'][$rawkey]);
                 $data['unitType'][$rawkey] = $this->getUnitType($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]);
                 if ($data['dType'][$rawkey] == 'diff') {
                     if (isset($this->lastRecord[$data['DeviceID']])) {
-						$newraw = $this->lastRecord[$data['DeviceID']]["raw"][$rawkey] - $rawval;
-                        if (!isset($data['deltaT'])) $data['deltaT'] = (strtotime($this->lastRecord[$data['DeviceID']]['Date']) - strtotime($data['Date']));
-						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $extra, $data['deltaT']);
+						$newraw = $rawval - $this->lastRecord[$data['DeviceID']]["raw"][$rawkey];
+                        if (!isset($data['deltaT'])) $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$data['DeviceID']]['Date']);
+						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$i], $data['deltaT']);
                     } else {
 						$data["Data".$rawkey] = NULL;
                     }
-//   					$data["DiffData".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"]);
                 } else {
-					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $extra);
+					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$i]);
                 }
 				$data["data"][$rawkey] = $data["Data".$rawkey];
 			}
+    		$this->checkRecord($data);
+    		if ($data['Status'] == "GOOD") {
+    		    $this->lastRecord[$data['DeviceID']] = $data;
+            }    
 		}
-		$this->checkRecord($data);
-		if ($data['Status'] == "GOOD") {
-		    $this->lastRecord[$data['DeviceID']] = $data;
-        }    
     }
 
     function checkRecord(&$data) {
