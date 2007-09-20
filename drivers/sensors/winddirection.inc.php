@@ -30,6 +30,7 @@ if (!class_exists('windDirectionSensor')) {
                         '&#176;' => 'raw',
                         'Direction' => 'raw'
                     ),
+                    "inputSize" => 5,
                 ),
             ),
         );

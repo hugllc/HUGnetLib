@@ -157,6 +157,22 @@ if (!class_exists('resistiveSensor')) {
             This defines all of the sensors that this driver deals with...
         */
         var $sensors = array(
+            0x00 => array(
+                'BCTherm2322640' => array(
+                    "longName" => "BC Components Thermistor #2322640 ",
+                    "unitType" => "Temperature",
+                    "validUnits" => array('&#176;F', '&#176;C'),
+                    "function" => "BCTherm2381_640_66103",
+                    "storageUnit" => '&#176;C',
+                    "unitModes" => array(
+                        '&#176;C' => 'raw,diff',                        
+                        '&#176;F' => 'raw,diff',
+                    ),
+                    "checkFunction" => "BCTherm2381_640_66103_check",
+                    "extraText" => "Bias Resistor in k Ohms",
+                    "extraDefault" => 100,
+                ),
+            ),
             0x02 => array(
                 'BCTherm2322640' => array(
                     "longName" => "BC Components Thermistor #2322640 ",
@@ -171,6 +187,19 @@ if (!class_exists('resistiveSensor')) {
                     "checkFunction" => "BCTherm2381_640_66103_check",
                     "extraText" => "Bias Resistor in k Ohms",
                     "extraDefault" => 10,
+                ),
+                'resisDoor' => array(
+                    "longName" => "Resistive Door Sensor",
+                    "unitType" => "Percentage Open",
+                    "validUnits" => array('%'),
+                    "function" => "resisDoor",
+                    "storageUnit" => '%',
+                    "unitModes" => array(
+                        '%' => 'raw',                        
+                    ),
+                    "checkFunction" => "resisDoor_check",
+                    "extraText" => array("Bias Resistor in kOhms", "Fixed Resistor in kOhms", "Switched Resistor in kOhms"),
+                    "extraDefault" => array(10,10,10),
                 ),
             ),
         );
@@ -240,7 +269,7 @@ if (!class_exists('resistiveSensor')) {
     	}
 */    
         function BCTherm2381_640_66103($A, $TC, $Bias=10) {
-            if (empty($Bias)) $Bias = 10;
+            if (empty($Bias)) $Bias = $this->sensors[0x02]['BCTherm2322640']['extraDefault'];
     		$ohms = $this->getResistance($A, $TC, $Bias);
     		return $this->BCTherm2322640Interpolate($ohms, $Bias, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
         }
@@ -283,7 +312,18 @@ if (!class_exists('resistiveSensor')) {
     		return($T);
     	}
     
-    
+        // This function calculates the open percentage based on the resistance seen.
+        function resisDoor($A, $TC, $extra, $deltaT) {
+            $Bias = (empty($extra[0])) ? $this->sensors[0x02]['resisDoor']['extraDefault'][0] : $extra[0];
+            $Fixed = (empty($extra[1])) ? $this->sensors[0x02]['resisDoor']['extraDefault'][1] : $extra[1];
+            if ($Fixed <= 0) return 0;        
+            $Switched = (empty($extra[2])) ? $this->sensors[0x02]['resisDoor']['extraDefault'][2] : $extra[2];
+            if ($Switched <= 0) return 0;        
+    		$R = $this->getResistance($A, $TC, $Bias);
+            $R -= $Fixed;
+            if ($R < 0) return 0;
+            return ($R / $Fixed) * 100;
+        }
     
     }
 }

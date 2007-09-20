@@ -115,8 +115,8 @@ class sensor {
         $return = array();
 	    $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
-            if (is_array($class->sensors[$type][$sensor]['extraTest'])) {
-                foreach($class->sensors[$type][$sensor]['extraTest'] as $key => $val) {
+            if (is_array($class->sensors[$type][$sensor]['extraText'])) {
+                foreach($class->sensors[$type][$sensor]['extraText'] as $key => $val) {
                     $return[$key]['text'] = $val;
                     $return[$key]['default'] = $class->sensors[$type][$sensor]['extraDefault'][$key];
                 }
@@ -137,6 +137,21 @@ class sensor {
         if (is_object($class)) {
             $return = $class->sensors[$type][$sensor]['unitType'];
         }
+		return $return;
+	}
+    /**
+        Returns the default units for this type of sensor
+    */
+	function getSize($type, $sensor) 
+	{
+        $return = 1;
+	    $class = $this->getClass($type, $sensor);
+        if (is_object($class)) {
+            if (isset($class->sensors[$type][$sensor]['inputSize'])) {
+                $return = $class->sensors[$type][$sensor]['inputSize'];
+            }
+        }
+        if ($return < 1) $return = 1;
 		return $return;
 	}
     /**
@@ -171,7 +186,9 @@ class sensor {
                 $return = $class->sensors[$type][$sensor]['unitModes'][$unit];
                 $return = explode(",", $return);
                 if ($mode !== FALSE) {
-                    if (array_search($mode, $return) !== FALSE) {
+                    if ($mode == "ignore") {
+                        $return = $mode;
+                    } else if (array_search($mode, $return) !== FALSE) {
                         $return = $mode;
                     } else {
                         $return = $return[0];
@@ -196,7 +213,7 @@ class sensor {
     */
 	function getAllUnits($type, $sensor) 
 	{
-        $return = NULL;
+        $return = array();
 	    $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $return = $class->sensors[$type][$sensor]['validUnits'];
@@ -225,10 +242,44 @@ class sensor {
         return $sensors;
     }
 
+    function checkUnits(&$type, &$sensor, &$units, &$mode) {
+        if (is_array($units)) {
+            $skip = 0;
+            foreach($units as $key => $value) {
+                // This is so we skip useless data points.  If a sensor takes more than
+                // one input then skip the extra ones.
+                if ($skip > 0) {
+                    $units[$key] = NULL;
+                    $mode[$key] = "ignore";
+                    $skip--;
+                    continue;
+                }
+                $skip = $this->getSize($type[$key], $sensor[$key]) - 1;
+
+                $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
+                $mode[$key] = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
+            }
+        } else {
+            $units = $this->getUnits($type, $sensor, $units);
+            $mode = $this->getUnitMode($type, $sensor, $units, $mode);           
+        }
+    }
     function decodeData(&$data) {
 		if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
 		if (is_array($data["raw"])) {
+            $skip = 0;
 			foreach($data["raw"] as $rawkey => $rawval) {
+                // This is so we skip useless data points.  If a sensor takes more than
+                // one input then skip the extra ones.
+                if ($skip > 0) {
+                    $data["Data".$rawkey] = NULL;
+    				$data["data"][$rawkey] = NULL;
+                    $skip--;
+                    continue;
+                }
+                $skip = $this->getSize($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]) - 1;
+
+
                 if (is_null($data['Units'][$rawkey]))
                 {
                     $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]);
