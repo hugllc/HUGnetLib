@@ -247,6 +247,7 @@ class sensor {
         if (is_array($type)) {
             if (!is_array($units)) $units = array();
             if (!is_array($mode)) $mode = array();
+            if (!is_array($sensor)) $sensor = array();
         
             $skip = 0;
             foreach($units as $key => $value) {
@@ -264,6 +265,7 @@ class sensor {
                 $mode[$key] = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }
         } else {
+            if (is_array($sensor)) unset($sensor);
             $units = $this->getUnits($type, $sensor, $units);
             $mode = $this->getUnitMode($type, $sensor, $units, $mode);           
         }
