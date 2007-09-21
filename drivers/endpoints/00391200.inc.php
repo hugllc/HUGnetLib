@@ -150,7 +150,7 @@ define("e00391102B_SENSORS", 9);
 	}
 	
 		
-		function InterpConfig($Info) {
+		function InterpConfig(&$Info) {
 			//$Info["Location"] = $this->deflocation;
             $Info['HWName'] = $this->HWName;
 
@@ -235,7 +235,6 @@ define("e00391102B_SENSORS", 9);
             		$data["Driver"] = $Info["Driver"];
             		$data["DeviceKey"] = $Info["DeviceKey"];
             		$data["Types"] = $Info["Types"];
-                    $data['params'] = $Info['params'];
             		$data["DataIndex"] = $data["Data"][$index++];
             		$oldtc = $data["Data"][$index++];  // There is nothing here.
             		$data["TimeConstant"] = $data["Data"][$index++];

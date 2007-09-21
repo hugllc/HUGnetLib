@@ -38,15 +38,17 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     			"0039-21-01-A" => "DEFAULT",
     		),
     	);
+
+        var $Types = array(
+            "fake" => array(0x40, 0x50, 0x02, 0x40, 0x50, 0x02),
+            "real" => array(0x50, 0x02, 0x40, 0x40, 0x40, 0x40, 0x02, 0x50),
+        );
+        var $sensorType = array(
+            "fake" => array("Controller", "Controller", 'BCTherm2322640', "Controller", "Controller", 'BCTherm2322640'),
+            "real" => array("Controller", 'BCTherm2322640', "Controller", "Controller", "Controller", "Controller", 'BCTherm2322640', "Controller"),
+        );
     	var $labels = array(
     		"DEFAULT" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
-    	);
-    	var $units = array(
-    		"DEFAULT" => array("V", "A", "&#176;C", "V", "A", "&#176;C"),
-    	);
-    
-    	var $deflocation = array(
-    		'DEFAULT' => array("HUGnet 1", "HUGnet 2"),
     	);
     
     	var $config = array(
@@ -190,51 +192,49 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		return($Info);
     	}
     */
-    	function InterpConfig($Info) {
+    	function InterpConfig(&$Info) {
     		$return = array();
     
-            $packet = $Info;
-            $packet['HWName'] = $this->HWName;
-			$packet["Location"] = $this->deflocation;
-	        $packet["PacketTimeout"] = 2;
-			if (isset($this->config[$packet["FWPartNum"]])) {
-				$packet["NumSensors"] = $this->config[$packet["FWPartNum"]]["Sensors"];	
-				$packet["Function"] = $this->config[$packet["FWPartNum"]]["Function"];
+            $Info['HWName'] = $this->HWName;
+			$Info["Location"] = $this->deflocation;
+	        $Info["PacketTimeout"] = 2;
+			if (isset($this->config[$Info["FWPartNum"]])) {
+				$Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];	
+				$Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
 			} else {
-				$packet["NumSensors"] = $this->config["DEFAULT"]["Sensors"];	
-				$packet["Function"] = $this->config["DEFAULT"]["Function"];
+				$Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];	
+				$Info["Function"] = $this->config["DEFAULT"]["Function"];
 			}
 
-			$packet['ActiveSensors'] = $packet["NumSensors"];
+			$Info['ActiveSensors'] = $Info["NumSensors"];
+            $Info['params'] = device::decodeParams($Info['params']);
 			
-			if ($packet['FWPartNum'] == '0039-20-06-C') {
-				$packet['mcu'] = array();
-				$packet['mcu']["SRAM"] = hexdec(substr($packet["RawSetup"], 44, 4));
-				$packet['mcu']["E2"] = hexdec(substr($packet["RawSetup"], 48, 4));
-				$packet['mcu']["FLASH"] = hexdec(substr($packet["RawSetup"], 52, 6));
-				$packet['mcu']["FLASHPAGE"] = hexdec(substr($packet["RawSetup"], 58, 4));
-				if ($packet['mcu']["FLASHPAGE"] == 0) $packet['mcu']["FLASHPAGE"] = 128;
-				$packet['mcu']["PAGES"] = $packet['mcu']["FLASH"]/$packet['mcu']["FLASHPAGE"];
-				$packet["CRC"] = strtoupper(substr($packet["RawSetup"], 62, 4));
-				$packet['bootLoader'] = TRUE;
+			if ($Info['FWPartNum'] == '0039-20-06-C') {
+				$Info['mcu'] = array();
+				$Info['mcu']["SRAM"] = hexdec(substr($Info["RawSetup"], 44, 4));
+				$Info['mcu']["E2"] = hexdec(substr($Info["RawSetup"], 48, 4));
+				$Info['mcu']["FLASH"] = hexdec(substr($Info["RawSetup"], 52, 6));
+				$Info['mcu']["FLASHPAGE"] = hexdec(substr($Info["RawSetup"], 58, 4));
+				if ($Info['mcu']["FLASHPAGE"] == 0) $Info['mcu']["FLASHPAGE"] = 128;
+				$Info['mcu']["PAGES"] = $Info['mcu']["FLASH"]/$Info['mcu']["FLASHPAGE"];
+				$Info["CRC"] = strtoupper(substr($Info["RawSetup"], 62, 4));
+				$Info['bootLoader'] = TRUE;
 			} else {
-				$packet['bootLoader'] = FALSE;
+				$Info['bootLoader'] = FALSE;
 			}
 
+            $Info["Types"] = $this->Types["fake"];
+            $Info['params']['sensorType'] = $this->sensorTypes["fake"];
+            for($i = 0; $i < $Info['ActiveSensors']; $i++) {
+                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+    	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
+    		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
+                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+            }			
 			if (isset($this->labels[$Info["FWPartNum"]])) {
-				$packet["Labels"] = $this->labels[$Info["FWPartNum"]];
+				$Info["Location"] = $this->labels[$Info["FWPartNum"]];
 			} else {
-				$packet["Labels"] = $this->labels["DEFAULT"];			
-			}
-			if (isset($this->units[$Info["FWPartNum"]])) {
-				$packet["Units"] = $this->units[$Info["FWPartNum"]];
-			} else {
-				$packet["Units"] = $this->units["DEFAULT"];			
-			}
-			if (isset($this->deflocation[$Info["FWPartNum"]])) {
-				$packet["Location"] = $this->deflocation[$Info["FWPartNum"]];
-			} else {
-				$packet["Location"] = $this->deflocation['DEFAULT'];			
+				$Info["Location"] = $this->labels["DEFAULT"];			
 			}
 
             if (is_array($Info['RawData'])) {
@@ -247,21 +247,21 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
             
             				$strings[0] = substr($RawData, 0, (strlen($RawData)/2));
             				$strings[1] = substr($RawData, (strlen($RawData)/2));
-                            $packet['subDevices'] = array();
+                            $Info['subDevices'] = array();
             				foreach($strings as $str) {
             					for($i = 0; $i < strlen($str); $i += 6) {
 
             						$id = substr($str, $i, 6);
             						if ((strlen($id) == 6) && ($id != '000000')) {
-            							$packet['subDevices'][$index][] = $id;
+            							$Info['subDevices'][$index][] = $id;
             						}
             					}
             					$index++;
             				}
             				break;		
             			case PACKET_HUGNETPOWER_COMMAND:		
-            				$packet['HUGnetPower'][0] = (hexdec(substr($RawData, 0, 2)) == 0) ? 0 : 1;
-            				$packet['HUGnetPower'][1] = (hexdec(substr($RawData, 2, 2)) == 0) ? 0 : 1;
+            				$Info['HUGnetPower'][0] = (hexdec(substr($RawData, 0, 2)) == 0) ? 0 : 1;
+            				$Info['HUGnetPower'][1] = (hexdec(substr($RawData, 2, 2)) == 0) ? 0 : 1;
             				break;
             			case PACKET_CONFIG_COMMAND:
             			default:            			
@@ -269,7 +269,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
             		}
                 }
             }
-    		return($packet);
+    		return($Info);
     	}
     	
     	function updateConfig($Info) {
@@ -324,67 +324,75 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     	function InterpSensors($Info, $Packets) {
     		$return = array();
     
-    		foreach($Packets as $packet) {
-    			if (isset($packet['RawData'])) {
-    				$ret = $packet;
-    				$packet = $this->checkDataArray($packet);
-    	//			$ret["RawData"] = $packet["RawData"];
-    	//			$ret['sendCommand'] = $packet['sendCommand'];
-    				$ret["Driver"] = get_class($this);
-    				if (!isset($packet["Date"])) {
-    					$ret["Date"] = date("Y-m-d H:i:s");
+    		foreach($Packets as $data) {
+    			if (isset($data['RawData'])) {
+    				$data = $this->checkDataArray($data);
+    				$data["Driver"] = get_class($this);
+    				if (!isset($data["Date"])) {
+    					$data["Date"] = date("Y-m-d H:i:s");
     				} else {
-    					$ret["Date"] = $packet["Date"];
+    					$data["Date"] = $data["Date"];
     				}
-    				$ret["DeviceKey"] = $Info["DeviceKey"];
+    				$data["DeviceKey"] = $Info["DeviceKey"];
+
     	
-    				switch($packet['sendCommand']) {
+    				switch($data['sendCommand']) {
     					case PACKET_READPACKETSTATS_COMMAND:
     						$loc = 0;
     						for($index = 0; $index < 3; $index++) {
-    							$ret['Stats'][$index]['PacketRX'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketRX'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketTX'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketTX'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketTimeout'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketTimeout'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketNoBuffer'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketNoBuffer'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketBadCSum'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketBadCSum'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketSent'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketSent'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketGateway'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketGateway'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketStartTX1'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketStartTX1'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketStartTX2'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketStartTX2'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['PacketBadIface'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['PacketBadIface'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['ByteRX'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['ByteRX'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['ByteRX'] += $packet['Data'][$loc++] * 0x10000;
-    							$ret['Stats'][$index]['ByteRX'] += $packet['Data'][$loc++] * 0x1000000;
-    							$ret['Stats'][$index]['ByteTX'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['ByteTX'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['ByteTX'] += $packet['Data'][$loc++] * 0x10000;
-    							$ret['Stats'][$index]['ByteTX'] += $packet['Data'][$loc++] * 0x1000000;
-    							$ret['Stats'][$index]['ByteTX2'] = $packet['Data'][$loc++];
-    							$ret['Stats'][$index]['ByteTX2'] += $packet['Data'][$loc++] * 0x100;
-    							$ret['Stats'][$index]['ByteTX2'] += $packet['Data'][$loc++] * 0x10000;
-    							$ret['Stats'][$index]['ByteTX2'] += $packet['Data'][$loc++] * 0x1000000;
+    							$data['Stats'][$index]['PacketRX'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketRX'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketTX'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketTX'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketTimeout'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketTimeout'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketNoBuffer'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketNoBuffer'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketBadCSum'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketBadCSum'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketSent'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketSent'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketGateway'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketGateway'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketStartTX1'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketStartTX1'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketStartTX2'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketStartTX2'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['PacketBadIface'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['PacketBadIface'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['ByteRX'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['ByteRX'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['ByteRX'] += $data['Data'][$loc++] * 0x10000;
+    							$data['Stats'][$index]['ByteRX'] += $data['Data'][$loc++] * 0x1000000;
+    							$data['Stats'][$index]['ByteTX'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['ByteTX'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['ByteTX'] += $data['Data'][$loc++] * 0x10000;
+    							$data['Stats'][$index]['ByteTX'] += $data['Data'][$loc++] * 0x1000000;
+    							$data['Stats'][$index]['ByteTX2'] = $data['Data'][$loc++];
+    							$data['Stats'][$index]['ByteTX2'] += $data['Data'][$loc++] * 0x100;
+    							$data['Stats'][$index]['ByteTX2'] += $data['Data'][$loc++] * 0x10000;
+    							$data['Stats'][$index]['ByteTX2'] += $data['Data'][$loc++] * 0x1000000;
     						}
     						break;		
     					default:
     						$index = 0; 
-    						$ret["ActiveSensors"] = $Info["ActiveSensors"];
-    						$ret["NumSensors"] = $Info["NumSensors"];
-    						$ret["DataIndex"] = $packet["Data"][$index++];
-    						for ($key = 0; $index < count($packet['Data']); $key++) {
-    							$ret["raw"][$key] = $packet["Data"][$index++];
-    							$ret["raw"][$key] += $packet["Data"][$index++] << 8;
+    						$data["ActiveSensors"] = $Info["ActiveSensors"];
+    						$data["NumSensors"] = $Info["NumSensors"];
+    						$data["TimeConstant"] = 1;
+                            $data["Types"] = $this->Types["fake"];
+                            foreach($data["Types"] as $key => $val) {
+                                if (is_null($data['Units'][$key]))
+                                {
+                                    $data['Units'][$key] = $this->driver->sensors->getUnits($data["Types"][$key], $this->sensorType['fake'][$key]);
+                                }
+                                $data['unitType'][$key] = $this->driver->sensors->getUnitType($data["Types"][$key], $this->sensorType['fake'][$key]);
+                            }
+    						$data["DataIndex"] = $data["Data"][$index++];
+    						for ($key = 0; $index < count($data['Data']); $key++) {
+    							$data["raw"][$key] = $data["Data"][$index++];
+    							$data["raw"][$key] += $data["Data"][$index++] << 8;
     						}
+
     						/*
     							Input 0: HUGnet2 Current
     							Input 1: HUGnet2 Temp
@@ -402,34 +410,41 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     							Output 4: HUGnet2 Current
     							Output 5: HUGnet2 Temp
     						*/		
-    						$vLow = $this->V->getDividerVoltage($ret['raw'][5], 180, 27, 1);
-    						$vHigh = $this->V->getDividerVoltage($ret['raw'][4], 180, 27, 1);
-    						$ret["Data0"] = $vHigh - $vLow;
+                            $reads = array();
+                            foreach($this->Types["real"] as $key => $type) {
+                                $sensorType = $this->sensorType["real"][$key];
+                                $reads[$key] = $this->driver->sensors->getReading($data['raw'][$key], $type, $this->sensorType["real"][$key], 1, $Info['params']['Extra'][$key]);
+                            }
+                            $data["Data0"] = $reads[4] - $reads[5];
+                            $data["Data1"] = $reads[7];
+                            $data["Data2"] = $reads[6];
+                            $data["Data3"] = $reads[3] - $reads[2];
+                            $data["Data4"] = $reads[0];
+                            $data["Data5"] = $reads[1];
+/*
+    						$vLow = $this->V->getDividerVoltage($data['raw'][5], 180, 27, 1);
+    						$vHigh = $this->V->getDividerVoltage($data['raw'][4], 180, 27, 1);
+    						$data["Data0"] = $vHigh - $vLow;
     						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$ret["Data1"] = $this->I->getCurrent($ret['raw'][7], 0.5, $gain, 1);
-    						$ret["Data2"] = $this->R->BCTherm2381_640_66103($ret['raw'][6], 1, 10);
-//    						$ohms = $this->R->getResistance($ret['raw'][6], 1, 100);
-//    						$ret["Data2"] = $this->R->getReading($ohms, 0);
-    
-    
-    						$vLow = $this->V->getDividerVoltage($ret['raw'][2], 180, 27, 1);
-    						$vHigh = $this->V->getDividerVoltage($ret['raw'][3], 180, 27, 1);
-    						$ret["Data3"] = $vHigh - $vLow;
+    						$data["Data1"] = $this->I->getCurrent($data['raw'][7], 0.5, $gain, 1);
+    						$data["Data2"] = $this->R->BCTherm2381_640_66103($data['raw'][6], 1, 10);
+        
+    						$vLow = $this->V->getDividerVoltage($data['raw'][2], 180, 27, 1);
+    						$vHigh = $this->V->getDividerVoltage($data['raw'][3], 180, 27, 1);
+    						$data["Data3"] = $vHigh - $vLow;
     						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$ret["Data4"] = $this->I->getCurrent($ret['raw'][0], 0.5, $gain, 1);
-    						$ret["Data5"] = $this->R->BCTherm2381_640_66103($ret['raw'][1], 1, 10);
+    						$data["Data4"] = $this->I->getCurrent($data['raw'][0], 0.5, $gain, 1);
+    						$data["Data5"] = $this->R->BCTherm2381_640_66103($data['raw'][1], 1, 10);
 
 
-                            $ret["unitType"] = array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature");
-                            $ret["Units"] = array("V", "A", "&#176; C", "V", "A", "&#176; C");
-                            
-//    						$ohms = $this->R->getResistance($ret['raw'][1], 1, 100);
-//    						$ret["Data5"] = $this->R->getReading($ohms, 0);
+                            $data["unitType"] = array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature");
+                            $data["Units"] = array("V", "A", "&#176; C", "V", "A", "&#176; C");
+*/                            
     						break;
 
     				}
-    				$ret = $this->CheckRecord($Info, $ret);
-    				$return[] = $ret;
+    				$data = $this->CheckRecord($Info, $data);
+    				$return[] = $data;
     			}
     		}	
     		

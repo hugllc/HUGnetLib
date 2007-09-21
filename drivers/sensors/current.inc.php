@@ -152,6 +152,38 @@ if (!class_exists('currentSensor')) {
     class currentSensor extends sensor_base
     {
     
+        var $sensors = array(
+            0x50 => array(
+                "FETBoard" => array(
+                    "longName" => "FET Board Current Sensor",
+                    "unitType" => "Current",
+                    "validUnits" => array('mA', 'A'),
+                    "defaultUnits" =>  'mA',
+                    "function" => "FETBoard",
+                    "storageUnit" => 'mA',
+                    "unitModes" => array(
+                        'mA' => 'raw,diff',
+                        'A' => 'raw,diff',
+                    ),
+                    "extraText" => array("R in Ohms", "Gain"),
+                    "extraDefault" => array(0.5, 1),
+                ),
+                "Controller" => array(
+                    "longName" => "Controller Board Current Sensor",
+                    "unitType" => "Current",
+                    "validUnits" => array('mA', 'A'),
+                    "defaultUnits" =>  'mA',
+                    "function" => "FETBoard",
+                    "storageUnit" => 'mA',
+                    "unitModes" => array(
+                        'mA' => 'raw,diff',
+                        'A' => 'raw,diff',
+                    ),
+                    "extraText" => array("R in Ohms", "Gain"),
+                    "extraDefault" => array(0.5, 1),
+                ),
+            ),
+        );
     	/**
     		@public
     		@brief Return the voltage
@@ -176,7 +208,12 @@ if (!class_exists('currentSensor')) {
     		return($Read);
     	}
     
-    
+        function FETBoard($val, $sensor, $TC, $extra=NULL) {
+            $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $A = $this->getCurrent($val, $R, $G, $TC);
+            return $A * 1000;
+        }    
     
     }
 }

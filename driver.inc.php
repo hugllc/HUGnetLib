@@ -748,11 +748,11 @@ class driver {
         foreach($history as $key => $val) {
            if (is_array($val)) {
                 if (($lastRecord !== NULL) || (count($history) < 2)) {
-                    if (!isset($val['deltaT'])) $history[$key]['deltaT'] = (strtotime($lastRecord['Date']) - strtotime($val['Date']));
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if ($type[$i] != $dType[$i]) {
                             switch($type[$i]) {
                             case 'diff':
+                                if (!isset($val['deltaT'])) $history[$key]['deltaT'] = strtotime($val['Date']) - strtotime($lastRecord['Date']);
                                 $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
                                 break;
                             case 'ignore':
@@ -791,8 +791,10 @@ class driver {
                 }
             }
         }
-        foreach($cTo as $key => $val) {
-            $devInfo["Units"][$key] = $val;
+        if (is_array($cTo)) {
+            foreach($cTo as $key => $val) {
+                $devInfo["Units"][$key] = $val;
+            }
         }
     }
 
