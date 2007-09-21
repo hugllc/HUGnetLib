@@ -206,10 +206,9 @@ if (!class_exists('voltageSensor')) {
         function FETBoard($val, $sensor, $TC, $extra=NULL) {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-var_dump($R1);
-var_dump($R2);
             $V = $this->getDividerVoltage($val, $R1, $R2, $TC);
             if ($V < 0) $V = NULL;
+    	    $V = round($V, 4);
             return $V;
         }    
     

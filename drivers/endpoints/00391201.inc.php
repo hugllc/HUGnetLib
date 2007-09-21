@@ -146,14 +146,14 @@ define("e00391201_SENSORS", 9);
 		}
 
 
-		function CheckRecord($Info, $Rec) {
-			$Rec['StatusOld'] = $Rec['Status'];
+		function CheckRecord($Info, &$Rec) {
+		    if (isset($Rec['Status'])) {
+    			$Rec['StatusOld'] = $Rec['Status'];
+            }
 			if (empty($Rec['RawData'])) {
 				$Rec["Status"] = 'BAD';
-				return $Rec;
-			} else {
-				$Rec["Status"] = 'GOOD';
-			}
+				return;
+		    }
 			if (isset($Rec["Data8"]) && ($Rec["Data8"] == 0)) $Rec["Status"] = BAD;
 			$zero = TRUE;
 			for($i = 0; $i < $Rec['NumSensors']; $i ++) {
@@ -166,8 +166,6 @@ define("e00391201_SENSORS", 9);
 				$Rec["Status"] = "BAD";
 				$Rec["StatusCode"] = " All Zero";		
 			}
-		
-			return($Rec);	
 		}
 
 		function InterpConfig(&$Info) {
@@ -202,15 +200,15 @@ define("e00391201_SENSORS", 9);
     
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
             for($i = 0; $i < $Info['ActiveSensors']; $i++) {
-                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
     	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
     		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
             }			
 			if (isset($this->labels[$Info["FWPartNum"]])) {
-				$Info["Location"] = $this->labels[$Info["FWPartNum"]];
+				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
 			} else {
-				$Info["Location"] = $this->labels["DEFAULT"];			
+				$Info["Labels"] = $this->labels["DEFAULT"];			
 			}
 			return($Info);
 		}

@@ -180,7 +180,7 @@ if (!class_exists('currentSensor')) {
                         'A' => 'raw,diff',
                     ),
                     "extraText" => array("R in Ohms", "Gain"),
-                    "extraDefault" => array(0.5, 1),
+                    "extraDefault" => array(0.5, 7),
                 ),
             ),
         );
@@ -212,7 +212,7 @@ if (!class_exists('currentSensor')) {
             $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $A = $this->getCurrent($val, $R, $G, $TC);
-            return $A * 1000;
+            return round($A * 1000, 1);
         }    
     
     }

@@ -89,12 +89,12 @@ if (!class_exists("e00392800")) {
 
     	function CheckRecord($Info, &$Rec) {
     	
-    		$Rec['StatusOld'] = $Rec['Status'];
+		    if (isset($Rec['Status'])) {
+    			$Rec['StatusOld'] = $Rec['Status'];
+            }
     		if (empty($Rec['RawData'])) {
     			$Rec["Status"] = 'BAD';
-    			return $Rec;
-    		} else {
-    			$Rec["Status"] = 'GOOD';
+    			return ;
     		}
     		$Bad = 0;
 
@@ -174,8 +174,8 @@ if (!class_exists("e00392800")) {
 						$Info["Types"][$i] = 0;
 					}
 				}
-//				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
-                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 				$Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
 				$Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
