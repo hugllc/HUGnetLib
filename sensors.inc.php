@@ -271,7 +271,7 @@ class sensor {
         }
     }
 
-    function decodeData(&$data) {
+    function decodeData(&$Info, &$data) {
 		if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
 		if (is_array($data["raw"])) {
             $skip = 0;
@@ -284,25 +284,25 @@ class sensor {
                     $skip--;
                     continue;
                 }
-                $skip = $this->getSize($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]) - 1;
+                $skip = $this->getSize($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]) - 1;
 
 
                 if (is_null($data['Units'][$rawkey]))
                 {
-                    $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]);
+                    $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
                 }
-                $data['dType'][$rawkey] = $this->getUnitMode($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $data['params']['dType'][$rawkey]);
-                $data['unitType'][$rawkey] = $this->getUnitType($data["Types"][$rawkey], $data['params']['sensorType'][$rawkey]);
+                $data['dType'][$rawkey] = $this->getUnitMode($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
+                $data['unitType'][$rawkey] = $this->getUnitType($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
                 if ($data['dType'][$rawkey] == 'diff') {
                     if (isset($this->lastRecord[$data['DeviceID']])) {
 						$newraw = $rawval - $this->lastRecord[$data['DeviceID']]["raw"][$rawkey];
                         if (!isset($data['deltaT'])) $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$data['DeviceID']]['Date']);
-						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$rawkey], $data['deltaT']);
+						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data['deltaT']);
                     } else {
 						$data["Data".$rawkey] = NULL;
                     }
                 } else {
-					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$rawkey]);
+					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey]);
                 }
 				$data["data"][$rawkey] = $data["Data".$rawkey];
 			}
