@@ -168,9 +168,8 @@ if (!class_exists('resistiveSensor')) {
                         '&#176;C' => 'raw,diff',                        
                         '&#176;F' => 'raw,diff',
                     ),
-                    "checkFunction" => "BCTherm2381_640_66103_check",
-                    "extraText" => "Bias Resistor in k Ohms",
-                    "extraDefault" => 100,
+                    "extraText" => array("Bias Resistor in k Ohms", "Thermistor Value @25C"),
+                    "extraDefault" => array(100, 10),
                 ),
             ),
             0x02 => array(
@@ -184,9 +183,8 @@ if (!class_exists('resistiveSensor')) {
                         '&#176;C' => 'raw,diff',                        
                         '&#176;F' => 'raw,diff',
                     ),
-                    "checkFunction" => "BCTherm2381_640_66103_check",
-                    "extraText" => "Bias Resistor in k Ohms",
-                    "extraDefault" => 10,
+                    "extraText" => array("Bias Resistor in k Ohms", "Thermistor Value @25C"),
+                    "extraDefault" => array(10, 10),
                 ),
                 'resisDoor' => array(
                     "longName" => "Resistive Door Sensor",
@@ -253,20 +251,17 @@ if (!class_exists('resistiveSensor')) {
     			- C 2.626311e-6
     			- D 0.675278e-7
     	*/
-        function BCTherm2381_640_66103($A, $sensor, $TC, $Bias=10, $deltaT=NULL) {
-            if (empty($Bias)) $Bias = $sensor['extraDefault'];
+        function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=NULL) {
+            if (!is_array($extra)) $extra = array();
+            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $baseTherm = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
     		$ohms = $this->getResistance($A, $TC, $Bias);
-    		$T = $this->BCTherm2322640Interpolate($ohms, 10, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
+    		$T = $this->BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
 
             if ($T > 150) return NULL;
             if ($T < -40) return NULL;
+            $T = round ($T, 4);
             return $T;
-        }
-
-        function BCTherm2381_640_66103_check($T) {
-            if ($T > 150) return FALSE;
-            if ($T < -40) return FALSE;
-            return TRUE;
         }
     
     	/**
@@ -312,7 +307,7 @@ if (!class_exists('resistiveSensor')) {
     		$R = $this->getResistance($A, $TC, $Bias);
             $R -= $Fixed;
             if ($R < 0) return 0;
-            return ($R / $Fixed) * 100;
+            return ($R / $Switched) * 100;
         }
     
     }

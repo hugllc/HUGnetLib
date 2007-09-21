@@ -203,6 +203,7 @@ define("e00391102B_SENSORS", 9);
 //				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
                 $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 				$Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
+				$Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 
 			}
@@ -271,7 +272,7 @@ define("e00391102B_SENSORS", 9);
 						}
 						
 					}
-    				$this->driver->sensors->decodeData($data);
+    				$this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
     				$ret[] = $data;
 				}

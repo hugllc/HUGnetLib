@@ -245,7 +245,7 @@ if (!class_exists("e00392800")) {
             			
             		}
 
-    				$this->driver->sensors->decodeData($data);
+    				$this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
     				$ret[] = $data;
 				}
