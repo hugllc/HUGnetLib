@@ -36,7 +36,7 @@ if (!class_exists('windDirectionSensor')) {
         );
         var $defaultSensor = 'maximum-inc';    
     
-        function maximumIncSensor($ndir) {
+        function maximumIncSensor($ndir, $sensor, $TC) {
             $dir = NULL;        
     
             if ($ndir & (1<<0)) $dir1 = 0;   //N

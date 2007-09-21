@@ -291,7 +291,7 @@ define("e00391102B_SENSORS", 9);
 			$ret = array();
 
 			foreach($Packets as $key => $data) {
-				$data = $this->checkDataArray($data);
+				$this->checkDataArray($data);
 				if(isset($data['RawData'])) {
 				    $index = 0;
             		$data['NumSensors'] = $Info['NumSensors'];
@@ -309,8 +309,7 @@ define("e00391102B_SENSORS", 9);
 					if (is_array($data["Data"])) {
 						for ($i = 0; $i < $Info["NumSensors"]; $i++) {
 							$key = $this->getOrder($Info, $i, TRUE);
-
-							switch ($Info["Types"][$key]) {
+							switch ($data["Types"][$key]) {
 								case 1:
 									$data["raw"][$key] = $data["Data"][$index++];
 									$data["raw"][$key] += $data["Data"][$index++] << 8;
@@ -320,8 +319,8 @@ define("e00391102B_SENSORS", 9);
 									$d = $d ^ 0xF0;  // invert the top half of the value.
 									$data["raw"][$key] = $d;
 									break;											
-								case 2:
-								case 0:
+								case 0x2:
+								case 0x0:
 								case 0x30:
 								case 0x70:
 								case 0x71:
@@ -330,7 +329,7 @@ define("e00391102B_SENSORS", 9);
 									$data["raw"][$key] = $data["Data"][$index++];
 									$data["raw"][$key] += $data["Data"][$index++] << 8;
 									$data["raw"][$key] += $data["Data"][$index++] << 16;
-									break;											
+									break;
 		
 							}					
 		

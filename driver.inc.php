@@ -738,38 +738,36 @@ class driver {
     */
     function modifyUnits(&$history, &$devInfo, &$dPlaces, $type=NULL, $units=NULL) {
         // This uses defaults if nothing exists for a particular sensor
-        for ($i = 0; $i < $devInfo['ActiveSensors']; $i++) {
-            if (!isset($units[$i])) {
-                $units[$i] = $this->sensors->getUnits($devInfo['Types'][$i], $devInfo['params']['sensorType'][$i]); //$this->_defUnits[$devInfo['Units'][$i]];
-            }        
-            if (!isset($type[$i])) {
-                $type[$i] = $this->sensors->getUnitDefMode($devInfo['Types'][$i], $devInfo['params']['sensorType'][$i], $units[$i]);
-            }
-            $extra[$i] = $devInfo['params']['Extra'][$i];
-        }
+        $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
+
         $lastRecord = NULL;
         if (!is_array($history)) $history = array();
         foreach($history as $key => $val) {
            if (is_array($val)) {
+                $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $history[$key]["Units"], $history[$key]["dType"]);
                 if (($lastRecord !== NULL) || (count($history) < 2)) {
-                    $history[$key]['deltaT'] = (strtotime($lastRecord['Date']) - strtotime($val['Date']));
+                    if (!isset($val['deltaT'])) $history[$key]['deltaT'] = (strtotime($lastRecord['Date']) - strtotime($val['Date']));
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-                        switch(trim(strtolower($type[$i]))) {
-                        case 'diff':
-                            if (($lastRecord["Data".$i] < $val["Data".$i]) && ($devInfo['Units'][$i] == "counts")) {
+                        if (trim(strtolower($type[$i])) != trim(strtolower($history[$key]['dType'][$i]))) {
+/*
+                            switch(trim(strtolower($type[$i]))) {
+                            case 'diff':
+                                if (($lastRecord["Data".$i] < $val["Data".$i]) && ($devInfo['Units'][$i] == "counts")) {
+                                    unset($history[$key]["Data".$i]);
+                                } else if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
+                                    $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
+                                } else {
+                                    unset($history[$key]["Data".$i]);
+                                }
+                                break;
+                            case 'ignore':
                                 unset($history[$key]["Data".$i]);
-                            } else if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
-                                $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
-                            } else {
-                                unset($history[$key]["Data".$i]);
+                                break;
+                            default:
+                                 // Do nothing by default
+                                break;
                             }
-                            break;
-                        case 'ignore':
-                            unset($history[$key]["Data".$i]);
-                            break;
-                        default:
-                             // Do nothing by default
-                            break;
+*/  
                         }
                     }            
                     $lastRecord = $val;
@@ -782,12 +780,14 @@ class driver {
                         if (isset($units[$i])) {
                             $to = $units[$i];
 
-                            $from = $devInfo['Units'][$i];
+                            $from = $val['Units'][$i];
                             $func = $this->unit->getConvFunct($from, $to, $type[$i]);
 
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
 //                                $devInfo['Units'][$i] = $to;
                                 $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
+                                $history[$key]['data'][$i] = $history[$key]['Data'.$i];
+                                $history[$key]['Units'][$i] = $to;
                             }
                         }
                     }
@@ -1064,12 +1064,10 @@ class eDEFAULT {
 		@param $data Array a packet that might need the 'Data' array created
 		@return Array The same packet with the 'Data' array created
 	*/
-	function checkDataArray($work) {
+	function checkDataArray(&$work) {
 		if (!is_array($work['Data'])) {
 			for ($i = 0; $i < (strlen($work["RawData"])/2); $i++) {
 				$work['Data'][$i] = hexdec(substr($work['RawData'], ($i*2), 2));
-//				$work['Data'] = hexdec(substr($work['RawData'], ($i*2), 2));
-
 			}
 		}
 

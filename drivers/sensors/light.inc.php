@@ -78,7 +78,7 @@ if (!class_exists('lightSensor')) {
     		return($L);
     	}
     	
-        function OSRAMBPW34($A, $TC) {
+        function OSRAMBPW34($A, $sensor, $TC) {
     
     		$den = $this->Am*$this->s*$this->D; 
     		if ($den == 0) return(1500);

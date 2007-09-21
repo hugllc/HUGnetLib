@@ -106,7 +106,7 @@ if (!class_exists('pulseCounter')) {
             
             Freq = Pulses/Time
         */
-        function maximumAnemometer($val, $TC, $extra, $deltaT=NULL) {
+        function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=NULL) {
             if (empty($deltaT) || ($deltaT < 0)) return NULL;
             if ($val <= 0) return 0;
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
@@ -114,12 +114,12 @@ if (!class_exists('pulseCounter')) {
             return $speed;
         }
         
-        function diffCheck($value, $units) {
+        function diffCheck($value, $sensor, $units) {
             if ($value < 0) return FALSE;
             return TRUE;
         }
 
-        function WattNode($val, $TC, $extra, $deltaT=NULL) {
+        function WattNode($val, $sensor, $TC, $extra, $deltaT=NULL) {
             if (empty($deltaT) || ($deltaT < 0)) return NULL;
             $Wh = $val * $extra;
             return $Wh / 1000;
