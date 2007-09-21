@@ -40,72 +40,10 @@ if (!class_exists("e00392800")) {
 			"DEFAULT" => array("Function" => "Unknown", "Sensors" => 20, "SensorLength" => e00391102B_SENSOR_LENGTH),		
 		);
 
-        var $calParts = 2;
 
-		var $configvars = array(
-			"TimeConstant" => array(
-				"Name" => "Time Constant", 
-				"Input" => array(
-					'type' => 'text',
-					'attrib' => array('size' => 3, 'maxlength' => 3),
-					'rule' => array(
-						array(
-							'type' => 'numeric',
-							'message' => 'Time Constant must be numeric',
-						),
-						array(
-							'type' => 'required',
-							'message' => 'Time Constant can not be empty',
-						),
-					),
-				),
-				"Start" => 4, 
-				"Length" => 1, 
-				"Range" => "1-255"
-			),
-		);
-			
-//			0 => array(-40 => 332.1, -35 => 240, -30 => 175.2, -25 => 129.3, -20 => 96.36, -15 => 72.5, -10 => 55.05, -5 => 42.16, 0 => 32.56, 5 => 25.34, 10 => 19.87, 15 => 15.70, 20 => 12.49, 25 => 10.00, 30 => 8.059, 35 => 6.535, 40 => 5.330, 45 => 4.372, 50 => 3.606, 55 => 2.989, 60 => 2.490, 65 => 2.084, 70 => 1.753, 75 => 1.481, 80 => 1.256, 85 => 1.070, 90 => 0.9154, 95 => 0.7860, 100 => 0.6773, 105 => 0.5858, 110 => 0.5083, 115 => 0.4426, 120 => 0.3866, 125 => 0.3387),
 		/**
 			@brief Calibration data
 		*/
-		var $caldata = array(
-			0 => array(-40 => 50304, -35 => 46208, -30 => 41664, -25 => 36928, -20 => 32128, -15 => 27520, -10 => 23232, -5 => 19392, 0 => 16064, 5 => 13248, 10 => 10880, 15 => 8896, 20 => 7296, 25 => 5952, 30 => 4864, 35 => 4032, 40 => 3328, 45 => 2752, 50 => 2304, 55 => 1920, 60 => 1600, 65 => 1344, 70 => 1152, 75 => 960, 80 => 832, 85 => 704, 90 => 576, 95 => 512, 100 => 448, 105 => 384, 110 => 320, 115 => 320, 120 => 256, 125 => 192, 130 => 192, 135 => 192, 140 => 128, 145 => 128, 150 => 128),
-			1 => array(0 => 65472, 5 => 65408, 10 => 65152, 15 => 64256, 20 => 61120, 25 => 51712, 30 => 32768, 35 => 13760, 40 => 4352, 45 => 1216, 50 => 320, 55 => 64),
-			);
-		var $labels = array(
-		    0 => "Temp", 
-		    1 => "Moisture", 
-		    2 => "Temp", 
-		    3 => "Moisture", 
-		    0x10 => "Relative Humidity", 
-		    0x20 => "Capacitance", 
-		    0x30 => "Light", 
-		    0x6F => 'Numeric Direction',
-		    0x70 => "Pulse Counter", 
-		    );  //!< Default labels for the sensor inputs
-		var $units = array(
-		    0 => "&#176;C", 
-		    1 => "% Moisture", 
-		    2 => "&#176;C", 
-		    3 => "k Ohms", 
-		    0x10 => "%", 
-		    0x20 => "pF", 
-		    0x30 => "W/m^2", 
-		    0x6F => '&#176;',
-		    0x70 => "counts", 
-		); //!< Default units for the sensor inputs
-
-		var $sensorTypes = array(
-			0 => "Temperature 100k Bias", 
-			1 => "Moisture", 
-			2 => "Temperature 10k Bias", 
-			3 => "Moisture", 
-			0x10 => "Relative Humidity", 
-			0x20 => "Capacitance",
-			0x6F => "Wind Direction",
-			0x70 => "Pulse Counter",
-		);  //!< Default labels for the sensor inputs
 	
 		/**
 			@brief Extra columns to display for these endpoints
@@ -238,7 +176,7 @@ if (!class_exists("e00392800")) {
 				}
 //				$Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
                 $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-				$Info["Units"][$i] = $this->units[$Info["Types"][$i]];	
+				$Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
 			}
 			return($Info);
