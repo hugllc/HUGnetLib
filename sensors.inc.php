@@ -259,8 +259,10 @@ class sensor {
                     $skip--;
                     continue;
                 }
-                $skip = $this->getSize($type[$key], $sensor[$key]) - 1;
-
+                $size = $this->getSize($type[$key], $sensor[$key]);
+                if ($size > 1) {
+                    $skip = $size - 1;
+                }
                 $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
                 $mode[$key] = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }

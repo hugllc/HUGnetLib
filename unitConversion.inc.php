@@ -17,6 +17,12 @@ class unitConversion {
         'V' => array(
             'mV' => 'toMilli',
         ),
+        'mA' => array(
+            'A' => 'fromMilli',
+        ),
+        'mV' => array(
+            'V' => 'fromMilli',
+        ),
     );
     var $unitsNonDiff = array(
         '&#176;' => array(
@@ -33,20 +39,24 @@ class unitConversion {
     var $notGraphable = array(
         'Direction' => TRUE,
     );
+    
+    var $preferredUnit = array(
+        '&#176;C' => '&#176;F',
+    );
+    
+    function preferredUnit($unit) {
+        if (isset($this->preferredUnit[$unit])) {
+            return $this->preferredUnit[$unit];
+        } else {
+            return $unit;
+        }
+    }    
+    
     function graphable($units) {
         $units = trim($units);
         return !isset($this->notGraphable[$units]);
     }    
-    
-    function checkDataTypes(&$unitsFrom, &$unitsTo, &$dTypes) {
-        if (!is_array($unitsFrom)) return FALSE;
-        if (!is_array($unitsTo)) return FALSE;
-        foreach($unitsTo as $key => $val) {
-            $dTypes[$key] = $this->getDataType($unitsFrom[$key], $val, $dTypes[$key]);
-        }
-        return TRUE;        
-    }    
-    
+        
     function getDataType($from, $to, $default = 'all') {
         if (trim(strtolower($default)) == 'ignore') return $default;
         if (isset($this->unitsDiff[$from][$to])) {
@@ -64,7 +74,6 @@ class unitConversion {
         $ret = $this->units[$from][$to];
         if ($ret !== NULL) return $ret;
         if (isset($this->units[$from][$to])) {
-print "HERE";
             return $this->units[$from][$to];
         }
         if ($type == 'diff') {
@@ -176,6 +185,15 @@ print "HERE";
     */
 	function toMilli($V, $time, $type) {
 		return($V*1000);
+	}
+    /**
+    @brief
+    @param
+    @return
+    
+    */
+	function fromMilli($V, $time, $type) {
+		return($V/1000);
 	}
 
     /**
