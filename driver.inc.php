@@ -736,29 +736,24 @@ class driver {
     @return
     
     */
-    function modifyUnits(&$history, &$devInfo, &$dPlaces, $type=NULL, $units=NULL) {
+    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=NULL, &$units=NULL) {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 
+        for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+            $dType[$i] = (empty($val['dType'][$i])) ? $devInfo["dType"][$i] : $val['dType'][$i];
+        }        
         $lastRecord = NULL;
         if (!is_array($history)) $history = array();
         foreach($history as $key => $val) {
            if (is_array($val)) {
-                $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $history[$key]["Units"], $history[$key]["dType"]);
                 if (($lastRecord !== NULL) || (count($history) < 2)) {
                     if (!isset($val['deltaT'])) $history[$key]['deltaT'] = (strtotime($lastRecord['Date']) - strtotime($val['Date']));
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-                        if (trim(strtolower($type[$i])) != trim(strtolower($history[$key]['dType'][$i]))) {
-/*
-                            switch(trim(strtolower($type[$i]))) {
+                        if ($type[$i] != $dType[$i]) {
+                            switch($type[$i]) {
                             case 'diff':
-                                if (($lastRecord["Data".$i] < $val["Data".$i]) && ($devInfo['Units'][$i] == "counts")) {
-                                    unset($history[$key]["Data".$i]);
-                                } else if ($lastRecord["Data".$i] > ($val["Data".$i] * 0.001)) {
-                                    $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
-                                } else {
-                                    unset($history[$key]["Data".$i]);
-                                }
+                                $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
                                 break;
                             case 'ignore':
                                 unset($history[$key]["Data".$i]);
@@ -767,7 +762,7 @@ class driver {
                                  // Do nothing by default
                                 break;
                             }
-*/  
+  
                         }
                     }            
                     $lastRecord = $val;
@@ -780,62 +775,25 @@ class driver {
                         if (isset($units[$i])) {
                             $to = $units[$i];
 
-                            $from = $val['Units'][$i];
+                            $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
                             $func = $this->unit->getConvFunct($from, $to, $type[$i]);
 
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
-//                                $devInfo['Units'][$i] = $to;
+                                if (!isset($cTo[$i])) $cTo[$i] = $to;
                                 $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
-                                $history[$key]['data'][$i] = $history[$key]['Data'.$i];
-                                $history[$key]['Units'][$i] = $to;
                             }
                         }
+                        if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
+                            $history[$key]["Data".$i] = round($history[$key]["Data".$i], $dPlaces);
+                        }
+                        $history[$key]['data'][$i] = $history[$key]['Data'.$i];
                     }
                 }
             }
         }
-
-        for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-            if (isset($units[$i])) {
-                $to = $units[$i];
-    
-                $from = $devInfo['Units'][$i];
-    
-                $func = $this->unit->getConvFunct($from, $to, $type[$i]);
-    
-                if (!empty($func)) {
-                    $devInfo['Units'][$i] = $to;
-                }
-            }
-            if (is_numeric($dPlaces)) {
-                $this->_decimalPlaces = $dPlaces;
-                $dPlaces = array();
-            }
-            
-            if (!isset($dPlaces[$devInfo['Units'][$i]])) {
-                if (isset($this->_maxDecimalPlaces[$devInfo['Units'][$i]])) {
-                    $dPlaces[$devInfo['Units'][$i]] = $this->_maxDecimalPlaces[$devInfo['Units'][$i]];
-                } else {
-                    $dPlaces[$devInfo['Units'][$i]] = $this->_decimalPlaces;
-                }     
-            }    
-        
+        foreach($cTo as $key => $val) {
+            $devInfo["Units"][$key] = $val;
         }
-        if ($type == 'diff') {
-            foreach($devInfo['Units'] as $key => $val) {
-//                $devInfo['Units'][$key] = '&Delta; '.$val;
-            }
-        }
-
-        foreach($history as $hkey => $rec) {
-            for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-                 if (is_numeric($rec["Data".$i])) {
-//                     $history[$hkey]["Data".$i] = (float) number_format($rec["Data".$i], $dPlaces[$devInfo['Units'][$i]], ".", "");
-                     $history[$hkey]["Data".$i] = round($rec["Data".$i], $dPlaces[$devInfo['Units'][$i]]);
-                 }  
-            }
-        }
-
     }
 
 
