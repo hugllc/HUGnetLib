@@ -110,7 +110,6 @@ class device {
 	*/
 	function UpdateDevice($Packet, $force=FALSE){
 
-
         $DeviceID = NULL;
         $GatewayKey = NULL;
 		foreach($Packet as $key => $val) {
@@ -174,12 +173,14 @@ class device {
                 // This makes sure that the gateway key gets set, as it might have changed.
                 if (!is_null($GatewayKey)) $ep['GatewayKey'] = $GatewayKey;
 				if (!empty($ep['DeviceKey'])) {
+                    unset($ep['params']);
 					$return = $this->db->AutoExecute('devices', $ep, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
 				} else {
 				    if (!empty($ep["HWPartNum"])) {
     				    if (!empty($ep["FWPartNum"])) {
         				    if (!empty($ep["SerialNum"])) {
                                 unset($ep['DeviceKey']);
+                                unset($ep['params']);
             					$return = $this->db->AutoExecute('devices', $ep, 'INSERT');
                             }
                         }
@@ -218,6 +219,8 @@ class device {
         if (is_array($params)) {
             $params = serialize($params);
             $params = base64_encode($params);
+        } else if (!is_string($params)) {
+            $params = "";
         }
         return $params;
     }

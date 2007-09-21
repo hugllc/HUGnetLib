@@ -90,27 +90,13 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		return($Packets);
     	}
     
-    	function CheckRecord($Info, $Rec) {
-    		$Rec['StatusOld'] = $Rec['Status'];
+    	function CheckRecord($Info, &$Rec) {
+    	    if (isset($Rec['Status'])) {
+        		$Rec['StatusOld'] = $Rec['Status'];
+            }
     		if (empty($Rec['RawData'])) {
     			$Rec["Status"] = 'BAD';
-    			return $Rec;
-    		} else {
-    			$Rec["Status"] = 'GOOD';
-    		}
-    		for($key = 0; $key < $Rec['ActiveSensors']; $key++) {
-    			switch ($key) {
-    				case 5:		// These thermistors only go from -40 to +150
-    				case 2:		// These thermistors only go from -40 to +150
-    
-    					if (($Rec['Data'.$key] > 150) || ($Rec['Data'.$key] < -40)) {
-    						$Bad++;
-    						$Rec['Data'.$key] = NULL;
-    					}
-    					break;
-    				default:
-    					break;
-    			}
+    			return;
     		}
     		
     		$zero = TRUE;
@@ -127,7 +113,6 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     			$Rec["StatusCode"] = " All Zero";		
     		}
     		
-    		return($Rec);	
     	}
     
     	function ReadSensors($Info) {
@@ -162,36 +147,6 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     	}
     
     
-    	
-    /*	
-    	function GetInfo($Info) {
-    		$Info["Location"] = $this->deflocation;
-    
-    		If (isset($this->config[$Info["FWPartNum"]])) {
-    			$Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];	
-    			$Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-    		} else {
-    			$Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];	
-    			$Info["Function"] = $this->config["DEFAULT"]["Function"];
-    		}
-    		
-    		if ($Info['FWPartNum'] == '0039-20-06-C') {
-    			$Info['mcu'] = array();
-    			$Info['mcu']["SRAM"] = hexdec(substr($Info["RawSetup"], 44, 4));
-    			$Info['mcu']["E2"] = hexdec(substr($Info["RawSetup"], 48, 4));
-    			$Info['mcu']["FLASH"] = hexdec(substr($Info["RawSetup"], 52, 6));
-    			$Info['mcu']["FLASHPAGE"] = hexdec(substr($Info["RawSetup"], 58, 4));
-    			if ($Info['mcu']["FLASHPAGE"] == 0) $Info['mcu']["FLASHPAGE"] = 128;
-    			$Info['mcu']["PAGES"] = $Info['mcu']["FLASH"]/$Info['mcu']["FLASHPAGE"];
-    			$Info["CRC"] = strtoupper(substr($Info["RawSetup"], 62, 4));
-    			$Info['bootLoader'] = TRUE;
-    		} else {
-    			$Info['bootLoader'] = FALSE;
-    		}
-    		
-    		return($Info);
-    	}
-    */
     	function InterpConfig(&$Info) {
     		$return = array();
     
@@ -224,7 +179,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
 			}
 
             $Info["Types"] = $this->Types["fake"];
-            $Info['params']['sensorType'] = $this->sensorTypes["fake"];
+            $Info['params']['sensorType'] = $this->sensorType["fake"];
             for($i = 0; $i < $Info['ActiveSensors']; $i++) {
                 $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
     	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
@@ -281,23 +236,11 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
                     $query = "UPDATE devices SET ControllerKey=".$Info['DeviceKey'].", ControllerIndex=".$index." WHERE ".$where;
 		            $return = $this->driver->db->query($query);
                     
-/*
-					foreach($devList as $dev) {
-                        $res = $this->driver->getDevice($dev, "ID");
-						if (is_array($res)) {
-							$update = array(
-								'ControllerKey' => $Info['DeviceKey'],
-								'ControllerIndex' => $index,
-							);
-		            	    $return = $this->driver->db->AutoExecute($this->driver->device_table, $update, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
-						}
-					}
-*/
 				}
 				$update = array(
 					'ControllerKey' => 0,
 					'ControllerIndex' => 0,
-				);
+				);				
         	    $return = $this->driver->db->AutoExecute($this->driver->device_table, $update, 'UPDATE', 'DeviceKey='.$Info['DeviceKey']);
 				
 			}
@@ -307,11 +250,12 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     	
     	
     	function saveSensorData($Info, $Packets) {
-    
-    		foreach($Packets as $packet) {
+    		foreach($Packets as $packet) {    		
     			if (isset($packet['DataIndex'])) {
-    				if (($packet["Status"] == "GOOD")){						
-    				    $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
+    				if (($packet["Status"] == "GOOD")) {
+    				    if ($packet['sendCommand'] == '55'){						
+        				    $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
+        				}
     				} else {
     					$return = FALSE;
     				}
@@ -421,29 +365,12 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
                             $data["Data3"] = $reads[3] - $reads[2];
                             $data["Data4"] = $reads[0];
                             $data["Data5"] = $reads[1];
-/*
-    						$vLow = $this->V->getDividerVoltage($data['raw'][5], 180, 27, 1);
-    						$vHigh = $this->V->getDividerVoltage($data['raw'][4], 180, 27, 1);
-    						$data["Data0"] = $vHigh - $vLow;
-    						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$data["Data1"] = $this->I->getCurrent($data['raw'][7], 0.5, $gain, 1);
-    						$data["Data2"] = $this->R->BCTherm2381_640_66103($data['raw'][6], 1, 10);
-        
-    						$vLow = $this->V->getDividerVoltage($data['raw'][2], 180, 27, 1);
-    						$vHigh = $this->V->getDividerVoltage($data['raw'][3], 180, 27, 1);
-    						$data["Data3"] = $vHigh - $vLow;
-    						$gain = 1+(180/20); // Non inverting amplifier Rf = 180, Rs = 20
-    						$data["Data4"] = $this->I->getCurrent($data['raw'][0], 0.5, $gain, 1);
-    						$data["Data5"] = $this->R->BCTherm2381_640_66103($data['raw'][1], 1, 10);
 
-
-                            $data["unitType"] = array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature");
-                            $data["Units"] = array("V", "A", "&#176; C", "V", "A", "&#176; C");
-*/                            
+                            $data["Status"] = "GOOD";
     						break;
 
     				}
-    				$data = $this->CheckRecord($Info, $data);
+    				$this->CheckRecord($Info, $data);
     				$return[] = $data;
     			}
     		}	
