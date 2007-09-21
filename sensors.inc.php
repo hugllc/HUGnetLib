@@ -48,13 +48,13 @@ class sensor {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $args = func_get_args();
-            unset($args[1]); // Remove the $type
+            $args[1]; // Remove the $type
             unset($args[2]); // Remove the $sensor
-            $args = array_merge($args);
             $stuff = $class->sensors[$type][$sensor];
-            if (!is_array($stuff)) $stuff = $class->sensors[$type][$class->defaultSensor];
             if (isset($stuff['mult'])) $val *= $stuff['mult'];
             $args[0] = $val;
+            $args[1] = $stuff;
+            $args = array_merge($args); // Compacts the array
             $val = $this->runFunction($class, $stuff['function'], $args, $args[0]);
         }
         return($val);
@@ -243,7 +243,11 @@ class sensor {
     }
 
     function checkUnits(&$type, &$sensor, &$units, &$mode) {
-        if (is_array($units)) {
+
+        if (is_array($type)) {
+            if (!is_array($units)) $units = array();
+            if (!is_array($mode)) $mode = array();
+        
             $skip = 0;
             foreach($units as $key => $value) {
                 // This is so we skip useless data points.  If a sensor takes more than
@@ -290,12 +294,12 @@ class sensor {
                     if (isset($this->lastRecord[$data['DeviceID']])) {
 						$newraw = $rawval - $this->lastRecord[$data['DeviceID']]["raw"][$rawkey];
                         if (!isset($data['deltaT'])) $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$data['DeviceID']]['Date']);
-						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$i], $data['deltaT']);
+						$data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$rawkey], $data['deltaT']);
                     } else {
 						$data["Data".$rawkey] = NULL;
                     }
                 } else {
-					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$i]);
+					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $data['params']["sensorType"][$rawkey], $data["TimeConstant"], $data['params']['Extra'][$rawkey]);
                 }
 				$data["data"][$rawkey] = $data["Data".$rawkey];
 			}
@@ -320,7 +324,7 @@ class sensor {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $args = func_get_args();
-            unset($args[1]); // Remove the $type
+            $args[1] = $class->sensors[$type][$sensor]; // This overwrites the type
             unset($args[2]); // Remove the $sensor
             $stuff = $class->sensors[$type][$sensor];
             $ret = $this->runFunction($class, $stuff['checkFunction'], $args, TRUE);

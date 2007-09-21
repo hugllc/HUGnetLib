@@ -196,7 +196,7 @@ if (!class_exists('voltageSensor')) {
         /**
             This sensor returns us 10mV / % humidity
         */
-        function CHSMSS($A, $T, $Vref=NULL) {
+        function CHSMSS($A, $sensor, $T, $Vref=NULL) {
             if ($Vref == NULL) $Vref = 1.1;
             $volts = $this->getVoltage($A, $T, $Vref);
             return $volts * 100;
