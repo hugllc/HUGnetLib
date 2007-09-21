@@ -111,136 +111,19 @@ define("e00391201_SENSORS", 9);
 			"DEFAULT" => array("A", "V", "A", "V", "A", "V", "A", "V", "V"),
 			"0039-20-05-C" => array("A", "V", "A", "V", "V"),
 			);
+		var $types = array(
+			"DEFAULT" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
+        );
+		var $sensorTypes = array(
+            "DEFAULT" => array("FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard"),
+        );
+
 		var $cols = array("FET0pMode" => "FET 0 Mode", 
 								"FET1pMode" => "FET 1 Mode", 
 								"FET2pMode" => "FET 2 Mode", 
 								"FET3pMode" => "FET 3 Mode", 
 								"NumSensors" => "# Sensors",
 								);
-
-		var $configvars = array(
-			"FET0Mode" => array(
-				"Name" => "FET0 Mode", 
-				"Input" => array(
-					'type' => 'select',
-					'attrib' => array('0' => 'Digital', 2 => 'Analog - Voltage', 3 => 'Analog - Current', 1 => 'Analog - Hi Z'),
-				),
-				"Start" => 4, 
-				"Length" => 1,
-				"Shift" => 0,
-				"Mask" => 0x03,
-			),
-			"FET0" => array(
-				"Name" => "FET0 Set Point", 
-				"Input" => array(
-					'type' => 'text',
-					'attrib' => array('size' => 5, 'maxlength' => 5),
-					'rule' => array(
-						array(
-							'type' => 'numeric',
-							'message' => 'Time Constant must be numeric',
-						),
-						array(
-							'type' => 'required',
-							'message' => 'Time Constant can not be empty',
-						),
-					),
-				),
-				"Start" => 5, 
-				"Length" => 1, 
-			),
-			"FET1Mode" => array(
-				"Name" => "FET1 Mode", 
-				"Input" => array(
-					'type' => 'select',
-					'attrib' => array(0 => 'Digital', 2 => 'Analog - Voltage', 3 => 'Analog - Current', 1 => 'Analog - Hi Z'),
-				),
-				"Start" => 4, 
-				"Length" => 1, 
-				"Shift" => 2,
-				"Mask" => 0x03,
-			),
-			"FET1" => array(
-				"Name" => "FET1 Set Point", 
-				"Input" => array(
-					'type' => 'text',
-					'attrib' => array('size' => 5, 'maxlength' => 5),
-					'rule' => array(
-						array(
-							'type' => 'numeric',
-							'message' => 'Time Constant must be numeric',
-						),
-						array(
-							'type' => 'required',
-							'message' => 'Time Constant can not be empty',
-						),
-					),
-				),
-				"Start" => 6,
-				"Length" => 1, 
-			),
-			"FET2Mode" => array(
-				"Name" => "FET2 Mode", 
-				"Input" => array(
-					'type' => 'select',
-					'attrib' => array(0 => 'Digital', 2 => 'Analog - Voltage', 3 => 'Analog - Current', 1 => 'Analog - Hi Z'),
-				),
-				"Start" => 4, 
-				"Length" => 1, 
-				"Shift" => 4,
-				"Mask" => 0x03,
-			),
-			"FET2" => array(
-				"Name" => "FET2 Set Point", 
-				"Input" => array(
-					'type' => 'text',
-					'attrib' => array('size' => 5, 'maxlength' => 5),
-					'rule' => array(
-						array(
-							'type' => 'numeric',
-							'message' => 'Time Constant must be numeric',
-						),
-						array(
-							'type' => 'required',
-							'message' => 'Time Constant can not be empty',
-						),
-					),
-				),
-				"Start" => 7,
-				"Length" => 1, 
-			),
-			"FET3Mode" => array(
-				"Name" => "FET3 Mode", 
-				"Input" => array(
-					'type' => 'select',
-					'attrib' => array(0 => 'Digital', 2 => 'Analog - Voltage', 3 => 'Analog - Current', 1 => 'Analog - Hi Z'),
-				),
-				"Start" => 4, 
-				"Length" => 1,
-				"Shift" => 6,
-				"Mask" => 0x3,
-			),
-			"FET3" => array(
-				"Name" => "FET3 Set Point", 
-				"Input" => array(
-					'type' => 'text',
-					'attrib' => array('size' => 5, 'maxlength' => 5),
-					'rule' => array(
-						array(
-							'type' => 'numeric',
-							'message' => 'Time Constant must be numeric',
-						),
-						array(
-							'type' => 'required',
-							'message' => 'Time Constant can not be empty',
-						),
-					),
-				),
-				"Start" => 8,
-				"Length" => 1, 
-			),
-
-		);
 
 		function ReadMem($Info) {
 		
@@ -287,7 +170,7 @@ define("e00391201_SENSORS", 9);
 			return($Rec);	
 		}
 
-		function InterpConfig($Info) {
+		function InterpConfig(&$Info) {
 
             $Info['HWName'] = $this->HWName;
 			if ($this->devices[$Info["FWPartNum"]][$Info["HWPartNum"]] == "BAD") {
@@ -314,23 +197,21 @@ define("e00391201_SENSORS", 9);
 			$Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET1_MULT, 2));
 			$Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET2_MULT, 2));
 			$Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET3_MULT, 2));
-			
-			if (isset($this->labels[$Info["FWPartNum"]])) {
-				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
-			} else {
-				$Info["Labels"] = $this->labels["DEFAULT"];			
-			}
-			if (isset($this->units[$Info["FWPartNum"]])) {
-				$Info["Units"] = $this->units[$Info["FWPartNum"]];
-			} else {
-				$Info["Units"] = $this->units["DEFAULT"];			
-			}
-			if (isset($this->deflocation[$Info["FWPartNum"]])) {
-				$Info["Location"] = $this->deflocation[$Info["FWPartNum"]];
-			} else {
-				$Info["Location"] = $this->deflocation['DEFAULT'];			
-			}
 
+            $Info['params'] = device::decodeParams($Info['params']);
+    
+            $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
+            for($i = 0; $i < $Info['ActiveSensors']; $i++) {
+                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+    	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
+    		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
+                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+            }			
+			if (isset($this->labels[$Info["FWPartNum"]])) {
+				$Info["Location"] = $this->labels[$Info["FWPartNum"]];
+			} else {
+				$Info["Location"] = $this->labels["DEFAULT"];			
+			}
 			return($Info);
 		}
 
@@ -342,71 +223,39 @@ define("e00391201_SENSORS", 9);
 		
 			$ret = array();
 			foreach($Packets as $data) {
+			    $data = $this->checkDataArray($data);
 				if (isset($data['RawData'])) {
-					$data = $this->checkDataArray($data);
-	//				$data = $this->InterpConfig($data);
-					$return = $data;
-					$index = 0; 
-					$return["ReplyTime"] = $data["ReplyTime"];
-					$return["RawData"] = $data["RawData"];
-					$return["DataIndex"] = $data["Data"][$index++];
-		         $return["ActiveSensors"] = $Info["ActiveSensors"];
-					$return['sendCommand'] = $data['sendCommand'];
-					$return['NumSensors'] = $Info['NumSensors'];
-		         $return["Driver"] = $Info["Driver"];
+				    $index = 0;
+            		$data['NumSensors'] = $Info['NumSensors'];
+            		$data["ActiveSensors"] = $Info["ActiveSensors"];
+            		$data["Driver"] = $Info["Driver"];
+            		$data["DeviceKey"] = $Info["DeviceKey"];
+            		$data["Types"] = $Info["Types"];
+            		$data["DataIndex"] = $data["Data"][$index++];
+            		$data["TimeConstant"] = 1;
 		         
-					if (!isset($data["Date"])) {
-						$return["Date"] = date("Y-m-d H:i:s");
-					} else {
-						$return["Date"] = $data["Date"];
-					}
-					$return["DeviceKey"] = $Info["DeviceKey"];
 					if (is_array($data["Data"])) {
 						for ($key = 0; $key < $Info["NumSensors"]; $key++) {
-							$return["raw"][$key] = $data["Data"][$index++];
-							$return["raw"][$key] += $data["Data"][$index++] << 8;
+							$data["raw"][$key] = $data["Data"][$index++];
+							$data["raw"][$key] += $data["Data"][$index++] << 8;
 						}
 						
 					}	
-					if (is_array($return["raw"])) {
-						
-						/* This sets up what we should see from the double poll averager */
-						foreach($return["raw"] as $rawkey => $rawval) {
-							if (isset($this->caldata[$Info["FWPartNum"]])) {
-								$caldata = $this->caldata[$Info["FWPartNum"]][$rawkey];
-							} else {
-								$caldata = $this->caldata["DEFAULT"][$rawkey];
-							}
-							$return["cal"][$rawkey] = (($rawval / 0xFFFF) * 2.56) * $caldata;
-						}
-						/* This changes the voltage across the FET into the output voltage */
-						/* Vo = Vmain - Vf */
-						foreach($return["cal"] as $calkey => $calval) {
-							if (($calkey == 1) || ($calkey == 3) || ($calkey == 5) || ($calkey == 7)) {
-							
-								$MainV = $return["cal"][$this->config[$Info["FWPartNum"]]["MainV"]];
-								$tdata = $MainV - $calval;
-								$return['Units'][$calkey] = "V";
-								$return['unitType'][$calkey] = "Voltage";
-							} else {
-								$tdata = $calval;
-								$return['Units'][$calkey] = "A";
-								$return['unitType'][$calkey] = "Current";
-							}
-							//$data = number_format($data, 3);
-							$return["cal"][$calkey] = $calval;
-	//						$return[$calkey] = $tdata;
-							$return["Data".$calkey] = $tdata;
-		
-						}
-						$return['Units'][8] = "V";
-						$return['unitType'][8] = "Voltage";
-					}
-					$return = $this->CheckRecord($Info, $return);
-					$ret[] = $return;
+    				$this->driver->sensors->decodeData($Info, $data);
+                    // This changes the voltage across the FET into the output voltage
+                    // Vo = Vmain - Vf 
+                    $data["Data1"] = $data['data'][1] = $data["Data8"] -  $data["Data1"];
+                    $data["Data3"] = $data['data'][3] = $data["Data8"] -  $data["Data3"];
+                    $data["Data5"] = $data['data'][5] = $data["Data8"] -  $data["Data5"];
+                    $data["Data7"] = $data['data'][7] = $data["Data8"] -  $data["Data7"];
+
+                    // Check everything
+                    $this->checkRecord($Info, $data);
+    				$ret[] = $data;
+
 				}
 			}
-			return($ret);
+			return $ret;
 		}
 	
 	
