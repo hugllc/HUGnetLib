@@ -270,6 +270,7 @@ class sensor {
             $mode = $this->getUnitMode($type, $sensor, $units, $mode);           
         }
     }
+
     function decodeData(&$data) {
 		if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
 		if (is_array($data["raw"])) {
