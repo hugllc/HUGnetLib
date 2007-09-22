@@ -100,9 +100,11 @@ class sensor {
             if (array_search($unit, $class->sensors[$type][$sensor]['validUnits']) !== FALSE) {
                 $return = $unit;
             } else {
-//                reset($class->sensors[$type][$sensor]['validUnits']);
-//                $return = current($class->sensors[$type][$sensor]['validUnits']);
                 $return = $class->sensors[$type][$sensor]['storageUnit'];
+                if (is_null($return)) {
+                    reset($class->sensors[$type][$sensor]['validUnits']);
+                    $return = current($class->sensors[$type][$sensor]['validUnits']);
+                }
             }
         }
 		return $return;
@@ -304,7 +306,7 @@ class sensor {
 						$data["Data".$rawkey] = NULL;
                     }
                 } else {
-					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey]);
+					$data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $deltaT);
                 }
 				$data["data"][$rawkey] = $data["Data".$rawkey];
 			}
