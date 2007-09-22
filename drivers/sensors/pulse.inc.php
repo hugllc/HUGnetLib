@@ -27,6 +27,7 @@ if (!class_exists('pulseCounter')) {
                     "unitType" => "Pulses",
                     "validUnits" => array('PPM', 'counts'),
                     "storageUnit" =>  'PPM',
+                    "function" => "getPPM",
                     "unitModes" => array(
                         'PPM' => 'diff',
                         'counts' => 'raw,diff',
@@ -38,13 +39,15 @@ if (!class_exists('pulseCounter')) {
                     "longName" => "Generic Revolving Thingy",
                     "unitType" => "Revolutional Speed",
                     "validUnits" => array('PPM', 'counts', 'RPM'),
-                    "storageUnits" =>  'PPM',
+                    "storageUnit" =>  'PPM',
+                    "function" => "getPPM",
                     "unitModes" => array(
                         'PPM' => 'diff',
                         'RPM' => 'diff',
                         'counts' => 'raw,diff',
                     ),
                     "extraText" => "Counts per Revolution",
+                    "extraDefault" => 1,
                 ),
                 'maximumAnemometer' => array(
                     "longName" => "Maximum Inc type Hall Effect Anemometer",
@@ -125,6 +128,11 @@ if (!class_exists('pulseCounter')) {
             return $Wh / 1000;
         }
 
+        function getPPM($val, $sensor, $TC, $extra, $deltaT) {
+            $ppm = ($val / $deltaT) * 60;
+            if ($ppm < 0) return NULL;
+            return $ppm;
+        }
 
     }
     
