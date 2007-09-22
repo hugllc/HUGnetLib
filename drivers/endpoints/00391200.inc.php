@@ -126,7 +126,7 @@ define("e00391102B_SENSORS", 9);
     
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-    			if ($Rec['Data'.$i] != 0) {
+    			if (!is_null($Rec['Data'.$i])) {
     				$zero = FALSE;
     				break;
     			}

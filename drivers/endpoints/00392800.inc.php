@@ -100,12 +100,11 @@ if (!class_exists("e00392800")) {
 
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-    			if (is_null($Rec['Data'.$i])) {
+    			if (!is_null($Rec['Data'.$i])) {
     				$zero = FALSE;
     				break;
     			}
     		}
-    
     		if ($zero && ($i > 3)) {
     			$Rec["Status"] = "BAD";
     			$Rec["StatusCode"] = " All Bad";		
