@@ -103,7 +103,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
     			if (!is_numeric($Rec['Data'.$i])) {
     				$Rec['Data'.$key] = NULL;
-    			} else if (!empty($Rec['Data'.$i])) {
+    			} else if (!is_null($Rec['Data'.$i])) {
     				$zero = FALSE;
     				break;
     			}

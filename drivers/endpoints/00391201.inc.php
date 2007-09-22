@@ -157,7 +157,7 @@ define("e00391201_SENSORS", 9);
 			if (isset($Rec["Data8"]) && ($Rec["Data8"] == 0)) $Rec["Status"] = BAD;
 			$zero = TRUE;
 			for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-				if ($Rec['Data'.$i] != 0) {
+				if (!is_null($Rec['Data'.$i])) {
 					$zero = FALSE;
 					break;
 				}
