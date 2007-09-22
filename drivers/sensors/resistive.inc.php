@@ -298,7 +298,7 @@ if (!class_exists('resistiveSensor')) {
     	}
     
         // This function calculates the open percentage based on the resistance seen.
-        function resisDoor($A, $sensor, $TC, $extra, $deltaT) {
+        function resisDoor($A, $sensor, $TC, $extra) {
             $Bias = (empty($extra[0])) ? $sensors['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             if ($Fixed <= 0) return 0;        
