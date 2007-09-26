@@ -123,7 +123,6 @@ if (!class_exists('pulseCounter')) {
         }
 
         function WattNode($val, $sensor, $TC, $extra, $deltaT=NULL) {
-            if (empty($deltaT) || ($deltaT < 0)) return NULL;
             $Wh = $val * $extra;
             return $Wh / 1000;
         }
