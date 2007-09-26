@@ -58,7 +58,7 @@ if (!class_exists('pulseCounter')) {
                         'MPH' => 'diff',
                     ),
                     "function" => "maximumAnemometer",
-                    "checkFunction" => "diffCheck",
+                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
@@ -69,7 +69,7 @@ if (!class_exists('pulseCounter')) {
                         '&#34;' => 'diff',
                     ),
                     "mult" => 0.01,
-                    "checkFunction" => "diffCheck",
+                    "checkFunction" => "pulseCheck",
                     "doTotal" => TRUE,
                 ),
                 'bravo3motion' => array(
@@ -81,7 +81,7 @@ if (!class_exists('pulseCounter')) {
                         'counts' => 'diff,raw',
                         'PPM' => 'diff',
                     ),
-                    "checkFunction" => "diffCheck",
+                    "checkFunction" => "pulseCheck",
                     "doTotal" => TRUE,
                 ),
                 'wattnode' => array(
@@ -96,6 +96,7 @@ if (!class_exists('pulseCounter')) {
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => TRUE,
+                    "checkFunction" => "pulseCheck",
                 ),
             ),
         );
@@ -117,13 +118,14 @@ if (!class_exists('pulseCounter')) {
             return $speed;
         }
         
-        function diffCheck($value, $sensor, $units) {
+        function pulseCheck($value, $sensor, $units, $dType) {
             if ($value < 0) return FALSE;
             return TRUE;
         }
 
         function WattNode($val, $sensor, $TC, $extra, $deltaT=NULL) {
             $Wh = $val * $extra;
+            if ($Wh < 0) return NULL;
             return $Wh / 1000;
         }
 

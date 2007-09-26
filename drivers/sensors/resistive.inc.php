@@ -306,8 +306,14 @@ if (!class_exists('resistiveSensor')) {
             if ($Switched <= 0) return 0;        
     		$R = $this->getResistance($A, $TC, $Bias);
             $R -= $Fixed;
-            if ($R < 0) return 0;
-            return ($R / $Switched) * 100;
+            // Got something wrong here.  We shouldn't have a negative resistance.
+            if ($R < 0) return NULL;
+            $perc = ($R / $Switched) * 100;
+            // We need to limit this to between 0 and  100.
+            // It can't be open more than all the time.
+            // It can't be open less than none of the time.
+            if (($perc < 0) || ($perc > 100)) return NULL;
+            return $perc;
         }
     
     }
