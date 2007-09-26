@@ -319,16 +319,17 @@ class sensor {
 
     function checkRecord(&$data) {
         // Start with the assumption that the packet is good.
-        $data["Status"] = "GOOD";
+        if (!isset($data["Status"])) $data["Status"] = "GOOD";
+
         // Check each reading.
         for ($i = 0; $i < $data['ActiveSensors']; $i++) {
-            if (!$this->checkPoint($data['Data'.$i], $data['Types'][$i], $data['params']['sensorType'][$i], $data['Units'][$i])) {
+            if (!$this->checkPoint($data['Data'.$i], $data['Types'][$i], $data['params']['sensorType'][$i], $data['Units'][$i], $data['dType'][$i])) {
                 $data['Data'.$i] = NULL;
                 $data['data'][$i] = NULL;
             }
         }
     }
-    function checkPoint($value, $type, $sensor) {
+    function checkPoint($value, $type, $sensor, $dType) {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $args = func_get_args();
