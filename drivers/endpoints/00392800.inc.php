@@ -263,6 +263,7 @@ if (!class_exists("e00392800")) {
 //			$this->eDEFAULT($servers, $db, $options);
             parent::eDEFAULT($driver);
 //			$this->packet =& $driver->packet;
+/*
 			$this->R = new resistiveSensor(65536, 65536, 1<<6, 1023);
 			$this->C = new capacitiveSensor(65536, 65536, 1<<6, 1023);
 			$this->Light = new lightSensor(65536, 65536, 1<<6, 1023);
@@ -270,6 +271,7 @@ if (!class_exists("e00392800")) {
 			$this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
 			$this->windDir = new windDirectionSensor();
 			$this->Pulse = new pulseCounter();
+*/
 		}
 
 
