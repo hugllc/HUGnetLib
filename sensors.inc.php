@@ -245,26 +245,13 @@ class sensor {
     }
 
     function checkUnits(&$type, &$sensor, &$units, &$mode) {
-
         if (is_array($type)) {
             if (!is_array($units)) $units = array();
             if (!is_array($mode)) $mode = array();
             if (!is_array($sensor)) $sensor = array();
         
             $skip = 0;
-            foreach($units as $key => $value) {
-                // This is so we skip useless data points.  If a sensor takes more than
-                // one input then skip the extra ones.
-                if ($skip > 0) {
-                    $units[$key] = NULL;
-                    $mode[$key] = "ignore";
-                    $skip--;
-                    continue;
-                }
-                $size = $this->getSize($type[$key], $sensor[$key]);
-                if ($size > 1) {
-                    $skip = $size - 1;
-                }
+            foreach($units as $key => $value) {                
                 $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
                 $mode[$key] = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }

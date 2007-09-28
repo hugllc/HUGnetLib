@@ -130,6 +130,7 @@ if (!class_exists('pulseCounter')) {
         }
 
         function getPPM($val, $sensor, $TC, $extra, $deltaT) {
+            if ($deltaT <= 0) return NULL;
             $ppm = ($val / $deltaT) * 60;
             if ($ppm < 0) return NULL;
             return $ppm;
