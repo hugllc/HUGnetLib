@@ -96,6 +96,8 @@ if (!class_exists("e00392800")) {
     			$Rec["Status"] = 'BAD';
     			return ;
     		}
+            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+
     		$Bad = 0;
 
     		$zero = TRUE;
@@ -122,7 +124,7 @@ if (!class_exists("e00392800")) {
     	}
 	
 		
-		function InterpConfig($Info) {
+		function InterpConfig(&$Info) {
 			//$Info["Location"] = $this->deflocation;
 
             $Info['HWName'] = $this->HWName;

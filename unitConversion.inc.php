@@ -6,64 +6,121 @@ class unitConversion {
 
     var $units = array(
         '&#176;C' => array(
-            '&#176;F' => 'CtoF',
+            'longName' => '&#176;C',
+            'varType' => 'float',
+            'convert' => array(
+                '&#176;F' => 'CtoF',
+            ),
+            'preferred' => '&#176;F',
         ),
         '&#176;F' => array(
-            '&#176;C' => 'FtoC',
+            'longName' => '&#176;F',
+            'varType' => 'float',
+            'convert' => array(
+                '&#176;C' => 'FtoC',
+            ),
         ),
         'A' => array(
-            'mA' => 'toMilli',
+            'longName' => 'Amps',
+            'varType' => 'float',
+            'convert' => array(
+                'mA' => 'toMilli',
+            ),
         ),
         'V' => array(
-            'mV' => 'toMilli',
+            'longName' => 'Volts',
+            'varType' => 'float',
+            'convert' => array(
+                'mV' => 'toMilli',
+            ),
         ),
         'mA' => array(
-            'A' => 'fromMilli',
+            'longName' => 'milliamps',
+            'varType' => 'float',
+            'convert' => array(
+                'A' => 'fromMilli',
+            ),
         ),
         'mV' => array(
-            'V' => 'fromMilli',
+            'longName' => 'millivolts',
+            'varType' => 'float',
+            'convert' => array(
+                'V' => 'fromMilli',
+            ),
         ),
-    );
-    var $unitsNonDiff = array(
         '&#176;' => array(
-            'Direction' => 'numDirtoDir',
+            'longName' => 'Compass Degrees',
+            'varType' => 'float',
+            'mode' => 'raw',        
+            'convert' => array(
+                'Direction' => 'numDirtoDir',
+            ),
         ),        
-    );
-    var $unitsDiff = array(
         'counts' => array(
-            'RPM' => 'CnttoRPM',
-            'PPM' => 'CnttoRPM',
+            'longName' => 'Counts',
+            'varType' => 'int',
+            'mode' => 'diff',
+            'convert' => array(
+                'RPM' => 'CnttoRPM',    
+                'PPM' => 'CnttoRPM',
+            ),
         ),
+        'Direction' => array(
+            'longName' => 'Direction',
+            'varType' => 'text',
+            'mode' => 'raw',
+            'convert' => array(
+                '&#176;' => 'DirtonumDir',
+            ),
+        ),  
+        'RPM' => array(
+            'longName' => 'Revolutions Per Minute',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),  
+        'PPM' => array(
+            'longName' => 'Pulses Per Minute',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),
+        'kWh' => array(
+            'longName' => 'Kilowatt Hours',
+            'varType' => 'float',
+            'convert' => array(
+                'Wh' => 'toMilli',
+            ),
+        ),
+        'Wh' => array(
+            'longName' => 'Watt Hours',
+            'varType' => 'float',
+            'convert' => array(
+                'kWh' => 'fromMilli',
+            ),
+        ),
+        
     );
-    
-    var $notGraphable = array(
-        'Direction' => TRUE,
-    );
-    
-    var $preferredUnit = array(
-        '&#176;C' => '&#176;F',
-    );
-    
+        
     function preferredUnit($unit) {
-        if (isset($this->preferredUnit[$unit])) {
-            return $this->preferredUnit[$unit];
+        if (isset($this->units[$unit]['preferred'])) {
+            return $this->units[$unit]['preferred'];
         } else {
             return $unit;
         }
     }    
     
-    function graphable($units) {
-        $units = trim($units);
-        return !isset($this->notGraphable[$units]);
+    function graphable($unit) {
+        $unit = trim($unit);
+        if (($this->units[$unit]['varType'] == 'int') || ($this->units[$unit]['varType'] == 'float')) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }    
         
     function getDataType($from, $to, $default = 'all') {
         if (trim(strtolower($default)) == 'ignore') return $default;
-        if (isset($this->unitsDiff[$from][$to])) {
-            return 'diff';
-        }
-        if (isset($this->unitsNonDiff[$from][$to])) {
-            return 'raw';
+        if (isset($this->unitsDiff[$from]['mode'])) {
+            return $this->unitsDiff[$from]['mode'];
         }
         return $default;
     }
@@ -73,38 +130,27 @@ class unitConversion {
         
         $ret = $this->units[$from][$to];
         if ($ret !== NULL) return $ret;
-        if (isset($this->units[$from][$to])) {
-            return $this->units[$from][$to];
+        if (isset($this->units[$from]['convert'][$to])) {
+            if (!isset($this->units[$to]['mode']) || ($this->units[$to]['mode'] == $type)) {
+                return $this->units[$from]['convert'][$to];
+            }
         }
-        if ($type == 'diff') {
-            return $this->unitsDiff[$from][$to];
-        } else {
-            return $this->unitsNonDiff[$from][$to];        
-        }
+        return NULL;
     }
 
     function getPossConv($type, $from=NULL) {
 
         $ret = array();
         foreach($this->units as $f => $to) {
-            foreach($to as $t => $func) {
-                $ret[$f][$t] = $t;
-            }
-        }
-        if (($type == 'diff') || ($type == 'all')) {
-            foreach($this->unitsDiff as $f => $to) {
-                foreach($to as $t => $func) {
-                    $ret[$f][$t] = $t;
+            if (is_array($to['convert'])) {
+                if (!isset($to['mode']) || ($to['mode'] == $type)) {
+                    foreach($to['convert'] as $t => $func) {
+                        $ret[$f][$t] = $t;
+                    }
                 }
             }
         }
-        if (($type != 'diff') || ($type == 'all')) {
-            foreach($this->unitsNonDiff as $f => $to) {
-                foreach($to as $t => $func) {
-                    $ret[$f][$t] = $t;
-                }
-            }
-        }
+
         foreach($ret as $key => $val) {
             $ret[$key][$key] = $key;        
         }
@@ -230,6 +276,27 @@ class unitConversion {
         if ($ndir <= 315) return "NW";
         if ($ndir <= 337.5) return "NNW";
         return "N";
+	}
+
+	function DirtonumDir($ndir, $time, $type) {
+	    $ndir = trim(strtoupper($ndir));
+        if ($ndir == "N") return 0;
+        if ($ndir == "NNE") return 22.5;
+        if ($ndir == "NE") return 45;
+        if ($ndir == "ENE") return 67.5;
+        if ($ndir == "E") return 90;
+        if ($ndir == "ESE") return 112.5;
+        if ($ndir == "SE") return 135;
+        if ($ndir == "SSE") return 157.5;
+        if ($ndir == "S") return 180;
+        if ($ndir == "SSW") return 202.5;
+        if ($ndir == "SW") return 225;
+        if ($ndir == "WSW") return 247.5;
+        if ($ndir == "W") return 270;
+        if ($ndir == "WNW") return 292.5;
+        if ($ndir == "NW") return 315;
+        if ($ndir == "NNW") return 337.5;
+        return 0;
 	}
 
 }

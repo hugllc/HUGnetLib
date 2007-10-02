@@ -18,6 +18,7 @@
 class firmware {
    var $table = "firmware";		//!< The table to use
 	var $id = "FirmwareKey";	 //!< This is the Field name for the key of the record
+    var $cache = array();
 
 	/**
 		@brief Constructor
@@ -110,6 +111,9 @@ class firmware {
 		$this->addWhere("FirmwareStatus='".$Status."'");
 		$ret = $this->getAll();
         */
+
+        if ($ret = $this->cache($FWPartNum)) return $ret;
+        
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." FWPartNum='".$FWPartNum."' ";
@@ -123,7 +127,8 @@ class firmware {
         $query .= " ORDER BY Date DESC "
                 ." LIMIT 0,1 ";
         $ret = $this->db->getArray($query);
-		return($ret[0]);
+        $this->cache($FWPartNum, $ret[0]);
+		return $ret[0];
 	}
 
 	/**
@@ -133,6 +138,7 @@ class firmware {
 	function GetFirmwareFor($HWPartNum, $Status=NULL) {
         $HWPartNum = substr($HWPartNum, 0, 7);
 
+        if ($ret = $this->cache($HWPartNum)) return $ret;
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." HWPartNum='".$HWPartNum."' ";
@@ -142,6 +148,7 @@ class firmware {
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
         $ret = $this->db->getArray($query);
+        $this->cache($HWPartNum, $ret);
 		return $ret;
 	}
 
@@ -150,6 +157,8 @@ class firmware {
 	
 	*/
 	function GetFirmware($FWPartNum, $version=NULL, $Status=NULL) {
+
+        if ($ret = $this->cache($FWPartNum)) return $ret;
 
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
@@ -164,6 +173,7 @@ class firmware {
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
         $ret = $this->db->getArray($query);
+        $this->cache($FWPartNum, $ret);
 		return $ret;
 	}
 
@@ -172,14 +182,34 @@ class firmware {
 	
 	*/
 	function get($FWKey) {
+        if ($ret = $this->cache($FWKey)) return $ret;
 
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." FirmwareKey=".(int)$FWKey." ";
         $ret = $this->db->getArray($query);
+        $this->cache($FWKey, $ret[0]);
 		return $ret[0];
 	}
 
+    function cache($key, $save=FALSE) {
+        if ($save === FALSE) {
+            if (is_array($this->cache[$key])) {
+                return $this->cache[$key];
+            } else {
+                foreach($this->cache as $val) {
+                    if ($val['FirmwareKey'] == $key) return $val;
+                    if ($val['FWPartNum'] == $key) return $val;
+                    if ($val['HWPartNum'] == $key) return $val;
+                }
+                return FALSE;
+            }
+        } else {
+            if (is_array($save)) {
+                $this->cache[$key] = $save;
+            }
+        }
+    }
 
 }
 
