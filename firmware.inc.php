@@ -16,9 +16,10 @@
 	This class implements the packet structure for talking with endpoints.
 */
 class firmware {
-   var $table = "firmware";		//!< The table to use
+    var $table = "firmware";		//!< The table to use
 	var $id = "FirmwareKey";	 //!< This is the Field name for the key of the record
     var $cache = array();
+    var $cacheTimeout = 86400;    // Cache times out every day.
 
 	/**
 		@brief Constructor
@@ -194,6 +195,7 @@ class firmware {
 
     function cache($key, $save=FALSE) {
         if ($save === FALSE) {
+            if ((time() - $this->cacheDate[$key]) > $this->cacheTimeout) return FALSE;
             if (is_array($this->cache[$key])) {
                 return $this->cache[$key];
             } else {
@@ -205,9 +207,13 @@ class firmware {
                 return FALSE;
             }
         } else {
-            if (is_array($save)) {
+            if (is_array($save) && (count($save) > 0)) {
                 $this->cache[$key] = $save;
             }
+            // Reset the cache time whether we got data or not.  That way if
+            // we lose connection to the database we will just continue to use
+            // the cached value.
+            $this->cacheDate[$key] = time();
         }
     }
 
