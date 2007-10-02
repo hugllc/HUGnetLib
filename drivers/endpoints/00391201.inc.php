@@ -154,6 +154,8 @@ define("e00391201_SENSORS", 9);
 				$Rec["Status"] = 'BAD';
 				return;
 		    }
+            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+		    
 			if (isset($Rec["Data8"]) && ($Rec["Data8"] == 0)) $Rec["Status"] = BAD;
 			$zero = TRUE;
 			for($i = 0; $i < $Rec['NumSensors']; $i ++) {
@@ -201,6 +203,7 @@ define("e00391201_SENSORS", 9);
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
             for($i = 0; $i < $Info['ActiveSensors']; $i++) {
                 $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
     	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
     		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);

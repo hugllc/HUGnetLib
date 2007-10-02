@@ -122,6 +122,8 @@ define("e00391102B_SENSORS", 9);
     			$Rec["Status"] = 'BAD';
     			return;
     		}
+            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+    		
     		$Bad = 0;
     
     		$zero = TRUE;

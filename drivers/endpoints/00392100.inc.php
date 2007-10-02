@@ -98,6 +98,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     			$Rec["Status"] = 'BAD';
     			return;
     		}
+            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
     		
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
@@ -148,7 +149,6 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     
     
     	function InterpConfig(&$Info) {
-    		$return = array();
     
             $Info['HWName'] = $this->HWName;
 			$Info["Location"] = $this->deflocation;
@@ -181,7 +181,8 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
             $Info["Types"] = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
             for($i = 0; $i < $Info['ActiveSensors']; $i++) {
-                $Info["Labels"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
     	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
     		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
@@ -550,27 +551,26 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     		return($retpkt);
     	}
     
-        function checkProgram($Info, $pkts, $update=FALSE) {
-    
-            $dInfo = $this->driver->InterpConfig($pkts);
-    
+        function checkProgram($Info, $dInfo, $update=FALSE) {
+            $this->InterpConfig($Info);    
             $return = FALSE;
-            if ($dInfo['bootLoader'] || $update){
-                print "\r\nGetting the latest firmware... ";
+            if ($Info['bootLoader'] || $update){
+                //print "\r\nGetting the latest firmware... ";
                 $res = $this->firmware->GetLatestFirmware('0039-20-01-C');
-                print " found v".$res['FirmwareVersion']."\r\n";
-
-                if (!$dInfo['bootLoader']) {
-                    if ($this->CompareFWVersion($dInfo['FWVersion'], $res['FirmwareVersion']) < 0) {
-                        print "Board is running ".$dInfo['FWVersion']."\r\n";
+                print " v".$res['FirmwareVersion'];
+                if ($Info['bootLoader']) {
+                    print "Board is running the bootloader.\r\n";
+                } else {
+                    print " => ".$Info["FWVersion"];
+                    if ($this->CompareFWVersion($Info["FWVersion"], $res['FirmwareVersion']) < 0) {
                         print "Crashing the running program\r\n";
-                        $this->RunBootLoader($dInfo);
+                        $this->RunBootLoader($Info);
                     } else {
                         $update=FALSE;                        
                     }
                 }
-                if ($dInfo['bootLoader'] || $update) {
-                    $return = $this->loadProgram($dInfo, $dInfo, $res[0]['FirmwareKey']);
+                if ($Info['bootLoader'] || $update) {
+                    $return = $this->loadProgram($Info, $Info, $res['FirmwareKey']);
                 } else {
                     $return = TRUE;
                 }

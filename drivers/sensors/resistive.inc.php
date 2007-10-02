@@ -224,7 +224,7 @@ if (!class_exists('resistiveSensor')) {
     		if (is_null($s)) $s = $this->s;	
     		if (is_null($Am)) $Am = $this->Am;	
     	
-    		if ($D == 0) return(0);
+    		if ($D == 0) return 0;
     		$Den = ((($Am*$s*$TC*$Tf)/$D) - $A);
     		if (($Den == 0) || !is_numeric($Den)) return($A*$Bias);
     		$R = ($A*$Bias)/$Den;
@@ -258,6 +258,7 @@ if (!class_exists('resistiveSensor')) {
     		$ohms = $this->getResistance($A, $TC, $Bias);
     		$T = $this->BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
 
+            if (is_null($T)) return NULL;
             if ($T > 150) return NULL;
             if ($T < -40) return NULL;
             $T = round ($T, 4);
@@ -286,7 +287,8 @@ if (!class_exists('resistiveSensor')) {
     	*/
     	function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
     	{
-    		if ($R <= 0) return(0);
+    	    // This gets out bad values
+    		if ($R <= 0) return NULL;
     		$T = $A;
     		$T += $B * log($R/$R0);
     		$T += $C * pow(log($R/$R0),2);
@@ -301,9 +303,9 @@ if (!class_exists('resistiveSensor')) {
         function resisDoor($A, $sensor, $TC, $extra) {
             $Bias = (empty($extra[0])) ? $sensors['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            if ($Fixed <= 0) return 0;        
+            if ($Fixed <= 0) return NULL;        
             $Switched = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
-            if ($Switched <= 0) return 0;        
+            if ($Switched <= 0) return NULL;        
     		$R = $this->getResistance($A, $TC, $Bias);
             $R -= $Fixed;
             // Got something wrong here.  We shouldn't have a negative resistance.

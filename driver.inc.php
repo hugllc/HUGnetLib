@@ -551,7 +551,6 @@ class driver {
 //		if (isset($packets['RawData'])) $packets = array($packets);
 		if (!is_array($packets)) return FALSE;
 
-		$retval = array();
 		$dev = array();
         $return = array();
 		foreach($packets as $packet) {
@@ -642,11 +641,9 @@ class driver {
             $return['RawData'][$packet['sendCommand']] = $packet['RawData'];
 		}
 		if (isset($return['Driver']) && ($return['Driver'] != "eDEFAULT")) {
-    		$retval = $this->RunFunction($return, "InterpConfig");
-		} else {
-		    $retval = $return;
+    		$this->RunFunction($return, "InterpConfig");
 		}
-		return($retval);
+		return $return;
 	}
 
 
