@@ -77,7 +77,9 @@ class sensor {
     /**
         Returns the class
     */
-    function &getClass($type, &$sensor) {
+    function &getClass(&$type, &$sensor) {
+        $type = (int) $type;
+        $sensor = (string) $sensor;
         $class = $this->dev[$type][$sensor];
         if (is_null($class)) {
             if (is_array($this->dev[$type])) {
