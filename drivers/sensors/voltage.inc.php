@@ -237,11 +237,14 @@ if (!class_exists('voltageSensor')) {
         function CHSMSS($A, $sensor, $T, $Vref=NULL) {
             if ($Vref == NULL) $Vref = 1.1;
             $volts = $this->getVoltage($A, $T, $Vref);
-            return $volts * 100;
+            $humidity = $volts * 100;
+            if (($humidity > 100) && ($humidity < 105)) return 100;
+            if ($humidity > 100) return NULL;
+            if ($humidity < 0) return NULL;
+            return $humidity;
         }
+        
         function CHSMSS_check($humidity, $units) {
-            if ($humidity > 100) return FALSE;
-            if ($humidity < 0) return FALSE;
             return TRUE;
         }
 

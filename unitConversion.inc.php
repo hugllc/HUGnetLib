@@ -83,6 +83,11 @@ class unitConversion {
             'mode' => 'diff',
             'varType' => 'float',
         ),
+        'MPH' => array(
+            'longName' => 'Miles Per Hour',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),
         'kWh' => array(
             'longName' => 'Kilowatt Hours',
             'varType' => 'float',
@@ -96,6 +101,14 @@ class unitConversion {
             'convert' => array(
                 'kWh' => 'fromMilli',
             ),
+        ),
+        '%' => array(
+            'longName' => 'Relative Humidity',
+            'varType' => 'float',
+        ),
+        '&#34;' => array(
+            'longName' => 'Relative Humidity',
+            'varType' => 'float',
         ),
         
     );
