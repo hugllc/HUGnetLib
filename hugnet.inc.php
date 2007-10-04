@@ -16,7 +16,7 @@
 		This page generated from @ref hugnet.inc.php
 */
 
-define("HUGNET_BACKEND_VERSION", "0.7.0");	
+define("HUGNET_BACKEND_VERSION", "0.7.1");	
 
 /** The base path to all the files included for HUGnet */
 define("HUGNET_INCLUDE_PATH", dirname(__FILE__));	
