@@ -738,16 +738,13 @@ class driver {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 
-        for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-            $dType[$i] = (empty($val['dType'][$i])) ? $devInfo["dType"][$i] : $val['dType'][$i];
-        }        
         $lastRecord = NULL;
         if (!is_array($history)) $history = array();
         foreach($history as $key => $val) {
            if (is_array($val)) {
                 if (($lastRecord !== NULL) || (count($history) < 2)) {
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-                        if ($type[$i] != $dType[$i]) {
+                        if ($type[$i] != $devInfo["dType"][$i]) {
                             switch($type[$i]) {
                             case 'diff':
                                 if (!isset($val['deltaT'])) $history[$key]['deltaT'] = strtotime($val['Date']) - strtotime($lastRecord['Date']);
