@@ -87,11 +87,14 @@ if (!class_exists('pulseCounter')) {
                 'wattnode' => array(
                     "longName" => "CCS WattNode Pulse Output Power Meter",
                     "unitType" => "Power",
-                    "validUnits" => array('kWh'),
+                    "validUnits" => array('kWh', 'Wh', 'kW', 'W'),
                     "storageUnit" =>  'kWh',
                     "function" => "WattNode",
                     "unitModes" => array(
                         'kWh' => 'raw,diff',
+                        'Wh' => 'raw,diff',
+                        'kW' => 'diff',
+                        'W' => 'diff',
                     ),
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,

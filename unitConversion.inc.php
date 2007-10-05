@@ -93,6 +93,24 @@ class unitConversion {
             'varType' => 'float',
             'convert' => array(
                 'Wh' => 'toMilli',
+                'kW' => 'kWhTokW',
+                'W' => 'kWhToW',
+            ),
+        ),
+        'kW' => array(
+            'longName' => 'Kilowatts',
+            'mode' => 'diff',
+            'varType' => 'float',
+            'convert' => array(
+                'W' => 'toMilli',
+            ),
+        ),
+        'W' => array(
+            'longName' => 'Watts',
+            'mode' => 'diff',
+            'varType' => 'float',
+            'convert' => array(
+                'kW' => 'fromMilli',
             ),
         ),
         'Wh' => array(
@@ -100,6 +118,7 @@ class unitConversion {
             'varType' => 'float',
             'convert' => array(
                 'kWh' => 'fromMilli',
+                'W' => 'kWhTokW',
             ),
         ),
         '%' => array(
@@ -312,6 +331,19 @@ class unitConversion {
         return 0;
 	}
 
+    function kWhTokW ($val, $time, $type, $extra) {
+        if (empty($time)) return NULL;
+        if ($type != "diff") return NULL;
+        return ($val / (abs($time) / 3600));
+    }
+
+    function kWhToW ($val, $time, $type, $extra) {
+        $val = unitConversion::kWhTokW($val, $time, $type, $extra);
+        if (is_null($val)) return $val;
+        return $val * 1000;
+    }
+
 }
+
 
 ?>
