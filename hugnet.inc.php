@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 		This page generated from @ref hugnet.inc.php
 */
 
-define("HUGNET_BACKEND_VERSION", "0.7.1");	
+define("HUGNET_BACKEND_VERSION", "0.7.2");	
 
 /** The base path to all the files included for HUGnet */
 define("HUGNET_INCLUDE_PATH", dirname(__FILE__));	
