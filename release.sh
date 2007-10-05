@@ -10,4 +10,4 @@ fi
 
 svn commit .
 echo Tagging the version
-svn -m "Release $VERSION" copy ./$COM_NAME ${SVN_SERVER}/0039/tags/24/${VERSION}
+svn -m "Release $VERSION" copy ./$COM_NAME ${SVN_SERVER}/HUGnet/tags/HUGnetLib/${VERSION}
