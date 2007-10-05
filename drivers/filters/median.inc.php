@@ -13,9 +13,11 @@ if (!class_exists('medianFilter') && class_exists("filter_base")) {
     class medianFilter extends filter_base
     {
         var $filters = array(
-            "medianFilter" => array(
-                "longName" => "Median Filter",
-                "minimumRows" => 3,
+            "numeric" => array(
+                "medianFilter" => array(
+                    "longName" => "Median Filter",
+                    "minimumRows" => 3,
+                ),
             ),
         );
     
