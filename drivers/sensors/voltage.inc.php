@@ -1,4 +1,4 @@
-<php
+<?php
 /*
 HUGnetLib is a library of HUGnet code
 Copyright (C) 2007 Hunt Utilities Group, LLC
@@ -242,6 +242,8 @@ if (!class_exists('voltageSensor')) {
     	*/
     	function getVoltage($A, $T, $Vref) 
     	{
+    	    if (is_null($A)) return NULL;
+    	    if (is_null($Vref)) return NULL;
     		$denom = $T * $this->Tf * $this->Am * $this->s;
     		if ($denom == 0) return 0;
     		$num = $A * $this->D * $Vref;
@@ -254,9 +256,9 @@ if (!class_exists('voltageSensor')) {
         /**
             This sensor returns us 10mV / % humidity
         */
-        function CHSMSS($A, $sensor, $T, $Vref=NULL) {
-            if ($Vref == NULL) $Vref = 1.1;
-            $volts = $this->getVoltage($A, $T, $Vref);
+        function CHSMSS($A, $sensor, $T, $Vref=1.1) {
+            if (is_null($A)) return NULL;
+            $volts = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
             if (($humidity > 100) && ($humidity < 105)) return 100;
             if ($humidity > 100) return NULL;
