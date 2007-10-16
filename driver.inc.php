@@ -27,6 +27,7 @@
  *   @version $Id$    
  *
  */
+
 /** Where in the config string the hardware part number starts */
 define("ENDPOINT_HW_START", 10);
 /** Where in the config string the firmware part number starts */
@@ -110,7 +111,7 @@ class driver {
      *   @param int $days The number of days back to go
      *   @param string|int $start The start date of the health report
      *   @return array The array of health information
-    */
+     */
     function health($where, $days = 7, $start=NULL) {
 
         if ($start === NULL) {
