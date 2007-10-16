@@ -149,6 +149,10 @@ class unitConversion {
             'longName' => 'Relative Humidity',
             'varType' => 'float',
         ),
+        'W/m^2' => array(
+            'longName' => 'Watts per Meter Squared',
+            'varType' => 'float',
+        ),
         
     );
         
