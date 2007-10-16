@@ -28,23 +28,23 @@
  *
  */
 
-/** Where in the config string the hardware part number starts */
+/** Where in the config string the hardware part number starts  */
 define("ENDPOINT_HW_START", 10);
-/** Where in the config string the firmware part number starts */
+/** Where in the config string the firmware part number starts  */
 define("ENDPOINT_FW_START", 20);
-/** Where in the config string the firmware version starts */
+/** Where in the config string the firmware version starts  */
 define("ENDPOINT_FWV_START", 30);
-/** Where in the config string the group starts */
+/** Where in the config string the group starts  */
 define("ENDPOINT_GROUP", 36);    
-/** Where in the config string the boredom constant starts */
+/** Where in the config string the boredom constant starts  */
 define("ENDPOINT_BOREDOM", 42);
-/** Where in the config string the configuration ends */
+/** Where in the config string the configuration ends  */
 define("ENDPOINT_CONFIGEND", 44);
-/** The default command to read config */
+/** The default command to read config  */
 define("eDEFAULT_CONFIG_COMMAND", "5C");
-/** The default command to read sensors */
+/** The default command to read sensors  */
 define("eDEFAULT_SENSOR_READ", "55");
-/** The default command to set the group */
+/** The default command to set the group  */
 define("eDEFAULT_SETGROUP", "5B");
 
 
@@ -58,7 +58,7 @@ require_once(HUGNET_INCLUDE_PATH."/unitConversion.inc.php");
  * Class for talking with HUGNet endpoints
  *
  *    All communication with endpoints should go through this class.
- */
+  */
 class driver {
     var $_maxDecimalPlaces = array(
         'Revs' => 0,
@@ -82,17 +82,17 @@ class driver {
     var $_decimalPlaces = 2;
 
 
-    /** The error number.  0 if no error occurred */ 
+    /** The error number.  0 if no error occurred  */ 
     var $Errno = 0;
-    /** Error String */
+    /** Error String  */
     var $Error = "";
-    /** An array of driver classes. */
+    /** An array of driver classes.  */
     var $drivers = array();
-    /** The drivers and what software and hardware they encompass are mapped here */
+    /** The drivers and what software and hardware they encompass are mapped here  */
     var $dev = array();
-    /** How many times the poll interval has to pass before we show an error on it    */
+    /** How many times the poll interval has to pass before we show an error on it     */
     var $PollWarningIntervals = 2;        
-    /** The display colors to use for different error codes    */
+    /** The display colors to use for different error codes     */
     var $ErrorColors = array(
         "DevOnBackup" => array("Severity" => "Low", "Description" => "Device is currently being polled on one of the backup servers", "Style" => "#00E000"),
     );    
@@ -105,13 +105,13 @@ class driver {
     /**
      *   Queries health information from the database.
      *   
-     *   @todo This should be moved to the device class
+     ** @todo This should be moved to the device class
      *   
-     *   @param string $where Extra where clause for the SQL
-     *   @param int $days The number of days back to go
-     *   @param string|int $start The start date of the health report
-     *   @return array The array of health information
-     */
+     ** @param string $where Extra where clause for the SQL
+     ** @param int $days The number of days back to go
+     ** @param string|int $start The start date of the health report
+     ** @return array The array of health information
+      */
     function health($where, $days = 7, $start=NULL) {
 
         if ($start === NULL) {
@@ -167,13 +167,13 @@ class driver {
 
 
     /**
-        @brief Sends out an all call so all boards respond.
-        @param $Info Array Infomation about the device to get stylesheet information for
-        @return The return should be put inside of style="" css tags in your HTML
+     * Sends out an all call so all boards respond.
+     * @param $Info Array Infomation about the device to get stylesheet information for
+     * @return The return should be put inside of style="" css tags in your HTML
     
         Returns a style based on the condition of the endpoint.  Useful for displaying
         a list of endpoints and quickly seeing which ones have problems.
-    */
+     */
     function Diagnose($Info) {
 
         $problem = array();
@@ -223,16 +223,16 @@ class driver {
 
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @param $function String The name of the function to run
-        @return FALSE if the function does not exist.  Otherwise passes
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $function String The name of the function to run
+     * @return FALSE if the function does not exist.  Otherwise passes
             the function return through.
 
         This checks for the function in both the specific class for the endpoint
         driver and the default driver.  If the classes or the methods don't exist
         then it complains.
-    */
+     */
     function RunFunction ($Info, $function) {
         if (!is_array($Info)) return FALSE;
         $return = array();
@@ -275,12 +275,12 @@ class driver {
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @param $Type Integer The type of memory to read
-        @param $Address Integer the address to read from memory
-        @param $Length Integer the length of data to read from memory
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $Type Integer The type of memory to read
+     * @param $Address Integer the address to read from memory
+     * @param $Length Integer the length of data to read from memory
+     */
 /*
     function ReadMem($Info, $Type, $Address, $Length) {
     
@@ -293,55 +293,55 @@ class driver {
         }
         return($return);
     }
-*/    
+ */    
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function ReadConfig($Info) {
         $return = $this->RunFunction($Info, "ReadConfig");
         return($return);
     }
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function InterpSensors($Info, $Packets) {
         $return = $this->RunFunction($Info, "InterpSensors", $Packets);
         return($return);
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function saveSensorData($Info, $Packets) {
         $return = $this->RunFunction($Info, "saveSensorData", $Packets);
         return($return);
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function saveConfigData($Info, $Packets) {
         $return = $this->RunFunction($Info, "saveConfigData", $Packets);
         return($return);
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function GetConfigVars($Info) {
         $return = $this->RunFunction($Info, "GetConfigVars");
         return($return);    
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function     SetConfig($Info, $start, $data) {
         //add_debug_output("Setting Configuration:<br>\n");
          $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
@@ -357,38 +357,41 @@ class driver {
     }
         
     /**
-        @brief Decodes data coming from the endpoint
-        @param $data Array Infomation about the device to use
-    */
+     * Decodes data coming from the endpoint
+     * @param $data Array Infomation about the device to use
+     */
     function DecodeData($data) {
         $return = $this->RunFunction($data, "DecodeData");
         return($return);
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $data Array The record to check.
-    */
-    function CheckRecord($data) {
-        $return = $this->RunFunction($data, "CheckRecord");
-        return($return);
+     * Checks a data record to determine what its status is.  It changes
+     * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
+     * is the status that the record had originally.
+     *
+     * @param array $Info The information array on the device
+     * @param array $Rec The data record to check
+      */
+    function CheckRecord($Info, &$Rec) {
+        $this->RunFunction($Info, "CheckRecord", $Rec);
     }
     
         
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function ReadSensors($Info) {
         $return = $this->RunFunction($Info, "ReadSensors");
         return($return);        
     }
                 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @param $which Which label to retrieve. 
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $which Which label to retrieve. 
+     */
     function GetLabel($Info, $which) {
     
         $Info["GetLabel"] = $which;    
@@ -397,10 +400,10 @@ class driver {
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @param $which Which label to retrieve. 
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $which Which label to retrieve. 
+     */
     function GetUnits($Info, $which) {    
         $Info["GetUnits"] = $which;    
         $return = $this->RunFunction($Info, "GetUnits");
@@ -408,18 +411,18 @@ class driver {
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function GetCols($Info){
         $return = $this->RunFunction($Info, "GetCols");
         return($return);
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function GetCalibration($Info, $rawcal){
         $return = $this->RunFunction($Info, "GetCalibration", $rawcal);
         return($return);
@@ -427,27 +430,27 @@ class driver {
 
         
     /**
-        @brief Runs a function using the correct driver for the endpoint
-    */
+     * Runs a function using the correct driver for the endpoint
+     */
     function done() {
         $this->packet->close();
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Packet Array Array of information about the device with the data from the incoming packet
-        @param $force Boolean Force the update even if the serial number and hardware part number don't match
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Packet Array Array of information about the device with the data from the incoming packet
+     * @param $force Boolean Force the update even if the serial number and hardware part number don't match
+     */
     function UpdateDevice($Packet, $force=FALSE){
 
         return $this->device->UpdateDevice($Packet, $force);                    
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Packet Array The incoming packet
-        @param $GatewayKey Integer The gateway the packet came from
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Packet Array The incoming packet
+     * @param $GatewayKey Integer The gateway the packet came from
+     */
     function UnsolicitedConfigCheck($Packet, $GatewayKey) {
         if (!isset($Packet["DeviceID"])) $Packet["DeviceID"] = strtoupper($Packet["From"]);
         if (!isset($Packet["GatewayKey"])) $Packet["GatewayKey"] = $Packet["Socket"];
@@ -472,11 +475,11 @@ class driver {
         return $this->device->getDevice($id, $type);
     }
     /**
-        @brief Converts a packet array into an array for inserting into the packet log tables in the database.
-        @param $Packet Array The packet that came in.
-        @param $Gateway Integer the gateway key of the gateway this packet came from
-        @param $Type String They type of packet it is.
-    */
+     * Converts a packet array into an array for inserting into the packet log tables in the database.
+     * @param $Packet Array The packet that came in.
+     * @param $Gateway Integer the gateway key of the gateway this packet came from
+     * @param $Type String They type of packet it is.
+     */
     function PacketLog($Packet, $Gateway, $Type="UNSOLICITED") {
         //$this->device->lookup($Packet["from"], "DeviceID");
 //        $Info = $this->device->lookup[0];
@@ -501,9 +504,9 @@ class driver {
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function FindDevice($Info) {
         $this->gateway->reset();
         $gw = $this->gateway->getAll();
@@ -513,10 +516,10 @@ class driver {
 
         
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @param GatewayKey Int The gateway to try first.
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param GatewayKey Int The gateway to try first.
+     */
     function GetInfo($Info, $GatewayKey = 0) {
         $DeviceID = $Info["DeviceID"];
         //add_debug_output("Getting Configuration for ".$Info["DeviceID"]."<BR>\n");
@@ -545,11 +548,11 @@ class driver {
             
     }
     /**
-        @brief Interpret a configuration packet.
-        @param $packet Array Infomation about the device to use plus a configuration packet            
-        @return Array of device information on success, FALSE on failure 
-        @todo Move this back to the driver class?
-    */
+     * Interpret a configuration packet.
+     * @param $packet Array Infomation about the device to use plus a configuration packet            
+     * @return Array of device information on success, FALSE on failure 
+     * @todo Move this back to the driver class?
+     */
     function InterpConfig ($packets, $forceDriver=NULL) {
 //        if (isset($packets['RawData'])) $packets = array($packets);
         if (!is_array($packets)) return FALSE;
@@ -651,10 +654,10 @@ class driver {
 
 
     /**
-        @brief Adds the driver information to the array given to it
-        @param $Info Array Infomation about the device to use
-        @return Returns $Info with added information from the driver.
-    */
+     * Adds the driver information to the array given to it
+     * @param $Info Array Infomation about the device to use
+     * @return Returns $Info with added information from the driver.
+     */
     function getHistoryTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
         {
@@ -664,10 +667,10 @@ class driver {
     }
 
     /**
-        @brief Adds the driver information to the array given to it
-        @param $Info Array Infomation about the device to use
-        @return Returns $Info with added information from the driver.
-    */
+     * Adds the driver information to the array given to it
+     * @param $Info Array Infomation about the device to use
+     * @return Returns $Info with added information from the driver.
+     */
     function getAverageTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
         {
@@ -677,10 +680,10 @@ class driver {
     }
 
     /**
-        @brief Adds the driver information to the array given to it
-        @param $Info Array Infomation about the device to use
-        @return Returns $Info with added information from the driver.
-    */
+     * Adds the driver information to the array given to it
+     * @param $Info Array Infomation about the device to use
+     * @return Returns $Info with added information from the driver.
+     */
     function getLocationTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
         {
@@ -691,10 +694,10 @@ class driver {
 
 
     /**
-        @brief Adds the driver information to the array given to it
-        @param $Info Array Infomation about the device to use
-        @return Returns $Info with added information from the driver.
-    */
+     * Adds the driver information to the array given to it
+     * @param $Info Array Infomation about the device to use
+     * @return Returns $Info with added information from the driver.
+     */
     function DriverInfo($Info) {
         $Info['sendCommand'] = eDEFAULT_CONFIG_COMMAND;
         $Info = $this->RunFunction($Info, "InterpConfig");
@@ -705,9 +708,9 @@ class driver {
     }
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     */
     function FindDriver($Info) {
         //add_debug_output("Checking for driver<br>\n");
         //add_debug_output(get_stuff($this->dev, "driver"));
@@ -732,11 +735,11 @@ class driver {
     }
     
     /**
-    @brief
-    @param
-    @return
+ *
+ * @param
+ * @return
     
-    */
+     */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=NULL, &$units=NULL) {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
@@ -804,8 +807,8 @@ class driver {
 
     
     /**
-        @brief Constructor    
-    */
+     * Constructor    
+     */
     function driver(&$db=NULL, $plugins = "", $direct=TRUE) {
 
         // This creates one database connection that everyone shares.
@@ -815,7 +818,7 @@ class driver {
         if ($db == NULL) {
             $db = HUGNET_DATABASE;
         }
-*/
+ */
         
 
         $this->db = &$db;
@@ -867,15 +870,15 @@ class driver {
 }
 
 /**
-    @brief The default driver class
+ * The default driver class
     
     This is the default driver class.  All drivers MUST inherit this class.  They should
     build on it.  The class has some necessary stuff that doesn't need to be duplicated
     in each of the drivers themselves.
-*/
+ */
 class eDEFAULT {
     /**
-    @brief Stores the device information for this driver
+ * Stores the device information for this driver
     
     This array stores information on which hardware and firmware combinations
     this driver supports.  The format is as follows:
@@ -907,7 +910,7 @@ class eDEFAULT {
 
     );
     @endcode
-    */
+     */
     var $history_table = "history";
     var $location_table = "location";
     var $average_table = "average";
@@ -917,7 +920,7 @@ class eDEFAULT {
 
     var $labels = array(0 => "");        //!< The default labels for the sensor outputs.
     var $units = array(0 => "");        //!< The array of units used by the device sensor outputs (ie Degrees F, Degrees C)
-    /** These are the columns that all devices share */
+    /** These are the columns that all devices share  */
     var $defcols = array(
         "DeviceKey" => "Key", 
         "DeviceName" => "Name",
@@ -944,14 +947,14 @@ class eDEFAULT {
         "ControllerIndex" => "Controller Port",
     );
 
-    /** These are the editable columns that all devices share */
+    /** These are the editable columns that all devices share  */
     var $defeditcols = array(
         "DeviceLocation" => "Location",
         "DeviceJob" => "Job",
         "BoredomThreshold" => "Boredom Threshold",
     );
 
-    /** This is where the hardware devices default configurations go.*/
+    /** This is where the hardware devices default configurations go. */
     var $config = array(
         "DEFAULT" => array("Function" => "Unknown", "Sensors" => 0, "SensorLength" => 0),        
     );
@@ -962,22 +965,22 @@ class eDEFAULT {
     var $var = array();            //!< The variable that are devices specific go here.
 
     /** 
-        @brief Default configuraion variable definition
+     * Default configuraion variable definition
         
-    */
-    /** Default location variable definition */
+     */
+    /** Default location variable definition  */
     var $deflocation = array();
 
-    /** The maximum value of the AtoD convertor */
+    /** The maximum value of the AtoD convertor  */
     var $AtoDMax = 1023;
 
 
     var $configvars = array();
     /**
-        @brief Returns the packet to send to read the sensor data out of an endpoint
-        @param $Info Array Infomation about the device to use
-        @note This should only be defined in a driver that inherits this class if the packet differs
-    */
+     * Returns the packet to send to read the sensor data out of an endpoint
+     * @param $Info Array Infomation about the device to use
+     * @note This should only be defined in a driver that inherits this class if the packet differs
+     */
     function ReadSensors($Info) {
 
         $packet[0] = array(
@@ -995,11 +998,11 @@ class eDEFAULT {
     }
 
     /**
-        @brief Returns the packet to send to read the sensor data out of an endpoint
-        @param $Info Array Infomation about the device to use
-        @param $packet Array The packet to save.
-        @note This should only be defined in a driver that inherits this class if the packet differs
-    */
+     * Returns the packet to send to read the sensor data out of an endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $packet Array The packet to save.
+     * @note This should only be defined in a driver that inherits this class if the packet differs
+     */
     function saveSensorData($Info, $Packets) {
         foreach($Packets as $packet) {
             if (($packet["Status"] == "GOOD")){
@@ -1013,21 +1016,21 @@ class eDEFAULT {
     }
 
     /**
-        @brief Returns the packet to send to read the sensor data out of an endpoint
-        @param $Info Array Infomation about the device to use
-        @param $packet Array The packet to save.
-        @note This should only be defined in a driver that inherits this class if the packet differs
-    */
+     * Returns the packet to send to read the sensor data out of an endpoint
+     * @param $Info Array Infomation about the device to use
+     * @param $packet Array The packet to save.
+     * @note This should only be defined in a driver that inherits this class if the packet differs
+     */
     function updateConfig($Info) {
         $return = TRUE;
         return($return);
     }
 
     /**
-        @brief Checks a database record to see if it should be interpreted.
-        @param $data Array a packet that might need the 'Data' array created
-        @return Array The same packet with the 'Data' array created
-    */
+     * Checks a database record to see if it should be interpreted.
+     * @param $data Array a packet that might need the 'Data' array created
+     * @return Array The same packet with the 'Data' array created
+     */
     function checkDataArray(&$work) {
         if (!is_array($work['Data'])) {
             for ($i = 0; $i < (strlen($work["RawData"])/2); $i++) {
@@ -1039,49 +1042,36 @@ class eDEFAULT {
     }
 
     /**
-        @brief Checks a database record to see if it should be interpreted.
-        @param $Rec Array the record to check.  This must include all device information.
-        @return Array The record returned with BAD for the status.
-        @note This method MUST be implemented by each driver that inherits this class
-
-        This marks everything bad because we don't want data stored in the history unless
-        the record is good.  It will only be in the raw_history.
-    */
-    function CheckRecord($Info, $Rec) {
+     * Checks a data record to determine what its status is.  It changes
+     * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
+     * is the status that the record had originally.
+     *
+     * @param array $Info The information array on the device
+     * @param array $Rec The data record to check
+      */
+    function CheckRecord($Info, &$Rec) {
         $Rec["Status"] = 'UNRELIABLE';
-        
-        return($Rec);    
     }
 
 
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-    */
-/*
-    function GetInfo($Info) {
-        $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
-        $Info["Function"] = $this->config["DEFAULT"]["Function"];
-        return($Info);
-    }
-*/    
-    /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @note This method MUST be implemented by each driver that inherits this class
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @note This method MUST be implemented by each driver that inherits this class
+      */
     function ReadMem($Info) {
         $return = $this->BadDriver($Info, "ReadMem");    
         return($return);
     }
     
     /**
-        @brief Gets the configuration variables from the device configuration
-        @return Array The names of all of the configuration variables
-    
-        These differ from the returnn of eDEFAULT::GetCols in that these are stored
-        in the device itself, rather than in the database.
-    */
+     * Gets the configuration variables from the device configuration
+     *
+     * These differ from the returnn of eDEFAULT::GetCols in that these are stored
+     * in the device itself, rather than in the database.
+     *
+     * @return Array The names of all of the configuration variables
+     */
     function GetConfigVars() {
         $return = array_merge($this->defconfigvars, $this->configvars);
         return($return);    
@@ -1089,10 +1079,10 @@ class eDEFAULT {
     
     
     /**
-        @brief Returns the packet to send to read the configuration out of an endpoint
-        @param $Info Array Infomation about the device to use
-        @note This should only be defined in a driver that inherits this class if the packet differs
-    */
+     * Returns the packet to send to read the configuration out of an endpoint
+     * @param $Info Array Infomation about the device to use
+     * @note This should only be defined in a driver that inherits this class if the packet differs
+     */
     function ReadConfig($Info) {
         $packet = array(
             array(
@@ -1110,21 +1100,21 @@ class eDEFAULT {
     
     
     /**
-        @brief Decodes the data retuned by the endpoint
-        @param $data Array Infomation about the device to use
-        @note This method MUST be implemented by each driver that inherits this class
-    */
+     * Decodes the data retuned by the endpoint
+     * @param $data Array Infomation about the device to use
+     * @note This method MUST be implemented by each driver that inherits this class
+     */
     function DecodeData($data) {
         $return = $this->BadDriver($data, "ReadMem");
         return($return);        
     }
     
     /**
-        @brief Does something with an unsolicited packet.
-        @param $Info Array Infomation about the device to use including the unsolicited packet.
-        @return always TRUE
-        @note This method MUST be implemented by each driver that inherits this class
-    */
+     * Does something with an unsolicited packet.
+     * @param $Info Array Infomation about the device to use including the unsolicited packet.
+     * @return always TRUE
+     * @note This method MUST be implemented by each driver that inherits this class
+     */
     function Unsolicited($Info) {
         //add_debug_output("Unsolicited default failing silently.<br>\n");
         print "Unsolicited default failing silently.\n";
@@ -1132,29 +1122,29 @@ class eDEFAULT {
     }
     
     /**
-        @brief Interprets a config packet
-        @param $Info Array Infomation about the device to use including the unsolicited packet.
-    */
+     * Interprets a config packet
+     * @param $Info Array Infomation about the device to use including the unsolicited packet.
+     */
     function InterpConfig($Info) {
 //        $Info['ActiveSensors'] = 0;
         return($Info);
     }
     /**
-        @brief Finds the correct error code for why it was called
-        @param $Info Array Infomation about the device to use
-        @param $fct string The function that the code tried to run
-        @return array The error code depending on what the problem was.
+     * Finds the correct error code for why it was called
+     * @param $Info Array Infomation about the device to use
+     * @param $fct string The function that the code tried to run
+     * @return array The error code depending on what the problem was.
         @warning This function MUST NOT be implemented in any drivers that inherit this class
-    */
+     */
     function BadDriver($Info, $fct) {
         $return = FALSE;
         return($return);
     }    
     
     /**
-        @brief The routine that interprets returned sensor data
-        @param $Info array The packet to interpret
-        @note This method MUST be implemented by each driver that inherits this class.
+     * The routine that interprets returned sensor data
+     * @param $Info array The packet to interpret
+     * @note This method MUST be implemented by each driver that inherits this class.
 
         This is a minimal implementation that only picks out the common things
         in all packets: DataIndex.  This happens so that if there is a driver that 
@@ -1163,7 +1153,7 @@ class eDEFAULT {
         
         
         
-    */
+     */
     function InterpSensors($Info, $Packets) {
 //        $return = $this->BadDriver($Info, "InterpSensors");    
         $Info = $this->InterpConfig($Info);
@@ -1195,13 +1185,13 @@ class eDEFAULT {
 
 
     /**
-        @brief Get the columns in the database that are for this endpoint
-        @param $Info Array Infomation about the device to use
-        @return The columns that pertain to this endpoint
-        @note Sound NOT be implemented in child classes that class needs it to work differently
-
+     * Get the columns in the database that are for this endpoint
+     * @param $Info Array Infomation about the device to use
+     * @return The columns that pertain to this endpoint
+     * @note Sound NOT be implemented in child classes that class needs it to work differently
+     *
         This is used to easily display the pertinent columns for any endpoint.
-    */
+     */
     function GetCols($Info){
         $Columns = $this->defcols;
         if (is_array($this->cols)) {
@@ -1211,14 +1201,15 @@ class eDEFAULT {
     }
 
     /**
-        @brief Get the columns in the database that are editable by the user
-        @param $Info Array Infomation about the device to use
-        @return The columns that can be edited
-        @note Sound NOT be implemented in child classes that class needs it to work differently
-        
-        This function is here so that it is easy to create pages that allow these
-        columns to be changed.
-    */
+     * Get the columns in the database that are editable by the user
+     *
+     *   This function is here so that it is easy to create pages that allow these
+     *   columns to be changed.
+     *
+     * @param $Info Array Infomation about the device to use
+     * @return The columns that can be edited
+     * @note Sound NOT be implemented in child classes that class needs it to work differently
+     */
     function GetEditCols($Info){
         $Columns = $this->defeditcols;
         if (is_array($this->editcols)) {
@@ -1228,26 +1219,26 @@ class eDEFAULT {
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @todo make this function work?
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @todo make this function work?
+     */
     function SetAllConfig($Info) {
     }
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $Info Array Infomation about the device to use
-        @todo make this function work?
-    */
+     * Runs a function using the correct driver for the endpoint
+     * @param $Info Array Infomation about the device to use
+     * @todo make this function work?
+     */
     function GetCalibration($Info, $rawcal) {
     }
 
     /**
-        @brief Returns a packet that will set the configuration data in an endpoint
-        @param $Info Array Infomation about the device to use
-        @return FALSE on failuer, The packet in array form on success
-        @todo Document this better.
-    */
+     * Returns a packet that will set the configuration data in an endpoint
+     * @param $Info Array Infomation about the device to use
+     * @return FALSE on failuer, The packet in array form on success
+     * @todo Document this better.
+     */
     function SetConfig($Info, $start, $data) {
 
         $buffersize = 7;
@@ -1287,12 +1278,14 @@ class eDEFAULT {
     }
     
     /**
-        @brief Runs a function using the correct driver for the endpoint
-        @param $ver1 string The first version to use in the compare
-        @param $ver2 string The second version to use in the compare        
-        @return -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
-        @note Sound NOT be implemented in child classes that class needs it to work differently
-    */
+     * Runs a function using the correct driver for the endpoint
+     *
+     * Should NOT be implemented in child classes unless that class needs it to work differently
+     *
+     * @param string $ver1 The first version to use in the compare
+     * @param string $ver2 The second version to use in the compare        
+     * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
+     */
     function CompareFWVersion($ver1, $ver2) {
         $v1 = explode(".", $ver1);
         $v2 = explode(".", $ver2);
@@ -1309,11 +1302,11 @@ class eDEFAULT {
     
     
     /**
-        @brief Constructor.
-        
-        This function sets up $this->history, $this->location, and $this->averages to
-        their default value.
-    */
+     * Constructor.
+     *   
+     *   This function sets up $this->history, $this->location, and $this->averages to
+     *   their default value.
+     */
     function eDEFAULT(&$driver) {
 
         $this->driver =& $driver;
