@@ -39,7 +39,7 @@ class unitConversion {
      *  @var array
      *  {@source }
      */
-    public static var $units = array(
+    var $units = array(
         'temperature' => array(
             '&#176;C' => array(
                 'longName' => '&#176;C',

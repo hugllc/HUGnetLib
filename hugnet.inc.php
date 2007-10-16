@@ -38,7 +38,6 @@ if (!defined("HUGNET_DATABASE")) {
 if (!defined("HUGNET_LOCAL_DATABASE")) {
     define("HUGNET_LOCAL_DATABASE", "HUGnetLocal");
 }
-
 $inc = ini_get('include_path');
 $inc .= ":".dirname(__FILE__)."/lib/pear";
 ini_set('include_path', $inc);
