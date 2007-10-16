@@ -1,4 +1,5 @@
 <?php
+defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
 /**
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
@@ -492,11 +493,12 @@ class plugins {
 		This routine sets this->dir and this->extension then checks for plugins
 	*/
 	function plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) {
+        $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
 		if (trim($basedir) != "" ) $this->dir = $basedir;
 		if (trim($webdir) != "" ) $this->webdir = $webdir;
 		if (trim($extension) != "" ) $this->extension = $extension;
 		$this->_skipDir = $skipDir;
-		$this->find_plugins();
+		if (!is_array($this->plugins)) $this->find_plugins();
 	}
 
 	/**
@@ -571,6 +573,7 @@ class plugins {
 			$this->_debug( "\tErrors encountered parsing file. Skipping ".$file.".\n", 4);
 		} else {
 			$this->file_count++;
+			$info = NULL;
 			if (is_array($plugin_info)) {
 				$info = $plugin_info;
 				$this->plugin_info[$file] = $info;
