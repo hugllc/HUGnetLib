@@ -1,45 +1,32 @@
 <?php
-/*
-HUGnetLib is a library of HUGnet code
-Copyright (C) 2007 Hunt Utilities Group, LLC
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 3
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
-?>
-<?php
 /**
-	$Id$
-	@file sensors/resistive.inc.php
-	@brief Class for dealing with resistive sensors
-	
-	This class does all the math for resistive sensors.
-	
-	$Log: resistive.inc.php,v $
-	Revision 1.4  2005/11/23 16:45:57  prices
-	Fixed a couple of things
-	
-	Revision 1.3  2005/06/13 23:02:29  prices
-	Fixed a problem in how the drivers were checking records and how e00391200 was
-	interpreting packets.
-	
-	Revision 1.2  2005/04/26 22:06:18  prices
-	Updated documentation.
-	
-
-	
-*/
+ *   <pre>
+ *   HUGnetLib is a library of HUGnet code
+ *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ *   
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License
+ *   as published by the Free Software Foundation; either version 3
+ *   of the License, or (at your option) any later version.
+ *   
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *   
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *   </pre>
+ *
+ *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ *   @package HUGnetLib
+ *   @subpackage Sensors
+ *   @copyright 2007 Hunt Utilities Group, LLC
+ *   @author Scott Price <prices@hugllc.com>
+ *   @version $Id$    
+ *
+ */
 /**
 	@page rSensors Resistive Sensors
 	@section rSensors_intro Introduction
