@@ -28,15 +28,15 @@
  *
  */
 /**
- *	@brief This function adds to the debug output
- *	@param stuff String This is what is actually added to the debug information
- *	@param level Integer between 0 and 10 this is the debug level at which to show it.
- *	@ingroup Debug
+ *    This function adds to the debug output
  *
- *	This function adds information to the file log in the debug info.    
- *	It must be the first function here, even preceeding the includes, as   
- *	all of the includes use it.                                            
+ *    This function adds information to the file log in the debug info.    
+ *    It must be the first function here, even preceeding the includes, as   
+ *    all of the includes use it.                                            
  *
+ *    @param string $stuff This is what is actually added to the debug information
+ *    @param int $level Between 0 and 10 this is the debug level at which to show it.
+ *    @ingroup Debug
  */
 function add_debug_output($stuff, $level=10) {
    global $debug;
@@ -48,53 +48,60 @@ function add_debug_output($stuff, $level=10) {
 }
 
 /**
- *	Returns seconds as years days hours minutes seconds
+ *    Returns seconds as years days hours minutes seconds
+ *
+ * @param int $seconds The number of seconds
+ * @param int $digits The number of digits to display after the decimal point
+ * @return string The string of the format '0Y 0d 0h 0m 0s'
  */
 
-function get_ydhms ($seconds, $digits=0) {	
-	$years = (int)($seconds/60/60/24/365.25);
-	$seconds -= $years*60*60*24*365.25;
-	$days = (int)($seconds/60/60/24);
-	$seconds -= $days*60*60*24;
-	$hours = (int)($seconds/60/60);
-	$seconds -= $hours*60*60;
-	$minutes = (int)($seconds/60);
-	$seconds -= $minutes*60;
-	$seconds = number_format($seconds, $digits);
-	
-	$return = "";
-	if ($years > 0) $return .= $years."Y ";
-	if ($days > 0) $return .= $days."d ";
-	if ($hours > 0) $return .= $hours."h ";
-	if ($minutes > 0) $return .= $minutes."m ";
-	$return .= $seconds."s";
-	return($return);
+function get_ydhms ($seconds, $digits=0) {    
+    $years = (int)($seconds/60/60/24/365.25);
+    $seconds -= $years*60*60*24*365.25;
+    $days = (int)($seconds/60/60/24);
+    $seconds -= $days*60*60*24;
+    $hours = (int)($seconds/60/60);
+    $seconds -= $hours*60*60;
+    $minutes = (int)($seconds/60);
+    $seconds -= $minutes*60;
+    $seconds = number_format($seconds, $digits);
+    
+    $return = "";
+    if ($years > 0) $return .= $years."Y ";
+    if ($days > 0) $return .= $days."d ";
+    if ($hours > 0) $return .= $hours."h ";
+    if ($minutes > 0) $return .= $minutes."m ";
+    $return .= $seconds."s";
+    return($return);
 }
 
 /**
-	@brief Prints out the number of bytes using K, M, G, T, Etc
-
+ *   Prints out the number of bytes using K, M, G, T, Etc
+ *
+ * @param int $bytes The number of bytes we have
+ * @param int $digits The number of places beyond the decimal point to show
+ * @return string A string in the format '1.2M bytes'
 */
 function get_bytes($bytes, $digits=2) {
 
-	$labels = array("", " k", " M", " G", " T", " P");
+    $labels = array("", " k", " M", " G", " T", " P");
 
-	$index == 0;
-	while ($bytes > 1024) {
-		$bytes = $bytes/1024;
-		$index ++;
-	}
-	$bytes = number_format($bytes, $digits);
-	$bytes .= $labels[$index]." bytes";
-	return($bytes);
+    $index == 0;
+    while ($bytes > 1024) {
+        $bytes = $bytes/1024;
+        $index ++;
+    }
+    $bytes = number_format($bytes, $digits);
+    $bytes .= $labels[$index]." bytes";
+    return($bytes);
 }
 /**
-	@brief Prints a string formated in the debug style
-	@param stuff String The string to print out
-	@ingroup Debug
-	
-	Prints out the string in $stuff within tags that
-	look like "\<DIV CLASS="debug">...\</DIV>"
+ *   Prints a string formated in the debug style
+ *   Prints out the string in $stuff within tags that
+ *   look like "\<DIV CLASS="debug">...\</DIV>"
+ *
+ *   @param string $stuff The string to print out
+ *   
 */
 function print_debug($stuff) {
    print get_debug($stuff);
@@ -102,13 +109,13 @@ function print_debug($stuff) {
 }
 
 /**
-	@brief Returns a string formated to print out as in the debug style
-	@param stuff String The string to print out
-	@returns String $stuff within HTML tags
-	@ingroup Debug
+    Returns a string formated to print out as in the debug style
+    @param stuff String The string to print out
+    @returns String $stuff within HTML tags
+    @ingroup Debug
 
-	Returns a string with stuff in an HTML tag that 
-	looks like "\<DIV CLASS="debug">...\</DIV>"
+    Returns a string with stuff in an HTML tag that 
+    looks like "\<DIV CLASS="debug">...\</DIV>"
 */
 function get_debug($stuff) {
    global $debug;
@@ -122,13 +129,13 @@ function get_debug($stuff) {
 }
 
 /**
-   @brief Prints out a lot of debug information.
-	@ingroup Debug
-	
-	Prints out a lot of debug information including
-	all of the GLOBALS in PHP ($_ENV, $_GET, etc) plus
-	the PHP version, all the constants, and a listing
-	of the debug output from the code that ran.
+   Prints out a lot of debug information.
+    @ingroup Debug
+    
+    Prints out a lot of debug information including
+    all of the GLOBALS in PHP ($_ENV, $_GET, etc) plus
+    the PHP version, all the constants, and a listing
+    of the debug output from the code that ran.
 */
 function print_debug_info() {
 
@@ -182,7 +189,7 @@ function print_debug_info() {
          }
       }
       
-		// Process ID stuff.
+        // Process ID stuff.
       $text .= "<b>User:</b> ".getmyuid()." (".get_current_user().")<br />\n";
       $text .= "<b>Process #:</b> ".getmypid()."<br />\n";
       $cfile = get_cfg_var("cfg_file_path");
@@ -204,19 +211,19 @@ function print_debug_info() {
 }
 
 /**
-	@brief Makes stuff printable
-	@return String A printable copy of what it was given.
-	@param array Mixed The input.  Can be just about anything including objects and arrays.
-	@param name String The name you want it printed out under.
-	@param level integer DO NOT USE.  FOR INTERNAL USE ONLY.  This allows it to recurse.
-	
-	This function takes just about anything and makes it printable.  It splits out arrays
-	and objects so they look like the code it would have taken to create them.  Ex if $a = array("Hello"),
-	$a would print out: @c a[0]="Hello" .
+    Makes stuff printable
+    @return String A printable copy of what it was given.
+    @param array Mixed The input.  Can be just about anything including objects and arrays.
+    @param name String The name you want it printed out under.
+    @param level integer DO NOT USE.  FOR INTERNAL USE ONLY.  This allows it to recurse.
+    
+    This function takes just about anything and makes it printable.  It splits out arrays
+    and objects so they look like the code it would have taken to create them.  Ex if $a = array("Hello"),
+    $a would print out: @c a[0]="Hello" .
 */
 function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
 
-	if ($level > $levelLimit) return $levelLimit;
+    if ($level > $levelLimit) return $levelLimit;
    if (is_array($array)) {
       foreach(array_keys($array) as $key) {
          if ((is_array($array[$key])) || (is_object($array[$key]))){
@@ -256,13 +263,13 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
 }
 
 /**
-	@brief This function is a formatter for get_stuff.
-	@return String Formated text based on $key and $value
-	@param key String The name of the variable to print out
-	@param val Mixed The value of the variable to print out
-	@private
-	
-	This routine is used by get_stuff and should not be called directly.
+    This function is a formatter for get_stuff.
+    @return String Formated text based on $key and $value
+    @param key String The name of the variable to print out
+    @param val Mixed The value of the variable to print out
+    @private
+    
+    This routine is used by get_stuff and should not be called directly.
 */
    function get_value($key, $val) {
       if (is_bool($val)) {
@@ -286,21 +293,21 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
    }
 
 /**
-	@brief Creates select boxes to select the time of day.
-	@return String HTML code to create a select box for the time of day
-	@param Name String the name of the SELECT input.  
-	@param Selected Mixed This is the time to show by default in the boxes
-		If it is not set it defaults to Now.  It will show the closest time
-		that it can to the time it was given.
-	@param MinuteIncrement Integer The increment for the minutes field.  Make
-		this 1 to show all 60 minutes in the hour.  A higher increment means less
-		options for the user.  Default = 5
+    Creates select boxes to select the time of day.
+    @return String HTML code to create a select box for the time of day
+    @param Name String the name of the SELECT input.  
+    @param Selected Mixed This is the time to show by default in the boxes
+        If it is not set it defaults to Now.  It will show the closest time
+        that it can to the time it was given.
+    @param MinuteIncrement Integer The increment for the minutes field.  Make
+        this 1 to show all 60 minutes in the hour.  A higher increment means less
+        options for the user.  Default = 5
 
-	This will come back (when the form is submitted) as an array of the following:
-	   	-name[hour] Integer the hour returned
-	   	-name[minute] Integer the minute returned
-	   	-name[am] String Either 'am' or 'pm'
-	   	
+    This will come back (when the form is submitted) as an array of the following:
+           -name[hour] Integer the hour returned
+           -name[minute] Integer the minute returned
+           -name[am] String Either 'am' or 'pm'
+           
 */
 function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) {
    if (trim($Selected) == "") {
@@ -323,7 +330,7 @@ function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) {
    if ($hour > 12) $hour = 1;
    $selam = date("a", $Selected);
 
-	// Do the hour
+    // Do the hour
    $return = "<SELECT NAME=\"".$Name."[hour]\">\n";
    for ($i = 1; $i < 13; $i++) {
       $return .= "<option value=".$i;
@@ -333,7 +340,7 @@ function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) {
    $return .= "</SELECT>\n";
    $return .= " : ";
 
-	// Do the minutes
+    // Do the minutes
    $return .= "<SELECT NAME=\"".$Name."[minute]\">\n";
    for ($i = 0; $i < 60; $i+=$MinuteIncrement) {
       $return .= "<option value=".$i;
@@ -343,7 +350,7 @@ function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) {
    $return .= "</SELECT>\n";
    $return .= " ";
 
-	// Do am/pm
+    // Do am/pm
    $return .= "<SELECT NAME=\"".$Name."[am]\">\n";
    $return .= "<option value=am";
    if ("am" == trim(strtolower($selam))) $return .= " SELECTED";
@@ -357,16 +364,16 @@ function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) {
 }
 
 /**
-	@brief Creates a select box for the month
-	@return String HTML code to create a select box for the month
-	@param Name String the name of the SELECT input  Default = 'month'
-	@param Selected Integer This is the month to show by default
-	@sa SelectYear
-	@sa SelectDay
-	@sa SelectTime
-	
-	Just print out the output of this routine and you will get a select box
-	for the month.
+    Creates a select box for the month
+    @return String HTML code to create a select box for the month
+    @param Name String the name of the SELECT input  Default = 'month'
+    @param Selected Integer This is the month to show by default
+    @sa SelectYear
+    @sa SelectDay
+    @sa SelectTime
+    
+    Just print out the output of this routine and you will get a select box
+    for the month.
 */
 function SelectMonth($Name="month", $Selected="") {
 
@@ -384,18 +391,18 @@ function SelectMonth($Name="month", $Selected="") {
 }
 
 /**
-	@brief Creates a select box for the year
-	@return String HTML code to create a select box for the year
-	@param Name String the name of the SELECT input  Default = 'Year'
-	@param Selected Integer This is the year to show by default
-	@param EndYear Integer the last year to print.  Default = Current Year
-	@param StartYear Integer the first year to print.  Default = EndYear - 6
-	@sa SelectDay
-	@sa SelectMonth
-	@sa SelectTime
-	
-	Just print out the output of this routine and you will get a select box
-	for the year.
+    Creates a select box for the year
+    @return String HTML code to create a select box for the year
+    @param Name String the name of the SELECT input  Default = 'Year'
+    @param Selected Integer This is the year to show by default
+    @param EndYear Integer the last year to print.  Default = Current Year
+    @param StartYear Integer the first year to print.  Default = EndYear - 6
+    @sa SelectDay
+    @sa SelectMonth
+    @sa SelectTime
+    
+    Just print out the output of this routine and you will get a select box
+    for the year.
 */
 function SelectYear($Name="Year", $Selected="", $EndYear = "", $StartYear="") {
    if (trim($EndYear) == "") $EndYear = date("Y")+1;
@@ -416,16 +423,16 @@ function SelectYear($Name="Year", $Selected="", $EndYear = "", $StartYear="") {
 }
 
 /**
-	@brief Creates a select box for the day of the month
-	@return String HTML code to create a select box for the day of the month
-	@param Name String the name of the SELECT input  Default = 'Day'
-	@param Selected Integer This is the Day to show by default
-	@sa SelectYear
-	@sa SelectMonth
-	@sa SelectTime
-	
-	Just print out the output of this routine and you will get a select box
-	for the day of the month.
+    Creates a select box for the day of the month
+    @return String HTML code to create a select box for the day of the month
+    @param Name String the name of the SELECT input  Default = 'Day'
+    @param Selected Integer This is the Day to show by default
+    @sa SelectYear
+    @sa SelectMonth
+    @sa SelectTime
+    
+    Just print out the output of this routine and you will get a select box
+    for the day of the month.
 
 */
 function SelectDay($Name="Day", $Selected="") {
@@ -443,14 +450,14 @@ function SelectDay($Name="Day", $Selected="") {
 
 
 /**
-	@brief Adds links in text
-	@param text String The string to mark up
-	@returns String The marked up string
-	@todo Make these regular expressioons better
-	@todo Make it recognize already marked up links
+    Adds links in text
+    @param text String The string to mark up
+    @returns String The marked up string
+    @todo Make these regular expressioons better
+    @todo Make it recognize already marked up links
 
-	This function takes a string in, and replaces any occurance of links (http://www.dflytech.com or mailto:prices@dflytech.com)
-	and replaces them with an <A HREF=> tag.  This makes links in text output clickable.
+    This function takes a string in, and replaces any occurance of links (http://www.dflytech.com or mailto:prices@dflytech.com)
+    and replaces them with an <A HREF=> tag.  This makes links in text output clickable.
 */
 function markup($text) {
 //   global $extra;
@@ -464,28 +471,28 @@ function markup($text) {
 
    $base = trim(BASE_WEB_DIR);
    if (substr($base, strlen($base)-1, 1) == "/") {
-	$base = substr($base, 0,  strlen($base)-1);
+    $base = substr($base, 0,  strlen($base)-1);
    }
 
-	$text = preg_replace('/(\[img\])+([A-Za-z.-\/\\-?+@&;#%\=0-9_\-]*)(\[\/img\])+/','<a href="'.$base.'\2" class="markup"><img src="'.$base.'\2" alt="[ Image ]" class="markup"></a>',$text);
-	$text = preg_replace('/(<+[^<>]*)(<+[^<>]*>+)+([^<>]*>+)/','\1\3',$text);
+    $text = preg_replace('/(\[img\])+([A-Za-z.-\/\\-?+@&;#%\=0-9_\-]*)(\[\/img\])+/','<a href="'.$base.'\2" class="markup"><img src="'.$base.'\2" alt="[ Image ]" class="markup"></a>',$text);
+    $text = preg_replace('/(<+[^<>]*)(<+[^<>]*>+)+([^<>]*>+)/','\1\3',$text);
 
 //     $text = str_replace("//", "/", $text);
 //   $text = str_replace("[img]", "<img src=\"".$extra, $text);
 //   $text = str_replace("[/img]", "\" alt=Image class=markup>", $text);
 //   $text = str_replace("&amp;", "&", $text);
-//	$text = stripslashes($text);
+//    $text = stripslashes($text);
  //  $text = nl2br($text);
    return($text);
 }
 
 /**
-	@brief Formats the date consistantly, so that it is always the same. 
-	@return String The formated date.
-	@todo Make the format configurable.
-	@param date Mixed This is the date in either Unix time format or a string (July 4, 1776)
-	@param wrap Boolean Whether to force a line wrap between the date and time Default = FALSE
-	@param time Boolean Whether or not to add the time.  Default = TRUE
+    Formats the date consistantly, so that it is always the same. 
+    @return String The formated date.
+    @todo Make the format configurable.
+    @param date Mixed This is the date in either Unix time format or a string (July 4, 1776)
+    @param wrap Boolean Whether to force a line wrap between the date and time Default = FALSE
+    @param time Boolean Whether or not to add the time.  Default = TRUE
 */
 function formatdate($date, $wrap=FALSE, $time=TRUE) {
 
@@ -508,17 +515,17 @@ function formatdate($date, $wrap=FALSE, $time=TRUE) {
 }
 
 /**
-	@brief Gets all of the arguments of a web page and returns them.
-	@return The arguments of the web page formated to be added to the the URL of a link
-	@param skip String A comma separated list of parameters to ignore.
+    Gets all of the arguments of a web page and returns them.
+    @return The arguments of the web page formated to be added to the the URL of a link
+    @param skip String A comma separated list of parameters to ignore.
 
-	This function returns all of the arguments to a web page in a manner in which
-	they can be easily added to a link.  They come back in the format:  "?Arg1=Value1&Arg2=Value2"
+    This function returns all of the arguments to a web page in a manner in which
+    they can be easily added to a link.  They come back in the format:  "?Arg1=Value1&Arg2=Value2"
 */
 function get_args($skip="") {
    $args = "?";
 
-	// Remove the session information.  It will be added automatically anyway.
+    // Remove the session information.  It will be added automatically anyway.
    if (trim($skip) != "") $skip .= ",";
    $skip .= session_name().", name, password, passwd";
 
@@ -538,9 +545,9 @@ function get_args($skip="") {
 }
 
 /**
-	@brief Returns hidden input tags for whatever variable is fed into it.
-	@param var The variable to save.
-	@param name The name of the variable to save.
+    Returns hidden input tags for whatever variable is fed into it.
+    @param var The variable to save.
+    @param name The name of the variable to save.
 */
    function get_hidden_var_post($var, $name="") { 
       if (is_array($var)) {
@@ -555,9 +562,9 @@ function get_args($skip="") {
             }
          }
       } else {
-	    	if (trim($name) != "") {
-				$return .= "<INPUT TYPE=HIDDEN NAME=\"".$name."\" VALUE=\"".$var."\">\n";
-			}
+            if (trim($name) != "") {
+                $return .= "<INPUT TYPE=HIDDEN NAME=\"".$name."\" VALUE=\"".$var."\">\n";
+            }
       }
       return($return);
    }
