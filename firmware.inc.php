@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Class to keep track of firmware and store it in the database.
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC

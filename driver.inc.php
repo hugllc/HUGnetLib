@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Main class for dealing with endpoints.
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC

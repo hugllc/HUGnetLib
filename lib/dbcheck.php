@@ -1,6 +1,8 @@
 #!/usr/local/bin/php
 <?php
 /**
+ *   Script to check the database
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC

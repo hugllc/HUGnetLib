@@ -1,5 +1,7 @@
 <?php
 /**
+ *   This is the control code for the 0039-12 endpoints with other daughter boards
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC

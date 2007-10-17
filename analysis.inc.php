@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Class for saving analysis data
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC
@@ -25,6 +27,7 @@
  *   @copyright 2007 Hunt Utilities Group, LLC
  *   @author Scott Price <prices@hugllc.com>
  *   @version $Id$    
+ *   @deprecated
  *
  */
 

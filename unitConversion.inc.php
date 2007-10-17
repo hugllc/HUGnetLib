@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Everything to do with Units.
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC
@@ -29,6 +31,12 @@
  */
 /**
  *   Class for doing unit conversions and storing unit information
+ *   
+ *   All units must be added to this class if they are to be used in HUGnet
+ *   code.  This is because this tells everything else how to deal with these
+ *   units and how to convert between them.  If units are not added here then
+ *   many things will not work with the units.
+ *
  *   @subpackage unitConversion
  */
 class unitConversion {
@@ -37,7 +45,7 @@ class unitConversion {
      *  This is the array that defines all of our units and how to
      * display and use them.
      *  @var array
-     *  {@source }
+     *
      */
     var $units = array(
         'temperature' => array(
@@ -192,6 +200,7 @@ class unitConversion {
 
     /**
      * Checks to see if there is a unit that is preferred over the one given.
+     *
      * @param string $unit The unit to check
      * @return string The preferred unit
      */
@@ -206,6 +215,7 @@ class unitConversion {
     
     /**
      * Checks to see if a particular unit is able to be graphed
+     *
      * @param string $unit The unit to check
      * @return bool Whether the unit can be graphed or not
      */
@@ -221,8 +231,11 @@ class unitConversion {
     }    
     /**
      * Checks if a unit exists and returns the information on it if it does.
+     *
+     * Returns FALSE if the unit is not found
+     *
      * @param string $unit The unit to find
-     * @return bool|array FALSE if the unit is not found, the array of unit information if it is found
+     * @return array the array of unit information if it is found
      */
     function findUnit($unit) {
 
@@ -235,6 +248,7 @@ class unitConversion {
 
     /**
      * Gets the data type for this particular unit
+     *
      * @param string $from The starting unit
      * @param string $to The unit to be converted into
      * @param string $default The data type to use if none is specified
@@ -253,6 +267,7 @@ class unitConversion {
 
     /**
      * Gets the conversion function to convert $from to $to
+     *
      * @param string $from The starting unit
      * @param string $to The unit to be converted into
      * @param string $type The data type to use
@@ -272,6 +287,7 @@ class unitConversion {
     }
     /**
      * Gets all possible conversions if $from == NULL.  Otherwise
+     *
      * it gets all possible conversions from $from.
      * @param string $from The starting unit
      * @param string $type The data type to use if none is specified
@@ -306,6 +322,12 @@ class unitConversion {
     }
 
     /**
+     *  Converts from &#176; C to &#176; F.
+     *
+     *  If the temperature is differential we can't add 32 like we would
+     *  for an absolute temperature.  This is because it is already factored
+     *  out by the subtraction in the difference.
+     *
      * @param float $c The temperature in C
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -318,6 +340,12 @@ class unitConversion {
 	}
 
     /**
+     *  Converts from &#176; F to &#176; C.
+     *
+     *  If the temperature is differential we can't subtract 32 like we would
+     *  for an absolute temperature.  This is because it is already factored
+     *  out by the subtraction in the difference.
+     *
      * @param float $f The temperature in F
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -328,6 +356,8 @@ class unitConversion {
 		return((5*($f-32))/9);
 	}
     /**
+     * Change counts into revolutions per minute
+     *
      * @param int $cnt The number of counts
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -349,13 +379,14 @@ class unitConversion {
      *   AC Freq = (MPH + 0.1) / 1.6965
      *   
      *   MPH = ACFreq * 1.6965 - 0.1    
+     *
+     *  This function has moved to the driver for pulse counters.
      *   
      * @param int $cnt The number of counts since the last record.
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @param int $cntPerRev the number of counts per revolution
      * @return float NULL if data is not differential, MPH otherwise
-     * @access private
      * @deprecated
     */
     function CnttoMPH ($cnt, $time, $type, $cntPerRev) {
@@ -373,6 +404,7 @@ class unitConversion {
 
     /**
      * Converts a unit to milli.  meters to millimeters for example.
+     *
      * @param float/int $W The number to work on
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -383,6 +415,7 @@ class unitConversion {
 	}
     /**
      * Converts a unit from milli.  millimeters to meters for example.
+     *
      * @param float/int $W The number to work on
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -394,6 +427,7 @@ class unitConversion {
 
     /**
      * Converts a unit to centi.  meters to centimeters for example.
+     *
      * @param float/int $W The number to work on
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
@@ -404,11 +438,20 @@ class unitConversion {
 	}
 
    /**
-     * Converts a unit from centi.  centimeters to meters for example.
-     * @param float/int $W The number to work on
+     * Converts from a numeric compass direction to a textual direction abbreviation.
+     *
+     * So this converts 0 &#176; into 'N', 22.5 &#176; into 'NNE', etc.
+     * This function is set up so that any number greater than the previous number
+     * but less than or equal to the current number is taken for that direction.  So
+     * if we got an input of 10 &#176; then it would return 'NNE'.
+     *
+     * If the number give is out of range (less than 0 or greater than 360) 'N' is
+     * returned.
+     *
+     * @param float $ndir The numeric direction from 0 to 360 &#176;
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
-     * @return float W/100
+     * @return string The text direction
     */
 	function numDirtoDir($ndir, $time, $type) {
         if ($ndir <= 0) return "N";
@@ -430,6 +473,19 @@ class unitConversion {
         return "N";
 	}
 
+   /**
+     * Converts from a textual direction abbreviation to a numberic compass direction.
+     *
+     * So this converts 'N' into 0 &#176; into 'N', 'NNE' into 22.5 &#176;, etc.
+     *     
+     * This function returns 0 if it gets an abbreviation that it does not understand.
+     *
+     *
+     * @param string $ndir The text direction
+     * @param int $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     * @return float The text direction from 0 to 360 &#176;
+    */
 	function DirtonumDir($ndir, $time, $type) {
 	    $ndir = trim(strtoupper($ndir));
         if ($ndir == "N") return 0;
@@ -451,12 +507,34 @@ class unitConversion {
         return 0;
 	}
 
+    /**
+     *  This function changes kWh into kW
+     *
+     *  It does this by dividing the delta time out of it.  I am
+     *  not sure if this is a valid way to do it.
+     *
+     * @param float $val The input value
+     * @param int $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     * @param mixed $extra The extra information from the sensor.
+     * @return float The kW value
+     */
     function kWhTokW ($val, $time, $type, $extra) {
         if (empty($time)) return NULL;
         if ($type != "diff") return NULL;
         return ($val / (abs($time) / 3600));
     }
 
+    /**
+     *  This function changes kWh into W
+     *
+     * @param float $val The input value
+     * @param int $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     * @param mixed $extra The extra information from the sensor.
+     * @uses unitConversion::kWhTokW()
+     * @return float The W value
+     */
     function kWhToW ($val, $time, $type, $extra) {
         $val = unitConversion::kWhTokW($val, $time, $type, $extra);
         if (is_null($val)) return $val;

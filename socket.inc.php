@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Communicates with the tcp to serial driver
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC
@@ -50,91 +52,89 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 
 /**
-	@brief Class for talking with HUGNet endpoints
-	
-	
-*/
-
+ *   Class for talking with HUGNet endpoints through unix sockets
+ *   
+ *   
+ */
 class ep_socket {
-	/**
-		@privatesection
-		@brief How many times we retry the packet until we get a good one 
-	*/
-	var $Retries = 2;
-	/**
-		@private
-		Server information is stored here.
-	
-		@par What is 'Sock' anyway?
-		A significant number of the methods in this class have the parameter
-		$sock.  This is the same everywhere.  It is an index to this array
-		that stores socket information.  It is just a key to identify the
-		particalur server connection that is stored here.  It can actually
-		be anything.
-	*/
-	var $socket = NULL;
-	/** The error number.  0 if no error occurred */
-	var $Errno = 0;
-	/** The error string */
-	var $Error = "";
-	/** The port number.   This is the default */
-	var $Port = 2000;
-	/** The server string */
-	var $Server = "";
+    /** @var int How many times we retry the packet until we get a good one */
+    var $Retries = 2;
+    /** @var array Server information is stored here. */
+    var $socket = NULL;
+    /** @var int The error number.  0 if no error occurred */
+    var $Errno = 0;
+    /** @var string The error string */
+    var $Error = "";
+    /** @var int The port number.   This is the default */
+    var $Port = 2000;
+    /** @var string The server string */
+    var $Server = "";
 
 
-	/** The timeout for waiting for a packet in seconds */
-	var $PacketTimeout = 5;
-	/** The timeout for waiting for a packet in seconds */
-	var $AckTimeout = 2;
-	/** The timeout for waiting for a packet in seconds */
-	var $SockTimeout = 2;
-	var $verbose = FALSE;		//!< Whether we should print out a lot output
-	var $CheckPeriod = 60;		//!< The default period for checking in with the servers
-	var $readstr = array();		//!< Array of strings that we are reading
-	/**
-		@publicsection
-	*/
-	/**
-		@private
-		@brief Write data out a socket
-		@param $line String the data to send out the socket
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
-		@return FALSE on failure, the number of bytes written on success
-	*/
-	function Write($data) {
-		if ($this->CheckConnect()) $this->Connect("", 0);
+    /** @var int The timeout for waiting for a packet in seconds */
+    var $PacketTimeout = 5;
+    /** @var int The timeout for waiting for a packet in seconds */
+    var $AckTimeout = 2;
+    /** @var int The timeout for waiting for a packet in seconds */
+    var $SockTimeout = 2;
+    /** @var bool Whether we should print out a lot output */
+    var $verbose = FALSE;        
+    /** @var int The default period for checking in with the servers */
+    var $CheckPeriod = 60;        
+    /** @var array Array of strings that we are reading */
+    var $readstr = array();        
+
+    /**
+     *   Write data out a socket
+     *
+     *   @param string $data The data to send out the socket
+     *   @return int The number of bytes written on success, FALSE on failure
+     */
+    function Write($data) {
+        if ($this->CheckConnect()) $this->Connect("", 0);
         usleep(mt_rand(500, 10000));
-		$return = @fwrite($this->socket, $data);
-//		if ($this->verbose) print "Writing: '".$line."' on ".$sock."\r\n";
-		return($return);
-	}
+        $return = @fwrite($this->socket, $data);
+//        if ($this->verbose) print "Writing: '".$line."' on ".$sock."\r\n";
+        return($return);
+    }
 
 
-	/**
-		@brief Read data from the server
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
-		@param $timeout Integer the amount of time to wait for the server to respond
-		@return Read bytes on success, FALSE on failure
-	*/
+    /**
+     *   Read data from the server
+     *
+     *   @param int $timeout The amount of time to wait for the server to respond
+     *   @return int Read bytes on success, FALSE on failure
+     */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
 
-		$read = array($this->socket);
-		$socks = @stream_select ($read, $write=NULL, $except=NULL, $timeout);
-		$char = FALSE;
-		if ($socks === FALSE) {
-			if ($this->verbose) print "Bad Connection\r\n";
-		} else if (count($read) > 0) {
-			foreach($read as $tsock) {
-				$char = @fread($tsock, 1);
-				if (($char === FALSE) || ($char === EOF)) return FALSE;
-//			    $char = ord($char);
-			}
-		}
+        $read = array($this->socket);
+        $socks = @stream_select ($read, $write=NULL, $except=NULL, $timeout);
+        $char = FALSE;
+        if ($socks === FALSE) {
+            if ($this->verbose) print "Bad Connection\r\n";
+        } else if (count($read) > 0) {
+            foreach($read as $tsock) {
+                $char = @fread($tsock, 1);
+                if (($char === FALSE) || ($char === EOF)) return FALSE;
+//                $char = ord($char);
+            }
+        }
         return ($char);
     }     
     
+    /**
+     *   Turns a number into a text hexidecimal string
+     *   
+     *   If the number comes out smaller than $width the string is padded 
+     *   on the left side with zeros.
+     *
+     *   Duplicate: {@link EPacket::hexify()}
+     *
+     *   @param int $value The number to turn into a hex string
+     *   @param int $width The width of the final string
+     *   @return string The hex string created.
+    */    
     function hexify(&$string, $width=2) {
         $string = dechex($string);
         $string = str_pad($string, $width, "0", STR_PAD_LEFT);
@@ -143,37 +143,31 @@ class ep_socket {
     }   
 
 
-	/**
-		@brief Closes the socket connection
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
+    /**
+     *   Closes the socket connection
+     *   
+     */
+    function Close() {
+        if ($this->socket != 0) {
+            if ($this->verbose) print("Closing Connection\r\n");
+            fclose($this->socket);
+            $this->socket = 0;
+        }
+    }
 
-		This function sends "exit\r\n" to the server to announce its intention
-		to break the connection before it actually does.  Use this function unless
-		you absolutely need ep_socket::ForceClose.
-	*/
-	function Close() {
-		if ($this->socket != 0) {
-			if ($this->verbose) print("Closing Connection\r\n");
-			fclose($this->socket);
-			$this->socket = 0;
-		}
-	}
+    /**
+     *   Checks to make sure that all we are connected to the server
+     *   
+     *   This routine only checks the connection.  It does nothing else.  If you want to
+     *   have the script automatically connect if it is not connected already then use
+     *   ep_socket::Connect().
+     *
+     *   @uses ep_socket::Connect()
+     *   @return bool TRUE if the connection is good, FALSE otherwise
+    */
+    function CheckConnect() {
 
-	/**
-		@brief Checks to make sure that all we are connected to the server
-		@param $server String Name or IP address of the server to connect to
-		@param $port Integer The TCP port on the server to connect to
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
-		@param $timeout Integer The time to wait before giving up on a bad connection
-		@return TRUE if the connection is good, FALSE otherwise
-		
-		This routine only checks the connection.  It does nothing else.  If you want to
-		have the script automatically connect if it is not connected already then use
-		ep_socket::Connect.
-	*/
-	function CheckConnect() {
-
-		if ($this->socket != 0) {
+        if ($this->socket != 0) {
             if (feof($this->socket)) {
                 $return = FALSE;
             } else {
@@ -182,71 +176,72 @@ class ep_socket {
         } else {
             $return = FALSE;
         }
-		return($return);
-	}
-	
-	/**
-		@brief Connects to the server
-		@param $server String Name or IP address of the server to connect to
-		@param $port Integer The TCP port on the server to connect to
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
-		@param $timeout Integer The time to wait before giving up on a bad connection
-		@return TRUE if the connection is good, FALSE otherwise
-		
-		This function first checks the connection.  If you are planning on checking the
-		connection and want the server to automatically connect if not connectd, use this
-		routine.  If you just want to check the connection, use ep_socket::CheckConnect.
-	*/
-	function Connect($server = "", $port = 0, $timeout=0) {
+        return($return);
+    }
+    
+    /**
+     *   Connects to the server
+     *   
+     *   This function first checks the connection.  If you are planning on checking the
+     *   connection and want the server to automatically connect if not connectd, use this
+     *   routine.  If you just want to check the connection, use ep_socket::CheckConnect.
+     *
+     *   @param string $server Name or IP address of the server to connect to
+     *   @param int $port The TCP port on the server to connect to
+     *   @param int $timeout The time to wait before giving up on a bad connection
+     *   @return bool TRUE if the connection is good, FALSE otherwise
+     */
+    function Connect($server = "", $port = 0, $timeout=0) {
 
-		$return = FALSE;
-		if ($this->CheckConnect()) {
-			$return = TRUE;
-		} else {
-			$this->Close();
-		}
-		if ($return === FALSE) {
-			if (!empty($server)) $this->Server = $server;
-			if (!empty($port)) $this->Port = $port;
+        $return = FALSE;
+        if ($this->CheckConnect()) {
+            $return = TRUE;
+        } else {
+            $this->Close();
+        }
+        if ($return === FALSE) {
+            if (!empty($server)) $this->Server = $server;
+            if (!empty($port)) $this->Port = $port;
 
-			if (!empty($this->Server) && !empty($this->Port)) {
-	
-				if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-				$this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-				if (($this->Errno == 0) && ($this->socket != 0)) {
-					stream_set_blocking($this->socket, FALSE);
-					if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
-					$return = TRUE;
-				} else {
-					if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
-					$this->socket = 0;
-				}
-			} else {
-				$this->Errno = -1;
-				$this->Error = "No server specified";
-				$return = FALSE;
-			}
-		}		
-		return($return);
-	}			
+            if (!empty($this->Server) && !empty($this->Port)) {
+    
+                if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
+                $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+                if (($this->Errno == 0) && ($this->socket != 0)) {
+                    stream_set_blocking($this->socket, FALSE);
+                    if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
+                    $return = TRUE;
+                } else {
+                    if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
+                    $this->socket = 0;
+                }
+            } else {
+                $this->Errno = -1;
+                $this->Error = "No server specified";
+                $return = FALSE;
+            }
+        }        
+        return($return);
+    }            
 
 
-	/**
-		@brief Constructor	
-		@param $server String The name or IP of the server to connect to
-		@param $tcpport Integer the TCP port to connect to on the server.
-		@param $sock Mixed The socket to use.  See ep_socket::socket for more information.
-		@param $verbose Boolean Make the class put out a lot of output
-	*/
-	function ep_socket($server, $tcpport = SOCKET_DEFAULT_PORT, $sock=0, $verbose=FALSE) {
-		if (empty($tcpport)) $tcpport = SOCKET_DEFAULT_PORT;
-		$this->verbose = $verbose;
-		if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-		if (trim($server) != "") {
-			$this->Connect($server, $tcpport, $sock);
-		}
-		if ($this->verbose) print "Done\r\n";
-	}
-	
+    /**
+     *   Constructor
+     *   
+     *   @param string $server The name or IP of the server to connect to
+     *   @param int $tcpport The TCP port to connect to on the server. Set to 0 for
+     *       the default port.
+     *   @param bool $verbose Make the class put out a lot of output
+     */
+    function ep_socket($server, $tcpport = SOCKET_DEFAULT_PORT, $verbose=FALSE) {
+        if (empty($tcpport)) $tcpport = SOCKET_DEFAULT_PORT;
+        $this->verbose = $verbose;
+        if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
+        if (trim($server) != "") {
+            $this->Connect($server, $tcpport);
+        }
+        if ($this->verbose) print "Done\r\n";
+    }
+    
 }
 ?>
