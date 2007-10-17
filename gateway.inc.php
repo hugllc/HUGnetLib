@@ -1,5 +1,6 @@
 <?php
 /**
+ *   Class to keep track of gateways.
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC

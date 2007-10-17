@@ -1,5 +1,7 @@
 <?php
 /**
+ *   Class for building cute tables.
+ *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
  *   Copyright (C) 2007 Hunt Utilities Group, LLC
