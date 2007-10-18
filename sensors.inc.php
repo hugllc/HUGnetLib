@@ -511,37 +511,31 @@ class sensor {
 class sensor_base
 {
 
-    /**
-        The maximum value for the AtoD convertor from @ref vSensors_final_formula
-    */
+    /** @var int The maximum value for the AtoD convertor from @ref vSensors_final_formula */
     var $Am = 1023;
-    /**
-        The Tf value from @ref lightSensors_final_formula
-    */
+    /** @var int The Tf value from @ref lightSensors_final_formula */
     var $Tf = 65536;
-    /**
-        The D value from @ref lightSensors_final_formula
-    */
+    /** @var int The D value from @ref lightSensors_final_formula */
     var $D = 65536;
-    /**
-        The s value from @ref vSensors_final_formula
-    */
+    /** @var int The s value from @ref vSensors_final_formula */
     var $s = 64;
-    /**
-        The Vcc value
-    */
+    /** @var float The Vcc value */
     var $Vcc = 5;
-    /**
-        This defines all of the sensors that this driver deals with...
-    */
+    /** @var array This defines all of the sensors that this driver deals with... */
     var $sensors = array();
-    /**
-        This is the default sensor if no sensor is defined...
-    */
+    /** @var array This is the default sensor if no sensor is defined... */
     var $defaultSensors = array();
     
     /**
-        Constructor.
+     *   Constructor.
+     *
+     *  This just sets up the variables if they are passed to it.
+     *
+     *  @param int $Tf See {@link sensor_base::$Tf}
+     *  @param int $D See {@link sensor_base::$D}
+     *  @param int $s See {@link sensor_base::$s}
+     *  @param int $Am See {@link sensor_base::$Am}
+     *  @param int $Vcc See {@link sensor_base::$Vcc}
     */
     function __construct($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
     {
