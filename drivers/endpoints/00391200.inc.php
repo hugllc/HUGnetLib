@@ -335,12 +335,6 @@ define("e00391102B_SENSORS", 9);
         function e00391200 (&$driver) {
 //            $this->eDEFAULT($servers, $db, $options);
             parent::eDEFAULT($driver);
-//            $this->packet =& $driver->packet;
-            $this->R = new resistiveSensor(65536, 65536, 1<<6, 1023);
-            $this->C = new capacitiveSensor(65536, 65536, 1<<6, 1023);
-            $this->Light = new lightSensor(65536, 65536, 1<<6, 1023);
-            $this->Moisture = new moistureSensor();
-            $this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
         }
 
 
