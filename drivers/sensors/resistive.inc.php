@@ -297,9 +297,9 @@ if (!class_exists('resistiveSensor')) {
          *  2. The yellow zone resistance
          *
          * It is not well documented.  It seems to contain the formula:
-         *  B = ( My - Mr ) / ( log( Ry ) - log( Rr ) )
-         *  A = Mr - ( B * log( Rr ) )
-         *  M = A + (B * log( R ) );
+         *  - B = ( My - Mr ) / ( log( Ry ) - log( Rr ) )
+         *  - A = Mr - ( B * log( Rr ) )
+         *  - M = A + (B * log( R ) );
          * where:
          * - M = Moisture (%)
          * - Mr = Minimum % for red zone (bad)
@@ -308,6 +308,10 @@ if (!class_exists('resistiveSensor')) {
          * - Ry = Maximum Ohms for yellow zone (marginal)
          * - A = ???
          * - B = ???
+         *
+         * I think this formula is based on logrythmic curves with the points
+         * (Ry, My) and (Rr, Mr).  Resistance and Moiture have an inverse
+         * relationship.
          *
          * @param float $A The incoming value
          * @param array $sensor The sensor setup array
