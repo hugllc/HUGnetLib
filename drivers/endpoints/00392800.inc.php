@@ -120,7 +120,8 @@ if (!class_exists("e00392800")) {
     			$Rec["Status"] = 'BAD';
     			return ;
     		}
-            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+    		// Start with the assumption that the record is good.
+            $Rec['Status'] = "GOOD";    		
 
     		$Bad = 0;
 
@@ -136,10 +137,6 @@ if (!class_exists("e00392800")) {
     			$Rec["StatusCode"] = " All Bad";		
     		}
     
-    		if ($Rec["TimeConstant"] == 0) {
-    			$Rec["Status"] = "BAD";
-    			$Rec["StatusCode"] = " Bad TC";
-    		}
     		if (($Bad != 0) && ($Bad >= $Rec["ActiveSensors"])) {
     			$Rec["Status"] = "BAD";
     			$Rec["StatusCode"] = "All Bad Readings";
@@ -236,9 +233,8 @@ if (!class_exists("e00392800")) {
             		$data["Types"] = $Info["Types"];
                     $data['params'] = $Info['params'];
             		$data["DataIndex"] = $data["Data"][$index++];
-            		$oldtc = $data["Data"][$index++];  // There is nothing here.
+            		$index++;  // There is nothing here.
             		$data["TimeConstant"] = $data["Data"][$index++];
-        	    	if ($data["TimeConstant"] == 0) $data["TimeConstant"] = $oldtc;
 
             		if (is_array($data["Data"])) {
             			for ($i = 0; $i < $Info["NumSensors"]; $i++) {
@@ -269,13 +265,11 @@ if (!class_exists("e00392800")) {
             			}
             			
             		}
-
     				$this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
     				$ret[] = $data;
 				}
 			}
-		
 			return($ret);
 		}
 

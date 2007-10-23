@@ -176,7 +176,7 @@ define("e00391201_SENSORS", 9);
 				$Rec["Status"] = 'BAD';
 				return;
 		    }
-            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+            $Rec['Status'] = "GOOD";    		
 		    
 			if (isset($Rec["Data8"]) && ($Rec["Data8"] == 0)) $Rec["Status"] = BAD;
 			$zero = TRUE;

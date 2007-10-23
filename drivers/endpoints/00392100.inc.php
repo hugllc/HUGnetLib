@@ -120,7 +120,7 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     			$Rec["Status"] = 'BAD';
     			return;
     		}
-            if ($Rec['Status'] == "NEW") $Rec['Status'] = "GOOD";    		
+            $Rec['Status'] = "GOOD";    		
     		
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
@@ -171,7 +171,6 @@ $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "
     
     
     	function InterpConfig(&$Info) {
-    
             $Info['HWName'] = $this->HWName;
 			$Info["Location"] = $this->deflocation;
 	        $Info["PacketTimeout"] = 2;
