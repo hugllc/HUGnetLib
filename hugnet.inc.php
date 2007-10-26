@@ -30,7 +30,7 @@
  *
  */
 /** The version define for all of HUGnetLib */
-define("HUGNET_LIB_VERSION", "0.7.2");	
+define("HUGNET_LIB_VERSION", "0.7.3");	
 /** This is for backward compatibility with some older stuff */
 define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);	
 
