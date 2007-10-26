@@ -441,9 +441,10 @@ class sensor {
                 $data['dType'][$rawkey] = $this->getUnitMode($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
                 $data['unitType'][$rawkey] = $this->getUnitType($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
                 if ($data['dType'][$rawkey] == 'diff') {
-                    if (isset($this->lastRecord[$data['DeviceID']])) {
-                        $newraw = $rawval - $this->lastRecord[$data['DeviceID']]["raw"][$rawkey];
-                        if (!isset($data['deltaT'])) $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$data['DeviceID']]['Date']);
+                    if (isset($this->lastRecord[$Info['DeviceID']])) {
+                        if (!isset($data['deltaT'])) $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$Info['DeviceID']]['Date']);
+                        $newraw = $rawval - $this->lastRecord[$Info['DeviceID']]["raw"][$rawkey];
+                        if ($data['deltaT'] < 0) $newraw = abs($newraw);
                         $data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data['deltaT']);
                     } else {
                         $data["Data".$rawkey] = NULL;
@@ -453,10 +454,9 @@ class sensor {
                 }
                 $data["data"][$rawkey] = $data["Data".$rawkey];
             }
+            $data['deltaT'] = abs($data['deltaT']);
+            $this->lastRecord[$Info['DeviceID']] = $data;
             $this->checkRecord($data);
-            if ($data['Status'] == "GOOD") {
-                $this->lastRecord[$data['DeviceID']] = $data;
-            }    
         }
     }
 

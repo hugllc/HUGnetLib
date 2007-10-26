@@ -163,6 +163,9 @@ class EPacket {
     /** Check to see if we are a unique serial number on this net */
     var $_DeviceIDCheck = TRUE;
 
+    /** @var bool Tells us whether to use direct access to the endpoints */
+    var $_direct = TRUE;
+
     /**
      *   @private
      *   Builds a packet
