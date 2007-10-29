@@ -29,7 +29,7 @@
  *   @version $Id$    
  *
  */
-require_once HUGNET_INCLUDE_PATH.'/firmware.inc.php';
+require_once HUGNET_INCLUDE_PATH.'/firmware.php';
 
 if (!class_exists("e00392100")) {
 
