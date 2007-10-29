@@ -204,7 +204,7 @@ class unitConversion {
      * @param string $unit The unit to check
      * @return string The preferred unit
      */
-    function preferredUnit($unit) {
+    public function preferredUnit($unit) {
         $u = $this->findUnit($unit);
         if (isset($u['preferred'])) {
             return $u['preferred'];
@@ -219,7 +219,7 @@ class unitConversion {
      * @param string $unit The unit to check
      * @return bool Whether the unit can be graphed or not
      */
-    function graphable($unit) {
+    public function graphable($unit) {
         $unit = trim($unit);
         $u = $this->findUnit($unit);
         if ($u === FALSE) return FALSE;
@@ -237,7 +237,7 @@ class unitConversion {
      * @param string $unit The unit to find
      * @return array the array of unit information if it is found
      */
-    function findUnit($unit) {
+    public function findUnit($unit) {
 
         foreach($this->units as $key => $value) {
             if (isset($value[$unit])) return $this->units[$key][$unit];
@@ -254,7 +254,7 @@ class unitConversion {
      * @param string $default The data type to use if none is specified
      * @return string The data type to use
      */
-    function getDataType($from, $to, $default = 'all') {
+    public function getDataType($from, $to, $default = 'all') {
         if (trim(strtolower($default)) == 'ignore') return $default;
         $u = $this->findUnit($from);
         if ($u !== FALSE) {
@@ -273,7 +273,7 @@ class unitConversion {
      * @param string $type The data type to use
      * @return string NULL if no function exists, the function name otherwise. 
      */
-    function getConvFunct($from, $to, $type) {
+    public function getConvFunct($from, $to, $type) {
         if ($to == $from) return NULL;
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
@@ -294,7 +294,7 @@ class unitConversion {
      * @return array The possible conversions
      */
 
-    function getPossConv($type, $from=NULL) {
+    public function getPossConv($type, $from=NULL) {
 
         $ret = array();
         foreach($this->units as $f => $cat) {
@@ -333,7 +333,7 @@ class unitConversion {
      * @param string $type The type of data (diff, raw, etc)
      * @return float The temperature in F
      */
-	function CtoF($c, $time, $type) {
+    public function CtoF($c, $time, $type) {
 		$F = ((9*$c)/5);
 		if ($type != 'diff') $F += 32;
         return($F);
@@ -351,11 +351,12 @@ class unitConversion {
      * @param string $type The type of data (diff, raw, etc)
      * @return float The temperature in C
     */
-	function FtoC($f, $time, $type) {
+	public function FtoC($f, $time, $type) {
 		if ($type != 'diff') $f -= 32;
 		return((5*($f-32))/9);
 	}
     /**
+     *
      * Change counts into revolutions per minute
      *
      * @param int $cnt The number of counts
@@ -363,8 +364,9 @@ class unitConversion {
      * @param string $type The type of data (diff, raw, etc)
      * @param int $cntPerRev the number of counts per revolution
      * @return float NULL if not differential data, the RPM otherwise
+     *
     */
-    function CnttoRPM ($cnt, $time, $type, $cntPerRev) {
+    public function CnttoRPM ($cnt, $time, $type, $cntPerRev) {
         if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
             $rpm = ($cnt/$time/$cntPerRev)*60;
@@ -389,7 +391,7 @@ class unitConversion {
      * @return float NULL if data is not differential, MPH otherwise
      * @deprecated
     */
-    function CnttoMPH ($cnt, $time, $type, $cntPerRev) {
+    public function CnttoMPH ($cnt, $time, $type, $cntPerRev) {
         if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
             $ACFreq = $cnt/$time/$cntPerRev;
@@ -409,8 +411,9 @@ class unitConversion {
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @return float W*1000
+     *
     */
-	function toMilli($W, $time, $type) {
+	public function toMilli($W, $time, $type) {
 		return $W*1000;
 	}
     /**
@@ -420,8 +423,9 @@ class unitConversion {
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @return float W/1000
+     *
     */
-	function fromMilli($W, $time, $type) {
+	public function fromMilli($W, $time, $type) {
 		return $W/1000;
 	}
 
@@ -432,8 +436,9 @@ class unitConversion {
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @return float W/100
+     * 
     */
-	function fromCenti($W, $time, $type) {
+	public function fromCenti($W, $time, $type) {
 		return $W/100 ;
 	}
 
@@ -453,26 +458,8 @@ class unitConversion {
      * @param string $type The type of data (diff, raw, etc)
      * @return string The text direction
      *
-     * @assert (0, 0, 0) == 'N'
-     * @assert (22.5, 0, 0) == 'NNE'
-     * @assert (45, 0, 0) == 'NE'
-     * @assert (67.5, 0, 0) == 'ENE'
-     * @assert (90, 0, 0) == 'E'
-     * @assert (112.5, 0, 0) == 'ESE'
-     * @assert (135, 0, 0) == 'SE'
-     * @assert (157.5, 0, 0) == 'SSE'
-     * @assert (180, 0, 0) == 'S'
-     * @assert (202.5, 0, 0) == 'SSW'
-     * @assert (225, 0, 0) == 'SW'
-     * @assert (247.5, 0, 0) == 'WSW'
-     * @assert (270, 0, 0) == 'W'
-     * @assert (292.5, 0, 0) == 'WNW'
-     * @assert (315, 0, 0) == 'NW'
-     * @assert (337.5, 0, 0) == 'NNW'
-     * @assert (360, 0, 0) == 'N'
-     * @assert (-1, 0, 0) == 'N'
     */
-	function numDirtoDir($ndir, $time, $type) {
+	public function numDirtoDir($ndir, $time, $type) {
         if ($ndir <= 0) return "N";
         if ($ndir <= 22.5) return "NNE";
         if ($ndir <= 45) return "NE";
@@ -505,25 +492,8 @@ class unitConversion {
      * @param string $type The type of data (diff, raw, etc)
      * @return float The text direction from 0 to 360 &#176;
      *
-     * @assert ('N', 0, 0) == 0
-     * @assert ('NNE', 0, 0) == 22.5
-     * @assert ('NE', 0, 0) == 45
-     * @assert ('ENE', 0, 0) == 67.5
-     * @assert ('E', 0, 0) == 90
-     * @assert ('ESE', 0, 0) == 112.5
-     * @assert ('SE', 0, 0) == 135
-     * @assert ('SSE', 0, 0) == 157.5
-     * @assert ('S', 0, 0) == 180
-     * @assert ('SSW', 0, 0) == 202.5
-     * @assert ('SW', 0, 0) == 225
-     * @assert ('WSW', 0, 0) == 247.5
-     * @assert ('W', 0, 0) == 270
-     * @assert ('WNW', 0, 0) == 292.5
-     * @assert ('NW', 0, 0) == 315
-     * @assert ('NNW', 0, 0) == 337.5
-     * @assert ('ASDF', 0, 0) == 0 
     */
-	function DirtonumDir($ndir, $time, $type) {
+	public function DirtonumDir($ndir, $time, $type) {
 	    $ndir = trim(strtoupper($ndir));
         if ($ndir == "N") return 0;
         if ($ndir == "NNE") return 22.5;
@@ -556,7 +526,7 @@ class unitConversion {
      * @param mixed $extra The extra information from the sensor.
      * @return float The kW value
      */
-    function kWhTokW ($val, $time, $type, $extra) {
+    public function kWhTokW ($val, $time, $type, $extra) {
         if (empty($time)) return NULL;
         if ($type != "diff") return NULL;
         return ($val / (abs($time) / 3600));
@@ -572,7 +542,7 @@ class unitConversion {
      * @uses unitConversion::kWhTokW()
      * @return float The W value
      */
-    function kWhToW ($val, $time, $type, $extra) {
+    public function kWhToW ($val, $time, $type, $extra) {
         $val = unitConversion::kWhTokW($val, $time, $type, $extra);
         if (is_null($val)) return $val;
         return $val * 1000;
