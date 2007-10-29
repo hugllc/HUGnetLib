@@ -50,11 +50,11 @@ define("eDEFAULT_SENSOR_READ", "55");
 define("eDEFAULT_SETGROUP", "5B");
 
 
-require_once(HUGNET_INCLUDE_PATH."/packet.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/filters.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/device.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/unitConversion.inc.php");
+require_once(HUGNET_INCLUDE_PATH."/packet.php");
+require_once(HUGNET_INCLUDE_PATH."/sensors.php");
+require_once(HUGNET_INCLUDE_PATH."/filters.php");
+require_once(HUGNET_INCLUDE_PATH."/device.php");
+require_once(HUGNET_INCLUDE_PATH."/unitConversion.php");
 
 /**
  * Class for talking with HUGNet endpoints

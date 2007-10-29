@@ -452,6 +452,25 @@ class unitConversion {
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @return string The text direction
+     *
+     * @assert (0, 0, 0) == 'N'
+     * @assert (22.5, 0, 0) == 'NNE'
+     * @assert (45, 0, 0) == 'NE'
+     * @assert (67.5, 0, 0) == 'ENE'
+     * @assert (90, 0, 0) == 'E'
+     * @assert (112.5, 0, 0) == 'ESE'
+     * @assert (135, 0, 0) == 'SE'
+     * @assert (157.5, 0, 0) == 'SSE'
+     * @assert (180, 0, 0) == 'S'
+     * @assert (202.5, 0, 0) == 'SSW'
+     * @assert (225, 0, 0) == 'SW'
+     * @assert (247.5, 0, 0) == 'WSW'
+     * @assert (270, 0, 0) == 'W'
+     * @assert (292.5, 0, 0) == 'WNW'
+     * @assert (315, 0, 0) == 'NW'
+     * @assert (337.5, 0, 0) == 'NNW'
+     * @assert (360, 0, 0) == 'N'
+     * @assert (-1, 0, 0) == 'N'
     */
 	function numDirtoDir($ndir, $time, $type) {
         if ($ndir <= 0) return "N";
@@ -485,6 +504,24 @@ class unitConversion {
      * @param int $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      * @return float The text direction from 0 to 360 &#176;
+     *
+     * @assert ('N', 0, 0) == 0
+     * @assert ('NNE', 0, 0) == 22.5
+     * @assert ('NE', 0, 0) == 45
+     * @assert ('ENE', 0, 0) == 67.5
+     * @assert ('E', 0, 0) == 90
+     * @assert ('ESE', 0, 0) == 112.5
+     * @assert ('SE', 0, 0) == 135
+     * @assert ('SSE', 0, 0) == 157.5
+     * @assert ('S', 0, 0) == 180
+     * @assert ('SSW', 0, 0) == 202.5
+     * @assert ('SW', 0, 0) == 225
+     * @assert ('WSW', 0, 0) == 247.5
+     * @assert ('W', 0, 0) == 270
+     * @assert ('WNW', 0, 0) == 292.5
+     * @assert ('NW', 0, 0) == 315
+     * @assert ('NNW', 0, 0) == 337.5
+     * @assert ('ASDF', 0, 0) == 0 
     */
 	function DirtonumDir($ndir, $time, $type) {
 	    $ndir = trim(strtoupper($ndir));
