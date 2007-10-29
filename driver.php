@@ -49,6 +49,7 @@ define("eDEFAULT_SENSOR_READ", "55");
 /** The default command to set the group  */
 define("eDEFAULT_SETGROUP", "5B");
 
+if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", ".");
 
 require_once(HUGNET_INCLUDE_PATH."/packet.php");
 require_once(HUGNET_INCLUDE_PATH."/sensors.php");
@@ -838,7 +839,7 @@ class driver {
 
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
-            $plugins = new plugins(dirname(__FILE__)."/drivers/", "inc.php");
+            $plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
         }
         // This has to go after the plugin registrations about
         $this->sensors = new sensor($plugins);

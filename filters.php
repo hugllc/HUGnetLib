@@ -35,7 +35,7 @@ class filter {
 	function __construct(&$plugins = "") {
 		if (!is_object($plugins)) {
 			if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
-			$plugins = new plugins(dirname(__FILE__)."/plugins/", "inc.php");
+			$plugins = new plugins(dirname(__FILE__)."/plugins/", "php");
 		}
 
 		foreach($plugins->plugins["Generic"]["filter"] as $driver) {

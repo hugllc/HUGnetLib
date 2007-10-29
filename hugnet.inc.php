@@ -56,11 +56,11 @@ $inc .= ":".dirname(__FILE__)."/lib/pear";
 ini_set('include_path', $inc);
  
 
-//require_once(HUGNET_INCLUDE_PATH."/device.inc.php");
+//require_once(HUGNET_INCLUDE_PATH."/device.php");
 /** Include the gateway code */
-require_once(HUGNET_INCLUDE_PATH."/gateway.inc.php");
+require_once(HUGNET_INCLUDE_PATH."/gateway.php");
 /** Include the endpoint driver code */
-require_once(HUGNET_INCLUDE_PATH."/driver.inc.php");
+require_once(HUGNET_INCLUDE_PATH."/driver.php");
 
 if (!function_exists("get_temp_dir")) {
    /**

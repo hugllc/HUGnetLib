@@ -91,7 +91,7 @@ define("DRIVER_NOT_COMPLETE", 2);
 
 if (!class_exists(ep_socket)) {
     /** Make sure we have the socket interface */
-    require_once("socket.inc.php");
+    require_once("socket.php");
 }
 
 
