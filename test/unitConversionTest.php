@@ -45,6 +45,24 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     protected function tearDown() {
     }
 
+    public function testUnitArray() {
+        $o = new unitConversion;
+        foreach($o->units as $catName => $cat) {
+            foreach($cat as $shortName => $unit) {
+                $this->assertTrue(is_string($unit['longName']), $catName.":".$shortName.": Long name is not a string");
+                $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
+                $this->assertTrue(is_string($unit['varType']), $catName.":".$shortName.": Variable type is not a string");
+                $this->assertTrue($this->checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
+            }
+        }
+    }
+
+    private function checkvarType($vartype) {
+        if ($vartype == 'float') return TRUE;
+        if ($vartype == 'int') return TRUE;
+        if ($vartype == 'text') return TRUE;
+        return FALSE;
+    }
     /**
      */
     public function testpreferredUnit() {
