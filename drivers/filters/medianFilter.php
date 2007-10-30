@@ -31,7 +31,7 @@
  */
 
 if (!class_exists('medianFilter') && class_exists("filter_base")) {
-    $this->add_generic(array("Name" => "medianFilter", "Type" => "filter", "Class" => "medianFilter"));
+    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "medianFilter", "Type" => "filter", "Class" => "medianFilter"));
     
     class medianFilter extends filter_base
     {

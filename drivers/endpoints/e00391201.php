@@ -56,7 +56,7 @@ define("e00391201_FET2_MULT", 58);
 define("e00391201_FET3_MULT", 60);
 define("e00391201_SENSORS", 9);
 
-	$this->add_generic(array("Name" => "e00391201", "Type" => "driver", "Class" => "e00391201", "deviceJOIN" => "e00391200_location"));
+	if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00391201", "Type" => "driver", "Class" => "e00391201", "deviceJOIN" => "e00391200_location"));
 
 
 

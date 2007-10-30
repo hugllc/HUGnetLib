@@ -32,11 +32,11 @@
 /**
 	@brief class for dealing with resistive sensors.
 */
-if (!class_exists('pulseCounter')) {
-    $this->add_generic(array("Name" => "pulseCounter", "Type" => "sensor", "Class" => "pulseCounter"));
+if (!class_exists('pulseSensor')) {
+    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "pulseSensor", "Type" => "sensor", "Class" => "pulseSensor"));
     
     
-    class pulseCounter extends sensor_base
+    class pulseSensor extends sensor_base
     {
     
         /**
