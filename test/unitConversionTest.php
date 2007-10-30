@@ -49,12 +49,38 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         $o = new unitConversion;
         foreach($o->units as $catName => $cat) {
             foreach($cat as $shortName => $unit) {
+                // Long Name
                 $this->assertTrue(is_string($unit['longName']), $catName.":".$shortName.": Long name is not a string");
                 $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
+                // Var Type
                 $this->assertTrue(is_string($unit['varType']), $catName.":".$shortName.": Variable type is not a string");
                 $this->assertTrue($this->checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
+                // Mode (Mode is not required)
+                if (isset($unit['mode'])) {
+                    $this->assertTrue(is_string($unit['mode']), $catName.":".$shortName.": Mode is not a string");
+                    $this->assertTrue($this->checkMode($unit['mode']), $catName.":".$shortName.": Mode '".$unit['varType']."'is not valid");
+                }
+                // Mode (Mode is not required)
+                if (isset($unit['convert'])) {
+                    $this->assertTrue(is_array($unit['convert']), $catName.":".$shortName.": convert is not an array");
+                    foreach($unit['convert'] as $to => $function) {
+                        $this->assertTrue(method_exists($o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
+                        $this->assertTrue($this->findUnits($o->units, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
+                    }
+                }
             }
         }
+    }
+    
+    private function findUnits($array, $units) {
+        if (is_array($array)) {
+            foreach($array as $catName => $cat) {
+                if (isset($cat[$units])) {
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
     }
 
     private function checkvarType($vartype) {
@@ -63,6 +89,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         if ($vartype == 'text') return TRUE;
         return FALSE;
     }
+    /**
+    */
+    private function checkMode($mode) {
+        if ($mode == 'raw') return TRUE;
+        if ($mode == 'diff') return TRUE;
+        return FALSE;
+    }
+
     /**
      */
     public function testpreferredUnit() {
