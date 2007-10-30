@@ -7,7 +7,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once '../process.php';
+require_once dirname(__FILE__).'/../process.php';
 
 /**
  * Test class for process.

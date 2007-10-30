@@ -37,7 +37,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once '../unitConversion.php';
+require_once dirname(__FILE__).'/../unitConversion.php';
 
 /**
  * Test class for unitConversion.
