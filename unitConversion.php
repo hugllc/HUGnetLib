@@ -353,7 +353,7 @@ class unitConversion {
     */
 	public function FtoC($f, $time, $type) {
 		if ($type != 'diff') $f -= 32;
-		return((5*($f-32))/9);
+		return((5/9)*($f));
 	}
     /**
      *

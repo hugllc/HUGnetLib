@@ -89,7 +89,7 @@ define("DRIVER_NOT_FOUND", 1);
 /** Error Code */
 define("DRIVER_NOT_COMPLETE", 2);
 
-if (!class_exists(ep_socket)) {
+if (!class_exists(epsocket)) {
     /** Make sure we have the socket interface */
     require_once("socket.php");
 }
@@ -828,7 +828,7 @@ class EPacket {
             if (isset($Info["GatewayIP"]) && isset($Info["GatewayKey"]) && isset($Info["GatewayPort"])) {
                 $sock = $Info['GatewayKey'];
                 if (!is_object($this->socket[$sock])) {
-                    $this->socket[$sock] = new ep_socket("", 0, $verbose);
+                    $this->socket[$sock] = new epsocket("", 0, $verbose);
                     $this->socket[$sock]->verbose = $this->verbose;
                 }
                 $return = $this->socket[$sock]->Connect($Info["GatewayIP"], $Info["GatewayPort"]);
@@ -896,7 +896,7 @@ class EPacket {
      *   If the number comes out smaller than $width the string is padded 
      *   on the left side with zeros.
      *
-     *   Duplicate: {@link ep_socket::hexify()}
+     *   Duplicate: {@link epsocket::hexify()}
      *
      *   @param int $value The number to turn into a hex string
      *   @param int $width The width of the final string
