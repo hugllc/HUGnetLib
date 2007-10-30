@@ -41,7 +41,7 @@ define('PACKET_READPACKETSTATS_COMMAND', '57');
 /** Reads the downstream unit serial numbers */
 define('PACKET_HUGNETPOWER_COMMAND','60');
 
-$this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "e00392100", "deviceJOIN" => ""));
+if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "e00392100", "deviceJOIN" => ""));
 
 
 

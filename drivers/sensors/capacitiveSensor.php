@@ -30,7 +30,7 @@
  *
  */
 if (!class_exists('capacitiveSensor')) {
-    $this->add_generic(array("Name" => "capacitiveSensor", "Type" => "sensor", "Class" => "capacitiveSensor"));
+    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "capacitiveSensor", "Type" => "sensor", "Class" => "capacitiveSensor"));
 
 
     /**
@@ -38,6 +38,24 @@ if (!class_exists('capacitiveSensor')) {
     */
     class capacitiveSensor extends filter_base
     {
+
+        var $sensors = array(
+            0x20 => array(
+                'generic' => array(
+                    "longName" => "Generic Capacitive Sensor",
+                    "unitType" => "Capacitance",
+                    "validUnits" => array('F', 'uF', 'nF'),
+                    "storageUnit" =>  'uF',
+                    "function" => "genericCap",
+                    "unitModes" => array(
+                        'F' => 'raw,diff',
+                        'uF' => 'raw,diff',
+                        'nF' => 'raw,diff',
+                    ),
+
+                ),
+            ),
+        );
     
         /**
          *   This function takes in the AtoD value and returns the calculated

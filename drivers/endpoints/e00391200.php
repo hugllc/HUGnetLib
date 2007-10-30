@@ -40,7 +40,7 @@ define("e00391102B_TYPES", ENDPOINT_CONFIGEND+4);
 /** The number of sensors for this device */
 define("e00391102B_SENSORS", 9);
     // Register this plugin    
-    $this->add_generic(array("Name" => "e00391200", "Type" => "driver", "Class" => "e00391200"));
+    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00391200", "Type" => "driver", "Class" => "e00391200"));
 
 
     /**

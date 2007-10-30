@@ -49,11 +49,11 @@ define("eDEFAULT_SENSOR_READ", "55");
 /** The default command to set the group  */
 define("eDEFAULT_SETGROUP", "5B");
 
-if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", ".");
+if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
 
-require_once(HUGNET_INCLUDE_PATH."/packet.php");
-require_once(HUGNET_INCLUDE_PATH."/sensors.php");
-require_once(HUGNET_INCLUDE_PATH."/filters.php");
+require_once(HUGNET_INCLUDE_PATH."/EPacket.php");
+require_once(HUGNET_INCLUDE_PATH."/sensor.php");
+require_once(HUGNET_INCLUDE_PATH."/filter.php");
 require_once(HUGNET_INCLUDE_PATH."/device.php");
 require_once(HUGNET_INCLUDE_PATH."/unitConversion.php");
 

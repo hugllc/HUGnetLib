@@ -32,9 +32,10 @@
 
 if (!class_exists("e00392800")) {
 
-
-	$this->add_generic(array("Name" => "e00392800", "Type" => "driver", "Class" => "e00392800", "deviceJOIN" => "e00391200_location"));
-
+	// Protect us in case this is included differently
+	if (method_exists($this, 'add_generic')) {
+		$this->add_generic(array("Name" => "e00392800", "Type" => "driver", "Class" => "e00392800", "deviceJOIN" => "e00391200_location"));
+	}
 
 	/**
 		@brief Driver for the 0039-12 endpoint board and select firmwares
