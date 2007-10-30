@@ -56,7 +56,7 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
  *   
  *   
  */
-class ep_socket {
+class epsocket {
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
