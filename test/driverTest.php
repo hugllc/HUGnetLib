@@ -7,7 +7,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once '../driver.php';
+require_once dirname(__FILE__).'/../driver.php';
 
 /**
  * Test class for driver.

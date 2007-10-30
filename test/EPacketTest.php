@@ -7,7 +7,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once '../EPacket.php';
+require_once dirname(__FILE__).'/../EPacket.php';
 
 /**
  * Test class for EPacket.

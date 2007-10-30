@@ -7,7 +7,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once '../gateway.php';
+require_once dirname(__FILE__).'/../gateway.php';
 
 /**
  * Test class for gateway.
