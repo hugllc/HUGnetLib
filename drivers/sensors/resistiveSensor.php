@@ -110,7 +110,6 @@ if (!class_exists('resistiveSensor')) {
                     "unitModes" => array(
                         '%' => 'raw',                        
                     ),
-                    "checkFunction" => "resisDoor_check",
                     "extraText" => array("Bias Resistor in kOhms", "Fixed Resistor in kOhms", "Switched Resistor in kOhms"),
                     "extraDefault" => array(10,10,10),
                 ),
