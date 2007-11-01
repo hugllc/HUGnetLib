@@ -60,22 +60,14 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
             foreach($sensor as $shortName => $values) {
                 $this->assertTrue(is_string($values['longName']), $this->class.":".$type.":".$shortName.": Long name is not a string");
                 $this->assertFalse(empty($values['longName']), $this->class.":".$type.":".$shortName.": Long name can not be empty");
-                if (!empty($values['function'])) {
+                if (isset($values['function'])) {
                     $this->assertTrue(method_exists($o, $values['function']), $this->class.":".$type.":".$shortName.": Method ".$values['function']." does not exist");            
                 }
-                if (!empty($values['checkFunction'])) {
+                if (isset($values['checkFunction'])) {
                     $this->assertTrue(method_exists($o, $values['checkFunction']), $this->class.":".$type.":".$shortName.": Method ".$values['checkFunction']." does not exist");            
                 }
-                if (isset($values['extraText'])) {
-                    if (is_array($values['extraText'])) {
-                        $this->assertTrue(is_array($values['extraDefault']), $this->class.":".$type.":".$shortName.": If extraText is an array extraDefault must also be an array.");
-                        $this->assertTrue((count($values['extraText']) == count($values['extraDefault'])), $this->class.":".$type.":".$shortName.": extraText and extraDefault must have the same number of elements");
-                    } else {
-                        $this->assertTrue(is_string($values['extraText']), $this->class.":".$type.":".$shortName.": extraText must either be an array or a string");
-                        $this->assertFalse(is_array($values['extraDefault']), $this->class.":".$type.":".$shortName.": If extraText is not an array extraDefault must also not be an array.");
-                    }
-                }
-
+                $this->checkUnits($values['unitType'], $values['validUnits'], $values['storageUnit'], $values['unitModes'], $type, $shortName);
+                $this->checkExtra($values['extraText'], $values['extraDefault'], $type, $shortName);
                 if (isset($values['mult'])) {
                     $this->assertTrue(is_numeric($values['mult']), $this->class.":".$type.":".$shortName.": Multiplier must be numeric");            
                 }
@@ -87,6 +79,26 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
                 }
             }
         }                
+    }
+    
+    private function checkExtra($extraText, $extraDefault, $type, $shortName) {
+        if (isset($extraText)) {
+            if (is_array($extraText)) {
+                $this->assertTrue(is_array($extraDefault), $this->class.":".$type.":".$shortName.": If extraText is an array extraDefault must also be an array.");
+                $this->assertTrue((count($extraText) == count($extraDefault)), $this->class.":".$type.":".$shortName.": extraText and extraDefault must have the same number of elements");
+            } else {
+                $this->assertTrue(is_string($extraText), $this->class.":".$type.":".$shortName.": extraText must either be an array or a string");
+                $this->assertFalse(is_array($extraDefault), $this->class.":".$type.":".$shortName.": If extraText is not an array extraDefault must also not be an array.");
+            }
+        }
+    
+    }
+
+    private function checkUnits($unitType, $validUnits, $storageUnit, $unitModes, $type, $shortName) {
+        $this->assertTrue(is_string($unitType),  $this->class.":".$type.":".$shortName.": unitType must be a string");
+        $this->assertTrue(is_array($validUnits),  $this->class.":".$type.":".$shortName.": validUnits must be an array");
+        $this->assertTrue(is_string($storageUnit),  $this->class.":".$type.":".$shortName.": unitType must be a string");
+        $this->assertTrue(is_array($unitModes),  $this->class.":".$type.":".$shortName.": unitModes must be an array");
     }
 }
 ?>
