@@ -81,6 +81,12 @@ if (!class_exists('capacitiveSensor')) {
             $C = (-1.0 / $Den2) * $t;
             return($C);
         }    
+        
+        /**
+         */
+        function genericCap($val, $sensor, $TC, $extra=NULL) {
+            return $val;
+        }
     }
 }
 
