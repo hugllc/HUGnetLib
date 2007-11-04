@@ -48,7 +48,7 @@ class unitConversion {
      *
      */
     var $units = array(
-        'temperature' => array(
+        'Temperature' => array(
             '&#176;C' => array(
                 'longName' => '&#176;C',
                 'varType' => 'float',
@@ -65,7 +65,7 @@ class unitConversion {
                 ),
             ),
         ),
-        'current' => array(
+        'Current' => array(
             'A' => array(
                 'longName' => 'Amps',
                 'varType' => 'float',
@@ -81,7 +81,7 @@ class unitConversion {
                 ),
             ),
         ),
-        'voltage' => array(
+        'Voltage' => array(
             'V' => array(
                 'longName' => 'Volts',
                 'varType' => 'float',
@@ -97,7 +97,7 @@ class unitConversion {
                 ),
             ),
         ),
-        'direction' => array(
+        'Direction' => array(
             '&#176;' => array(
                 'longName' => 'Compass Degrees',
                 'varType' => 'float',
@@ -115,11 +115,10 @@ class unitConversion {
                 ),
             ),  
         ),
-        'counting' => array(
+        'Pulses' => array(
             'counts' => array(
                 'longName' => 'Counts',
                 'varType' => 'int',
-                'mode' => 'diff',
                 'convert' => array(
                     'RPM' => 'CnttoRPM',    
                     'PPM' => 'CnttoRPM',
@@ -136,14 +135,14 @@ class unitConversion {
                 'varType' => 'float',
             ),  
         ),
-        'speed' => array(
+        'Speed' => array(
             'MPH' => array(
                 'longName' => 'Miles Per Hour',
                 'mode' => 'diff',
                 'varType' => 'float',
             ),
         ),
-        'power' => array(
+        'Power' => array(
             'kWh' => array(
                 'longName' => 'Kilowatt Hours',
                 'varType' => 'float',
@@ -178,21 +177,47 @@ class unitConversion {
                 ),
             ),
         ),
-        'humidity' => array(
+        'Humidity' => array(
             '%' => array(
                 'longName' => 'Relative Humidity',
                 'varType' => 'float',
             ),
         ),
-        'rain' => array(
+        'Rain' => array(
             '&#34;' => array(
                 'longName' => 'Rain Fall',
                 'varType' => 'float',
             ),
         ),
-        'light' => array(
+        'Light' => array(
             'W/m^2' => array(
                 'longName' => 'Watts per Meter Squared',
+                'varType' => 'float',
+            ),
+        ),
+        'Bale Moisture' => array(
+            '%' => array(
+                'longName' => 'Percent Water by Weight',
+                'varType' => 'float',
+            ),
+        ),
+        'Capacitance' => array(
+            'F' => array(
+                'longName' => 'Farad',
+                'varType' => 'float',
+            ),
+            'uF' => array(
+                'longName' => 'Microfarad',
+                'varType' => 'float',
+            ),
+            'nF' => array(
+                'longName' => 'Nanofarad',
+                'varType' => 'float',
+            ),
+        ),
+        'Door' => array(
+            '%' => array(
+                'longName' => 'Percentage Open',
                 'varType' => 'float',
             ),
         ),

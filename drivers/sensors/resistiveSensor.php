@@ -76,7 +76,7 @@ if (!class_exists('resistiveSensor')) {
             0x01 => array(
                 'BaleMoistureV1' => array(
                     "longName" => "Bale Moisture V1",
-                    "unitType" => "Percent Water By Weight",
+                    "unitType" => "Bale Moisture",
                     "validUnits" => array('%'),
                     "function" => "getMoistureV1",
                     "storageUnit" => '%',
@@ -103,7 +103,7 @@ if (!class_exists('resistiveSensor')) {
                 ),
                 'resisDoor' => array(
                     "longName" => "Resistive Door Sensor",
-                    "unitType" => "Percentage Open",
+                    "unitType" => "Door",
                     "validUnits" => array('%'),
                     "function" => "resisDoor",
                     "storageUnit" => '%',
@@ -117,10 +117,10 @@ if (!class_exists('resistiveSensor')) {
             0x03 => array(
                 'BaleMoistureV2' => array(
                     "longName" => "Bale Moisture V2",
-                    "unitType" => "Percent Water By Weight",
-                    "validUnits" => array('k Ohms'),
+                    "unitType" => "Bale Moisture",
+                    "validUnits" => array('%'),
                     "function" => "getMoistureV2",
-                    "storageUnit" => 'k Ohms',
+                    "storageUnit" => '%',
                     "unitModes" => array(
                         'k Ohms' => 'raw,diff',                        
                     ),

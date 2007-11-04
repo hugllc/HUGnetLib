@@ -44,7 +44,7 @@ if (!class_exists('voltageSensor')) {
             0x10 => array(
                 'CHSMSS' => array(
                     "longName" => "TDK CHS-MSS ",
-                    "unitType" => "Relative Humidity",
+                    "unitType" => "Humidity",
                     "validUnits" => array('%'),
                     "defaultUnits" =>  '%',
                     "function" => "CHSMSS",
