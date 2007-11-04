@@ -95,7 +95,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
                     $this->assertTrue(is_array($unit['convert']), $catName.":".$shortName.": convert is not an array");
                     foreach($unit['convert'] as $to => $function) {
                         $this->assertTrue(method_exists($o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
-                        $this->assertTrue($this->findUnits($o->units, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
+                        $this->assertTrue($this->findUnits($catName, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
                     }
                 }
             }
@@ -103,15 +103,49 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      */
-    private function findUnits($array, $units) {
-        if (is_array($array)) {
-            foreach($array as $catName => $cat) {
-                if (isset($cat[$units])) {
-                    return TRUE;
+    public function findUnits($cat, $units) {
+        $o = new unitConversion;
+        if (is_null($cat)) {
+            if (is_array($o->units)) {
+                foreach($array as $catName => $cat) {
+                    return isset($cat[$units]);
                 }
             }
+        } else {
+            return is_array($o->units[$cat][$units]);
         }
         return FALSE;
+    }
+    /**
+     */
+    public function findUnitMode($cat, $unit, $mode) {
+        $o = new unitConversion;
+        if (is_null($cat)) {
+            if (is_array($o->units)) {
+                foreach($array as $catName => $cat) {
+                    if (isset($cat[$unit])) {
+                        return unitConversionTest::checkUnitModeRaw($cat[$unit]['mode'], $mode);
+                    }
+                }
+            }
+        } else {
+            return unitConversionTest::checkUnitModeRaw($o->units[$cat][$unit]['mode'], $mode);
+        }
+        return FALSE;
+    }
+    /**
+     */
+    private function checkUnitModeRaw($modes, $mode) {
+        if (is_null($modes)) {                        
+            return TRUE;
+        } else {
+            if (stristr($modes, $mode) === FALSE) {
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        }
+    
     }
 
     /**

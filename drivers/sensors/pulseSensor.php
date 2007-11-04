@@ -60,7 +60,7 @@ if (!class_exists('pulseSensor')) {
                 ),
                 'genericRevolver' => array(
                     "longName" => "Generic Revolving Thingy",
-                    "unitType" => "Revolutional Speed",
+                    "unitType" => "Pulses",
                     "validUnits" => array('PPM', 'counts', 'RPM'),
                     "storageUnit" =>  'PPM',
                     "function" => "getPPM",
@@ -74,7 +74,7 @@ if (!class_exists('pulseSensor')) {
                 ),
                 'maximumAnemometer' => array(
                     "longName" => "Maximum Inc type Hall Effect Anemometer",
-                    "unitType" => "Wind Speed",
+                    "unitType" => "Speed",
                     "validUnits" => array('MPH'),
                     "storageUnit" =>  'MPH',
                     "unitModes" => array(
@@ -85,7 +85,7 @@ if (!class_exists('pulseSensor')) {
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
-                    "unitType" => "Rain Fall",
+                    "unitType" => "Rain",
                     "validUnits" => array('&#34;'),
                     "storageUnit" =>  '&#34;',
                     "unitModes" => array(
@@ -97,7 +97,7 @@ if (!class_exists('pulseSensor')) {
                 ),
                 'bravo3motion' => array(
                     "longName" => "DSC Bravo 3 Motion Sensor",
-                    "unitType" => "Counts",
+                    "unitType" => "Pulses",
                     "validUnits" => array('counts', 'PPM'),
                     "storageUnit" =>  'counts',
                     "unitModes" => array(
