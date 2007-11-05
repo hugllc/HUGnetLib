@@ -44,16 +44,18 @@ class sensor {
             $plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
         }
 
-        foreach($plugins->plugins["Generic"]["sensor"] as $driver) {
-            if (class_exists($driver["Class"])) {
-                $class = $driver["Class"];
-                $this->sensors[$class] = new $class();
-                if (is_array($this->sensors[$class]->sensors)) {
-                    foreach($this->sensors[$class]->sensors as $type => $sInfo) {
-                        foreach($sInfo as $sensor => $val) {
-                            $this->dev[$type][$sensor] = $class;
+        if (is_array($plugins->plugins["Generic"]["sensor"])) {
+            foreach($plugins->plugins["Generic"]["sensor"] as $driver) {
+                if (class_exists($driver["Class"])) {
+                    $class = $driver["Class"];
+                    $this->sensors[$class] = new $class();
+                    if (is_array($this->sensors[$class]->sensors)) {
+                        foreach($this->sensors[$class]->sensors as $type => $sInfo) {
+                            foreach($sInfo as $sensor => $val) {
+                                $this->dev[$type][$sensor] = $class;
+                            }
+                            if (!isset($this->dev[$type]['default'])) $this->dev[$type]['default'] = $class;
                         }
-                        if (!isset($this->dev[$type]['default'])) $this->dev[$type]['default'] = $class;
                     }
                 }
             }

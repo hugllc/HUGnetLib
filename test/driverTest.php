@@ -38,7 +38,8 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once dirname(__FILE__).'/../driver.php';
+require_once dirname(__FILE__).'/../hugnet.inc.php';
+require_once 'adodb/adodb.inc.php';
 
 /**
  * Test class for driver.
@@ -76,6 +77,11 @@ class driverTest extends PHPUnit_Framework_TestCase {
     protected function tearDown() {
     }
 
+    public function &createDriver() {
+        $db = &ADONewConnection('mysqli');
+        $driver = new driver($db);
+        return $driver;
+    }
     /**
      * @todo Implement testHealth().
      */

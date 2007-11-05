@@ -139,7 +139,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    function testremove($info) {
+    function testremove() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
           "This test has not been implemented yet."

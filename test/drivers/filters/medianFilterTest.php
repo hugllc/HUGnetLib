@@ -38,7 +38,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once dirname(__FILE__).'/../filterTest.php';
+require_once dirname(__FILE__).'/../filterTestBase.php';
 
 /**
  * Test class for medianFilter.

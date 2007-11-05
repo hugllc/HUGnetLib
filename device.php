@@ -35,14 +35,33 @@
 */
 
 class device {
+    /** The table devices are stored in */
     var $table = "devices";
+    /** The key used for the table */
     var $primaryCol = "DeviceKey";
-    
-    function device(&$driver) {
+
+    /** The table the analysis output is stored in */
+    var $analysis_table = "analysis";
+
+    /**
+     * This function sets up the driver object, and the database object.  The
+     * database object is taken from the driver object.
+     *
+     * @param object $driver  This should be an object of class driver
+    */
+    function __construct(&$driver) {
         $this->db = &$driver->db;
         $this->_driver = &$driver;
     }
-    
+
+    /**
+     * This returns an array setup for a HTML select list using the adodb
+     * function 'GetMenu'
+     *
+     * @param string $name The name of the select list
+     * @param mixed $selected The entry that is currently selected
+     * @param int $GatewayKey The key to use if only one gateway is to be selected
+     */    
     function selectDevice($name=NULL, $selected=NULL, $GatewayKey=NULL) {
     
         $query = "SELECT DeviceKey, DeviceID FROM devices WHERE";
@@ -60,6 +79,15 @@ class device {
         }
     }    
     
+    /**
+     * Gets the database record of a devices.  It can be fed the DeviceID, DeviceName,
+     * or DeviceKey, depending on the type paramater.  This also gets gateway information
+     * as well as calibration information on the device.
+     *
+     * @param mixed $id This is either the DeviceID, DeviceName or DeviceKey
+     * @param int $type The type of the 'id' parameter.  It is "ID" for DeviceID,
+     *    "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
+     */
     function getDevice($id, $type="KEY") {
         if (empty($id)) return array();
 	    if (isset($this->_devCache[$id])) return($this->_devCache[$id]);
@@ -80,26 +108,6 @@ class device {
         if (is_array($devInfo)) {
            	$devInfo = $devInfo[0];
             $devInfo = $this->_driver->DriverInfo($devInfo);
-
-/*
-            $query = "select * from ".$this->_driver->getLocationTable($devInfo)." where DeviceKey='".$id."'";
-
-            $loc = $this->db->getArray($query);
-//            $devInfo["Location"] = ;
-            if (is_array($loc[0])) {
-//                $devInfo['Location'] = $loc[0];
-                foreach($loc[0] as $key => $tLoc) {
-                    $key = trim($key);
-                    if (strtolower(substr($key, 0, 3)) == "loc") {
-                        if (!empty($tLoc)) {
-                            $devInfo["OldLocation"][$key] = $tLoc;
-                            $nKey = (int) substr($key, 3);
-                            $devInfo["OldLocation"][$nKey] = $tLoc;
-                        }
-                    }
-                }
-            }
-*/
 
             $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
 
@@ -220,6 +228,16 @@ class device {
 		return($return);					
 	}
 
+    /**
+     * This sets the device paramters in the database.  The device parameters
+     * are stored as string (text) in the database.  This routine takes in the
+     * parameter array, encodes it, then stores it in the database.
+     *
+     * @uses device::encodeParams
+     *
+     * @param int $DeviceKey The key for the device to be stored
+     * @param array $params The parameter array to be stored.
+     */
 	function setParams($DeviceKey, $params) {
 	    $params = $this->db->qstr($this->encodeParams($params));
         $this->db->debug = TRUE;
@@ -231,10 +249,18 @@ class device {
         return $return;
     }
 
+    /**
+     * Checks to see if this is a controller.
+     *
+     * @param array $info This is a device information array
+     */
     function isController(&$info) {
         return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
     }
 
+    /**
+     *
+     */
     function encodeParams(&$params) {
         if (is_array($params)) {
             $params = serialize($params);
@@ -245,6 +271,9 @@ class device {
         return $params;
     }
 
+    /**
+     *
+     */
     function decodeParams(&$params) {
         if (is_string($params)) {
             $params = base64_decode($params);
@@ -256,10 +285,16 @@ class device {
 }
 
 
+/**
+ *
+ */
 class deviceCache {
 	var $table = "devices";				//!< The database table to use
 	var $primaryCol = "DeviceKey";	 //!< This is the Field name for the key of the record
 
+    /**
+     *
+     */
     var $fields = array(
         	"DeviceKey" => "int(11)",
             "DeviceID" => "varchar(6)",
@@ -294,7 +329,6 @@ class deviceCache {
 		@param $db String The database to use
 		@param $options the database options to use.
 	*/
-
     function __construct($file = NULL, $mode = 0666, $error = NULL) {
         if ($error == NULL) $error =& $this->lastError;
         
@@ -316,6 +350,9 @@ class deviceCache {
         }
     }
     
+    /**
+     *
+     */
     function createTable() {
         $query = "CREATE TABLE `".$this->table."` (
                       `DeviceKey` int(11) NOT NULL,
@@ -353,6 +390,9 @@ class deviceCache {
         return $ret;
     }
 
+    /**
+     *
+     */
     function addArray($InfoArray) {
         if (is_array($InfoArray)) {
             foreach($InfoArray as $info) {
@@ -361,6 +401,9 @@ class deviceCache {
         }
     }
     
+    /**
+     *
+     */
     function add($info) {    
         if (isset($info['DeviceID']) 
                 && isset($info['GatewayKey']) 
@@ -393,6 +436,9 @@ class deviceCache {
         }
     }
 
+    /**
+     *
+     */
     function update($info) {    
         if (isset($info['DeviceKey'])) {
             $div = "";
@@ -420,6 +466,9 @@ class deviceCache {
     }
 
 
+    /**
+     *
+     */
     function getAll() {
         $query = " SELECT * FROM '".$this->table."'; ";
         $ret = $this->_sqlite->query($query);
@@ -430,11 +479,18 @@ class deviceCache {
         return $ret;
     }
 
+    /**
+     *
+     */
     function query($query) {
         $ret = $this->_sqlite->query($query);
         if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
         return $ret;
     }
+
+    /**
+     *
+     */
     function remove($info) {
         if (is_array($info))
         {

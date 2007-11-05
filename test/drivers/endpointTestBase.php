@@ -207,10 +207,9 @@ class endpointTestBase extends PHPUnit_Framework_TestCase {
     function testReadConfig() {
         $o = $this->setupDriver();
         if (is_object($o)) {
-            $config = $o->drivers[$this->driver]->ReadConfig($this->goodEndpoints[0]);
-var_dump($this->driver);
-var_dump($config);
-die();
+            /* Put test here */
+            // Remove the following line when you implement this test.
+            $this->markTestIncomplete("This test has not been implemented yet.");
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
         }

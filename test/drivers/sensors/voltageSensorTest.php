@@ -38,7 +38,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once dirname(__FILE__).'/../sensorTest.php';
+require_once dirname(__FILE__).'/../sensorTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/sensors/voltageSensor.php';
 
 /**

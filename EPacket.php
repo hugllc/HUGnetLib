@@ -175,6 +175,7 @@ class EPacket {
      *   This function actually builds the packet to write to the socket.  It takes in
      *   an array of the form:
      *   <code>
+     *   array["To"] = "0000A5";
      *   array["Command"] = 02;
      *   array["Data"][0] = 00;
      *   array["Data"][1] = 01;
@@ -435,8 +436,9 @@ class EPacket {
         if (is_array($array)) {
             $ret = '';
             foreach($array as $d) {
-                $ret .= $this->hexify($d, 2);
+                $ret .= EPacket::hexify($d, 2);
             }
+            return $ret;
         } else if (is_string($array)) {
             return $array;
         } else {
@@ -612,7 +614,7 @@ class EPacket {
      */
     function isGateway($DeviceID) {
         if (is_string($DeviceID)) {
-            $sn = hexdec($DeviceID);
+            $DeviceID = hexdec($DeviceID);
         }
         return (($DeviceID < $this->maxSN) && ($DeviceID > 0));
     }
@@ -905,7 +907,7 @@ class EPacket {
     function hexify($value, $width=2) {
         $value = dechex($value);
         $value = str_pad($value, $width, "0", STR_PAD_LEFT);
-        $value = substr($value, 0, $width);
+        $value = substr($value, strlen($value)-$width);
         $value = strtoupper($value);
 
         return($value);
@@ -931,7 +933,7 @@ class EPacket {
         for($i = 0; ($i < $length) && ($i < $width); $i++) {
             $char = substr($str, $i, 1);
             $char = ord($char);
-            $value .= $this->hexify($char, 2);
+            $value .= EPacket::hexify($char, 2);
         }
         $value = str_pad($value, $width, "0", STR_PAD_RIGHT);
         
