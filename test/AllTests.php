@@ -56,6 +56,7 @@ require_once 'drivers/endpoints/e00392800Test.php';
 require_once 'drivers/endpoints/e00392100Test.php';
 require_once 'drivers/endpoints/e00391200Test.php';
 require_once 'drivers/endpoints/e00391201Test.php';
+require_once 'drivers/endpoints/eDEFAULTTest.php';
 // Filters
 require_once 'drivers/filters/medianFilterTest.php';
 // Sensors
@@ -94,6 +95,7 @@ class AllTests
  
         // Driver Tests 
         // Endpoints
+        $suite->addTestSuite('eDEFAULTTest');
         $suite->addTestSuite('e00392800Test');
         $suite->addTestSuite('e00392100Test');
         $suite->addTestSuite('e00391200Test');
