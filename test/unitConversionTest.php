@@ -23,7 +23,7 @@
  *
  *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *   @package HUGnetLib
- *   @subpackage unitConversion
+ *   @subpackage Test
  *   @copyright 2007 Hunt Utilities Group, LLC
  *   @author Scott Price <prices@hugllc.com>
  *   @version $Id: unitConversion.php 411 2007-10-29 21:27:43Z prices $    
