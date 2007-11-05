@@ -1,6 +1,6 @@
 <?php
 /**
- *   Main class for dealing with endpoints.
+ *   Tests the 00392800 endpoint class
  *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
