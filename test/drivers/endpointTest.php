@@ -1,6 +1,6 @@
 <?php
 /**
- *   Main class for dealing with endpoints.
+ *   This is the basis for all endpoint driver test classes.
  *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
