@@ -21,53 +21,58 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *   </pre>
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Filters
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id: unitConversion.inc.php 369 2007-10-12 15:05:32Z prices $    
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage Filters
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version $Id: unitConversion.inc.php 369 2007-10-12 15:05:32Z prices $    
  *
  */
-
+/**
+ * A class for filtering endpoint data.  This class implements drivers that actually
+ * do the filtering.
+ */
 class filter {
 
-	function __construct(&$plugins = "") {
-		if (!is_object($plugins)) {
-			if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
-			$plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
-		}
+    /**
+     * The constructor.  This sets everything up and finds the plugins.
+     *
+     * @param object $plugins This is an object of class plugins.
+     * @see plugins
+     */
+    function __construct(&$plugins = "") {
+        if (!is_object($plugins)) {
+            if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
+            $plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
+        }
 
-		foreach($plugins->plugins["Generic"]["filter"] as $driver) {
-			if (class_exists($driver["Class"])) {
-				$class = $driver["Class"];
-				$this->filters[$class] = new $class();
-				if (is_array($this->filters[$class]->filters)) {
-					foreach($this->filters[$class]->filters as $type => $sInfo) {
-						foreach($sInfo as $filter => $val) {
-							$this->filter[$type][$filter] = $class;
-						}
-						if (!isset($this->filter[$type]['default'])) $this->dev[$type]['default'] = $class;
-					}
-				}
-			}
-		}
-	}
+        foreach($plugins->plugins["Generic"]["filter"] as $driver) {
+            if (class_exists($driver["Class"])) {
+                $class = $driver["Class"];
+                $this->filters[$class] = new $class();
+                if (is_array($this->filters[$class]->filters)) {
+                    foreach($this->filters[$class]->filters as $type => $sInfo) {
+                        foreach($sInfo as $filter => $val) {
+                            $this->dev[$type][$filter] = $class;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	/**
-		@public
-		@brief Return the voltage
-		@param $R Float The current resistance of the thermistor
-		@param $type Int The type of filter.
-		@return filter value	
-	
-		@par Introduction
-		This function 
-
-	
-	*/
-	function filterdata(&$data, $type, $filter=NULL) 
-	{
+    /**
+     * This function does the actual filtering of the data based on the input given.
+     *
+     * Return the voltage
+     * @param array $data
+     * @param string $type
+     * @param string $filter    
+     * @return array The filtered data
+    */
+    function filterdata(&$data, $type, $filter=NULL) 
+    {
         $class = $this->getClass($type, $filter);
         if (is_object($class)) {
             $args = func_get_args();
@@ -79,12 +84,17 @@ class filter {
             $val = $this->runFunction($class, $stuff['function'], $args, $args[0]);
         }
         return($val);
-	}
+    }
 
     /**
-        Returns the class
-        $return is the default sent to it.
-    */
+     * Runs the filter function based on the information given.
+     *
+     * @param object $class This is the filter class to run the function on
+     * @param string $function This is the method to call on the class
+     * @param array $args The array of arguments for the function
+     * @param mixed $return This is the default value to return if the function is not found
+     * @return array The filtered data
+     */
     function runFunction(&$class, $function, &$args, &$return = NULL) {
         if (isset($function)) {
             if (method_exists($class, $function)) {
@@ -96,8 +106,13 @@ class filter {
     }
 
     /**
-        Returns the class
-    */
+     *   Returns the class.  If you want the default filter for the filter type
+     * Just give $filter a blank variable.  This will be set to the name of the filter
+     * tat it finds.
+     *
+     * @param string $type The type of filter
+     * @param string $filter The filter to implement.  This can be changed by this routine.
+     */
     function &getClass($type, &$filter) {
         $class = $this->dev[$type][$filter];
         if (is_null($class)) {
@@ -106,7 +121,6 @@ class filter {
                 $filter = key($this->dev[$type]);
                 $class = current($this->dev[$type]);
             }            
-//            $class = $this->dev[$type]['default'];
         }
         return $this->filters[$class];    
     }
@@ -114,7 +128,7 @@ class filter {
 
 
 /**
-	@brief Base class for filters.
+ * Base class for filters.
 */
 class filter_base
 {
@@ -123,13 +137,13 @@ class filter_base
     */
     var $filters = array();
     
-	/**
-		Constructor.
-	*/
-	function __construct()
-	{
+    /**
+        Constructor.
+    */
+    function __construct()
+    {
 
-	}
+    }
 
 
 }

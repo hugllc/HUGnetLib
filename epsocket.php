@@ -21,12 +21,12 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *   </pre>
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Socket
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage Socket
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version $Id$    
  *
  */
 
@@ -54,7 +54,10 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 /**
  *   Class for talking with HUGNet endpoints through unix sockets
  *   
- *   
+ * This class is meant to talk to something like {@link http://ser2net.sourceforge.net/ ser2net}
+ * or any of the serial to ethernet servers from {@link http://www.bb-elec.com/ B&B Electronics}.
+ * Other methods might work, but they are untested.  It basically expects a raw
+ * serial port that is accessable through a unix socket.  
  */
 class epsocket {
     /** @var int How many times we retry the packet until we get a good one */
@@ -87,8 +90,8 @@ class epsocket {
     /**
      *   Write data out a socket
      *
-     *   @param string $data The data to send out the socket
-     *   @return int The number of bytes written on success, FALSE on failure
+     * @param string $data The data to send out the socket
+     * @return int The number of bytes written on success, FALSE on failure
      */
     function Write($data) {
         if ($this->CheckConnect()) $this->Connect("", 0);
@@ -102,8 +105,8 @@ class epsocket {
     /**
      *   Read data from the server
      *
-     *   @param int $timeout The amount of time to wait for the server to respond
-     *   @return int Read bytes on success, FALSE on failure
+     * @param int $timeout The amount of time to wait for the server to respond
+     * @return int Read bytes on success, FALSE on failure
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
@@ -131,9 +134,9 @@ class epsocket {
      *
      *   Duplicate: {@link EPacket::hexify()}
      *
-     *   @param int $value The number to turn into a hex string
-     *   @param int $width The width of the final string
-     *   @return string The hex string created.
+     * @param int $value The number to turn into a hex string
+     * @param int $width The width of the final string
+     * @return string The hex string created.
     */    
     function hexify(&$string, $width=2) {
         $string = dechex($string);
@@ -162,8 +165,8 @@ class epsocket {
      *   have the script automatically connect if it is not connected already then use
      *   ep_socket::Connect().
      *
-     *   @uses ep_socket::Connect()
-     *   @return bool TRUE if the connection is good, FALSE otherwise
+     * @uses ep_socket::Connect()
+     * @return bool TRUE if the connection is good, FALSE otherwise
     */
     function CheckConnect() {
 
@@ -186,10 +189,10 @@ class epsocket {
      *   connection and want the server to automatically connect if not connectd, use this
      *   routine.  If you just want to check the connection, use ep_socket::CheckConnect.
      *
-     *   @param string $server Name or IP address of the server to connect to
-     *   @param int $port The TCP port on the server to connect to
-     *   @param int $timeout The time to wait before giving up on a bad connection
-     *   @return bool TRUE if the connection is good, FALSE otherwise
+     * @param string $server Name or IP address of the server to connect to
+     * @param int $port The TCP port on the server to connect to
+     * @param int $timeout The time to wait before giving up on a bad connection
+     * @return bool TRUE if the connection is good, FALSE otherwise
      */
     function Connect($server = "", $port = 0, $timeout=0) {
 
@@ -228,10 +231,10 @@ class epsocket {
     /**
      *   Constructor
      *   
-     *   @param string $server The name or IP of the server to connect to
-     *   @param int $tcpport The TCP port to connect to on the server. Set to 0 for
+     * @param string $server The name or IP of the server to connect to
+     * @param int $tcpport The TCP port to connect to on the server. Set to 0 for
      *       the default port.
-     *   @param bool $verbose Make the class put out a lot of output
+     * @param bool $verbose Make the class put out a lot of output
      */
     function ep_socket($server, $tcpport = SOCKET_DEFAULT_PORT, $verbose=FALSE) {
         if (empty($tcpport)) $tcpport = SOCKET_DEFAULT_PORT;
