@@ -1,6 +1,6 @@
 <?php
 /**
- *   Everything to do with Units.
+ *   Tests the unit conversion class
  *
  *   <pre>
  *   HUGnetLib is a library of HUGnet code
