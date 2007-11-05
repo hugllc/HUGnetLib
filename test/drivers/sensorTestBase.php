@@ -82,7 +82,7 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
     /**
      * Test the sensor variable
      */
-    public function testSensorVar() {
+    public function testSensorVariable() {
         $o = new $this->class;
         $this->assertTrue(is_array($o->sensors), $this->class." doesn't have a sensor variable");
         $this->assertTrue((count($o->sensors) > 0), $this->class." doesn't have any sensors defined");
@@ -114,7 +114,7 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
     /**
      * Test the extra portion of the sensor variable
      */    
-    public function testExtra() {
+    public function testSensorVariableExtra() {
         $o = new $this->class;
         foreach($o->sensors as $type => $sensor) {
             foreach($sensor as $shortName => $values) {
@@ -134,7 +134,7 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
     /**
      * Test the units portion of the sensor variable
      */    
-    public function testUnits() {
+    public function testSensorVariableUnits() {
         $o = new $this->class;
         foreach($o->sensors as $type => $sensor) {
             foreach($sensor as $shortName => $values) {
