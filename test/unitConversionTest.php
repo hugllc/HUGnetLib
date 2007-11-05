@@ -26,7 +26,7 @@
  *   @subpackage Test
  *   @copyright 2007 Hunt Utilities Group, LLC
  *   @author Scott Price <prices@hugllc.com>
- *   @version $Id: unitConversion.php 411 2007-10-29 21:27:43Z prices $    
+ *   @version $Id$    
  *
  */
 // Call unitConversionTest::main() if this source file is executed directly.
