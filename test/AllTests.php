@@ -39,6 +39,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 // Main Files
 require_once 'deviceTest.php'; 
+require_once 'deviceCacheTest.php'; 
 require_once 'driverTest.php'; 
 require_once 'EPacketTest.php'; 
 require_once 'epsocketTest.php'; 
@@ -80,6 +81,7 @@ class AllTests
 
         // Main file Tests 
         $suite->addTestSuite('deviceTest');
+        $suite->addTestSuite('deviceCacheTest');
         $suite->addTestSuite('driverTest');
         $suite->addTestSuite('EPacketTest');
         $suite->addTestSuite('epsocketTest');
