@@ -59,6 +59,7 @@ class gateway {
      * @return FALSE on failure, Array of gateway information on success
     */
     function Find($verbose = FALSE) {
+        if (!is_object($this->db)) return FALSE;
         $return = FALSE;
         if (function_exists("posix_uname")) {
             if ($verbose) print "Trying to figure out which gateway to use...\r\n";
@@ -125,10 +126,27 @@ class gateway {
         $bytes .= $labels[$index]." bytes";
         return($bytes);
     }
-
+    /**
+     * Get a gateway
+     *
+     * @param int $key The GatewayKey for th gateway to get
+     * @return array The information about the gateway
+     */
     function get($key) {
+        if (!is_object($this->db)) return FALSE;
         $ret = $this->db->getArray("SELECT * from ".$this->table." where ".$this->id." = '".$key."'");
         if (is_array($ret)) $ret = $ret[0];
+        return $ret;
+    }
+
+    /**
+     * Get all gateways
+     *
+     * @return array An array of gateway information arrays
+     */
+    function getAll() {
+        if (!is_object($this->db)) return FALSE;
+        $ret = $this->db->getArray("SELECT * from ".$this->table."");
         return $ret;
     }
 

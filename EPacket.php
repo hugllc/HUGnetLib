@@ -348,11 +348,11 @@ class EPacket {
                 "GetReply" => $GetReply, 
                 "SentTime" => $this->PacketTime(),
                 "SentFrom" => trim(strtoupper($this->SN)),
-                "SentTo" => trim(strtoupper($Packet["to"])),
+                "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
                 "sendCommand" => trim(strtoupper($Packet['command'])),
                 'group' => $group,
                 'packet' => $Packet,
-                "PacketTo" => trim(strtoupper($Packet["to"])),
+                "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
                 "Date" => date("Y-m-d H:i:s"),
                 "GatewayKey" => $Info['GatewayKey'],
                 "DeviceKey" => $Info['DeviceKey'],
@@ -708,7 +708,10 @@ class EPacket {
         $pkt = array();
         $pkt["Command"] = substr($data, 0, 2);
         $pkt["To"] = trim(strtoupper(substr($data, 2, 6))); 
+        $pkt["To"] = str_pad($pkt["To"], 6, "0", STR_PAD_LEFT);
         $pkt["From"] = trim(strtoupper(substr($data, 8, 6)));
+        $pkt["From"] = str_pad($pkt["From"], 6, "0", STR_PAD_LEFT);
+
         $length = hexdec(substr($data, 14, 2));
         $pkt["Length"] = $length;
         $pkt["RawData"] = substr($data, 16, ($length*2));
@@ -827,8 +830,13 @@ class EPacket {
      */
     function Connect($Info) {
         if ($this->_direct) {
+            $sock = $Info['GatewayKey'];
+            if (is_object($this->socket[$sock])) {
+                if ($this->socket[$sock]->CheckConnect()) {
+                    return TRUE;
+                }
+            }
             if (isset($Info["GatewayIP"]) && isset($Info["GatewayKey"]) && isset($Info["GatewayPort"])) {
-                $sock = $Info['GatewayKey'];
                 if (!is_object($this->socket[$sock])) {
                     $this->socket[$sock] = new epsocket("", 0, $verbose);
                     $this->socket[$sock]->verbose = $this->verbose;
@@ -869,7 +877,7 @@ class EPacket {
      */
     function Close($Info) {
         if (is_object($this->socket[$Info['GatewayKey']])) {
-            $this->socket[$Info['GatewayKey']]->close();
+            $this->socket[$Info['GatewayKey']]->Close();
         }
     }
 

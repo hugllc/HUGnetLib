@@ -115,62 +115,102 @@ class driverTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testRunFunction().
      */
-    public function testRunFunction() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testRunFunctionDefaultCall() {
+        $Info = array();
+        $o = new driver();
+        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+        $o->drivers['eDEFAULT']->expects($this->once())
+                               ->method('InterpConfig')
+                               ->with($this->arrayHasKey("Driver"));
+        $ret = $o->RunFunction($Info, "InterpConfig");
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionBadDriverCall() {
+        $Info = array("Driver" => "BadDriver");
+        $o = new driver();
+        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+        $o->drivers['eDEFAULT']->expects($this->once())
+                               ->method('InterpConfig')
+                               ->with($this->arrayHasKey("Driver"));
+        $ret = $o->RunFunction($Info, "InterpConfig");
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionGoodDriverCall() {
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = $this->getMock("testDriver", array("InterpConfig"), array(&$o));
+        $o->drivers['testDriver']->expects($this->once())
+                               ->method('InterpConfig')
+                               ->with($this->arrayHasKey("Driver"));
+        $ret = $o->RunFunction($Info, "InterpConfig");
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionMultiArgsCall() {
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->drivers['testDriver']->expects($this->once())
+                               ->method('Test')
+                               ->with($this->arrayHasKey("Driver"));
+        $ret = $o->RunFunction($Info, "Test", "1", "2");
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionMissingFunctionCall() {
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $ret = $o->RunFunction($Info, "Test", "1", "2");
+        $this->assertEquals(NULL, $ret);
     }
 
     /**
      * @todo Implement testReadConfig().
      */
-    public function testReadConfig() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function test__CallCall() {
+        $Info = array('Driver' => 'testDriver');
+        $o = new driver();
+        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->drivers['testDriver']->expects($this->once())
+                               ->method('Test')
+                               ->with($this->arrayHasKey("Driver"), $this->equalTo("1"), $this->equalTo("2"));
+        $ret = $o->Test($Info, "1", "2");
     }
 
     /**
-     * @todo Implement testInterpSensors().
+     * @todo Implement testReadConfig().
      */
-    public function testInterpSensors() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function test__Call() {
+        $Info = array('Driver' => 'testDriver');
+        $arg2 = "1";
+        $arg3 = "2";
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $ret = $o->Test($Info, $arg2, $arg3);
+        $this->assertEquals($ret['arg2'], $arg2, "Arg2 mangled: '".$ret['arg2']."' != '$arg2'");
+        $this->assertEquals($ret['arg3'], $arg3, "Arg3 mangled: '".$ret['arg3']."' != '$arg3'");
     }
 
     /**
-     * @todo Implement testSaveSensorData().
+     * @todo Implement testReadConfig().
      */
-    public function testSaveSensorData() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function test__CallNoArgsCall() {
+        $o = new driver();
+        // This has to go to eDEFAULT since it has no args.
+        $o->drivers['eDEFAULT'] = $this->getMock("testDriver", array("TestCall"), array(&$o));
+        $o->drivers['eDEFAULT']->expects($this->once())
+                               ->method('TestCall')
+                               ->with($this->arrayHasKey("Driver"));
+        $ret = $o->TestCall();
     }
 
-    /**
-     * @todo Implement testSaveConfigData().
-     */
-    public function testSaveConfigData() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGetConfigVars().
-     */
-    public function testGetConfigVars() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
 
     /**
      * @todo Implement testSetConfig().
@@ -183,93 +223,31 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testDecodeData().
-     */
-    public function testDecodeData() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testCheckRecord().
-     */
-    public function testCheckRecord() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testReadSensors().
-     */
-    public function testReadSensors() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGetLabel().
-     */
-    public function testGetLabel() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGetUnits().
-     */
-    public function testGetUnits() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGetCols().
-     */
-    public function testGetCols() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGetCalibration().
-     */
-    public function testGetCalibration() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
      * @todo Implement testDone().
      */
     public function testDone() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("GatewayKey" => 1);
+        $o = new driver();
+        // This has to go to eDEFAULT since it has no args.
+        $o->packet = $this->getMock("EPacket");
+        $o->packet->expects($this->once())
+                  ->method('Close')
+                  ->with($this->arrayHasKey("GatewayKey"));
+        $o->done($Info);
     }
 
     /**
      * @todo Implement testUpdateDevice().
      */
     public function testUpdateDevice() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("DeviceID" => 1);
+        $o = new driver();
+        // This has to go to eDEFAULT since it has no args.
+        $o->device = $this->getMock("device", array("UpdateDevice"), array(&$o));
+        $o->device->expects($this->once())
+                  ->method('UpdateDevice')
+                  ->with($this->arrayHasKey("DeviceID"));
+        $o->UpdateDevice($Info);
     }
 
     /**
@@ -286,10 +264,14 @@ class driverTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testGetDevice().
      */
     public function testGetDevice() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("DeviceID" => 1);
+        $o = new driver();
+        // This has to go to eDEFAULT since it has no args.
+        $o->device = $this->getMock("device", array("getDevice"), array(&$o));
+        $o->device->expects($this->once())
+                  ->method('getDevice')
+                  ->with($this->arrayHasKey("DeviceID"));
+        $o->getDevice($Info, "KEY");
     }
 
     /**
@@ -306,10 +288,14 @@ class driverTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testFindDevice().
      */
     public function testFindDevice() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("GatewayKey" => 1);
+        $o = new driver();
+        // This has to go to eDEFAULT since it has no args.
+        $o->packet = $this->getMock("EPacket");
+        $o->packet->expects($this->once())
+                  ->method('FindDevice')
+                  ->with($this->arrayHasKey("GatewayKey"));
+        $o->FindDevice($Info);
     }
 
     /**
@@ -336,40 +322,77 @@ class driverTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testGetHistoryTable().
      */
     public function testGetHistoryTable() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $table = $o->drivers['testDriver']->history_table;
+        $this->assertEquals($o->getHistoryTable($Info), $table);
+    }
+
+    /**
+     * @todo Implement testGetHistoryTable().
+     */
+    public function testGetHistoryTableBad() {
+        $Info = array("Driver" => "asdf");
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $this->assertFalse($o->getHistoryTable($Info));
     }
 
     /**
      * @todo Implement testGetAverageTable().
      */
     public function testGetAverageTable() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $table = $o->drivers['testDriver']->average_table;
+        $this->assertEquals($o->getAverageTable($Info), $table);
+    }
+    /**
+     * @todo Implement testGetHistoryTable().
+     */
+    public function testGetAverageTableBad() {
+        $Info = array("Driver" => "asdf");
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $this->assertFalse($o->getAverageTable($Info));
     }
 
     /**
      * @todo Implement testGetLocationTable().
      */
     public function testGetLocationTable() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $table = $o->drivers['testDriver']->location_table;
+        $this->assertEquals($o->getLocationTable($Info), $table);
+    }
+    /**
+     * @todo Implement testGetHistoryTable().
+     */
+    public function testGetLocationTableBad() {
+        $Info = array("Driver" => "asdf");
+        $o = new driver();
+        $this->assertFalse($o->getLocationTable($Info));
     }
 
     /**
      * @todo Implement testDriverInfo().
      */
     public function testDriverInfo() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $Info = array(
+            "DeviceID" => "123456",
+            "Driver" => "testDriver",
+            );
+        $o = new driver();
+        $o->drivers['testDriver'] = new testDriver(&$o);
+        $Info = $o->DriverInfo($Info);
+        $history_table = $o->drivers['testDriver']->history_table;
+        $this->assertEquals($Info['history_table'], $history_table, "history_table mangled: '".$Info['history_table']."' != '$history_table'");
+        $average_table = $o->drivers['testDriver']->average_table;
+        $this->assertEquals($Info['average_table'], $average_table, "average_table mangled: '".$Info['average_table']."' != '$average_table'");
     }
 
     /**
@@ -396,5 +419,41 @@ class driverTest extends PHPUnit_Framework_TestCase {
 // Call driverTest::main() if this source file is executed directly.
 if (PHPUnit_MAIN_METHOD == "driverTest::main") {
     driverTest::main();
+}
+/**
+ * This is a dummy endpoint driver to test the driver class with
+ *
+ * @see driver, eDEFAULT
+ */
+class testDriver extends eDEFAULT {
+
+        /** history table */
+        var $history_table = "testhistory";
+        /** location table
+         *  @deprecated This is now stored in the 'params' field in the devices table
+         */
+        var $location_table = "testlocation";
+        /** Average Table */
+        var $average_table = "testaverage";
+        /** Raw history Table */
+        var $raw_history_table = "testhistory_raw";
+        
+    
+    public function Test($arg1, $arg2, $arg3) {
+        if (is_array($arg1)) {
+            $arg1['arg2'] = $arg2;
+            $arg1['arg3'] = $arg3;
+        }
+        return $arg1;
+    }
+
+    public function TestCall($arg1) {
+        return $arg1;
+    }
+    
+    public function InterpConfig($Info) {
+        $Info["testVar"] = "InterpConfig";
+        return $Info;
+    }
 }
 ?>
