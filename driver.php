@@ -239,15 +239,12 @@ class driver {
             return(FALSE);
         }
 
-        //add_debug_output("Using driver: '".$use_class."' with function ".$function."<BR>\n");
-        $command = '$return = $this->drivers["'.$use_class.'"]->'.$function.'($Info';
         $args = func_get_args();
-        for ($i = 2; $i < func_num_args(); $i++) {
-            $command .= ", \$args[".$i."]";
-        }
-        $command .= ");";
+        $args[0] = $Info;
+        unset($args[1]);
+        $class = &$this->drivers[$use_class];
+        $return = call_user_func_array(array(&$class, $function), $args);
 
-        eval($command);
 //        $return = $this->drivers[$use_class]->$function($Info);
         if (is_array($return)) {        
             if (isset($return["Errno"]) || isset($return["Error"])) { 
@@ -256,72 +253,28 @@ class driver {
                 $return = FALSE;
             }
         }
-        return($return);
+        return $return;
         
     }
 
     /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     * @param $Type Integer The type of memory to read
-     * @param $Address Integer the address to read from memory
-     * @param $Length Integer the length of data to read from memory
+     *  Tries to run a function defined by what is called.  This should
+     * replace all of the really short functions calling RunFunction.
+     *
      */
-/*
-    function ReadMem($Info, $Type, $Address, $Length) {
-    
-        $Info["MemType"] = $Type;    
-        $Info["MemAddress"] = $Address;    
-        $Info["MemLength"] = $Length;    
-        $return = $this->RunFunction($Info, "ReadMem");
-        if ($return !== FALSE) {
-            $return = $this->packet->SendPacket($Info, $return);
+    function __call($m, $a) {
+        if (is_array($a[0])) {
+            $args = array($a[0]);
+            unset($a[0]);
+        } else {
+            $args = array(array());
         }
-        return($return);
-    }
- */    
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function ReadConfig($Info) {
-        $return = $this->RunFunction($Info, "ReadConfig");
-        return($return);
-    }
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function InterpSensors($Info, $Packets) {
-        $return = $this->RunFunction($Info, "InterpSensors", $Packets);
-        return($return);
-    }
-
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function saveSensorData($Info, $Packets) {
-        $return = $this->RunFunction($Info, "saveSensorData", $Packets);
-        return($return);
-    }
-
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function saveConfigData($Info, $Packets) {
-        $return = $this->RunFunction($Info, "saveConfigData", $Packets);
-        return($return);
-    }
-    
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function GetConfigVars($Info) {
-        $return = $this->RunFunction($Info, "GetConfigVars");
-        return($return);    
+        $args[] = $m;
+        if (is_array($a)) {
+            $args = array_merge($args, $a);
+        }
+        return call_user_func_array(array($this, "RunFunction"), $args);
+        
     }
 
     /**
@@ -342,84 +295,13 @@ class driver {
         return($return);
     }
         
-    /**
-     * Decodes data coming from the endpoint
-     * @param $data Array Infomation about the device to use
-     */
-    function DecodeData($data) {
-        $return = $this->RunFunction($data, "DecodeData");
-        return($return);
-    }
-
-    /**
-     * Checks a data record to determine what its status is.  It changes
-     * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
-     * is the status that the record had originally.
-     *
-     * @param array $Info The information array on the device
-     * @param array $Rec The data record to check
-      */
-    function CheckRecord($Info, &$Rec) {
-        $this->RunFunction($Info, "CheckRecord", $Rec);
-    }
-    
-        
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function ReadSensors($Info) {
-        $return = $this->RunFunction($Info, "ReadSensors");
-        return($return);        
-    }
                 
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     * @param $which Which label to retrieve. 
-     */
-    function GetLabel($Info, $which) {
-    
-        $Info["GetLabel"] = $which;    
-        $return = $this->RunFunction($Info, "GetLabel");
-        return($return);
-    }
-
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     * @param $which Which label to retrieve. 
-     */
-    function GetUnits($Info, $which) {    
-        $Info["GetUnits"] = $which;    
-        $return = $this->RunFunction($Info, "GetUnits");
-        return($return);
-    }
-    
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function GetCols($Info){
-        $return = $this->RunFunction($Info, "GetCols");
-        return($return);
-    }
-
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     */
-    function GetCalibration($Info, $rawcal){
-        $return = $this->RunFunction($Info, "GetCalibration", $rawcal);
-        return($return);
-    }
-
         
     /**
      * Runs a function using the correct driver for the endpoint
      */
-    function done() {
-        $this->packet->close();
+    function done($Info) {
+        $this->packet->Close($Info);
     }
     
     /**
@@ -494,7 +376,6 @@ class driver {
      * @param $Info Array Infomation about the device to use
      */
     function FindDevice($Info) {
-        $this->gateway->reset();
         $gw = $this->gateway->getAll();
         $return = $this->packet->FindDevice($Info, $gw);
         return($return);
@@ -640,9 +521,10 @@ class driver {
 
 
     /**
-     * Adds the driver information to the array given to it
+     * Gets the name of the history table for a particular device
+     *
      * @param $Info Array Infomation about the device to use
-     * @return Returns $Info with added information from the driver.
+     * @return mixed The name of the table as a string on success, FALSE on failure
      */
     function getHistoryTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
@@ -653,9 +535,10 @@ class driver {
     }
 
     /**
-     * Adds the driver information to the array given to it
+     * Gets the name of the average table for a particular device
+     *
      * @param $Info Array Infomation about the device to use
-     * @return Returns $Info with added information from the driver.
+     * @return mixed The name of the table as a string on success, FALSE on failure
      */
     function getAverageTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
@@ -666,9 +549,10 @@ class driver {
     }
 
     /**
-     * Adds the driver information to the array given to it
+     * Gets the name of the location table for a particular device
+     *
      * @param $Info Array Infomation about the device to use
-     * @return Returns $Info with added information from the driver.
+     * @return mixed The name of the table as a string on success, FALSE on failure
      */
     function getLocationTable($Info) {
         if (is_object($this->drivers[$Info['Driver']]))
@@ -795,22 +679,14 @@ class driver {
     /**
      * Constructor    
      */
-    function driver(&$db, $plugins = "", $direct=TRUE) {
-
-        // This creates one database connection that everyone shares.
-//        if (!isset($options['dbWrite'])) $options['dbWrite'] = FALSE;
-//        $mdb =& MultiDBQueryTool::getWriteDSN($servers, $db, $options);
-/*
-        if ($db == NULL) {
-            $db = HUGNET_DATABASE;
-        }
- */
-        
+    function driver(&$db=NULL, $plugins = "", $direct=TRUE) {        
 
         $this->db = &$db;
-        $this->db->SetFetchMode(ADODB_FETCH_ASSOC);
+        if (is_object($this->db)) {
+            $this->db->SetFetchMode(ADODB_FETCH_ASSOC);
+        }
         if ($direct) {
-            $this->packet = new EPacket();
+            $this->packet = new EPacket(NULL, $this->verbose);
         } else {
             $this->packet = new EPacket(NULL, $this->verbose, $this->db);
         }

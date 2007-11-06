@@ -303,6 +303,7 @@ if (!class_exists('eDEFULAT')) {
          * @param array $Info Infomation about the device to use including the unsolicited packet.
          */
         function InterpConfig($Info) {
+die("THERE");
             return($Info);
         }
         /**
@@ -499,5 +500,4 @@ if (!class_exists('eDEFULAT')) {
         }
     }    
 }
-
 ?>
