@@ -79,6 +79,8 @@ if (!class_exists('eDEFULAT')) {
          */
         var $devices = array();
     
+        /** The hardware name */
+        var $HWName = "Default";
         
         /** history table */
         var $history_table = "history";
@@ -131,7 +133,7 @@ if (!class_exists('eDEFULAT')) {
     
         /** This is where the hardware devices default configurations go. */
         var $config = array(
-            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 0, "SensorLength" => 0),        
+            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 0),        
         );
     
         /** Calibration data */
@@ -274,20 +276,10 @@ if (!class_exists('eDEFULAT')) {
             $Packets = $this->packet->SendPacket($Info, $packet);
             return($Packets);
         }
-        
-        
-        /**
-         * Decodes the data retuned by the endpoint
-         * @param array $data Infomation about the device to use
-         * @note This method MUST be implemented by each driver that inherits this class
-         */
-        function DecodeData($data) {
-            $return = $this->BadDriver($data, "ReadMem");
-            return($return);        
-        }
-        
+                
         /**
          * Does something with an unsolicited packet.
+         *
          * @param array $Info Infomation about the device to use including the unsolicited packet.
          * @return always TRUE
          * @note This method MUST be implemented by each driver that inherits this class
@@ -303,7 +295,6 @@ if (!class_exists('eDEFULAT')) {
          * @param array $Info Infomation about the device to use including the unsolicited packet.
          */
         function InterpConfig($Info) {
-die("THERE");
             return($Info);
         }
         /**
@@ -330,14 +321,12 @@ die("THERE");
          *   
          */
         function InterpSensors($Info, $Packets) {
-    //        $return = $this->BadDriver($Info, "InterpSensors");    
             $Info = $this->InterpConfig($Info);
             $ret = array();
             foreach($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
                 if(isset($data['RawData'])) {
     
-    //                $data = $this->InterpConfig($data);
                     $return = $data;
     
                     $index = 0; 
@@ -413,6 +402,7 @@ die("THERE");
     
         /**
          * Returns a packet that will set the configuration data in an endpoint
+         *
          * @param array $Info Infomation about the device to use
          * @param int $start Infomation about the device to use
          * @param mixed $data The data either as an array or in hexified form

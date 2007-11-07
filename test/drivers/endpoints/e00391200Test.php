@@ -46,6 +46,30 @@ require_once dirname(__FILE__).'/../endpointTestBase.php';
  */
 class e00391200Test extends endpointTestBase {
     /**
+     *  Test cases for the InterpConfig routine
+     */
+     var $InterpConfigTestCases = array(
+         array(
+             "Info" => array(
+                 "RawSetup" => "000000008000391200410039200343010203FFFFFF5001020270700303030302",
+                 "HWPartNum" => "0039-12-01-A",
+                 "FWPartNum" => "0039-20-03-C",
+                 "FWVersion" => "01.02.03",
+                 "DeviceID" => "000080",
+                 "SerialNum" => 128,
+                 "DeviceGroup" => "FFFFFF",
+             ),
+             "Return" => array(  
+                 "HWName" => "0039-12 Endpoint",
+                 "NumSensors" => 9,
+                 "Function" => "Temperature Sensor",
+                 "TimeConstant" => 1,
+                 "DriverInfo" => "01020270700303030302",
+                 "Types" => array(2,2,112,112,3,3,3,3,2),
+             ),
+         ),
+     );
+    /**
      * Runs the test methods of this class.
      *
      * @access public

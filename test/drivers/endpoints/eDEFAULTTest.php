@@ -58,6 +58,16 @@ class eDEFAULTTest extends endpointTestBase {
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
 
+    public function testConfigArray() {
+        // Do nothing here.  This test is not valid for the default driver
+    }
+    public function testDevicesArray() {
+        // Do nothing here.  This test is not valid for the default driver
+    }
+    public function testInterpConfig() {
+        // Do nothing here.  This test is not valid for the default driver
+    }
+
 }
 
 // Call eDEFAULTTest::main() if this source file is executed directly.

@@ -46,6 +46,46 @@ require_once dirname(__FILE__).'/../endpointTestBase.php';
  */
 class e00391201Test extends endpointTestBase {
     /**
+     *  Test cases for the InterpConfig routine
+     */
+    var $InterpConfigTestCases = array(
+        array(
+            "Info" => array(
+                "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
+                "HWPartNum" => "0039-12-02-B",
+                "FWPartNum" => "0039-20-04-C",
+                "FWVersion" => "00.00.04",
+                "DeviceID" => "00004E",
+                "SerialNum" => 78,
+                "DeviceGroup" => "FFFFFF",
+            ),
+            "Return" => array(  
+                "HWName" => "0039-12 Endpoint",
+                "NumSensors" => 9,
+                "Function" => "Fan Controller",
+                "DriverInfo" => "E48081828330405060",
+                "Types" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
+				"FET0Mode" => 0,
+				"FET0pMode" => "Digital",
+				"FET1Mode" => 1,
+				"FET1pMode" => "Analog - High Z",
+				"FET2Mode" => 2,
+				"FET2pMode" => "Analog - Voltage",
+				"FET3Mode" => 3,
+				"FET3pMode" => "Analog - Current",
+    			"FET0" => 0x80,
+    			"FET1" => 0x81,
+    			"FET2" => 0x82,
+    			"FET3" => 0x83,
+    			"FET0Mult" => 0x30,
+    			"FET1Mult" => 0x40,
+    			"FET2Mult" => 0x50,
+    			"FET3Mult" => 0x60,
+
+             ),
+         ),
+     );
+    /**
      * Runs the test methods of this class.
      *
      * @access public

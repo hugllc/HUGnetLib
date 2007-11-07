@@ -39,7 +39,6 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
-require_once dirname(__FILE__).'/../../../drivers/sensors/currentSensor.php';
 
 /**
  * Test class for sensor.

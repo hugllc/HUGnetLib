@@ -46,6 +46,56 @@ require_once dirname(__FILE__).'/../endpointTestBase.php';
  */
 class e00392100Test extends endpointTestBase {
     /**
+     *  Test cases for the InterpConfig routine
+     */
+    var $InterpConfigTestCases = array(
+        array(
+            "Info" => array(
+                "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
+                "HWPartNum" => "0039-21-01-A",
+                "FWPartNum" => "0039-20-01-C",
+                "FWVersion" => "00.00.07",
+                "DeviceID" => "0000CC",
+                "SerialNum" => 204,
+                "DeviceGroup" => "FFFFFF",
+            ),
+            "Return" => array(  
+                "HWName" => "Controller Board",
+                "NumSensors" => 6,
+                "Function" => "HUGnet Controller",
+                "Types" => array(0x40, 0x50, 0x02, 0x40, 0x50, 0x02),
+                "bootLoader" => FALSE,
+             ),
+         ),
+        array(
+            "Info" => array(
+                "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
+                "HWPartNum" => "0039-21-01-A",
+                "FWPartNum" => "0039-20-06-C",
+                "FWVersion" => "00.00.02",
+                "DeviceID" => "0000B6",
+                "SerialNum" => 182,
+                "DeviceGroup" => "EEEEEE",
+            ),
+            "Return" => array(  
+                "HWName" => "Controller Board",
+                "NumSensors" => 6,
+                "Function" => "HUGnet Controller",
+                "Types" => array(0x40, 0x50, 0x02, 0x40, 0x50, 0x02),
+                "bootLoader" => TRUE,
+				'mcu' => array(
+				    "SRAM" => 0x400,
+				    "E2" => 0x1E0,
+				    "FLASH" => 0x3800,
+				    "FLASHPAGE" => 128,
+				    "PAGES" => 112,
+				),
+				"CRC" => "8055",
+             ),
+         ),
+     );
+
+    /**
      * Runs the test methods of this class.
      *
      * @access public
