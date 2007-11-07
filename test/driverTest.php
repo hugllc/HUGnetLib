@@ -113,12 +113,32 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     *
+     */
+    public function testRegisterDriver() {
+        $o = new driver();
+        $class = "testDriver";
+        $o->registerDriver($class);
+        $this->assertTrue(is_object($o->drivers[$class]), "Driver object is missing");
+        $this->assertEquals(get_class($o->drivers[$class]), $class, "The wrong class got registered");    
+        foreach($o->drivers[$class]->devices as $fw => $Firm) {
+            foreach($Firm as $hw => $ver) {
+                $dev = explode(",", $ver);
+                foreach($dev as $d) {
+                    $this->assertEquals($o->dev[$hw][$fw][$d], $class, "'$hw->$fw->$d': entry not found");
+                }
+            }
+        }
+
+    }
+    /**
      * @todo Implement testRunFunction().
      */
     public function testRunFunctionDefaultCall() {
         $Info = array();
         $o = new driver();
-        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+//        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+        $o->registerDriver($this->getMock("eDEFAULT", array("InterpConfig"), array(&$o)), "eDEFAULT");
         $o->drivers['eDEFAULT']->expects($this->once())
                                ->method('InterpConfig')
                                ->with($this->arrayHasKey("Driver"));
@@ -130,7 +150,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function testRunFunctionBadDriverCall() {
         $Info = array("Driver" => "BadDriver");
         $o = new driver();
-        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+//        $o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$o));
+        $o->registerDriver($this->getMock("eDEFAULT", array("InterpConfig"), array(&$o)), "eDEFAULT");
         $o->drivers['eDEFAULT']->expects($this->once())
                                ->method('InterpConfig')
                                ->with($this->arrayHasKey("Driver"));
@@ -142,7 +163,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function testRunFunctionGoodDriverCall() {
         $Info = array("Driver" => "testDriver");
         $o = new driver();
-        $o->drivers['testDriver'] = $this->getMock("testDriver", array("InterpConfig"), array(&$o));
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("InterpConfig"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("InterpConfig"), array(&$o)), "testDriver");
         $o->drivers['testDriver']->expects($this->once())
                                ->method('InterpConfig')
                                ->with($this->arrayHasKey("Driver"));
@@ -154,7 +176,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function testRunFunctionMultiArgsCall() {
         $Info = array("Driver" => "testDriver");
         $o = new driver();
-        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("Test"), array(&$o)), "testDriver");
         $o->drivers['testDriver']->expects($this->once())
                                ->method('Test')
                                ->with($this->arrayHasKey("Driver"));
@@ -166,7 +189,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function testRunFunctionMissingFunctionCall() {
         $Info = array("Driver" => "testDriver");
         $o = new driver();
-        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("Test"), array(&$o)), "testDriver");
         $ret = $o->RunFunction($Info, "Test", "1", "2");
         $this->assertEquals(NULL, $ret);
     }
@@ -177,7 +201,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function test__CallCall() {
         $Info = array('Driver' => 'testDriver');
         $o = new driver();
-        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("Test"), array(&$o)), "testDriver");
         $o->drivers['testDriver']->expects($this->once())
                                ->method('Test')
                                ->with($this->arrayHasKey("Driver"), $this->equalTo("1"), $this->equalTo("2"));
@@ -192,7 +217,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $arg2 = "1";
         $arg3 = "2";
         $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
+//        $o->drivers['testDriver'] = new testDriver(&$o);
+        $o->registerDriver("testDriver");
         $ret = $o->Test($Info, $arg2, $arg3);
         $this->assertEquals($ret['arg2'], $arg2, "Arg2 mangled: '".$ret['arg2']."' != '$arg2'");
         $this->assertEquals($ret['arg3'], $arg3, "Arg3 mangled: '".$ret['arg3']."' != '$arg3'");
@@ -204,7 +230,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function test__CallNoArgsCall() {
         $o = new driver();
         // This has to go to eDEFAULT since it has no args.
-        $o->drivers['eDEFAULT'] = $this->getMock("testDriver", array("TestCall"), array(&$o));
+//        $o->drivers['eDEFAULT'] = $this->getMock("testDriver", array("TestCall"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("TestCall"), array(&$o)), "eDEFAULT");
         $o->drivers['eDEFAULT']->expects($this->once())
                                ->method('TestCall')
                                ->with($this->arrayHasKey("Driver"));
@@ -427,17 +454,25 @@ if (PHPUnit_MAIN_METHOD == "driverTest::main") {
  */
 class testDriver extends eDEFAULT {
 
-        /** history table */
-        var $history_table = "testhistory";
-        /** location table
-         *  @deprecated This is now stored in the 'params' field in the devices table
-         */
-        var $location_table = "testlocation";
-        /** Average Table */
-        var $average_table = "testaverage";
-        /** Raw history Table */
-        var $raw_history_table = "testhistory_raw";
-        
+    /** history table */
+    var $history_table = "testhistory";
+    /** location table
+     *  @deprecated This is now stored in the 'params' field in the devices table
+     */
+    var $location_table = "testlocation";
+    /** Average Table */
+    var $average_table = "testaverage";
+    /** Raw history Table */
+    var $raw_history_table = "testhistory_raw";
+    var $devices = array(    
+        "testFW" => array(
+            "testHW1" => "DEFAULT",
+            "testHW2" => "0.1.2,0.2.3",
+        ),
+        "DEFAULT" => array(
+            "testHW3" => "DEFAULT",
+        ),
+    );        
     
     public function Test($arg1, $arg2, $arg3) {
         if (is_array($arg1)) {

@@ -68,7 +68,10 @@ require_once 'drivers/sensors/resistiveSensorTest.php';
 require_once 'drivers/sensors/voltageSensorTest.php';
 require_once 'drivers/sensors/windDirectionSensorTest.php';
 
-
+/**
+ *  This class runs all of the tests.  This must be done with no errors
+ * before the software is ever released.
+ */
 class AllTests
 {
     public static function main()

@@ -48,20 +48,40 @@ class filter {
         }
 
         foreach($plugins->plugins["Generic"]["filter"] as $driver) {
-            if (class_exists($driver["Class"])) {
-                $class = $driver["Class"];
-                $this->filters[$class] = new $class();
-                if (is_array($this->filters[$class]->filters)) {
-                    foreach($this->filters[$class]->filters as $type => $sInfo) {
-                        foreach($sInfo as $filter => $val) {
-                            $this->dev[$type][$filter] = $class;
-                        }
-                    }
-                }
-            }
+            $this->registerFilter($driver["Class"]);
         }
     }
 
+    /**
+     * Register a filter class.
+     *
+     * @param mixed $class The name of the sensor class to register, or the actual object
+     * @param string $name The name of the class if the above is an object.
+     * @return bool TRUE on success, FALSE on failure
+     */
+     public function registerFilter($class, $name=FALSE) {
+        if (is_string($class) && class_exists($class)) {
+            $this->filters[$class] = new $class();
+        } else if (is_object($class)) {
+            if (empty($name)) $name = get_class($class);
+            $this->filters[$name] = $class;
+            $class = $name;
+        } else {
+            return FALSE;
+        }
+
+        if (is_array($this->filters[$class]->filters)) {
+            foreach($this->filters[$class]->filters as $type => $sInfo) {
+                foreach($sInfo as $filter => $val) {
+                    $this->dev[$type][$filter] = $class;
+                }
+            }
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+     
+     }
     /**
      * This function does the actual filtering of the data based on the input given.
      *
@@ -95,11 +115,11 @@ class filter {
      * @param mixed $return This is the default value to return if the function is not found
      * @return array The filtered data
      */
-    function runFunction(&$class, $function, &$args, &$return = NULL) {
-        if (isset($function)) {
+    function runFunction(&$class, $function, &$args, $return = NULL) {
+        if (is_string($function)) {
             if (method_exists($class, $function)) {
                 $fct = array(&$class, $function);
-                call_user_func_array($fct, $args);
+                $return = call_user_func_array($fct, $args);
             }
         }
         return $return;

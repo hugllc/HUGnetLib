@@ -80,61 +80,146 @@ class sensorTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testGetReading().
      */
     public function testSensorVar() {
-/*
-        $o = new unitConversion;
-        foreach($o->units as $catName => $cat) {
-            foreach($cat as $shortName => $unit) {
-                // Long Name
-                $this->assertTrue(is_string($unit['longName']), $catName.":".$shortName.": Long name is not a string");
-                $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
-                // Var Type
-                $this->assertTrue(is_string($unit['varType']), $catName.":".$shortName.": Variable type is not a string");
-                $this->assertTrue($this->checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
-                // Mode (Mode is not required)
-                if (isset($unit['mode'])) {
-                    $this->assertTrue(is_string($unit['mode']), $catName.":".$shortName.": Mode is not a string");
-                    $this->assertTrue($this->checkMode($unit['mode']), $catName.":".$shortName.": Mode '".$unit['varType']."'is not valid");
-                }
-                // Mode (Mode is not required)
-                if (isset($unit['convert'])) {
-                    $this->assertTrue(is_array($unit['convert']), $catName.":".$shortName.": convert is not an array");
-                    foreach($unit['convert'] as $to => $function) {
-                        $this->assertTrue(method_exists($o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
-                        $this->assertTrue($this->findUnits($o->units, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
-                    }
-                }
+    }
+    /**
+     *
+     */
+    public function testRegisterSensor() {
+        $o = new sensor();
+        $class = "testSensor";
+        $o->registerSensor($class);
+        $this->assertTrue(is_object($o->sensors[$class]), "Driver object is missing");
+        $this->assertEquals(get_class($o->sensors[$class]), $class, "The wrong class got registered");    
+        foreach($o->sensors[$class]->sensors as $type => $sInfo) {
+            foreach($sInfo as $sensor => $val) {
+                $this->assertEquals($o->dev[$type][$sensor], $class, "'$type->$sensor': Not found");
             }
         }
-*/
+
+    }
+
+    /**
+     * @todo Implement testGetReading().
+     */
+    public function testGetReadingCall() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($this->getMock($cName), $cName);
+        $o->sensors[$cName]->expects($this->once())
+                           ->method('Test1')
+                           ->with($this->equalTo(1), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
+        $ret = $o->getReading(1, 0x100, "testSensor1", 10, "extra");
     }
     /**
      * @todo Implement testGetReading().
      */
-    public function testGetReading() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testGetReadingBadType() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $ret = $o->getReading(1, 0x400, "testSensor1", 10, "extra");
+        $this->assertEquals($ret, 1);
+    }
+    /**
+     * @todo Implement testGetReading().
+     */
+    public function testGetReadingGood() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $ret = $o->getReading(1, 0x100, "testSensor1", 10, "extra");
+        $this->assertEquals($ret, 10);
     }
 
     /**
      * @todo Implement testRunFunction().
      */
-    public function testRunFunction() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testRunFunctionCall() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($this->getMock($cName), $cName);
+        $o->sensors[$cName]->expects($this->once())
+                           ->method('Test1')
+                           ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4));
+        $args = array(1,2,3,4);
+        $ret = $o->runFunction($o->sensors[$cName], 'Test1', $args, "2");
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionGood() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $args = array(1,2,3,4);
+        $ret = $o->runFunction($o->sensors[$cName], 'Test2', $args, 5);
+        $this->assertEquals($ret, 1);
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionBadFct() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $args = array(1,2,3,4);
+        $ret = $o->runFunction($o->sensors[$cName], 'badFunction', $args, 5);
+        $this->assertEquals($ret, 5);
+    }
+    /**
+     * @todo Implement testRunFunction().
+     */
+    public function testRunFunctionBadClass() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $args = array(1,2,3,4);
+        $class = "badClass";
+        $ret = $o->runFunction($class, 'Test1', $args, 5);
+        $this->assertEquals($ret, 5);
     }
 
     /**
      * @todo Implement testGetClass().
      */
-    public function testGetClass() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testGetClassSetSensor() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $type = 0x100;
+        $sensor = "";
+        $class = $o->getClass($type, $sensor);
+        $this->assertTrue(is_object($class), "Object not returned");
+        $this->assertEquals(get_class($class), $cName, "Object not returned");
+        $this->assertEquals($type, 0x100, "Type changed incorrectly");
+        $this->assertEquals($sensor, "testSensor1", "Sensor changed incorrectly");
+    }
+    /**
+     * @todo Implement testGetClass().
+     */
+    public function testGetClassGood() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $type = 0x100;
+        $sensor = "testSensor2";
+        $class = $o->getClass($type, $sensor);
+        $this->assertTrue(is_object($class), "Object not returned");
+        $this->assertEquals(get_class($class), $cName, "Object not returned");
+        $this->assertEquals($type, 0x100, "Type changed incorrectly");
+        $this->assertEquals($sensor, "testSensor2", "Sensor changed incorrectly");
+    }
+    /**
+     * @todo Implement testGetClass().
+     */
+    public function testGetClassBad() {
+        $o = new sensor();
+        $cName = "testSensor";
+        $o->registerSensor($cName);
+        $type = 0x400;
+        $sensor = "testSensor2";
+        $class = $o->getClass($type, $sensor);
+        $this->assertEquals($class, NULL);
     }
 
     /**
@@ -271,5 +356,52 @@ class sensorTest extends PHPUnit_Framework_TestCase {
 // Call sensorTest::main() if this source file is executed directly.
 if (PHPUnit_MAIN_METHOD == "sensorTest::main") {
     sensorTest::main();
+}
+
+/**
+ *  This is a test sensor.  It is not used for anything else.
+ */
+class testSensor extends sensor_base {
+    var $sensors = array(
+        0x100 => array(
+            "testSensor1" => array(
+                "longName" => "Generic Test Sensor 1",
+                "unitType" => "Test",
+                "validUnits" => array('A', 'B', 'C'),
+                "storageUnit" =>  'B',
+                "function" => "test1",
+                "extra" => "extraTest",
+                "extraDefault" => "extraDefaultTest",
+                "unitModes" => array(
+                    'A' => 'raw,diff',
+                    'B' => 'diff',
+                    'C' => 'raw',
+                ),
+            ),
+            "testSensor2" => array(
+                "longName" => "Generic Test Sensor 2",
+                "unitType" => "Test2",
+                "validUnits" => array('D', 'E', 'F'),
+                "storageUnit" =>  'E',
+                "function" => "test",
+                "unitModes" => array(
+                    'E' => 'raw,diff',
+                    'D' => 'diff',
+                    'F' => 'raw',
+                ),
+            ),
+        ),
+    );
+
+    /**
+     * 
+     */    
+    public function Test1($val, $sensor, $TC, $extra) {
+        // This must stay the same. 
+        return $val*10;
+    }
+    public function Test2($val, $sensor, $TC, $extra) {
+        return $val;
+    }
 }
 ?>
