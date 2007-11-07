@@ -122,7 +122,7 @@ if (!class_exists('resistiveSensor')) {
                     "function" => "getMoistureV2",
                     "storageUnit" => '%',
                     "unitModes" => array(
-                        'k Ohms' => 'raw,diff',                        
+                        '%' => 'raw,diff',                        
                     ),
                     "extraText" => array("Bias Resistor in k Ohms", "Red Zone resistance in k Ohms", "Yellow Zone resistance in k Ohms"),
                     "extraDefault" => array(1000, 10, 1000),

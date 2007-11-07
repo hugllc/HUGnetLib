@@ -134,22 +134,76 @@ class sensorTestBase extends PHPUnit_Framework_TestCase {
     /**
      * Test the units portion of the sensor variable
      */    
-    public function testSensorVariableUnits() {
+    public function testSensorVariableUnitType() {
         $o = new $this->class;
         foreach($o->sensors as $type => $sensor) {
             foreach($sensor as $shortName => $values) {
+                // Check unitType
                 $this->assertTrue(is_string($values['unitType']),  $this->class.":".$type.":".$shortName.": unitType must be a string");
-                $this->assertTrue(is_array($values['validUnits']),  $this->class.":".$type.":".$shortName.": validUnits must be an array");
-                $this->assertTrue(is_string($values['storageUnit']),  $this->class.":".$type.":".$shortName.": unitType must be a string");
-                $this->assertTrue(is_array($values['unitModes']),  $this->class.":".$type.":".$shortName.": unitModes must be an array");
                 $this->assertTrue(unitConversionTest::findUnits($values['unitType'], $values['storageUnit']), $this->class.":".$type.":".$shortName.": unit ".$values['storageUnit']." of type ".$values['unitType']." not found in unitConversion");
+            }
+        }
+    }
+
+    /**
+     * Test the units portion of the sensor variable
+     */    
+    public function testSensorVariableStorageUnit() {
+        $o = new $this->class;
+        foreach($o->sensors as $type => $sensor) {
+            foreach($sensor as $shortName => $values) {
+                // Check storage Unit
+                $this->assertTrue(is_string($values['storageUnit']),  $this->class.":".$type.":".$shortName.": unitType must be a string");
+                // Check to make sure the storage unit is also a valid unit.
+                $found = array_search($values['storageUnit'], $values['validUnits']);
+                if ($found !== FALSE) $found = TRUE;
+                $this->assertTrue($found, $this->class.":".$type.":".$shortName.": Unit '$unit' not found in valid units list");
+
+            }
+        }
+    }
+
+    /**
+     * Test the units portion of the sensor variable
+     */    
+    public function testSensorVariableValidUnits() {
+        $o = new $this->class;
+        foreach($o->sensors as $type => $sensor) {
+            foreach($sensor as $shortName => $values) {
+                // Check valid units
+                $this->assertTrue(is_array($values['validUnits']),  $this->class.":".$type.":".$shortName.": validUnits must be an array");
+                $this->assertTrue(count($values['validUnits']) > 0, $this->class.":".$type.":".$shortName.": At least one unit must be defined");
                 foreach($values['validUnits'] as $unit) {
                     $this->assertFalse(empty($unit), $this->class.":".$type.":".$shortName.": blank unit");            
+                    // Check to make sure the unit
                     $this->assertTrue(unitConversionTest::findUnits($values['unitType'], $unit), $this->class.":".$type.":".$shortName.": unit ".$unit." not found in unitConversion");
+                    // Check to make sure the unit is also in the modes list
+                    $this->assertTrue(is_string($values['unitModes'][$unit]), $this->class.":".$type.":".$shortName.": Unit '$unit' not found in mode list");
                 }
+            }
+        }
+    }
+
+    /**
+     * Test the units portion of the sensor variable
+     */    
+    public function testSensorVariableUnitMode() {
+        $o = new $this->class;
+        foreach($o->sensors as $type => $sensor) {
+            foreach($sensor as $shortName => $values) {
+                // Check unit modes
+                $this->assertTrue(is_array($values['unitModes']),  $this->class.":".$type.":".$shortName.": unitModes must be an array");
+                $this->assertTrue(count($values['unitModes']) > 0, $this->class.":".$type.":".$shortName.": At least one mode must be defined");
                 foreach($values['unitModes'] as $unit => $mode) {
-                    if (!is_array($mode)) $mode = array($mode);
+                    // Check to make sure each unit in the mode list is also in the validUnits list
+                    $found = array_search($unit, $values['validUnits']);
+                    if ($found !== FALSE) $found = TRUE;
+                    $this->assertTrue($found, $this->class.":".$type.":".$shortName.": Unit '$unit' not found in valid units list");
+                    // Check the modes based on the units.
+                    $this->assertTrue(is_string($mode), $this->class.":".$type.":".$shortName.": Mode for unit '$unit' is not a string");
+                    $mode = explode("'", $mode);
                     foreach($mode as $m) {
+                        $m = trim($m);
                         $this->assertTrue(unitConversionTest::findUnitMode($values['unitType'], $unit, $m), $this->class.":".$type.":".$shortName.": mode ".$m." not found for ".$unit."");
                     }
                 }

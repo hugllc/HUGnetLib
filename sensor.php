@@ -46,22 +46,41 @@ class sensor {
 
         if (is_array($plugins->plugins["Generic"]["sensor"])) {
             foreach($plugins->plugins["Generic"]["sensor"] as $driver) {
-                if (class_exists($driver["Class"])) {
-                    $class = $driver["Class"];
-                    $this->sensors[$class] = new $class();
-                    if (is_array($this->sensors[$class]->sensors)) {
-                        foreach($this->sensors[$class]->sensors as $type => $sInfo) {
-                            foreach($sInfo as $sensor => $val) {
-                                $this->dev[$type][$sensor] = $class;
-                            }
-                            if (!isset($this->dev[$type]['default'])) $this->dev[$type]['default'] = $class;
-                        }
-                    }
-                }
+                $this->registerSensor($driver["Class"]);
             }
         }
     }
 
+    /**
+     * Register a sensor class.
+     *
+     * @param mixed $class The name of the sensor class to register, or the actual object
+     * @param string $name The name of the class if the above is an object.
+     * @return bool TRUE on success, FALSE on failure
+     */
+    public function registerSensor($class, $name=FALSE) {
+        if (is_string($class) && class_exists($class)) {
+            $this->sensors[$class] = new $class();
+        } else if (is_object($class)) {
+            if (empty($name)) $name = get_class($class);
+            $this->sensors[$name] = $class;
+            $class = $name;
+        } else {
+            return FALSE;
+        }
+        if (is_array($this->sensors[$class]->sensors)) {
+            foreach($this->sensors[$class]->sensors as $type => $sInfo) {
+                foreach($sInfo as $sensor => $val) {
+                    $this->dev[$type][$sensor] = $class;
+                }
+                if (!isset($this->dev[$type]['default'])) $this->dev[$type]['default'] = $class;
+            }
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    
+    }
     /**
      *   This is the generic function to get a sensor reading crunched into its correct
      *   and useful value.
@@ -74,7 +93,7 @@ class sensor {
      *   @param string $sensor The short name of the sensor
      *   @return mixed The cruched reading.
      */
-    function getReading($val, $type, $sensor=NULL) 
+    function getReading($val, $type, $sensor=NULL, $TC) 
     {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
@@ -101,7 +120,7 @@ class sensor {
      *   @return mixed The return value of the function
      */
     function runFunction(&$class, $function, &$args, $return = NULL) {
-        if (isset($function)) {
+        if (is_string($function)) {
             if (method_exists($class, $function)) {
                 $fct = array(&$class, $function);
                 $return = call_user_func_array($fct, $args);
@@ -132,8 +151,7 @@ class sensor {
                 reset($this->dev[$type]);
                 $sensor = key($this->dev[$type]);
                 $class = current($this->dev[$type]);
-            }            
-//            $class = $this->dev[$type]['default'];
+            }
         }
         return $this->sensors[$class];    
     }

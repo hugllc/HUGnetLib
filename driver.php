@@ -673,7 +673,43 @@ class driver {
         }
     }
 
-
+    /**
+     * Register a endpoint driver.
+     *
+     * @param mixed $class The name of the sensor class to register, or the actual object to register
+     * @param string $name The name of the sensor class if the above is an object.  The default is the class name.
+     * @return bool TRUE on success, FALSE on failure
+     */
+    public function registerDriver($class, $name=FALSE) {
+            if (is_string($class) && class_exists($class)) {
+                $this->drivers[$class] = new $class($this);
+            } else if (is_object($class)) {
+                if (empty($name)) $name = get_class($class);
+                $this->drivers[$name] = $class;
+                $class = $name;
+            } else {
+                return FALSE;
+            }
+            if (is_array($this->drivers[$class]->devices)) {
+                foreach($this->drivers[$class]->devices as $fw => $Firm) {
+                    foreach($Firm as $hw => $ver) {
+                        $dev = explode(",", $ver);
+                        foreach($dev as $d) {
+                            if (!isset($this->dev[$hw][$fw][$d])) {
+                                $this->dev[$hw][$fw][$d] = $class;
+                                //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
+                            } else {
+                             die("HERE");
+                            }
+                        }
+                    }
+                }
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+    
+    }
 
     
     /**
@@ -706,27 +742,8 @@ class driver {
         $this->filters = new filter($plugins);
 
         foreach($plugins->plugins["Generic"]["driver"] as $driver) {
-            if (class_exists($driver["Class"])) {
-                $class = $driver["Class"];
-                $this->drivers[$class] = new $class($this);
-                if (is_array($this->drivers[$class]->devices)) {
-                    foreach($this->drivers[$class]->devices as $fw => $Firm) {
-                        foreach($Firm as $hw => $ver) {
-                            $dev = explode(",", $ver);
-                            foreach($dev as $d) {
-                                if (!isset($this->dev[$hw][$fw][$d])) {
-                                    $this->dev[$hw][$fw][$d] = $class;
-                                    //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            $this->registerDriver($driver["Class"]);
         }
-        
-//        print get_stuff($this);
-
     }
 
 }
