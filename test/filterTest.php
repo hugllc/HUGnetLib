@@ -97,11 +97,11 @@ class filterTest extends PHPUnit_Framework_TestCase {
     public function testFilterdataCall() {
         $o = new filter();
         $cName = "testFilter";
+        $val = 1;
         $o->registerFilter($this->getMock($cName), $cName);
         $o->filters[$cName]->expects($this->once())
                            ->method('Test1')
-                           ->with($this->equalTo(1), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
-        $val = 1;
+                           ->with($this->equalTo($val), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
         $ret = $o->Filterdata($val, "testType", "testSensor1", 10, "extra");
     }
 

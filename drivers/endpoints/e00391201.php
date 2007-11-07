@@ -96,7 +96,8 @@ define("e00391201_SENSORS", 9);
 			"0039-20-05-C" => array(
 				"0039-12-02-B" => "DEFAULT",
 			),
-
+            "DEFAULT" => array(
+            ),
 		);
 		
 		var $modes = array(
@@ -117,7 +118,7 @@ define("e00391201_SENSORS", 9);
 			"0039-11-07-A" => array("Function" => "Power Controller", "Sensors" => 9, "MainV" => 8),
 			"0039-11-08-A" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
 			"0039-20-05-C" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
-
+            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9),
 		);
 
 		var $caldata = array(

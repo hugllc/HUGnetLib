@@ -698,8 +698,6 @@ class driver {
                             if (!isset($this->dev[$hw][$fw][$d])) {
                                 $this->dev[$hw][$fw][$d] = $class;
                                 //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
-                            } else {
-                             die("HERE");
                             }
                         }
                     }

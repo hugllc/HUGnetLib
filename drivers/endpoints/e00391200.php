@@ -89,8 +89,7 @@ define("e00391102B_SENSORS", 9);
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
             ),
-
-            "DEFAULT" => array(
+                        "DEFAULT" => array(
                 "0039-12-00-A" => "DEFAULT",
                 "0039-12-01-A" => "DEFAULT",
                 "0039-12-02-A" => "DEFAULT",
@@ -108,14 +107,12 @@ define("e00391102B_SENSORS", 9);
          *  @var array
          */
         var $config = array(
-            "0039-11-02-B" => array("Function" => "Temperature/Moisture Sensor", "Sensors" => e00391102B_SENSORS, "SensorLength" => e00391102B_SENSOR_LENGTH),        
-            "0039-11-03-B" => array("Function" => "Temperature Sensor", "Sensors" => e00391102B_SENSORS, "SensorLength" => e00391103B_SENSOR_LENGTH),        
-            "0039-20-02-C" => array("Function" => "Moisture Sensor", "Sensors" => e00391102B_SENSORS, "SensorLength" => e00391102B_SENSOR_LENGTH, "DisplayOrder" => "0,4,1,5,2,6,3,7,8"),
-            "0039-20-03-C" => array("Function" => "Temperature Sensor", "Sensors" => e00391102B_SENSORS, "SensorLength" => e00391103B_SENSOR_LENGTH),        
-            "0039-20-07-C" => array("Function" => "Capactive Sensor", "Sensors" => e00391102B_SENSORS, "SensorLength" => e00391103B_SENSOR_LENGTH),        
-            "0039-20-12-C" => array("Function" => "Pulse Counter", "Sensors" => 4, "SensorLength" => 13),        
-            "0039-20-13-C" => array("Function" => "Sensor Board", "Sensors" => 8, "SensorLength" => 24),        
-            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9, "SensorLength" => e00391102B_SENSOR_LENGTH),        
+            "0039-11-02-B" => array("Function" => "Temperature/Moisture Sensor", "Sensors" => 9),        
+            "0039-11-03-B" => array("Function" => "Temperature Sensor", "Sensors" => 9),        
+            "0039-20-02-C" => array("Function" => "Moisture Sensor", "Sensors" => 9, "DisplayOrder" => "0,4,1,5,2,6,3,7,8"),
+            "0039-20-03-C" => array("Function" => "Temperature Sensor", "Sensors" => 9,),        
+            "0039-20-07-C" => array("Function" => "Capactive Sensor", "Sensors" => 9),        
+            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9),        
         );
 
     

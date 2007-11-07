@@ -74,7 +74,7 @@ if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00
     	);
     
     	var $config = array(
-    		"DEFAULT" => array("Function" => "HUGnet Controller", "Sensors" => 6, "SensorLength" => 33),		
+    		"DEFAULT" => array("Function" => "HUGnet Controller", "Sensors" => 6),		
     	);
     		
     	var $cols = array(

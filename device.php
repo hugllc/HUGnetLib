@@ -278,6 +278,8 @@ class device {
         if (is_string($params)) {
             $params = base64_decode($params);
             $params = unserialize($params);
+        } else {
+            $params = array();
         }
         return $params;    
     }

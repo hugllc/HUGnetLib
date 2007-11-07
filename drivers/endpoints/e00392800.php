@@ -21,12 +21,12 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *   </pre>
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Endpoints
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ ** @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ ** @package HUGnetLib
+ ** @subpackage Endpoints
+ ** @copyright 2007 Hunt Utilities Group, LLC
+ ** @author Scott Price <prices@hugllc.com>
+ ** @version $Id$    
  *
  */
 
@@ -48,7 +48,16 @@ if (!class_exists("e00392800")) {
         var $history_table = "e00392800_history";
 
         var $devices = array(
-        
+            "0039-20-12-C" => array(
+                "0039-28-01-A" => "DEFAULT",
+                "0039-28-01-B" => "DEFAULT",
+                "0039-28-01-C" => "DEFAULT",
+            ),        
+            "0039-20-13-C" => array(
+                "0039-28-01-A" => "DEFAULT",
+                "0039-28-01-B" => "DEFAULT",
+                "0039-28-01-C" => "DEFAULT",
+            ),        
             "DEFAULT" => array(
                 "0039-28-01-A" => "DEFAULT",
                 "0039-28-01-B" => "DEFAULT",
@@ -60,9 +69,9 @@ if (!class_exists("e00392800")) {
         var $deflocation = array("Sensor 1", "Sensor 2", "Sensor 3", "Sensor 4", "Sensor 5", "Sensor 6", "Sensor 7", "Sensor 8", "Sensor 9");
 
         var $config = array(
-            "0039-20-12-C" => array("Function" => "Pulse Counter", "Sensors" => 4, "SensorLength" => 13),        
-            "0039-20-13-C" => array("Function" => "Sensor Board", "Sensors" => 20, "SensorLength" => 24),        
-            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 20, "SensorLength" => e00391102B_SENSOR_LENGTH),        
+            "0039-20-12-C" => array("Function" => "Pulse Counter", "Sensors" => 4),        
+            "0039-20-13-C" => array("Function" => "Sensor Board", "Sensors" => 16),        
+            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 16),        
         );
 
 
@@ -225,8 +234,9 @@ if (!class_exists("e00392800")) {
             return $ukey;
         }
 
-
-//        function DecodeData($data) {
+        /**
+         *
+         */
         function InterpSensors($Info, $Packets) {
             $Info = $this->InterpConfig($Info);
             $ret = array();
@@ -285,23 +295,11 @@ if (!class_exists("e00392800")) {
 
         /**
          * Constructor
-            @param $db String The database to use
-            @param $servers Array The servers to use.
-            @param $options the database options to use.
+         *
+         * @param object $driver Object of class driver.
         */    
         function e00392800 (&$driver) {
-//            $this->eDEFAULT($servers, $db, $options);
             parent::eDEFAULT($driver);
-//            $this->packet =& $driver->packet;
-/*
-            $this->R = new resistiveSensor(65536, 65536, 1<<6, 1023);
-            $this->C = new capacitiveSensor(65536, 65536, 1<<6, 1023);
-            $this->Light = new lightSensor(65536, 65536, 1<<6, 1023);
-            $this->Moisture = new moistureSensor();
-            $this->V = new voltageSensor(65536, 65536, 1<<6, 1023);
-            $this->windDir = new windDirectionSensor();
-            $this->Pulse = new pulseCounter();
-*/
         }
 
 
