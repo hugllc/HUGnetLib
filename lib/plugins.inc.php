@@ -577,7 +577,8 @@ class plugins {
         global $debug;
         $plugin_info = FALSE;
         $this->_debug("Checking File:  ".$file."\n", 4);
-        $freturn = include_once($filedir.$file); 
+        // These files might need to be included more than once, so we use include
+        $freturn = include $filedir.$file; 
         if (!$freturn) {
             $this->_debug($freturn, 4);
             $this->_debug( "\tErrors encountered parsing file. Skipping ".$file.".\n", 4);
