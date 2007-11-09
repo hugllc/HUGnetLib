@@ -738,9 +738,12 @@ class driver {
         $this->sensors = new sensor($plugins);
         // This has to go after the plugin registrations about
         $this->filters = new filter($plugins);
-
-        foreach($plugins->plugins["Generic"]["driver"] as $driver) {
-            $this->registerDriver($driver["Class"]);
+        if (is_array($plugins->plugins["Generic"]["driver"])) {
+            foreach($plugins->plugins["Generic"]["driver"] as $driver) {
+                $this->registerDriver($driver["Class"]);
+            }
+        } else {
+            // Do something here as we didn't find any plugins.
         }
     }
 
