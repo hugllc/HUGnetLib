@@ -30,8 +30,6 @@
  *
  */
 if (!class_exists('currentSensor')) {
-    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "currentSensor", "Type" => "sensor", "Class" => "currentSensor"));
-
     /**
      * Class for dealing with current sensors.
     */
@@ -111,6 +109,9 @@ if (!class_exists('currentSensor')) {
     }
 }
 
+if (method_exists($this, "add_generic")) {
+    $this->add_generic(array("Name" => "currentSensor", "Type" => "sensor", "Class" => "currentSensor"));
+}
 
 
 ?>

@@ -31,7 +31,7 @@
  *
  */
 
-if (!class_exists('eDEFULAT')) {
+if (!class_exists('eDEFAULT')) {
     /**
      * The default driver class
      *   

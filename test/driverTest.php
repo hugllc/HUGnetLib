@@ -195,6 +195,23 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(NULL, $ret);
     }
 
+    public function testRunFunctionBadFunctionCall() {
+        $Info = array("Driver" => "asdf");
+        $o = new driver();
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("Test"), array(&$o)), "testDriver");
+        $ret = $o->RunFunction($Info, "TestBad", "1", "2");
+        $this->assertEquals(FALSE, $ret);
+    }
+    public function testRunFunctionGotError() {
+        $Info = array("Driver" => "testDriver");
+        $o = new driver();
+//        $o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$o));
+        $o->registerDriver($this->getMock("testDriver", array("Test"), array(&$o)), "testDriver");
+        $ret = $o->RunFunction($Info, "getError", "1", "2");
+        $this->assertEquals(FALSE, $ret);
+    }
+
     /**
      * @todo Implement testReadConfig().
      */
@@ -489,6 +506,10 @@ class testDriver extends eDEFAULT {
     public function InterpConfig($Info) {
         $Info["testVar"] = "InterpConfig";
         return $Info;
+    }
+    
+    public function getError() {
+        return array("Errno" => 1, "Error" => "Test Error");
     }
 }
 ?>

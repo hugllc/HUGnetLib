@@ -34,14 +34,13 @@ require_once HUGNET_INCLUDE_PATH.'/firmware.php';
 if (!class_exists("e00392100")) {
 
 
-/** Reads the downstream unit serial numbers */
-define('PACKET_READDOWNSTREAMSN_COMMAND', '56');
-/** Reads the downstream unit serial numbers */
-define('PACKET_READPACKETSTATS_COMMAND', '57');
-/** Reads the downstream unit serial numbers */
-define('PACKET_HUGNETPOWER_COMMAND','60');
-
-if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "e00392100", "deviceJOIN" => ""));
+    /** Reads the downstream unit serial numbers */
+    define('PACKET_READDOWNSTREAMSN_COMMAND', '56');
+    /** Reads the downstream unit serial numbers */
+    define('PACKET_READPACKETSTATS_COMMAND', '57');
+    /** Reads the downstream unit serial numbers */
+    define('PACKET_HUGNETPOWER_COMMAND','60');
+    
 
 
 
@@ -773,4 +772,7 @@ if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "e00
     
     }
 }	
+if (method_exists($this, "add_generic")) {
+    $this->add_generic(array("Name" => "e00392100", "Type" => "driver", "Class" => "e00392100", "deviceJOIN" => ""));
+}
 ?>

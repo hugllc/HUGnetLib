@@ -77,17 +77,29 @@ class filterTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     *
+     * dataProvider for testRegisterFilter
      */
-    public function testRegisterFilter() {
+    public static function dataRegisterFilter() {
+        return array(
+            array("testFilter", TRUE),
+            array("testFilterBad", FALSE),
+            array("testFilterNoFilters", FALSE),
+        );
+    }
+    /**
+     * @dataProvider dataRegisterFilter
+     */
+    public function testRegisterFilter($class, $expect) {
         $o = new filter();
-        $class = "testFilter";
-        $o->registerFilter($class);
-        $this->assertTrue(is_object($o->filters[$class]), "Driver object is missing");
-        $this->assertEquals(get_class($o->filters[$class]), $class, "The wrong class got registered");    
-        foreach($o->filters[$class]->filters as $type => $sInfo) {
-            foreach($sInfo as $filter => $val) {
-                $this->assertEquals($o->dev[$type][$filter], $class, "'$type->$sensor': Not found");
+        $ret = $o->registerFilter($class);
+        $this->assertSame($expect, $ret);
+        if ($expect) {
+            $this->assertType("object", $o->filters[$class], "Driver object is missing");
+            $this->assertEquals(get_class($o->filters[$class]), $class, "The wrong class got registered");    
+            foreach($o->filters[$class]->filters as $type => $sInfo) {
+                foreach($sInfo as $filter => $val) {
+                    $this->assertSame($o->dev[$type][$filter], $class, "'$type->$filter': Not found");
+                }
             }
         }
     }
@@ -104,15 +116,19 @@ class filterTest extends PHPUnit_Framework_TestCase {
                            ->with($this->equalTo($val), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
         $ret = $o->Filterdata($val, "testType", "testSensor1", 10, "extra");
     }
+    public static function dataFilterdata() {
+        return array(
+        );
+    }
 
     /**
-     * @todo Implement testFilterdata().
+     * @dataProvider dataFilterdata
      */
-    public function testFilterdata() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testFilterdata($data, $type, $filter, $expect) {
+        $o = new filter();
+        $o->registerFilter("testFilter");
+        $ret = $o->filterdata($data, $type, $filter);
+        $this->assertSame($expect, $ret);
     }
 
     /**
@@ -128,84 +144,53 @@ class filterTest extends PHPUnit_Framework_TestCase {
         $args = array(1,2,3,4);
         $ret = $o->runFunction($o->filters[$cName], 'Test1', $args, "2");
     }
-    /**
-     * @todo Implement testRunFunction().
-     */
-    public function testRunFunctionGood() {
-        $o = new filter();
-        $cName = "testFilter";
-        $o->registerFilter($cName);
-        $args = array(1,2,3,4);
-        $ret = $o->runFunction($o->filters[$cName], 'Test2', $args, 5);
-        $this->assertEquals($ret, 1);
-    }
-    /**
-     * @todo Implement testRunFunction().
-     */
-    public function testRunFunctionBadFct() {
-        $o = new filter();
-        $cName = "testFilter";
-        $o->registerFilter($cName);
-        $args = array(1,2,3,4);
-        $ret = $o->runFunction($o->filters[$cName], 'badFunction', $args, 5);
-        $this->assertEquals($ret, 5);
-    }
-    /**
-     * @todo Implement testRunFunction().
-     */
-    public function testRunFunctionBadClass() {
-        $o = new filter();
-        $cName = "testFilter";
-        $o->registerFilter($cName);
-        $args = array(1,2,3,4);
-        $class = "badClass";
-        $ret = $o->runFunction($class, 'Test1', $args, 5);
-        $this->assertEquals($ret, 5);
-    }
-
 
     /**
-     * @todo Implement testGetClass().
+     *
      */
-    public function testGetClassSetFilter() {
-        $o = new filter();
-        $cName = "testFilter";
-        $o->registerFilter($cName);
-        $type = "testType";
-        $filter = "";
-        $class = $o->getClass($type, $filter);
-        $this->assertTrue(is_object($class), "Object not returned");
-        $this->assertEquals(get_class($class), $cName, "Object not returned");
-        $this->assertEquals($type, "testType", "Type changed incorrectly");
-        $this->assertEquals($filter, "testFilter1", "Sensor changed incorrectly");
+    public static function dataRunFunction() {
+        return array(
+            array("testFilter", "Test1", array(1,2,3,4), 24, 10),
+            array("testFilter", "badFunction", array(1,2,3,4), 5, 5),
+            array("badClass", "Test1", array(1,2,3,4), 7, 7),
+        );
     }
     /**
-     * @todo Implement testGetClass().
+     * @dataProvider dataRunFunction
      */
-    public function testGetClassGood() {
-        $o = new filter();
-        $cName = "testFilter";
-        $o->registerFilter($cName);
-        $type = "testType";
-        $filter = "testFilter2";
-        $class = $o->getClass($type, $filter);
-        $this->assertTrue(is_object($class), "Object not returned");
-        $this->assertEquals(get_class($class), $cName, "Object not returned");
-        $this->assertEquals($type, "testType", "Type changed incorrectly");
-        $this->assertEquals($filter, "testFilter2", "Sensor changed incorrectly");
+    public function testRunFunction($class, $function, $args, $default, $expect) {
+        $o = new sensor();
+        $o->registerSensor($class);
+        $ret = $o->runFunction($o->sensors[$class], $function, $args, $default);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     *
+     */
+    public static function dataGetClass() {
+        return array(
+            array("testType", "", "sameClass", "testType", "testFilter1"),
+            array("testType", "testFilter2", "sameClass", "testType", "testFilter2"),
+            array("badType", "testFilter2", NULL, "badType", "testFilter2"),
+        );
     }
     /**
-     * @todo Implement testGetClass().
+     * @dataProvider dataGetClass().
      */
-    public function testGetClassBad() {
+    public function testGetClass($type, $sensor, $expect, $typeExpect, $sensorExpect) {
         $o = new filter();
         $cName = "testFilter";
         $o->registerFilter($cName);
-        $type = 0x400;
-        $sensor = "testFilter2";
         $class = $o->getClass($type, $sensor);
-        $this->assertEquals($class, NULL);
+        if ($expect === "sameClass") {
+            $expect = $o->filters[$cName];
+        }
+        $this->assertSame($class, $expect, "Wrong object returned");
+        $this->assertEquals($type, $typeExpect, "Type changed incorrectly");
+        $this->assertEquals($sensor, $sensorExpect, "Sensor changed incorrectly");
     }
+
 }
 
 // Call filterTest::main() if this source file is executed directly.
@@ -259,4 +244,14 @@ class testFilter extends filter_base {
         return $val;
     }
 }
+/**
+ * This class is to test how things handle not having a sensors variable;
+ */
+class testFilterNoFilters extends filter_base {
+    function __construct() {
+        // Make absolutely sure that there are no sensors
+        unset($this->filters);
+    }
+}
+
 ?>

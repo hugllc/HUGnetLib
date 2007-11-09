@@ -93,7 +93,7 @@ class sensor {
      *   @param string $sensor The short name of the sensor
      *   @return mixed The cruched reading.
      */
-    function getReading($val, $type, $sensor=NULL, $TC) 
+    function getReading($val, $type, &$sensor, $TC) 
     {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
@@ -172,7 +172,7 @@ class sensor {
      *   @param string $unit The unit to check.
      *   @return string A valid unit for the sensor given.
      */
-    function getUnits($type, $sensor, $unit = FALSE) 
+    function getUnits($type, &$sensor, $unit = FALSE) 
     {
         $return = NULL;
         $class = $this->getClass($type, $sensor);
@@ -181,10 +181,6 @@ class sensor {
                 $return = $unit;
             } else {
                 $return = $class->sensors[$type][$sensor]['storageUnit'];
-                if (is_null($return)) {
-                    reset($class->sensors[$type][$sensor]['validUnits']);
-                    $return = current($class->sensors[$type][$sensor]['validUnits']);
-                }
             }
         }
         return $return;
@@ -211,7 +207,7 @@ class sensor {
      *   @param string $unit The unit to check.
      *   @return array Array of information about the extra parameters of the sensor
      */
-    function getExtra($type, $sensor) 
+    function getExtra($type, &$sensor) 
     {
         $return = array();
         $class = $this->getClass($type, $sensor);
@@ -240,7 +236,7 @@ class sensor {
      *   @param string $sensor The short name of the sensor
      *   @return string The name of what the sensor is measuring.
      */
-    function getUnitType($type, $sensor) 
+    function getUnitType($type, &$sensor) 
     {
         $return = NULL;
         $class = $this->getClass($type, $sensor);
@@ -280,11 +276,11 @@ class sensor {
      *
      *   @param int $type Int The type of sensor
      *   @param string $sensor The short name of the sensor
-     *   @return bool Whether to total instead of average.
+     *   @return bool Whether to total instead of average.  Returns FALSE by default
      */
     function doTotal($type, $sensor) 
     {
-        $return = NULL;
+        $return = FALSE;
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
             $return = (bool) $class->sensors[$type][$sensor]['doTotal'];
@@ -304,7 +300,7 @@ class sensor {
      *   @param string $mode The mode to check
      *   @return string A valid mode for the sensor given.
      */
-    function getUnitMode($type, $sensor, $unit=NULL, $mode=FALSE) 
+    function getUnitMode($type, &$sensor, $unit=NULL, $mode=FALSE) 
     {
         $return = array();
         $class = $this->getClass($type, $sensor);
@@ -342,7 +338,7 @@ class sensor {
      *   @param string $unit The unit to check
      *   @return string
      */
-    function getUnitDefMode($type, $sensor, $unit) 
+    function getUnitDefMode($type, &$sensor, $unit) 
     {
         $return = $this->getUnitMode($type, $sensor, $unit);
         return $return[0];
@@ -355,7 +351,7 @@ class sensor {
      *   @param string $sensor The short name of the sensor
      *   @return array
      */
-    function getAllUnits($type, $sensor) 
+    function getAllUnits($type, &$sensor) 
     {
         $return = array();
         $class = $this->getClass($type, $sensor);
@@ -409,7 +405,7 @@ class sensor {
             if (!is_array($sensor)) $sensor = array();
         
             $skip = 0;
-            foreach($units as $key => $value) {                
+            foreach($type as $key => $value) {                
                 $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
                 $mode[$key] = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }

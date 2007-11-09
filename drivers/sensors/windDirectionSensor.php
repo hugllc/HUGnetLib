@@ -33,7 +33,6 @@
 	@brief class for dealing with resistive sensors.
 */
 if (!class_exists('windDirectionSensor')) {
-    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "windDirectionSensor", "Type" => "sensor", "Class" => "windDirectionSensor"));
 
     class windDirectionSensor extends sensor_base
     {
@@ -114,6 +113,8 @@ if (!class_exists('windDirectionSensor')) {
     }
 }
 
-
+if (method_exists($this, "add_generic")) {
+    $this->add_generic(array("Name" => "windDirectionSensor", "Type" => "sensor", "Class" => "windDirectionSensor"));
+}
 
 ?>

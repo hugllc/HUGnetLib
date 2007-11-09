@@ -302,7 +302,6 @@ class unitConversion {
         if ($to == $from) return NULL;
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
-        if ($u === FALSE) return NULL;
         if (isset($f['convert'][$to])) {
             if (!isset($t['mode']) || ($t['mode'] == $type)) {
                 return $f['convert'][$to];
@@ -322,28 +321,23 @@ class unitConversion {
     public function getPossConv($type, $from=NULL) {
 
         $ret = array();
-        foreach($this->units as $f => $cat) {
-            foreach($cat as $c => $to) {
-                if (is_array($to['convert'])) {
-                    if (!isset($to['mode']) || ($to['mode'] == $type)) {
-                        foreach($to['convert'] as $t => $func) {
-                            $ret[$f][$t] = $t;
+        foreach($this->units as $c => $cat) {
+            if (($f == $from) || is_null($from)) {
+                foreach($cat as $f => $to) {
+                    if (is_array($to['convert'])) {
+                        if (!isset($to['mode']) || ($to['mode'] == $type)) {
+                            foreach($to['convert'] as $t => $func) {
+                                $ret[$f] = $t;
+                            }
                         }
                     }
                 }
-            }
+             }
         }
 
-        foreach($ret as $key => $val) {
-            $ret[$key][$key] = $key;        
-        }
-        if ($from == NULL) {
-            return $ret;
-        } else {
-            // We can always convert from and to the same unit.
-            $ret[$from][$from] = $from;
-            return $ret[$from];
-        }
+        if (!is_null($from)) $ret[$from] = $from;
+
+        return $ret;
     }
 
     /**
@@ -416,6 +410,7 @@ class unitConversion {
      * @return float NULL if data is not differential, MPH otherwise
      * @deprecated
     */
+/*
     public function CnttoMPH ($cnt, $time, $type, $cntPerRev) {
         if ($cntPerRev <= 0) $cntPerRev = 1;
         if ($type == 'diff') {
@@ -427,7 +422,7 @@ class unitConversion {
             return(NULL);        
         }    
     }
-
+*/
 
     /**
      * Converts a unit to milli.  meters to millimeters for example.

@@ -103,7 +103,7 @@ class filter {
             $args = array_merge($args); // Compacts the array
             $val = $this->runFunction($class, $stuff['function'], $args, $args[0]);
         }
-        return($val);
+        return $val;
     }
 
     /**

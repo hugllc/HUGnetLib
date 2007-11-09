@@ -30,8 +30,6 @@
  *
  */
 if (!class_exists('lightSensor')) {
-    if (method_exists($this, "add_generic")) $this->add_generic(array("Name" => "lightSensor", "Type" => "sensor", "Class" => "lightSensor"));
-
     /**
      * This class implements photo sensors.
      *
@@ -116,6 +114,9 @@ if (!class_exists('lightSensor')) {
     }
 }
 
+if (method_exists($this, "add_generic")) {
+    $this->add_generic(array("Name" => "lightSensor", "Type" => "sensor", "Class" => "lightSensor"));
+}
 
 
 

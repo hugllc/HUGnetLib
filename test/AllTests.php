@@ -33,9 +33,11 @@
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'AllTests::main');
 }
- 
+
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
+
+require_once 'otherTest.php';
 
 // Main Files
 require_once 'deviceTest.php'; 
@@ -83,6 +85,7 @@ class AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLib');
 
+        $suite->addTestSuite('otherTest');
         // Main file Tests 
         $suite->addTestSuite('deviceTest');
         $suite->addTestSuite('deviceCacheTest');
