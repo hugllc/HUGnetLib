@@ -37,7 +37,7 @@ if (!class_exists('lightSensor')) {
     class lightSensor extends sensor_base
     {
         var $defaultSensor = 'OSRAM BPW-34';
-        var $sensors = array(
+        public $sensors = array(
             0x30 => array(
                 'OSRAM BPW-34' => array(
                     "longName" =>  "OSRAM BPW-34 Photodiode",
@@ -82,12 +82,12 @@ if (!class_exists('lightSensor')) {
             // wrong formula according to the docs  2006-12-15 SLP
             // This formula is correct.
             $den = $this->Am*$this->s*$this->D; 
-            if ($den == 0) return(1500);
-            $L = (-1500)*$A * $this->Tf * $TC;
+            if ($den == 0) return(1500.0);
+            $L = (-1500.0)*$A * $this->Tf * $TC;
             $L = $L / $den;
-            $L += 1500;
+            $L += 1500.0;
     
-            return($L);
+            return round($L, 4);
         }
         
         /**
@@ -104,12 +104,12 @@ if (!class_exists('lightSensor')) {
         function OSRAMBPW34($A, $sensor, $TC, $extra=NULL) {
     
             $den = $this->Am*$this->s*$this->D; 
-            if ($den == 0) return(1500);
-            $L = (-1500)*$A * $this->Tf * $TC;
+            if ($den == 0) return(1500.0);
+            $L = (-1500.0)*$A * $this->Tf * $TC;
             $L = $L / $den;
-            $L += 1500;
+            $L += 1500.0;
     
-            return($L);    
+            return round($L, 4);    
         }
     }
 }

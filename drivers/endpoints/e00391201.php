@@ -267,10 +267,10 @@ define("e00391201_SENSORS", 9);
     				$this->driver->sensors->decodeData($Info, $data);
                     // This changes the voltage across the FET into the output voltage
                     // Vo = Vmain - Vf 
-                    $data["Data1"] = $data['data'][1] = $data["Data8"] -  $data["Data1"];
-                    $data["Data3"] = $data['data'][3] = $data["Data8"] -  $data["Data3"];
-                    $data["Data5"] = $data['data'][5] = $data["Data8"] -  $data["Data5"];
-                    $data["Data7"] = $data['data'][7] = $data["Data8"] -  $data["Data7"];
+                    $data["Data1"] = $data['data'][1] = round($data["Data8"] -  $data["Data1"], 4);
+                    $data["Data3"] = $data['data'][3] = round($data["Data8"] -  $data["Data3"], 4);
+                    $data["Data5"] = $data['data'][5] = round($data["Data8"] -  $data["Data5"], 4);
+                    $data["Data7"] = $data['data'][7] = round($data["Data8"] -  $data["Data7"], 4);
 
                     // Check everything
                     $this->checkRecord($Info, $data);

@@ -41,7 +41,7 @@ if (!class_exists('pulseSensor')) {
             This defines all of the sensors that this driver deals with...
         */
         // PPM = Pulses per minute
-        var $sensors = array(
+        public $sensors = array(
             0x70 => array(
                 'generic' => array(
                     "longName" => "Generic Pulse Counter",

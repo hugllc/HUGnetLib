@@ -36,7 +36,7 @@ if (!class_exists('currentSensor')) {
     class currentSensor extends sensor_base
     {
     
-        var $sensors = array(
+        public $sensors = array(
             0x50 => array(
                 "FETBoard" => array(
                     "longName" => "FET Board Current Sensor",
@@ -83,11 +83,11 @@ if (!class_exists('currentSensor')) {
         function getCurrent($A, $R, $G, $T) 
         {
             $denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
-            if ($denom == 0) return 0;
+            if ($denom == 0) return 0.0;
             $numer = $A * $this->D * $this->Vcc;
     
             $Read = $numer/$denom;
-            return $Read ;
+            return round($Read, 4) ;
         }
     
         /**

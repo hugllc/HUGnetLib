@@ -39,7 +39,7 @@ if (!class_exists('voltageSensor')) {
         /**
             This defines all of the sensors that this driver deals with...
         */
-        var $sensors = array(
+        public $sensors = array(
             0x10 => array(
                 'CHSMSS' => array(
                     "longName" => "TDK CHS-MSS ",
@@ -48,7 +48,8 @@ if (!class_exists('voltageSensor')) {
                     "defaultUnits" =>  '%',
                     "function" => "CHSMSS",
                     "storageUnit" => '%',
-                    "checkFunction" => "CHSMSS_check",
+                    "extraText" => "AtoD Ref Voltage",
+                    "extraDefault" => 1.1,
                     "unitModes" => array(
                         '%' => 'raw,diff',
                     ),
@@ -89,11 +90,11 @@ if (!class_exists('voltageSensor')) {
         function getDividerVoltage($A, $R1, $R2, $T)
         {
                 $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
-                if ($denom == 0) return 0;
+                if ($denom == 0) return 0.0;
                 $numer = $A * $this->D * $this->Vcc * ($R1 + $R2);
 
                 $Read = $numer/$denom;
-                return($Read);
+                return round($Read, 4);
         }
 
         function FETBoard($val, $sensor, $TC, $extra=NULL) {
@@ -118,32 +119,27 @@ if (!class_exists('voltageSensor')) {
     	    if (is_null($A)) return NULL;
     	    if (is_null($Vref)) return NULL;
     		$denom = $T * $this->Tf * $this->Am * $this->s;
-    		if ($denom == 0) return 0;
+    		if ($denom == 0) return 0.0;
     		$num = $A * $this->D * $Vref;
     	    
     	    $volts = $num / $denom;
-    		return $volts;
+    		return round($volts, 4);
     	}
     
     
         /**
             This sensor returns us 10mV / % humidity
         */
-        function CHSMSS($A, $sensor, $T, $Vref=1.1) {
+        function CHSMSS($A, $sensor, $T, $extra) {
             if (is_null($A)) return NULL;
-            if (empty($Vref)) $Vref = 1.1;
+            $Vref = (empty($extra)) ? $sensor['extraDefault'] : $extra;            
             $volts = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
-            if (($humidity > 100) && ($humidity < 105)) return 100;
-            if ($humidity > 100) return NULL;
             if ($humidity < 0) return NULL;
+            $humidity = round($humidity, 4);
             return $humidity;
         }
         
-        function CHSMSS_check($humidity, $units) {
-            return TRUE;
-        }
-
     }
 }
 

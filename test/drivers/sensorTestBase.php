@@ -29,54 +29,40 @@
  *   @version $Id$
  *
  */
-
 require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../../sensor.php';
 require_once dirname(__FILE__).'/../unitConversionTest.php';
-
 /**
  * This class is the basis for all sensor driver tests.  This class should be
  * inherited by all sensor test driver classes.  Tests in here can be overridden
  * if necessary, but this class should still be inherited.
  */
-class sensorTestBase extends PHPUnit_Framework_TestCase {
+abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
+     * 
      */
-    public static function main() {
-        require_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("sensorTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
+    public function testSensorParent() {
+        $o = new $this->class;
+        // Long Name
+        $this->assertEquals("sensor_base", get_parent_class($o), $this->class." parent class must be 'sensor_base'");
     }
-
-    function __construct() {
-        $this->class = get_class($this);
-        $this->class = str_replace("Test", "", $this->class);
+    
+    
+    public static function dataSensorArray() {
+        return array();
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
+     * @dataProvider dataSensorArray
      */
-    protected function setUp() {
-    }
-
-    /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     */
-    protected function tearDown() {
+    public function testSensorArrayLongName($catName, $shortName, $sensor) {
+        $o = new $this->class;
+        // Long Name
+        $this->assertType("string", $sensor['longName'], $catName.":".$shortName.": Long name is not a string");
+        $this->assertThat(strlen($sensor['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
     }
 
     /**
