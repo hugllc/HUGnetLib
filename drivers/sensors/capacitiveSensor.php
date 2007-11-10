@@ -35,10 +35,10 @@ if (!class_exists('capacitiveSensor')) {
     /**
      *   class for dealing with capacitive sensors.
     */
-    class capacitiveSensor extends filter_base
+    class capacitiveSensor extends sensor_base
     {
 
-        var $sensors = array(
+        public $sensors = array(
             0x20 => array(
                 'generic' => array(
                     "longName" => "Generic Capacitive Sensor",
@@ -78,6 +78,7 @@ if (!class_exists('capacitiveSensor')) {
             if ($Den2 == 0) return(0);
     
             $C = (-1.0 / $Den2) * $t;
+            $C = round($C, 4);
             return($C);
         }    
         

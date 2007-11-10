@@ -217,7 +217,7 @@ if (!class_exists('eDEFAULT')) {
                 }
             }
     
-            return($work);
+            return $work;
         }
     
         /**

@@ -40,7 +40,7 @@ if (!class_exists('windDirectionSensor')) {
         /**
             This defines all of the sensors that this driver deals with...
         */
-        var $sensors = array(
+        public $sensors = array(
             0x6F => array(
                 'maximum-inc' => array(
                     "longName" => "Maximum Inc wind direction sensor",
@@ -61,16 +61,35 @@ if (!class_exists('windDirectionSensor')) {
         function maximumIncSensor($ndir, $sensor, $TC) {
             $dir = NULL;        
     
-            if ($ndir & (1<<0)) $dir1 = 0;   //N
-            if ($ndir & (1<<2)) $dir1 = 90;  //E
-            if ($ndir & (1<<4)) $dir1 = 180; //S
-            if ($ndir & (1<<6)) $dir1 = 270; //W
+            $dir1 = NULL;
+            if ($ndir & (1<<0)) $dir1 = 0.0;   //N
+            if ($ndir & (1<<2)) {
+                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
+                $dir1 = 90.0;  //E
+            }
+            if ($ndir & (1<<4)) {
+                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
+                $dir1 = 180.0; //S
+            }
+            if ($ndir & (1<<6)) {
+                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
+                $dir1 = 270.0; //W
+            }
     
-            if ($ndir & (1<<1)) $dir2 = 45;    //NE
-            if ($ndir & (1<<3)) $dir2 = 135;    //SE
-            if ($ndir & (1<<5)) $dir2 = 225;    //SW
-            if ($ndir & (1<<7)) $dir2 = 315;    //NW
-    
+            $dir2 = NULL;
+            if ($ndir & (1<<1)) $dir2 = 45.0;    //NE
+            if ($ndir & (1<<3)) {
+                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
+                $dir2 = 135.0;    //SE
+            }
+            if ($ndir & (1<<5)) {
+                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
+                $dir2 = 225.0;    //SW
+            }
+            if ($ndir & (1<<7)) {
+                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
+                $dir2 = 315.0;    //NW
+            }
             // This code encompances all posible good values.  It is safe
             // in that respect.  It could probably be speeded up, though.  ;)
             if (!is_null($dir1) && is_null($dir2)) 

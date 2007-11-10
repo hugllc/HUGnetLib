@@ -41,9 +41,9 @@ if (!class_exists('resistiveSensor')) {
     class resistiveSensor extends sensor_base
     {
         /** @var float Moisture red zone % */
-        var $Mr = 18;
+        private $Mr = 18;
         /** @var float Moisture yellow zone % */
-        var $My = 12;
+        private $My = 12;
         
         /**
          * This is the array of sensor information.  
@@ -56,7 +56,7 @@ if (!class_exists('resistiveSensor')) {
          * two entries should be kept identical except for the first extraDefault, which
          * should be 100 under the 0x00 type and 10 under the 0x02 type.
          */
-        var $sensors = array(
+        public $sensors = array(
             0x00 => array(
                 'BCTherm2322640' => array(
                     "longName" => "BC Components Thermistor #2322640 ",
@@ -153,11 +153,11 @@ if (!class_exists('resistiveSensor')) {
             if (is_null($s)) $s = $this->s;    
             if (is_null($Am)) $Am = $this->Am;    
         
-            if ($D == 0) return 0;
+            if ($D == 0) return 0.0;
             $Den = ((($Am*$s*$TC*$Tf)/$D) - $A);
-            if (($Den == 0) || !is_numeric($Den)) return($A*$Bias);
-            $R = ($A*$Bias)/$Den;
-            return($R);
+            if (($Den == 0) || !is_numeric($Den)) $Den = 1.0;
+            $R = (float)($A*$Bias)/$Den;
+            return round($R, 4);
         }
         
         /**
@@ -214,10 +214,11 @@ if (!class_exists('resistiveSensor')) {
          *   @return float The Temperature in degrees C
          * 
         */
-        function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
+        private function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
             if ($R <= 0) return NULL;
+            if ($R0 == 0) return NULL;
             $T = $A;
             $T += $B * log($R/$R0);
             $T += $C * pow(log($R/$R0),2);
@@ -243,7 +244,7 @@ if (!class_exists('resistiveSensor')) {
          * @return float The percentage of time the door is open
          */ 
         function resisDoor($A, $sensor, $TC, $extra) {
-            $Bias = (empty($extra[0])) ? $sensors['extraDefault'][0] : $extra[0];
+            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             if ($Fixed <= 0) return NULL;        
             $Switched = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
@@ -257,7 +258,7 @@ if (!class_exists('resistiveSensor')) {
             // It can't be open more than all the time.
             // It can't be open less than none of the time.
             if (($perc < 0) || ($perc > 100)) return NULL;
-            return $perc;
+            return round($perc, 2);
         }
 
         /**
@@ -275,9 +276,10 @@ if (!class_exists('resistiveSensor')) {
          * @return float The percentage of time the door is open
          */ 
         function getMoistureV2($A, $sensor, $TC, $extra) {
-            $Bias = (empty($extra[0])) ? $sensors['extraDefault'][0] : $extra[0];
-            $Rr = (empty($extra[1])) ? $sensors['extraDefault'][1] : $extra[1];
-            $Ry = (empty($extra[2])) ? $sensors['extraDefault'][1] : $extra[2];
+            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            if ($Ry <= $Rr) return NULL;
             $R = $this->getResistance($A, $TC, $Bias, 1, 1, 64);
             
             $M = $R;
@@ -318,17 +320,18 @@ if (!class_exists('resistiveSensor')) {
          * @return float The percentage of time the door is open
          */ 
         function getMoistureV1($A, $sensor, $TC, $extra) {
-            $Bias = (empty($extra[0])) ? $sensors['extraDefault'][0] : $extra[0];
-            $Rr = (empty($extra[1])) ? $sensors['extraDefault'][1] : $extra[1];
-            $Ry = (empty($extra[2])) ? $sensors['extraDefault'][2] : $extra[2];
+            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            if ($Ry <= $Rr) return NULL;
             $R = $this->getResistance($A, 1, $Bias);
 
-    		if ($R == 0) return(35);
+    		if ($R == 0) return(35.0);
     		//$R is coming in k Ohms.  We need Ohms.
     		$R = $R * 1000;
     		$num = $this->My - $this->Mr;
     		$den = log($Ry) - log($Rr);
-    		if ($den == 0) return(35);
+    		if ($den == 0) return(35.0);
     		$B = $num / $den;
     		$A = $this->Mr - ($B * log($Rr));
     		

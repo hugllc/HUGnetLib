@@ -524,7 +524,7 @@ class sensor {
 /**
     * Base class for sensors.
 */
-class sensor_base
+abstract class sensor_base
 {
 
     /** @var int The maximum value for the AtoD convertor from @ref vSensors_final_formula */
@@ -538,7 +538,7 @@ class sensor_base
     /** @var float The Vcc value */
     var $Vcc = 5;
     /** @var array This defines all of the sensors that this driver deals with... */
-    var $sensors = array();
+    public $sensors = array();
     /** @var array This is the default sensor if no sensor is defined... */
     var $defaultSensors = array();
     
