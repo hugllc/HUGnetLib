@@ -675,7 +675,5 @@ $this->printArray($ret);
             $this->markTestSkipped("Skipped do to lack of driver"); 
         }
     }        
-
 }
-
 ?>

@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/sensors/pulseSensor.php';
 
 /**
  * Test class for sensor.
@@ -76,6 +77,14 @@ class pulseSensorTest extends sensorTestBase {
      */
     protected function tearDown() {
     }
+
+    /**
+     * data provider for testSensorArray*
+     */    
+    public static function dataSensorArray() {
+        return sensorTestBase::sensorArrayDataSource("pulseSensor");
+    }
+    
     /**
      * Data provider for testMaximumAnemometer
      */
@@ -87,11 +96,10 @@ class pulseSensorTest extends sensorTestBase {
 
     /**
      * @dataProvider dataMaximumAnemometer
+     * @covers pulseSensor::maximumAnemometer
      */
     public function testMaximumAnemometer($val, $sensor, $TC, $extra, $deltaT, $expect) {
-        $o = new pulseSensor();
-        $ret = $o->maximumAnemometer($val, $sensor, $TC, $extra, $deltaT) ;
-        $this->assertSame($expect, $ret);
+        parent::sensorTest("pulseSensor", "maximumAnemometer", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
@@ -107,11 +115,10 @@ class pulseSensorTest extends sensorTestBase {
 
     /**
      * @dataProvider dataPulseCheck
+     * @covers pulseSensor::PulseCheck
      */
     public function testPulseCheck($value, $sensor, $units, $dType, $expect) {
-        $o = new pulseSensor();
-        $ret = $o->pulseCheck($value, $sensor, $units, $dType) ;
-        $this->assertSame($expect, $ret);
+        parent::sensorCheckTest("pulseSensor", "pulseCheck", $value, $sensor, $units, $dType, $expect);
     }
 
     /**
@@ -125,11 +132,10 @@ class pulseSensorTest extends sensorTestBase {
 
     /**
      * @dataProvider dataWattNode
+     * @covers pulseSensor::WattNode
      */
     public function testWattNode($val, $sensor, $TC, $extra, $deltaT, $expect) {
-        $o = new pulseSensor();
-        $ret = $o->WattNode($val, $sensor, $TC, $extra, $deltaT, $expect) ;
-        $this->assertSame($expect, $ret);
+        parent::sensorTest("pulseSensor", "WattNode", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
@@ -143,11 +149,10 @@ class pulseSensorTest extends sensorTestBase {
 
     /**
      * @dataProvider dataGetPPM
+     * @covers pulseSensor::GetPPM
      */
     public function testGetPPM($val, $sensor, $TC, $extra, $deltaT, $expect) {
-        $o = new pulseSensor();
-        $ret = $o->GetPPM($val, $sensor, $TC, $extra, $deltaT, $expect) ;
-        $this->assertSame($expect, $ret);
+        parent::sensorTest("pulseSensor", "GetPPM", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }

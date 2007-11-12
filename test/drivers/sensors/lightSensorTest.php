@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/sensors/lightSensor.php';
 
 /**
  * Test class for sensor.
@@ -78,6 +79,13 @@ class lightSensorTest extends sensorTestBase {
     protected function tearDown() {
     }
     /**
+     * data provider for testSensorArray*
+     */    
+    public static function dataSensorArray() {
+        return sensorTestBase::sensorArrayDataSource("lightSensor");
+    }
+
+    /**
      * Data provider for testGetLight
      */
     public static function dataGetLight() {
@@ -89,6 +97,7 @@ class lightSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGetLight
+     * @covers lightSensor::GetLight
      */
     public function testGetLight($A, $TC, $expect) {
         $o = new lightSensor();
@@ -101,18 +110,17 @@ class lightSensorTest extends sensorTestBase {
      */
     public static function dataOSRAMBPW34() {
         return array(
-            array(65472, array(), 1, array(), 0.0), //This is the maximum reading (minimum light)
-            array(0, array(), 1, array(), 1500.0),  // This is the minimum reading (maximum light)
-            array(65472, array(), 0, array(), 1500.0),  // Woops!  Time constant is 0
+            array(65472, array(), 1, array(), 0, 0.0), //This is the maximum reading (minimum light)
+            array(0, array(), 1, array(), 0, 1500.0),  // This is the minimum reading (maximum light)
+            array(65472, array(), 0, array(), 0, 1500.0),  // Woops!  Time constant is 0
         );
     }
     /**
      * @dataProvider dataOSRAMBPW34
+     * @covers lightSensor::OSRAMBPW34
      */
-    public function testOSRAMBPW34($A, $sensor, $TC, $extra, $expect) {
-        $o = new lightSensor();
-        $ret = $o->OSRAMBPW34($A, $sensor, $TC, $extra);
-        $this->assertSame($expect, $ret);
+    public function testOSRAMBPW34($A, $sensor, $TC, $extra, $deltaT, $expect) {
+        parent::sensorTest("lightSensor", "OSRAMBPW34", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }

@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
+require_once dirname(__FILE__).'/unitConversionTest.php';
 require_once 'adodb/adodb.inc.php';
 
 /**
@@ -83,56 +84,98 @@ class driverTest extends PHPUnit_Framework_TestCase {
         return $driver;
     }
     /**
-     * @todo Implement testHealth().
+     * dataProvider for testRegisterSensor
      */
-    public function testHealth() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataRegisterDriver() {
+        $classTest = new testDriver();
+        return array(
+            array("testDriver", TRUE),
+            array("testDriverBad", FALSE),
+            array("testDriverNoDrivers", FALSE),
+            array($classTest, TRUE),
         );
     }
-
     /**
-     * @todo Implement testDiagnose().
+     *
+     * @dataProvider dataRegisterDriver
+     * @covers driver::RegisterDriver
      */
-    public function testDiagnose() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public function testRegisterDriver($class, $expect) {
+        $o = new driver();
+        $ret = $o->registerDriver($class);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * dataProvider for testRegisterSensor
+     */
+    public static function dataRegisterDriverGood() {
+        // These should all be good drivers.
+        $classTest = new testDriver();
+        return array(
+            array("testDriver"),
+            array($classTest),
         );
     }
-
     /**
-     * @todo Implement testGet_ydhms().
+     *
+     * @dataProvider dataRegisterDriverGood
+     * @covers driver::RegisterDriver
      */
-    public function testGet_ydhms() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+    public function testRegisterDriverObject($class) {
+        $o = new driver();
+        $ret = $o->registerDriver($class);
+        if (is_object($class)) {
+            $this->assertSame($class, $o->drivers[get_class($class)]);
+        } else {
+            $this->assertThat($o->drivers[$class], $this->isInstanceOf($class));
+        }
     }
 
     /**
      *
+     * @dataProvider dataRegisterDriverGood
+     * @covers driver::RegisterDriver
      */
-    public function testRegisterDriver() {
+    public function testRegisterDriverDevArray($class) {
         $o = new driver();
-        $class = "testDriver";
-        $o->registerDriver($class);
-        $this->assertTrue(is_object($o->drivers[$class]), "Driver object is missing");
-        $this->assertEquals(get_class($o->drivers[$class]), $class, "The wrong class got registered");    
+        $ret = $o->registerDriver($class);
+        if (is_object($class)) $class = get_class($class);
+        $this->assertType("array", $o->drivers[$class]->devices, "Devices array missing");
         foreach($o->drivers[$class]->devices as $fw => $Firm) {
             foreach($Firm as $hw => $ver) {
                 $dev = explode(",", $ver);
                 foreach($dev as $d) {
-                    $this->assertEquals($o->dev[$hw][$fw][$d], $class, "'$hw->$fw->$d': entry not found");
+                    $this->assertSame($o->dev[$hw][$fw][$d], $class, "'$hw->$fw->$d': entry not found");
                 }
             }
         }
-
     }
+
     /**
-     * @todo Implement testRunFunction().
+     * data provider for testDriversRegistered
+     */
+    public static function dataDriversRegistered() {
+        return array(
+            array("eDEFAULT"),
+            array("e00391200"),
+            array("e00391201"),
+            array("e00392100"),
+            array("e00392800"),
+        );
+    }
+    
+    /**
+     * @dataProvider dataDriversRegistered
+     */
+    public function testDriversRegistered($class) {
+        $o = new driver();
+        $this->assertThat($o->drivers[$class], $this->isInstanceOf($class));
+    }
+
+
+    /**
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
      */
     public function testRunFunctionDefaultCall() {
         $Info = array();
@@ -145,7 +188,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $ret = $o->RunFunction($Info, "InterpConfig");
     }
     /**
-     * @todo Implement testRunFunction().
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
      */
     public function testRunFunctionBadDriverCall() {
         $Info = array("Driver" => "BadDriver");
@@ -158,7 +202,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $ret = $o->RunFunction($Info, "InterpConfig");
     }
     /**
-     * @todo Implement testRunFunction().
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
      */
     public function testRunFunctionGoodDriverCall() {
         $Info = array("Driver" => "testDriver");
@@ -171,7 +216,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $ret = $o->RunFunction($Info, "InterpConfig");
     }
     /**
-     * @todo Implement testRunFunction().
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
      */
     public function testRunFunctionMultiArgsCall() {
         $Info = array("Driver" => "testDriver");
@@ -184,7 +230,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $ret = $o->RunFunction($Info, "Test", "1", "2");
     }
     /**
-     * @todo Implement testRunFunction().
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
      */
     public function testRunFunctionMissingFunctionCall() {
         $Info = array("Driver" => "testDriver");
@@ -195,6 +242,10 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(NULL, $ret);
     }
 
+    /**
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
+     */
     public function testRunFunctionBadFunctionCall() {
         $Info = array("Driver" => "asdf");
         $o = new driver();
@@ -203,6 +254,10 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $ret = $o->RunFunction($Info, "TestBad", "1", "2");
         $this->assertEquals(FALSE, $ret);
     }
+    /**
+     * @dataProvider dataRunFunction().
+     * @covers driver::RunFunction
+     */
     public function testRunFunctionGotError() {
         $Info = array("Driver" => "testDriver");
         $o = new driver();
@@ -213,7 +268,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testReadConfig().
+     * @dataProvider dataReadConfig().
+     * @covers driver::__call
      */
     public function test__CallCall() {
         $Info = array('Driver' => 'testDriver');
@@ -227,7 +283,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testReadConfig().
+     * @dataProvider dataReadConfig().
+     * @covers driver::__call
      */
     public function test__Call() {
         $Info = array('Driver' => 'testDriver');
@@ -242,7 +299,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testReadConfig().
+     * @dataProvider dataReadConfig().
+     * @covers driver::__call
      */
     public function test__CallNoArgsCall() {
         $o = new driver();
@@ -257,7 +315,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @todo Implement testSetConfig().
+     * @dataProvider dataSetConfig().
+     * @covers driver::SetConfig
      */
     public function testSetConfig() {
         // Remove the following line when you implement this test.
@@ -267,7 +326,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testDone().
+     * @dataProvider dataDone().
+     * @covers driver::Done
      */
     public function testDone() {
         $Info = array("GatewayKey" => 1);
@@ -281,7 +341,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testUpdateDevice().
+     * @dataProvider dataUpdateDevice().
+     * @covers driver::UpdateDevice
      */
     public function testUpdateDevice() {
         $Info = array("DeviceID" => 1);
@@ -295,7 +356,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testUnsolicitedConfigCheck().
+     * @dataProvider dataUnsolicitedConfigCheck().
+     * @covers driver::UnsolicitedConfigCheck
      */
     public function testUnsolicitedConfigCheck() {
         // Remove the following line when you implement this test.
@@ -305,7 +367,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testGetDevice().
+     * @dataProvider dataGetDevice().
+     * @covers driver::GetDevice
      */
     public function testGetDevice() {
         $Info = array("DeviceID" => 1);
@@ -319,17 +382,48 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testPacketLog().
+     * data provider for testFindDriver
      */
-    public function testPacketLog() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataPacketLog() {
+        return array(
+            array(
+                array("DeviceKey" => 1, "ReplyTime" => 2.54, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "5C"),
+                array("GatewayKey" => 5),
+                "POWERUP",
+                array("DeviceKey" => 1, "ReplyTime" => 2.54, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "5C", "Type" => "POWERUP"),
+            ),
+            array(
+                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "55"),
+                array("GatewayKey" => 5),
+                NULL,
+                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "55", "Type" => "UNSOLICITED"),
+            ),
+            array(
+                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
+                array("GatewayKey" => 5),
+                FALSE,
+                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
+            ),
         );
+    }
+    /**
+     * @dataProvider dataPacketLog().
+     * @covers driver::PacketLog
+     */
+    public function testPacketLog($Packet, $Gateway, $type, $expect) {
+        $o = new driver();
+        $o->registerDriver("testDriver");
+        if (is_null($type)) {
+            $pkt = $o->PacketLog($Packet, $Gateway);
+        } else {
+            $pkt = $o->PacketLog($Packet, $Gateway, $type);
+        }
+        $this->assertSame($expect, $pkt);
     }
 
     /**
-     * @todo Implement testFindDevice().
+     * @dataProvider dataFindDevice().
+     * @covers driver::FindDevice
      */
     public function testFindDevice() {
         $Info = array("GatewayKey" => 1);
@@ -343,7 +437,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testGetInfo().
+     * @dataProvider dataGetInfo().
+     * @covers driver::GetInfo
      */
     public function testGetInfo() {
         // Remove the following line when you implement this test.
@@ -352,112 +447,260 @@ class driverTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    /**
-     * @todo Implement testInterpConfig().
-     */
-    public function testInterpConfig() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataInterpConfig() {
+        return array(
+            array("Bad", FALSE),
+            array(array(), array()),
+            array(
+                array(
+                    array(
+                        "DeviceKey" => 1,
+                        "sendCommand" => PACKET_COMMAND_GETSETUP,
+                        "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                        "Date" => "2007-11-12 12:34:04",
+                    ),
+                    array(
+                        "PacketFrom" => "wrongOne",
+                        "RawData" => "12345678",
+                        "sendCommand" => "55",
+                        "Date" => "2007-11-13 12:34:04",
+                    ),
+                    array(
+                        "From" => "wrongOne",
+                        "RawData" => "12345678",
+                        "sendCommand" => "56",
+                        "Date" => "2007-11-14 12:34:04",
+                    ),
+                    array(
+                        "DeviceID" => "wrongOne",
+                        "RawData" => "12345678",
+                        "sendCommand" => "57",
+                        "Date" => "2007-11-15 12:34:04",
+                    ),
+                    array(
+                        "DeviceID" => "0000E8",
+                        "Data" => "12345678",
+                        "sendCommand" => PACKET_COMMAND_GETCALIBRATION,
+                        "Date" => "2007-11-16 12:34:04",
+                    ),
+                ),
+                array(
+                    "LastConfig" => "2007-11-16 12:34:04",
+                    "DeviceKey" => 1,
+                    "CurrentGatewayKey" => NULL,
+                    "SerialNum" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "ABCD-EF-01-A",
+                    "FWPartNum" => "0123-45-67-C",
+                    "FWVersion" => "00.00.05",
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 80,
+                    "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                    "Driver" => "testDriver",
+                    "RawData" => Array(
+                        "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                        "4C" => "12345678",
+                    ),
+                    "RawCalibration" => "12345678",
+                    "HWName" => "Phantom Test Hardware",
+                ),
+            ),      
+
         );
     }
 
     /**
-     * @todo Implement testGetHistoryTable().
+     * @dataProvider dataInterpConfig().
+     * @covers driver::InterpConfig
      */
-    public function testGetHistoryTable() {
-        $Info = array("Driver" => "testDriver");
+    public function testInterpConfig($packets, $expect) {
         $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
-        $table = $o->drivers['testDriver']->history_table;
-        $this->assertEquals($o->getHistoryTable($Info), $table);
+        $o->registerDriver("testDriver");
+        $ret = $o->InterpConfig ($packets);
+        $this->assertSame($expect, $ret);
     }
 
     /**
-     * @todo Implement testGetHistoryTable().
+     * data provider for testGetHistoryTable
      */
-    public function testGetHistoryTableBad() {
-        $Info = array("Driver" => "asdf");
+    public static function dataGetHistoryTable() {
+        return array(
+            array("testDriver", "testhistory"),
+            array("asdf", FALSE),
+        );
+    }
+    /**
+     * @dataProvider dataGetHistoryTable().
+     * @covers driver::GetHistoryTable
+     */
+    public function testGetHistoryTable($driver, $table) {
+        $Info = array("Driver" => $driver);
         $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
-        $this->assertFalse($o->getHistoryTable($Info));
+        $o->registerDriver($driver);
+        $this->assertSame($table, $o->getHistoryTable($Info));
     }
 
     /**
-     * @todo Implement testGetAverageTable().
+     * data provider for testGetHistoryTable
      */
-    public function testGetAverageTable() {
-        $Info = array("Driver" => "testDriver");
-        $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
-        $table = $o->drivers['testDriver']->average_table;
-        $this->assertEquals($o->getAverageTable($Info), $table);
+    public static function dataGetAverageTable() {
+        return array(
+            array("testDriver", "testaverage"),
+            array("asdf", FALSE),
+        );
     }
     /**
-     * @todo Implement testGetHistoryTable().
+     * @dataProvider dataGetAverageTable().
      */
-    public function testGetAverageTableBad() {
-        $Info = array("Driver" => "asdf");
+    public function testGetAverageTable($driver, $table) {
+        $Info = array("Driver" => $driver);
         $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
-        $this->assertFalse($o->getAverageTable($Info));
-    }
-
-    /**
-     * @todo Implement testGetLocationTable().
-     */
-    public function testGetLocationTable() {
-        $Info = array("Driver" => "testDriver");
-        $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
-        $table = $o->drivers['testDriver']->location_table;
-        $this->assertEquals($o->getLocationTable($Info), $table);
-    }
-    /**
-     * @todo Implement testGetHistoryTable().
-     */
-    public function testGetLocationTableBad() {
-        $Info = array("Driver" => "asdf");
-        $o = new driver();
-        $this->assertFalse($o->getLocationTable($Info));
+        $o->registerDriver($driver);
+        $this->assertSame($table, $o->getAverageTable($Info));
     }
 
     /**
-     * @todo Implement testDriverInfo().
+     * data provider for testGetLocationTable
      */
-    public function testDriverInfo() {
-        $Info = array(
-            "DeviceID" => "123456",
-            "Driver" => "testDriver",
-            );
+    public static function dataGetLocationTable() {
+        return array(
+            array("testDriver", "testlocation"),
+            array("asdf", FALSE),
+        );
+    }
+    /**
+     * @dataProvider dataGetLocationTable().
+     */
+    public function testGetLocationTable($driver, $table) {
+        $Info = array("Driver" => $driver);
         $o = new driver();
-        $o->drivers['testDriver'] = new testDriver(&$o);
+        $o->registerDriver($driver);
+        $this->assertSame($table, $o->getLocationTable($Info));
+    }
+
+    
+    /**
+     * data provider for testGetLocationTable
+     */
+    public static function dataDriverInfo() {
+        return array(
+            array(array("DeviceID" => "123456", "Driver" => "testDriver"), "history_table", "testhistory"),
+            array(array("DeviceID" => "123456", "Driver" => "testDriver"), "average_table", "testaverage"),
+        );
+    }
+    /**
+     * @dataProvider dataDriverInfo().
+     * @covers driver::DriverInfo
+     */
+    public function testDriverInfo($Info, $field, $expect) {
+        $o = new driver();
+        $o->registerDriver($Info["Driver"]);
         $Info = $o->DriverInfo($Info);
-        $history_table = $o->drivers['testDriver']->history_table;
-        $this->assertEquals($Info['history_table'], $history_table, "history_table mangled: '".$Info['history_table']."' != '$history_table'");
-        $average_table = $o->drivers['testDriver']->average_table;
-        $this->assertEquals($Info['average_table'], $average_table, "average_table mangled: '".$Info['average_table']."' != '$average_table'");
+        $this->assertSame($expect, $Info[$field]);
     }
 
     /**
-     * @todo Implement testFindDriver().
+     * data provider for testFindDriver
      */
-    public function testFindDriver() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataFindDriver() {
+        return array(
+            array(array("HWPartNum" => 1, "FWPartNum" => 2, "FWVersion" =>3), "eDEFAULT", 1),
+            array(array("HWPartNum" => "testHW2", "FWPartNum" => "testFW", "FWVersion" => "0.2.3"), "testDriver", 2),
+            array(array("HWPartNum" => "testHW1", "FWPartNum" => "testFW", "FWVersion" => "otherVersion"), "testDriver", 3),
+            array(array("HWPartNum" => "testHW3", "FWPartNum" => "otherFW", "FWVersion" => "otherVersion"), "testDriver", 4),
+            array(array("HWPartNum" => "testHW4", "FWPartNum" => "testFW2", "FWVersion" => "otherVersion"), "eDEFAULT", 5),
         );
+    }
+    /**
+     * @dataProvider dataFindDriver().
+     * @covers driver::FindDriver
+     */
+    public function testFindDriver($Info, $expect) {
+        $o = new driver();
+        $o->registerDriver("testDriver");
+        $driver = $o->findDriver($Info);
+        $this->assertSame($expect, $driver);
+    }
+
+    public function &modifyUnitsSetup() {
+        $o = new driver();
+        $o->sensors->registerSensor("testSensor");
+        $o->unit = new unitConversionMock();
+        return $o;
     }
 
     /**
-     * @todo Implement testModifyUnits().
+     * data provider for testModifyUnits
      */
-    public function testModifyUnits() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataModifyUnits() {
+        return array(
+            array(
+                array(
+                    0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
+                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
+                ), // History
+                array(
+                    "ActiveSensors" => 5, 
+                    "dType" => array("raw","diff","diff","raw","diff"), 
+                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
+                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "Units" => array("E", "B", "E", "E", "E"),
+                ), // DevInfo
+                2, // dPlaces
+                array("raw", "ignore", "diff", "diff", "raw"), // Type
+                array("E", "B", "E", "D", "E"), // Units
+                array(
+                    1 => array("Data0" => NULL,"Data2" => 4.0, "Data3" => -1.0, "Data4" => 6.5, "data" => array(NULL,NULL,4.0,-1.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
+                ), // expectHistory
+                array(
+                    "ActiveSensors" => 5, 
+                    "dType" => array("raw","diff","diff","raw","diff"), 
+                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
+                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "Units" => array("E", "B", "E", "D", "E"),
+                ), // expectDevInfo
+                array("raw", "ignore", "diff", "diff", "diff"), // expectType
+                array("E", "B", "E", "D","E"), // expectUnits
+            ),
         );
     }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+     */
+    public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $o = $this->modifyUnitsSetup();
+        $ret = $o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectHistory, $history);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+     */
+    public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $o = $this->modifyUnitsSetup();
+        $ret = $o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectDevInfo, $devInfo);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+     */
+    public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $o = $this->modifyUnitsSetup();
+        $ret = $o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectType, $type);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+     */
+    public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $o = $this->modifyUnitsSetup();
+        $ret = $o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectUnits, $units);
+    }
+
 }
 
 // Call driverTest::main() if this source file is executed directly.
@@ -488,6 +731,10 @@ class testDriver extends eDEFAULT {
         ),
         "DEFAULT" => array(
             "testHW3" => "DEFAULT",
+            "ABCD-EF-01-A" => "DEFAULT",
+        ),
+        "testFW2" => array(
+            "testHW4" => "BAD",
         ),
     );        
     
@@ -503,13 +750,34 @@ class testDriver extends eDEFAULT {
         return $arg1;
     }
     
-    public function InterpConfig($Info) {
-        $Info["testVar"] = "InterpConfig";
+    public function InterpConfig(&$Info) {
+        $Info['HWName'] = "Phantom Test Hardware";
         return $Info;
     }
     
     public function getError() {
         return array("Errno" => 1, "Error" => "Test Error");
     }
+    
+    public function __construct(&$driver = FALSE) {
+        if (is_object($driver)) {
+            parent::eDEFAULT($driver);
+        }
+    }
+    
+    public function __toString() {
+        return "object(".get_class($this).")";
+    }
 }
+/**
+ * This is a dummy endpoint driver to test the driver class with
+ *
+ * @see driver, eDEFAULT
+ */
+class testDriverNoDrivers extends eDEFAULT {
+    public function __construct() {
+        unset($this->devices);
+    }
+}
+
 ?>

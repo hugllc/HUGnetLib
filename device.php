@@ -284,6 +284,128 @@ class device {
         return $params;    
     }
 
+    /**
+     *   Queries health information from the database.
+     *   
+     ** @todo This should be moved to the device class
+     *   
+     ** @param string $where Extra where clause for the SQL
+     ** @param int $days The number of days back to go
+     ** @param string|int $start The start date of the health report
+     ** @return array The array of health information
+      */
+    function health($where, $days = 7, $start=NULL) {
+
+        if ($start === NULL) {
+            $start = time();
+        } else if (is_string($start)) {
+            $start = strtotime($start);
+        }
+        $end = $start - (86400 * $days);
+        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->device_table." ";
+        $cquery .= " WHERE PollInterval > 0 ";
+        if (!empty($where)) $cquery .= " AND ".$where;
+        $res = $this->db->getArray($cquery);
+        $count = $res[0]['count'];
+        if (empty($count)) $count = 1;
+        
+        $query = " SELECT " .
+                 "  ROUND(AVG(AverageReplyTime), 2) as ReplyTime " .
+                 ", ROUND(STD(AverageReplyTime), 2) as ReplyTimeSTD " .
+                 ", ROUND(MIN(AverageReplyTime), 2) as ReplyTimeMIN " .
+                 ", ROUND(MAX(AverageReplyTime), 2) as ReplyTimeMAX " .
+                 ", ROUND(AVG(AveragePollTime), 2) as PollInterval " . 
+                 ", ROUND(STD(AveragePollTime), 2) as PollIntervalSTD " . 
+                 ", ROUND(MIN(AveragePollTime), 2) as PollIntervalMIN " . 
+                 ", ROUND(MAX(AveragePollTime), 2) as PollIntervalMAX " . 
+                 ", ROUND(AVG(PollInterval), 2) as PollIntervalSET " . 
+                 ", ROUND(AVG(PollInterval/AveragePollTime), 2) as PollDensity " . 
+                 ", ROUND(STD(PollInterval/AveragePollTime), 2) as PollDensitySTD " . 
+                 ", ROUND(MIN(PollInterval/AveragePollTime), 2) as PollDensityMIN " . 
+                 ", ROUND(MAX(PollInterval/AveragePollTime), 2) as PollDensityMAX " . 
+                 ", '1.0' as PollDensitySET " . 
+                 ", SUM(Powerups) as Powerups " .
+                 ", SUM(Reconfigs) as Reconfigs " .
+                 ", ROUND(SUM(Polls) / ".$days.") as DailyPolls ".
+                 ", ROUND((1440 / AVG(PollInterval)) * ".$count.") as DailyPollsSET ".
+                 " ";
+        $query .= " FROM " . $this->analysis_table;
+
+        $query .= " LEFT JOIN " . $this->device_table . " ON " . 
+                 $this->device_table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
+
+        $query .= " WHERE " .
+                  $this->analysis_table . ".Date <= ".$this->db->qstr(date("Y-m-d H:i:s", $start)).
+                  " AND " .
+                  $this->analysis_table . ".Date >= ".$this->db->qstr(date("Y-m-d H:i:s", $end));
+    
+        if (!empty($where)) $query .= " AND ".$where;
+                 
+        $res = $this->db->getArray($query);
+        if (isset($res[0])) $res = $res[0];
+        return $res;
+    }
+
+
+
+    /**
+     * Sends out an all call so all boards respond.
+     * @param $Info Array Infomation about the device to get stylesheet information for
+     * @return The return should be put inside of style="" css tags in your HTML
+    
+        Returns a style based on the condition of the endpoint.  Useful for displaying
+        a list of endpoints and quickly seeing which ones have problems.
+     */
+    function Diagnose($Info) {
+
+        $problem = array();
+        if ($Info["PollInterval"] > 0) {
+            $timelag = time() - strtotime($Info["LastPoll"]);
+            $pollhistory = (strtotime($Info["LastPoll"]) - strtotime($Info["LastHistory"]));
+            if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
+            
+            if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))){
+                $problem[] = "Last Poll ".$this->get_ydhms($timelag)." ago\n";
+            }
+            if ($pollhistory > 1800) {
+                $problem[] = "History ".$this->get_ydhms($pollhistory)." old\n";
+            }
+            if (($Info["GatewayKey"] != $Info["CurrentGatewayKey"]) && ($Info["CurrentGatewayKey"] != 0)) {
+//                $problem[] = "Polling on backup gateway\n";
+            }
+            if ($Info['ActiveSensors'] == 0) {
+                $problem[] = "No Active Sensors\n";
+            }
+        }
+        return($problem);        
+    }
+    /**
+     * Puts seconds into a human readable Hours minutes seconds
+     *
+     * @param float $seconds The number of seconds
+     * @param int $digits the number of places after the decimal point to have on the seconds
+     * @return string
+     */
+    function get_ydhms ($seconds, $digits=0) {
+        $years = (int)($seconds/60/60/24/365.25);
+        $seconds -= $years*60*60*24*365.25;
+        $days = (int)($seconds/60/60/24);
+        $seconds -= $days*60*60*24;
+        $hours = (int)($seconds/60/60);
+        $seconds -= $hours*60*60;
+        $minutes = (int)($seconds/60);
+        $seconds -= $minutes*60;
+        $seconds = number_format($seconds, $digits);
+
+        $return = "";
+        if ($years > 0) $return .= $years."Y ";
+        if ($days > 0) $return .= $days."d ";
+        if ($hours > 0) $return .= $hours."h ";
+        if ($minutes > 0) $return .= $minutes."m ";
+        $return .= $seconds."s";
+        return($return);
+    }
+
 }
 
 

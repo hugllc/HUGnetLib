@@ -99,8 +99,7 @@ class sensorTest extends PHPUnit_Framework_TestCase {
         $ret = $o->registerSensor($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
-            $this->assertType("object", $o->sensors[$class], "Driver object is missing");
-            $this->assertEquals(get_class($o->sensors[$class]), $class, "The wrong class got registered");    
+            $this->assertThat($o->sensors[$class], $this->isInstanceOf($class));
             foreach($o->sensors[$class]->sensors as $type => $sInfo) {
                 foreach($sInfo as $sensor => $val) {
                     $this->assertEquals($o->dev[$type][$sensor], $class, "'$type->$sensor': Not found");

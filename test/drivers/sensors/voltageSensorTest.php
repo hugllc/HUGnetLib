@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/sensors/voltageSensor.php';
 
 /**
  * Test class for sensor.
@@ -76,6 +77,12 @@ class voltageSensorTest extends sensorTestBase {
      */
     protected function tearDown() {
     }
+    /**
+     * data provider for testSensorArray*
+     */    
+    public static function dataSensorArray() {
+        return sensorTestBase::sensorArrayDataSource("voltageSensor");
+    }
 
     /**
      * Data provider for testGetDividerVoltage
@@ -89,6 +96,7 @@ class voltageSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGetDividerVoltage
+     * @covers voltageSensor::GetDividerVoltage
      */
     public function testGetDividerVoltage($A, $R1, $R2, $T, $expect) {
         $o = new voltageSensor();
@@ -101,19 +109,18 @@ class voltageSensorTest extends sensorTestBase {
      */
     public static function dataFETBoard() {
         return array(
-            array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 1), 0.1527),
-            array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 0), 0.1527),
-            array(1000, array("extraDefault"=>array(1, 1)), 1, array(0, 1), 0.1527),
-            array(1000, array("extraDefault"=>array(1, 1)), 1, NULL, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 1), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 0), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1)), 1, array(0, 1), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1)), 1, NULL, 0, 0.1527),
         );
     }
     /**
      * @dataProvider dataFETBoard
+     * @covers voltageSensor::FETBoard
      */
-    public function testFETBoard($val, $sensor, $TC, $extra, $expect) {
-        $o = new voltageSensor();
-        $ret = $o->FETBoard($val, $sensor, $TC, $extra);
-        $this->assertSame($expect, $ret);
+    public function testFETBoard($val, $sensor, $TC, $extra, $deltaT, $expect) {
+        parent::sensorTest("voltageSensor", "FETBoard", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
@@ -129,6 +136,7 @@ class voltageSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGetVoltage
+     * @covers voltageSensor::GetVoltage
      */
     public function testGetVoltage($A, $T, $Vref, $expect) {
         $o = new voltageSensor();
@@ -141,20 +149,19 @@ class voltageSensorTest extends sensorTestBase {
      */
     public static function dataCHSMSS() {
         return array(
-            array(10000, array("extraDefault"=>1.1), 1, 1.1, 16.8),
-            array(10000, array("extraDefault"=>1.1), 1, NULL, 16.8),
-            array(10000, array("extraDefault"=>1.1), 1, 0, 16.8),
-            array(65535, array("extraDefault"=>1.1), 1, 1.1, 110.11),
-            array(-10000, array("extraDefault"=>1.1), 1, 1.1, NULL),
+            array(10000, array("extraDefault"=>1.1), 1, 1.1, 0, 16.8),
+            array(10000, array("extraDefault"=>1.1), 1, NULL, 0, 16.8),
+            array(10000, array("extraDefault"=>1.1), 1, 0, 0, 16.8),
+            array(65535, array("extraDefault"=>1.1), 1, 1.1, 0, 110.11),
+            array(-10000, array("extraDefault"=>1.1), 1, 1.1, 0, NULL),
         );
     }
     /**
      * @dataProvider dataCHSMSS
+     * @covers voltageSensor::CHSMSS
      */
-    public function testCHSMSS($val, $sensor, $TC, $extra, $expect) {
-        $o = new voltageSensor();
-        $ret = $o->CHSMSS($val, $sensor, $TC, $extra);
-        $this->assertSame($expect, $ret);
+    public function testCHSMSS($val, $sensor, $TC, $extra, $deltaT, $expect) {
+        parent::sensorTest("voltageSensor", "CHSMSS", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }
