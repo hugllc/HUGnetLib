@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/sensors/windDirectionSensor.php';
 
 /**
  * Test class for sensor.
@@ -76,39 +77,44 @@ class windDirectionSensorTest extends sensorTestBase {
      */
     protected function tearDown() {
     }
+    /**
+     * data provider for testSensorArray*
+     */    
+    public static function dataSensorArray() {
+        return sensorTestBase::sensorArrayDataSource("windDirectionSensor");
+    }
 
     /**
      * Data provider for testGetCapacitance
      */
     public static function dataMaximumIncSensor() {
         return array(
-            array(0x01, array(), 0, 0.0),
-            array(0x04, array(), 0, 90.0),
-            array(0x10, array(), 0, 180.0),
-            array(0x40, array(), 0, 270.0),
-            array(0x02, array(), 0, 45.0),
-            array(0x08, array(), 0, 135.0),
-            array(0x20, array(), 0, 225.0),
-            array(0x80, array(), 0, 315.0),
-            array(0x03, array(), 0, 22.5),
-            array(0x81, array(), 0, 337.5),
-            array(0x06, array(), 0, 67.5),
-            array(0x0C, array(), 0, 112.5),
-            array(0x18, array(), 0, 157.5),
-            array(0x30, array(), 0, 202.5),
-            array(0x60, array(), 0, 247.5),
-            array(0xC0, array(), 0, 292.5),
-            array(0x05, array(), 0, NULL),
-            array(0x00, array(), 0, NULL),
+            array(0x01, array(), 0, 0, 0, 0.0),
+            array(0x04, array(), 0, 0, 0, 90.0),
+            array(0x10, array(), 0, 0, 0, 180.0),
+            array(0x40, array(), 0, 0, 0, 270.0),
+            array(0x02, array(), 0, 0, 0, 45.0),
+            array(0x08, array(), 0, 0, 0, 135.0),
+            array(0x20, array(), 0, 0, 0, 225.0),
+            array(0x80, array(), 0, 0, 0, 315.0),
+            array(0x03, array(), 0, 0, 0, 22.5),
+            array(0x81, array(), 0, 0, 0, 337.5),
+            array(0x06, array(), 0, 0, 0, 67.5),
+            array(0x0C, array(), 0, 0, 0, 112.5),
+            array(0x18, array(), 0, 0, 0, 157.5),
+            array(0x30, array(), 0, 0, 0, 202.5),
+            array(0x60, array(), 0, 0, 0, 247.5),
+            array(0xC0, array(), 0, 0, 0, 292.5),
+            array(0x05, array(), 0, 0, 0, NULL),
+            array(0x00, array(), 0, 0, 0, NULL),
         );
     }
     /**
      * @dataProvider dataMaximumIncSensor
+     * @covers windDirectionSensor::maximumIncSensor
      */
-    public function testMaximumIncSensor($ndir, $sensor, $TC, $expect) {
-        $o = new windDirectionSensor();
-        $ret = $o->maximumIncSensor($ndir, $sensor, $TC);
-        $this->assertSame($expect, $ret);
+    public function testMaximumIncSensor($ndir, $sensor, $TC, $extra, $deltaT, $expect) {
+        parent::sensorTest("windDirectionSensor", "maximumIncSensor", $ndir, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }

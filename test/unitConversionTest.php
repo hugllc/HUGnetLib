@@ -580,4 +580,92 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
 if (PHPUnit_MAIN_METHOD == "unitConversionTest::main") {
     unitConversionTest::main();
 }
+
+
+/**
+ *  This is a mock class to test the rest of the system.
+ */
+class unitConversionMock extends unitConversion {
+    var $units = array(
+        'Test' => array(
+            'A' => array(
+                'longName' => 'A',
+                'varType' => 'float',
+                'convert' => array(
+                    'B' => 'AtoB',
+                    'C' => 'AtoC',
+                ),
+            ),
+            'B' => array(
+                'longName' => 'B',
+                'varType' => 'float',
+                'convert' => array(
+                    'A' => 'BtoA',
+                    'C' => 'BtoC',
+                ),
+                'preferred' => 'A',
+            ),
+            'C' => array(
+                'longName' => 'C',
+                'varType' => 'float',
+                'convert' => array(
+                    'A' => 'CtoA',
+                    'B' => 'CtoB',
+                ),
+                'preferred' => 'A',
+            ),
+        ),
+        'Test2' => array(
+            'D' => array(
+                'longName' => 'D',
+                'varType' => 'float',
+                'convert' => array(
+                    'E' => 'AtoB',
+                    'F' => 'AtoC',
+                ),
+            ),
+            'E' => array(
+                'longName' => 'E',
+                'varType' => 'float',
+                'convert' => array(
+                    'D' => 'BtoA',
+                    'F' => 'BtoC',
+                ),
+                'preferred' => 'D',
+            ),
+            'F' => array(
+                'longName' => 'C',
+                'varType' => 'float',
+                'convert' => array(
+                    'D' => 'CtoA',
+                    'E' => 'CtoB',
+                ),
+            ),
+        ),
+    );
+    
+    public function AtoB($W, $time, $type) {
+        return 2*$W;
+    }
+
+    public function BtoA($W, $time, $type) {
+        return $W/2;
+    }
+    public function AtoC($W, $time, $type) {
+        return 4*$W;
+    }
+
+    public function CtoA($W, $time, $type) {
+        return $W/4;
+    }
+    public function BtoC($W, $time, $type) {
+        return 10*$W;
+    }
+
+    public function CtoB($W, $time, $type) {
+        return $W/10;
+    }
+
+}
+
 ?>

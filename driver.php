@@ -89,125 +89,17 @@ class driver {
     var $packet_log_table = "PacketLog";
 
     /**
-     *   Queries health information from the database.
-     *   
-     ** @todo This should be moved to the device class
-     *   
-     ** @param string $where Extra where clause for the SQL
-     ** @param int $days The number of days back to go
-     ** @param string|int $start The start date of the health report
-     ** @return array The array of health information
+      * @see device::health
       */
     function health($where, $days = 7, $start=NULL) {
-
-        if ($start === NULL) {
-            $start = time();
-        } else if (is_string($start)) {
-            $start = strtotime($start);
-        }
-        $end = $start - (86400 * $days);
-        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->device_table." ";
-        $cquery .= " WHERE PollInterval > 0 ";
-        if (!empty($where)) $cquery .= " AND ".$where;
-        $res = $this->db->getArray($cquery);
-        $count = $res[0]['count'];
-        if (empty($count)) $count = 1;
-        
-        $query = " SELECT " .
-                 "  ROUND(AVG(AverageReplyTime), 2) as ReplyTime " .
-                 ", ROUND(STD(AverageReplyTime), 2) as ReplyTimeSTD " .
-                 ", ROUND(MIN(AverageReplyTime), 2) as ReplyTimeMIN " .
-                 ", ROUND(MAX(AverageReplyTime), 2) as ReplyTimeMAX " .
-                 ", ROUND(AVG(AveragePollTime), 2) as PollInterval " . 
-                 ", ROUND(STD(AveragePollTime), 2) as PollIntervalSTD " . 
-                 ", ROUND(MIN(AveragePollTime), 2) as PollIntervalMIN " . 
-                 ", ROUND(MAX(AveragePollTime), 2) as PollIntervalMAX " . 
-                 ", ROUND(AVG(PollInterval), 2) as PollIntervalSET " . 
-                 ", ROUND(AVG(PollInterval/AveragePollTime), 2) as PollDensity " . 
-                 ", ROUND(STD(PollInterval/AveragePollTime), 2) as PollDensitySTD " . 
-                 ", ROUND(MIN(PollInterval/AveragePollTime), 2) as PollDensityMIN " . 
-                 ", ROUND(MAX(PollInterval/AveragePollTime), 2) as PollDensityMAX " . 
-                 ", '1.0' as PollDensitySET " . 
-                 ", SUM(Powerups) as Powerups " .
-                 ", SUM(Reconfigs) as Reconfigs " .
-                 ", ROUND(SUM(Polls) / ".$days.") as DailyPolls ".
-                 ", ROUND((1440 / AVG(PollInterval)) * ".$count.") as DailyPollsSET ".
-                 " ";
-        $query .= " FROM " . $this->analysis_table;
-
-        $query .= " LEFT JOIN " . $this->device_table . " ON " . 
-                 $this->device_table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
-
-        $query .= " WHERE " .
-                  $this->analysis_table . ".Date <= ".$this->db->qstr(date("Y-m-d H:i:s", $start)).
-                  " AND " .
-                  $this->analysis_table . ".Date >= ".$this->db->qstr(date("Y-m-d H:i:s", $end));
-    
-        if (!empty($where)) $query .= " AND ".$where;
-                 
-        $res = $this->db->getArray($query);
-        if (isset($res[0])) $res = $res[0];
-        return $res;
+        return $this->device->health($where, $days, $start);
     }
-
-
-
     /**
-     * Sends out an all call so all boards respond.
-     * @param $Info Array Infomation about the device to get stylesheet information for
-     * @return The return should be put inside of style="" css tags in your HTML
-    
-        Returns a style based on the condition of the endpoint.  Useful for displaying
-        a list of endpoints and quickly seeing which ones have problems.
+     * @see device::Diagnose
      */
     function Diagnose($Info) {
-
-        $problem = array();
-        if ($Info["PollInterval"] > 0) {
-            $timelag = time() - strtotime($Info["LastPoll"]);
-            $pollhistory = (strtotime($Info["LastPoll"]) - strtotime($Info["LastHistory"]));
-            if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
-            
-            if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))){
-                $problem[] = "Last Poll ".$this->get_ydhms($timelag)." ago\n";
-            }
-            if ($pollhistory > 1800) {
-                $problem[] = "History ".$this->get_ydhms($pollhistory)." old\n";
-            }
-            if (($Info["GatewayKey"] != $Info["CurrentGatewayKey"]) && ($Info["CurrentGatewayKey"] != 0)) {
-//                $problem[] = "Polling on backup gateway\n";
-            }
-            if ($Info['ActiveSensors'] == 0) {
-                $problem[] = "No Active Sensors\n";
-            }
-        }
-        return($problem);        
-    }
-    
-
-    function get_ydhms ($seconds, $digits=0) {
-        $years = (int)($seconds/60/60/24/365.25);
-        $seconds -= $years*60*60*24*365.25;
-        $days = (int)($seconds/60/60/24);
-        $seconds -= $days*60*60*24;
-        $hours = (int)($seconds/60/60);
-        $seconds -= $hours*60*60;
-        $minutes = (int)($seconds/60);
-        $seconds -= $minutes*60;
-        $seconds = number_format($seconds, $digits);
-
-        $return = "";
-        if ($years > 0) $return .= $years."Y ";
-        if ($days > 0) $return .= $days."d ";
-        if ($hours > 0) $return .= $hours."h ";
-        if ($minutes > 0) $return .= $minutes."m ";
-        $return .= $seconds."s";
-        return($return);
-    }
-
-    
-
-    
+        return $this->device->Diagnose($Info);
+    }        
     /**
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
@@ -219,7 +111,7 @@ class driver {
         driver and the default driver.  If the classes or the methods don't exist
         then it complains.
      */
-    function RunFunction ($Info, $function) {
+    function RunFunction (&$Info, $function) {
         if (!is_array($Info)) return FALSE;
         $return = array();
         $function = trim($function);
@@ -240,7 +132,7 @@ class driver {
         }
 
         $args = func_get_args();
-        $args[0] = $Info;
+        $args[0] = &$Info;
         unset($args[1]);
         $class = &$this->drivers[$use_class];
         $return = call_user_func_array(array(&$class, $function), $args);
@@ -281,7 +173,7 @@ class driver {
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
      */
-    function     SetConfig($Info, $start, $data) {
+    function SetConfig($Info, $start, $data) {
         //add_debug_output("Setting Configuration:<br>\n");
          $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
         $this->Error = "";
@@ -315,29 +207,10 @@ class driver {
     }
     
     /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Packet Array The incoming packet
-     * @param $GatewayKey Integer The gateway the packet came from
-     */
-    function UnsolicitedConfigCheck($Packet, $GatewayKey) {
-        if (!isset($Packet["DeviceID"])) $Packet["DeviceID"] = strtoupper($Packet["From"]);
-        if (!isset($Packet["GatewayKey"])) $Packet["GatewayKey"] = $Packet["Socket"];
-        $return = FALSE;
-        switch($Packet["Command"]) {
-            case "5D":
-            case "5E":
-            case "5F":
-                $return = $this->RunFunction($Packet, "ReadConfig");
-                if ($return !== FALSE) {
-                    $return = $this->packet->SendPacket($Packet, $return, -1, FALSE);
-                }
-                break;
-            default:
-                break;
-        }
-        return($return);
-    }
-    
+     * Wrapper for device::getDevice
+     *
+     * @see device::getDevice
+     */    
     function getDevice($id, $type="KEY") {
 
         return $this->device->getDevice($id, $type);
@@ -428,6 +301,27 @@ class driver {
         $return = array();
         foreach($packets as $packet) {
 //            $return = $packet;
+            if (!isset($return['DeviceID'])) {
+                if (isset($packet['PacketFrom'])) {
+                    $return['DeviceID'] = $packet['PacketFrom'];
+                } else if (isset($packet['From'])) {
+                    $return['DeviceID'] = $packet['From'];
+                }
+            } else {
+                if (!empty($packet['PacketFrom'])) {
+                    if ($return['DeviceID'] != $packet['PacketFrom']) {
+                        continue;
+                    }
+                } else if (!empty($packet['From'])) {
+                    if ($return['DeviceID'] != $packet['From']) {
+                        continue;
+                    }
+                } else if (!empty($packet['DeviceID'])) {
+                    if ($return['DeviceID'] != $packet['DeviceID']) {
+                        continue;
+                    }
+                }
+            }
             if (!isset($packet["RawData"])) {
                 if (isset($packet["Data"])) {
                     $packet["RawData"] = $packet["Data"];
@@ -437,20 +331,6 @@ class driver {
                     $packet['RawData'] = $packet['RawSetup'];
                 }
             }
-            if (!isset($return['DeviceID'])) {
-                if (isset($packet['PacketFrom'])) {
-                    $return['DeviceID'] = $packet['PacketFrom'];
-                } else if (isset($packet['From'])) {
-                    $return['DeviceID'] = $packet['From'];
-                }
-            } else {
-                if (!empty($packet['PacketFrom']))
-                    if ($return['DeviceID'] != $packet['PacketFrom']) continue;
-                if (!empty($packet['From']))
-                    if ($return['DeviceID'] != $packet['From']) continue;
-                if (!empty($packet['DeviceID']))
-                    if ($return['DeviceID'] != $packet['DeviceID']) continue;
-              }
             if (isset($packet["Date"])) {
                 $return["LastConfig"] = $packet["Date"];
             } else {
@@ -480,6 +360,9 @@ class driver {
                             $return["LastConfig"] = date("Y-m-d H:i:s");
                         }
                         $return["SerialNum"] = hexdec(substr($packet["RawData"], 0, 10));
+                        if (empty($return["DeviceID"])) {
+                            $return["DeviceID"] = EPacket::hexify($return["SerialNum"], 6);
+                        }
                         $return["HWPartNum"] =     trim(strtoupper(substr($packet["RawData"], ENDPOINT_HW_START, 4)."-".
                                                                                 substr($packet["RawData"], ENDPOINT_HW_START+4, 2)."-".
                                                                                 substr($packet["RawData"], ENDPOINT_HW_START+6, 2)."-".
@@ -582,26 +465,18 @@ class driver {
      * @param $Info Array Infomation about the device to use
      */
     function FindDriver($Info) {
-        //add_debug_output("Checking for driver<br>\n");
-        //add_debug_output(get_stuff($this->dev, "driver"));
-        //add_debug_output("Hardware: ".$Info["HWPartNum"]." Firmware: ".$Info["FWPartNum"]." Version: ".$Info["FWVersion"]."<br>\n");
         if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]])) {
-            //add_debug_output("Using specific driver for ".$Info["HWPartNum"]." ".$Info["FWPartNum"]." ".$Info["FWVersion"]."<br>\n");
             $return = $this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]];
         }else if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]]["BAD"])) {
-            //add_debug_output("Bad Combination ".$Info["HWPartNum"]." ".$Info["FWPartNum"]."<br>\n");
-            $return = $this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]]["BAD"];
+            $return = "eDEFAULT";
         } else if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]]["DEFAULT"])) {
-            //add_debug_output("Defaulting to generic driver for ".$Info["HWPartNum"]." ".$Info["FWPartNum"]."<br>\n");
             $return = $this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]]["DEFAULT"];
         } else if (isset($this->dev[$Info["HWPartNum"]]["DEFAULT"]["DEFAULT"])) {
-            //add_debug_output("Defaulting to generic driver for ".$Info["HWPartNum"]."<br>\n");
             $return = $this->dev[$Info["HWPartNum"]]["DEFAULT"]["DEFAULT"];
         } else {
-            //add_debug_output("No driver found!<br>\n");
             $return = "eDEFAULT";
         }
-        return($return);
+        return $return;
     }
     
     /**
@@ -630,7 +505,12 @@ class driver {
                                 unset($history[$key]["Data".$i]);
                                 break;
                             default:
-                                 // Do nothing by default
+                                 // Do nothing by default.
+                                 // That means we need to make sure we change the data type
+                                 // in the $type array to reflect what we have not done.  ;)
+                                if (!empty($devInfo["dType"][$i])) {
+                                    $type[$i] = $devInfo["dType"][$i];
+                                }
                                 break;
                             }
                         }
@@ -652,7 +532,6 @@ class driver {
 
                             $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
                             $func = $this->unit->getConvFunct($from, $to, $type[$i]);
-
                             if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
                                 if (!isset($cTo[$i])) $cTo[$i] = $to;
                                 $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);

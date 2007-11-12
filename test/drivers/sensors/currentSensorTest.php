@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../sensorTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/sensors/currentSensor.php';
 
 /**
  * Test class for sensor.
@@ -78,6 +79,13 @@ class currentSensorTest extends sensorTestBase {
     }
 
     /**
+     * data provider for testSensorArray*
+     */    
+    public static function dataSensorArray() {
+        return sensorTestBase::sensorArrayDataSource("currentSensor");
+    }
+
+    /**
      * Data provider for testGetCurrent
      */
     public static function dataGetCurrent() {
@@ -91,6 +99,7 @@ class currentSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGetCurrent
+     * @covers currentSensor::GetCurrent
      */
     public function testGetCurrent($A, $R, $G, $T, $expect) {
         $o = new currentSensor();
@@ -103,19 +112,18 @@ class currentSensorTest extends sensorTestBase {
      */
     public static function dataFETBoard() {
         return array(
-            array(500, array('extraDefault'=>array(1, 1)), 1, array(0.5, 1), 76.4),
-            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0, 1), 76.4),
-            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0.5, 0), 76.4),
-            array(500, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0.0),
+            array(500, array('extraDefault'=>array(1, 1)), 1, array(0.5, 1), 0, 76.4),
+            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0, 1), 0, 76.4),
+            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0.5, 0), 0, 76.4),
+            array(500, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0, 0.0),
         );
     }
     /**
      * @dataProvider dataFETBoard
+     * @covers currentSensor::FETBoard
      */
-    public function testFETBoard($val, $sensor, $TC, $extra, $expect) {
-        $o = new currentSensor();
-        $ret = $o->FETBoard($val, $sensor, $TC, $extra);
-        $this->assertSame($expect, $ret);
+    public function testFETBoard($val, $sensor, $TC, $extra, $deltaT, $expect) {
+        parent::sensorTest("currentSensor", "FETBoard", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }

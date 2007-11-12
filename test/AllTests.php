@@ -87,9 +87,9 @@ class AllTests
 
         $suite->addTestSuite('otherTest');
         // Main file Tests 
+        $suite->addTestSuite('driverTest');
         $suite->addTestSuite('deviceTest');
         $suite->addTestSuite('deviceCacheTest');
-        $suite->addTestSuite('driverTest');
         $suite->addTestSuite('EPacketTest');
         $suite->addTestSuite('epsocketTest');
         $suite->addTestSuite('filterTest');

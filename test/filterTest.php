@@ -94,8 +94,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
         $ret = $o->registerFilter($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
-            $this->assertType("object", $o->filters[$class], "Driver object is missing");
-            $this->assertEquals(get_class($o->filters[$class]), $class, "The wrong class got registered");    
+            $this->assertThat($o->filters[$class], $this->isInstanceOf($class));
             foreach($o->filters[$class]->filters as $type => $sInfo) {
                 foreach($sInfo as $filter => $val) {
                     $this->assertSame($o->dev[$type][$filter], $class, "'$type->$filter': Not found");

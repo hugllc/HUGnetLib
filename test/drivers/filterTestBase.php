@@ -70,9 +70,42 @@ class filterTestBase extends PHPUnit_Framework_TestCase {
      */
     protected function tearDown() {
     }
+    /**
+     *
+     */
+    public static function filterArrayDataSource($class) {
+        $o = new $class();
+        $return = array();
+        foreach($o->filters as $catName => $cat) {
+            foreach($cat as $shortName => $sensor) {
+                $return[] = array($catName, $shortName, $sensor);
+            }
+        }
+        return $return;
+    }
 
+    /**
+     * Data provider stub for testFilterVariable
+     *
+     *  This should be redifined in subclasses.
+     */
+    public static function dataFilterVariable() {
+        return array();
+    }
+    /**
+     * @dataProvider dataFilterVariable
+     */
     public function testFilterVariable() {
         
+    
+    }
+
+    /**
+     * Generic function to test filter routines.
+     *
+     * call by using parent::filterTest()
+     */
+    public static function filterTest($class, $method, $val) {
     
     }
 }

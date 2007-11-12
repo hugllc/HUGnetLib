@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../filterTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/filters/medianFilter.php';
 
 /**
  * Test class for medianFilter.
@@ -75,6 +76,14 @@ class medianFilterTest extends filterTestBase {
      */
     protected function tearDown() {
     }
+
+    /**
+     * data provider for dataFilterVariable* 
+     */
+    public static function dataFilterVariable() {
+        return parent::filterArrayDataSource("medianFilter");
+    }
+
 }
 
 // Call medianFilterTest::main() if this source file is executed directly.

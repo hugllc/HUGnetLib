@@ -77,6 +77,64 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @dataProvider dataHealth().
+     * @covers driver::testHealth
+     */
+    public function testHealth() {
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete(
+          "This test has not been implemented yet."
+        );
+    }
+
+    /**
+     * data provider dataDiagnose
+     */
+    public static function dataDiagnose() {
+        return array(
+        );
+    }
+    /**
+     * @dataProvider dataDiagnose().
+     * @covers device::testDiagnose
+     */
+    public function testDiagnose($Info, $expect) {
+        $o = new driver();
+        $ret = $o->device->Get_diagnose($Info);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * @dataProvider dataDiagnose().
+     * @covers driver::testDiagnose
+     */
+    public function testDiagnoseDriver($Info, $expect) {
+        $o = new driver();
+        $ret = $o->Get_diagnose($Info);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * data provider for testGet_ydhms
+     */
+    public static function dataGet_ydhms() {
+        return array(
+            array(5000.25, 2, "1h 23m 20.25s"),
+            array(50000000, 0, "1Y 213d 10h 53m 20s"),
+        );
+    }
+    /**
+     * @dataProvider dataGet_ydhms().
+     * @covers driver::Get_ydhms
+     */
+    public function testGet_ydhms($seconds, $digits, $expect) {
+        $o = new driver();
+        $ret = $o->device->Get_ydhms($seconds, $digits);
+        $this->assertSame($expect, $ret);
+    }
+
+
+    /**
      * @todo Implement testSelectDevice().
      */
     public function testSelectDevice() {
