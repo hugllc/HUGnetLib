@@ -121,31 +121,6 @@ define("e00391102B_SENSORS", 9);
                                 "NumSensors" => "# Sensors",
                                 );
 
-        /**
-         * Read the memory of an endpoint
-         *
-         * @param array $Info The information array on the device
-         * @return array A packet array to be sent to the packet structure ({@see EPacket})
-         */
-        function ReadMem($Info) {
-        
-            switch($Info["MemType"]) {
-                case EEPROM:
-                    $Type = eDEFAULT_EEPROM_READ;
-                    break;
-                case SRAM:
-                default:
-                    $Type = eDEFAULT_SRAM_READ;
-                    break;
-            }
-            $return = array();
-            $return["Command"] = $Type;
-            $return["To"] = $Info["DeviceID"];
-            $return["Data"][0] = "00" ;
-            $return["Data"][1] = $Info["MemAddress"] & 0xFF;
-            $return["Data"][2] = $Info["MemLength"] & 0xFF;
-            return($return);
-        }
 
         
         function CheckRecord($Info, &$Rec) {
@@ -244,16 +219,6 @@ define("e00391102B_SENSORS", 9);
 
             }
             return($Info);
-        }
-        function getOrder($Info, $key, $rev = FALSE) {
-            if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) { 
-                $Order = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
-                if ($rev) $Order = array_flip($Order);
-                $ukey = $Order[$key];
-            } else {
-                $ukey = $key;
-            }
-            return $ukey;
         }
 
 

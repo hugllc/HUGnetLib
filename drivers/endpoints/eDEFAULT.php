@@ -232,15 +232,44 @@ if (!class_exists('eDEFAULT')) {
         function CheckRecord($Info, &$Rec) {
             $Rec["Status"] = 'UNRELIABLE';
         }
-    
+
+        /**
+         *  Gets the order of the sensors in an endpoint.
+         */    
+        protected function getOrder($Info, $key, $rev = FALSE) {
+            if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) { 
+                $Order = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
+                if ($rev) $Order = array_flip($Order);
+                $ukey = $Order[$key];
+            } else {
+                $ukey = $key;
+            }
+            return $ukey;
+        }
     
         /**
-         * Runs a function using the correct driver for the endpoint
-         * @param array $Info Infomation about the device to use
-         * @note This method MUST be implemented by each driver that inherits this class
-          */
+         * Read the memory of an endpoint
+         *
+         * @param array $Info The information array on the device
+         * @return array A packet array to be sent to the packet structure ({@see EPacket})
+         */
         function ReadMem($Info) {
-            $return = $this->BadDriver($Info, "ReadMem");    
+        
+            switch($Info["MemType"]) {
+                case EEPROM:
+                    $Type = eDEFAULT_EEPROM_READ;
+                    break;
+                case SRAM:
+                default:
+                    $Type = eDEFAULT_SRAM_READ;
+                    break;
+            }
+            $return = array();
+            $return["Command"] = $Type;
+            $return["To"] = $Info["DeviceID"];
+            $return["Data"][0] = "00" ;
+            $return["Data"][1] = $Info["MemAddress"] & 0xFF;
+            $return["Data"][2] = $Info["MemLength"] & 0xFF;
             return($return);
         }
         

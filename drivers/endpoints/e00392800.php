@@ -216,19 +216,6 @@ if (!class_exists("e00392800")) {
             }
             return($Info);
         }
-        /**
-         *
-         */
-        function getOrder($Info, $key, $rev = FALSE) {
-            if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) { 
-                $Order = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
-                if ($rev) $Order = array_flip($Order);
-                $ukey = $Order[$key];
-            } else {
-                $ukey = $key;
-            }
-            return $ukey;
-        }
 
         /**
          *

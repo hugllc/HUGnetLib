@@ -31,7 +31,7 @@
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
+    define('PHPUnit_MAIN_METHOD', 'HUGnetLibTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -74,7 +74,7 @@ require_once 'drivers/sensors/windDirectionSensorTest.php';
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
  */
-class AllTests
+class HUGnetLibTests
 {
     public static function main()
     {
@@ -123,7 +123,7 @@ class AllTests
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
-    AllTests::main();
+if (PHPUnit_MAIN_METHOD == 'HUGnetLibTests::main') {
+    HUGnetLibTests::main();
 }
 ?>

@@ -334,12 +334,6 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     public function testPacketCallBackFunction() {
         $o = new EPacket();
         $string = "ABCDE";
-        /**
-         * This function is for testing callback
-         */
-        function EPacketTest_CallBack_Function($pkt) {
-            $_SESSION['EPacketTest_CallBack_Function'] = $pkt;
-        }
 
         $o->PacketSetCallBack("EPacketTest_CallBack_Function");
         $o->PacketCallBack($string);
@@ -734,6 +728,13 @@ class epsocketMock extends epsocket {
         return TRUE;
     }
 
+}
+
+/**
+ * This function is for testing callback
+ */
+function EPacketTest_CallBack_Function($pkt) {
+    $_SESSION['EPacketTest_CallBack_Function'] = $pkt;
 }
 
 ?>

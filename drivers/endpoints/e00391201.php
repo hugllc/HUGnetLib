@@ -147,25 +147,6 @@ define("e00391201_SENSORS", 9);
 								"NumSensors" => "# Sensors",
 								);
 
-		function ReadMem($Info) {
-		
-			switch($Info["MemType"]) {
-				case EEPROM:
-					$Type = e00391102B_EEPROM_READ;
-					break;
-				case SRAM:
-				default:
-					$Type = e00391102B_SRAM_READ;
-					break;
-			}
-			$return = array();
-			$return["Command"] = $Type;
-			$return["To"] = $Info["DeviceID"];
-			$return["Data"][0] = "00" ;
-			$return["Data"][1] = $Info["MemAddress"] & 0xFF;
-			$return["Data"][2] = $Info["MemLength"] & 0xFF;
-			return($return);
-		}
 
 
 		function CheckRecord($Info, &$Rec) {
