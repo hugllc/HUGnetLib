@@ -93,6 +93,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                     $o->packet->socket[1]->setReply($data, $reply);
                 }
             }
+            $o->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
 //            $o->packet->verbose=TRUE;
             return $o;
         } else {
@@ -433,6 +434,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
             array(
                 array(
                     "5A5A5A5C0000250000200059" => "5A5A5A0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
+                    "5A5A5A4C0000250000200049" => "5A5A5AFF00002000002500FA",
                 ),
                 array("DeviceID" => "000025", "GatewayKey" => 1),
                 array(
