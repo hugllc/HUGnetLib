@@ -84,10 +84,16 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    function &setupDriver() {
+    function &setupDriver($preloadPackets=NULL) {
         $o = driverTest::createDriver();
         if (is_object($o->drivers[$this->class])) {
             $o->packet->socket[1] = new epsocketMock;
+            if (is_array($preloadPackets)) {
+                foreach($preloadPackets as $data => $reply) {
+                    $o->packet->socket[1]->setReply($data, $reply);
+                }
+            }
+//            $o->packet->verbose=TRUE;
             return $o;
         } else {
             return FALSE;
@@ -357,14 +363,34 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo implement testCheckRecord()
+     *
      */
-    function testCheckRecord() {
+    public static function dataCheckRecord() {
+        return array(
+            array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD"), 1),
+            array(
+                array(),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => NULL, "Data1" => NULL, "Data2" => NULL, "Data3" => NULL, "Data4" => NULL, "NumSensors" => 5),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => NULL, "Data1" => NULL, "Data2" => NULL, "Data3" => NULL, "Data4" => NULL, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
+                2,
+            ),
+            array(
+                array(),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1, "Status" => "BAD", "StatusCode" => "Bad TC"),
+                3,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider dataCheckRecord()
+     */
+    function testCheckRecord($Info, $Rec, $expect) {
         $o = $this->setupDriver();
         if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
+            $o->drivers[$this->class]->checkRecord($Info, $Rec);
+            $this->assertSame($expect, $Rec);
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
         }
@@ -399,16 +425,98 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         }
     }
     
-    
     /**
-     * @todo implement testReadConfig()
+     * data provider for testReadConfig
      */
-    function testReadConfig() {
-        $o = $this->setupDriver();
+    public static function dataReadConfig() {
+        return array(
+            array(
+                array(
+                    "5A5A5A5C0000250000200059" => "5A5A5A0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
+                ),
+                array("DeviceID" => "000025", "GatewayKey" => 1),
+                array(
+                    "GetReply" => TRUE,
+                    "SentFrom" => "000020",
+                    "SentTo" => "000025",
+                    "sendCommand" => "5C",
+                    "group" => FALSE,
+                    "packet" => array(
+                        "to" => "000025",
+                        "command" => "5C",
+                        "data" => "",
+                    ),
+                    "PacketTo" => "000025",
+                    "GatewayKey" => 1,
+                    "DeviceKey" => NULL,
+                    "Type" => "OUTGOING",
+                    "RawData" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                    "sentRawData" => "",
+                    "Parts" => 1,
+                    "Command" => "01",
+                    "To" => "000020",
+                    "From" => "000025",
+                    "Length" => 32,
+                    "Checksum" => "9F",
+                    "CalcChecksum" => "9F",
+                    "Socket" => 1,
+                    "Reply" => TRUE,
+                    "toMe" => TRUE,
+                    "isGateway" => FALSE,
+                    "Data" => array(
+                        0 => 0,
+                        1 => 0,
+                        2 => 0,
+                        3 => 0,
+                        4 => 37,
+                        5 => 0,
+                        6 => 57,
+                        7 => 18,
+                        8 => 2,
+                        9 => 66,
+                        10 => 0,
+                        11 => 57,
+                        12 => 32,
+                        13 => 3,
+                        14 => 67,
+                        15 => 0,
+                        16 => 0,
+                        17 => 2,
+                        18 => 255,
+                        19 => 255,
+                        20 => 255,
+                        21 => 80,
+                        22 => 1,
+                        23 => 0,
+                        24 => 0,
+                        25 => 0,
+                        26 => 0,
+                        27 => 0,
+                        28 => 0,
+                        29 => 0,
+                        30 => 0,
+                        31 => 0,
+                    ),
+                    "RawPacket" => "0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F"
+                ),
+                1,
+            ),
+        );
+    }
+    /**
+     * @dataProvider dataReadConfig()
+     */
+    function testReadConfig($preloadPackets, $Info, $expect) {
+        $o = $this->setupDriver($preloadPackets);
         if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
+            $ret = $o->drivers[$this->class]->ReadConfig($Info);
+            $ret = $ret[0];
+            unset($ret["pktTimeout"]);
+            unset($ret["SentTime"]);
+            unset($ret["Date"]);
+            unset($ret["Time"]);
+            unset($ret["ReplyTime"]);
+            $this->assertSame($expect, $ret);
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
         }
@@ -544,7 +652,6 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                             $this->checkInterpSensorsReturn($pkt, $params["Return"][$p], $p);
                         }
                     } else {
-$this->printArray($ret);
                         $this->assertSame($params["Return"], $ret);
                     }
                 }

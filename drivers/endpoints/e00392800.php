@@ -132,8 +132,6 @@ if (!class_exists("e00392800")) {
             // Start with the assumption that the record is good.
             $Rec['Status'] = "GOOD";            
 
-            $Bad = 0;
-
             $zero = TRUE;
             for($i = 0; $i < $Rec['NumSensors']; $i ++) {
                 if (!is_null($Rec['Data'.$i])) {
@@ -143,12 +141,14 @@ if (!class_exists("e00392800")) {
             }
             if ($zero && ($i > 3)) {
                 $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = " All Bad";        
+                $Rec["StatusCode"] = "All Bad";
+                return;
             }
-    
-            if (($Bad != 0) && ($Bad >= $Rec["ActiveSensors"])) {
+
+            if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = "All Bad Readings";
+                $Rec["StatusCode"] = "Bad TC";
+                return;
             }
 
         }

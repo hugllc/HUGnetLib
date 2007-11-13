@@ -188,8 +188,16 @@ define("e00391201_SENSORS", 9);
 			}
 			if ($zero && ($i > 3)) {
 				$Rec["Status"] = "BAD";
-				$Rec["StatusCode"] = " All Zero";		
+				$Rec["StatusCode"] = "All Bad";		
+				return;
 			}
+    
+            if ($Rec["TimeConstant"] == 0) {
+                $Rec["Status"] = "BAD";
+                $Rec["StatusCode"] = "Bad TC";
+                return;
+            }
+
 		}
 
 		function InterpConfig(&$Info) {

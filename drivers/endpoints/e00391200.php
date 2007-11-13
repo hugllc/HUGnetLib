@@ -172,16 +172,14 @@ define("e00391102B_SENSORS", 9);
     
             if ($zero && ($i > 3)) {
                 $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = " All Zero";        
+                $Rec["StatusCode"] = "All Bad";
+                return;
             }
     
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = " Bad TC";
-            }
-            if (($Bad != 0) && ($Bad >= $Rec["ActiveSensors"])) {
-                $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = "All Bad Readings";
+                $Rec["StatusCode"] = "Bad TC";
+                return;
             }
             
         }

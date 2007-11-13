@@ -124,7 +124,7 @@ if (!class_exists("e00392100")) {
     		$zero = TRUE;
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
     			if (!is_numeric($Rec['Data'.$i])) {
-    				$Rec['Data'.$key] = NULL;
+    				$Rec['Data'.$i] = NULL;
     			} else if (!is_null($Rec['Data'.$i])) {
     				$zero = FALSE;
     				break;
@@ -132,8 +132,16 @@ if (!class_exists("e00392100")) {
     		}
     		if ($zero && ($i > 3)) {
     			$Rec["Status"] = "BAD";
-    			$Rec["StatusCode"] = " All Zero";		
+    			$Rec["StatusCode"] = "All Bad";		
+    			return;
     		}
+            if ($Rec["sendCommand"] == PACKET_COMMAND_GETDATA) {
+                if ($Rec["TimeConstant"] == 0) {
+                    $Rec["Status"] = "BAD";
+                    $Rec["StatusCode"] = "Bad TC";
+                    return;
+                }
+            }
     		
     	}
     
