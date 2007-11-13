@@ -84,7 +84,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    private function &setupDriver() {
+    function &setupDriver() {
         $o = driverTest::createDriver();
         if (is_object($o->drivers[$this->class])) {
             $o->packet->socket[1] = new epsocketMock;
@@ -100,24 +100,73 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         $o = $this->setupDriver();
         $this->assertType("object", $o->drivers[$this->class], "This class '".$this->class."' did not register as a plugin");
     }
+
     /**
-     *
+     *  A subclass should call this routine in the dataDevicesArray function
+     * parent::devicesCheckVersion($class)
      */
-    function testDevicesArray() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->devices, "Driver '".$this->class."' has no devices array");
-        foreach($d->devices as $fw => $Firm) {
-            $this->checkPartNum($fw);
-            $this->assertType("array", $d->config[$fw], "'$fw' not found in config array");
-            foreach($Firm as $hw => $ver) {
-                $this->checkPartNum($hw);
-                $dev = explode(",", $ver);
-                foreach($dev as $v) {
-                    $this->checkVersion($v);
+    public static function devicesArrayDataSource($class, $var) {
+        $o = driverTest::createDriver();
+        $return = array();
+        foreach($o->drivers[$class]->devices as $fw => $Firm) {
+            if ($var == "fw") {
+                $return[] = array($fw, $Firm);
+            } else {
+                foreach($Firm as $hw => $ver) {
+                    if ($var == "hw") {
+                        $return[] = array($fw, $hw, $ver);
+                    } else {
+                        $dev = explode(",", $ver);
+                        foreach($dev as $v) {
+                            $return[] = array($fw, $hw, $v);
+                        }
+                    }
                 }
             }
+            
         }
+        return $return;
+    }
+
+
+
+    /**
+     * data provider for testDevicesArray
+     */    
+    public static function dataDevicesVersion() {
+        return array();
+    }
+    /**
+     * @dataProvider dataDevicesVersion
+     */
+    function testDevicesArrayVersion($fw, $hw, $version) {
+        $this->checkVersion($version);
+    }
+    /**
+     * data provider for testDevicesArray
+     */    
+    public static function dataDevicesFirmware() {
+        return array();
+    }
+    /**
+     * @dataProvider dataDevicesFirmware
+     */
+    function testDevicesArrayFirmware($fw, $Firm) {
+        $this->checkPartNum($fw);
+        $this->assertType("array", $Firm);
+    }
+    /**
+     * data provider for testDevicesArray
+     */    
+    public static function dataDevicesHardware() {
+        return array();
+    }
+    /**
+     * @dataProvider dataDevicesHardware
+     */
+    function testDevicesArrayHardware($fw, $hw, $Ver) {
+        $this->checkPartNum($hw);
+        $this->assertType("string", $Ver);
     }
     /**
      *
@@ -131,17 +180,38 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    function testVars() {
+    function testHWName() {
         $o = $this->setupDriver();
         $d = &$o->drivers[$this->class];
         $this->assertType("string", $d->HWName, "Driver '".$this->class."' has no HWName attribute");
         $this->assertThat(strlen($d->HWName), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+
+    }
+    /**
+     *
+     */
+    function testAverageTable() {
+        $o = $this->setupDriver();
+        $d = &$o->drivers[$this->class];
         $this->assertType("string", $d->average_table, "Driver '".$this->class."' has no HWName attribute");
         $this->assertThat(strlen($d->average_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+    }
+    /**
+     *
+     */
+    function testHistoryTable() {
+        $o = $this->setupDriver();
+        $d = &$o->drivers[$this->class];
         $this->assertType("string", $d->history_table, "Driver '".$this->class."' has no HWName attribute");
         $this->assertThat(strlen($d->history_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+    }
+    /**
+     *
+     */
+    function testAtoDMax() {
+        $o = $this->setupDriver();
+        $d = &$o->drivers[$this->class];
         $this->assertType("int", $d->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");                
-
     }
 
     /**
@@ -178,81 +248,70 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
             $this->assertThat($val, $this->lessThanOrEqual(255));
         }        
     }
-    
-    /**
-     *
-     */
-    function testConfigArray() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config, "Driver '".$this->class."' has no config array");
-        foreach($d->config as $fw => $params) {
-            $this->checkPartNum($fw);
-            $this->assertType("array", $params, "'$fw':Parameters are not an array");
-            $this->assertType("array", $d->devices[$fw], "'$fw' not found in devices array");
-        }        
-    }
-    
-    /**
-     *
-     */
-    function testConfigArrayFunction() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config, "Driver '".$this->class."' has no config array");
-        foreach($d->config as $fw => $params) {
-            // Function
-            $this->assertType("string", $params["Function"], "'$fw': Parameter 'Function' must be a string");
-        }        
-    }
-    
-    /**
-     *
-     */
-    function testConfigArraySensors() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config, "Driver '".$this->class."' has no config array");
-        foreach($d->config as $fw => $params) {
-            // Sensors
-            $this->assertType("int", $params["Sensors"], "'$fw': Parameter 'Sensors' must be a int");
-            $this->assertThat($params["Sensors"], $this->greaterThanOrEqual(0), "'$fw': The number of sensors must be greater than 0");
 
-        }        
-    }
     /**
+     * data provider for dataConfigArray* functions
+     */
+    public static function dataConfigArray($class=NULL) {
+        if (empty($class)) return array();
+        $o = driverTest::createDriver();
+        $return = array();
+        foreach($o->drivers[$class]->config as $fw => $params) {
+            $return[] = array($class, $fw, $params);
+        }
+        return $return;
+    }
+    
+    /**
+     * @dataProvider dataConfigArray
+     */
+    function testConfigArray($class, $fw, $params) {
+        $o = $this->setupDriver();
+        $this->checkPartNum($fw);
+        $this->assertType("array", $params, "'$fw':Parameters are not an array");
+        $this->assertType("array", $o->drivers[$this->class]->devices[$fw], "'$fw' not found in devices array");
+    }
+    
+    /**
+     * @dataProvider dataConfigArray
+     */
+    function testConfigArrayFunction($class, $fw, $params) {
+        $this->assertType("string", $params["Function"], "'$fw': Parameter 'Function' must be a string");
+    }
+    
+    /**
+     * @dataProvider dataConfigArray
      *
      */
-    function testConfigArrayDisplayOrder() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config, "Driver '".$this->class."' has no config array");
-        foreach($d->config as $fw => $params) {
-            // This is not required so we only check it if it is present
-            if (isset($params['DisplayOrder'])) {
-                $this->assertType("string", $params["DisplayOrder"], "'$fw': Parameter 'DisplayOrder' must be a int");
-                $do = explode(",", $params['DisplayOrder']);
-                $this->assertEquals(count($do), $params["Sensors"], "'$fw': Number of display items needs to be identical to the number of sensors.");
-                $doTmp = array();
-                foreach($do as $order) {
-                    $this->assertThat($order, $this->lessThan($params["Sensors"]), "'$fw': Display order items must be less than the number of sensors.");
-                    $this->assertThat($order, $this->greaterThanOrEqual(0), "'$fw': Display order items must be greater than or equal to 0");
-                    $this->assertFalse(isset($doTmp[$order]), "'$fw': $order already duplicated!  All entries in display order must be unique");
-                    $doTmp[$order] = TRUE;
-                }
+    function testConfigArraySensors($class, $fw, $params) {
+        $this->assertType("int", $params["Sensors"], "'$fw': Parameter 'Sensors' must be a int");
+        $this->assertThat($params["Sensors"], $this->greaterThanOrEqual(0), "'$fw': The number of sensors must be greater than 0");
+    }
+    /**
+     * @dataProvider dataConfigArray
+     *
+     */
+    function testConfigArrayDisplayOrder($class, $fw, $params) {
+        // This is not required so we only check it if it is present
+        if (isset($params['DisplayOrder'])) {
+            $this->assertType("string", $params["DisplayOrder"], "'$fw': Parameter 'DisplayOrder' must be a int");
+            $do = explode(",", $params['DisplayOrder']);
+            $this->assertEquals(count($do), $params["Sensors"], "'$fw': Number of display items needs to be identical to the number of sensors.");
+            $doTmp = array();
+            foreach($do as $order) {
+                $this->assertThat($order, $this->lessThan($params["Sensors"]), "'$fw': Display order items must be less than the number of sensors.");
+                $this->assertThat($order, $this->greaterThanOrEqual(0), "'$fw': Display order items must be greater than or equal to 0");
+                $this->assertFalse(isset($doTmp[$order]), "'$fw': $order already duplicated!  All entries in display order must be unique");
+                $doTmp[$order] = TRUE;
             }
         }
     }
     /**
+     * @dataProvider dataConfigArray
      *
      */
-    function testConfigArrayBad() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config, "Driver '".$this->class."' has no config array");
-        foreach($d->config as $fw => $params) {
-            $this->assertFalse(isset($params["SensorLength"]), "'$fw': Parameter 'SensorLength' is not used anymore and should be removed.");
-        }
+    function testConfigArrayBad($class, $fw, $params) {
+        $this->assertFalse(isset($params["SensorLength"]), "'$fw': Parameter 'SensorLength' is not used anymore and should be removed.");
     }
     /**
      * Test the read sensors routine
@@ -287,20 +346,6 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @todo implement testupdateConfig()
      */
     function testupdateConfig() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
-    }
-
-    /**
-     * @todo implement testcheckDataArray()
-     */
-    function testcheckDataArray() {
         $o = $this->setupDriver();
         if (is_object($o)) {
             /* Put test here */
@@ -572,41 +617,6 @@ $this->printArray($ret);
         }
     }
 
-    /**
-     * @todo implement testGetCols()
-     */
-    function testGetCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->getCols($Info);
-            $this->assertType("array", $cols, "Return must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
-    }
-
-    /**
-     * @todo implement testGetEditCols()
-     */
-    function testGetEditCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->getEditCols($Info);
-            $this->assertType("array", $cols, "Return must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
-    }
     
     /**
      * @todo implement testSetAllConfig()
@@ -649,31 +659,5 @@ $this->printArray($ret);
         }
     }
     
-    /**
-     * data provider for testCompareFWVesrion
-     */
-    public static function dataCompareFWVersion() {
-        return array(
-            array("1.2.3", "1.2.3", 0),
-            array("1.2.4", "1.2.3", 1),
-            array("1.3.3", "1.2.3", 1),
-            array("2.2.3", "1.2.3", 1),
-            array("1.2.3", "1.2.4", -1),
-            array("1.2.3", "1.3.3", -1),
-            array("1.2.3", "2.2.3", -1),
-        );
-    }
-    /**
-     * @dataProvider dataCompareFWVersion
-     */
-    function testCompareFWVersion($v1, $v2, $expect) {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $ret = $o->drivers[$this->class]->CompareFWVersion($v1, $v2);
-            $this->assertEquals($expect, $ret);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
-    }        
 }
 ?>

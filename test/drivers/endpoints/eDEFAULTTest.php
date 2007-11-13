@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../endpointTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/endpoints/eDEFAULT.php';
 
 /**
  * Test class for endpoints.
@@ -71,6 +72,97 @@ class eDEFAULTTest extends endpointTestBase {
     public function testInterpSensors() {
         // Do nothing here.  This test is not valid for the default driver
     }
+    public static function dataConfigArray() {
+        return parent::dataConfigArray("eDEFAULT");
+    }
+
+    /**
+     * data provider for testCheckDataArray
+     */
+    public static function dataCheckDataArray() {
+        return array(
+            array(
+                array("RawData" => "000102030405060708090A0B0C0D0E0F"),
+                array("RawData" => "000102030405060708090A0B0C0D0E0F", "Data" => array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)),
+            ),
+        );
+    }
+    /**
+     * @dataProvider dataCheckDataArray()
+     */
+    function testcheckDataArray($work, $expect) {
+        $o = $this->setupDriver();
+        if (is_object($o)) {
+            $o->drivers[$this->class]->checkDataArray($work);
+            $this->assertSame($expect, $work);
+        } else {
+            $this->markTestSkipped("Skipped do to lack of driver"); 
+        }
+    }
+
+
+    /**
+     * @todo implement testGetCols()
+     */
+    function testGetCols(){
+        $o = $this->setupDriver();
+        if (is_object($o)) {
+            $Info = array();
+            $cols = $o->drivers[$this->class]->getCols($Info);
+            $this->assertType("array", $cols, "Return must be an array");
+            foreach($cols as $key => $val) {
+                $this->assertType("string", $key, "Array key must be an string");                
+                $this->assertType("string", $val, "Array value must be an string");                
+            }
+        } else {
+            $this->markTestSkipped("Skipped do to lack of driver"); 
+        }
+    }
+
+    /**
+     * @todo implement testGetEditCols()
+     */
+    function testGetEditCols(){
+        $o = $this->setupDriver();
+        if (is_object($o)) {
+            $Info = array();
+            $cols = $o->drivers[$this->class]->getEditCols($Info);
+            $this->assertType("array", $cols, "Return must be an array");
+            foreach($cols as $key => $val) {
+                $this->assertType("string", $key, "Array key must be an string");                
+                $this->assertType("string", $val, "Array value must be an string");                
+            }
+        } else {
+            $this->markTestSkipped("Skipped do to lack of driver"); 
+        }
+    }
+
+    /**
+     * data provider for testCompareFWVesrion
+     */
+    public static function dataCompareFWVersion() {
+        return array(
+            array("1.2.3", "1.2.3", 0),
+            array("1.2.4", "1.2.3", 1),
+            array("1.3.3", "1.2.3", 1),
+            array("2.2.3", "1.2.3", 1),
+            array("1.2.3", "1.2.4", -1),
+            array("1.2.3", "1.3.3", -1),
+            array("1.2.3", "2.2.3", -1),
+        );
+    }
+    /**
+     * @dataProvider dataCompareFWVersion
+     */
+    function testCompareFWVersion($v1, $v2, $expect) {
+        $o = $this->setupDriver();
+        if (is_object($o)) {
+            $ret = $o->drivers[$this->class]->CompareFWVersion($v1, $v2);
+            $this->assertEquals($expect, $ret);
+        } else {
+            $this->markTestSkipped("Skipped do to lack of driver"); 
+        }
+    }        
 
 }
 

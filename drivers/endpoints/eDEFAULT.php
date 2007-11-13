@@ -130,6 +130,8 @@ if (!class_exists('eDEFAULT')) {
             "DeviceJob" => "Job",
             "BoredomThreshold" => "Boredom Threshold",
         );
+        /** These are the editable columns that all devices share  */
+        var $editcols = array();
     
         /** This is where the hardware devices default configurations go. */
         var $config = array(
@@ -138,10 +140,9 @@ if (!class_exists('eDEFAULT')) {
     
         /** Calibration data */
         var $caldata = array();                
-        /** I don't know why this is here */
-        var $cols = array();                    
         /** The columns that are device specific go here */
-        var $Columns = array();                
+        var $cols = array();                    
+
         var $var = array();            
     
         /** Default location variable definition  */
@@ -210,7 +211,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $data a packet that might need the 'Data' array created
          * @return array The same packet with the 'Data' array created
          */
-        function checkDataArray(&$work) {
+        final function checkDataArray(&$work) {
             if (!is_array($work['Data'])) {
                 for ($i = 0; $i < (strlen($work["RawData"])/2); $i++) {
                     $work['Data'][$i] = hexdec(substr($work['RawData'], ($i*2), 2));
@@ -304,7 +305,7 @@ if (!class_exists('eDEFAULT')) {
          * @return bool Always FALSE
             @warning This function MUST NOT be implemented in any drivers that inherit this class
          */
-        function BadDriver($Info, $fct) {
+        final function BadDriver($Info, $fct) {
             return FALSE;
         }    
         
@@ -356,7 +357,7 @@ if (!class_exists('eDEFAULT')) {
          *
          *   This is used to easily display the pertinent columns for any endpoint.
          */
-        function GetCols($Info){
+        final function GetCols($Info){
             $Columns = $this->defcols;
             if (is_array($this->cols)) {
                 $Columns = array_merge($Columns, $this->cols);
@@ -374,7 +375,7 @@ if (!class_exists('eDEFAULT')) {
          * @return array The columns that can be edited
          * @note Sound NOT be implemented in child classes that class needs it to work differently
          */
-        function GetEditCols($Info){
+        final function GetEditCols($Info){
             $Columns = $this->defeditcols;
             if (is_array($this->editcols)) {
                 $Columns = array_merge($Columns, $this->editcols);
@@ -456,7 +457,7 @@ if (!class_exists('eDEFAULT')) {
          * @param string $ver2 The second version to use in the compare        
          * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
          */
-        function CompareFWVersion($ver1, $ver2) {
+        final function CompareFWVersion($ver1, $ver2) {
             $v1 = explode(".", $ver1);
             $v2 = explode(".", $ver2);
             for ($i = 0; $i < 3; $i++) {

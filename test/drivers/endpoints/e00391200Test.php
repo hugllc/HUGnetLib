@@ -39,6 +39,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../endpointTestBase.php';
+require_once dirname(__FILE__).'/../../../drivers/endpoints/e00391200.php';
 
 /**
  * Test class for endpoints.
@@ -199,6 +200,19 @@ class e00391200Test extends endpointTestBase {
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
 
+    public static function dataDevicesFirmware() {
+        return parent::devicesArrayDataSource("e00391200", "fw");
+    }
+
+    public static function dataDevicesHardware() {
+        return parent::devicesArrayDataSource("e00391200", "hw");
+    }
+    public static function dataDevicesVersion() {
+        return parent::devicesArrayDataSource("e00391200", "ver");
+    }
+    public static function dataConfigArray() {
+        return parent::dataConfigArray("e00391200");
+    }
 }
 
 // Call e00391200Test::main() if this source file is executed directly.
