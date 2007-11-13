@@ -95,9 +95,10 @@ class filterTestBase extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataFilterVariable
      */
-    public function testFilterVariable() {
-        
-    
+    public function testFilterVariableLongName($catName, $shortName, $filter) {
+        // Long Name
+        $this->assertType("string", $filter['longName'], $catName.":".$shortName.": Long name is not a string");
+        $this->assertThat(strlen($filter['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");    
     }
 
     /**
