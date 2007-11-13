@@ -727,6 +727,9 @@ class epsocketMock extends epsocket {
      */
     function Write($data) {
         $this->lastPacket = EPacket::hexifyStr($data);
+        if (!isset($this->reply[$this->lastPacket])) {
+//            print "\nGot: ".$this->lastPacket."\n";
+        }
         $this->index = 0;
         return TRUE;
     }

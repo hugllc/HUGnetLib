@@ -63,6 +63,9 @@ class eDEFAULTTest extends endpointTestBase {
     public function testConfigArray() {
         // Do nothing here.  This test is not valid for the default driver
     }
+    public function testReadConfig() {
+        // Do nothing here.  This test is not valid for the default driver
+    }
     public function testDevicesArray() {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -163,6 +166,20 @@ class eDEFAULTTest extends endpointTestBase {
             $this->markTestSkipped("Skipped do to lack of driver"); 
         }
     }        
+
+    /**
+     * @dataProvider dataCheckRecord()
+     */
+    function testCheckRecord() {
+        $o = $this->setupDriver();
+        if (is_object($o)) {
+            $Rec = array();
+            $o->drivers[$this->class]->checkRecord(array(), $Rec);
+            $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
+        } else {
+            $this->markTestSkipped("Skipped do to lack of driver"); 
+        }
+    }
 
 }
 
