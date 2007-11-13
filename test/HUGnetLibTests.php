@@ -53,22 +53,7 @@ require_once 'sensorTest.php';
 require_once 'unitConversionTest.php';
 
 // Drivers
-// Endpoints
-require_once 'drivers/endpoints/e00392800Test.php';
-require_once 'drivers/endpoints/e00392100Test.php';
-require_once 'drivers/endpoints/e00391200Test.php';
-require_once 'drivers/endpoints/e00391201Test.php';
-require_once 'drivers/endpoints/eDEFAULTTest.php';
-// Filters
-require_once 'drivers/filters/medianFilterTest.php';
-// Sensors
-require_once 'drivers/sensors/capacitiveSensorTest.php';
-require_once 'drivers/sensors/currentSensorTest.php';
-require_once 'drivers/sensors/lightSensorTest.php';
-require_once 'drivers/sensors/pulseSensorTest.php';
-require_once 'drivers/sensors/resistiveSensorTest.php';
-require_once 'drivers/sensors/voltageSensorTest.php';
-require_once 'drivers/sensors/windDirectionSensorTest.php';
+require_once 'drivers/HUGnetLibDriverTests.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -100,24 +85,7 @@ class HUGnetLibTests
         $suite->addTestSuite('unitConversionTest');
  
         // Driver Tests 
-        // Endpoints
-        $suite->addTestSuite('eDEFAULTTest');
-        $suite->addTestSuite('e00392800Test');
-        $suite->addTestSuite('e00392100Test');
-        $suite->addTestSuite('e00391200Test');
-        $suite->addTestSuite('e00391201Test');
- 
-        // Filters
-        $suite->addTestSuite('medianFilterTest');
-         
-        // Sensors
-        $suite->addTestSuite('capacitiveSensorTest');
-        $suite->addTestSuite('currentSensorTest');
-        $suite->addTestSuite('lightSensorTest');
-        $suite->addTestSuite('pulseSensorTest');
-        $suite->addTestSuite('resistiveSensorTest');
-        $suite->addTestSuite('voltageSensorTest');
-        $suite->addTestSuite('windDirectionSensorTest');
+        $suite->addTest(HUGnetLibDriverTests::suite());
  
         return $suite;
     }
