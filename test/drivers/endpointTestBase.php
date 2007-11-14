@@ -43,6 +43,8 @@ require_once dirname(__FILE__).'/../unitConversionTest.php';
  */
 abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
 
+    static $socket = 1;
+
     var $goodEndpoints = array(
         array(
             "DeviceID" => "123456",
@@ -70,6 +72,11 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
+        $this->o = driverTest::createDriver();
+        if (is_object($this->o->drivers[$this->class])) {
+            $this->o->packet->socket[self::$socket] = new epsocketMock;
+            $this->o->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
+        }
     }
 
     /**
@@ -79,33 +86,21 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function tearDown() {
+        unset($this->o);
     }
 
-    /**
-     *
-     */
-    function &setupDriver($preloadPackets=NULL) {
-        $o = driverTest::createDriver();
-        if (is_object($o->drivers[$this->class])) {
-            $o->packet->socket[1] = new epsocketMock;
-            if (is_array($preloadPackets)) {
-                foreach($preloadPackets as $data => $reply) {
-                    $o->packet->socket[1]->setReply($data, $reply);
-                }
+    protected function setUpPacket($preload) {
+        if (is_array($preload)) {
+            foreach($preload as $data => $reply) {
+                $this->o->packet->socket[self::$socket]->setReply($data, $reply);
             }
-            $o->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
-//            $o->packet->verbose=TRUE;
-            return $o;
-        } else {
-            return FALSE;
         }
     }
     /**
      *
      */
     function testDriver() {
-        $o = $this->setupDriver();
-        $this->assertType("object", $o->drivers[$this->class], "This class '".$this->class."' did not register as a plugin");
+        $this->assertType("object", $this->o->drivers[$this->class], "This class '".$this->class."' did not register as a plugin");
     }
 
     /**
@@ -113,7 +108,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * parent::devicesCheckVersion($class)
      */
     public static function devicesArrayDataSource($class, $var) {
-        $o = driverTest::createDriver();
+        $o = driverTest::createDriver();        
         $return = array();
         foreach($o->drivers[$class]->devices as $fw => $Firm) {
             if ($var == "fw") {
@@ -147,7 +142,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @dataProvider dataDevicesVersion
      */
     function testDevicesArrayVersion($fw, $hw, $version) {
-        $this->checkVersion($version);
+        $this->assertRegExp("/([0-9]{2}\.[0-9]{2}\.[0-9]{2}|DEFAULT|BAD)/", $version);
     }
     /**
      * data provider for testDevicesArray
@@ -159,7 +154,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @dataProvider dataDevicesFirmware
      */
     function testDevicesArrayFirmware($fw, $Firm) {
-        $this->checkPartNum($fw);
+        $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
         $this->assertType("array", $Firm);
     }
     /**
@@ -172,96 +167,51 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @dataProvider dataDevicesHardware
      */
     function testDevicesArrayHardware($fw, $hw, $Ver) {
-        $this->checkPartNum($hw);
+        $this->assertRegExp("/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]/", $hw);
         $this->assertType("string", $Ver);
     }
     /**
      *
      */
     function testConfigDefault() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("array", $d->config['DEFAULT'], "Driver '".$this->class."' has no DEFAULT config");
+        $this->assertType("array", $this->o->drivers[$this->class]->config['DEFAULT'], "Driver '".$this->class."' has no DEFAULT config");
     }
     
     /**
      *
      */
     function testHWName() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("string", $d->HWName, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($d->HWName), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $this->assertType("string", $this->o->drivers[$this->class]->HWName, "Driver '".$this->class."' has no HWName attribute");
+        $this->assertThat(strlen($this->o->drivers[$this->class]->HWName), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
 
     }
     /**
      *
      */
     function testAverageTable() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("string", $d->average_table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($d->average_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $this->assertType("string", $this->o->drivers[$this->class]->average_table, "Driver '".$this->class."' has no HWName attribute");
+        $this->assertThat(strlen($this->o->drivers[$this->class]->average_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
     }
     /**
      *
      */
     function testHistoryTable() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("string", $d->history_table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($d->history_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $this->assertType("string", $this->o->drivers[$this->class]->history_table, "Driver '".$this->class."' has no HWName attribute");
+        $this->assertThat(strlen($this->o->drivers[$this->class]->history_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
     }
     /**
      *
      */
     function testAtoDMax() {
-        $o = $this->setupDriver();
-        $d = &$o->drivers[$this->class];
-        $this->assertType("int", $d->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");                
-    }
-
-    /**
-     * Check to make sure the part number is in the correct format
-     */
-    private function checkPartNum($part) {
-        if ($part == "DEFAULT") return TRUE;
-        $p = explode("-", $part);
-        $this->assertEquals(count($p), 4, "'$part' is not in XXXX-XX-XX-X format");
-        $this->assertEquals(strlen($p[0]), 4, "'".$p[0]."' is not 4 characters");
-        $this->assertType("numeric", $p[0], "'".$p[0]."' is not a number");
-        $this->assertEquals(strlen($p[1]), 2, "'".$p[1]."' is not 2 characters");
-        $this->assertType("numeric", $p[1], "'".$p[1]."' is not a number");
-        $this->assertEquals(strlen($p[2]), 2, "'".$p[2]."' is not 2 characters");
-        $this->assertType("numeric", $p[2], "'".$p[2]."' is not a number");
-        $this->assertEquals(strlen($p[3]), 1, "'".$p[3]."' is not 1 character");
-        $this->assertNotType("numeric", $p[3], "'".$p[2]."' can not be a number");
-        
-        return TRUE;
-    }
-    /**
-     *
-     */    
-    private function checkVersion($ver) {
-        if ($ver == "DEFAULT") return TRUE;
-        if ($ver == "BAD") return TRUE;
-        $v = explode(".", $ver);
-        $this->assertEquals(count($v), 3, "'$ver' is not in X.Y.Z format");
-        $this->assertType("numeric", $v[0], "'".$v[0]."' is not a number in '$ver'");
-        $this->assertType("numeric", $v[1], "'".$v[1]."' is not a number in '$ver'");
-        $this->assertType("numeric", $v[2], "'".$v[2]."' is not a number in '$ver'");
-        foreach($v as $val) {
-            $this->assertThat($val, $this->greaterThanOrEqual(0));
-            $this->assertThat($val, $this->lessThanOrEqual(255));
-        }        
+        $this->assertType("int", $this->o->drivers[$this->class]->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");                
     }
 
     /**
      * data provider for dataConfigArray* functions
      */
     public static function dataConfigArray($class=NULL) {
-        if (empty($class)) return array();
         $o = driverTest::createDriver();
+        if (empty($class)) return array();
         $return = array();
         foreach($o->drivers[$class]->config as $fw => $params) {
             $return[] = array($class, $fw, $params);
@@ -273,10 +223,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @dataProvider dataConfigArray
      */
     function testConfigArray($class, $fw, $params) {
-        $o = $this->setupDriver();
-        $this->checkPartNum($fw);
+        $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
         $this->assertType("array", $params, "'$fw':Parameters are not an array");
-        $this->assertType("array", $o->drivers[$this->class]->devices[$fw], "'$fw' not found in devices array");
+        $this->assertType("array", $this->o->drivers[$this->class]->devices[$fw], "'$fw' not found in devices array");
     }
     
     /**
@@ -284,6 +233,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      */
     function testConfigArrayFunction($class, $fw, $params) {
         $this->assertType("string", $params["Function"], "'$fw': Parameter 'Function' must be a string");
+        $this->assertFalse(empty($params["Function"]), "'$fw': Parameter 'Function' can not be empty");
     }
     
     /**
@@ -325,42 +275,24 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @todo implement testReadSensors()
      */
     function testReadSensors() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
      * @todo implement testsaveSensorData()
      */
     function testsaveSensorData() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
      * @todo implement testupdateConfig()
      */
     function testupdateConfig() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
@@ -388,13 +320,8 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @dataProvider dataCheckRecord()
      */
     function testCheckRecord($Info, $Rec, $expect) {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $o->drivers[$this->class]->checkRecord($Info, $Rec);
-            $this->assertSame($expect, $Rec);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        $this->o->drivers[$this->class]->checkRecord($Info, $Rec);
+        $this->assertSame($expect, $Rec);
     }
 
 
@@ -402,28 +329,16 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @todo implement testReadMem()
      */
     function testReadMem() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
     
     /**
      * @todo implement testGetConfigVars()
      */
     function testGetConfigVars() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
     
     /**
@@ -436,7 +351,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                     "5A5A5A5C0000250000200059" => "5A5A5A0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
                     "5A5A5A4C0000250000200049" => "5A5A5AFF00002000002500FA",
                 ),
-                array("DeviceID" => "000025", "GatewayKey" => 1),
+                array("DeviceID" => "000025", "GatewayKey" => self::$socket),
                 array(
                     "GetReply" => TRUE,
                     "SentFrom" => "000020",
@@ -449,7 +364,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                         "data" => "",
                     ),
                     "PacketTo" => "000025",
-                    "GatewayKey" => 1,
+                    "GatewayKey" => self::$socket,
                     "DeviceKey" => NULL,
                     "Type" => "OUTGOING",
                     "RawData" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
@@ -508,47 +423,32 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataReadConfig()
      */
-    function testReadConfig($preloadPackets, $Info, $expect) {
-        $o = $this->setupDriver($preloadPackets);
-        if (is_object($o)) {
-            $ret = $o->drivers[$this->class]->ReadConfig($Info);
-            $ret = $ret[0];
-            unset($ret["pktTimeout"]);
-            unset($ret["SentTime"]);
-            unset($ret["Date"]);
-            unset($ret["Time"]);
-            unset($ret["ReplyTime"]);
-            $this->assertSame($expect, $ret);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+    function testReadConfig($preload, $Info, $expect) {
+        $this->setUpPacket($preload);
+        $ret = $this->o->drivers[$this->class]->ReadConfig($Info);
+        $ret = $ret[0];
+        unset($ret["pktTimeout"]);
+        unset($ret["SentTime"]);
+        unset($ret["Date"]);
+        unset($ret["Time"]);
+        unset($ret["ReplyTime"]);
+        $this->assertSame($expect, $ret);
     }
         
     /**
      * @todo implement testUnsolicited()
      */
     function testUnsolicited() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
     /**
      */
     function testInterpConfig() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            if (is_array($this->InterpConfigTestCases) && (count($this->InterpConfigTestCases) > 0)) {
-                foreach($this->InterpConfigTestCases as $key => $params) {
-                    $ret = $o->drivers[$this->class]->InterpConfig($params["Info"]);
-                    $this->checkInterpConfigReturn($ret, $params['Return']);
-                }
-            } else {
-                $this->markTestSkipped("Skipped do to lack of driver"); 
+        if (is_array($this->InterpConfigTestCases) && (count($this->InterpConfigTestCases) > 0)) {
+            foreach($this->InterpConfigTestCases as $key => $params) {
+                $ret = $this->o->drivers[$this->class]->InterpConfig($params["Info"]);
+                $this->checkInterpConfigReturn($ret, $params['Return']);
             }
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
@@ -631,34 +531,25 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      *
      */
     function testBadDriver() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $this->assertFalse($o->drivers[$this->class]->BadDriver($Info, "Test"));
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }    
     
     /**
      *
      */
     function testInterpSensors() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            if (is_array($this->InterpSensorsTestCases)) {
-                foreach($this->InterpSensorsTestCases as $key => $params) {
-                    $ret = $o->drivers[$this->class]->InterpSensors($params["Info"], $params["Packets"]);
-                    if (is_array($params["Return"])) {
-                        $this->assertType("array", $ret, "Return was not an array");
-                        foreach($ret as $p => $pkt) {
-                            $this->checkInterpSensorsReturn($pkt, $params["Return"][$p], $p);
-                        }
-                    } else {
-                        $this->assertSame($params["Return"], $ret);
+        if (is_array($this->InterpSensorsTestCases)) {
+            foreach($this->InterpSensorsTestCases as $key => $params) {
+                $ret = $this->o->drivers[$this->class]->InterpSensors($params["Info"], $params["Packets"]);
+                if (is_array($params["Return"])) {
+                    $this->assertType("array", $ret, "Return was not an array");
+                    foreach($ret as $p => $pkt) {
+                        $this->checkInterpSensorsReturn($pkt, $params["Return"][$p], $p);
                     }
+                } else {
+                    $this->assertSame($params["Return"], $ret);
                 }
-            } else {
-                $this->markTestSkipped("Skipped do to lack of driver"); 
             }
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
@@ -694,35 +585,25 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @todo implement testGetCols()
      */
     function testDefCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->defcols;
-            $this->assertType("array", $cols, "Variable must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
+        $Info = array();
+        $cols = $this->o->drivers[$this->class]->defcols;
+        $this->assertType("array", $cols, "Variable must be an array");
+        foreach($cols as $key => $val) {
+            $this->assertType("string", $key, "Array key must be an string");                
+            $this->assertType("string", $val, "Array value must be an string");                
         }
     }
     /**
      * @todo implement testGetCols()
      */
     function testCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->cols;
-            $this->assertType("array", $cols, "Variable must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertFalse(isset($o->drivers[$this->class]->defcols[$key]), "Column already defined as a default in variable defcols");                
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
+        $Info = array();
+        $cols = $this->o->drivers[$this->class]->cols;
+        $this->assertType("array", $cols, "Variable must be an array");
+        foreach($cols as $key => $val) {
+            $this->assertFalse(isset($this->o->drivers[$this->class]->defcols[$key]), "Column already defined as a default in variable defcols");                
+            $this->assertType("string", $key, "Array key must be an string");                
+            $this->assertType("string", $val, "Array value must be an string");                
         }
     }
 
@@ -731,41 +612,23 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
      * @todo implement testSetAllConfig()
      */
     function testSetAllConfig() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
     /**
      * @todo implement testGetCalibration()
      */
     function testGetCalibration() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
      * @todo implement testSetConfig()
      */
     function testSetConfig() {
-        $o = $this->setupDriver();    
-        if (is_object($o)) {
-            /* Put test here */
-            // Remove the following line when you implement this test.
-            $this->markTestIncomplete("This test has not been implemented yet.");
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
     
 }

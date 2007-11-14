@@ -101,6 +101,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
+        $this->o = new unitConversion;
+        $this->o->units = $this->testUnits;
     }
 
     /**
@@ -110,6 +112,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function tearDown() {
+        unset($this->o);
     }
 
     /**
@@ -130,7 +133,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayLongName($catName, $shortName, $unit) {
-        $o = new unitConversion;
         // Long Name
         $this->assertType("string", $unit['longName'], $catName.":".$shortName.": Long name is not a string");
         $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
@@ -140,7 +142,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayVarType($catName, $shortName, $unit) {
-        $o = new unitConversion;
         // Var Type
         $this->assertType("string", $unit['varType'], $catName.":".$shortName.": Variable type is not a string");
         $this->assertTrue($this->checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
@@ -205,8 +206,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataUnitArrayConvertFunct
      */
     public function testUnitArrayConvertFunct($catName, $shortName, $to, $function) {
-        $o = new unitConversion;
-        $this->assertTrue(method_exists($o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
+        $this->assertTrue(method_exists($this->o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
         $this->assertTrue($this->findUnits($catName, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
     }
     /**
@@ -287,9 +287,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataPreferredUnit
      */
     public function testPreferredUnit($unit, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->preferredUnit($unit));
+        $this->assertSame($expect, $this->o->preferredUnit($unit));
     }    
     
     /**
@@ -305,9 +303,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataGraphable
      */
     public function testGraphable($unit, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->graphable($unit));
+        $this->assertSame($expect, $this->o->graphable($unit));
     }    
     /**
      *
@@ -322,9 +318,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataFindUnit
      */
     public function testfindUnit($unit, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->findUnit($unit));
+        $this->assertSame($expect, $this->o->findUnit($unit));
     }
 
     /**
@@ -340,28 +334,32 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataDataType
      */
     public function testgetDataType($from, $to, $default, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->getDataType($from, $to, $default));
+        $this->assertSame($expect, $this->o->getDataType($from, $to, $default));
     }
 
     /**
      *
      */
-    public static function dataGetConvFunct() {
+    public static function dataConvert() {
         return array(
-            array("&#176;F", "&#176;C", "diff", "FtoC"),
-            array("&#176;F", "&#176;F", "diff", NULL),
-            array("&#176;F", "Direction", "diff", NULL),
+            array(32, "&#176;F", "&#176;C", 0, "raw", NULL, 0.0, "&#176;C"),
+            array(32, "&#176;F", "&#176;F", 0, "diff", NULL, 32, "&#176;F"),
+            array(32, "&#176;F", "Direction", 0, "diff", NULL, 32, "&#176;F"),
         );
     }
     /**
-     * @dataProvider dataGetConvFunct
+     * @dataProvider dataConvert
      */
-    public function testGetConvFunct($to, $from, $type, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->getConvFunct($to, $from, $type));
+    public function testConvert($val, $from, $to, $time, $type, $extra, $expect, $toExpect) {
+        $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * @dataProvider dataConvert
+     */
+    public function testConvertTo($val, $from, $to, $time, $type, $extra, $expect, $toExpect) {
+        $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
+        $this->assertSame($toExpect, $to);
     }
 
     /**
@@ -380,9 +378,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataGetPossConv
      */
     public function testGetPossConv($type, $from, $expect) {
-        $o = new unitConversion;
-        $o->units = $this->testUnits;
-        $this->assertSame($expect, $o->getPossConv($type, $from));
+        $this->assertSame($expect, $this->o->getPossConv($type, $from));
     }
 
     /**
@@ -401,16 +397,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataTemperature
      */
     public function testCtoF($c, $f, $time, $type) {
-        $o = new unitConversion;
-        $this->assertEquals($f, $o->CtoF($c, $time, $type));        
+        $this->assertEquals($f, $this->o->CtoF($c, $time, $type));        
 	}
 
     /**
      * @dataProvider dataTemperature
      */
 	public function testFtoC($c, $f, $time, $type) {
-        $o = new unitConversion;
-        $this->assertEquals($c, $o->FtoC($f, $time, $type));        
+        $this->assertEquals($c, $this->o->FtoC($f, $time, $type));        
 	}
 
 
@@ -428,15 +422,13 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataMilli
      */
 	public function testtoMilli($v, $m, $time, $type) {
-        $o = new unitConversion;
-        $this->assertEquals($m, $o->toMilli($v, $time, $type));
+        $this->assertEquals($m, $this->o->toMilli($v, $time, $type));
 	}
     /**
      * @dataProvider dataMilli
     */
 	public function testfromMilli($v, $m, $time, $type) {
-        $o = new unitConversion;
-        $this->assertEquals($v, $o->fromMilli($m, $time, $type));
+        $this->assertEquals($v, $this->o->fromMilli($m, $time, $type));
 	}
 
     /**
@@ -453,8 +445,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataCenti
      */
 	public function testfromCenti($v, $c, $time, $type) {
-        $o = new unitConversion;
-        $this->assertEquals($v, $o->fromCenti($c, 0, 'raw'));
+        $this->assertEquals($v, $this->o->fromCenti($c, 0, 'raw'));
 	}
 
 
@@ -473,8 +464,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataCnttoRPM
      */
     public function testCnttoRPM($cnt, $rpm, $time, $type, $cntperrev) {
-        $o = new unitConversion;
-        $this->assertEquals($rpm, $o->CnttoRPM($cnt, $time, $type, $cntperrev));
+        $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntperrev));
     }
 
     /**
@@ -514,8 +504,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataDirtoNumDir
      */
     public function testDirtonumDir($numdir, $dir) {
-        $o = new unitConversion;
-        $this->assertSame($numdir, $o->DirtonumDir($dir, 0, 0));
+        $this->assertSame($numdir, $this->o->DirtonumDir($dir, 0, 0));
     }
 
     /**
@@ -532,8 +521,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataNumDirtoDir
      */
     public function testnumDirtoDir($numdir, $dir) {
-        $o = new unitConversion;
-        $this->assertSame($dir, $o->numDirtoDir($numdir, 0, 0));
+        $this->assertSame($dir, $this->o->numDirtoDir($numdir, 0, 0));
     }
     
     /**
@@ -551,8 +539,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider datakWhTokW
      */
     public function testkWhTokW ($val, $time, $type, $extra, $expect) {
-        $o = new unitConversion;
-        $this->assertEquals($expect, $o->kWhTokW($val, $time, $type, $extra));
+        $this->assertEquals($expect, $this->o->kWhTokW($val, $time, $type, $extra));
     }
 
     /**
@@ -570,8 +557,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * @dataProvider datakWhToW
      */
     public function testkWhToW ($val, $time, $type, $extra, $expect) {
-        $o = new unitConversion;
-        $this->assertEquals($expect, $o->kWhToW($val, $time, $type, $extra));
+        $this->assertEquals($expect, $this->o->kWhToW($val, $time, $type, $extra));
     }
 
 }
