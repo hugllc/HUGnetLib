@@ -298,7 +298,7 @@ class unitConversion {
      * @param string $type The data type to use
      * @return string NULL if no function exists, the function name otherwise. 
      */
-    public function getConvFunct($from, $to, $type) {
+    protected function getConvFunct($from, $to, $type) {
         if ($to == $from) return NULL;
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
@@ -308,6 +308,27 @@ class unitConversion {
             }
         }
         return NULL;
+    }
+    
+    /**
+     * Converts a value based on input given.
+     *
+     * @param mixed $val The value to convert
+     * @param string $from The starting unit
+     * @param string $to The unit to be converted into
+     * @param int $time The time in seconds between this record and the last.
+     * @param string $type The data type to use
+     * @param mixed $extra Any extra stuff we might need.
+     * @return mixed
+     */
+    public function convert($val, $from, &$to, $time, $type, $extra) {
+        $func = $this->getConvFunct($from, $to, $type);
+        if (method_exists($this, $func) && ($val !== NULL)) {
+            $val = $this->{$func}($val, $time, $type, $extra);
+        } else {
+            $to = $from;
+        }
+        return $val;
     }
     /**
      * Gets all possible conversions if $from == NULL.  Otherwise

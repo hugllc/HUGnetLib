@@ -527,15 +527,11 @@ class driver {
                 }
                 if (isset($history[$key])) {
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
-                        if (isset($units[$i])) {
-                            $to = $units[$i];
+                        if (isset($units[$i]) && isset($history[$key]['Data'.$i])) {
+                            if (!isset($cTo[$i])) $cTo[$i] = $units[$i];
 
                             $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
-                            $func = $this->unit->getConvFunct($from, $to, $type[$i]);
-                            if (!empty($func) && ($history[$key]['Data'.$i] !== NULL)) {
-                                if (!isset($cTo[$i])) $cTo[$i] = $to;
-                                $history[$key]['Data'.$i] = $this->unit->{$func}($history[$key]['Data'.$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
-                            }
+                            $history[$key]['Data'.$i] = $this->unit->convert($history[$key]['Data'.$i], $from, $cTo[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
                         }
                         if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
                             $history[$key]["Data".$i] = round($history[$key]["Data".$i], $dPlaces);
