@@ -94,13 +94,8 @@ class eDEFAULTTest extends endpointTestBase {
      * @dataProvider dataCheckDataArray()
      */
     function testcheckDataArray($work, $expect) {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $o->drivers[$this->class]->checkDataArray($work);
-            $this->assertSame($expect, $work);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        $this->o->drivers[$this->class]->checkDataArray($work);
+        $this->assertSame($expect, $work);
     }
 
 
@@ -108,17 +103,12 @@ class eDEFAULTTest extends endpointTestBase {
      * @todo implement testGetCols()
      */
     function testGetCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->getCols($Info);
-            $this->assertType("array", $cols, "Return must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
+        $Info = array();
+        $cols = $this->o->drivers[$this->class]->getCols($Info);
+        $this->assertType("array", $cols, "Return must be an array");
+        foreach($cols as $key => $val) {
+            $this->assertType("string", $key, "Array key must be an string");                
+            $this->assertType("string", $val, "Array value must be an string");                
         }
     }
 
@@ -126,17 +116,12 @@ class eDEFAULTTest extends endpointTestBase {
      * @todo implement testGetEditCols()
      */
     function testGetEditCols(){
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Info = array();
-            $cols = $o->drivers[$this->class]->getEditCols($Info);
-            $this->assertType("array", $cols, "Return must be an array");
-            foreach($cols as $key => $val) {
-                $this->assertType("string", $key, "Array key must be an string");                
-                $this->assertType("string", $val, "Array value must be an string");                
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
+        $Info = array();
+        $cols = $this->o->drivers[$this->class]->getEditCols($Info);
+        $this->assertType("array", $cols, "Return must be an array");
+        foreach($cols as $key => $val) {
+            $this->assertType("string", $key, "Array key must be an string");                
+            $this->assertType("string", $val, "Array value must be an string");                
         }
     }
 
@@ -158,27 +143,17 @@ class eDEFAULTTest extends endpointTestBase {
      * @dataProvider dataCompareFWVersion
      */
     function testCompareFWVersion($v1, $v2, $expect) {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $ret = $o->drivers[$this->class]->CompareFWVersion($v1, $v2);
-            $this->assertEquals($expect, $ret);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        $ret = $this->o->drivers[$this->class]->CompareFWVersion($v1, $v2);
+        $this->assertEquals($expect, $ret);
     }        
 
     /**
      * @dataProvider dataCheckRecord()
      */
     function testCheckRecord() {
-        $o = $this->setupDriver();
-        if (is_object($o)) {
-            $Rec = array();
-            $o->drivers[$this->class]->checkRecord(array(), $Rec);
-            $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        $Rec = array();
+        $this->o->drivers[$this->class]->checkRecord(array(), $Rec);
+        $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
     }
 
 }
