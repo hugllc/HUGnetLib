@@ -40,6 +40,7 @@ require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
 require_once dirname(__FILE__).'/unitConversionTest.php';
+require_once dirname(__FILE__).'/EPacketTest.php';
 require_once 'adodb/adodb.inc.php';
 
 /**
@@ -86,6 +87,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $db = &ADONewConnection('mysqli');
         $driver = new driver($db);
         $driver->unit = new unitConversionMock();
+        $driver->gateway = new gatewayMock();
         $driver->packet->socket[$socket] = new epsocketMock;
         $driver->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
         $driver->sensors->registerSensor("testSensor");
@@ -192,7 +194,6 @@ class driverTest extends PHPUnit_Framework_TestCase {
      */
     public function testRunFunctionDefaultCall() {
         $Info = array();
-//        $this->o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$this->o));
         $this->o->registerDriver($this->getMock("eDEFAULT", array("InterpConfig"), array(&$this->o)), "eDEFAULT");
         $this->o->drivers['eDEFAULT']->expects($this->once())
                                ->method('InterpConfig')

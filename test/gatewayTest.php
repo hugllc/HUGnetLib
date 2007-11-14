@@ -121,4 +121,17 @@ class gatewayTest extends PHPUnit_Framework_TestCase {
 if (PHPUnit_MAIN_METHOD == "gatewayTest::main") {
     gatewayTest::main();
 }
+
+class gatewayMock extends gateway {
+    function getAll() {
+        return array(
+            array(
+                "GatewayKey" => 1,
+                "GatewayName" => "Test Gateway",
+                "GatewayIP" => "127.0.0.1",
+                "GatewayPort" => "2000",
+            ),
+        );
+    }
+}
 ?>
