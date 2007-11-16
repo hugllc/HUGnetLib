@@ -39,7 +39,6 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../EPacket.php';
-require_once dirname(__FILE__).'/../epsocket.php';
 
 /**
  * Test class for EPacket.
