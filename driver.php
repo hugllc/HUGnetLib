@@ -76,8 +76,6 @@ class driver {
     var $drivers = array();
     /** The drivers and what software and hardware they encompass are mapped here  */
     var $dev = array();
-    /** How many times the poll interval has to pass before we show an error on it     */
-    var $PollWarningIntervals = 2;        
     /** The display colors to use for different error codes     */
     var $ErrorColors = array(
         "DevOnBackup" => array("Severity" => "Low", "Description" => "Device is currently being polled on one of the backup servers", "Style" => "#00E000"),
