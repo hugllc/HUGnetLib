@@ -459,11 +459,11 @@ class deviceCache {
         if (!is_null($file)) {
             $this->file = $file;
         } else {
-            $this->file = get_temp_dir()."/".HUGNET_LOCAL_DATABASE;
+            $this->file = HUGNET_LOCAL_DATABASE;
         }
-        if (!is_string($file)) $file = "/tmp/HUGnetLocal";
+        if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
 //        $this->_sqlite = new SQLiteDatabase($file, $mode, $error);
-        $this->_sqlite = new PDO("sqlite:".$file.".sq3");
+        $this->_sqlite = new PDO("sqlite:".$this->file);
         $this->createTable();
         $ret = $this->_sqlite->query("PRAGMA table_info(".$this->table.")");
         if (is_object($ret)) $columns = $ret->fetchAll(PDO::FETCH_ASSOC);
