@@ -40,9 +40,19 @@ if (!defined("HUGNET_DATABASE")) {
     /** The name of the default HUGnet Database */
     define("HUGNET_DATABASE", "HUGNet");
 }
+
+$temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
+if ( $temp_file )
+{
+    $temp_dir = realpath( dirname( $temp_file ) );
+    unlink( $temp_file );
+} else {
+    $temp_dir = "/tmp";
+}
+
 if (!defined("HUGNET_LOCAL_DATABASE")) {
     /** The name of the default local (sqlite) HUGnet Database */
-    define("HUGNET_LOCAL_DATABASE", "HUGnetLocal");
+    define("HUGNET_LOCAL_DATABASE", $temp_dir."/HUGnetLocal.sq3");
 }
 
 if (include 'PHPUnit/Framework.php') {
@@ -62,30 +72,5 @@ require_once(HUGNET_INCLUDE_PATH."/gateway.php");
 /** Include the endpoint driver code */
 require_once(HUGNET_INCLUDE_PATH."/driver.php");
 
-if (!function_exists("get_temp_dir")) {
-   /**
-    *  This finds the temp directory for the system.  It does this by creating
-    *  a temporary file name then cutting the directory off of this.
-    *
-    *  Returns FALSE on failure.
-    *
-    *  @return string The path to the temp directory.
-    */
-   function get_temp_dir() {
-      // Try to use system's temporary directory
-      // as random name shouldn't exist
-      $temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
-      if ( $temp_file )
-      {
-          $temp_dir = realpath( dirname( $temp_file ) );
-          unlink( $temp_file );
-          return $temp_dir;
-      }
-      else
-      {
-          return FALSE;
-      }
-   }
-}
 
 ?>

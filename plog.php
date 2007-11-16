@@ -31,28 +31,50 @@
 
 class plog {
 
-    var $table = "PacketLog";
-    var $index = 1;
-    var $file = NULL;
+    private $table = "PacketLog";
+    private $index = 1;
+    private $file = NULL;
+    public $criticalError = FALSE;
 
     function __construct($name = NULL, $file=NULL) {
         if (!is_null($file)) {
             $this->file = $file;
         } else {
-            $this->file = get_temp_dir()."/".HUGNET_LOCAL_DATABASE;
+            $this->file = HUGNET_LOCAL_DATABASE;
         }
-//        $this->_sqlite = new SQLiteDatabase($this->file, $mode, $error);
-        $this->_sqlite = new PDO("sqlite:".$this->file.".sq3");
-        if (!empty($name)) {
-            $this->table = $name;
-        }
+                
+        if (is_writable($this->file)) {
+    //        $this->_sqlite = new SQLiteDatabase($this->file, $mode, $error);
+            $this->_sqlite = new PDO("sqlite:".$this->file);
+            if (!empty($name)) {
+                $this->table = $name;
+            }
+    
+            @$this->createPacketLog();
 
-        @$this->createPacketLog();
+            $this->getID();
+        } else {
+            $this->criticalError = "Database Not Writable!";
+        }
+/*
+$this->_sqlite->errorInfo() output:
+
+array(3) {
+  [0]=>
+  string(5) "HY000"
+  [1]=>
+  int(8)
+  [2]=>
+  string(36) "attempt to write a readonly database"
+}
+
+"HY000" is not unique, but 8 seems to be.
+*/
        
-        $this->getID();
     }
 
     function getID() {
+        if (!is_object($this->_sqlite)) return FALSE;
         $query = "SELECT MAX(id) as id from '".$this->table."'";    
         $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
         if (is_object($ret)) {
@@ -63,6 +85,7 @@ class plog {
     }
     
     function createPacketLog() {
+        if (!is_object($this->_sqlite)) return FALSE;
         
         $query = " CREATE TABLE '".$this->table."' (
                       'id' int(11) NOT NULL,
@@ -82,10 +105,13 @@ class plog {
                       PRIMARY KEY  ('id')
                     );
                     ";
-        return @$this->_sqlite->query($query);
+        $ret = @$this->_sqlite->query($query);
+        return $ret;
     }
 
     function get($where, $limit=0, $start=0) {
+        if (!is_object($this->_sqlite)) return FALSE;
+
         $query = "SELECT * FROM '".$this->table."' WHERE ".$where;
         if ($limit > 0) $query .= " limit ".$start.", ".$limit;
         $res = $this->_sqlite->query($query);
@@ -98,6 +124,8 @@ class plog {
     }
 
     function getOne($where = NULL) {
+        if (!is_object($this->_sqlite)) return FALSE;
+
         $query = "SELECT * FROM '".$this->table."' ";
         if (!empty($where)) $query .= " WHERE ".$where;
 
@@ -116,6 +144,7 @@ class plog {
 
 
     function add($info) {    
+        if (!is_object($this->_sqlite)) return FALSE;
         if (isset($info['PacketFrom']) 
                 && isset($info['PacketFrom']) 
                 && !empty($info['GatewayKey']) 
@@ -124,6 +153,7 @@ class plog {
                 && !empty($info['sendCommand'])
                 )
         {
+
             $div = "";
             $fields = "";
             $values = "";
@@ -142,8 +172,8 @@ class plog {
                 $this->index++;
             }
             $query = " REPLACE INTO '".$this->table."' (".$fields.") VALUES (".$values.")";
-            return $this->_sqlite->query($query);
-
+            $ret = $this->_sqlite->query($query);
+            return $ret;
 
 
         } else {
@@ -158,6 +188,7 @@ class plog {
     }
 
     function remove($info) {
+        if (!is_object($this->_sqlite)) return FALSE;
         if (is_array($info) && isset($info['id']))
         {
 /*

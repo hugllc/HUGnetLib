@@ -45,6 +45,7 @@ class process {
     var $file = NULL;
     var $FileOnly = FALSE;
 
+
     /**
      * constructor
      * @param string $file The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
@@ -53,14 +54,14 @@ class process {
         if (!is_null($file)) {
             $this->file = $file;
         } else {
-            $this->file = get_temp_dir()."/".HUGNET_LOCAL_DATABASE;
+            $this->file = HUGNET_LOCAL_DATABASE;
         }
-        if (!is_string($file)) $file = "/tmp/HUGnetLocal";
+        if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
         if (!is_long($mode)) $mode = 0666;
         if ($error == NULL) $error =& $this->lastError;
         $this->getMyInfo();
-//        $this->_sqlite = new SQLiteDatabase($file, $mode, $error);
-        $this->_sqlite = new PDO("sqlite:".$file.".sq3");
+
+        $this->_sqlite = new PDO("sqlite:".$this->file);
         $this->createTable();
     }
     
@@ -79,7 +80,7 @@ class process {
         } else {
             $this->me["Program"] = $name;
         }
-        $this->me["File"] = get_temp_dir()."/".trim($this->me["Program"]).".pid";
+        $this->me["File"] = dirname($this->file)."/".trim($this->me["Program"]).".pid";
         $this->me["Block"] = $block;
         $this->me["Started"] = date("Y-m-d H:i:s");
         
