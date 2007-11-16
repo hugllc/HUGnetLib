@@ -110,23 +110,27 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     public static function devicesArrayDataSource($class, $var) {
         $o = driverTest::createDriver();        
         $return = array();
-        foreach($o->drivers[$class]->devices as $fw => $Firm) {
-            if ($var == "fw") {
-                $return[] = array($fw, $Firm);
-            } else {
-                foreach($Firm as $hw => $ver) {
-                    if ($var == "hw") {
-                        $return[] = array($fw, $hw, $ver);
-                    } else {
-                        $dev = explode(",", $ver);
-                        foreach($dev as $v) {
-                            $return[] = array($fw, $hw, $v);
+        if (isset($o->drivers[$class]->devices)) {
+            foreach($o->drivers[$class]->devices as $fw => $Firm) {
+                if ($var == "fw") {
+                    $return[] = array($fw, $Firm);
+                } else {
+                    foreach($Firm as $hw => $ver) {
+                        if ($var == "hw") {
+                            $return[] = array($fw, $hw, $ver);
+                        } else {
+                            $dev = explode(",", $ver);
+                            foreach($dev as $v) {
+                                $return[] = array($fw, $hw, $v);
+                            }
                         }
                     }
                 }
+                
             }
-            
-        }
+        } else {
+            $return = array();
+        }        
         return $return;
     }
 
@@ -213,8 +217,12 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         $o = driverTest::createDriver();
         if (empty($class)) return array();
         $return = array();
-        foreach($o->drivers[$class]->config as $fw => $params) {
-            $return[] = array($class, $fw, $params);
+        if (is_array($o->drivers[$class]->config)) {
+            foreach($o->drivers[$class]->config as $fw => $params) {
+                $return[] = array($class, $fw, $params);
+            }
+        } else {
+            $return = array();
         }
         return $return;
     }

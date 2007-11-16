@@ -43,6 +43,7 @@ require_once 'endpoints/e00392800Test.php';
 require_once 'endpoints/e00392100Test.php';
 require_once 'endpoints/e00391200Test.php';
 require_once 'endpoints/e00391201Test.php';
+require_once 'endpoints/e00392601Test.php';
 require_once 'endpoints/eDEFAULTTest.php';
 // Filters
 require_once 'filters/medianFilterTest.php';
@@ -77,6 +78,7 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('e00392100Test');
         $suite->addTestSuite('e00391200Test');
         $suite->addTestSuite('e00391201Test');
+        $suite->addTestSuite('e00392601Test');
  
         // Filters
         $suite->addTestSuite('medianFilterTest');

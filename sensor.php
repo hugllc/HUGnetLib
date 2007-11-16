@@ -449,7 +449,6 @@ class sensor {
                 }
                 $skip = $this->getSize($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]) - 1;
 
-
                 if (is_null($data['Units'][$rawkey]))
                 {
                     $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
