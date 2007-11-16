@@ -51,6 +51,7 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 
 
+if (!class_exists("epsocket")) {
 /**
  *   Class for talking with HUGNet endpoints through unix sockets
  *   
@@ -246,5 +247,6 @@ class epsocket {
         if ($this->verbose) print "Done\r\n";
     }
     
+}
 }
 ?>
