@@ -185,23 +185,41 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testEncodeParams().
+     *
      */
-    public function testEncodeParams() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataEncodeParams() {
+        return array(
+            array(array("this"=>"is","a"=>"test"), "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"),
+            array("test String", "test String"),
+            array(1234, ""),
         );
+    }
+    /**
+     * @dataProvider dataEncodeParams
+     */
+    public function testEncodeParams($params, $expect) {
+        $ret = device::encodeParams($params);
+        $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
+        $this->assertSame($expect, $ret, "return array incorrect");
     }
 
     /**
-     * @todo Implement testDecodeParams().
+     *
      */
-    public function testDecodeParams() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
+    public static function dataDecodeParams() {
+        return array(
+            array("YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9", array("this"=>"is","a"=>"test")),
+            array(array("this"=>"is","an"=>"array"),array("this"=>"is","an"=>"array")),
+            array(1234, array()),
         );
+    }
+    /**
+     * @dataProvider dataDecodeParams
+     */
+    public function testDecodeParams($params, $expect) {
+        $ret = device::decodeParams($params);
+        $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
+        $this->assertSame($expect, $ret, "return array incorrect");
     }
 }
 
