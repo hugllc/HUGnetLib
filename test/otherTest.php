@@ -75,12 +75,14 @@ class otherTest extends PHPUnit_Framework_TestCase {
      */
     protected function tearDown() {
     }
-
-    public function testGetTempDir() {
-        $dir = get_temp_dir();
-        $this->assertFileExists($dir);
+    
+    public function testOther() {
+         // Remove the following line when you implement this test.
+        $this->markTestIncomplete(
+          "This test has not been implemented yet."
+        );
+   
     }
-
 }
 
 // Call epsocketTest::main() if this source file is executed directly.
