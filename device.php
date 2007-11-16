@@ -42,6 +42,8 @@ class device {
 
     /** The table the analysis output is stored in */
     var $analysis_table = "analysis";
+    /** How many times the poll interval has to pass before we show an error on it     */
+    var $PollWarningIntervals = 2;        
 
     /**
      * This function sets up the driver object, and the database object.  The
@@ -123,7 +125,6 @@ class device {
             if (is_array($gw)) {
                 $devInfo['Gateway'] = $gw[0];
             }
-
             $devInfo["params"] = $this->decodeParams($devInfo["params"]);
 
             $this->_devCache[$id] = $devInfo;
@@ -239,10 +240,10 @@ class device {
      * @param array $params The parameter array to be stored.
      */
 	function setParams($DeviceKey, $params) {
+        if (is_array($params)) $params = device::encodeParams($params);
 	    $params = $this->db->qstr($this->encodeParams($params));
-        $this->db->debug = TRUE;
         $return = $this->db->Execute("UPDATE ".$this->table." SET params = ".$params." WHERE DeviceKey=".$DeviceKey);
-		if (!$return) {
+		if ($return === FALSE) {
 			$this->Errno = $this->db->MetaError();
 			$this->Error = $this->db->MetaErrorMsg($this->Errno);
 		}
@@ -278,7 +279,7 @@ class device {
         if (is_string($params)) {
             $params = base64_decode($params);
             $params = unserialize($params);
-        } else {
+        } else if (!is_array($params)) {
             $params = array();
         }
         return $params;    
@@ -302,7 +303,7 @@ class device {
             $start = strtotime($start);
         }
         $end = $start - (86400 * $days);
-        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->device_table." ";
+        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->table." ";
         $cquery .= " WHERE PollInterval > 0 ";
         if (!empty($where)) $cquery .= " AND ".$where;
         $res = $this->db->getArray($cquery);
@@ -331,8 +332,8 @@ class device {
                  " ";
         $query .= " FROM " . $this->analysis_table;
 
-        $query .= " LEFT JOIN " . $this->device_table . " ON " . 
-                 $this->device_table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
+        $query .= " LEFT JOIN " . $this->table . " ON " . 
+                 $this->table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
 
         $query .= " WHERE " .
                   $this->analysis_table . ".Date <= ".$this->db->qstr(date("Y-m-d H:i:s", $start)).
@@ -340,7 +341,7 @@ class device {
                   $this->analysis_table . ".Date >= ".$this->db->qstr(date("Y-m-d H:i:s", $end));
     
         if (!empty($where)) $query .= " AND ".$where;
-                 
+
         $res = $this->db->getArray($query);
         if (isset($res[0])) $res = $res[0];
         return $res;
@@ -357,7 +358,6 @@ class device {
         a list of endpoints and quickly seeing which ones have problems.
      */
     function Diagnose($Info) {
-
         $problem = array();
         if ($Info["PollInterval"] > 0) {
             $timelag = time() - strtotime($Info["LastPoll"]);
