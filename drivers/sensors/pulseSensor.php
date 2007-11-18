@@ -135,7 +135,7 @@ if (!class_exists('pulseSensor')) {
             Freq = Pulses/Time
         */
         function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=NULL) {
-            if (empty($deltaT) || ($deltaT < 0)) return NULL;
+            if (empty($deltaT)) return NULL;
             if ($val <= 0) return 0;
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
             if ($speed < 0) $speed = 0;
@@ -143,7 +143,7 @@ if (!class_exists('pulseSensor')) {
         }
         
         function pulseCheck($value, $sensor, $units, $dType) {
-            if ($value < 0) return FALSE;
+//            if ($value < 0) return FALSE;
             return TRUE;
         }
 
