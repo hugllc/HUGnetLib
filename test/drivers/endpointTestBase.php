@@ -469,7 +469,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     private function checkInterpConfigReturn($ret, $expected) {
         // Check the stuff we can predict
         foreach($expected as $key => $val) {
-            $this->assertSame($ret[$key], $val, $this->class.": InterpConfig Failure in key $key");
+            $this->assertSame($val, $ret[$key], $this->class.": InterpConfig Failure in key $key");
         }
         // Check the stuff we can't predict (it might change witout a change in this code)
         foreach(array("Labels", "Units", "unitType", "dType", "doTotal") as $type) {

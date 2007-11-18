@@ -71,12 +71,10 @@ class e00392601Test extends endpointTestBase {
                  "SerialNum" => 232,
                  "Driver" => "e00392601",
                  "DeviceGroup" => "FFFFFF",
-                 "HWName" => "0039-28 Endpoint",
-                 "NumSensors" => 16,
-                 "Function" => "Sensor Board",
-                 "TimeConstant" => 1,
+                 "HWName" => "0039-26 Gateway",
+                 "NumSensors" => 0,
+                 "Function" => "Gateway",
                  "DriverInfo" => "0102020202020202027070707070707070",
-                 "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
             ),
          ),
      );
@@ -118,7 +116,17 @@ class e00392601Test extends endpointTestBase {
         return parent::dataConfigArray("e00392601");
     }
 
-
+    public static function dataGetConfigStr() {
+        return array(
+        );
+    }
+    /**
+     * @dataProvider dataGetConfigStr
+     */
+    function testGetConfigStr($Info, $expect) {
+        $ret = e00392601::getConfigStr($Info);
+        $this->assertSame($expect, $ret);
+    }
     public function testCheckRecord() {
         // This test is meaningless on this driver
     }
