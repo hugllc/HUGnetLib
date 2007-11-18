@@ -137,6 +137,10 @@ if (!class_exists("e00392601")) {
             $Info["Types"] = array();
             $Info["Labels"] = array();
             $Info["Units"] = array();
+            $Info["unitType"] = array();
+            $Info["dType"] = array();
+            $Info["doTotal"] = array();
+            $Info["params"] = array();
             
             $Info["isGateway"] = TRUE;
     

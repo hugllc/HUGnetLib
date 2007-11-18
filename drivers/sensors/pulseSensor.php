@@ -79,7 +79,7 @@ if (!class_exists('pulseSensor')) {
                         'MPH' => 'diff',
                     ),
                     "function" => "maximumAnemometer",
-                    "checkFunction" => "pulseCheck",
+//                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
@@ -90,7 +90,7 @@ if (!class_exists('pulseSensor')) {
                         '&#34;' => 'diff',
                     ),
                     "mult" => 0.01,
-                    "checkFunction" => "pulseCheck",
+//                    "checkFunction" => "pulseCheck",
                     "doTotal" => TRUE,
                 ),
                 'bravo3motion' => array(
@@ -120,7 +120,7 @@ if (!class_exists('pulseSensor')) {
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => TRUE,
-                    "checkFunction" => "pulseCheck",
+//                    "checkFunction" => "pulseCheck",
                 ),
             ),
         );
@@ -143,7 +143,7 @@ if (!class_exists('pulseSensor')) {
         }
         
         function pulseCheck($value, $sensor, $units, $dType) {
-//            if ($value < 0) return FALSE;
+            if ($value < 0) return FALSE;
             return TRUE;
         }
 
