@@ -484,6 +484,7 @@ class driver {
     
      */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=NULL, &$units=NULL) {
+
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 

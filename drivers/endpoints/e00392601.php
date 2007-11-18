@@ -37,7 +37,17 @@ if (!class_exists("e00392601")) {
      * Driver for the 0039-12 endpoint board and select firmwares
     */
     class e00392601 extends eDEFAULT{
-
+        static $PacketSN = 0;
+        static $PacketHWPartNum = 20;
+        static $PacketFWPartNum = 30;
+        static $PacketFWVersion = 40;
+        static $PacketGroup = 46;
+        static $PacketPriority = 52;
+        static $PacketJobs = 54;
+        static $PacketGatewayKey = 56;
+        static $PacketName = 60;
+        static $PacketIP = 120;
+        
         var $HWName = "0039-26 Gateway";
 
         var $average_table = "e00392601_average";
@@ -78,7 +88,36 @@ if (!class_exists("e00392601")) {
         
             $Rec["Status"] = "BAD";
         }
+
+        function getConfigStr($Info) {
+            $string = EPacket::hexify($Info["SerialNum"], 10);
     
+            $string .= str_replace("-", "", $Info["HWPartNum"]);
+            $string .= str_replace("-", "", $Info["FWPartNum"]);
+            $ver = explode(".", POLL_VERSION);
+            for($i = 0; $i < 3; $i++) $string .= EPacket::hexify($ver[$i], 2);
+            $string .= "FFFFFF";
+    
+            $string .= EPacket::hexify($Info["Priority"], 2);
+            $Jobs = 0;
+            if ($Info["doPoll"]) $Jobs |= 0x01;
+            if ($Info["doConfig"]) $Jobs |= 0x02;
+            if ($Info["doCCheck"]) $Jobs |= 0x04;
+            if ($Info["doUnsolicited"]) $Jobs |= 0x08;
+            $string .= EPacket::hexify($Jobs, 2);
+            $string .= EPacket::hexify($Info['GatewayKey'], 4);
+    
+            $string .= EPacket::hexifyStr($Info["Name"], 60);
+     
+            $myIP = explode(".", $Info["IP"]);
+    
+            for($i = 0; $i < 4; $i++) {
+                $string .= EPacket::hexify($myIP[$i], 2);
+            }
+
+            return $string;
+
+        }    
         
         /**
          *
@@ -100,27 +139,25 @@ if (!class_exists("e00392601")) {
             $Info["Units"] = array();
             
             $Info["isGateway"] = TRUE;
-
-			$Info["FWVersion"] = 	trim(strtoupper(hexdec(substr($pkt["RawData"], ENDPOINT_FWV_START, 2)).".".
-													hexdec(substr($pkt["RawData"], ENDPOINT_FWV_START+2, 2)).".".
-													hexdec(substr($pkt["RawData"], ENDPOINT_FWV_START+4, 2))));
-
-
-            $Info["Priority"] = 	hexdec(trim(strtoupper(substr($pkt["RawData"], ENDPOINT_BOREDOM, 2))));
-            $Info["Jobs"] = 	hexdec(trim(strtoupper(substr($pkt["RawData"], ENDPOINT_BOREDOM+2, 2))));
-            $Info["myGatewayKey"] = 	hexdec(trim(strtoupper(substr($pkt["RawData"], ENDPOINT_BOREDOM+4, 4))));
-            $Info["NodeName"] = 	$this->packet->deHexify(trim(strtoupper(substr($pkt["RawData"], ENDPOINT_BOREDOM+8, 60))));
-			$Info["NodeIP"] = 	trim(strtoupper(hexdec(substr($pkt["RawData"], ENDPOINT_BOREDOM+68, 2)).".".
-													hexdec(substr($pkt["RawData"], ENDPOINT_BOREDOM+70, 2)).".".
-													hexdec(substr($pkt["RawData"], ENDPOINT_BOREDOM+72, 2)).".".
-													hexdec(substr($pkt["RawData"], ENDPOINT_BOREDOM+74, 2))));
-
+    
+            $index = 0;
+            $Info["Priority"] = $Info['BoredomThreshold'];
+            $Jobs = hexdec(substr($Info["DriverInfo"], $index, 2));
+            $Info['doPoll'] = (bool) ($Jobs & 0x01);
+            $Info['doConfig'] = (bool) ($Jobs & 0x02);
+            $Info['doCCheck'] = (bool) ($Jobs & 0x04);
+            $Info['doUnsolicited'] = (bool) ($Jobs & 0x08);
+            $index += 2;
+            $Info["GatewayKey"] = 	hexdec(substr($Info["DriverInfo"], $index, 4));
+            $index += 4;
+            $Info["Name"] = 	$this->packet->deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
+            $index += 60;
+			$IP = str_split(substr($Info["DriverInfo"], $index, 8), 2);
+            foreach($IP as $k => $v) {
+                $IP[$k] = hexdec($v); 
+            }
+            $Info['IP'] = implode(".", $IP);
             
-            $Info['doPoll'] = (bool) ($Info['Jobs'] & 0x01);
-            $Info['doConfig'] = (bool) ($Info['Jobs'] & 0x02);
-            $Info['doCCheck'] = (bool) ($Info['Jobs'] & 0x04);
-            $Info['doUnsolicited'] = (bool) ($Info['Jobs'] & 0x08);
-
             return($Info);
         }
 

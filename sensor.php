@@ -442,8 +442,8 @@ class sensor {
                 // This is so we skip useless data points.  If a sensor takes more than
                 // one input then skip the extra ones.
                 if ($skip > 0) {
-                    $data["Data".$rawkey] = NULL;
-                    $data["data"][$rawkey] = NULL;
+                    unset($data["Data".$rawkey]);
+                    unset($data["data"][$rawkey]);
                     $skip--;
                     continue;
                 }
@@ -462,10 +462,10 @@ class sensor {
                         if ($data['deltaT'] < 0) $newraw = abs($newraw);
                         $data["Data".$rawkey] = $this->getReading($newraw, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data['deltaT']);
                     } else {
-                        $data["Data".$rawkey] = NULL;
+                        unset($data["Data".$rawkey]);
                     }
                 } else {
-                    $data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $deltaT);
+                    $data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data["deltaT"]);
                 }
                 $data["data"][$rawkey] = $data["Data".$rawkey];
             }
