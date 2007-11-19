@@ -120,7 +120,7 @@ if (!class_exists('pulseSensor')) {
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => TRUE,
-//                    "checkFunction" => "pulseCheck",
+//                     "checkFunction" => "pulseCheck",
                 ),
             ),
         );
