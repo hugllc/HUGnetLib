@@ -462,7 +462,7 @@ class EPacket {
             } while ($SN == $this->SN);
             $Info = array("DeviceID" => $SN);
             if ($this->verbose) print "Checking Serial Number ".$SN."\r\n";
-            $ret = $this->ping($Info);
+            $ret = $this->ping($Info, TRUE);
         } while (is_array($ret));
         $this->SN = $SN;
         if ($this->verbose) print "Using Serial Number ".$this->SN."\r\n";
@@ -844,15 +844,7 @@ class EPacket {
                 $return = $this->socket[$sock]->Connect($Info["GatewayIP"], $Info["GatewayPort"]);
                 if ($this->_DeviceIDCheck) {
                     if (($this->SN == FALSE) || ((hexdec($this->SN) >= $this->maxSN) || (hexdec($this->SN) < 1))) {
-                        if ($return === FALSE) {
-                            $this->ChangeSN($Info);
-        //                    $this->SN = $this->hexify(mt_rand(1,$this->maxSN), 6);
-        //                    $this->SN = strtoupper(str_pad(dechex(mt_rand(1,32)), 6, "0", STR_PAD_LEFT));
-                        } else {
-                            $this->ChangeSN($Info);
-        //                    $this->SN = $this->hexify(mt_rand(1,$this->maxSN), 6);
-        //                    $this->SN = strtoupper(str_pad(dechex(mt_rand(1,32)), 6, "0", STR_PAD_LEFT));
-                        }
+                        $this->ChangeSN($Info);
                         if ($this->verbose) print "Using Serial Number ".$this->SN."\r\n";
                         // Put something here
                     }
