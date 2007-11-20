@@ -191,21 +191,30 @@ if (!class_exists("e00392100")) {
 
 			$Info['ActiveSensors'] = $Info["NumSensors"];
             $Info['params'] = device::decodeParams($Info['params']);
-			
+
+            self::InterpConfig00392006C($Info);
+            $this->InterpConfigSensors($Info);
+            self::InterpConfigDownstream($Info);
+            self::InterpConfigHUGnetPower($Info);
+        }
+
+        private static function InterpConfig00392006C(&$Info) {
 			if ($Info['FWPartNum'] == '0039-20-06-C') {
-				$Info['mcu'] = array();
-				$Info['mcu']["SRAM"] = hexdec(substr($Info["RawSetup"], 44, 4));
-				$Info['mcu']["E2"] = hexdec(substr($Info["RawSetup"], 48, 4));
-				$Info['mcu']["FLASH"] = hexdec(substr($Info["RawSetup"], 52, 6));
-				$Info['mcu']["FLASHPAGE"] = hexdec(substr($Info["RawSetup"], 58, 4));
+				$Info['mcu'] = array(
+				    "SRAM" => hexdec(substr($Info["DriverInfo"], 0, 4)),
+				    "E2" => hexdec(substr($Info["DriverInfo"], 4, 4)),
+				    "FLASH" => hexdec(substr($Info["DriverInfo"], 8, 6)),
+				    "FLASHPAGE" => hexdec(substr($Info["DriverInfo"], 14, 4)),
+				);
 				if ($Info['mcu']["FLASHPAGE"] == 0) $Info['mcu']["FLASHPAGE"] = 128;
 				$Info['mcu']["PAGES"] = $Info['mcu']["FLASH"]/$Info['mcu']["FLASHPAGE"];
-				$Info["CRC"] = strtoupper(substr($Info["RawSetup"], 62, 4));
+				$Info["CRC"] = strtoupper(substr($Info["DriverInfo"], 18, 4));
 				$Info['bootLoader'] = TRUE;
 			} else {
 				$Info['bootLoader'] = FALSE;
 			}
-
+        }
+        private function InterpConfigSensors(&$Info) {
             $Info["Types"] = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
             for($i = 0; $i < $Info['ActiveSensors']; $i++) {
@@ -220,40 +229,34 @@ if (!class_exists("e00392100")) {
 			} else {
 				$Info["Location"] = $this->labels["DEFAULT"];			
 			}
+        }
+        private static function InterpConfigDownstream(&$Info) {
 
-            if (is_array($Info['RawData'])) {
-                foreach($Info['RawData'] as $sendCommand => $RawData) {
+      	    if (!empty($Info["RawData"][PACKET_READDOWNSTREAMSN_COMMAND])) {
+      	        $pkt = &$Info["RawData"][PACKET_READDOWNSTREAMSN_COMMAND];
+				$index = 0;
 
-            		switch($sendCommand) {
-            			case PACKET_READDOWNSTREAMSN_COMMAND:
-            				$index = 0;
-            				$RawData = trim($RawData);
-            
-            				$strings[0] = substr($RawData, 0, (strlen($RawData)/2));
-            				$strings[1] = substr($RawData, (strlen($RawData)/2));
-                            $Info['subDevices'] = array();
-            				foreach($strings as $str) {
-            					for($i = 0; $i < strlen($str); $i += 6) {
+				$strings[0] = substr($pkt, 0, (strlen($pkt)/2));
+				$strings[1] = substr($pkt, (strlen($pkt)/2));
+                $Info['subDevices'] = array();
+				foreach($strings as $str) {
+					for($i = 0; $i < strlen($str); $i += 6) {
 
-            						$id = substr($str, $i, 6);
-            						if ((strlen($id) == 6) && ($id != '000000')) {
-            							$Info['subDevices'][$index][] = $id;
-            						}
-            					}
-            					$index++;
-            				}
-            				break;		
-            			case PACKET_HUGNETPOWER_COMMAND:		
-            				$Info['HUGnetPower'][0] = (hexdec(substr($RawData, 0, 2)) == 0) ? 0 : 1;
-            				$Info['HUGnetPower'][1] = (hexdec(substr($RawData, 2, 2)) == 0) ? 0 : 1;
-            				break;
-            			case PACKET_CONFIG_COMMAND:
-            			default:            			
-            				break;		
-            		}
-                }
+						$id = substr($str, $i, 6);
+						if ((strlen($id) == 6) && ($id != '000000')) {
+							$Info['subDevices'][$index][] = $id;
+						}
+					}
+					$index++;
+				}
             }
-    		return($Info);
+        }
+        private static function InterpConfigHUGnetPower(&$Info) {
+      	    if (!empty($Info["RawData"][PACKET_HUGNETPOWER_COMMAND])) {
+      	        $pkt = &$Info["RawData"][PACKET_HUGNETPOWER_COMMAND];
+				$Info['HUGnetPower'][0] = (hexdec(substr($pkt, 0, 2)) == 0) ? 0 : 1;
+				$Info['HUGnetPower'][1] = (hexdec(substr($pkt, 2, 2)) == 0) ? 0 : 1;
+            }
     	}
     	
     	function updateConfig($Info) {

@@ -77,28 +77,28 @@ if (!class_exists('eDEFAULT')) {
          * );
          * @endcode
          */
-        var $devices = array();
+        public $devices = array();
     
         /** The hardware name */
-        var $HWName = "Default";
+        protected $HWName = "Default";
         
         /** history table */
-        var $history_table = "history";
+        protected $history_table = "history";
         /** location table
          *  @deprecated This is now stored in the 'params' field in the devices table
          */
-        var $location_table = "location";
+        protected $location_table = "location";
         /** Average Table */
-        var $average_table = "average";
+        protected $average_table = "average";
         /** Raw history Table */
-        var $raw_history_table = "history_raw";
+        protected $raw_history_table = "history_raw";
         
         /** The default labels for the sensor outputs. */
-        var $labels = array(0 => "");
+        protected $labels = array(0 => "");
         /** The array of units used by the device sensor outputs (ie Degrees F, Degrees C) */
-        var $units = array(0 => "");
+        protected $units = array(0 => "");
         /** These are the columns that all devices share  */
-        var $defcols = array(
+        private $defcols = array(
             "DeviceKey" => "Key", 
             "DeviceName" => "Name",
             "DeviceID" => "ID", 
@@ -125,28 +125,28 @@ if (!class_exists('eDEFAULT')) {
         );
     
         /** These are the editable columns that all devices share  */
-        var $defeditcols = array(
+        private $defeditcols = array(
             "DeviceLocation" => "Location",
             "DeviceJob" => "Job",
             "BoredomThreshold" => "Boredom Threshold",
         );
         /** These are the editable columns that all devices share  */
-        var $editcols = array();
+        protected $editcols = array();
     
         /** This is where the hardware devices default configurations go. */
-        var $config = array(
+        public $config = array(
             "DEFAULT" => array("Function" => "Unknown", "Sensors" => 0),        
         );
     
         /** Calibration data */
-        var $caldata = array();                
+        protected $caldata = array();                
         /** The columns that are device specific go here */
-        var $cols = array();                    
+        protected $cols = array();                    
 
         var $var = array();            
     
         /** Default location variable definition  */
-        var $deflocation = array();
+        protected $deflocation = array();
     
         /** The maximum value of the AtoD convertor  */
         var $AtoDMax = 1023;
@@ -155,7 +155,7 @@ if (!class_exists('eDEFAULT')) {
         /** 
          * Default configuraion variable definition
          */
-        var $configvars = array();
+        private $configvars = array();
         /**
          * Returns the packet to send to read the sensor data out of an endpoint
          * @param array $Info Infomation about the device to use
@@ -265,11 +265,11 @@ if (!class_exists('eDEFAULT')) {
                     break;
             }
             $return = array();
-            $return["Command"] = $Type;
-            $return["To"] = $Info["DeviceID"];
-            $return["Data"][0] = "00" ;
-            $return["Data"][1] = $Info["MemAddress"] & 0xFF;
-            $return["Data"][2] = $Info["MemLength"] & 0xFF;
+            $Info["Command"] = $Type;
+            $Info["To"] = $Info["DeviceID"];
+            $Info["Data"][0] = "00" ;
+            $Info["Data"][1] = $Info["MemAddress"] & 0xFF;
+            $Info["Data"][2] = $Info["MemLength"] & 0xFF;
             return($return);
         }
         
@@ -324,9 +324,54 @@ if (!class_exists('eDEFAULT')) {
          * Interprets a config packet
          * @param array $Info Infomation about the device to use including the unsolicited packet.
          */
-        function InterpConfig($Info) {
-            return($Info);
+        function InterpConfig(&$Info) {
+            eDEFAULT::InterpBaseConfig($Info);
+            eDEFAULT::InterpCalibration($Info);
         }
+
+        /**
+         *
+         */
+        function InterpBaseConfig(&$Info) {
+            if (isset($Info['RawData'][PACKET_COMMAND_GETSETUP])) {
+                $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
+                if (strlen($pkt) >= PACKET_CONFIG_MINSIZE) 
+                {
+                    $Info["SerialNum"] = hexdec(substr($pkt, 0, 10));
+                    $Info["HWPartNum"] = trim(strtoupper(substr($pkt, ENDPOINT_HW_START, 4)."-".
+                                                         substr($pkt, ENDPOINT_HW_START+4, 2)."-".
+                                                         substr($pkt, ENDPOINT_HW_START+6, 2)."-".
+                                                         chr(hexdec(substr($pkt, ENDPOINT_HW_START+8, 2)))));
+                    $Info["FWPartNum"] = trim(strtoupper(substr($pkt, ENDPOINT_FW_START, 4)."-".
+                                                         substr($pkt, ENDPOINT_FW_START+4, 2)."-".
+                                                         substr($pkt, ENDPOINT_FW_START+6, 2)."-".
+                                                         chr(hexdec(substr($pkt, ENDPOINT_FW_START+8, 2)))));
+                    $Info["FWVersion"] = trim(strtoupper(substr($pkt, ENDPOINT_FWV_START, 2).".".
+                                                         substr($pkt, ENDPOINT_FWV_START+2, 2).".".
+                                                         substr($pkt, ENDPOINT_FWV_START+4, 2)));
+            
+                    if (strlen($pkt) >= (ENDPOINT_GROUP+6)) {
+                        $Info["DeviceGroup"] = trim(strtoupper(substr($pkt, ENDPOINT_GROUP, 6)));
+                    }    
+                    if (strlen($pkt) >= (ENDPOINT_BOREDOM+2)) {
+                        $Info["BoredomThreshold"] =     hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
+                    }            
+                    $Info["DriverInfo"] = substr($pkt, ENDPOINT_BOREDOM+2);
+                    $Info["RawSetup"] = $pkt;
+                    devInfo::setDate($Info, "LastConfig");                    
+
+                }
+            }
+        
+        }
+
+        function InterpCalibration(&$Info) {
+            if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
+                $pkt = &$Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
+                $Info['RawCalibration'] = $pkt;
+            }        
+        }
+
         /**
          * Finds the correct error code for why it was called
          * @param array $Info Infomation about the device to use
@@ -360,14 +405,14 @@ if (!class_exists('eDEFAULT')) {
                     $return = $data;
     
                     $index = 0; 
-                    $return['NumSensors'] = $Info['NumSensors'];
-                    $return["DataIndex"] = $data["Data"][$index++];
-                    $return["Driver"] = $Info["Driver"];
+                    $Info['NumSensors'] = $Info['NumSensors'];
+                    $Info["DataIndex"] = $data["Data"][$index++];
+                    $Info["Driver"] = $Info["Driver"];
                     if (!isset($data["Date"])) {
-                        $return["Date"] = date("Y-m-d H:i:s");
+                        $Info["Date"] = date("Y-m-d H:i:s");
                     }
                     
-                    if (!isset($return['DeviceKey'])) $return["DeviceKey"] = $Info["DeviceKey"];
+                    if (!isset($Info['DeviceKey'])) $Info["DeviceKey"] = $Info["DeviceKey"];
     
                     $return = $this->CheckRecord($Info, $return);
                     $ret[] = $return;
@@ -499,7 +544,37 @@ if (!class_exists('eDEFAULT')) {
             return(0);
     
         }        
-        
+
+        /**
+         * Gets the name of the history table for a particular device
+         *
+         * @param $Info Array Infomation about the device to use
+         * @return mixed The name of the table as a string on success, FALSE on failure
+         */
+        final public function getHistoryTable() {
+            return $this->history_table;
+        }
+    
+        /**
+         * Gets the name of the average table for a particular device
+         *
+         * @param $Info Array Infomation about the device to use
+         * @return mixed The name of the table as a string on success, FALSE on failure
+         */
+        final public function getAverageTable() {
+            return $this->average_table;
+        }
+    
+        /**
+         * Gets the name of the location table for a particular device
+         *
+         * @param $Info Array Infomation about the device to use
+         * @return mixed The name of the table as a string on success, FALSE on failure
+         */
+        final public function getLocationTable() {
+            return $this->location_table;
+        }
+            
         
         /**
          * Constructor.

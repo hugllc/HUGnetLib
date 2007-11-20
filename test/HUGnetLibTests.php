@@ -40,6 +40,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'otherTest.php';
 
 // Main Files
+require_once 'devInfoTest.php'; 
 require_once 'deviceTest.php'; 
 require_once 'deviceCacheTest.php'; 
 require_once 'driverTest.php'; 
@@ -72,6 +73,7 @@ class HUGnetLibTests
 
         $suite->addTestSuite('otherTest');
         // Main file Tests 
+        $suite->addTestSuite('devInfoTest');
         $suite->addTestSuite('driverTest');
         $suite->addTestSuite('deviceTest');
         $suite->addTestSuite('deviceCacheTest');

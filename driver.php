@@ -53,6 +53,7 @@ if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", dirname(__FILE_
 
 require_once(HUGNET_INCLUDE_PATH."/EPacket.php");
 require_once(HUGNET_INCLUDE_PATH."/sensor.php");
+require_once(HUGNET_INCLUDE_PATH."/devInfo.php");
 require_once(HUGNET_INCLUDE_PATH."/filter.php");
 require_once(HUGNET_INCLUDE_PATH."/device.php");
 require_once(HUGNET_INCLUDE_PATH."/unitConversion.php");
@@ -163,6 +164,7 @@ class driver {
         if (is_array($a)) {
             $args = array_merge($args, $a);
         }
+
         return call_user_func_array(array($this, "RunFunction"), $args);
         
     }
@@ -296,152 +298,42 @@ class driver {
         if (!is_array($packets)) return FALSE;
 
         $dev = array();
-        $return = array();
+        $Info = array();
         foreach($packets as $packet) {
-//            $return = $packet;
-            if (!isset($return['DeviceID'])) {
-                if (isset($packet['PacketFrom'])) {
-                    $return['DeviceID'] = $packet['PacketFrom'];
-                } else if (isset($packet['From'])) {
-                    $return['DeviceID'] = $packet['From'];
-                }
-            } else {
-                if (!empty($packet['PacketFrom'])) {
-                    if ($return['DeviceID'] != $packet['PacketFrom']) {
-                        continue;
-                    }
-                } else if (!empty($packet['From'])) {
-                    if ($return['DeviceID'] != $packet['From']) {
-                        continue;
-                    }
-                } else if (!empty($packet['DeviceID'])) {
-                    if ($return['DeviceID'] != $packet['DeviceID']) {
-                        continue;
-                    }
-                }
-            }
-            if (!isset($packet["RawData"])) {
-                if (isset($packet["Data"])) {
-                    $packet["RawData"] = $packet["Data"];
-                } else if (isset($packet["rawdata"])) {
-                    $packet["RawData"] = $packet["rawdata"];
-                } else if (isset($packet["RawSetup"])) {
-                    $packet['RawData'] = $packet['RawSetup'];
-                }
-            }
-            if (isset($packet["Date"])) {
-                $return["LastConfig"] = $packet["Date"];
-            } else {
-                $return["LastConfig"] = date("Y-m-d H:i:s");
-            }
-            if (($return['Driver'] == 'eDEFAULT') || empty($return['Driver'])) {
-                if (isset($dev[$return['From']])) {
-                       $return['Driver'] = $dev[$return['From']];    
-                } else if (isset($packet['Driver'])) {
-                    $return['Driver'] = $packet['Driver'];
-                }
-            }
-            if (empty($return['DeviceKey'])) {
-                $return['DeviceKey'] = $packet['DeviceKey'];
-            }
+//            $Info = $packet;
+            devInfo::DeviceID($packet);
+            devInfo::RawData($packet);
 
-            switch (trim(strtoupper($packet['sendCommand']))) {
-                case PACKET_COMMAND_GETSETUP:
-                case PACKET_COMMAND_GETSETUP_GROUP:
-    
-                    if (strlen($packet["RawData"]) >= PACKET_CONFIG_MINSIZE) 
-                    {
-                        $return["CurrentGatewayKey"] = $packet["GatewayKey"];
-                        if (isset($packet["Date"])) {
-                            $return["LastConfig"] = $packet["Date"];
-                        } else {
-                            $return["LastConfig"] = date("Y-m-d H:i:s");
-                        }
-                        $return["SerialNum"] = hexdec(substr($packet["RawData"], 0, 10));
-                        if (empty($return["DeviceID"])) {
-                            $return["DeviceID"] = EPacket::hexify($return["SerialNum"], 6);
-                        }
-                        $return["HWPartNum"] =     trim(strtoupper(substr($packet["RawData"], ENDPOINT_HW_START, 4)."-".
-                                                                                substr($packet["RawData"], ENDPOINT_HW_START+4, 2)."-".
-                                                                                substr($packet["RawData"], ENDPOINT_HW_START+6, 2)."-".
-                                                                                chr(hexdec(substr($packet["RawData"], ENDPOINT_HW_START+8, 2)))));
-                        $return["FWPartNum"] =     trim(strtoupper(substr($packet["RawData"], ENDPOINT_FW_START, 4)."-".
-                                                                                substr($packet["RawData"], ENDPOINT_FW_START+4, 2)."-".
-                                                                                substr($packet["RawData"], ENDPOINT_FW_START+6, 2)."-".
-                                                                                chr(hexdec(substr($packet["RawData"], ENDPOINT_FW_START+8, 2)))));
-                        $return["FWVersion"] =     trim(strtoupper(substr($packet["RawData"], ENDPOINT_FWV_START, 2).".".
-                                                                                substr($packet["RawData"], ENDPOINT_FWV_START+2, 2).".".
-                                                                                substr($packet["RawData"], ENDPOINT_FWV_START+4, 2)));
-                
-                        if (strlen($packet["RawData"]) >= (ENDPOINT_GROUP+6)) {
-                            $return["DeviceGroup"] = trim(strtoupper(substr($packet["RawData"], ENDPOINT_GROUP, 6)));
-                        }    
-                        if (strlen($packet["RawData"]) >= (ENDPOINT_BOREDOM+2)) {
-                            $return["BoredomThreshold"] =     hexdec(trim(strtoupper(substr($packet["RawData"], ENDPOINT_BOREDOM, 2))));
-                        }            
-                        $return["RawSetup"] = $packet["RawData"];
-                        $return["Driver"] = $this->FindDriver($return);
-                        if ($return['Driver'] != 'eDEFAULT') {
-                            $dev[$return['From']] = $return['Driver'];
-                        }
-
-                    }
-                
-                    break;
-                case PACKET_COMMAND_GETCALIBRATION:
-                    $return['RawCalibration'] = $packet['RawData'];
-                    break;
+            // Check for a basic setup packet
+            if ($packet['sendCommand'] == PACKET_COMMAND_GETSETUP) {
+                // Since we got a basic setup packet lets deal with it
+                if (empty($Info['DeviceID'])) $Info["DeviceID"] = $packet["DeviceID"];
+                if ($Info['DeviceID'] == $packet['DeviceID']) {
+                    // Make sure this one is for the correct DeviceID
+                    if (empty($Info['DeviceKey'])) $Info['DeviceKey'] = $packet['DeviceKey'];
+                    $Info["CurrentGatewayKey"] = $packet["GatewayKey"];
+                    $Info["Date"] = $packet["Date"];
+                }
             }
-            $return['RawData'][$packet['sendCommand']] = $packet['RawData'];
+            
+            // Save all of the raw data by DeviceID.  We don't necessarily know what
+            // Device we are dealing with.
+            $RawData[$packet['DeviceID']][$packet['sendCommand']] = $packet['RawData'];
+
         }
-        if (isset($return['Driver']) && ($return['Driver'] != "eDEFAULT")) {
-            $this->RunFunction($return, "InterpConfig");
+        if (is_array($RawData[$Info['DeviceID']])) {
+            $Info['RawData'] = $RawData[$Info['DeviceID']];
+            eDEFAULT::interpConfig($Info);
+            $Info["Driver"] = $this->FindDriver($Info);
         }
-        return $return;
+
+        if (!empty($Info['Driver']) && ($Info['Driver'] != "eDEFAULT")) {
+            $this->RunFunction($Info, "InterpConfig");
+        }
+        return $Info;
     }
 
 
-    /**
-     * Gets the name of the history table for a particular device
-     *
-     * @param $Info Array Infomation about the device to use
-     * @return mixed The name of the table as a string on success, FALSE on failure
-     */
-    function getHistoryTable($Info) {
-        if (is_object($this->drivers[$Info['Driver']]))
-        {
-            return $this->drivers[$Info['Driver']]->history_table;
-        }
-        return FALSE;
-    }
-
-    /**
-     * Gets the name of the average table for a particular device
-     *
-     * @param $Info Array Infomation about the device to use
-     * @return mixed The name of the table as a string on success, FALSE on failure
-     */
-    function getAverageTable($Info) {
-        if (is_object($this->drivers[$Info['Driver']]))
-        {
-            return $this->drivers[$Info['Driver']]->average_table;
-        }
-        return FALSE;
-    }
-
-    /**
-     * Gets the name of the location table for a particular device
-     *
-     * @param $Info Array Infomation about the device to use
-     * @return mixed The name of the table as a string on success, FALSE on failure
-     */
-    function getLocationTable($Info) {
-        if (is_object($this->drivers[$Info['Driver']]))
-        {
-            return $this->drivers[$Info['Driver']]->location_table;
-        }
-        return FALSE;
-    }
 
 
     /**

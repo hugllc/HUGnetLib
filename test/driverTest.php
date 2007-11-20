@@ -454,8 +454,8 @@ class driverTest extends PHPUnit_Framework_TestCase {
 
     public static function dataInterpConfig() {
         return array(
-            array("Bad", FALSE),
-            array(array(), array()),
+            array("Bad", FALSE, 1),
+            array(array(), array(), 2),
             array(
                 array(
                     array(
@@ -463,6 +463,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
                         "sendCommand" => PACKET_COMMAND_GETSETUP,
                         "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
                         "Date" => "2007-11-12 12:34:04",
+                        "From" => "0000E8",
                     ),
                     array(
                         "PacketFrom" => "wrongOne",
@@ -490,25 +491,28 @@ class driverTest extends PHPUnit_Framework_TestCase {
                     ),
                 ),
                 array(
-                    "LastConfig" => "2007-11-16 12:34:04",
+                    "DeviceID" => "0000E8",
                     "DeviceKey" => 1,
                     "CurrentGatewayKey" => NULL,
+                    "Date" => "2007-11-12 12:34:04",
+                    "RawData" => Array(
+                        "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                        "4C" => "12345678",
+                    ),
                     "SerialNum" => 232,
-                    "DeviceID" => "0000E8",
                     "HWPartNum" => "ABCD-EF-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "00.00.05",
                     "DeviceGroup" => "FFFFFF",
                     "BoredomThreshold" => 80,
+                    "DriverInfo" => "0102020202020202027070707070707070",
                     "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
-                    "Driver" => "testDriver",
-                    "RawData" => Array(
-                        "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
-                        "4C" => "12345678",
-                    ),
+                    "LastConfig" => "2007-11-12 12:34:04",
                     "RawCalibration" => "12345678",
+                    "Driver" => "testDriver",
                     "HWName" => "Phantom Test Hardware",
                 ),
+                3,
             ),      
 
         );
@@ -525,63 +529,6 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expect, $ret);
     }
 
-    /**
-     * data provider for testGetHistoryTable
-     */
-    public static function dataGetHistoryTable() {
-        return array(
-            array("testDriver", "testhistory"),
-            array("asdf", FALSE),
-        );
-    }
-    /**
-     * @dataProvider dataGetHistoryTable().
-     * @covers driver::GetHistoryTable
-     */
-    public function testGetHistoryTable($driver, $table) {
-        $Info = array("Driver" => $driver);
-        
-        $this->o->registerDriver($driver);
-        $this->assertSame($table, $this->o->getHistoryTable($Info));
-    }
-
-    /**
-     * data provider for testGetHistoryTable
-     */
-    public static function dataGetAverageTable() {
-        return array(
-            array("testDriver", "testaverage"),
-            array("asdf", FALSE),
-        );
-    }
-    /**
-     * @dataProvider dataGetAverageTable().
-     */
-    public function testGetAverageTable($driver, $table) {
-        $Info = array("Driver" => $driver);
-        
-        $this->o->registerDriver($driver);
-        $this->assertSame($table, $this->o->getAverageTable($Info));
-    }
-
-    /**
-     * data provider for testGetLocationTable
-     */
-    public static function dataGetLocationTable() {
-        return array(
-            array("testDriver", "testlocation"),
-            array("asdf", FALSE),
-        );
-    }
-    /**
-     * @dataProvider dataGetLocationTable().
-     */
-    public function testGetLocationTable($driver, $table) {
-        $Info = array("Driver" => $driver);
-        
-        $this->o->registerDriver($driver);
-        $this->assertSame($table, $this->o->getLocationTable($Info));
-    }
 
     
     /**
@@ -713,15 +660,15 @@ if (PHPUnit_MAIN_METHOD == "driverTest::main") {
 class testDriver extends eDEFAULT {
 
     /** history table */
-    var $history_table = "testhistory";
+    protected $history_table = "testhistory";
     /** location table
      *  @deprecated This is now stored in the 'params' field in the devices table
      */
-    var $location_table = "testlocation";
+    protected $location_table = "testlocation";
     /** Average Table */
-    var $average_table = "testaverage";
+    protected $average_table = "testaverage";
     /** Raw history Table */
-    var $raw_history_table = "testhistory_raw";
+    protected $raw_history_table = "testhistory_raw";
     var $devices = array(    
         "testFW" => array(
             "testHW1" => "DEFAULT",
