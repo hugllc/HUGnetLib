@@ -114,7 +114,7 @@ if (!class_exists("e00392601")) {
             for($i = 0; $i < 4; $i++) {
                 $string .= EPacket::hexify($myIP[$i], 2);
             }
-
+print $string;
             return $string;
 
         }    

@@ -73,6 +73,7 @@ class process {
     function getMyInfo($block="NORMAL", $name = FALSE) {
         $stuff = posix_uname();
         $this->me["Host"] = $stuff["nodename"];
+        $this->me["Domain"] = $stuff["domainname"];
         $this->me["OS"] = $stuff["sysname"];
         $this->me["PID"] = getmypid();
         if ($name === FALSE) {

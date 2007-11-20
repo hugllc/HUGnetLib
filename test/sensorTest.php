@@ -324,6 +324,7 @@ class sensorTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataGetUnitMode() {
         return array(
+            array("A", "raw", "ignore", "testSensor2", 0x100, "testSensor2"), // Wrong unit for this sensor
             array("A", "raw", "raw", "testSensor1", 0x100, "testSensor1"),
             array("B", "raw", "diff", "testSensor1", 0x100, "testSensor1"),
             array("B", "diff", "diff", "testSensor1", 0x100, "testSensor1"),
@@ -461,72 +462,309 @@ class sensorTest extends PHPUnit_Framework_TestCase {
         // Otherwise we don't know which run failed.  It should be incremented
         // for each test case.
         return array(
+            // Test case 1
+            // This test case has only one device in it
             array(
                 "info" => array(
-                    "params" => array(
-                        "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
-                        "Extra" => array(5,4,3,2,1),
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
                     ),
                 ),
                 "data" => array(
                     array(
                         "Date" => "2007-01-02 03:00:00",
+                        "DeviceKey" => 1,
                         "ActiveSensors" => 5,
                         "raw" => array(1,2,3,4,5),
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", NULL, "B", "B"),
-                        "dType" => array("raw", "diff", "diff", NULL, "raw"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
                     ),
                     array(
                         "Date" => "2007-01-02 03:10:00",
+                        "DeviceKey" => 1,
                         "ActiveSensors" => 5,
                         "raw" => array(2,3,4,5,6),
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", NULL, "B", "B"),
-                        "dType" => array("raw", "diff", "diff", NULL, "raw"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:20:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(3,5,5,6,7),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", NULL, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
                     ),
                 ),
                 "expectInfo" => array(
-                    "params" => array(
-                        "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
-                        "Extra" => array(5,4,3,2,1),
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
                     ),
                 ),
                 "expectData" => array(
-                    array(
-                        "Date" => "2007-01-02 03:00:00",
-                        "ActiveSensors" => 5,
-                        "raw" => array(1,2,3,4,5),
-                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
-                        "Units" => array("A", "B", "E", "B", "B"),
-                        "dType" => array("raw", "diff", "raw", NULL, "raw"),
-                        "unitType" => array("Test", "Test", "Test2", "Test"),
-                        "Data0" => 5,
-                        "data" => array(5, NULL, 6, 8),
-                        "Data2" => 6,
-                        "Data3" => 8,
-                        "deltaT" => 0,
-                        "Status" => "GOOD",
-                    ),
-                    array(
-                        "Date" => "2007-01-02 03:10:00",
-                        "ActiveSensors" => 5,
-                        "raw" => array(2,3,4,5,6),
-                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
-                        "Units" => array("A", "B", "E", "B", "B"),
-                        "dType" => array("raw", "diff", "raw", NULL, "raw"),
-                        "unitType" => array("Test", "Test", "Test2", "Test"),
-                        "Data0" => 10,
-                        "data" => array(10, 4, 8, 10),
-                        "deltaT" => 600,
-                        "Data1" => 4,
-                        "Data2" => 8,
-                        "Data3" => 10,
-                        "Status" => "GOOD",
+                    1 => array(
+                        array(
+                            "Date" => "2007-01-02 03:00:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(1,2,3,4,5),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 5,
+                            "data" => array(5, NULL, 6, 8),
+                            "Data2" => 6,
+                            "Data3" => 8,
+                            "deltaT" => 0,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:10:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(2,3,4,5,6),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 10,
+                            "data" => array(10, 4, 8, 10),
+                            "deltaT" => 600,
+                            "Data1" => 4,
+                            "Data2" => 8,
+                            "Data3" => 10,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:20:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(3,5,5,6,7),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 15,
+                            "data" => array(15, 8, 10, 12),
+                            "deltaT" => 600,
+                            "Data1" => 8,
+                            "Data2" => 10,
+                            "Data3" => 12,
+                            "Status" => "GOOD",
+                        ),
                     ),
                 ),
                 "run" => 1,
             ),
+
+            // Test case 2
+            // This test case has 2 alternating devices in it
+            array(
+                "info" => array(
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
+                    ),
+                    2 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor2", "testSensor2", "testSensor1", "testSensor1", "testSensor1"),
+                            "Extra" => array(11,12,2,3,4),
+                        ),
+                    ),
+                ),
+                "data" => array(
+                    array(
+                        "Date" => "2007-01-02 03:00:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(1,2,3,4,5),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", NULL, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:00:00",
+                        "DeviceKey" => 2,
+                        "ActiveSensors" => 5,
+                        "raw" => array(11,12,13,14,15),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("E", "E", "E", "B", "B"),
+                        "dType" => array("diff", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:10:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(2,3,4,5,6),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", NULL, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:10:00",
+                        "DeviceKey" => 2,
+                        "ActiveSensors" => 5,
+                        "raw" => array(12,13,14,25,26),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("E", "E", "E", "B", "B"),
+                        "dType" => array("diff", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:20:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(3,5,5,6,7),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", NULL, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:20:00",
+                        "DeviceKey" => 2,
+                        "ActiveSensors" => 5,
+                        "raw" => array(13,15,15,16,17),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("E", "E", "E", "B", "B"),
+                        "dType" => array("diff", "diff", "diff", "ignore", "raw"),
+                    ),
+                ),
+                "expectInfo" => array(
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
+                    ),
+                    2 => array(
+                        "params" => array(
+                            "sensorType" => array("testSensor2", "testSensor2", "testSensor1", "testSensor1", "testSensor1"),
+                            "Extra" => array(11,12,2,3,4),
+                        ),
+                    ),
+                ),
+                "expectData" => array(
+                    1 => array(
+                        array(
+                            "Date" => "2007-01-02 03:00:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(1,2,3,4,5),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 5,
+                            "data" => array(5, NULL, 6, 8),
+                            "Data2" => 6,
+                            "Data3" => 8,
+                            "deltaT" => 0,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:10:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(2,3,4,5,6),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 10,
+                            "data" => array(10, 4, 8, 10),
+                            "deltaT" => 600,
+                            "Data1" => 4,
+                            "Data2" => 8,
+                            "Data3" => 10,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:20:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(3,5,5,6,7),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 15,
+                            "data" => array(15, 8, 10, 12),
+                            "deltaT" => 600,
+                            "Data1" => 8,
+                            "Data2" => 10,
+                            "Data3" => 12,
+                            "Status" => "GOOD",
+                        ),
+                    ),
+                    2 => array(
+                        array(
+                            "Date" => "2007-01-02 03:00:00",
+                            "DeviceKey" => 2,
+                            "ActiveSensors" => 5,
+                            "raw" => array(11,12,13,14,15),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("E", "E", "E", "B", "B"),
+                            "dType" => array("raw", "raw", "ignore", "diff", "diff"),
+                            "unitType" => array("Test2", "Test2", "Test", "Test", "Test"),
+                            "Data0" => 22,
+                            "data" => array(22, 24, 26, NULL, NULL),
+                            "Data1" => 24,
+                            "Data2" => 26,
+                            "deltaT" => 0,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:10:00",
+                            "DeviceKey" => 2,
+                            "ActiveSensors" => 5,
+                            "raw" => array(12,13,14,25,26),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("E", "E", "E", "B", "B"),
+                            "dType" => array("raw", "raw", "ignore", "diff", "diff"),
+                            "unitType" => array("Test2", "Test2", "Test", "Test", "Test"),
+                            "Data0" => 24,
+                            "data" => array(24, 26, 28, 33, 44),
+                            "Data1" => 26,
+                            "Data2" => 28,
+                            "deltaT" => 600,
+                            "Data3" => 33,
+                            "Data4" => 44,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:20:00",
+                            "DeviceKey" => 2,
+                            "ActiveSensors" => 5,
+                            "raw" => array(13,15,15,16,17),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("E", "E", "E", "B", "B"),
+                            "dType" => array("raw", "raw", "ignore", "diff", "diff"),
+                            "unitType" => array("Test2", "Test2", "Test", "Test", "Test"),
+                            "Data0" => 26,
+                            "data" => array(26, 30, 30, -27, -36),
+                            "Data1" => 30,
+                            "Data2" => 30,
+                            "deltaT" => 600,
+                            "Data3" => -27,
+                            "Data4" => -36,
+                            "Status" => "GOOD",
+                        ),
+                    ),
+                ),
+                "run" => 2,
+            ),
+  
         );
     }
     /**
@@ -541,12 +779,13 @@ class sensorTest extends PHPUnit_Framework_TestCase {
         $expectType = $type;
         $newData = array();
         foreach($data as $d) {
-            $o->DecodeData($info, $d);
-            $newData[] = $d;
+            $o->DecodeData($info[$d['DeviceKey']], $d);
+            $newData[$d['DeviceKey']][] = $d;
         }
         $this->assertSame($expectInfo, $info, "Info is not the same");
         $this->assertSame($expectData, $newData, "Data is not the same");
     }
+
 
     /**
      * Data provider for testCheckRecord
