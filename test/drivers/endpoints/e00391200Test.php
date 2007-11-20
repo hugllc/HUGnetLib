@@ -54,6 +54,7 @@ class e00391200Test extends endpointTestBase {
          array(
              "Info" => array(
                  "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                 "DriverInfo" => "01000000000000000000",
                  "HWPartNum" => "0039-12-02-B",
                  "FWPartNum" => "0039-20-03-C",
                  "FWVersion" => "00.00.02",

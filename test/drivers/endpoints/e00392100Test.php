@@ -54,6 +54,7 @@ class e00392100Test extends endpointTestBase {
         array(
             "Info" => array(
                 "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
+                "DriverInfo" => "FF",
                 "HWPartNum" => "0039-21-01-A",
                 "FWPartNum" => "0039-20-01-C",
                 "FWVersion" => "00.00.07",
@@ -68,6 +69,7 @@ class e00392100Test extends endpointTestBase {
             ),
             "Return" => array(  
                 "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
+                "DriverInfo" => "FF",
                 "HWPartNum" => "0039-21-01-A",
                 "FWPartNum" => "0039-20-01-C",
                 "FWVersion" => "00.00.07",
@@ -96,6 +98,7 @@ class e00392100Test extends endpointTestBase {
         array(
             "Info" => array(
                 "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
+                "DriverInfo" => "040001E000380000808055",
                 "HWPartNum" => "0039-21-01-A",
                 "FWPartNum" => "0039-20-06-C",
                 "FWVersion" => "00.00.02",
@@ -105,6 +108,7 @@ class e00392100Test extends endpointTestBase {
             ),
             "Return" => array(  
                 "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
+                "DriverInfo" => "040001E000380000808055",
                 "HWPartNum" => "0039-21-01-A",
                 "FWPartNum" => "0039-20-06-C",
                 "FWVersion" => "00.00.02",

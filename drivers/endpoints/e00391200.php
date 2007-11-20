@@ -167,11 +167,6 @@ define("e00391102B_SENSORS", 9);
             If (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
                 $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-/*
-                if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) {
-                    $Info["DisplayOrder"] = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
-                }
-*/
             } else {
                 $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
                 $Info["Function"] = $this->config["DEFAULT"]["Function"];
@@ -183,8 +178,7 @@ define("e00391102B_SENSORS", 9);
                 $Info["TimeConstant"] = 0;
             }
 
-            $Info['DriverInfo'] = substr($Info["RawSetup"], e00391102B_TC);
-//            $Info["Function"] = "Temperature/Moisture Sensor";    
+
             $start = strlen($Info["RawSetup"]) - (2*$this->config[$Info["FWPartNum"]]["Sensors"]);
             $Info["Types"] = array();
             $Info["Labels"] = array();

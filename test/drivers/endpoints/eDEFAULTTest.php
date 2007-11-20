@@ -156,10 +156,67 @@ class eDEFAULTTest extends endpointTestBase {
         $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
     }
 
+    /**
+     * data provider for testGetHistoryTable
+     */
+    public static function dataGetHistoryTable() {
+        return array(
+            array("testDriver", "testhistory"),
+        );
+    }
+    /**
+     * @dataProvider dataGetHistoryTable().
+     * @covers driver::GetHistoryTable
+     */
+    public function testGetHistoryTable($driver, $table) {
+        $Info = array("Driver" => $driver);
+        
+        $this->o->registerDriver($driver);
+        $this->assertSame($table, $this->o->getHistoryTable($Info));
+    }
+
+    /**
+     * data provider for testGetHistoryTable
+     */
+    public static function dataGetAverageTable() {
+        return array(
+            array("testDriver", "testaverage"),
+        );
+    }
+    /**
+     * @dataProvider dataGetAverageTable().
+     */
+    public function testGetAverageTable($driver, $table) {
+        $Info = array("Driver" => $driver);
+        
+        $this->o->registerDriver($driver);
+        $this->assertSame($table, $this->o->getAverageTable($Info));
+    }
+
+    /**
+     * data provider for testGetLocationTable
+     */
+    public static function dataGetLocationTable() {
+        return array(
+            array("testDriver", "testlocation"),
+        );
+    }
+    /**
+     * @dataProvider dataGetLocationTable().
+     */
+    public function testGetLocationTable($driver, $table) {
+        $Info = array("Driver" => $driver);
+        
+        $this->o->registerDriver($driver);
+        $this->assertSame($table, $this->o->getLocationTable($Info));
+    }
+
+
 }
 
 // Call eDEFAULTTest::main() if this source file is executed directly.
 if (PHPUnit_MAIN_METHOD == "eDEFAULTTest::main") {
     eDEFAULTTest::main();
 }
+
 ?>

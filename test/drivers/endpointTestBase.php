@@ -184,24 +184,18 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    function testHWName() {
-        $this->assertType("string", $this->o->drivers[$this->class]->HWName, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($this->o->drivers[$this->class]->HWName), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
-
-    }
-    /**
-     *
-     */
     function testAverageTable() {
-        $this->assertType("string", $this->o->drivers[$this->class]->average_table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($this->o->drivers[$this->class]->average_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $table = $this->o->drivers[$this->class]->getAverageTable();
+        $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
+        $this->assertThat(strlen($table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
     }
     /**
      *
      */
     function testHistoryTable() {
-        $this->assertType("string", $this->o->drivers[$this->class]->history_table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($this->o->drivers[$this->class]->history_table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $table = $this->o->drivers[$this->class]->getHistoryTable();
+        $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
+        $this->assertThat(strlen($table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
     }
     /**
      *
@@ -456,7 +450,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         if (is_array($this->InterpConfigTestCases) && (count($this->InterpConfigTestCases) > 0)) {
             foreach($this->InterpConfigTestCases as $key => $params) {
                 $ret = $this->o->drivers[$this->class]->InterpConfig($params["Info"]);
-                $this->checkInterpConfigReturn($ret, $params['Return']);
+                $this->checkInterpConfigReturn($params["Info"], $params['Return']);
             }
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
@@ -589,33 +583,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     }
 
 
-    /**
-     * @todo implement testGetCols()
-     */
-    function testDefCols(){
-        $Info = array();
-        $cols = $this->o->drivers[$this->class]->defcols;
-        $this->assertType("array", $cols, "Variable must be an array");
-        foreach($cols as $key => $val) {
-            $this->assertType("string", $key, "Array key must be an string");                
-            $this->assertType("string", $val, "Array value must be an string");                
-        }
-    }
-    /**
-     * @todo implement testGetCols()
-     */
-    function testCols(){
-        $Info = array();
-        $cols = $this->o->drivers[$this->class]->cols;
-        $this->assertType("array", $cols, "Variable must be an array");
-        foreach($cols as $key => $val) {
-            $this->assertFalse(isset($this->o->drivers[$this->class]->defcols[$key]), "Column already defined as a default in variable defcols");                
-            $this->assertType("string", $key, "Array key must be an string");                
-            $this->assertType("string", $val, "Array value must be an string");                
-        }
-    }
-
-    
+   
     /**
      * @todo implement testSetAllConfig()
      */
@@ -638,6 +606,19 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
-    
+
+
 }
+
+/**
+ * Mock class for testing drivers.
+ */
+class driverMock {
+    public $packet = "packet";
+    public $device = "device";
+    public $history = "history";
+    public $location = "location";
+    public $average = "average";
+}
+
 ?>
