@@ -50,26 +50,27 @@ class e00391200Test extends endpointTestBase {
     /**
      *  Test cases for the InterpConfig routine
      */
-     var $InterpConfigTestCases = array(
-         array(
-             "Info" => array(
-                 "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                 "DriverInfo" => "01000000000000000000",
-                 "HWPartNum" => "0039-12-02-B",
-                 "FWPartNum" => "0039-20-03-C",
-                 "FWVersion" => "00.00.02",
-                 "DeviceID" => "000025",
-                 "SerialNum" => 37,
-                 "DeviceGroup" => "FFFFFF",
-             ),
-             "Return" => array(  
-                 "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                 "HWPartNum" => "0039-12-02-B",
-                 "FWPartNum" => "0039-20-03-C",
-                 "FWVersion" => "00.00.02",
-                 "DeviceID" => "000025",
-                 "SerialNum" => 37,
-                 "DeviceGroup" => "FFFFFF",
+    var $InterpConfigTestCases = array(
+        array(
+            "Info" => array(
+                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                "DriverInfo" => "01000000000000000000",
+                "HWPartNum" => "0039-12-02-B",
+                "FWPartNum" => "0039-20-03-C",
+                "FWVersion" => "00.00.02",
+                "DeviceID" => "000025",
+                "SerialNum" => 37,
+                "DeviceGroup" => "FFFFFF",
+            ),
+            "Return" => array(  
+                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                "DriverInfo" => "01000000000000000000",
+                "HWPartNum" => "0039-12-02-B",
+                "FWPartNum" => "0039-20-03-C",
+                "FWVersion" => "00.00.02",
+                "DeviceID" => "000025",
+                "SerialNum" => 37,
+                "DeviceGroup" => "FFFFFF",
                 "HWName" => "0039-12 Endpoint",
                 "NumSensors" => 9,
                 "Function" => "Temperature Sensor",
@@ -79,29 +80,30 @@ class e00391200Test extends endpointTestBase {
                 "Labels" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
                 "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
                 "params" => array(
-                    "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
+                "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
                 ),
                 "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
                 "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
                 "doTotal" => array(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
 
-             ),
-         ),
-     );
+            ),
+        ),
+    );
      
      var $InterpSensorsTestCases = array(
         array(
             "Info" => array(
-                 "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                 "HWPartNum" => "0039-12-02-B",
-                 "FWPartNum" => "0039-20-03-C",
-                 "FWVersion" => "00.00.02",
-                 "DeviceID" => "000025",
-                 "SerialNum" => 37,
-                 "ActiveSensors" => 9,
-                 "Driver" => "e00391200",
-                 "DeviceKey" => 5,
-                 "DeviceGroup" => "FFFFFF",
+                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                "DriverInfo" => "01000000000000000000",
+                "HWPartNum" => "0039-12-02-B",
+                "FWPartNum" => "0039-20-03-C",
+                "FWVersion" => "00.00.02",
+                "DeviceID" => "000025",
+                "SerialNum" => 37,
+                "ActiveSensors" => 9,
+                "Driver" => "e00391200",
+                "DeviceKey" => 5,
+                "DeviceGroup" => "FFFFFF",
                 "HWName" => "0039-12 Endpoint",
                 "NumSensors" => 9,
                 "Function" => "Temperature Sensor",
@@ -136,8 +138,8 @@ class e00391200Test extends endpointTestBase {
                     "Date" => "2007-02-23 22:38:01",
                     "Data" => array(250, 0, 1, 0, 24, 0, 206, 31, 0, 197, 31, 0, 198, 31, 0, 6, 24, 0, 0, 246, 0, 182, 255, 0, 191, 255, 0, 191, 255, 0, 127, 255),
                     "NumSensors" => 9,
-                     "ActiveSensors" => 9,
-                     "Driver" => "e00391200",
+                    "ActiveSensors" => 9,
+                    "Driver" => "e00391200",
                     "DeviceKey" => 5,
                     "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
                     "DataIndex" => 250,

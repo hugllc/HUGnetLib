@@ -165,48 +165,38 @@ if (!class_exists("e00392800")) {
             If (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
                 $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-/*
-                if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) {
-                    $Info["DisplayOrder"] = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
-                }
-*/
             } else {
                 $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
                 $Info["Function"] = $this->config["DEFAULT"]["Function"];
             }
             if ($Info["NumSensors"] > 0) {
-                $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], e00391102B_TC, 2));
-                if ($Info["TimeConstant"] == 0) $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], e00391102B_TC, 4));
+                $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
             } else {
                 $Info["TimeConstant"] = 0;
             }
 
-            $Info['DriverInfo'] = substr($Info["RawSetup"], e00391102B_TC);
-//            $Info["Function"] = "Temperature/Moisture Sensor";    
-//            $start = strlen($Info["RawSetup"]) - (2*$this->config[$Info["FWPartNum"]]["Sensors"]);
-            $start = 46;
             $Info["Types"] = array();
             $Info["Labels"] = array();
             $Info["Units"] = array();
             device::decodeParams($Info['params']);
-
+            $this->InterpConfig00392012C($Info);
+            $this->InterpConfigSensors($Info);
+        }
+        private function InterpConfig00392012C(&$Info) {
             switch(trim(strtoupper($Info["FWPartNum"]))) {
             case "0039-20-12-C":
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             default:
                 break;
             }
-
+        }
+        private function InterpConfigSensors(&$Info) {
             for ($i = 0; $i < $this->config[$Info["FWPartNum"]]["Sensors"]; $i++) {
                 
                 $key = $this->getOrder($Info, $i);
                 
                 if (!isset($Info['Types'][$i])) {
-                    if ($start > e00391102B_TC) {
-                        $Info["Types"][$i] = hexdec(substr($Info["RawSetup"], ($start + ($key*2)), 2));
-                    } else {
-                        $Info["Types"][$i] = 0;
-                    }
+                    $Info["Types"][$i] = hexdec(substr($Info["DriverInfo"], (($key*2)+2), 2));
                 }
                 $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
                 $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
@@ -214,15 +204,13 @@ if (!class_exists("e00392800")) {
                 $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
                 $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
             }
-
-            return($Info);
         }
 
         /**
          *
          */
         function InterpSensors($Info, $Packets) {
-            $Info = $this->InterpConfig($Info);
+            $this->InterpConfig($Info);
             $ret = array();
 
             unset($lastPacket);
