@@ -326,6 +326,7 @@ if (!class_exists('eDEFAULT')) {
          */
         function InterpConfig(&$Info) {
             eDEFAULT::InterpBaseConfig($Info);
+            eDEFAULT::InterpConfigDriverInfo($Info);
             eDEFAULT::InterpCalibration($Info);
         }
 
@@ -356,7 +357,6 @@ if (!class_exists('eDEFAULT')) {
                     if (strlen($pkt) >= (ENDPOINT_BOREDOM+2)) {
                         $Info["BoredomThreshold"] =     hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
                     }            
-                    $Info["DriverInfo"] = substr($pkt, ENDPOINT_BOREDOM+2);
                     $Info["RawSetup"] = $pkt;
                     devInfo::setDate($Info, "LastConfig");                    
 
@@ -365,6 +365,12 @@ if (!class_exists('eDEFAULT')) {
         
         }
 
+        function InterpConfigDriverInfo(&$Info) {
+            if (empty($Info["DriverInfo"]) && !empty($Info["RawSetup"])) {
+                $Info["DriverInfo"] = substr($Info["RawSetup"], ENDPOINT_BOREDOM+2);
+            }
+        
+        }
         function InterpCalibration(&$Info) {
             if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
