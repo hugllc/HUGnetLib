@@ -295,6 +295,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testPacketSetCallBack().
      */
+/*
     public function testPacketSetCallBackMethod() {
         $o = new EPacket();
         $t = new EPacketTest_CallBack_Class();
@@ -303,17 +304,18 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_object($o->callBackObject), "Class not saved correctly");
         $this->assertEquals(get_class($o->callBackObject), "EPacketTest_CallBack_Class", "Class not saved correctly");
     }
-
+*/
     /**
      * @todo Implement testPacketSetCallBack().
      */
+/*
     public function testPacketSetCallBackFunction() {
         $o = new EPacket();
         $o->PacketSetCallBack("EPacketTest_CallBack_Function");
         $this->assertEquals($o->callBackFunction, "EPacketTest_CallBack_Function", "Function not saved correctly");
         $this->assertTrue(is_null($o->callBackClass), "Class not saved correctly");
     }
-
+*/
     /**
      * @todo Implement testPacketCallBack().
      */
@@ -609,6 +611,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testSNCheck().
      */
+/*
     public function testSNCheck() {
         $o = new EPacket();
         // This is repeated twice on purpose.
@@ -621,6 +624,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $o->SNCheck(TRUE);
         $this->assertTrue($o->_DeviceIDCheck);
     }
+*/
 }
 
 // Call EPacketTest::main() if this source file is executed directly.

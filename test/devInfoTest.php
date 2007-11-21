@@ -125,7 +125,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
         $ret = devInfo::SetDate($Info, $Field);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
         $this->assertSame($expect[$Field], $ret, "Return not correct");
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-1][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
+        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
     }
 
     /**
@@ -135,7 +135,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
         $Info = array();
         $Field = "LastConfig";
         $ret = devInfo::SetDate($Info, $Field);
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-1][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
+        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
     }
 
 
