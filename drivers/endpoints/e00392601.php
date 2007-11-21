@@ -114,7 +114,6 @@ if (!class_exists("e00392601")) {
             for($i = 0; $i < 4; $i++) {
                 $string .= EPacket::hexify($myIP[$i], 2);
             }
-print $string;
             return $string;
 
         }    
@@ -178,7 +177,7 @@ print $string;
          * @param object $driver Object of class driver.
         */    
         function e00392601 (&$driver) {
-            parent::eDEFAULT($driver);
+            parent::__construct($driver);
         }
 
 

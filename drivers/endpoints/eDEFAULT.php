@@ -220,7 +220,7 @@ if (!class_exists('eDEFAULT')) {
     
             return $work;
         }
-    
+
         /**
          * Checks a data record to determine what its status is.  It changes
          * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
@@ -230,7 +230,43 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Rec The data record to check
           */
         function CheckRecord($Info, &$Rec) {
-            $Rec["Status"] = 'UNRELIABLE';
+            $Rec["Status"] = "UNRELIABLE";
+        }    
+        /**
+         * Checks a data record to determine what its status is.  It changes
+         * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
+         * is the status that the record had originally.
+         *
+         * @param array $Info The information array on the device
+         * @param array $Rec The data record to check
+          */
+        protected function CheckRecordBase($Info, &$Rec) {
+        
+            if (isset($Rec['Status'])) {
+                $Rec['StatusOld'] = $Rec['Status'];
+            }
+    
+            if (empty($Rec['RawData'])) {
+                $Rec["Status"] = 'BAD';
+                return;
+            }
+            $Rec['Status'] = "GOOD";            
+            
+            $Bad = 0;
+    
+            $zero = TRUE;
+            for($i = 0; $i < $Rec['NumSensors']; $i ++) {
+                if (!is_null($Rec['Data'.$i])) {
+                    $zero = FALSE;
+                    break;
+                }
+            }
+    
+            if ($zero && ($i > 3)) {
+                $Rec["Status"] = "BAD";
+                $Rec["StatusCode"] = "All Bad";
+                return;
+            }
         }
 
         /**
@@ -322,7 +358,7 @@ if (!class_exists('eDEFAULT')) {
         
         /**
          * Interprets a config packet
-         * @param array $Info Infomation about the device to use including the unsolicited packet.
+         * @param array $Info devInfo array
          */
         function InterpConfig(&$Info) {
             eDEFAULT::InterpBaseConfig($Info);
@@ -331,9 +367,10 @@ if (!class_exists('eDEFAULT')) {
         }
 
         /**
-         *
+         * This is the basic configuration that all endpoints have
+         * @param array $Info devInfo array
          */
-        function InterpBaseConfig(&$Info) {
+        protected function InterpBaseConfig(&$Info) {
             if (isset($Info['RawData'][PACKET_COMMAND_GETSETUP])) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
                 if (strlen($pkt) >= PACKET_CONFIG_MINSIZE) 
@@ -364,19 +401,99 @@ if (!class_exists('eDEFAULT')) {
             }
         
         }
-
-        function InterpConfigDriverInfo(&$Info) {
+        /**
+         * Adds the DriverInfo to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpConfigDriverInfo(&$Info) {
             if (empty($Info["DriverInfo"]) && !empty($Info["RawSetup"])) {
                 $Info["DriverInfo"] = substr($Info["RawSetup"], ENDPOINT_BOREDOM+2);
             }
         
         }
-        function InterpCalibration(&$Info) {
+        /**
+         * Adds the params to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpConfigParams(&$Info) {
+            device::decodeParams($Info['params']);
+        }
+        /**
+         * Adds the hardware information to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpConfigHW(&$Info) {
+            $Info['HWName'] = $this->HWName;
+        }
+        /**
+         * Adds the firmware information to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpConfigFW(&$Info) {
+            if (isset($this->config[$Info["FWPartNum"]])) {
+                $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
+                $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
+            } else {
+                $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
+                $Info["Function"] = $this->config["DEFAULT"]["Function"];
+            }        
+        }
+        /**
+         * Adds the calibration information to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpCalibration(&$Info) {
             if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
                 $Info['RawCalibration'] = $pkt;
             }        
         }
+
+        /**
+         * Adds the Types array to the devInfo array
+         * @param array $Info devInfo array
+         */
+        protected function InterpTypes(&$Info) {
+            for ($i = 0; $i < $Info["NumSensors"]; $i++) {
+                
+                $key = $this->getOrder($Info, $i);
+                
+                if (!isset($Info['Types'][$i])) {
+                    $Info["Types"][$i] = hexdec(substr($Info["DriverInfo"], (($key*2)+2), 2));
+                }
+            }
+        }
+        /**
+         *
+         */
+        protected function InterpSensorSetup(&$Info) {
+            $Info["unitType"] = array();
+            $Info["Labels"] = array();
+            $Info["Units"] = array();
+            $Info["dType"] = array();
+            $Info["doTotal"] = array();
+            for ($i = 0; $i < $Info["NumSensors"]; $i++) {
+                $Info["unitType"][$i] = $this->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $Info["Units"][$i] = $this->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);    
+                $Info["dType"][$i] = $this->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
+                $Info["doTotal"][$i] = $this->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+            }
+        
+        }
+        /**
+         *
+         */
+        protected function InterpConfigTC(&$Info) {
+            if ($Info["NumSensors"] > 0) {
+                $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
+                if ($Info["TimeConstant"] == 0) $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], e00391102B_TC, 4));
+            } else {
+                $Info["TimeConstant"] = 0;
+            }
+        
+        }
+
 
         /**
          * Finds the correct error code for why it was called
@@ -590,14 +707,12 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param object $driver An object of class Driver.
          */
-        function eDEFAULT(&$driver) {
+        function __construct(&$driver) {
     
             $this->driver =& $driver;
             $this->packet =& $driver->packet;
             $this->device =& $driver->device;
-            $this->history =& $driver->history;
-            $this->location =& $driver->location;
-            $this->average =& $driver->average;
+            $this->sensors =& $driver->sensors;
         }
     }    
 }

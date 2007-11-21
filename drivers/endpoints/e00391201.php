@@ -150,29 +150,8 @@ define("e00391201_SENSORS", 9);
 
 
 		function CheckRecord($Info, &$Rec) {
-		    if (isset($Rec['Status'])) {
-    			$Rec['StatusOld'] = $Rec['Status'];
-            }
-			if (empty($Rec['RawData'])) {
-				$Rec["Status"] = 'BAD';
-				return;
-		    }
-            $Rec['Status'] = "GOOD";    		
-		    
-			if (isset($Rec["Data8"]) && ($Rec["Data8"] == 0)) $Rec["Status"] = BAD;
-			$zero = TRUE;
-			for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-				if (!is_null($Rec['Data'.$i])) {
-					$zero = FALSE;
-					break;
-				}
-			}
-			if ($zero && ($i > 3)) {
-				$Rec["Status"] = "BAD";
-				$Rec["StatusCode"] = "All Bad";		
-				return;
-			}
-    
+            parent::CheckRecordBase($Info, $Rec);    
+            if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
                 $Rec["StatusCode"] = "Bad TC";
@@ -183,16 +162,27 @@ define("e00391201_SENSORS", 9);
 
 		function InterpConfig(&$Info) {
 
-            $Info['HWName'] = $this->HWName;
-			if ($this->devices[$Info["FWPartNum"]][$Info["HWPartNum"]] == "BAD") {
-				$Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];	
-				$Info["Function"] = "Incompatible Hardware";			
-			} else {
-				$Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];	
-				$Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-			}
-            $Info['DriverInfo'] = substr($Info["RawSetup"], e00391102B_TC);
+            $this->InterpConfigDriverInfo($Info);
+            $this->InterpConfigHW($Info);
+            $this->InterpConfigFW($Info);
+
 			$Info["ActiveSensors"] = $Info["NumSensors"];
+
+            $this->InterpConfigFETSetup($Info);
+            $this->InterpConfigParams($Info);
+
+            $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
+
+            $this->InterpSensorSetup($Info);
+
+			if (isset($this->labels[$Info["FWPartNum"]])) {
+				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
+			} else {
+				$Info["Labels"] = $this->labels["DEFAULT"];			
+			}
+
+        }
+        private function InterpConfigFETSetup(&$Info) {
 			$Info["Setup"] = hexdec(substr($Info["RawSetup"], e00391201_SETUP, 2));
 			for($i = 0; $i < 4; $i++) {
 				$mode = (($Info["Setup"]>>($i*2)) & 3);
@@ -208,30 +198,13 @@ define("e00391201_SENSORS", 9);
 			$Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET1_MULT, 2));
 			$Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET2_MULT, 2));
 			$Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET3_MULT, 2));
-
-            $Info['params'] = device::decodeParams($Info['params']);
-    
-            $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
-            for($i = 0; $i < $Info['ActiveSensors']; $i++) {
-                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-    	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
-    		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
-                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-            }			
-			if (isset($this->labels[$Info["FWPartNum"]])) {
-				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
-			} else {
-				$Info["Labels"] = $this->labels["DEFAULT"];			
-			}
-			return($Info);
-		}
+        }
 
 
 	
 		function InterpSensors($Info, $Packets) {
 
-			$Info = $this->InterpConfig($Info);
+			$this->InterpConfig($Info);
 		
 			$ret = array();
 			foreach($Packets as $data) {
@@ -279,8 +252,7 @@ define("e00391201_SENSORS", 9);
 		*/
 		function e00391201 (&$driver) {
 //			$this->eDEFAULT($servers, $db, $options);
-            parent::eDEFAULT($driver);
-			$this->packet =& $driver->packet;
+            parent::__construct($driver);
 		}
 	}
 }
