@@ -117,7 +117,7 @@ class EPacket {
     /** This contains all of the endpoints we know about */
     var $EndPoints = array();
     /** This is the packet buffer */
-    var $Packets = array();
+    private $Packets = array();
     /** How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** This is the socket descriptor */
@@ -139,32 +139,29 @@ class EPacket {
     var $verbose = FALSE;
 
     /** The preamble byte */
-    var $preambleByte = "5A";
+    private $preambleByte = "5A";
     /** The default serial number to use */
-    var $SN = "000020";
+    public $SN = "000020";
     /** The default serial number to use */
-    var $maxSN = 0x20;
+    private $maxSN = 0x20;
 
     /** Whether or not to return ALL packets received. */
-    var $_getAll = FALSE;
+    private $_getAll = FALSE;
     /** Whether or not to return unsolicited packets.*/
-    var $_getUnsolicited = FALSE;
+    private $_getUnsolicited = FALSE;
     /** The ID that unsolicited packets will be sent to. */
-    var $unsolicitedID = '000000'; 
+    private $unsolicitedID = '000000'; 
 
     /** Object for the incoming packet callback */
-    var $callBackObject = NULL;
+    private $callBackObject = NULL;
     /** Method to use on above object (if it is an object) */
-    var $callBackFunction = NULL;
-
-    /** This is for if we should be going directly to the endpoint or through the database.
-    var $_direct = TRUE;
+    private $callBackFunction = NULL;
 
     /** Check to see if we are a unique serial number on this net */
-    var $_DeviceIDCheck = TRUE;
+    private $_DeviceIDCheck = TRUE;
 
     /** @var bool Tells us whether to use direct access to the endpoints */
-    var $_direct = TRUE;
+    private $_direct = TRUE;
 
     /**
      *   @private
