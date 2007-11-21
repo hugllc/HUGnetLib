@@ -26,7 +26,7 @@
  * @subpackage Socket
  * @copyright 2007 Hunt Utilities Group, LLC
  * @author Scott Price <prices@hugllc.com>
- * @version $Id$    
+ * @version $Id: dbsocket.php 464 2007-11-16 17:42:46Z prices $    
  *
  */
 
@@ -51,7 +51,7 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 
 
-if (!class_exists("epsocket")) {
+if (!class_exists("dbsocket")) {
 /**
  *   Class for talking with HUGNet endpoints through unix sockets
  *   
@@ -60,7 +60,7 @@ if (!class_exists("epsocket")) {
  * Other methods might work, but they are untested.  It basically expects a raw
  * serial port that is accessable through a unix socket.  
  */
-class epsocket {
+class dbsocket {
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
@@ -88,6 +88,8 @@ class epsocket {
     /** @var array Array of strings that we are reading */
     var $readstr = array();        
 
+    /** @var int The index of the reply array */
+    private $replyIndex = 0;
     /**
      *   Write data out a socket
      *
@@ -95,14 +97,55 @@ class epsocket {
      * @return int The number of bytes written on success, FALSE on failure
      */
     function Write($data) {
-        if ($this->CheckConnect()) $this->Connect("", 0);
-        usleep(mt_rand(500, 10000));
-        $return = @fwrite($this->socket, $data);
-//        if ($this->verbose) print "Writing: '".$line."' on ".$sock."\r\n";
-        return($return);
+        $data = EPacket::hexify($data);
+        $pkt = EPacket::UnbuildPacket($data);
+        $id = rand(-24777216, 24777216);  // Big random number for the id
+        $this->packet[$id] = plog::PacketLogSetup($pkt);
+        $this->packet[$id]["sendTime"] = time();  // Big random number for the id
+        $this->packet[$id]["id"] = $id;
+        return $this->_db->AutoExecute("PacketSend", $pkt, 'INSERT');
     }
 
+    /**
+     *  
+     */
+    private function packetify(&$pkt) {
+        $pkt["To"] = $pkt["PacketTo"];
+        return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
+    }
 
+    /**
+     *  Gets the first of the packets that is destined for us.
+     */
+    private function getPacket() {
+        if (!is_string($this->replyPacket)) $this->replyPacket = "";
+        if (!empty($this->replyPacket)) return;
+        $query = "SELECT * FROM PacketSend WHERE Type = 'REPLY'";
+        $res = $this->db->getArray($query);
+        if (is_array($res)) {
+            foreach ($res as $pkt) {
+                if (is_array($this->packet[$pkt["id"]])) {
+                    $this->replyPacket = $this->packetify($pkt);
+                    $this->reply = $pkt["id"];
+                    return;
+                }
+            }
+        }    
+    }
+
+    /**
+     *  removes the packet for the id given
+     */
+    private function deletePacket($id) {
+        unset($this->packet[$id]);
+        if ($this->reply == $id) {
+            unset($this->reply);
+            $this->index = 0;
+        }
+        $query = "DELETE FROM PacketSend WHERE id = '".$return['id']."' ";
+        $this->_db->execute($query);
+
+    }
     /**
      *   Read data from the server
      *
@@ -111,20 +154,16 @@ class epsocket {
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
-
-        $read = array($this->socket);
-        $socks = @stream_select ($read, $write=NULL, $except=NULL, $timeout);
-        $char = FALSE;
-        if ($socks === FALSE) {
-            if ($this->verbose) print "Bad Connection\r\n";
-        } else if (count($read) > 0) {
-            foreach($read as $tsock) {
-                $char = @fread($tsock, 1);
-                if (($char === FALSE) || ($char === EOF)) return FALSE;
-//                $char = ord($char);
-            }
+        $this->getPacket();
+        if ($this->index < strlen($this->replyPacket)) {
+            $char = hexdec(substr($this->replyPacket, $this->replyIndex, 2));
+            $this->index+2;
+            if ($this->index >= strlen($this->replyPacket)) $this->deletePacket($this->reply);
+            return chr($char);
+        } else {
+            $this->index = 0;
+            return FALSE;
         }
-        return ($char);
     }     
     
     /**
@@ -132,11 +171,7 @@ class epsocket {
      *   
      */
     function Close() {
-        if ($this->socket != 0) {
-            if ($this->verbose) print("Closing Connection\r\n");
-            fclose($this->socket);
-            $this->socket = 0;
-        }
+        $this->packet = array();
     }
 
     /**
@@ -150,17 +185,7 @@ class epsocket {
      * @return bool TRUE if the connection is good, FALSE otherwise
     */
     function CheckConnect() {
-
-        if ($this->socket != 0) {
-            if (feof($this->socket)) {
-                $return = FALSE;
-            } else {
-                $return = TRUE;
-            }            
-        } else {
-            $return = FALSE;
-        }
-        return($return);
+        return $this->db->IsConnected();
     }
     
     /**
@@ -183,29 +208,7 @@ class epsocket {
         } else {
             $this->Close();
         }
-        if ($return === FALSE) {
-            if (!empty($server)) $this->Server = $server;
-            if (!empty($port)) $this->Port = $port;
-
-            if (!empty($this->Server) && !empty($this->Port)) {
-    
-                if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-                $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-                if (($this->Errno == 0) && ($this->socket != 0)) {
-                    stream_set_blocking($this->socket, FALSE);
-                    if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
-                    $return = TRUE;
-                } else {
-                    if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
-                    $this->socket = 0;
-                }
-            } else {
-                $this->Errno = -1;
-                $this->Error = "No server specified";
-                $return = FALSE;
-            }
-        }        
-        return($return);
+        return $return;
     }            
 
 
@@ -217,13 +220,10 @@ class epsocket {
      *       the default port.
      * @param bool $verbose Make the class put out a lot of output
      */
-    function __construct($server, $tcpport = SOCKET_DEFAULT_PORT, $verbose=FALSE) {
-        if (empty($tcpport)) $tcpport = SOCKET_DEFAULT_PORT;
+    function __construct(&$db, $verbose=FALSE) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-        if (trim($server) != "") {
-            $this->Connect($server, $tcpport);
-        }
+        $this->db = $db;
         if ($this->verbose) print "Done\r\n";
     }
     

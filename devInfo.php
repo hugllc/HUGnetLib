@@ -104,6 +104,7 @@ class devInfo {
      * @param string $pad The characters to pad to the LEFT end of the string
      */
     public static function setStringSize(&$value, $size, $pad="0") {
+        $value = trim($value);
         $value = str_pad($value, $size, $pad, STR_PAD_LEFT);
         $value = substr($value, strlen($value)-$size);
     }   

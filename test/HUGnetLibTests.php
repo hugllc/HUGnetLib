@@ -51,6 +51,7 @@ require_once 'firmwareTest.php';
 require_once 'gatewayTest.php'; 
 require_once 'processTest.php'; 
 require_once 'sensorTest.php'; 
+require_once 'plogTest.php'; 
 require_once 'unitConversionTest.php';
 
 // Drivers
@@ -84,6 +85,7 @@ class HUGnetLibTests
         $suite->addTestSuite('gatewayTest');
         $suite->addTestSuite('processTest');
         $suite->addTestSuite('sensorTest');
+        $suite->addTestSuite('plogTest');
         $suite->addTestSuite('unitConversionTest');
  
         // Driver Tests 
