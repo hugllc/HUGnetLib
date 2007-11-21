@@ -112,29 +112,14 @@ if (!class_exists("e00392100")) {
     	}
     
     	function CheckRecord($Info, &$Rec) {
-    	    if (isset($Rec['Status'])) {
-        		$Rec['StatusOld'] = $Rec['Status'];
-            }
-    		if (empty($Rec['RawData'])) {
-    			$Rec["Status"] = 'BAD';
-    			return;
-    		}
-            $Rec['Status'] = "GOOD";    		
-    		
-    		$zero = TRUE;
+
     		for($i = 0; $i < $Rec['NumSensors']; $i ++) {
     			if (!is_numeric($Rec['Data'.$i])) {
     				$Rec['Data'.$i] = NULL;
-    			} else if (!is_null($Rec['Data'.$i])) {
-    				$zero = FALSE;
-    				break;
     			}
     		}
-    		if ($zero && ($i > 3)) {
-    			$Rec["Status"] = "BAD";
-    			$Rec["StatusCode"] = "All Bad";		
-    			return;
-    		}
+            parent::CheckRecordBase($Info, $Rec);
+            if ($Rec["Status"] == "BAD") return;
             if ($Rec["sendCommand"] == PACKET_COMMAND_GETDATA) {
                 if ($Rec["TimeConstant"] == 0) {
                     $Rec["Status"] = "BAD";
@@ -178,24 +163,19 @@ if (!class_exists("e00392100")) {
     
     
     	function InterpConfig(&$Info) {
-            $Info['HWName'] = $this->HWName;
+            $this->InterpConfigDriverInfo($Info);
 			$Info["Location"] = $this->deflocation;
+            $this->InterpConfigHW($Info);
 	        $Info["PacketTimeout"] = 2;
-			if (isset($this->config[$Info["FWPartNum"]])) {
-				$Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];	
-				$Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-			} else {
-				$Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];	
-				$Info["Function"] = $this->config["DEFAULT"]["Function"];
-			}
-
+            $this->InterpConfigFW($Info);
+            
 			$Info['ActiveSensors'] = $Info["NumSensors"];
-            $Info['params'] = device::decodeParams($Info['params']);
+            $this->InterpConfigParams($Info);
 
-            self::InterpConfig00392006C($Info);
+            $this->InterpConfig00392006C($Info);
             $this->InterpConfigSensors($Info);
-            self::InterpConfigDownstream($Info);
-            self::InterpConfigHUGnetPower($Info);
+            $this->InterpConfigDownstream($Info);
+            $this->InterpConfigHUGnetPower($Info);
         }
 
         private static function InterpConfig00392006C(&$Info) {
@@ -217,18 +197,14 @@ if (!class_exists("e00392100")) {
         private function InterpConfigSensors(&$Info) {
             $Info["Types"] = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
-            for($i = 0; $i < $Info['ActiveSensors']; $i++) {
-                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-    	        $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);	
-    		    $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);	
-                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-            }			
+            $this->InterpSensorSetup($Info);
+
 			if (isset($this->labels[$Info["FWPartNum"]])) {
 				$Info["Location"] = $this->labels[$Info["FWPartNum"]];
 			} else {
 				$Info["Location"] = $this->labels["DEFAULT"];			
 			}
+
         }
         private static function InterpConfigDownstream(&$Info) {
 
@@ -770,13 +746,8 @@ if (!class_exists("e00392100")) {
     		@param $options the database options to use.
     	*/
     	function e00392100 (&$driver) {
-    		
-    		$this->driver =& $driver;
-    		$this->packet =& $driver->packet;
+            parent::__construct($driver);    		
     		$this->firmware = new firmware($driver->db);
-    		$this->R = new resistiveSensor(65536, 65536, 1<<6, 1023);
-    		$this->V = new voltageSensor(65536, 65536, 1<<6, 1023, 5);
-    		$this->I = new currentSensor(65536, 65536, 1<<6, 1023, 5);
     	}
     
     

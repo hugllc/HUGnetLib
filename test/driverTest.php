@@ -706,7 +706,7 @@ class testDriver extends eDEFAULT {
     
     public function __construct(&$driver = FALSE) {
         if (is_object($driver)) {
-            parent::eDEFAULT($driver);
+            parent::__construct($driver);
         }
     }
     

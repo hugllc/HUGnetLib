@@ -116,93 +116,39 @@ if (!class_exists("e00392800")) {
             }
             return($return);
         }
-
         /**
          *
          */
         function CheckRecord($Info, &$Rec) {
-        
-            if (isset($Rec['Status'])) {
-                $Rec['StatusOld'] = $Rec['Status'];
-            }
-            if (empty($Rec['RawData'])) {
-                $Rec["Status"] = 'BAD';
-                return ;
-            }
-            // Start with the assumption that the record is good.
-            $Rec['Status'] = "GOOD";            
-
-            $zero = TRUE;
-            for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-                if (!is_null($Rec['Data'.$i])) {
-                    $zero = FALSE;
-                    break;
-                }
-            }
-            if ($zero && ($i > 3)) {
-                $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = "All Bad";
-                return;
-            }
-
+            parent::CheckRecordBase($Info, $Rec);    
+            if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
                 $Rec["StatusCode"] = "Bad TC";
                 return;
             }
-
-        }
-    
+        
+        }    
         
         /**
          *
          */
         function InterpConfig(&$Info) {
-            //$Info["Location"] = $this->deflocation;
-
-            $Info['HWName'] = $this->HWName;
-
-            If (isset($this->config[$Info["FWPartNum"]])) {
-                $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
-                $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-            } else {
-                $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
-                $Info["Function"] = $this->config["DEFAULT"]["Function"];
-            }
-            if ($Info["NumSensors"] > 0) {
-                $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
-            } else {
-                $Info["TimeConstant"] = 0;
-            }
-
-            $Info["Types"] = array();
-            $Info["Labels"] = array();
-            $Info["Units"] = array();
-            device::decodeParams($Info['params']);
+            $this->InterpConfigDriverInfo($Info);
+            $this->InterpConfigHW($Info);
+            $this->InterpConfigFW($Info);
+            $this->InterpConfigTC($Info);
+            $this->InterpConfigParams($Info);
             $this->InterpConfig00392012C($Info);
-            $this->InterpConfigSensors($Info);
+            $this->InterpTypes($Info);
+            $this->InterpSensorSetup($Info);
         }
+        /**
+         *
+         */
         private function InterpConfig00392012C(&$Info) {
-            switch(trim(strtoupper($Info["FWPartNum"]))) {
-            case "0039-20-12-C":
+            if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
-            default:
-                break;
-            }
-        }
-        private function InterpConfigSensors(&$Info) {
-            for ($i = 0; $i < $this->config[$Info["FWPartNum"]]["Sensors"]; $i++) {
-                
-                $key = $this->getOrder($Info, $i);
-                
-                if (!isset($Info['Types'][$i])) {
-                    $Info["Types"][$i] = hexdec(substr($Info["DriverInfo"], (($key*2)+2), 2));
-                }
-                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);    
-                $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
-                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
             }
         }
 
@@ -271,7 +217,7 @@ if (!class_exists("e00392800")) {
          * @param object $driver Object of class driver.
         */    
         function e00392800 (&$driver) {
-            parent::eDEFAULT($driver);
+            parent::__construct($driver);
         }
 
 

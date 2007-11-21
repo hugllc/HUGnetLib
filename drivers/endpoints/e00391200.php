@@ -121,97 +121,39 @@ define("e00391102B_SENSORS", 9);
                                 "NumSensors" => "# Sensors",
                                 );
 
-
-        
         function CheckRecord($Info, &$Rec) {
-        
-            if (isset($Rec['Status'])) {
-                $Rec['StatusOld'] = $Rec['Status'];
-            }
-    
-            if (empty($Rec['RawData'])) {
-                $Rec["Status"] = 'BAD';
-                return;
-            }
-            $Rec['Status'] = "GOOD";            
-            
-            $Bad = 0;
-    
-            $zero = TRUE;
-            for($i = 0; $i < $Rec['NumSensors']; $i ++) {
-                if (!is_null($Rec['Data'.$i])) {
-                    $zero = FALSE;
-                    break;
-                }
-            }
-    
-            if ($zero && ($i > 3)) {
-                $Rec["Status"] = "BAD";
-                $Rec["StatusCode"] = "All Bad";
-                return;
-            }
-    
+
+            parent::CheckRecordBase($Info, $Rec);    
+            if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
                 $Rec["StatusCode"] = "Bad TC";
                 return;
             }
-            
+        
         }
-    
         
         function InterpConfig(&$Info) {
-            //$Info["Location"] = $this->deflocation;
-            $Info['HWName'] = $this->HWName;
-
-            If (isset($this->config[$Info["FWPartNum"]])) {
-                $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
-                $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
-            } else {
-                $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
-                $Info["Function"] = $this->config["DEFAULT"]["Function"];
-            }
-            $Info['params'] = device::decodeParams($Info['params']);
-            $Info["Types"] = array();
+            $this->InterpConfigDriverInfo($Info);
+            $this->InterpConfigHW($Info);
+            $this->InterpConfigFW($Info);
+            $this->InterpConfigParams($Info);
             $this->InterpConfig00392012C($Info);
             $this->InterpConfigTC($Info);
-            $this->InterpConfigSensors($Info);
+            $this->InterpTypes($Info);
+            $this->InterpSensorSetup($Info);
+
         }
+        
         private function InterpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
         }
-        private function InterpConfigTC(&$Info) {
-            if ($Info["NumSensors"] > 0) {
-                $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
-                if ($Info["TimeConstant"] == 0) $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], e00391102B_TC, 4));
-            } else {
-                $Info["TimeConstant"] = 0;
-            }
-        
-        }
-        private function InterpConfigSensors(&$Info) {
-            $Info["Labels"] = array();
-            $Info["Units"] = array();
 
-            for ($i = 0; $i < $this->config[$Info["FWPartNum"]]["Sensors"]; $i++) {
-                
-                $key = $this->getOrder($Info, $i);
-                
-                if (!isset($Info['Types'][$i])) {
-                    $Info["Types"][$i] = hexdec(substr($Info["DriverInfo"], ($key*2)+2, 2));
-                }
-//                $Info["Labels"][$i] = $this->labels[$Info["Types"][$i]];
-                $Info["unitType"][$i] = $this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Labels"][$i] = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-                $Info["Units"][$i] = $this->driver->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);    
-                $Info["dType"][$i] = $this->driver->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
-                $Info["doTotal"][$i] = $this->driver->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
-
-            }
-        }
-
+        /**
+         *
+         */
         private function InterpSensorsSetData(&$Info, &$data) {
             $data['NumSensors'] = $Info['NumSensors'];
             $data["ActiveSensors"] = $Info["ActiveSensors"];
@@ -224,8 +166,12 @@ define("e00391102B_SENSORS", 9);
             if ($data["TimeConstant"] == 0) $data["TimeConstant"] = $oldtc;
 
         }
+        /**
+         *
+         */
         private function InterpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
+                // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
                 for ($i = 0; $i < $data["NumSensors"]; $i++) {
                     $key = $this->getOrder($Info, $i, TRUE);
@@ -233,11 +179,6 @@ define("e00391102B_SENSORS", 9);
                         case 1:
                             $data["raw"][$key] = $data["Data"][$index++];
                             $data["raw"][$key] += $data["Data"][$index++] << 8;
-                            break;                                            
-                        case 0x72:
-                            $d = $data["Data"][$index++];
-                            $d = $d ^ 0xF0;  // invert the top half of the value.
-                            $data["raw"][$key] = $d;
                             break;                                            
                         case 0x2:
                         case 0x0:
@@ -287,7 +228,7 @@ define("e00391102B_SENSORS", 9);
         */    
         function e00391200 (&$driver) {
 //            $this->eDEFAULT($servers, $db, $options);
-            parent::eDEFAULT($driver);
+            parent::__construct($driver);
         }
 
 
