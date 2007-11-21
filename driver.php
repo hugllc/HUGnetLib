@@ -215,34 +215,6 @@ class driver {
 
         return $this->device->getDevice($id, $type);
     }
-    /**
-     * Converts a packet array into an array for inserting into the packet log tables in the database.
-     * @param $Packet Array The packet that came in.
-     * @param $Gateway Integer the gateway key of the gateway this packet came from
-     * @param $Type String They type of packet it is.
-     */
-    function PacketLog($Packet, $Gateway, $Type="UNSOLICITED") {
-        //$this->device->lookup($Packet["from"], "DeviceID");
-//        $Info = $this->device->lookup[0];
-        $Info = array();
-        if (isset($Packet["DeviceKey"])) {
-            $Info["DeviceKey"] = $Packet["DeviceKey"];
-        }
-        $Info['ReplyTime'] = isset($Packet['ReplyTime']) ? $Packet['ReplyTime'] : 0 ;
-        $Info["GatewayKey"]= $Gateway["GatewayKey"];
-        $Info["RawData"] = $Packet["RawData"];
-        $Info["Date"] = date("Y-m-d H:i:s", $Packet["Time"]);
-        $Info["PacketFrom"] = $Packet["From"];
-        $Info["Command"] = $Packet["Command"];
-        $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
-        if (!empty($Type)) {
-            $Info["Type"] = $Type;
-        } else {
-            $Info["Type"] = "UNSOLICITED";        
-        }
-
-        return($Info);
-    }
 
     /**
      * Runs a function using the correct driver for the endpoint

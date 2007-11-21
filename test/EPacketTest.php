@@ -731,6 +731,9 @@ class epsocketMock extends epsocket {
         return TRUE;
     }
 
+    function __construct() {
+    
+    }
 }
 
 /**

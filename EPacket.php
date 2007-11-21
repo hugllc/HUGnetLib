@@ -89,10 +89,10 @@ define("DRIVER_NOT_FOUND", 1);
 /** Error Code */
 define("DRIVER_NOT_COMPLETE", 2);
 
-if (!class_exists(epsocket)) {
-    /** Make sure we have the socket interface */
-    require_once("epsocket.php");
-}
+/** Make sure we have the socket interface */
+require_once("epsocket.php");
+require_once("dbsocket.php");
+require_once("devInfo.php");
 
 
 /**
@@ -139,7 +139,7 @@ class EPacket {
     var $verbose = FALSE;
 
     /** The preamble byte */
-    private $preambleByte = "5A";
+    private static $preambleByte = "5A";
     /** The default serial number to use */
     public $SN = "000020";
     /** The default serial number to use */
@@ -179,7 +179,8 @@ class EPacket {
      *   ...
      *   </code> 
      */
-    function PacketBuild($Packet) {
+    function PacketBuild($Packet, $from=NULL) {
+        if (empty($from)) $from = $this->SN;
         if (!is_array($Packet)) $Packet = array();
         $string = "";
         $Packet = array_change_key_case($Packet, CASE_LOWER);
@@ -190,10 +191,10 @@ class EPacket {
             $Packet["to"] = str_pad($Packet["to"], 6, "0", STR_PAD_LEFT);
             $string = $Packet["command"];
             $string .= $Packet["to"];
-            $string .= substr(trim($this->SN), 0, 6);
+            $string .= substr(trim($from), 0, 6);
             $string .= sprintf("%02X", (strlen($Packet["data"])/2));
             $string .= $Packet["data"];
-            $return = $this->preambleByte.$this->preambleByte.$this->preambleByte.$string.$this->PacketGetChecksum($string);
+            $return = self::$preambleByte.self::$preambleByte.self::$preambleByte.$string.$this->PacketGetChecksum($string);
         }
         return($return);
     }
@@ -225,7 +226,7 @@ class EPacket {
             $chksum ^= $val;
         }
         $return = sprintf("%02X", $chksum);
-        return($return);
+        return $return;
     }
     
     /**
@@ -287,6 +288,44 @@ class EPacket {
     }
     
     /**
+     * Figures out if we should use the timeout given or the default one
+     */
+    private function getReplyTimeout($timeout) {
+        if (!is_numeric($timeout)) {
+            $timeout = $this->ReplyTimeout;
+        }
+        return $timeout;        
+    }
+
+    /**
+     *  Setup an array to send out a packet
+     */
+    private function setupSendPacket(&$Packet, $timeout, $getReply) {
+        $Packet = array_change_key_case($Packet, CASE_LOWER);
+        $group = (bool)(hexdec($Packet["command"]) & 0x80);
+
+        if (empty($Packet['data'])) $Packet['data'] = "";
+        $this->Packets[$this->_index] = array(
+            "pktTimeout" => $timeout,
+            "GetReply" => $getReply, 
+            "SentTime" => $this->PacketTime(),
+            "SentFrom" => trim(strtoupper($this->SN)),
+            "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
+            "sendCommand" => trim(strtoupper($Packet['command'])),
+            'group' => $group,
+            'packet' => $Packet,
+            "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
+            "Date" => date("Y-m-d H:i:s"),
+            "GatewayKey" => $Info['GatewayKey'],
+            "DeviceKey" => $Info['DeviceKey'],
+            "Type" => "OUTGOING",
+            "RawData" => trim(strtoupper($Packet['data'])),
+            "sentRawData" => trim(strtoupper($Packet['data'])),
+            "Parts" => (empty($Packet['Parts']) ? 1 : $Packet['Parts']),
+        );
+        return $this->_index++;
+    }
+    /**
      *   Sends out a packet
      *
      *   @param array $Info The array with the device information in it
@@ -295,94 +334,35 @@ class EPacket {
      *   @return bool FALSE on failure, TRUE on success
      */
     function SendPacket($Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
-        if ($pktTimeout === NULL) {
-            if (!is_null($Info['PacketTimeout'])) {
-                $pktTimeout = $Info['PacketTimeout'];
-            } else {
-                $pktTimeout = $this->ReplyTimeout;
-            }
-        }
+        $pktTimeout = $this->getReplyTimeout($pktTimeout);
         if (!is_array($PacketList)) return FALSE;
-
-        if (isset($Info['GatewayKey'])) {
-            $socket = $Info['GatewayKey'];
-        } else {
-            // If one is not given, use the first one.
-            reset($this->socket);
-            list($socket, $tmp) = each($this->socket);
-        }
-        if ($this->_direct) {
-            $useSocket = &$this->socket[$socket];
-        } else {
-            $useSocket = &$this->_db;
-        }
+        $this->PacketSendSetSocket($Info, $socket);
+        $useSocket = &$this->socket[$socket];
+        if (!is_object($useSocket)) return FALSE;
         if ($this->verbose) print("Sending a packet on ".$Info["GatewayIP"].":".$Info["GatewayPort"]."\n");
         $gotack = FALSE;
         $this->Packets[$socket] = array();
-        $PacketList = array_change_key_case($PacketList, CASE_LOWER);
-        if (isset($PacketList['to'])) {
-            $PacketList = array($PacketList);
-        } else {
-            foreach($PacketList as $key => $p) {
-                if (is_array($p)) {
-                    $PacketList[$key] = array_change_key_case($p, CASE_LOWER);
-                } else {
-                    unset($PacketList[$key]);
-                }
-            }
-        }
+        if (isset($PacketList['to'])) $PacketList = array($PacketList);
         // Make sure we are connected.
         $this->Connect($Info);
 
         $return = FALSE;
         foreach($PacketList as $Packet) {
-            $group = (bool)(hexdec($Packet["command"]) & 0x80);
-            $index = $this->_index++;
+            if (!is_array($Packet)) continue;
+            $index = $this->setupSendPacket($Packet, $pktTimeout, $GetReply);
 
-            if (empty($Packet['data'])) $Packet['data'] = "";
-            $this->Packets[$index] = array(
-                "pktTimeout" => $pktTimeout,
-                "GetReply" => $GetReply, 
-                "SentTime" => $this->PacketTime(),
-                "SentFrom" => trim(strtoupper($this->SN)),
-                "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
-                "sendCommand" => trim(strtoupper($Packet['command'])),
-                'group' => $group,
-                'packet' => $Packet,
-                "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
-                "Date" => date("Y-m-d H:i:s"),
-                "GatewayKey" => $Info['GatewayKey'],
-                "DeviceKey" => $Info['DeviceKey'],
-                "Type" => "OUTGOING",
-                "RawData" => trim(strtoupper($Packet['data'])),
-                "sentRawData" => trim(strtoupper($Packet['data'])),
-                "Parts" => (empty($Packet['Parts']) ? 1 : $Packet['Parts']),
-            );
-            $count = 0;
             $GotReply = FALSE;
             $sPktStr = $this->PacketBuild($Packet);
             $PktStr = $this->deHexify($sPktStr);
-            do {
-                if (is_object($useSocket)) {
-                    if ($this->verbose) print "Sending: ".$sPktStr."\n";
-                    if ($this->_direct) {
-                        $retval = $useSocket->Write($PktStr);
-                    } else if (is_object($this->_db)) {
-                        $this->Packets[$index]["id"] = rand(-24777216, 24777216);  // Big random number for the id
-
-                        $retval = $this->_db->AutoExecute("PacketSend", $this->Packets[$index], 'INSERT');
-                    } else {
-                        if ($this->verbose) print "Sending Failed.\n";
-                    }
-                }
+            for($count = 0; ($count < $this->Retries) && ($GotReply == FALSE); $count++) {
+                if ($this->verbose) print "Sending: ".$sPktStr."\n";
+                $retval = $useSocket->Write($PktStr);
                 if ($retval === FALSE) {
                     $this->Connect($Info);
-                }
-    
-                if ($retval) {
+                } else if ($retval) {
                     if (!$GetReply) {
                         $GotReply = TRUE;
-                        $return = TRUE;
+                        return TRUE;
                     }
                     while (!$GotReply){
                         $gotack = $this->RecvPacket($socket, $pktTimeout);
@@ -393,14 +373,26 @@ class EPacket {
                         }
                     };
                 }
-                
-                $count++;
-            } while (($count < $this->Retries) && !$GotReply);
+            }
             unset($this->Packets[$index]);
             
         }
         return($return);
 
+    }
+    /**
+     * Sets up the sockets for sending a packet
+     */
+    private function PacketSendSetSocket($Info, &$socketNum) {
+
+        if (isset($Info['GatewayKey'])) {
+            $socketNum = $Info['GatewayKey'];
+        } else {
+            // If one is not given, use the first one.
+            reset($this->socket);
+            list($socketNum, $tmp) = each($this->socket);
+        }
+    
     }
     /**
      *   Sends a reply packet
@@ -442,7 +434,26 @@ class EPacket {
             return '';
         }
     }
-    
+
+    /**
+     *    Creates an array of possible serial numbers
+     */
+    private function createSNArray() {
+        for ($i = 0; $i < $this->maxSN; $i++) {
+            $SN = $this->hexify(mt_rand(1,$this->maxSN), 6);
+            $this->SNArray[] = $SN;
+        }
+    }
+
+    /**
+     * Checks a given serial number to see if it is in use
+     */
+    private function checkSN($SN) {
+        $Info = array("DeviceID" => $SN);
+        if ($this->verbose) print "Checking Serial Number ".$SN."\r\n";
+        $ret = $this->ping($Info);
+        return !is_array($ret);
+    }
     /**
      *  Creates a random serial number then checks to see if
      *  that serial number is unique on the bus.
@@ -452,18 +463,17 @@ class EPacket {
     function ChangeSN($Info = NULL) {
         if (!is_array($Info)) $Info = array();
         $getAll = $this->_getAll;
-        $this->_getAll = FALSE;
-        do {
-            do {
-                $SN = $this->hexify(mt_rand(1,$this->maxSN), 6);
-            } while ($SN == $this->SN);
-            $Info = array("DeviceID" => $SN);
-            if ($this->verbose) print "Checking Serial Number ".$SN."\r\n";
-            $ret = $this->ping($Info, TRUE);
-        } while (is_array($ret));
-        $this->SN = $SN;
+        $this->getAll(FALSE);
+        for($i = 0; $i < count($this->SNArray); $i++) {
+            $key = array_rand($this->SNArray, 1);
+            if ($this->checkSN($this->SNArray[$key])) {                
+                break;
+            }
+        }
+        
+        $this->SN = $this->SNArray[$key];
         if ($this->verbose) print "Using Serial Number ".$this->SN."\r\n";
-        $this->_getAll = $getAll;
+        $this->getAll($getAll);
     }    
     
     /**
@@ -477,71 +487,6 @@ class EPacket {
     } 
 
 
-    /**
-     *   Gets the current time
-     *
-     *   @return Float The current time in seconds    
-     */
-
-    function RecvPacket($socket, $timeout=0) {
-        if ($this->_direct) {
-            $return = $this->_RecvPacket_Socket($socket, $timeout);
-        } else {
-            $return = $this->_RecvPacket_Indirect($socket, $timeout);        
-        }
-        return $return;
-    }
-
-
-    /**
-     *   Receives a packet from the database interface (indirect)
-     *
-     *   @param resource $socket The socket to send the information on
-     *   @param int $timeout The timeout to use.  0 means use the default
-     *   @return bool TRUE on success, FALSE on failure
-     */
-    function _RecvPacket_Indirect($socket, $timeout=0) {
-
-        if (empty($timeout)) $timeout = $this->IndirectReplyTimeout;
-        if (!is_array($this->buffers)) $this->buffers = array();
-        $Start = time();
-        $return = FALSE;
-        if (!is_object($this->_db)) return FALSE;
-        do {
-            $query = "SELECT * FROM PacketSend WHERE Type = 'REPLY' ";
-            $res = $this->_db->getArray($query);
-            if (is_array($res)) {
-                foreach($res as $key => $record) {
-                    foreach($this->Packets as $index => $pkt) {
-                        if ($record['id'] == $pkt['id']) {
-                            $return = array_merge($pkt, $record);
-                             $return["ReplyTime"] = $return["Time"] - $return["SentTime"]; 
-                            $return["Socket"] = $socket;
-                            $return["sendCommand"] = $ThePkt['sendCommand'];
-                            $return["Reply"] = TRUE;
-                            $return["toMe"] = TRUE;
-                            $return["isGateway"] = $this->isGateway($return["From"]);                              
-                        }
-                    }
-                }
-            }
-               $time = (time() - $Start);
-               if ($return === FALSE) sleep(2);
-
-        } while (($time < $timeout) && ($return === FALSE)) ;
-        if ($return === FALSE) {
-            if ($this->verbose) print "Packet Timeout\r\n";
-        } else {
-            $query = "DELETE FROM PacketSend WHERE id = '".$return['id']."' ";
-            $this->_db->execute($query);
-            if ($this->verbose) {
-                print "Got Reply on Socket ".$socket." in ".$GotReply["ReplyTime"]."s \r\n";
-            }
-        }
-        return($return);
-
-    }
-
 
     /**
      *   Receives a packet from the socket interface
@@ -550,7 +495,7 @@ class EPacket {
      *   @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
      *   @return bool FALSE on failure, the Packet array on success
      */
-    function _RecvPacket_Socket($socket, $timeout=0) {
+    function RecvPacket($socket, $timeout=0) {
         if (empty($timeout)) $timeout = $this->ReplyTimeout;
         if (!is_array($this->buffers)) $this->buffers = array();
         $Start = time();
@@ -565,9 +510,9 @@ class EPacket {
                 $char = ord($char);
                 $char = $this->hexify($char);
                 $mySocket->buffer .= strtoupper(trim($char));
-                $pkt = stristr($mySocket->buffer, $this->preambleByte.$this->preambleByte);
+                $pkt = stristr($mySocket->buffer, self::$preambleByte.self::$preambleByte);
                 if (strlen($pkt) > 11) {
-                    while (substr($pkt, 0, 2) == $this->preambleByte) $pkt = substr($pkt, 2);
+                    while (substr($pkt, 0, 2) == self::$preambleByte) $pkt = substr($pkt, 2);
                     // Location 14 is the length of the data section.
                     $len = hexdec(substr($pkt, 14, 2));
                     if (strlen($pkt) >= ((9 + $len)*2)) {
@@ -626,6 +571,94 @@ class EPacket {
         $this->_getAll = $val;
     }
 
+    /**
+     * Finds the array that the given packet is a reply to
+     *
+     * @param array $reply The packet returned
+     */
+    private function isReply($pkt, $reply) {
+        return (($pkt["SentTo"] == $reply["From"]) || $pkt['group']) && ($pkt["SentFrom"] == $reply["To"]);
+    }
+
+    /**
+     * Finds the array that the given packet is a reply to
+     *
+     * @param array $reply The packet returned
+     */
+    private function findReply($reply) {
+        if (!is_array($this->Packets)) $this->Packets = array();
+        $ret = FALSE;
+        foreach($this->Packets as $key => $pkt) {
+            if ($this->isReply($pkt, $reply)) {
+                $ret = $key;
+                break;
+            }
+        }
+        return $ret;
+    }
+    /**
+     * Checks to see if $reply is a reply to the packet $pkt 
+     * that was sent out.  If it is, it sets all sorts of good
+     * parameters.  If it is not it returns FALSE.
+     *
+     * @param array $pkt The packet sent out
+     * @param array $reply The packet returned
+     * @param int $socket The socket used
+     * @return mixed
+     */
+    private function checkPacketReply(&$reply, $socket) {
+        if ($reply['Command'] != PACKET_COMMAND_REPLY) return FALSE;
+        $key = $this->findReply($reply);
+        if ($key === FALSE) return FALSE;
+
+        $reply = array_merge($this->Packets[$key], $reply);
+        $reply["ReplyTime"] = $reply["Time"] - $reply["SentTime"]; 
+        $reply["Socket"] = $socket;
+        $reply["GatewayKey"] = $socket;
+        $reply["sendCommand"] = $this->Packets[$key]['sendCommand'];
+        $reply["Reply"] = TRUE;
+        $reply["toMe"] = TRUE;
+        $reply["isGateway"] = $this->isGateway($reply["From"]);
+    
+        unset($this->Packets[$key]);
+        return $reply;
+    }     
+    /**
+     * Checks the status of a packet.  If it is a reply it ignores it.
+     * If it is not a reply it deals with it.
+     *
+     * @param array $pkt The packet to check
+     * @param int $socket The socket used
+     * @return mixed
+     */
+    private function checkPacketOther(&$pkt, $socket) {
+        if ($pkt["Reply"] !== TRUE) {
+            $pkt["Unsolicited"] = (trim(strtoupper($pkt["To"])) == $this->unsolicitedID);
+            $pkt["Socket"] = $socket;
+            $pkt["GatewayKey"] = $socket;
+            $pkt["Reply"] = FALSE;
+            $pkt["toMe"] = (trim(strtoupper($pkt["To"])) == $this->SN);
+            $pkt["isGateway"] = $this->isGateway($pkt["From"]);
+
+            $this->packetCallBack($pkt);
+                
+            if (!($this->_getAll ||  ($pkt["Unsolicited"] && $this->_getUnsolicited))) {
+                $pkt = FALSE;
+            }
+        }
+    }     
+
+    /**
+     * Resets packets if they have timed out.
+     */
+    private function checkPacketTimeout() {
+        $timeout = $this->getReplyTimeout($this->Packets[$key]['pktTimeout']);
+        foreach($this->Packets as $key => $pkt) { 
+            if (($this->PacketTime() - $pkt["SentTime"]) > $timeout) {
+                unset($this->Packets[$key]);
+            }
+        }
+    }
     /** 
      *   This function puts return packets into the $this->Packet array
      *
@@ -634,65 +667,38 @@ class EPacket {
      *   @return bool|array FALSE on failure, The interpreted packet on success.
      */
     function InterpPacket($data, $sock=0) {
-        $return = FALSE;
+        $ret = FALSE;
         
         $pkt = $this->UnbuildPacket($data);
-        if ($pkt["Checksum"] == $pkt["CalcChecksum"]) {
-            if ($pkt['Command'] == PACKET_COMMAND_REPLY) {
-                if (is_array($this->Packets)) {
-                    foreach($this->Packets as $key => $ThePkt) {
-                        $toMe = (bool)(($ThePkt["SentTo"] == $pkt["From"]) || $ThePkt['group']);
-                        $fromMe = (bool)($ThePkt["SentFrom"] == $pkt["To"]);
-                        // Make sure that it is really a reply to me.
-                        if ($toMe && $fromMe ) {
-                            $return = array_merge($this->Packets[$key], $pkt);
-                            $return["ReplyTime"] = $return["Time"] - $return["SentTime"]; 
-                            $return["Socket"] = $sock;
-                            $return["GatewayKey"] = $sock;
-                            $return["sendCommand"] = $ThePkt['sendCommand'];
-                            $return["Reply"] = TRUE;
-                            $return["toMe"] = TRUE;
-                            $return["isGateway"] = $this->isGateway($return["From"]);
-                            for ($i = 0; $i < (strlen($return["RawData"])/2); $i++) {
-                                $return["Data"][] = hexdec(substr($return["RawData"], ($i*2), 2));
-                            }
-    
-                            unset($this->Packets[$key]);
-                            break;
-                        } else {
-                            $timeout = (isset($ThePkt['pktTimeout'])) ? $ThePkt['pktTimeout'] : $this->ReplyTimeout;
-                            if (($this->PacketTime() - $ThePkt["SentTime"]) > $timeout) {
-    //                        if ($this->verbose) print "Not for us: ".$this->Packets[$key]."\r\n";
-                                unset($this->Packets[$key]);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ($return["Reply"] !== TRUE) {
-                $pkt["Socket"] = $sock;
-                $pkt["GatewayKey"] = $sock;
-                $pkt["Reply"] = FALSE;
-                $pkt["Unsolicited"] = (trim(strtoupper($pkt["To"])) == $this->unsolicitedID);
-                $pkt["toMe"] = (trim(strtoupper($pkt["To"])) == $this->SN);
-                $pkt["isGateway"] = $this->isGateway($pkt["From"]);
-
-                $this->packetCallBack($pkt);
-                    
-                if ($this->_getAll ||  ((trim(strtoupper($pkt["To"])) == $this->unsolicitedID) && $this->_getUnsolicited)) 
-                {
-                    $return = $pkt;
-                }
-            }
-        } else {
+        if ($pkt["Checksum"] != $pkt["CalcChecksum"]) {
             if ($this->verbose) print "Bad Packet Received: ".$data."\r\n";
+            return FALSE;
         }
-
-        if ($return !== FALSE) $return['RawPacket'] = $data;
-        return($return);
+        $ret = $this->checkPacketReply($pkt, $sock);
+        $this->checkPacketTimeout();
+        $this->checkPacketOther($ret, $sock);
+        return $ret;
     }
-    
+
+    /**
+     * Removes the preamble from a packet string
+     *
+     * @param string $data The preamble will be removed from this packet string
+     */ 
+    private function removePreamble(&$data) {
+        while (substr($data, 0, 2) == self::$preambleByte) $data = substr($data, 2);    
+    }
+    /**
+     * Splits the data string into an array
+     *
+     * @param string $data The preamble will be removed from this packet string
+     */ 
+    private function splitDataString($data) {
+        for ($i = 0; $i < (strlen($data)/2); $i++) {
+            $ret[] = hexdec(substr($data, ($i*2), 2));
+        }
+        return $ret;
+    }
     /**
      *   Turns a packet string into an array of values.
      *
@@ -701,21 +707,24 @@ class EPacket {
      */
     function UnbuildPacket($data) {
         // Strip off any preamble bytes.
-        while (substr($data, 0, 2) == $this->preambleByte) $data = substr($data, 2);
+        $data = strtoupper($data);
+        $this->removePreamble($data);
         $pkt = array();
         $pkt["Command"] = substr($data, 0, 2);
-        $pkt["To"] = trim(strtoupper(substr($data, 2, 6))); 
-        $pkt["To"] = str_pad($pkt["To"], 6, "0", STR_PAD_LEFT);
-        $pkt["From"] = trim(strtoupper(substr($data, 8, 6)));
-        $pkt["From"] = str_pad($pkt["From"], 6, "0", STR_PAD_LEFT);
+        $pkt["To"] = substr($data, 2, 6); 
+        devInfo::setStringSize($pkt["To"], 6);
+        $pkt["From"] = substr($data, 8, 6);
+        devInfo::setStringSize($pkt["From"], 6);
 
         $length = hexdec(substr($data, 14, 2));
         $pkt["Length"] = $length;
         $pkt["RawData"] = substr($data, 16, ($length*2));
-        $pkt["Checksum"] = trim(strtoupper(substr($data, (16 + ($length*2)), 2)));
+        $pkt["Data"] = self::splitDataString($pkt["RawData"]);
+        $pkt["Checksum"] = substr($data, (16 + ($length*2)), 2);
         $pktdata = substr($data, 0, strlen($data)-2);
-        $pkt["CalcChecksum"] = trim(strtoupper($this->PacketGetChecksum($pktdata)));
-        $pkt["Time"] = $this->PacketTime();
+        $pkt["CalcChecksum"] = self::PacketGetChecksum($pktdata);
+        $pkt['RawPacket'] = $data;
+        $pkt["Time"] = self::PacketTime();
         return($pkt);
     }
     
@@ -835,8 +844,13 @@ class EPacket {
             }
             if (isset($Info["GatewayIP"]) && isset($Info["GatewayKey"]) && isset($Info["GatewayPort"])) {
                 if (!is_object($this->socket[$sock])) {
-                    $this->socket[$sock] = new epsocket("", 0, $verbose);
-                    $this->socket[$sock]->verbose = $this->verbose;
+                    if ($Info['indirect'] == TRUE) {
+                        $this->socket[$sock] = new dbsocket($this->_db);
+                        $this->socket[$sock]->verbose = $this->verbose;
+                    } else {
+                        $this->socket[$sock] = new epsocket($Info["GatewayIP"], $Info["GatewayPort"], $verbose);
+                        $this->socket[$sock]->verbose = $this->verbose;
+                    }
                 }
                 $return = $this->socket[$sock]->Connect($Info["GatewayIP"], $Info["GatewayPort"]);
                 if ($this->_DeviceIDCheck) {
@@ -877,12 +891,12 @@ class EPacket {
      *   @param bool $verbose If TRUE a lot of stuff is printed out
      *   @param object $db adodb database object
      */
-    function EPacket($Info=FALSE, $verbose=FALSE, &$db = NULL) {
+    function __construct($Info=FALSE, $verbose=FALSE, &$db = NULL) {
         if (is_object($db)) {
             $this->_direct = FALSE;
             $this->_db = &$db;
         }
-
+        $this-createSNArray();
         $this->verbose = $verbose;
         if (is_array($Info)) {
             $this->Connect($Info);

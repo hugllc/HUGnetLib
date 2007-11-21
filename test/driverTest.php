@@ -90,7 +90,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $driver = new driver($db);
         $driver->unit = new unitConversionMock();
         $driver->gateway = new gatewayMock($driver);
-        $driver->packet->socket[$socket] = new epsocketMock;
+        $driver->packet->socket[$socket] = new epsocketMock();
         $driver->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
         $driver->sensors->registerSensor("testSensor");
         return $driver;
@@ -386,45 +386,6 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->o->getDevice($Info, "KEY");
     }
 
-    /**
-     * data provider for testFindDriver
-     */
-    public static function dataPacketLog() {
-        return array(
-            array(
-                array("DeviceKey" => 1, "ReplyTime" => 2.54, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "5C"),
-                array("GatewayKey" => 5),
-                "POWERUP",
-                array("DeviceKey" => 1, "ReplyTime" => 2.54, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "5C", "Type" => "POWERUP"),
-            ),
-            array(
-                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "55"),
-                array("GatewayKey" => 5),
-                NULL,
-                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "55", "Type" => "UNSOLICITED"),
-            ),
-            array(
-                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
-                array("GatewayKey" => 5),
-                FALSE,
-                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
-            ),
-        );
-    }
-    /**
-     * @dataProvider dataPacketLog().
-     * @covers driver::PacketLog
-     */
-    public function testPacketLog($Packet, $Gateway, $type, $expect) {
-        
-        $this->o->registerDriver("testDriver");
-        if (is_null($type)) {
-            $pkt = $this->o->PacketLog($Packet, $Gateway);
-        } else {
-            $pkt = $this->o->PacketLog($Packet, $Gateway, $type);
-        }
-        $this->assertSame($expect, $pkt);
-    }
 
     /**
      * @dataProvider dataFindDevice().
