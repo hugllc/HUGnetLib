@@ -496,6 +496,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
      * data provider for testGetLocationTable
      */
     public static function dataDriverInfo() {
+        // DeviceID and Driver must be present and not empty
         return array(
             array(array("DeviceID" => "123456", "Driver" => "testDriver"), "history_table", "testhistory"),
             array(array("DeviceID" => "123456", "Driver" => "testDriver"), "average_table", "testaverage"),
