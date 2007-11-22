@@ -98,7 +98,7 @@ class epsocket {
         if ($this->CheckConnect()) $this->Connect("", 0);
         usleep(mt_rand(500, 10000));
         $return = @fwrite($this->socket, $data);
-//        if ($this->verbose) print "Writing: '".$line."' on ".$sock."\r\n";
+        if ($this->verbose) print "Writing: ".strlen($data)." chars on ".$this->socket."\r\n";
         return($return);
     }
 
@@ -176,7 +176,7 @@ class epsocket {
      * @return bool TRUE if the connection is good, FALSE otherwise
      */
     function Connect($server = "", $port = 0, $timeout=0) {
-
+        
         $return = FALSE;
         if ($this->CheckConnect()) {
             $return = TRUE;
@@ -188,7 +188,6 @@ class epsocket {
             if (!empty($port)) $this->Port = $port;
 
             if (!empty($this->Server) && !empty($this->Port)) {
-    
                 if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
                 $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
                 if (($this->Errno == 0) && ($this->socket != 0)) {
