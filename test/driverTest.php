@@ -510,6 +510,10 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->o->registerDriver($Info["Driver"]);
         $Info = $this->o->DriverInfo($Info);
         $this->assertSame($expect, $Info[$field]);
+        $this->assertType("string", $Info["DeviceID"], "DeviceID is missing");
+        $this->assertFalse(empty($Info["DeviceID"]), "DeviceID is missing");
+        $this->assertType("string", $Info["Driver"], "Driver is missing");
+        $this->assertFalse(empty($Info["Driver"]), "Driver is missing");
     }
 
     /**
