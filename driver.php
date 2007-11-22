@@ -315,7 +315,7 @@ class driver {
      */
     function DriverInfo($Info) {
         $Info['sendCommand'] = eDEFAULT_CONFIG_COMMAND;
-        $Info = $this->RunFunction($Info, "InterpConfig");
+        $this->RunFunction($Info, "InterpConfig");
         $Info['history_table'] = $this->getHistoryTable($Info);
         $Info['average_table'] = $this->getAverageTable($Info);
         $Info['location_table'] = $this->getLocationTable($Info);
