@@ -141,7 +141,7 @@ define("e00391102B_SENSORS", 9);
             $this->InterpConfig00392012C($Info);
             $this->InterpConfigTC($Info);
             $this->InterpTypes($Info);
-            $this->InterpSensorSetup($Info);
+            $this->InterpConfigSensorSetup($Info);
 
         }
         

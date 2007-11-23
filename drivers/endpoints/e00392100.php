@@ -197,7 +197,7 @@ if (!class_exists("e00392100")) {
         private function InterpConfigSensors(&$Info) {
             $Info["Types"] = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
-            $this->InterpSensorSetup($Info);
+            $this->InterpConfigSensorSetup($Info);
 
 			if (isset($this->labels[$Info["FWPartNum"]])) {
 				$Info["Location"] = $this->labels[$Info["FWPartNum"]];

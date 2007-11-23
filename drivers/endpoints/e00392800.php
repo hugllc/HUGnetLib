@@ -141,7 +141,7 @@ if (!class_exists("e00392800")) {
             $this->InterpConfigParams($Info);
             $this->InterpConfig00392012C($Info);
             $this->InterpTypes($Info);
-            $this->InterpSensorSetup($Info);
+            $this->InterpConfigSensorSetup($Info);
         }
         /**
          *

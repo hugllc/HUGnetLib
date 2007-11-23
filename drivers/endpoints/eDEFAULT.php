@@ -362,7 +362,6 @@ if (!class_exists('eDEFAULT')) {
          */
         function InterpConfig(&$Info) {
             eDEFAULT::InterpBaseConfig($Info);
-            eDEFAULT::InterpConfigDriverInfo($Info);
             eDEFAULT::InterpCalibration($Info);
         }
 
@@ -371,33 +370,17 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info devInfo array
          */
         protected function InterpBaseConfig(&$Info) {
-            if (isset($Info['RawData'][PACKET_COMMAND_GETSETUP])) {
+            if (strlen($Info['RawData'][PACKET_COMMAND_GETSETUP]) > PACKET_CONFIG_MINSIZE) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
-                if (strlen($pkt) >= PACKET_CONFIG_MINSIZE) 
-                {
-                    $Info["SerialNum"] = hexdec(substr($pkt, 0, 10));
-                    $Info["HWPartNum"] = trim(strtoupper(substr($pkt, ENDPOINT_HW_START, 4)."-".
-                                                         substr($pkt, ENDPOINT_HW_START+4, 2)."-".
-                                                         substr($pkt, ENDPOINT_HW_START+6, 2)."-".
-                                                         chr(hexdec(substr($pkt, ENDPOINT_HW_START+8, 2)))));
-                    $Info["FWPartNum"] = trim(strtoupper(substr($pkt, ENDPOINT_FW_START, 4)."-".
-                                                         substr($pkt, ENDPOINT_FW_START+4, 2)."-".
-                                                         substr($pkt, ENDPOINT_FW_START+6, 2)."-".
-                                                         chr(hexdec(substr($pkt, ENDPOINT_FW_START+8, 2)))));
-                    $Info["FWVersion"] = trim(strtoupper(substr($pkt, ENDPOINT_FWV_START, 2).".".
-                                                         substr($pkt, ENDPOINT_FWV_START+2, 2).".".
-                                                         substr($pkt, ENDPOINT_FWV_START+4, 2)));
-            
-                    if (strlen($pkt) >= (ENDPOINT_GROUP+6)) {
-                        $Info["DeviceGroup"] = trim(strtoupper(substr($pkt, ENDPOINT_GROUP, 6)));
-                    }    
-                    if (strlen($pkt) >= (ENDPOINT_BOREDOM+2)) {
-                        $Info["BoredomThreshold"] =     hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
-                    }            
-                    $Info["RawSetup"] = $pkt;
-                    devInfo::setDate($Info, "LastConfig");                    
-
-                }
+                $Info["SerialNum"] = hexdec(substr($pkt, 0, 10));
+                $Info["HWPartNum"] = devInfo::dehexifyPartNum(substr($pkt, ENDPOINT_HW_START, 10));
+                $Info["FWPartNum"] = devInfo::dehexifyPartNum(substr($pkt, ENDPOINT_FW_START, 10));
+                $Info["FWVersion"] = devInfo::dehexifyVersion(substr($pkt, ENDPOINT_FWV_START, 6));
+                $Info["DeviceGroup"] = trim(strtoupper(substr($pkt, ENDPOINT_GROUP, 6)));
+                $Info["BoredomThreshold"] = hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
+                $Info["RawSetup"] = $pkt;
+                devInfo::setDate($Info, "LastConfig");
+                self::InterpConfigDriverInfo($Info);
             }
         
         }
@@ -466,7 +449,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *
          */
-        protected function InterpSensorSetup(&$Info) {
+        protected function InterpConfigSensorSetup(&$Info) {
             $Info["unitType"] = array();
             $Info["Labels"] = array();
             $Info["Units"] = array();
@@ -524,21 +507,12 @@ if (!class_exists('eDEFAULT')) {
             foreach($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
                 if(isset($data['RawData'])) {
+                    $index = 3;
+                    $this->InterpSensorsSetData($Info, $data);
+                    $this->InterpSensorsGetData($data["Data"], &$index, 3);
     
-                    $return = $data;
-    
-                    $index = 0; 
-                    $Info['NumSensors'] = $Info['NumSensors'];
-                    $Info["DataIndex"] = $data["Data"][$index++];
-                    $Info["Driver"] = $Info["Driver"];
-                    if (!isset($data["Date"])) {
-                        $Info["Date"] = date("Y-m-d H:i:s");
-                    }
-                    
-                    if (!isset($Info['DeviceKey'])) $Info["DeviceKey"] = $Info["DeviceKey"];
-    
-                    $return = $this->CheckRecord($Info, $return);
-                    $ret[] = $return;
+                    $return = $this->CheckRecord($Info, $data);
+                    $ret[] = $data;
                 }
             }
         

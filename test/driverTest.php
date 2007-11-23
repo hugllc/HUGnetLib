@@ -463,7 +463,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
                     "SerialNum" => 232,
                     "HWPartNum" => "ABCD-EF-01-A",
                     "FWPartNum" => "0123-45-67-C",
-                    "FWVersion" => "00.00.05",
+                    "FWVersion" => "0.0.5",
                     "DeviceGroup" => "FFFFFF",
                     "BoredomThreshold" => 80,
                     "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
