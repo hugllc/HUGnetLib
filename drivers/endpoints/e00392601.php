@@ -34,7 +34,7 @@ if (!class_exists("e00392601")) {
 
 
     /**
-     * Driver for the 0039-12 endpoint board and select firmwares
+     * Driver for the polling script (0039-26-01-P)
     */
     class e00392601 extends eDEFAULT{
         var $HWName = "0039-26 Gateway";
@@ -81,8 +81,8 @@ if (!class_exists("e00392601")) {
         function getConfigStr($Info) {
             $string = EPacket::hexify($Info["SerialNum"], 10);
     
-            $string .= str_replace("-", "", $Info["HWPartNum"]);
-            $string .= str_replace("-", "", $Info["FWPartNum"]);
+            $string .= devInfo::hexifyPartNum($Info["HWPartNum"]);
+            $string .= devInfo::hexifyPartNum($Info["FWPartNum"]);
             $string .= devInfo::hexifyVersion($Info["FWVersion"]);
             $string .= "FFFFFF";
     
@@ -110,7 +110,6 @@ if (!class_exists("e00392601")) {
          *
          */
         function InterpConfig(&$Info) {
-            //$Info["Location"] = $this->deflocation;
 
             $Info['HWName'] = $this->HWName;
 
