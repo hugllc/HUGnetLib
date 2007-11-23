@@ -545,7 +545,36 @@ if (!class_exists('eDEFAULT')) {
             return($ret);
         }
     
+        /**
+         *
+         */
+        protected function InterpSensorsSetData(&$Info, &$data) {
+            $data['NumSensors'] = $Info['NumSensors'];
+            $data["ActiveSensors"] = $Info["ActiveSensors"];
+            $data["Driver"] = $Info["Driver"];
+            $data["DeviceKey"] = $Info["DeviceKey"];
+            $data["Types"] = $Info["Types"];
+            $data["DataIndex"] = $data["Data"][0];
+            $oldtc = $data["Data"][1];  // There is nothing here.
+            $data["TimeConstant"] = $data["Data"][2];
+            if ($data["TimeConstant"] == 0) $data["TimeConstant"] = $oldtc;
+
+        }
     
+        /**
+         *  Gets bytes of data out of the raw data string
+         */    
+        protected function InterpSensorsGetData($Data, &$index, $bytes, $width=NULL) {
+            if ($width < $bytes) $width = $bytes;
+            $shift = 0;
+            $byte = 0;
+            for($i = 0; $i < $bytes; $i++) {
+                $byte += $Data[$index++] << $shift;
+                $shift += 8;
+            }
+            $index += ($width - $bytes);
+            return $byte;
+        }
         /**
          * Get the columns in the database that are for this endpoint
          * @param array $Info Infomation about the device to use

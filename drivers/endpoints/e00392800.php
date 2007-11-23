@@ -162,53 +162,34 @@ if (!class_exists("e00392800")) {
             unset($lastPacket);
             foreach($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
-                $index = 0; 
                 if(isset($data['RawData'])) {
-                    $data['NumSensors'] = $Info['NumSensors'];
-                    $data["ActiveSensors"] = $Info["ActiveSensors"];
-                    $data["Driver"] = $Info["Driver"];
-                    $data["DeviceKey"] = $Info["DeviceKey"];
-                    $data["Types"] = $Info["Types"];
-                    $data['params'] = $Info['params'];
-                    $data["DataIndex"] = $data["Data"][$index++];
-                    $index++;  // There is nothing here.
-                    $data["TimeConstant"] = $data["Data"][$index++];
-
-                    if (is_array($data["Data"])) {
-                        for ($i = 0; $i < $Info["NumSensors"]; $i++) {
-                            $key = $this->getOrder($Info, $i, TRUE);
-
-                            if (isset($data["Data"][$index])) {
-                                switch ($Info["Types"][$key]) {
-                                    case 0x6F:
-                                        $d = $data["Data"][$index];
-            //                                    $d = $d ^ 0xF0;  // invert the top half of the value.
-                                        $data["raw"][$key] = $d;
-                                        $index += 3;
-                                        break;                                            
-                                    case 2:
-                                    case 0:
-                                    case 0x30:
-                                    case 0x70:
-                                    case 0x71:
-                                    case 0x10:
-                                    default:
-                                        $data["raw"][$key] = $data["Data"][$index++];
-                                        $data["raw"][$key] += $data["Data"][$index++] << 8;
-                                        $data["raw"][$key] += $data["Data"][$index++] << 16;
-                                        break;                                            
-            
-                                }                    
-                            }        
-                        }
-                        
-                    }
+                    self::InterpSensorsSetData($Info, $data);
+                    $index = 3; 
+                    self::InterpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
                     $ret[] = $data;
                 }
             }
             return($ret);
+        }
+
+        /**
+         *
+         */
+        private function InterpSensorsGetRaw(&$Info, &$data) {
+            if (is_array($data["Data"])) {
+                $index = 3;
+                for ($i = 0; $i < $Info["NumSensors"]; $i++) {
+                    $key = $this->getOrder($Info, $i, TRUE);
+                    if ($Info["Types"][$key] == 0x6F) {
+                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 1, 3);
+                    } else {
+                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 3);
+                    }
+                }
+                
+            }
         }
 
         /**

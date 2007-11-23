@@ -302,10 +302,8 @@ class unitConversion {
         if ($to == $from) return NULL;
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
-        if (isset($f['convert'][$to])) {
-            if (!isset($t['mode']) || ($t['mode'] == $type)) {
-                return $f['convert'][$to];
-            }
+        if (empty($t['mode']) || ($t['mode'] == $type)) {
+            return $f['convert'][$to];
         }
         return NULL;
     }

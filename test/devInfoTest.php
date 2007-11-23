@@ -152,10 +152,26 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetStringSize($value, $size, $pad, $expect) {
         if (is_null($pad)) {
-            devInfo::setStringSize($value, $size);
+            $ret = devInfo::setStringSize($value, $size);
         } else {
-            devInfo::setStringSize($value, $size, $pad);
+            $ret = devInfo::setStringSize($value, $size, $pad);
         }
+        $this->assertSame($expect, $value, '$value not changed correctly');
+        $this->assertSame($expect, $ret, "Return was not correct");
+    }   
+
+    public static function dataHexifyVersion() {
+        return array(
+            array("1.2.3", "010203"),
+            array("11.12.13", "111213"),
+        );
+    }
+
+    /**
+     * @dataProvider dataHexifyVersion
+     */
+    public function testHexifyVersion($version, $expect) {
+        $value = devInfo::hexifyVersion($version);
         $this->assertSame($expect, $value);
     }   
 
@@ -170,6 +186,36 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
      */
     public function testHexifyPartNum($partNum, $expect) {
         $value = devInfo::hexifyPartNum($partNum);
+        $this->assertSame($expect, $value);
+    }   
+
+
+    public static function dataDehexifyVersion() {
+        return array(
+            array("010203", "1.2.3"),
+            array("111213", "11.12.13"),
+        );
+    }
+
+    /**
+     * @dataProvider dataDehexifyVersion
+     */
+    public function testDehexifyVersion($version, $expect) {
+        $value = devInfo::dehexifyVersion($version);
+        $this->assertSame($expect, $value);
+    }   
+
+    public static function dataDehexifyPartNum() {
+        return array(
+            array("0039200643", "0039-20-06-C"),
+        );
+    }
+
+    /**
+     * @dataProvider dataDehexifyPartNum
+     */
+    public function testDehexifyPartNum($partNum, $expect) {
+        $value = devInfo::dehexifyPartNum($partNum);
         $this->assertSame($expect, $value);
     }   
 

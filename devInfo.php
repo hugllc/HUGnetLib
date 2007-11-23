@@ -107,6 +107,7 @@ class devInfo {
         $value = trim($value);
         $value = str_pad($value, $size, $pad, STR_PAD_LEFT);
         $value = substr($value, strlen($value)-$size);
+        return $value;
     }   
     
     /**
@@ -118,7 +119,7 @@ class devInfo {
     public static function hexifyVersion($version) {
         $ver = explode(".", $version);
         $str = "";
-        for($i = 0; $i < 3; $i++) $str .= EPacket::hexify($ver[$i], 2);
+        for($i = 0; $i < 3; $i++) $str .= self::setStringSize($ver[$i], 2);
         return $str;
     }
 
@@ -130,14 +131,44 @@ class devInfo {
      */
     public static function hexifyPartNum($PartNum) {
         $part = explode("-", $PartNum);
-        $str = trim($part[0]);
-        $str .= trim($part[1]);
-        $str .= trim($part[2]);
-        $chr = ord($part[3]);
-var_dump($part);
-var_dump($chr);       
+        $str = self::setStringSize($part[0], 4);
+        $str .= self::setStringSize($part[1], 2);
+        $str .= self::setStringSize($part[2], 2);
+        if (!empty($part[3])) {
+            $chr = ord($part[3]);
             $str .= EPacket::hexify($chr, 2);
+        }
+        self::setStringSize($str, 10); 
         return $str;
+    }
+
+    /**
+     * Hexifies a version in x.y.z form.
+     *
+     * @param string $version The version is x.y.z form
+     * @return string Hexified version (asciihex)
+     */
+    public static function dehexifyVersion($version) {
+        $version = strtoupper($version);
+        $str = array();
+        for($i = 0; $i < 3; $i++) $str[] .= (int)substr($version, ($i*2), 2);
+        return implode(".", $str);
+    }
+
+    /**
+     * Hexifies a version in x.y.z form.
+     *
+     * @param string $version The version is x.y.z form
+     * @return string Hexified version (asciihex)
+     */
+    public static function dehexifyPartNum($PartNum) {
+        $PartNum = strtoupper($PartNum);
+        $str = array();
+        $str[] = substr($PartNum, 0, 4);
+        $str[] = substr($PartNum, 4, 2);
+        $str[] = substr($PartNum, 6, 2);
+        $str[] = EPacket::dehexify(substr($PartNum, 8, 2));
+        return implode("-", $str);
     }
 
 }
