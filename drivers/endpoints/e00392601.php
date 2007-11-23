@@ -37,17 +37,6 @@ if (!class_exists("e00392601")) {
      * Driver for the 0039-12 endpoint board and select firmwares
     */
     class e00392601 extends eDEFAULT{
-        static $PacketSN = 0;
-        static $PacketHWPartNum = 20;
-        static $PacketFWPartNum = 30;
-        static $PacketFWVersion = 40;
-        static $PacketGroup = 46;
-        static $PacketPriority = 52;
-        static $PacketJobs = 54;
-        static $PacketGatewayKey = 56;
-        static $PacketName = 60;
-        static $PacketIP = 120;
-        
         var $HWName = "0039-26 Gateway";
 
         var $average_table = "e00392601_average";
@@ -94,8 +83,7 @@ if (!class_exists("e00392601")) {
     
             $string .= str_replace("-", "", $Info["HWPartNum"]);
             $string .= str_replace("-", "", $Info["FWPartNum"]);
-            $ver = explode(".", POLL_VERSION);
-            for($i = 0; $i < 3; $i++) $string .= EPacket::hexify($ver[$i], 2);
+            $string .= devInfo::hexifyVersion($Info["FWVersion"]);
             $string .= "FFFFFF";
     
             $string .= EPacket::hexify($Info["Priority"], 2);
