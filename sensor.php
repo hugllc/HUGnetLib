@@ -557,21 +557,11 @@ abstract class sensor_base
     */
     function __construct($Tf=FALSE, $D=FALSE, $s=FALSE, $Am=FALSE, $Vcc=FALSE)
     {
-        if (is_numeric($Tf)) {
-            $this->Tf = $Tf;
-        }
-        if (is_numeric($Vcc)) {
-            $this->D = $D;
-        }
-        if (is_numeric($Am)) {
-            $this->Am = $Am;
-        }
-        if (is_numeric($Vcc)) {
-            $this->Vcc = $Vcc;
-        }
-        if (is_numeric($s)) {
-            $this->s = $s;
-        }
+        if (is_numeric($Tf)) $this->Tf = $Tf;
+        if (is_numeric($Vcc))$this->D = $D;
+        if (is_numeric($Am)) $this->Am = $Am;
+        if (is_numeric($Vcc)) $this->Vcc = $Vcc;
+        if (is_numeric($s)) $this->s = $s;
     }
 
 

@@ -109,5 +109,36 @@ class devInfo {
         $value = substr($value, strlen($value)-$size);
     }   
     
+    /**
+     * Hexifies a version in x.y.z form.
+     *
+     * @param string $version The version is x.y.z form
+     * @return string Hexified version (asciihex)
+     */
+    public static function hexifyVersion($version) {
+        $ver = explode(".", $version);
+        $str = "";
+        for($i = 0; $i < 3; $i++) $str .= EPacket::hexify($ver[$i], 2);
+        return $str;
+    }
+
+    /**
+     * Hexifies a version in x.y.z form.
+     *
+     * @param string $version The version is x.y.z form
+     * @return string Hexified version (asciihex)
+     */
+    public static function hexifyPartNum($PartNum) {
+        $part = explode("-", $PartNum);
+        $str = trim($part[0]);
+        $str .= trim($part[1]);
+        $str .= trim($part[2]);
+        $chr = ord($part[3]);
+var_dump($part);
+var_dump($chr);       
+            $str .= EPacket::hexify($chr, 2);
+        return $str;
+    }
+
 }
 ?>

@@ -159,6 +159,21 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($expect, $value);
     }   
 
+    public static function dataHexifyPartNum() {
+        return array(
+            array("0039-20-06-C", "0039200643"),
+        );
+    }
+
+    /**
+     * @dataProvider dataHexifyPartNum
+     */
+    public function testHexifyPartNum($partNum, $expect) {
+        $value = devInfo::hexifyPartNum($partNum);
+        $this->assertSame($expect, $value);
+    }   
+
+
 
 }
 
