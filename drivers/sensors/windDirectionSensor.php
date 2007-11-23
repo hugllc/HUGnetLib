@@ -29,11 +29,11 @@
  *   @version $Id$    
  *
  */
-/**
-	@brief class for dealing with resistive sensors.
-*/
 if (!class_exists('windDirectionSensor')) {
 
+    /**
+     * This class deals with wind direction sensors.
+     */
     class windDirectionSensor extends sensor_base
     {
     
@@ -58,77 +58,79 @@ if (!class_exists('windDirectionSensor')) {
         );
         var $defaultSensor = 'maximum-inc';    
     
-        function maximumIncSensor($ndir, $sensor, $TC) {
-            $dir = NULL;        
+        /**
+         * Returns a numeric direction in degrees from the numeric bit 
+         * field that is returned by the Maximum Inc wind direction sensor.
+         *
+         * In this bit field the even bits are the cardinal directions and
+         * the odd bits are the ordinal directions.  Only one bit in each
+         * set can be set, and if there is a bit set in each they have to be
+         * 45 degrees apart (0 sometimes counts as 360 because degrees are
+         * circular).
+         *  
+         * @param int $bitField This is an 8 bit bit field returned by the sensor
+         * @param array $sensor this is the array of sensor information for this
+         *    sensor.  This is not used by this sensor.
+         * @param int $TC The timeconstant.  This is not used by this sensor.
+         */
+        function maximumIncSensor($bitField, $sensor, $TC) {
     
-            $dir1 = NULL;
-            if ($ndir & (1<<0)) $dir1 = 0.0;   //N
-            if ($ndir & (1<<2)) {
-                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
-                $dir1 = 90.0;  //E
-            }
-            if ($ndir & (1<<4)) {
-                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
-                $dir1 = 180.0; //S
-            }
-            if ($ndir & (1<<6)) {
-                if (!is_null($dir1)) return NULL;  // Can't have two cardinal directions!
-                $dir1 = 270.0; //W
-            }
-    
-            $dir2 = NULL;
-            if ($ndir & (1<<1)) $dir2 = 45.0;    //NE
-            if ($ndir & (1<<3)) {
-                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
-                $dir2 = 135.0;    //SE
-            }
-            if ($ndir & (1<<5)) {
-                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
-                $dir2 = 225.0;    //SW
-            }
-            if ($ndir & (1<<7)) {
-                if (!is_null($dir2)) return NULL;  // Can't have two ordinal directions!
-                $dir2 = 315.0;    //NW
-            }
-            // This code encompances all posible good values.  It is safe
-            // in that respect.  It could probably be speeded up, though.  ;)
-            if (!is_null($dir1) && is_null($dir2)) 
-            {
-                $dir = $dir1;
-            } else if (is_null($dir1) && !is_null($dir2)) 
-            {
-                $dir = $dir2;
-            } else 
-            {
-                if ($dir1 == 0) {
-                    if ($dir2 == 45) {
-                        $dir = 22.5;
-                    } else if ($dir2 == 315) {
-                        $dir = 337.5;
-                    }
-                } else if ($dir1 == 90) {
-                    if ($dir2 == 45) {
-                        $dir = 67.5;
-                    } else if ($dir2 == 135) {
-                        $dir = 112.5;
-                    }
-                } else if ($dir1 == 180) {
-                    if ($dir2 == 135) {
-                        $dir = 157.5;
-                    } else if ($dir2 == 225){
-                        $dir = 202.5;
-                    }
-                } else if ($dir1 == 270) {
-                    if ($dir2 == 225) {
-                        $dir = 247.5;
-                    } else if ($dir2 == 315) {
-                        $dir = 292.5;
-                    }
+            // Do the cardinal directions
+            $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
+            $cDir = NULL;
+            $oDir = NULL;
+            foreach($cDirections as $shift => $dir) {
+                // Do the cardinal direction
+                if ($bitField & (1<<$shift)) {
+                    if (!is_null($cDir)) return NULL;  // Can't have two cardinal directions!
+                    $cDir = $dir;
+                }
+                // Do the ordinal direction that is +45deg from the cardinal
+                if ($bitField & (1<<($shift+1))) {
+                    if (!is_null($oDir)) return NULL;  // Can't have two ordinal directions!
+                    $oDir = $dir + 45.0;
                 }
             }
-            
-            return $dir;
+
+            return $this->maximumIncSensorGetDir($cDir, $oDir);
         }
+        /**
+         * Get the direction back from the maximum inc wind direction sensor.
+         *
+         * Returns the direction as a floating point with the unit 'degrees' or
+         * NULL if the reading is bad.
+         *
+         * - If the ordinal direction is NULL it returns the cardinal direction.
+         * - If the cardinal direction is NULL it returns the ordinal direction.
+         * - Otherwise it retuns the average of the two.  This is only valid where
+         *     the difference between the two is 45, so it checks this first.
+         * - One special case is when the cardinal direction is north (0) and
+         *     the ordinal direction is NW (315).  In this case the cardinal
+         *     direction needs to be changed to 360 for the averaging to work
+         *     properly.
+         *
+         * @todo figure out why this routine scores 42 on the CRAP index from phpunit
+         *
+         * @param float $cDir The cardinal direction
+         * @param float $oDir The ordinal direction
+         * @return mixed
+         */
+        private function maximumIncSensorGetDir($cDir, $oDir) {
+            // If $oDir is null we are at a cardinal direction
+            if (is_null($oDir)) return $cDir;
+            // If $cDir is null we are at an ordinal direction
+            if (is_null($cDir)) return $oDir;
+            
+            // Now we have to check the in between directions.
+            // One special case first.  (see notes in docblock
+            if (($cDir == 0) && ($oDir == 315)) $cDir = 360;
+            // If the difference is not 45 it is a bad reading
+            if (abs($cDir - $oDir) != 45) return NULL;
+            // Return the average of the two directions.  This gives
+            // us the inbetween readings.
+            return ($cDir + $oDir)/2;
+        }
+
     }
 }
 
