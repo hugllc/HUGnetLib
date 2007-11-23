@@ -173,7 +173,7 @@ define("e00391201_SENSORS", 9);
 
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
 
-            $this->InterpSensorSetup($Info);
+            $this->InterpConfigSensorSetup($Info);
 
 			if (isset($this->labels[$Info["FWPartNum"]])) {
 				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
