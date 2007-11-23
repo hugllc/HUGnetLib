@@ -302,17 +302,16 @@ class EPacket {
      */
     private function setupSendPacket(&$Packet, $timeout, $getReply) {
         $Packet = array_change_key_case($Packet, CASE_LOWER);
-        $group = (bool)(hexdec($Packet["command"]) & 0x80);
 
         if (empty($Packet['data'])) $Packet['data'] = "";
         $this->Packets[$this->_index] = array(
             "pktTimeout" => $timeout,
             "GetReply" => $getReply, 
-            "SentTime" => $this->PacketTime(),
+            "SentTime" => EPacket::PacketTime(),
             "SentFrom" => trim(strtoupper($this->SN)),
             "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
             "sendCommand" => trim(strtoupper($Packet['command'])),
-            'group' => $group,
+            'group' => (bool)(hexdec($Packet["command"]) & 0x80),
             'packet' => $Packet,
             "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
             "Date" => date("Y-m-d H:i:s"),
@@ -342,14 +341,60 @@ class EPacket {
      *   @return bool FALSE on failure, TRUE on success
      */
     function SendPacket($Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
-        if ($pktTimeout === NULL) {
-            if (!is_null($Info['PacketTimeout'])) {
-                $pktTimeout = $Info['PacketTimeout'];
-            } else {
-                $pktTimeout = $this->ReplyTimeout;
-            }
-        }
+        $pktTimeout = $this->getReplyTimeout($pktTimeout);
+
+        // Setup the packet array
         if (!is_array($PacketList)) return FALSE;
+        $PacketList = array_change_key_case($PacketList, CASE_LOWER);
+        if (isset($PacketList['to'])) {
+            $PacketList = array($PacketList);
+        }
+
+        // Setup the socket we are working on
+        $socket = $this->PacketSendSetSocket($Info);
+        if ($this->verbose) print("Sending a packet on ".$Info["GatewayIP"].":".$Info["GatewayPort"]."\n");
+
+        // Make sure we are connected.
+        $this->Connect($Info);
+
+        $return = FALSE;
+        foreach($PacketList as $Packet) {
+            if (!is_array($Packet)) continue;
+            $index = $this->setupSendPacket($Packet, $pktTimeout, $GetReply);
+            $retval = $this->rawSendPacket($Info, $socket, $Packet, $index);
+            if ($retval !== FALSE) $return[] = $retval;
+        }
+        return($return);
+
+    }
+
+    /**
+     * Does the actual packet sending and calls the receive function
+     */
+    private function rawSendPacket(&$Info, $socket, &$Packet, $index) {
+        $count = 0;
+        $GotReply = FALSE;
+        $sPktStr = $this->PacketBuild($Packet);
+        $PktStr = $this->deHexify($sPktStr);
+        $useSocket = &$this->socket[$socket];
+        if (!is_object($useSocket)) $this->Connect($Info);
+        $return = FALSE;
+        do {
+            if ($this->verbose) print "Sending: ".$sPktStr."\n";
+            $retval = $useSocket->Write($PktStr);
+            if ($retval) {
+                $return = $this->RecvPacket($socket, $this->Packets[$index]["pktTimeout"]);
+            }
+            $count++;
+        } while (($count < $this->Retries) && ($return === FALSE));
+        unset($this->Packets[$index]);
+        return $return;
+    }
+
+    /**
+     * Sets up the sockets for sending a packet
+     */
+    private function PacketSendSetSocket($Info) {
 
         if (isset($Info['GatewayKey'])) {
             $socket = $Info['GatewayKey'];
@@ -358,112 +403,7 @@ class EPacket {
             reset($this->socket);
             list($socket, $tmp) = each($this->socket);
         }
-        if ($this->_direct) {
-            $useSocket = &$this->socket[$socket];
-        } else {
-            $useSocket = &$this->_db;
-        }
-        if ($this->verbose) print("Sending a packet on ".$Info["GatewayIP"].":".$Info["GatewayPort"]."\n");
-        $gotack = FALSE;
-        $this->Packets[$socket] = array();
-        $PacketList = array_change_key_case($PacketList, CASE_LOWER);
-        if (isset($PacketList['to'])) {
-            $PacketList = array($PacketList);
-        } else {
-            foreach($PacketList as $key => $p) {
-                if (is_array($p)) {
-                    $PacketList[$key] = array_change_key_case($p, CASE_LOWER);
-                } else {
-                    unset($PacketList[$key]);
-                }
-            }
-        }
-        // Make sure we are connected.
-        $this->Connect($Info);
-
-        $return = FALSE;
-        foreach($PacketList as $Packet) {
-            $group = (bool)(hexdec($Packet["command"]) & 0x80);
-            $index = $this->_index++;
-
-            if (empty($Packet['data'])) $Packet['data'] = "";
-            $this->Packets[$index] = array(
-                "pktTimeout" => $pktTimeout,
-                "GetReply" => $GetReply,
-                "SentTime" => $this->PacketTime(),
-                "SentFrom" => trim(strtoupper($this->SN)),
-                "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
-                "sendCommand" => trim(strtoupper($Packet['command'])),
-                'group' => $group,
-                'packet' => $Packet,
-                "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
-                "Date" => date("Y-m-d H:i:s"),
-                "GatewayKey" => $Info['GatewayKey'],
-                "DeviceKey" => $Info['DeviceKey'],
-                "Type" => "OUTGOING",
-                "RawData" => trim(strtoupper($Packet['data'])),
-                "sentRawData" => trim(strtoupper($Packet['data'])),
-                "Parts" => (empty($Packet['Parts']) ? 1 : $Packet['Parts']),
-            );
-            $count = 0;
-            $GotReply = FALSE;
-            $sPktStr = $this->PacketBuild($Packet);
-            $PktStr = $this->deHexify($sPktStr);
-            do {
-                if (is_object($useSocket)) {
-                    if ($this->verbose) print "Sending: ".$sPktStr."\n";
-                    if ($this->_direct) {
-                        $retval = $useSocket->Write($PktStr);
-                    } else if (is_object($this->_db)) {
-                        $this->Packets[$index]["id"] = rand(-24777216, 24777216);  // Big random number for the id
-
-                        $retval = $this->_db->AutoExecute("PacketSend", $this->Packets[$index], 'INSERT');
-                    } else {
-                        if ($this->verbose) print "Sending Failed.\n";
-                    }
-                }
-                if ($retval === FALSE) {
-                    $this->Connect($Info);
-                }
-
-                if ($retval) {
-                    if (!$GetReply) {
-                        $GotReply = TRUE;
-                        $return = TRUE;
-                    }
-                    while (!$GotReply){
-                        $gotack = $this->RecvPacket($socket, $pktTimeout);
-                        if ($gotack === FALSE) break;
-                        if (is_array($gotack)) {
-                            $return[] = $gotack;
-                            if ($gotack['Reply'] === TRUE) $GotReply = TRUE;
-                        }
-                    };
-                }
-
-                $count++;
-            } while (($count < $this->Retries) && !$GotReply);
-            unset($this->Packets[$index]);
-
-        }
-        return($return);
-
-    }
-
-
-    /**
-     * Sets up the sockets for sending a packet
-     */
-    private function PacketSendSetSocket($Info, &$socketNum) {
-
-        if (isset($Info['GatewayKey'])) {
-            $socketNum = $Info['GatewayKey'];
-        } else {
-            // If one is not given, use the first one.
-            reset($this->socket);
-            list($socketNum, $tmp) = each($this->socket);
-        }
-    
+        return $socket;
     }
     /**
      *   Sends a reply packet

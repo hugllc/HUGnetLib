@@ -507,14 +507,14 @@ class driverTest extends PHPUnit_Framework_TestCase {
      * @covers driver::DriverInfo
      */
     public function testDriverInfo($Info, $field, $expect) {
-        
+
+        $infoSave = $Info;        
         $this->o->registerDriver($Info["Driver"]);
         $Info = $this->o->DriverInfo($Info);
         $this->assertSame($expect, $Info[$field]);
-        $this->assertType("string", $Info["DeviceID"], "DeviceID is missing");
-        $this->assertFalse(empty($Info["DeviceID"]), "DeviceID is missing");
-        $this->assertType("string", $Info["Driver"], "Driver is missing");
-        $this->assertFalse(empty($Info["Driver"]), "Driver is missing");
+        foreach(array("DeviceID", "Driver") as $f) {
+            $this->assertSame($infoSave[$f], $Info[$f], "$f not the same");
+        }
     }
 
     /**
