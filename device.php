@@ -56,6 +56,27 @@ class device {
         $this->_driver = &$driver;
     }
 
+    public function update($key, $stuff) {
+        if (!is_array($stuff)) return FALSE;
+        $sep = "";
+        $set = "";
+        foreach($stuff as $field => $value) {
+            $set .= $sep.$field." = ".$this->db->qstr($value)." ";
+            $sep = ", ";
+        }
+        if (empty($set)) return FALSE;
+        $query = " UPDATE ".$this->table.
+                 " SET " . $set .
+                 " WHERE " .
+                 " DeviceKey=".$key;
+        if ($this->db->Execute($query)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+
+    } 
+
     /**
      * This returns an array setup for a HTML select list using the adodb
      * function 'GetMenu'
