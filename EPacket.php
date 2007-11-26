@@ -158,7 +158,7 @@ class EPacket {
     private $callBackFunction = NULL;
 
     /** Check to see if we are a unique serial number on this net */
-    private $_DeviceIDCheck = TRUE;
+    protected $_DeviceIDCheck = TRUE;
 
     /** @var bool Tells us whether to use direct access to the endpoints */
     private $_direct = TRUE;
@@ -471,10 +471,10 @@ class EPacket {
     /**
      * Checks a given serial number to see if it is in use
      */
-    private function checkSN($SN) {
+    private function checkSN($Info, $SN) {
         $Info = array("DeviceID" => $SN);
         if ($this->verbose) print "Checking Serial Number ".$SN."\r\n";
-        $ret = $this->ping($Info);
+        $ret = $this->ping($Info, TRUE);
         return !is_array($ret);
     }
     /**
@@ -489,9 +489,7 @@ class EPacket {
         $this->getAll(FALSE);
         for($i = 0; $i < count($this->SNArray); $i++) {
             $key = array_rand($this->SNArray, 1);
-            if ($this->checkSN($this->SNArray[$key])) {                
-                break;
-            }
+            if ($this->checkSN($Info, $this->SNArray[$key])) break;
         }
         
         $this->SN = $this->SNArray[$key];
