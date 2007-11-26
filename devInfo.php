@@ -107,6 +107,7 @@ class devInfo {
         $value = trim($value);
         $value = str_pad($value, $size, $pad, STR_PAD_LEFT);
         $value = substr($value, strlen($value)-$size);
+        $value = strtoupper($value);
         return $value;
     }   
     
@@ -136,7 +137,7 @@ class devInfo {
         $str .= self::setStringSize($part[2], 2);
         if (!empty($part[3])) {
             $chr = ord($part[3]);
-            $str .= EPacket::hexify($chr, 2);
+            $str .= self::hexify($chr, 2);
         }
         self::setStringSize($str, 10); 
         return $str;
@@ -167,9 +168,74 @@ class devInfo {
         $str[] = substr($PartNum, 0, 4);
         $str[] = substr($PartNum, 4, 2);
         $str[] = substr($PartNum, 6, 2);
-        $str[] = EPacket::dehexify(substr($PartNum, 8, 2));
+        $str[] = self::dehexify(substr($PartNum, 8, 2));
         return implode("-", $str);
     }
+    /**
+     *   Turns a number into a text hexidecimal string
+     *   
+     *   If the number comes out smaller than $width the string is padded 
+     *   on the left side with zeros.
+     *
+     *   Duplicate: {@link epsocket::hexify()}
+     *
+     *   @param int $value The number to turn into a hex string
+     *   @param int $width The width of the final string
+     *   @return string The hex string created.
+    */
+    function hexify($value, $width=2) {
+        $value = dechex($value);
+        $value = str_pad($value, $width, "0", STR_PAD_LEFT);
+        $value = substr($value, strlen($value)-$width);
+        $value = strtoupper($value);
+
+        return($value);
+    }
+
+
+    /**
+     *   Turns a binary string into a text hexidecimal string
+     *   
+     *   If the number comes out smaller than $width the string is padded 
+     *   on the left side with zeros.
+     *
+     *   If $width is not set then the string is kept the same lenght as
+     *   the incoming string.
+     *
+     *   @param string $str The binary string to convert to hex
+     *   @param int $width The width of the final string
+     *   @return string The hex string created.
+    */
+    function hexifyStr($str, $width=NULL) {
+        $value = "";
+        $length = strlen($str);
+        if (is_null($width)) $width = $length;
+        for($i = 0; ($i < $length) && ($i < $width); $i++) {
+            $char = substr($str, $i, 1);
+            $char = ord($char);
+            $value .= self::hexify($char, 2);
+        }
+        $value = str_pad($value, $width, "0", STR_PAD_RIGHT);
+        
+        return($value);
+    }
+
+    /**
+     *   Changed a hex string into a binary string.
+     *
+     *   @param string $string The hex packet string
+     *   @return string The binary string.
+     */
+    
+    function deHexify($string) {
+        $string = trim($string);
+        $bin = "";
+        for($i = 0; $i < strlen($string); $i+=2) {
+            $bin .= chr(hexdec(substr($string, $i, 2)));
+        }
+        return $bin;
+    }
+
 
 }
 ?>

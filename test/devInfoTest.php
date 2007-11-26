@@ -220,6 +220,58 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
     }   
 
 
+    public static function dataDehexify() {
+        return array(
+            array("4142434445", "ABCDE"),
+            array("6162636465", "abcde"),
+        );
+    }
+
+    public static function dataHexify() {
+        return array(
+            array(1, NULL, "01"),
+            array(-1, 4, "FFFF"),
+            array(1024, 2, "00"),
+            array(1024, 4, "0400"),
+        );
+    }
+    /**
+     * @dataProvider dataHexify
+     */
+    public function testHexify($value, $width, $expect) {
+        if (is_null($width)) {
+            $ret = devInfo::hexify($value);
+        } else {
+            $ret = devInfo::hexify($value, $width);
+        }
+        $this->assertEquals($expect, $ret);
+    }
+
+
+    public static function dataHexifyStr() {
+        return array(
+            array("\0\r\n", "000D0A"),
+            array("123", "313233"),
+            array("ABC", "414243"),
+        );
+    }
+    /**
+     * @dataProvider dataHexifyStr
+     */
+    public function testHexifyStr($str, $expect) {
+        $ret = devInfo::hexifyStr($str);
+        $this->assertEquals($expect, $ret);
+    }
+
+
+    /**
+     * @dataProvider dataDehexify
+     */
+    public function testDehexify($str, $expect) {
+        $bin = devInfo::dehexify($str);
+        $this->assertSame($expect, $bin);
+    }
+
 
 }
 

@@ -198,21 +198,7 @@ class EPacket {
         }
         return($return);
     }
-    /**
-     *   Changed a hex string into a binary string.
-     *
-     *   @param string $string The hex packet string
-     *   @return string The binary string.
-     */
-    
-    function deHexify($string) {
-        $string = trim($string);
-        $bin = "";
-        for($i = 0; $i < strlen($string); $i+=2) {
-            $bin .= chr(hexdec(substr($string, $i, 2)));
-        }
-        return $bin;
-    }
+
     /**
      *   Computes the checksum of a packet
      *
@@ -300,20 +286,22 @@ class EPacket {
     /**
      *  Setup an array to send out a packet
      */
-    private function setupSendPacket(&$Packet, $timeout, $getReply) {
+    private function setupSendPacket(&$Info, &$Packet, $timeout, $getReply) {
         $Packet = array_change_key_case($Packet, CASE_LOWER);
 
         if (empty($Packet['data'])) $Packet['data'] = "";
+        devInfo::setStringSize($Packet["to"], 6);
+        devInfo::setStringSize($Packet["command"], 2);
         $this->Packets[$this->_index] = array(
             "pktTimeout" => $timeout,
             "GetReply" => $getReply, 
             "SentTime" => EPacket::PacketTime(),
             "SentFrom" => trim(strtoupper($this->SN)),
-            "SentTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
-            "sendCommand" => trim(strtoupper($Packet['command'])),
+            "SentTo" => $Packet["to"],
+            "sendCommand" => $Packet['command'],
             'group' => (bool)(hexdec($Packet["command"]) & 0x80),
             'packet' => $Packet,
-            "PacketTo" => str_pad(trim(strtoupper($Packet["to"])), 6, "0", STR_PAD_LEFT),
+            "PacketTo" => $Packet["to"],
             "Date" => date("Y-m-d H:i:s"),
             "GatewayKey" => $Info['GatewayKey'],
             "DeviceKey" => $Info['DeviceKey'],
@@ -340,7 +328,7 @@ class EPacket {
      *   @param bool $GetReply Whether or not to wait for a reply.
      *   @return bool FALSE on failure, TRUE on success
      */
-    function SendPacket($Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
+    function SendPacket(&$Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
         $pktTimeout = $this->getReplyTimeout($pktTimeout);
 
         // Setup the packet array
@@ -357,38 +345,62 @@ class EPacket {
         // Make sure we are connected.
         $this->Connect($Info);
 
-        $return = FALSE;
+        $ret = array();
         foreach($PacketList as $Packet) {
             if (!is_array($Packet)) continue;
-            $index = $this->setupSendPacket($Packet, $pktTimeout, $GetReply);
-            $retval = $this->rawSendPacket($Info, $socket, $Packet, $index);
-            if ($retval !== FALSE) $return[] = $retval;
+            if (!is_object($this->socket[$socket])) $this->Connect($Info);
+            $index = $this->setupSendPacket($Info, $Packet, $pktTimeout, $GetReply);
+            $PktStr = devInfo::deHexify($this->PacketBuild($Packet));
+            $retval = $this->sendPacketWrite($socket, $PktStr, $index);
+            if (is_array($retval)) $ret += $retval;
+            unset($this->Packets[$index]);
         }
-        return($return);
+        if ($ret == array()) return FALSE;
+        return $ret;
 
     }
 
     /**
      * Does the actual packet sending and calls the receive function
+     *
+     *  Returns an array of packet arrays on success, FALSE on failure
+     *
+     * @param array $Info The devInfo array
+     * @param int $socket The socket to use
+     * @param array $Packet The packet array of the packet to send out
+     * @param int $index The packet index to use
+     * @return mixed
      */
-    private function rawSendPacket(&$Info, $socket, &$Packet, $index) {
-        $count = 0;
-        $GotReply = FALSE;
-        $sPktStr = $this->PacketBuild($Packet);
-        $PktStr = $this->deHexify($sPktStr);
-        $useSocket = &$this->socket[$socket];
-        if (!is_object($useSocket)) $this->Connect($Info);
-        $return = FALSE;
-        do {
+    private function sendPacketWrite($socket, $pktStr, $index) {
+        $ret = FALSE;
+        for($count = 0; ($count < $this->Retries) && ($ret == FALSE); $count++) {
             if ($this->verbose) print "Sending: ".$sPktStr."\n";
-            $retval = $useSocket->Write($PktStr);
-            if ($retval) {
-                $return = $this->RecvPacket($socket, $this->Packets[$index]["pktTimeout"]);
+            $write = $this->socket[$socket]->Write($pktStr);
+            if (empty($write)) continue;
+            $ret = $this->sendPacketGetReply($socket, $index);
+        }
+        return $ret;
+    }
+
+    /**
+     *  Gets a reply from the endpoint.
+     *
+     *  Returns an array of packet arrays on success, FALSE on failure
+     *
+     * @param int $socket The socket to use
+     * @param int $index The packet index to use
+     * @return mixed
+     */
+    private function sendPacketGetReply($socket, $index) {
+        $ret = array();
+        do {
+            $pktRet = $this->RecvPacket($socket, $this->Packets[$index]["pktTimeout"]);
+            if (is_array($pktRet)) {
+                $ret[] = $pktRet;
+                if ($pktRet["Reply"] === TRUE) break;
             }
-            $count++;
-        } while (($count < $this->Retries) && ($return === FALSE));
-        unset($this->Packets[$index]);
-        return $return;
+        } while ($pktRet !== FALSE);
+        return $ret;
     }
 
     /**
@@ -414,7 +426,7 @@ class EPacket {
      *   @return bool FALSE on failure, TRUE on success
      */
     function sendReply($Info, $to, $data=NULL) {
-        if (!is_string($to)) $to = $this->hexify($to, 6);
+        if (!is_string($to)) $to = devInfo::hexify($to, 6);
         
         if (is_array($data)) $data = $this->arrayToData($data);        
         
@@ -436,7 +448,7 @@ class EPacket {
         if (is_array($array)) {
             $ret = '';
             foreach($array as $d) {
-                $ret .= EPacket::hexify($d, 2);
+                $ret .= devInfo::hexify($d, 2);
             }
             return $ret;
         } else if (is_string($array)) {
@@ -451,7 +463,7 @@ class EPacket {
      */
     private function createSNArray() {
         for ($i = 0; $i < $this->maxSN; $i++) {
-            $SN = $this->hexify(mt_rand(1,$this->maxSN), 6);
+            $SN = devInfo::hexify(mt_rand(1,$this->maxSN), 6);
             $this->SNArray[] = $SN;
         }
     }
@@ -519,7 +531,7 @@ class EPacket {
             $char = $mySocket->ReadChar($timeout);
             if ($char !== FALSE) {
                 $char = ord($char);
-                $char = $this->hexify($char);
+                $char = devInfo::hexify($char);
                 $mySocket->buffer .= strtoupper(trim($char));
                 $pkt = stristr($mySocket->buffer, self::$preambleByte.self::$preambleByte);
                 if (strlen($pkt) > 11) {
@@ -678,17 +690,15 @@ class EPacket {
      *   @return bool|array FALSE on failure, The interpreted packet on success.
      */
     function InterpPacket($data, $sock=0) {
-        $ret = FALSE;
-        
         $pkt = $this->UnbuildPacket($data);
         if ($pkt["Checksum"] != $pkt["CalcChecksum"]) {
             if ($this->verbose) print "Bad Packet Received: ".$data."\r\n";
             return FALSE;
         }
-        $ret = $this->checkPacketReply($pkt, $sock);
+        $this->checkPacketReply($pkt, $sock);
         $this->checkPacketTimeout();
-        $this->checkPacketOther($ret, $sock);
-        return $ret;
+        $this->checkPacketOther($pkt, $sock);
+        return $pkt;
     }
 
     /**
@@ -906,54 +916,6 @@ class EPacket {
         }
     }
     
-    /**
-     *   Turns a number into a text hexidecimal string
-     *   
-     *   If the number comes out smaller than $width the string is padded 
-     *   on the left side with zeros.
-     *
-     *   Duplicate: {@link epsocket::hexify()}
-     *
-     *   @param int $value The number to turn into a hex string
-     *   @param int $width The width of the final string
-     *   @return string The hex string created.
-    */
-    function hexify($value, $width=2) {
-        $value = dechex($value);
-        $value = str_pad($value, $width, "0", STR_PAD_LEFT);
-        $value = substr($value, strlen($value)-$width);
-        $value = strtoupper($value);
-
-        return($value);
-    }
-
-    /**
-     *   Turns a binary string into a text hexidecimal string
-     *   
-     *   If the number comes out smaller than $width the string is padded 
-     *   on the left side with zeros.
-     *
-     *   If $width is not set then the string is kept the same lenght as
-     *   the incoming string.
-     *
-     *   @param string $str The binary string to convert to hex
-     *   @param int $width The width of the final string
-     *   @return string The hex string created.
-    */
-    function hexifyStr($str, $width=NULL) {
-        $value = "";
-        $length = strlen($str);
-        if (is_null($width)) $width = $length;
-        for($i = 0; ($i < $length) && ($i < $width); $i++) {
-            $char = substr($str, $i, 1);
-            $char = ord($char);
-            $value .= EPacket::hexify($char, 2);
-        }
-        $value = str_pad($value, $width, "0", STR_PAD_RIGHT);
-        
-        return($value);
-    }
-
     /**
      *  Set the flag as to whether to check the DeviceID.  If the DeviceID
      *  is not checked then it will be set to the default and stay that way.

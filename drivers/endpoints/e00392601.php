@@ -79,28 +79,28 @@ if (!class_exists("e00392601")) {
         }
 
         function getConfigStr($Info) {
-            $string = EPacket::hexify($Info["SerialNum"], 10);
+            $string = devInfo::hexify($Info["SerialNum"], 10);
     
             $string .= devInfo::hexifyPartNum($Info["HWPartNum"]);
             $string .= devInfo::hexifyPartNum($Info["FWPartNum"]);
             $string .= devInfo::hexifyVersion($Info["FWVersion"]);
             $string .= "FFFFFF";
     
-            $string .= EPacket::hexify($Info["Priority"], 2);
+            $string .= devInfo::hexify($Info["Priority"], 2);
             $Jobs = 0;
             if ($Info["doPoll"]) $Jobs |= 0x01;
             if ($Info["doConfig"]) $Jobs |= 0x02;
             if ($Info["doCCheck"]) $Jobs |= 0x04;
             if ($Info["doUnsolicited"]) $Jobs |= 0x08;
-            $string .= EPacket::hexify($Jobs, 2);
-            $string .= EPacket::hexify($Info['GatewayKey'], 4);
+            $string .= devInfo::hexify($Jobs, 2);
+            $string .= devInfo::hexify($Info['GatewayKey'], 4);
     
-            $string .= EPacket::hexifyStr($Info["Name"], 60);
+            $string .= devInfo::hexifyStr($Info["Name"], 60);
      
             $myIP = explode(".", $Info["IP"]);
     
             for($i = 0; $i < 4; $i++) {
-                $string .= EPacket::hexify($myIP[$i], 2);
+                $string .= devInfo::hexify($myIP[$i], 2);
             }
             return $string;
 
@@ -138,9 +138,9 @@ if (!class_exists("e00392601")) {
             $Info['doCCheck'] = (bool) ($Jobs & 0x04);
             $Info['doUnsolicited'] = (bool) ($Jobs & 0x08);
             $index += 2;
-            $Info["GatewayKey"] = 	hexdec(substr($Info["DriverInfo"], $index, 4));
+            $Info["GatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
             $index += 4;
-            $Info["Name"] = 	$this->packet->deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
+            $Info["Name"] = devInfo::deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
             $index += 60;
 			$IP = str_split(substr($Info["DriverInfo"], $index, 8), 2);
             foreach($IP as $k => $v) {
