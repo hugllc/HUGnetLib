@@ -30,8 +30,6 @@
  *
  */
 
-/** The default port for connection to seriald */
-define("SOCKET_DEFAULT_PORT", 1200);
 /** Error number for not getting a packet back */
 define("PACKET_ERROR_NOREPLY_NO", -1);
 /** Error message for not getting a packet back */
@@ -175,36 +173,32 @@ class epsocket {
      * @param int $timeout The time to wait before giving up on a bad connection
      * @return bool TRUE if the connection is good, FALSE otherwise
      */
-    function Connect($server = "", $port = 0, $timeout=0) {
+    function Connect($server = "", $port = "", $timeout=0) {
         
-        $return = FALSE;
         if ($this->CheckConnect()) {
-            $return = TRUE;
+            return TRUE;
         } else {
             $this->Close();
-        }
-        if ($return === FALSE) {
-            if (!empty($server)) $this->Server = $server;
-            if (!empty($port)) $this->Port = $port;
-
-            if (!empty($this->Server) && !empty($this->Port)) {
-                if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-                $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-                if (($this->Errno == 0) && ($this->socket != 0)) {
-                    stream_set_blocking($this->socket, FALSE);
-                    if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
-                    $return = TRUE;
-                } else {
-                    if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
-                    $this->socket = 0;
-                }
-            } else {
-                $this->Errno = -1;
-                $this->Error = "No server specified";
-                $return = FALSE;
-            }
         }        
-        return($return);
+        if (!empty($server)) $this->Server = $server;
+        if (!empty($port)) $this->Port = $port;
+
+        if (!empty($this->Server) && !empty($this->Port)) {
+            if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
+            $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+            if (($this->Errno == 0) && ($this->socket != 0)) {
+                stream_set_blocking($this->socket, FALSE);
+                if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
+                return TRUE;
+            } else {
+                if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
+                $this->socket = 0;
+            }
+        } else {
+            $this->Errno = -1;
+            $this->Error = "No server specified";
+        }
+        return FALSE;
     }            
 
 
@@ -216,13 +210,12 @@ class epsocket {
      *       the default port.
      * @param bool $verbose Make the class put out a lot of output
      */
-    function __construct($server, $tcpport = SOCKET_DEFAULT_PORT, $verbose=FALSE) {
-        if (empty($tcpport)) $tcpport = SOCKET_DEFAULT_PORT;
+    function __construct($server="", $tcpport="", $verbose=FALSE) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-        if (trim($server) != "") {
-            $this->Connect($server, $tcpport);
-        }
+        if (empty($server)) $server = "127.0.0.1";
+        if (empty($tcpport)) $tcpport = "2000";
+        $this->Connect($server, $tcpport);
         if ($this->verbose) print "Done\r\n";
     }
     

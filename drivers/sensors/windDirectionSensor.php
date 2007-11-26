@@ -67,6 +67,15 @@ if (!class_exists('windDirectionSensor')) {
          * set can be set, and if there is a bit set in each they have to be
          * 45 degrees apart (0 sometimes counts as 360 because degrees are
          * circular).
+         *
+         * - If the ordinal direction is NULL it returns the cardinal direction.
+         * - If the cardinal direction is NULL it returns the ordinal direction.
+         * - Otherwise it retuns the average of the two.  This is only valid where
+         *     the difference between the two is 45, so it checks this first.
+         * - One special case is when the cardinal direction is north (0) and
+         *     the ordinal direction is NW (315).  In this case the cardinal
+         *     direction needs to be changed to 360 for the averaging to work
+         *     properly.            
          *  
          * @param int $bitField This is an 8 bit bit field returned by the sensor
          * @param array $sensor this is the array of sensor information for this
@@ -91,31 +100,6 @@ if (!class_exists('windDirectionSensor')) {
                     $oDir = $dir + 45.0;
                 }
             }
-
-            return $this->maximumIncSensorGetDir($cDir, $oDir);
-        }
-        /**
-         * Get the direction back from the maximum inc wind direction sensor.
-         *
-         * Returns the direction as a floating point with the unit 'degrees' or
-         * NULL if the reading is bad.
-         *
-         * - If the ordinal direction is NULL it returns the cardinal direction.
-         * - If the cardinal direction is NULL it returns the ordinal direction.
-         * - Otherwise it retuns the average of the two.  This is only valid where
-         *     the difference between the two is 45, so it checks this first.
-         * - One special case is when the cardinal direction is north (0) and
-         *     the ordinal direction is NW (315).  In this case the cardinal
-         *     direction needs to be changed to 360 for the averaging to work
-         *     properly.
-         *
-         * @todo figure out why this routine scores 42 on the CRAP index from phpunit
-         *
-         * @param float $cDir The cardinal direction
-         * @param float $oDir The ordinal direction
-         * @return mixed
-         */
-        private function maximumIncSensorGetDir($cDir, $oDir) {
             // If $oDir is null we are at a cardinal direction
             if (is_null($oDir)) return $cDir;
             // If $cDir is null we are at an ordinal direction
