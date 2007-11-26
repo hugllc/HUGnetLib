@@ -352,7 +352,7 @@ class EPacket {
             $index = $this->setupSendPacket($Info, $Packet, $pktTimeout, $GetReply);
             $PktStr = devInfo::deHexify($this->PacketBuild($Packet));
             $retval = $this->sendPacketWrite($socket, $PktStr, $index);
-            if (is_array($retval)) $ret += $retval;
+            if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
         }
         if ($ret == array()) return FALSE;
