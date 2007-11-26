@@ -338,7 +338,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public function testDone() {
         $Info = array("GatewayKey" => 1);
         // This has to go to eDEFAULT since it has no args.
-        $this->o->packet = $this->getMock("EPacket");
+        $this->o->packet = $this->getMock("EPacket", array(), array("socketType" => "test"));
         $this->o->packet->expects($this->once())
                   ->method('Close')
                   ->with($this->arrayHasKey("GatewayKey"));
@@ -386,21 +386,6 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $this->o->getDevice($Info, "KEY");
     }
 
-
-    /**
-     * @dataProvider dataFindDevice().
-     * @covers driver::FindDevice
-     */
-    public function testFindDevice() {
-        $Info = array("GatewayKey" => 1);
-        
-        // This has to go to eDEFAULT since it has no args.
-        $this->o->packet = $this->getMock("EPacket");
-        $this->o->packet->expects($this->once())
-                  ->method('FindDevice')
-                  ->with($this->arrayHasKey("GatewayKey"));
-        $this->o->FindDevice($Info);
-    }
 
     /**
      * @dataProvider dataGetInfo().

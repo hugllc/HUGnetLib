@@ -187,7 +187,7 @@ class devInfo {
         $value = dechex($value);
         $value = str_pad($value, $width, "0", STR_PAD_LEFT);
         $value = substr($value, strlen($value)-$width);
-        $value = strtoupper($value);
+        $value = strtoupper(trim($value));
 
         return($value);
     }

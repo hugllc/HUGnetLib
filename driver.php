@@ -219,24 +219,13 @@ class driver {
     /**
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
-     */
-    function FindDevice($Info) {
-        $gw = $this->gateway->getAll();
-        $return = $this->packet->FindDevice($Info, $gw);
-        return($return);
-    }
-
-        
-    /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
      * @param GatewayKey Int The gateway to try first.
      */
     function GetInfo($Info, $GatewayKey = 0) {
         $DeviceID = $Info["DeviceID"];
         //add_debug_output("Getting Configuration for ".$Info["DeviceID"]."<BR>\n");
         if ($GatewayKey == 0) {
-            $usegw = $this->FindDevice($Info);
+            $usegw = $this->gateway->get($Info["GatewayKey"]);
         } else {
             $usegw = $this->gateway->get($GatewayKey);
         }
