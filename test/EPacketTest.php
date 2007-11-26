@@ -156,6 +156,8 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->o->socket[1] = new epsocketMock();
         $this->o->ReplyTimeout = 1; // This is a fast system.  It doesn't need a long timeout
         $this->o->verbose = TRUE;
+        
+        $this->txrxMock = new EPacketTXRXMock();
         ob_start();
     }
 
@@ -296,7 +298,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             array("55000ABC0000200401020304", "C3"),
             array("5C000ABC00002000", "CA"),
             array("5CABCDEF00002000", "F5"),
-            array("01000020ABCDEF00", "A8"),
+            array("0300002000000100", "22"),
+            array("0300002000000200", "21"),
+            array("0300002000000300", "20"),
             array("5E000000000DEF0401020304", "BC"),
         );
     }
@@ -668,14 +672,18 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($s, "");
     }
 
+
     /**
-     * @todo Implement testChangeSN().
+     *
      */
     public function testChangeSN() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->o->SNArray = array("000001", "000002", "000003", "000004");
+        // Load these packets up so that it always chooses "000004".
+        $this->o->socket[1]->setReply("5A5A5A030000010000200022", "5A5A5A010000200000010020");
+        $this->o->socket[1]->setReply("5A5A5A030000020000200021", "5A5A5A010000200000020023");
+        $this->o->socket[1]->setReply("5A5A5A030000030000200020", "5A5A5A010000200000030022");
+        $this->o->ChangeSN($Info);
+        $this->assertSame("000004", $this->o->SN);
     }
 
     /**
@@ -775,23 +783,17 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             array(
                 array("GatewayKey" => 1), 
                 NULL, 
-                "5A5A5A01002000ABCDEF00A8", 
                 array(
-                    "Command" => "01",
-                    "To" => "002000",
-                    "From" => "ABCDEF",
-                    "Length" => 0,
-                    "RawData" => "",
-                    "Data" => NULL,
-                    "Checksum" => "A8",
-                    "CalcChecksum" => "A8",
-                    "RawPacket" => "01002000ABCDEF00A8",
-                    "Unsolicited" => FALSE,
-                    "Socket" => 1,
-                    "GatewayKey" => 1,
-                    "Reply" => FALSE,
-                    "toMe" => FALSE,
-                    "isGateway" => FALSE,
+                    "socket" => 1,
+                    "timeout" => 0,
+                ),
+            ),
+            array(
+                array("GatewayKey" => 3), 
+                2, 
+                array(
+                    "socket" => 3,
+                    "timeout" => 2,
                 ),
             ),
         );    
@@ -800,19 +802,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataMonitor
      */
-    public function testMonitor($Info, $timeout, $pktStr, $expect) {
-        // This preloads our fake socket to send back the data we want
-        $this->o->socket[1]->setReply("Reply", $pktStr);
-        $this->o->socket[1]->lastPacket = "Reply";
+    public function testMonitor($Info, $timeout, $expect) {
         if (is_null($timeout)) {
-            $ret = $this->o->monitor($Info);
+            $ret = $this->txrxMock->monitor($Info);
         } else {
-            $ret = $this->o->monitor($Info, $timeout);
+            $ret = $this->txrxMock->monitor($Info, $timeout);
         }
-        unset($ret["Time"]);
-        unset($ret["ReplyTime"]);
-        unset($ret["SentTime"]);
-        unset($ret["Date"]);
         $this->assertSame($expect, $ret);
     }
 
@@ -821,129 +816,32 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                 FALSE, 
-                "5A5A5A02ABCDEF00002000AB", 
-                "5A5A5A01000020ABCDEF00A8", 
                 array(
-                    array(
-                        "pktTimeout" => 1,
-                        "GetReply" => TRUE,
-                        "SentFrom" => "000020",
-                        "SentTo" => "ABCDEF",
-                        "sendCommand" => "02",
-                        "group" => FALSE,
-                        "packet" => array(
-                            "command" => "02",
-                            "to" => "ABCDEF",
-                            "data" => "",
-                        ),
-                        "PacketTo" => "ABCDEF",
-                        "GatewayKey" => 1,
-                        "DeviceKey" => 1,
-                        "Type" => "OUTGOING",
-                        "RawData" => "",
-                        "sentRawData" => "",
-                        "Parts" => 1,
-                        "Command" => "01",
-                        "To" => "000020",
-                        "From" => "ABCDEF",
-                        "Length" => 0,
-                        "Data" => NULL,
-                        "Checksum" => "A8",
-                        "CalcChecksum" => "A8",
-                        "RawPacket" => "01000020ABCDEF00A8",
-                        "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
-                    ),
-                ),
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
+                    "GetReply" => TRUE,
+                    "pktTimeout" => NULL,
+               ),
             ),
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                 NULL, 
-                "5A5A5A02ABCDEF00002000AB", 
-                "5A5A5A01000020ABCDEF00A8", 
                 array(
-                    array(
-                        "pktTimeout" => 1,
-                        "GetReply" => TRUE,
-                        "SentFrom" => "000020",
-                        "SentTo" => "ABCDEF",
-                        "sendCommand" => "02",
-                        "group" => FALSE,
-                        "packet" => array(
-                            "command" => "02",
-                            "to" => "ABCDEF",
-                            "data" => "",
-                        ),
-                        "PacketTo" => "ABCDEF",
-                        "GatewayKey" => 1,
-                        "DeviceKey" => 1,
-                        "Type" => "OUTGOING",
-                        "RawData" => "",
-                        "sentRawData" => "",
-                        "Parts" => 1,
-                        "Command" => "01",
-                        "To" => "000020",
-                        "From" => "ABCDEF",
-                        "Length" => 0,
-                        "Data" => NULL,
-                        "Checksum" => "A8",
-                        "CalcChecksum" => "A8",
-                        "RawPacket" => "01000020ABCDEF00A8",
-                        "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
-                    ),
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
+                    "GetReply" => TRUE,
+                    "pktTimeout" => NULL,
                 ),
             ),
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                 TRUE, 
-                "5A5A5A03ABCDEF00002000AA", 
-                "5A5A5A01000020ABCDEF00A8", 
                 array(
-                    array(
-                        "pktTimeout" => 1,
-                        "GetReply" => TRUE,
-                        "SentFrom" => "000020",
-                        "SentTo" => "ABCDEF",
-                        "sendCommand" => "03",
-                        "group" => FALSE,
-                        "packet" => array(
-                            "command" => "03",
-                            "to" => "ABCDEF",
-                            "data" => "",
-                        ),
-                        "PacketTo" => "ABCDEF",
-                        "GatewayKey" => 1,
-                        "DeviceKey" => 1,
-                        "Type" => "OUTGOING",
-                        "RawData" => "",
-                        "sentRawData" => "",
-                        "Parts" => 1,
-                        "Command" => "01",
-                        "To" => "000020",
-                        "From" => "ABCDEF",
-                        "Length" => 0,
-                        "Data" => NULL,
-                        "Checksum" => "A8",
-                        "CalcChecksum" => "A8",
-                        "RawPacket" => "01000020ABCDEF00A8",
-                        "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
-                    ),
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "PacketList" => array("Command" => "03", "To" => "ABCDEF"),
+                    "GetReply" => TRUE,
+                    "pktTimeout" => NULL,
                 ),
-            ),
-            array(
-                array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                TRUE, 
-                "5A5A5A03ABCDEF00002000AA", 
-                "", 
-                FALSE,
             ),
         );
     }
@@ -951,17 +849,13 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataPing
      */
-    public function testPing($Info, $find, $pktStr, $replyStr, $expect) {
-        // This preloads our fake socket to send back the data we want
-        $this->o->socket[1]->setReply($pktStr, $replyStr);
+    public function testPing($Info, $find, $expect) {
         if (is_null($find)) {
-            $ret = $this->o->ping($Info);
+            $ret = $this->txrxMock->ping($Info);
         } else {
-            $ret = $this->o->ping($Info, $find);
+            $ret = $this->txrxMock->ping($Info, $find);
         }
-        self::packetRemoveDates($ret);
         $this->assertSame($expect, $ret);
-
     }
 
     /**
@@ -999,20 +893,22 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @todo Implement testSNCheck().
      */
-/*
-    public function testSNCheck() {
-        $o = new EPacket();
-        // This is repeated twice on purpose.
-        $o->SNCheck(FALSE);
-        $this->assertFalse($o->_DeviceIDCheck);
-        $o->SNCheck(TRUE);
-        $this->assertTrue($o->_DeviceIDCheck);
-        $o->SNCheck(FALSE);
-        $this->assertFalse($o->_DeviceIDCheck);
-        $o->SNCheck(TRUE);
-        $this->assertTrue($o->_DeviceIDCheck);
+    public function testSNCheck1() {
+        $this->txrxMock->SNCheck(FALSE);
+        $this->assertFalse($this->txrxMock->_DeviceIDCheck);
     }
-*/
+    public function testSNCheck2() {
+        $this->txrxMock->SNCheck(TRUE);
+        $this->assertTrue($this->txrxMock->_DeviceIDCheck);
+    }
+    public function testSNCheck3() {
+        $this->txrxMock->SNCheck(0);
+        $this->assertFalse($this->txrxMock->_DeviceIDCheck);
+    }
+    public function testSNCheck4() {
+        $this->txrxMock->SNCheck(1);
+        $this->assertTrue($this->txrxMock->_DeviceIDCheck);
+    }
 }
 
 // Call EPacketTest::main() if this source file is executed directly.
@@ -1032,6 +928,32 @@ class EPacketTest_CallBack_Class {
     }
 }
 
+/**
+ * This class overrides epsocket so that we can test EPacket without
+ * actually using a socket connection.
+ */
+class EPacketTXRXMock extends EPacket {
+    /** Check to see if we are a unique serial number on this net */                                                        
+    public $_DeviceIDCheck = TRUE;
+    function __construct() {
+    
+    }
+    
+    public function SendPacket(&$Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
+        return array(
+            "Info" => $Info,
+            "PacketList" => $PacketList,
+            "GetReply" => $GetReply,
+            "pktTimeout" => $pktTimeout,
+        );
+    }
+    public function RecvPacket($socket, $timeout = 0) {
+        return array(
+            "socket" => $socket,
+            "timeout" => $timeout,
+        );
+    }
+}
 /**
  * This class overrides epsocket so that we can test EPacket without
  * actually using a socket connection.
