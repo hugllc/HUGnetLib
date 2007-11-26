@@ -169,7 +169,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      */
     protected function tearDown() {
         unset($this->o);
-//        print ob_get_clean();
+//print ob_get_clean();
         ob_end_clean();
     }
 
@@ -568,6 +568,93 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 // expect
                 FALSE,
             ),
+            array(
+                // Info
+                array("DeviceKey" => 1),
+                // pkt
+                array(
+                    array(
+                        "Command" => "5C",
+                        "To" => "ABCDEF",
+                    ),
+                    array(
+                        "Command" => "55",
+                        "To" => "ABC",
+                        "Data" => "01020304",
+                    ),
+                ),
+                // pktStr
+                array("5A5A5A55000ABC0000200401020304C3", "5A5A5A5CABCDEF00002000F5"),
+                // replyStr
+                array("5A5A5A01000020000ABC040102030497", "5A5A5A01000020ABCDEF0401020304A8"),
+                // expect
+                array(
+                    array(
+                        "pktTimeout" => 1,
+                        "GetReply" => TRUE,
+                        "SentFrom" => "000020",
+                        "SentTo" => "ABCDEF",
+                        "sendCommand" => "5C",
+                        "group" => FALSE,
+                        "packet" => array(
+                            "command" => "5C",
+                            "to" => "ABCDEF",
+                            "data" => "",
+                        ),
+                        "PacketTo" => "ABCDEF",
+                        "GatewayKey" => 1,
+                        "DeviceKey" => 1,
+                        "Type" => "OUTGOING",
+                        "RawData" => "01020304",
+                        "sentRawData" => "",
+                        "Parts" => 1,
+                        "Command" => "01",
+                        "To" => "000020",
+                        "From" => "ABCDEF",
+                        "Length" => 4,
+                        "Data" => array(1,2,3,4),
+                        "Checksum" => "A8",
+                        "CalcChecksum" => "A8",
+                        "RawPacket" => "01000020ABCDEF0401020304A8",
+                        "Socket" => 1,
+                        "Reply" => TRUE,
+                        "toMe" => TRUE,
+                        "isGateway" => FALSE,
+                    ),
+                    array(
+                        "pktTimeout" => 1,
+                        "GetReply" => TRUE,
+                        "SentFrom" => "000020",
+                        "SentTo" => "000ABC",
+                        "sendCommand" => "55",
+                        "group" => FALSE,
+                        "packet" => array(
+                            "command" => "55",
+                            "to" => "000ABC",
+                            "data" => "01020304",
+                        ),
+                        "PacketTo" => "000ABC",
+                        "GatewayKey" => 1,
+                        "DeviceKey" => 1,
+                        "Type" => "OUTGOING",
+                        "RawData" => "01020304",
+                        "sentRawData" => "01020304",
+                        "Parts" => 1,
+                        "Command" => "01",
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Length" => 4,
+                        "Data" => array(1,2,3,4),
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                        "RawPacket" => "01000020000ABC040102030497",
+                        "Socket" => 1,
+                        "Reply" => TRUE,
+                        "toMe" => TRUE,
+                        "isGateway" => FALSE
+                    ),
+                ),
+            ),
         );
     }
 
@@ -576,7 +663,13 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      */
     public function testSendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = FALSE) {
         // This preloads our fake socket to send back the data we want
-        $this->o->socket[1]->setReply($pktStr, $replyStr);
+        if (is_array($pktStr)) {
+            foreach($pktStr as $k => $p) {
+                $this->o->socket[1]->setReply($p, $replyStr[$k]);
+            }
+        } else {
+            $this->o->socket[1]->setReply($pktStr, $replyStr);
+        }
         if ($getAll) $this->o->getAll($getAll);
         $rep = $this->o->SendPacket($Info, $pkt, TRUE, NULL);
         self::packetRemoveDates($rep);
