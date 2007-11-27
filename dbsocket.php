@@ -49,7 +49,7 @@ define("PACKET_ERROR_BADC_NO", -4);
 /** Error message for not getting a packet back */
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
-
+require_once("devInfo.php");
 
 if (!class_exists("dbsocket")) {
 /**
@@ -61,6 +61,8 @@ if (!class_exists("dbsocket")) {
  * serial port that is accessable through a unix socket.  
  */
 class dbsocket {
+    /** @var string The database table to use */
+    private $table = "PacketSend";
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
@@ -88,6 +90,9 @@ class dbsocket {
     /** @var array Array of strings that we are reading */
     var $readstr = array();        
 
+    /** @var array The packet we are currently sending out */
+    var $packet = array();
+
     /** @var int The index of the reply array */
     private $replyIndex = 0;
     /**
@@ -96,16 +101,41 @@ class dbsocket {
      * @param string $data The data to send out the socket
      * @return int The number of bytes written on success, FALSE on failure
      */
-    function Write($data) {
-        $data = EPacket::hexify($data);
-        $pkt = EPacket::UnbuildPacket($data);
-        $id = rand(-24777216, 24777216);  // Big random number for the id
-        $this->packet[$id] = plog::PacketLogSetup($pkt);
-        $this->packet[$id]["sendTime"] = time();  // Big random number for the id
+    function Write($data, $pkt) {
+        $id = rand(1, 24777216);  // Big random number for the id
+        $this->packet[$id] = $pkt;
         $this->packet[$id]["id"] = $id;
-        return $this->_db->AutoExecute("PacketSend", $pkt, 'INSERT');
+        $ret =  $this->insertPacket($this->packet[$id]);
+
+        if ($ret === FALSE) {
+            return FALSE;
+        } else {
+            return $id;
+        }
     }
 
+    private function insertPacket($pkt) {
+        $set = array();
+        $fields = array();
+        $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
+                        , 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData'
+                        , 'Type', 'Status', 'ReplyTime', 'Checked');
+        foreach($checkFields as $field) {
+            if (isset($pkt[$field])) {
+                if (is_string($pkt[$field])) {
+                    $val = $this->db->qstr($pkt[$field]);
+                } else {
+                    $val = $pkt[$field];
+                }
+                $set[] = $val;
+                $fields[] = $field;
+            }
+        }
+        $query = "INSERT INTO ".$this->table." (".implode(",", $fields).") VALUES (".implode(", ", $set).")";
+        $ret = $this->db->Execute($query);
+        if ($ret === FALSE) return FALSE;
+        return TRUE;
+    }
     /**
      *  
      */
@@ -119,18 +149,21 @@ class dbsocket {
      */
     private function getPacket() {
         if (!is_string($this->replyPacket)) $this->replyPacket = "";
-        if (!empty($this->replyPacket)) return;
-        $query = "SELECT * FROM PacketSend WHERE Type = 'REPLY'";
+        if (!empty($this->replyPacket)) return TRUE;
+        $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
         $res = $this->db->getArray($query);
         if (is_array($res)) {
             foreach ($res as $pkt) {
                 if (is_array($this->packet[$pkt["id"]])) {
                     $this->replyPacket = $this->packetify($pkt);
                     $this->reply = $pkt["id"];
-                    return;
+                    return TRUE;
+                } else {
+                    $this->deletePackt($pkt["id"]);
                 }
             }
-        }    
+        }
+        return FALSE;
     }
 
     /**
@@ -142,7 +175,7 @@ class dbsocket {
             unset($this->reply);
             $this->index = 0;
         }
-        $query = "DELETE FROM PacketSend WHERE id = '".$return['id']."' ";
+        $query = "DELETE FROM ".$this->table." WHERE id = '".$return['id']."' ";
         $this->_db->execute($query);
 
     }
@@ -154,16 +187,21 @@ class dbsocket {
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
-        $this->getPacket();
-        if ($this->index < strlen($this->replyPacket)) {
-            $char = hexdec(substr($this->replyPacket, $this->replyIndex, 2));
-            $this->index+2;
-            if ($this->index >= strlen($this->replyPacket)) $this->deletePacket($this->reply);
-            return chr($char);
-        } else {
-            $this->index = 0;
-            return FALSE;
+        if ($this->getPacket()) {
+            if ($this->index < strlen($this->replyPacket)) {
+                $char = hexdec(substr($this->replyPacket, $this->replyIndex, 2));
+                $this->index+2;
+                if ($this->index >= strlen($this->replyPacket)) {
+                    $this->deletePacket($this->reply);
+                    $this->index = 0;
+                    $this->replyPacket = "";
+                }
+                return chr($char);
+            }
         }
+        $this->index = 0;
+        $this->replyPacket = "";
+        return FALSE;
     }     
     
     /**
@@ -202,13 +240,9 @@ class dbsocket {
      */
     function Connect($server = "", $port = 0, $timeout=0) {
 
-        $return = FALSE;
-        if ($this->CheckConnect()) {
-            $return = TRUE;
-        } else {
-            $this->Close();
-        }
-        return $return;
+        if ($this->CheckConnect()) return TRUE;
+        $this->Close();
+        return FALSE;
     }            
 
 
@@ -223,7 +257,7 @@ class dbsocket {
     function __construct(&$db, $verbose=FALSE) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-        $this->db = $db;
+        $this->db = &$db;
         if ($this->verbose) print "Done\r\n";
     }
     

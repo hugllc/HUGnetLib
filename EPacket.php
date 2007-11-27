@@ -350,8 +350,8 @@ class EPacket {
             if (!is_array($Packet)) continue;
             if (!is_object($this->socket[$socket])) $this->Connect($Info);
             $index = $this->setupSendPacket($Info, $Packet, $pktTimeout, $GetReply);
-            $PktStr = devInfo::deHexify($this->PacketBuild($Packet));
-            $retval = $this->sendPacketWrite($socket, $PktStr, $index);
+            $Packet["PktStr"] = devInfo::deHexify($this->PacketBuild($Packet));
+            $retval = $this->sendPacketWrite($socket, $Packet, $index);
             if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
         }
@@ -371,11 +371,11 @@ class EPacket {
      * @param int $index The packet index to use
      * @return mixed
      */
-    private function sendPacketWrite($socket, $pktStr, $index) {
+    private function sendPacketWrite($socket, &$Packet, $index) {
         $ret = FALSE;
         for($count = 0; ($count < $this->Retries) && ($ret == FALSE); $count++) {
-            if ($this->verbose) print "Sending: ".devInfo::hexifyStr($pktStr)."\n";
-            $write = $this->socket[$socket]->Write($pktStr);
+            if ($this->verbose) print "Sending: ".devInfo::hexifyStr($Packet["PktStr"])."\n";
+            $write = $this->socket[$socket]->Write($Packet["PktStr"], $this->Packets[$index]);
             if (empty($write)) continue;
             $ret = $this->sendPacketGetReply($socket, $index);
         }
@@ -749,7 +749,7 @@ class EPacket {
     function UnbuildPacket($data) {
         // Strip off any preamble bytes.
         $data = strtoupper($data);
-        $this->removePreamble($data);
+        EPacket::removePreamble($data);
         $pkt = array();
         $pkt["Command"] = substr($data, 0, 2);
         $pkt["To"] = substr($data, 2, 6); 
@@ -760,13 +760,13 @@ class EPacket {
         $length = hexdec(substr($data, 14, 2));
         $pkt["Length"] = $length;
         $pkt["RawData"] = substr($data, 16, ($length*2));
-        $pkt["Data"] = self::splitDataString($pkt["RawData"]);
+        $pkt["Data"] = EPacket::splitDataString($pkt["RawData"]);
         $pkt["Checksum"] = substr($data, (16 + ($length*2)), 2);
         $pktdata = substr($data, 0, strlen($data)-2);
-        $pkt["CalcChecksum"] = self::PacketGetChecksum($pktdata);
+        $pkt["CalcChecksum"] = EPacket::PacketGetChecksum($pktdata);
         $pkt['RawPacket'] = $data;
-        $pkt["Time"] = self::PacketTime();
-        return($pkt);
+        $pkt["Time"] = EPacket::PacketTime();
+        return $pkt;
     }
     
     
