@@ -87,7 +87,9 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function tearDown() {
-        unset($this->plog);
+        $this->s->Close();
+        unset($this->s);
+        unset($this->sBadDB);
     }
 
     public static function dataWrite() {
@@ -166,6 +168,52 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
         $id = $this->sBadDB->Write($str, $pkt);
         $this->assertEquals($expect, $id);
     }
+
+    public static function dataReadChar() {
+        return array(
+            array(
+                "id" => 123456,
+                "queries" => array(
+                    0 => "('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand' "
+                        .", 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData' "
+                        .", 'Type', 'ReplyTime', 'Checked') "
+                        ." VALUES "
+                        ."(3456, 5, 1, '2007-11-23 05:02:03', '01', '5C'"
+                        .", 'ABCDEF', '000020', '01020304', '01020304'"
+                        .", 'REPLY', 0.134, 2)",
+                    1 => "('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand' "
+                        .", 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData' "
+                        .", 'Type', 'ReplyTime', 'Checked') "
+                        ." VALUES "
+                        ."(123456, 5, 1, '2007-11-23 05:02:03', '01', '5C'"
+                        .", 'ABCDEF', '000020', '01020304', '01020304'"
+                        .", 'REPLY', 0.134, 2)",
+                ),
+                "expect" => "5A5A5A01000020ABCDEF0401020304A8",
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider dataReadChar
+     */
+    public function testReadChar($id, $queries, $expect) {
+        foreach($queries as $query) {
+            $this->db->Execute("INSERT INTO ".$this->table." ".$query);
+        }
+        $this->s->packet[$id] = array(1,2,3,4);
+        $str = "";
+        // This calls readChar the way it was meant to be called.
+        // i.e. over and over until FALSE is returned.
+        do {
+            $char = $this->s->readChar();
+            if ($char === FALSE) break;
+            $str .= $char;
+        } while ($char !== FALSE);
+        $this->assertSame($expect, devInfo::hexifyStr($str));
+
+    }
+
 
     /**
      * @todo Implement testReadChar().

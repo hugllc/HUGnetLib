@@ -47,6 +47,7 @@ require_once dirname(__FILE__).'/../epsocket.php';
 class epsocketTest extends PHPUnit_Framework_TestCase {
 
     protected $port = 35000;
+    protected $host = "127.0.0.1";
     /**
      * Runs the test methods of this class.
      *
@@ -67,6 +68,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
+        $this->s = new epsocket($this->host, $this->port);
     }
 
     /**
@@ -76,6 +78,8 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function tearDown() {
+        $this->s->Close();
+        unset($this->s);
     }
 
     /**

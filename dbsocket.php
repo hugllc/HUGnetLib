@@ -95,6 +95,8 @@ class dbsocket {
 
     /** @var int The index of the reply array */
     private $replyIndex = 0;
+    
+    private $index = 0;
     /**
      *   Write data out a socket
      *
@@ -119,7 +121,7 @@ class dbsocket {
         $fields = array();
         $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
                         , 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData'
-                        , 'Type', 'Status', 'ReplyTime', 'Checked');
+                        , 'Type', 'ReplyTime', 'Checked');
         foreach($checkFields as $field) {
             if (isset($pkt[$field])) {
                 if (is_string($pkt[$field])) {
@@ -141,6 +143,7 @@ class dbsocket {
      */
     private function packetify(&$pkt) {
         $pkt["To"] = $pkt["PacketTo"];
+        $pkt["Data"] = $pkt["RawData"];
         return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
     }
 
@@ -157,9 +160,8 @@ class dbsocket {
                 if (is_array($this->packet[$pkt["id"]])) {
                     $this->replyPacket = $this->packetify($pkt);
                     $this->reply = $pkt["id"];
+                    $this->index = 0;
                     return TRUE;
-                } else {
-                    $this->deletePackt($pkt["id"]);
                 }
             }
         }
@@ -175,8 +177,8 @@ class dbsocket {
             unset($this->reply);
             $this->index = 0;
         }
-        $query = "DELETE FROM ".$this->table." WHERE id = '".$return['id']."' ";
-        $this->_db->execute($query);
+        $query = "DELETE FROM ".$this->table." WHERE id = '".$id."' ";
+        $this->db->execute($query);
 
     }
     /**
@@ -187,21 +189,20 @@ class dbsocket {
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
+        $char = FALSE;
         if ($this->getPacket()) {
             if ($this->index < strlen($this->replyPacket)) {
-                $char = hexdec(substr($this->replyPacket, $this->replyIndex, 2));
-                $this->index+2;
+                $char = hexdec(substr($this->replyPacket, $this->index, 2));
+                $this->index += 2;
                 if ($this->index >= strlen($this->replyPacket)) {
                     $this->deletePacket($this->reply);
                     $this->index = 0;
                     $this->replyPacket = "";
                 }
-                return chr($char);
+                $char = chr($char);
             }
         }
-        $this->index = 0;
-        $this->replyPacket = "";
-        return FALSE;
+        return $char;
     }     
     
     /**

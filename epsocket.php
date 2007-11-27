@@ -62,7 +62,7 @@ class epsocket {
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
-    var $socket = NULL;
+    var $socket = FALSE;
     /** @var int The error number.  0 if no error occurred */
     var $Errno = 0;
     /** @var string The error string */
@@ -71,8 +71,7 @@ class epsocket {
     var $Port = 2000;
     /** @var string The server string */
     var $Server = "";
-
-
+    
     /** @var int The timeout for waiting for a packet in seconds */
     var $PacketTimeout = 5;
     /** @var int The timeout for waiting for a packet in seconds */
@@ -93,7 +92,7 @@ class epsocket {
      * @return int The number of bytes written on success, FALSE on failure
      */
     function Write($data) {
-        if ($this->CheckConnect()) $this->Connect("", 0);
+        if ($this->CheckConnect()) $this->Connect();
         usleep(mt_rand(500, 10000));
         $return = @fwrite($this->socket, $data);
         if ($this->verbose) print "Writing: ".strlen($data)." chars on ".$this->socket."\r\n";
@@ -130,11 +129,10 @@ class epsocket {
      *   
      */
     function Close() {
-        if ($this->socket != 0) {
-            if ($this->verbose) print("Closing Connection\r\n");
-            fclose($this->socket);
-            $this->socket = 0;
-        }
+        if ($this->socket === FALSE) return;
+        if ($this->verbose) print("Closing Connection\r\n");
+        fclose($this->socket);
+        $this->socket = FALSE;
     }
 
     /**
@@ -149,16 +147,12 @@ class epsocket {
     */
     function CheckConnect() {
 
-        if ($this->socket != 0) {
-            if (feof($this->socket)) {
-                $return = FALSE;
-            } else {
-                $return = TRUE;
-            }            
+        if ($this->socket === FALSE) return FALSE;
+        if (feof($this->socket)) {
+            return FALSE;
         } else {
-            $return = FALSE;
-        }
-        return($return);
+            return TRUE;
+        }            
     }
     
     /**
@@ -175,32 +169,29 @@ class epsocket {
      */
     function Connect($server = "", $port = "", $timeout=0) {
         
-        if ($this->CheckConnect()) {
-            return TRUE;
-        } else {
-            $this->Close();
-        }        
+        if ($this->CheckConnect()) return TRUE;
+
+        $this->Close();
         if (!empty($server)) $this->Server = $server;
         if (!empty($port)) $this->Port = $port;
 
-        if (!empty($this->Server) && !empty($this->Port)) {
-            if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-            $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-            if (($this->Errno == 0) && ($this->socket != 0)) {
-                stream_set_blocking($this->socket, FALSE);
-                if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$port."\n");
-                return TRUE;
-            } else {
-                if ($this->verbose) print("Connection to ".$server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
-                $this->socket = 0;
-            }
-        } else {
-            $this->Errno = -1;
-            $this->Error = "No server specified";
-        }
-        return FALSE;
+        if (empty($this->Server) || empty($this->Port)) return FALSE;
+        
+        if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
+        return $this->connectOpenSocket();
     }            
 
+    private function connectOpenSocket() {
+        $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+        if ($this->socket !== FALSE) {
+            stream_set_blocking($this->socket, FALSE);
+            if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$this->Port."\n");
+            return TRUE;
+        }
+        if ($this->verbose) print("Connection to ".$this->Server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
+        return FALSE;
+    
+    }
 
     /**
      *   Constructor
