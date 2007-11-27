@@ -44,7 +44,6 @@ class plog {
         }
                 
         if (is_writable($this->file)) {
-    //        $this->_sqlite = new SQLiteDatabase($this->file, $mode, $error);
             $this->_sqlite = new PDO("sqlite:".$this->file);
             if (!empty($name)) {
                 $this->table = $name;
@@ -56,20 +55,6 @@ class plog {
         } else {
             $this->criticalError = "Database Not Writable!";
         }
-/*
-$this->_sqlite->errorInfo() output:
-
-array(3) {
-  [0]=>
-  string(5) "HY000"
-  [1]=>
-  int(8)
-  [2]=>
-  string(36) "attempt to write a readonly database"
-}
-
-"HY000" is not unique, but 8 seems to be.
-*/
        
     }
 
@@ -84,10 +69,9 @@ array(3) {
         return $newID + 1;
     }
     
-    function createPacketLog() {
-        if (!is_object($this->_sqlite)) return FALSE;
-        
-        $query = " CREATE TABLE '".$this->table."' (
+    function createPacketLogQuery($table="")     {
+        if (empty($table)) $table = $this->table;
+        $query = " CREATE TABLE '".$table."' (
                       'id' int(11) NOT NULL,
                       'DeviceKey' int(11) NOT NULL default '0',
                       'GatewayKey' int(11) NOT NULL default '0',
@@ -105,6 +89,11 @@ array(3) {
                       PRIMARY KEY  ('id')
                     );
                     ";
+        return $query;
+    }
+    function createPacketLog() {
+        if (!is_object($this->_sqlite)) return FALSE;
+        $query = $this->createPacketLogQuery();        
         $ret = @$this->_sqlite->query($query);
         return $ret;
     }
@@ -217,12 +206,14 @@ array(3) {
      * @param $Gateway Integer the gateway key of the gateway this packet came from
      * @param $Type String They type of packet it is.
      */
-    public static function packetLogSetup($Packet, $Gateway, $Type="UNSOLICITED") {
+    public static function packetLogSetup($Packet, $Gateway, $Type="") {
         //$this->device->lookup($Packet["from"], "DeviceID");
 //        $Info = $this->device->lookup[0];
         $Info = array();
         if (isset($Packet["DeviceKey"])) {
             $Info["DeviceKey"] = $Packet["DeviceKey"];
+        } else if (isset($Gateway["DeviceKey"])) {
+            $Info["DeviceKey"] = $Gateway["DeviceKey"];
         }
         $Info['ReplyTime'] = isset($Packet['ReplyTime']) ? $Packet['ReplyTime'] : 0 ;
         $Info["GatewayKey"]= $Gateway["GatewayKey"];
@@ -237,7 +228,7 @@ array(3) {
             $Info["Type"] = "UNSOLICITED";        
         }
 
-        return($Info);
+        return $Info;
     }
 
 }
