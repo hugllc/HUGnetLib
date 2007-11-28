@@ -181,6 +181,9 @@ class epsocket {
         return $this->connectOpenSocket();
     }            
 
+    /**
+     * This actually opens the socket and sets blocking.
+     */
     private function connectOpenSocket() {
         $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
         if ($this->socket !== FALSE) {

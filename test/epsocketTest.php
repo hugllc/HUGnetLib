@@ -48,6 +48,11 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     protected $port = 35000;
     protected $host = "127.0.0.1";
+    protected $descriptorspec = array(
+        0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+        1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+    );
+
     /**
      * Runs the test methods of this class.
      *
@@ -68,6 +73,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
+        $this->proc = proc_open("php ".dirname(__FILE__)."/epsocketTestScript.php", $this->descriptorspec, $this->pipes);
         $this->s = new epsocket($this->host, $this->port);
     }
 
@@ -78,8 +84,18 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function tearDown() {
+        fwrite($this->pipes[0], "quit\r\n");
+        fflush($this->pipes[0]);
+        fclose($this->pipes[0]);
+        fclose($this->pipes[1]);
+        proc_terminate($this->proc);
+        proc_close($this->proc);
         $this->s->Close();
         unset($this->s);
+    }
+
+    private function getstring() {
+    
     }
 
     /**
