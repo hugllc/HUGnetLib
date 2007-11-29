@@ -67,8 +67,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
-        $tempdir = dirname(tempnam('', 'na'));
-        $this->dbfile = $tempdir."/dbsocket.test.sq3";
+        $this->dbfile = tempnam(sys_get_temp_dir(), "dbsocket").".sq3";
         if (file_exists($this->dbfile)) unlink($this->dbfile);
         $this->db = &ADONewConnection('sqlite');
         $this->db->Connect($this->dbfile);
@@ -90,6 +89,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
         $this->s->Close();
         unset($this->s);
         unset($this->sBadDB);
+        if (file_exists($this->dbfile)) unlink($this->dbfile);
     }
 
     public static function dataWrite() {
