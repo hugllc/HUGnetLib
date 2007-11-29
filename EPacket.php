@@ -90,9 +90,9 @@ define("DRIVER_NOT_FOUND", 1);
 define("DRIVER_NOT_COMPLETE", 2);
 
 /** Make sure we have the socket interface */
-require_once("epsocket.php");
-require_once("dbsocket.php");
-require_once("devInfo.php");
+require_once(HUGNET_INCLUDE_PATH."/epsocket.php");
+require_once(HUGNET_INCLUDE_PATH."/dbsocket.php");
+require_once(HUGNET_INCLUDE_PATH."/devInfo.php");
 
 
 /**
