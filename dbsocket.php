@@ -49,7 +49,7 @@ define("PACKET_ERROR_BADC_NO", -4);
 /** Error message for not getting a packet back */
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
-require_once("devInfo.php");
+require_once(HUGNET_INCLUDE_PATH."/devInfo.php");
 
 if (!class_exists("dbsocket")) {
 /**
