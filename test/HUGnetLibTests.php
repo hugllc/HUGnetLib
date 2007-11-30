@@ -71,6 +71,8 @@ class HUGnetLibTests
  
     public static function suite()
     {
+        PHPUnit_Util_Filter::addDirectoryToFilter('adodb/', '.php');
+        PHPUnit_Util_Filter::addDirectoryToFilter('HUGnetLib/test/', '.php');
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLib');
 
         $suite->addTestSuite('otherTest');
