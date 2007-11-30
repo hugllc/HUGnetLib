@@ -806,20 +806,20 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testSNCheck().
      */
     public function testGetAll1() {
-        $this->txrxMock->getAll(FALSE);
-        $this->assertFalse($this->txrxMock->_getAll);
+        $this->o->getAll(FALSE);
+        $this->assertFalse($this->readAttribute($this->o, "_getAll"));
     }
     public function testGetAll2() {
-        $this->txrxMock->getAll(TRUE);
-        $this->assertTrue($this->txrxMock->_getAll);
+        $this->o->getAll(TRUE);
+        $this->assertTrue($this->readAttribute($this->o, "_getAll"));
     }
     public function testGetAll3() {
-        $this->txrxMock->getAll(0);
-        $this->assertFalse($this->txrxMock->_getAll);
+        $this->o->getAll(0);
+        $this->assertFalse($this->readAttribute($this->o, "_getAll"));
     }
     public function testGetAll4() {
-        $this->txrxMock->getAll(1);
-        $this->assertTrue($this->txrxMock->_getAll);
+        $this->o->getAll(1);
+        $this->assertTrue($this->readAttribute($this->o, "_getAll"));
     }
 
 
@@ -921,32 +921,31 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testClose().
      */
     public function testClose() {
-        $o = new EPacket();
-        $o->socket[1] = $this->getMock('epsocketMock');
-        $o->socket[1]->expects($this->once())
+        $this->o->socket[2] = $this->getMock('epsocketMock');
+        $this->o->socket[2]->expects($this->once())
                      ->method('Close');
-        $Info = array("GatewayKey" => 1);
-        $rep = $o->Close($Info);
+        $Info = array("GatewayKey" => 2);
+        $rep = $this->o->Close($Info);
     }
 
     /**
      * @todo Implement testSNCheck().
      */
     public function testSNCheck1() {
-        $this->txrxMock->SNCheck(FALSE);
-        $this->assertFalse($this->txrxMock->_DeviceIDCheck);
+        $this->o->SNCheck(FALSE);
+        $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
     public function testSNCheck2() {
-        $this->txrxMock->SNCheck(TRUE);
-        $this->assertTrue($this->txrxMock->_DeviceIDCheck);
+        $this->o->SNCheck(TRUE);
+        $this->assertTrue($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
     public function testSNCheck3() {
-        $this->txrxMock->SNCheck(0);
-        $this->assertFalse($this->txrxMock->_DeviceIDCheck);
+        $this->o->SNCheck(0);
+        $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
     public function testSNCheck4() {
-        $this->txrxMock->SNCheck(1);
-        $this->assertTrue($this->txrxMock->_DeviceIDCheck);
+        $this->o->SNCheck(1);
+        $this->assertTrue($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
 }
 
@@ -972,9 +971,6 @@ class EPacketTest_CallBack_Class {
  * actually using a socket connection.
  */
 class EPacketTXRXMock extends EPacket {
-    /** Check to see if we are a unique serial number on this net */                                                        
-    public $_DeviceIDCheck = TRUE;
-    public $_getAll = FALSE;
     function __construct() {
     
     }

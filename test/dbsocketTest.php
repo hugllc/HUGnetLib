@@ -67,7 +67,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
      */
     protected function setUp() {
-        $this->dbfile = tempnam(sys_get_temp_dir(), "dbsocket").".sq3";
+        $this->dbfile = sys_get_temp_dir()."/dbsocket".mt_rand(12435, 5412451).".sq3";
         if (file_exists($this->dbfile)) unlink($this->dbfile);
         $this->db = &ADONewConnection('sqlite');
         $this->db->Connect($this->dbfile);
