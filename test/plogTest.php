@@ -129,13 +129,13 @@ class plogTest extends PHPUnit_Framework_TestCase {
                 array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "55"),
                 array("GatewayKey" => 5),
                 NULL,
-                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "55", "Type" => "UNSOLICITED"),
+                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "55", "Type" => "UNSOLICITED"),
             ),
             array(
                 array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
                 array("GatewayKey" => 5),
                 FALSE,
-                array("DeviceKey" => 1, "ReplyTime" => 0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
+                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
             ),
         );
     }
