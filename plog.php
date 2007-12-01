@@ -207,27 +207,21 @@ class plog {
      * @param $Type String They type of packet it is.
      */
     public static function packetLogSetup($Packet, $Gateway, $Type="") {
-        //$this->device->lookup($Packet["from"], "DeviceID");
-//        $Info = $this->device->lookup[0];
+        if (empty($Type)) $Type = "UNSOLICITED";
         $Info = array();
         if (isset($Packet["DeviceKey"])) {
             $Info["DeviceKey"] = $Packet["DeviceKey"];
         } else if (isset($Gateway["DeviceKey"])) {
             $Info["DeviceKey"] = $Gateway["DeviceKey"];
         }
-        $Info['ReplyTime'] = isset($Packet['ReplyTime']) ? $Packet['ReplyTime'] : 0 ;
+        $Info['ReplyTime'] = (float) $Packet['ReplyTime'];
         $Info["GatewayKey"]= $Gateway["GatewayKey"];
         $Info["RawData"] = $Packet["RawData"];
         $Info["Date"] = date("Y-m-d H:i:s", $Packet["Time"]);
         $Info["PacketFrom"] = $Packet["From"];
         $Info["Command"] = $Packet["Command"];
         $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
-        if (!empty($Type)) {
-            $Info["Type"] = $Type;
-        } else {
-            $Info["Type"] = "UNSOLICITED";        
-        }
-
+        $Info ["Type"] = $Type;
         return $Info;
     }
 
