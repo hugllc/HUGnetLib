@@ -331,10 +331,12 @@ class driver {
     }
     
     /**
- *
- * @param
- * @return
-    
+     *
+     * @param array $history The history to modify.  This array gets directly modified.
+     * @param array $devInfo The devInfo array to modify.  This array gets directly modified.
+     * @param int $dPlaces The maximum number of decimal places to show.
+     * @param array $type The types to change to
+     * @param array $units The units to change to
      */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=NULL, &$units=NULL) {
         // This uses defaults if nothing exists for a particular sensor
