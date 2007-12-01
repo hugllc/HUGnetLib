@@ -29,6 +29,7 @@
  *   @version $Id$    
  *
  */
+/** This is for loading our firmware */
 require_once HUGNET_INCLUDE_PATH.'/firmware.php';
 
 if (!class_exists("e00392100")) {
@@ -45,7 +46,8 @@ if (!class_exists("e00392100")) {
 
 
     /**
-    	@brief Driver for the 0039-21 controller board
+     * Driver for the 0039-21 controller board
+     * @package HUGnetLib
     */
     class e00392100 extends eDEFAULT{
     
