@@ -18,16 +18,20 @@
  *   
  *   You should have received a copy of the GNU General Public License
  *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ *   MA  02110-1301, USA.
  *   </pre>
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Endpoints
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * PHP version 5
  *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
 /** Where in the config string the hardware part number starts  */
@@ -43,30 +47,42 @@ define("ENDPOINT_BOREDOM", 42);
 /** Where in the config string the configuration ends  */
 define("ENDPOINT_CONFIGEND", 44);
 /** The default command to read config  */
-define("eDEFAULT_CONFIG_COMMAND", "5C");
+define("EDEFAULT_CONFIG_COMMAND", "5C");
 /** The default command to read sensors  */
-define("eDEFAULT_SENSOR_READ", "55");
+define("EDEFAULT_SENSOR_READ", "55");
 /** The default command to set the group  */
-define("eDEFAULT_SETGROUP", "5B");
+define("EDEFAULT_SETGROUP", "5B");
 
 if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
 
-require_once(HUGNET_INCLUDE_PATH."/EPacket.php");
-require_once(HUGNET_INCLUDE_PATH."/sensor.php");
-require_once(HUGNET_INCLUDE_PATH."/devInfo.php");
-require_once(HUGNET_INCLUDE_PATH."/filter.php");
-require_once(HUGNET_INCLUDE_PATH."/device.php");
-require_once(HUGNET_INCLUDE_PATH."/unitConversion.php");
-require_once(HUGNET_INCLUDE_PATH."/lib/plugins.inc.php");
-require_once(HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php");
+require_once HUGNET_INCLUDE_PATH."/EPacket.php";
+require_once HUGNET_INCLUDE_PATH."/sensor.php";
+require_once HUGNET_INCLUDE_PATH."/devInfo.php";
+require_once HUGNET_INCLUDE_PATH."/filter.php";
+require_once HUGNET_INCLUDE_PATH."/device.php";
+require_once HUGNET_INCLUDE_PATH."/unitConversion.php";
+require_once HUGNET_INCLUDE_PATH."/lib/plugins.inc.php";
+require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
 
 /**
  * Class for talking with HUGNet endpoints
  *
  *    All communication with endpoints should go through this class.
-  */
-class driver {
-    /** This is the default number of decimal places to use if it is not specified anywhere else */
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.7.3    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class Driver
+{
+    /** This is the default number of decimal places to use if 
+     *  it is not specified anywhere else 
+     */
     var $_decimalPlaces = 2;
 
     /** The error number.  0 if no error occurred  */ 
@@ -79,7 +95,11 @@ class driver {
     var $dev = array();
     /** The display colors to use for different error codes     */
     var $ErrorColors = array(
-        "DevOnBackup" => array("Severity" => "Low", "Description" => "Device is currently being polled on one of the backup servers", "Style" => "#00E000"),
+        "DevOnBackup" => array(
+            "Severity" => "Low", 
+            "Description" => "Device is polled on backup server", 
+            "Style" => "#00E000"
+        ),
     );    
 
     var $device_table = "devices";
@@ -88,60 +108,81 @@ class driver {
     var $packet_log_table = "PacketLog";
 
     /**
-      * @see device::health
-      */
-    function health($where, $days = 7, $start=NULL) {
+     * This function is simply a wrapper for device::health
+     *
+     * @param string $where A valid SQL where string.
+     * @param int    $days  The number of days back to go
+     * @param string $start The start date in 'YYYY-MM-DD HH:MM:SS' notation.
+     *
+     * @return string
+     *
+     * @see device::health
+     */
+    function health($where, $days = 7, $start=null) 
+    {
         return $this->device->health($where, $days, $start);
     }
     /**
+     * Wrapper for device::Diagnose
+     *
+     * @param array $Info devInfo array with device to use
+     *
+     * @return string
+     *
      * @see device::Diagnose
      */
-    function Diagnose($Info) {
+    function diagnose($Info) 
+    {
         return $this->device->Diagnose($Info);
     }        
     /**
      * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     * @param $function String The name of the function to run
-     * @return FALSE if the function does not exist.  Otherwise passes
-            the function return through.
-
-        This checks for the function in both the specific class for the endpoint
-        driver and the default driver.  If the classes or the methods don't exist
-        then it complains.
+     *
+     * This checks for the function in both the specific class for the endpoint
+     * driver and the default driver.  If the classes or the methods don't exist
+     * then it complains.
+     *
+     * @param array  &$Info    Infomation about the device to use
+     * @param string $function The name of the function to run
+     *
+     * @return false if the function does not exist.  Otherwise passes
+     *       the function return through.
+     *
      */
-    function RunFunction (&$Info, $function) {
-        if (!is_array($Info)) return FALSE;
-        $return = array();
-        $function = trim($function);
+    function runFunction (&$Info, $function) 
+    {
+        if (!is_array($Info)) return false;
+        $return     = array();
+        $function   = trim($function);
         $use_driver = isset($Info["Driver"]) ? $Info['Driver'] : 'eDEFAULT';
         if ($use_driver == "eDEFAULT") {
-            $use_driver = $this->FindDriver($Info);
+            $use_driver        = $this->FindDriver($Info);
             $Info["OldDriver"] = $Info["Driver"];
-            $Info["Driver"] = $use_driver;
+            $Info["Driver"]    = $use_driver;
         }
 
-        if (is_object($this->drivers[$use_driver]) && method_exists($this->drivers[$use_driver], $function)) {
+        if (is_object($this->drivers[$use_driver]) 
+            && method_exists($this->drivers[$use_driver], $function)) {
             $use_class = $use_driver;
-        } else if (is_object($this->drivers["eDEFAULT"]) && method_exists($this->drivers["eDEFAULT"], $function)) {
+        } else if (is_object($this->drivers["eDEFAULT"]) 
+            && method_exists($this->drivers["eDEFAULT"], $function)) {
             $use_class = "eDEFAULT";
         } else {
             //add_debug_output("All Drivers (including eDEFAULT) failed.<BR>\n");
-            return(FALSE);
+            return(false);
         }
 
-        $args = func_get_args();
+        $args    = func_get_args();
         $args[0] = &$Info;
         unset($args[1]);
-        $class = &$this->drivers[$use_class];
+        $class  = &$this->drivers[$use_class];
         $return = call_user_func_array(array(&$class, $function), $args);
 
-//        $return = $this->drivers[$use_class]->$function($Info);
         if (is_array($return)) {        
             if (isset($return["Errno"]) || isset($return["Error"])) { 
                 $this->Error = $return["Error"];        
                 $this->Errno = $return["Errno"];
-                $return = FALSE;
+                $return      = false;
             }
         }
         return $return;
@@ -152,8 +193,13 @@ class driver {
      *  Tries to run a function defined by what is called.  This should
      * replace all of the really short functions calling RunFunction.
      *
+     * @param string $m The name of the function to call
+     * @param array  $a The array of arguments
+     *
+     * @return mixed
      */
-    function __call($m, $a) {
+    function __call($m, $a) 
+    {
         if (is_array($a[0])) {
             $args = array($a[0]);
             unset($a[0]);
@@ -177,9 +223,9 @@ class driver {
         //add_debug_output("Setting Configuration:<br>\n");
          $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
         $this->Error = "";
-        if ($pkts !== FALSE) {
-            $return = $this->packet->SendPacket($Info, $pkts, FALSE);
-            if ($return == FALSE) {
+        if ($pkts !== false) {
+            $return = $this->packet->SendPacket($Info, $pkts, false);
+            if ($return == false) {
                 $this->Error .= " Setting Config Failed. \n";
                 $this->Errno = -1;
             }
@@ -201,7 +247,7 @@ class driver {
      * @param $Packet Array Array of information about the device with the data from the incoming packet
      * @param $force Boolean Force the update even if the serial number and hardware part number don't match
      */
-    function UpdateDevice($Packet, $force=FALSE){
+    function UpdateDevice($Packet, $force=false){
 
         return $this->device->UpdateDevice($Packet, $force);                    
     }
@@ -235,7 +281,7 @@ class driver {
             $gw = $this->gateway->get($usegw["BackupKey"]);
         }
 
-        if ($gw !== FALSE) {
+        if ($gw !== false) {
             $Info = array_merge($Info, $usegw);
             $data = $this->ReadConfig($Info);
             $this->Info[$DeviceID] = $gw;
@@ -251,12 +297,12 @@ class driver {
     /**
      * Interpret a configuration packet.
      * @param $packet Array Infomation about the device to use plus a configuration packet            
-     * @return Array of device information on success, FALSE on failure 
+     * @return Array of device information on success, false on failure 
      * @todo Move this back to the driver class?
      */
-    function InterpConfig ($packets, $forceDriver=NULL) {
+    function InterpConfig ($packets, $forceDriver=null) {
 //        if (isset($packets['RawData'])) $packets = array($packets);
-        if (!is_array($packets)) return FALSE;
+        if (!is_array($packets)) return false;
 
         $dev = array();
         $Info = array();
@@ -303,7 +349,7 @@ class driver {
      * @return Returns $Info with added information from the driver.
      */
     function DriverInfo($Info) {
-        $Info['sendCommand'] = eDEFAULT_CONFIG_COMMAND;
+        $Info['sendCommand'] = EDEFAULT_CONFIG_COMMAND;
         $this->RunFunction($Info, "InterpConfig");
         $Info['history_table'] = $this->getHistoryTable($Info);
         $Info['average_table'] = $this->getAverageTable($Info);
@@ -338,15 +384,15 @@ class driver {
      * @param array $type The types to change to
      * @param array $units The units to change to
      */
-    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=NULL, &$units=NULL) {
+    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 
-        $lastRecord = NULL;
+        $lastRecord = null;
         if (!is_array($history)) $history = array();
         foreach($history as $key => $val) {
            if (is_array($val)) {
-                if (($lastRecord !== NULL) || (count($history) < 2)) {
+                if (($lastRecord !== null) || (count($history) < 2)) {
                     for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if ($type[$i] != $devInfo["dType"][$i]) {
                             switch($type[$i]) {
@@ -369,8 +415,8 @@ class driver {
                         }
   
                         if (!$this->sensors->checkPoint($history[$key]['Data'.$i], $devInfo['Types'][$i], $devInfo['params']['sensorType'][$i], $devInfo['Units'][$i], $devInfo['dType'][$i])) {
-                            $history[$key]['Data'.$i] = NULL;
-                            $history[$key]['data'][$i] = NULL;
+                            $history[$key]['Data'.$i] = null;
+                            $history[$key]['data'][$i] = null;
                         }
                     }            
                     $lastRecord = $val;
@@ -406,9 +452,9 @@ class driver {
      *
      * @param mixed $class The name of the sensor class to register, or the actual object to register
      * @param string $name The name of the sensor class if the above is an object.  The default is the class name.
-     * @return bool TRUE on success, FALSE on failure
+     * @return bool TRUE on success, false on failure
      */
-    public function registerDriver($class, $name=FALSE) {
+    public function registerDriver($class, $name=false) {
             if (is_string($class) && class_exists($class)) {
                 $this->drivers[$class] = new $class($this);
             } else if (is_object($class)) {
@@ -416,7 +462,7 @@ class driver {
                 $this->drivers[$name] = $class;
                 $class = $name;
             } else {
-                return FALSE;
+                return false;
             }
             if (is_array($this->drivers[$class]->devices)) {
                 foreach($this->drivers[$class]->devices as $fw => $Firm) {
@@ -432,7 +478,7 @@ class driver {
                 }
                 return TRUE;
             } else {
-                return FALSE;
+                return false;
             }
     
     }
@@ -441,16 +487,16 @@ class driver {
     /**
      * Constructor    
      */
-    function driver(&$db=NULL, $plugins = "", $direct=TRUE) {        
+    function driver(&$db=null, $plugins = "", $direct=TRUE) {        
 
         $this->db = &$db;
         if (is_object($this->db)) {
             $this->db->SetFetchMode(ADODB_FETCH_ASSOC);
         }
         if ($direct) {
-            $this->packet = new EPacket(NULL, $this->verbose);
+            $this->packet = new EPacket(null, $this->verbose);
         } else {
-            $this->packet = new EPacket(NULL, $this->verbose, $this->db);
+            $this->packet = new EPacket(null, $this->verbose, $this->db);
         }
         $this->gateway = new gateway($this);
         $this->device = new device($this);
