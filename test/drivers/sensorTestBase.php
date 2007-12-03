@@ -47,7 +47,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     public function testSensorParent() {
         $o = new $this->class;
         // Long Name
-        $this->assertEquals("sensor_base", get_parent_class($o), $this->class." parent class must be 'sensor_base'");
+        $this->assertEquals("Sensor_Base", get_parent_class($o), $this->class." parent class must be 'Sensor_Base'");
     }
     
     /**
