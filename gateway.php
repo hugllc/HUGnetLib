@@ -56,11 +56,11 @@ class gateway {
     /**
      * Try to automatically find out which gateway to use
      * @param bool $verbose Whether to send output to the terminal or not
-     * @return FALSE on failure, Array of gateway information on success
+     * @return false on failure, Array of gateway information on success
     */
-    function Find($verbose = FALSE) {
-        if (!is_object($this->db)) return FALSE;
-        $return = FALSE;
+    function Find($verbose = false) {
+        if (!is_object($this->db)) return false;
+        $return = false;
         if (function_exists("posix_uname")) {
             if ($verbose) print "Trying to figure out which gateway to use...\r\n";
             $stuff = posix_uname();
@@ -133,7 +133,7 @@ class gateway {
      * @return array The information about the gateway
      */
     function get($key) {
-        if (!is_object($this->db)) return FALSE;
+        if (!is_object($this->db)) return false;
         $ret = $this->db->getArray("SELECT * from ".$this->table." where ".$this->id." = '".$key."'");
         if (is_array($ret)) $ret = $ret[0];
         return $ret;
@@ -145,7 +145,7 @@ class gateway {
      * @return array An array of gateway information arrays
      */
     function getAll() {
-        if (!is_object($this->db)) return FALSE;
+        if (!is_object($this->db)) return false;
         $ret = $this->db->getArray("SELECT * from ".$this->table."");
         return $ret;
     }
@@ -170,8 +170,8 @@ class gatewayCache {
      * @param int $mode The octal mode to set the file to.
      * @param string $error A variable to store errors in.
     */
-    function __construct($file = NULL, $mode = 0666, $error = NULL) {
-        if ($error == NULL) $error =& $this->lastError;
+    function __construct($file = null, $mode = 0666, $error = null) {
+        if ($error == null) $error =& $this->lastError;
         
         if (!is_null($file)) {
             $this->file = $file;
@@ -196,12 +196,12 @@ class gatewayCache {
      */
     function createTable() {
         $query = "CREATE TABLE `gateways` (
-                  `GatewayKey` int(11) NOT NULL auto_increment,
-                  `GatewayIP` varchar(15) NOT NULL default '',
-                  `GatewayName` varchar(30) NOT NULL default '',
-                  `GatewayLocation` varchar(64) NOT NULL default '',
-                  `database` varchar(64) NOT NULL default '',
-                  `FirmwareStatus` varchar(16) NOT NULL default 'RELEASE',
+                  `GatewayKey` int(11) NOT null auto_increment,
+                  `GatewayIP` varchar(15) NOT null default '',
+                  `GatewayName` varchar(30) NOT null default '',
+                  `GatewayLocation` varchar(64) NOT null default '',
+                  `database` varchar(64) NOT null default '',
+                  `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
                   PRIMARY KEY  (`GatewayKey`),
                 );
                     ";
@@ -247,7 +247,7 @@ class gatewayCache {
             return $ret;
 
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -271,7 +271,7 @@ class gatewayCache {
             $query = " UPDATE '".$this->table."' SET (".$fields.") VALUES (".$values.") WHERE ".$this->id."=".$info['DeviceKey'];
             return $this->_sqlite->query($query);
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -306,14 +306,14 @@ class gatewayCache {
                 $where .= $div.$key."='".$val."'";
                 $div = " AND ";
             }
-            if (empty($where)) return FALSE;
+            if (empty($where)) return false;
 
             $query = " DELETE FROM '".$this->table."' WHERE ".$where;
             $ret = $this->_sqlite->query($query);
-            if (is_object($ret)) $ret = TRUE;
+            if (is_object($ret)) $ret = true;
             return $ret;
         } else {
-            return FALSE;
+            return false;
         }
     
     }

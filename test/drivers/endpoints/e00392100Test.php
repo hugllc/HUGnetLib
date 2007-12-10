@@ -87,7 +87,7 @@ class e00392100Test extends endpointTestBase {
                 "NumSensors" => 6,
                 "Function" => "HUGnet Controller",
                 "ActiveSensors" => 6,
-                "bootLoader" => FALSE,
+                "bootLoader" => false,
                 "Types" => array(64, 80, 2, 64, 80, 2),
                 "subDevices" => array(
                     array("0000FE", "0000FC"),
@@ -129,7 +129,7 @@ class e00392100Test extends endpointTestBase {
 				    "PAGES" => 112,
 				),
                 "CRC" => "8055",
-                "bootLoader" => TRUE,
+                "bootLoader" => true,
                 "Types" => array(64, 80, 2, 64, 80, 2),
              ),
          ),
@@ -154,13 +154,13 @@ class e00392100Test extends endpointTestBase {
                 "params" => array(
                     "sensorType" => array("Controller", "Controller", "BCTherm2322640", "Controller", "Controller", "BCTherm2322640"),
                 ),
-                "bootLoader" => FALSE,
+                "bootLoader" => false,
                 "Types" => array(64, 80, 2, 64, 80, 2),
                 "unitType" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
                 "Labels" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
                 "Units" => array("V", "mA", "&#176;C", "V", "mA", "&#176;C"),
                 "dType" => array("raw", "raw", "raw", "raw", "raw", "raw"),
-                "doTotal" => array(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+                "doTotal" => array(false, false, false, false, false, false),
             ),
             "Packets" => array(
                 array(

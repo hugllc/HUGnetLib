@@ -44,7 +44,7 @@ function add_debug_output($stuff, $level=10) {
    global $debug;
    global $debug_output;
 
-   if (($debug === TRUE) || ($debug <= $level)) {
+   if (($debug === true) || ($debug <= $level)) {
       $debug_output .= $stuff;
    }
 }
@@ -122,7 +122,7 @@ function print_debug($stuff) {
 function get_debug($stuff) {
    global $debug;
    if ($debug && (trim($stuff) != "")) {
-      $text = "<DIV CLASS=\"debug\" STYLE=\"\">\n".wordwrap($stuff, 200, "<br />\n", TRUE)."\n</DIV>\n";
+      $text = "<DIV CLASS=\"debug\" STYLE=\"\">\n".wordwrap($stuff, 200, "<br />\n", true)."\n</DIV>\n";
    } else {
       $text = "";
    }
@@ -276,12 +276,12 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
    function get_value($key, $val) {
       if (is_bool($val)) {
          if ($val) { 
-            $return = "TRUE";
+            $return = "true";
          } else {
-            $return= "FALSE";
+            $return= "false";
          }
       } else {
-         if ((trim(strtolower($key)) != "password") && (trim(strtolower($key)) != "passwd") && (stristr($key, "AUTH_PW") === FALSE)) {
+         if ((trim(strtolower($key)) != "password") && (trim(strtolower($key)) != "passwd") && (stristr($key, "AUTH_PW") === false)) {
             if (is_string($val)) {
                $return = "'".htmlspecialchars($val)."'";
             } else {
@@ -493,10 +493,10 @@ function markup($text) {
     @return String The formated date.
     @todo Make the format configurable.
     @param date Mixed This is the date in either Unix time format or a string (July 4, 1776)
-    @param wrap Boolean Whether to force a line wrap between the date and time Default = FALSE
-    @param time Boolean Whether or not to add the time.  Default = TRUE
+    @param wrap Boolean Whether to force a line wrap between the date and time Default = false
+    @param time Boolean Whether or not to add the time.  Default = true
 */
-function formatdate($date, $wrap=FALSE, $time=TRUE) {
+function formatdate($date, $wrap=false, $time=true) {
 
    if ($date == "") {
       $return = "Never";
@@ -532,13 +532,13 @@ function get_args($skip="") {
    $skip .= session_name().", name, password, passwd";
 
    foreach(array_keys($_GET) as $key) {
-      if (stristr($skip, $key) === FALSE) {
+      if (stristr($skip, $key) === false) {
          $args .= $sep.$key."=".$_GET[$key];
          $sep = "&";
       }
    }
    foreach(array_keys($_POST) as $key) {
-      if (stristr($skip, $key) === FALSE) {
+      if (stristr($skip, $key) === false) {
          $args .= $sep.$key."=".$_POST[$key];
          $sep = "&";
       }

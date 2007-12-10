@@ -81,13 +81,13 @@ class firmware {
                     case "S1":
                     default:
                         // Ignore it.
-                        $data = FALSE;
-                        $addr = FALSE;
-                        $size = FALSE;
-                        $csum = FALSE;
+                        $data = false;
+                        $addr = false;
+                        $size = false;
+                        $csum = false;
                         break;
                 }
-                if ($data != FALSE) {
+                if ($data != false) {
                     $MemBuffer = substr_replace($MemBuffer, $data, ($addr*2), ($size*2));
                 }
             }
@@ -125,10 +125,10 @@ class firmware {
      * 
      * @param string $FWPartNum This is the part number of the firmware wanted
      * @param string $Status This is the status of the firmware
-     * @param bool $All If this is TRUE any firmware not listed as BAD is returned
+     * @param bool $All If this is true any firmware not listed as BAD is returned
      * @return array The array of firmware information
     */
-    function GetLatestFirmware($FWPartNum, $Status=NULL, $All=FALSE) {
+    function GetLatestFirmware($FWPartNum, $Status=null, $All=false) {
         /*
         $this->reset();
         $this->addWhere("FWPartNum='".$FWPartNum."'");
@@ -141,7 +141,7 @@ class firmware {
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." FWPartNum='".$FWPartNum."' ";
-        if ($Status !== NULL) {
+        if ($Status !== null) {
             $query .= " AND "
                     ." FirmwareStatus='".$Status."' ";
         } else if (!$All) {
@@ -162,14 +162,14 @@ class firmware {
      * @param string $Status This is the status of the firmware
      * @return array The array of firmware information    
     */
-    function GetFirmwareFor($HWPartNum, $Status=NULL) {
+    function GetFirmwareFor($HWPartNum, $Status=null) {
         $HWPartNum = substr($HWPartNum, 0, 7);
 
         if ($ret = $this->cache($HWPartNum)) return $ret;
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." HWPartNum='".$HWPartNum."' ";
-        if ($Status !== NULL) {
+        if ($Status !== null) {
             $query .= " AND "
                     ." FirmwareStatus='".$Status."' ";
         }
@@ -186,18 +186,18 @@ class firmware {
      * @param string $version The particular version to get
      * @return array array of firmware information arrays    
     */
-    function GetFirmware($FWPartNum, $version=NULL, $Status=NULL) {
+    function GetFirmware($FWPartNum, $version=null, $Status=null) {
 
         if ($ret = $this->cache($FWPartNum)) return $ret;
 
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." FWPartNum='".$FWPartNum."' ";
-        if ($version !== NULL) {
+        if ($version !== null) {
             $query .= " AND "
                     ." FirmwareVersion='".$version."' ";
         }
-        if ($Status !== NULL) {
+        if ($Status !== null) {
             $query .= " AND "
                     ." FirmwareStatus='".$Status."' ";
         }
@@ -232,9 +232,9 @@ class firmware {
      * @param array $save This is the information to save.  If left blank we retrieve information.
      * @return array The array of firmware information
      */
-    function cache($key, $save=FALSE) {
-        if ($save === FALSE) {
-            if ((time() - $this->cacheDate[$key]) > $this->cacheTimeout) return FALSE;
+    function cache($key, $save=false) {
+        if ($save === false) {
+            if ((time() - $this->cacheDate[$key]) > $this->cacheTimeout) return false;
             if (is_array($this->cache[$key])) {
                 return $this->cache[$key];
             } else {
@@ -243,7 +243,7 @@ class firmware {
                     if ($val['FWPartNum'] == $key) return $val;
                     if ($val['HWPartNum'] == $key) return $val;
                 }
-                return FALSE;
+                return false;
             }
         } else {
             if (is_array($save) && (count($save) > 0)) {

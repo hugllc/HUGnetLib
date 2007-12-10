@@ -84,7 +84,7 @@ if (!class_exists('capacitiveSensor')) {
         
         /**
          */
-        function genericCap($val, $sensor, $TC, $extra=NULL) {
+        function genericCap($val, $sensor, $TC, $extra=null) {
             return $val;
         }
     }

@@ -157,11 +157,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         $db = $this->getMock("ADONewConnection", array(), array("sqlite"));
-        $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"), FALSE, $db, FALSE);
+        $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"), false, $db, false);
         $this->o->socket[2] = $this->getMock('epsocketMock', array("Connect", "Close", "ReadChar", "Write"), array("socketType"=>"test"));
 //        $this->o->socket[1] = new epsocketMock();
         $this->o->ReplyTimeout = 1; // This is a fast system.  It doesn't need a long timeout
-//        $this->o->verbose = TRUE;
+//        $this->o->verbose = true;
         
         $this->txrxMock = new EPacketTXRXMock();
 //        ob_start();
@@ -201,7 +201,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    public function validPacketArray($a, $test=NULL, $keys = NULL) {
+    public function validPacketArray($a, $test=null, $keys = null) {
         $this->assertTrue(is_array($a), "This is not an array!");
         $this->assertTrue(is_string($a['Command']), "'".$a['Command']."': Packet command must be a string");
         $this->assertEquals(2, strlen($a['Command']), "'".$a['Command']."': Packet command must contain exactly 2 characters");
@@ -212,7 +212,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 // Check to see if the key was specified
                 if (is_array($keys)) {
                     // If it was not continue.
-                    if (array_search($key, $keys) === FALSE) continue;
+                    if (array_search($key, $keys) === false) continue;
                     // Drop through if it was specified, or if nothing was specified.
                 }
                 if (trim(strtolower($key)) == "to") {
@@ -225,7 +225,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      *
      */
-    public function validPacketString($s, $a=NULL) {
+    public function validPacketString($s, $a=null) {
         $this->assertTrue(is_string($s), "This is not a string!");
         $s = strtoupper($s);
         $preambleLength = EPacketTest::getPreambleLength($s);
@@ -324,7 +324,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     public static function dataBuildPacket() {
         return array(
             array("123", "AB", "12345678", array("To"=>"123", "Command"=>"AB", "Data"=>"12345678")),
-            array("3456", "CD", NULL, array("To"=>"3456", "Command"=>"CD", "Data"=>"")),
+            array("3456", "CD", null, array("To"=>"3456", "Command"=>"CD", "Data"=>"")),
         );    
     }
 
@@ -389,11 +389,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 array(
                     array(
                         "pktTimeout" => 1,
-                        "GetReply" => TRUE,
+                        "GetReply" => true,
                         "SentFrom" => "000020",
                         "SentTo" => "000ABC",
                         "sendCommand" => "55",
-                        "group" => FALSE,
+                        "group" => false,
                         "packet" => array(
                             "command" => "55",
                             "to" => "000ABC",
@@ -401,7 +401,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         ),
                         "PacketTo" => "000ABC",
                         "GatewayKey" => 1,
-                        "DeviceKey" => NULL,
+                        "DeviceKey" => null,
                         "Type" => "OUTGOING",
                         "RawData" => "01020304",
                         "sentRawData" => "01020304",
@@ -415,9 +415,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "CalcChecksum" => "97",
                         "RawPacket" => "01000020000ABC040102030497",
                         "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE
+                        "Reply" => true,
+                        "toMe" => true,
+                        "isGateway" => false
                     ),
                 ),
             ),
@@ -437,11 +437,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 array(
                     array(
                         "pktTimeout" => 1,
-                        "GetReply" => TRUE,
+                        "GetReply" => true,
                         "SentFrom" => "000020",
                         "SentTo" => "000ABC",
                         "sendCommand" => "5C",
-                        "group" => FALSE,
+                        "group" => false,
                         "packet" => array(
                             "command" => "5C",
                             "to" => "000ABC",
@@ -458,14 +458,14 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "To" => "000020",
                         "From" => "000ABC",
                         "Length" => 0,
-                        "Data" => NULL,
+                        "Data" => null,
                         "Checksum" => "97",
                         "CalcChecksum" => "97",
                         "RawPacket" => "01000020000ABC0097",
                         "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
+                        "Reply" => true,
+                        "toMe" => true,
+                        "isGateway" => false,
                     ),
                 ),
             ),
@@ -495,20 +495,20 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "Checksum" => "BC",
                         "CalcChecksum" => "BC",
                         "RawPacket" => "5E000000000DEF0401020304BC",
-                        "Unsolicited" => TRUE,
+                        "Unsolicited" => true,
                         "Socket" => 1,
                         "GatewayKey" => 1,
-                        "Reply" => FALSE,
-                        "toMe" => FALSE,
-                        "isGateway" => FALSE,
+                        "Reply" => false,
+                        "toMe" => false,
+                        "isGateway" => false,
                     ),
                     array(
                         "pktTimeout" => 1,
-                        "GetReply" => TRUE,
+                        "GetReply" => true,
                         "SentFrom" => "000020",
                         "SentTo" => "ABCDEF",
                         "sendCommand" => "5C",
-                        "group" => FALSE,
+                        "group" => false,
                         "packet" => array(
                             "command" => "5C",
                             "to" => "ABCDEF",
@@ -530,13 +530,13 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "CalcChecksum" => "A8",
                         "RawPacket" => "01000020ABCDEF0401020304A8",
                         "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
+                        "Reply" => true,
+                        "toMe" => true,
+                        "isGateway" => false,
                     ),
                 ),
                 // GetAll
-                TRUE,
+                true,
             ),
             array(
                 // Info
@@ -557,7 +557,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 // replyStr
                 "5A5A5A01000020ABCDEF0401020304A8",
                 // expect
-                FALSE,
+                false,
             ),
             array(
                 // Info
@@ -574,7 +574,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 // replyStr
                 "019823561284756129487561",
                 // expect
-                FALSE,
+                false,
             ),
             array(
                 // Info
@@ -599,11 +599,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                 array(
                     array(
                         "pktTimeout" => 1,
-                        "GetReply" => TRUE,
+                        "GetReply" => true,
                         "SentFrom" => "000020",
                         "SentTo" => "ABCDEF",
                         "sendCommand" => "5C",
-                        "group" => FALSE,
+                        "group" => false,
                         "packet" => array(
                             "command" => "5C",
                             "to" => "ABCDEF",
@@ -625,17 +625,17 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "CalcChecksum" => "A8",
                         "RawPacket" => "01000020ABCDEF0401020304A8",
                         "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE,
+                        "Reply" => true,
+                        "toMe" => true,
+                        "isGateway" => false,
                     ),
                     array(
                         "pktTimeout" => 1,
-                        "GetReply" => TRUE,
+                        "GetReply" => true,
                         "SentFrom" => "000020",
                         "SentTo" => "000ABC",
                         "sendCommand" => "55",
-                        "group" => FALSE,
+                        "group" => false,
                         "packet" => array(
                             "command" => "55",
                             "to" => "000ABC",
@@ -657,9 +657,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
                         "CalcChecksum" => "97",
                         "RawPacket" => "01000020000ABC040102030497",
                         "Socket" => 1,
-                        "Reply" => TRUE,
-                        "toMe" => TRUE,
-                        "isGateway" => FALSE
+                        "Reply" => true,
+                        "toMe" => true,
+                        "isGateway" => false
                     ),
                 ),
             ),
@@ -669,7 +669,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataSendPacket().
      */
-    public function testSendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = FALSE) {
+    public function testSendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = false) {
         // This preloads our fake socket to send back the data we want
         if (is_array($pktStr)) {
             foreach($pktStr as $k => $p) {
@@ -679,7 +679,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             $this->o->socket[1]->setReply($pktStr, $replyStr);
         }
         if ($getAll) $this->o->getAll($getAll);
-        $rep = $this->o->SendPacket($Info, $pkt, TRUE, NULL);
+        $rep = $this->o->SendPacket($Info, $pkt, true, null);
         self::packetRemoveDates($rep);
         $this->assertSame($expect, $rep, "Return is not the same as expected");
     }
@@ -704,7 +704,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->o->socket[2]->expects($this->exactly(2))
                      ->method('Write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
-        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), FALSE, NULL);
+        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
 
     /**
@@ -716,7 +716,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->o->socket[2]->expects($this->any())
                      ->method('Write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
-        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), FALSE, NULL);
+        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
 
     /**
@@ -736,7 +736,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             array("0102030405", "0102030405"),
             array(array(1,2,3,4,5), "0102030405"),
             array(array(), ""),
-            array(NULL, ""),
+            array(null, ""),
             array(45, ""),
         );
     }
@@ -806,11 +806,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testSNCheck().
      */
     public function testGetAll1() {
-        $this->o->getAll(FALSE);
+        $this->o->getAll(false);
         $this->assertFalse($this->readAttribute($this->o, "_getAll"));
     }
     public function testGetAll2() {
-        $this->o->getAll(TRUE);
+        $this->o->getAll(true);
         $this->assertTrue($this->readAttribute($this->o, "_getAll"));
     }
     public function testGetAll3() {
@@ -840,7 +840,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         return array(
             array(
                 array("GatewayKey" => 1, "socketType" => "test"), 
-                NULL, 
+                null, 
                 array(
                     "socket" => 1,
                     "timeout" => 0,
@@ -873,32 +873,32 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         return array(
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                FALSE, 
+                false, 
                 array(
                     "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                     "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
-                    "GetReply" => TRUE,
-                    "pktTimeout" => NULL,
+                    "GetReply" => true,
+                    "pktTimeout" => null,
                ),
             ),
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                NULL, 
+                null, 
                 array(
                     "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                     "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
-                    "GetReply" => TRUE,
-                    "pktTimeout" => NULL,
+                    "GetReply" => true,
+                    "pktTimeout" => null,
                 ),
             ),
             array(
                 array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                TRUE, 
+                true, 
                 array(
                     "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
                     "PacketList" => array("Command" => "03", "To" => "ABCDEF"),
-                    "GetReply" => TRUE,
-                    "pktTimeout" => NULL,
+                    "GetReply" => true,
+                    "pktTimeout" => null,
                 ),
             ),
         );
@@ -932,11 +932,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testSNCheck().
      */
     public function testSNCheck1() {
-        $this->o->SNCheck(FALSE);
+        $this->o->SNCheck(false);
         $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
     public function testSNCheck2() {
-        $this->o->SNCheck(TRUE);
+        $this->o->SNCheck(true);
         $this->assertTrue($this->readAttribute($this->o,"_DeviceIDCheck"));
     }
     public function testSNCheck3() {
@@ -975,7 +975,7 @@ class EPacketTXRXMock extends EPacket {
     
     }
     
-    public function SendPacket(&$Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
+    public function SendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) {
         return array(
             "Info" => $Info,
             "PacketList" => $PacketList,
@@ -996,7 +996,7 @@ class EPacketTXRXMock extends EPacket {
  */
 class epsocketMock extends epsocket {
 
-    var $socket = FALSE;
+    var $socket = false;
     var $index = 0;
 
     public function setReply($data, $reply) {
@@ -1006,18 +1006,18 @@ class epsocketMock extends epsocket {
      *
      */
     public function Connect($server = "", $port = 0, $timeout=0) {
-        $return = FALSE;
-        if ($return === FALSE) {
+        $return = false;
+        if ($return === false) {
             if (!empty($server)) $this->Server = $server;
             if (!empty($port)) $this->Port = $port;
 
             if (!empty($this->Server) && !empty($this->Port)) {
-                $this->socket = TRUE;
-                $return = TRUE;
+                $this->socket = true;
+                $return = true;
             } else {
                 $this->Errno = -1;
                 $this->Error = "No server specified";
-                $return = FALSE;
+                $return = false;
             }
         }        
         return($return);
@@ -1027,14 +1027,14 @@ class epsocketMock extends epsocket {
      *
      */
     function CheckConnect() {
-        return TRUE;
+        return true;
     }
 
     /**
      *
      */
     function Close() {
-        $this->socket = FALSE;
+        $this->socket = false;
     }
 
     /**
@@ -1043,7 +1043,7 @@ class epsocketMock extends epsocket {
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
         
-        $char = FALSE;
+        $char = false;
         if (($this->index == 0) && (!empty($this->lastPacket))) {
             if (is_string($this->reply[$this->lastPacket])) {
                 $char = chr(hexdec(substr($this->reply[$this->lastPacket], $this->index, 2)));
@@ -1070,7 +1070,7 @@ class epsocketMock extends epsocket {
 //            print "\nGot: ".$this->lastPacket."\n";
         }
         $this->index = 0;
-        return TRUE;
+        return true;
     }
 
     function __construct($server="", $port="") {

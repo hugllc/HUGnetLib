@@ -42,15 +42,15 @@ class process {
             'Yearly' => 'Y',
         );
 
-    var $file = NULL;
-    var $FileOnly = FALSE;
+    var $file = null;
+    var $FileOnly = false;
 
 
     /**
      * constructor
      * @param string $file The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
     */
-    function __construct($file = NULL) {
+    function __construct($file = null) {
         if (!is_null($file)) {
             $this->file = $file;
         } else {
@@ -58,7 +58,7 @@ class process {
         }
         if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
         if (!is_long($mode)) $mode = 0666;
-        if ($error == NULL) $error =& $this->lastError;
+        if ($error == null) $error =& $this->lastError;
         $this->getMyInfo();
 
         $this->_sqlite = new PDO("sqlite:".$this->file);
@@ -70,13 +70,13 @@ class process {
      * @param string $block Type of blocking.  Default "NORMAL"
      * @param string $name The program name.  Automatically found if left out.    
     */
-    function getMyInfo($block="NORMAL", $name = FALSE) {
+    function getMyInfo($block="NORMAL", $name = false) {
         $stuff = posix_uname();
         $this->me["Host"] = $stuff["nodename"];
         $this->me["Domain"] = $stuff["domainname"];
         $this->me["OS"] = $stuff["sysname"];
         $this->me["PID"] = getmypid();
-        if ($name === FALSE) {
+        if ($name === false) {
             $this->me["Program"] = basename($_SERVER["SCRIPT_NAME"]);
         } else {
             $this->me["Program"] = $name;
@@ -90,7 +90,7 @@ class process {
     /**
      * Check to see if a process is running on the local machine.
      * @param $PID Integer The process ID of the process to check.
-     * @return TRUE if the process is running, FALSE otherwise
+     * @return true if the process is running, false otherwise
     */    
     function CheckProcess($PID) {
         return(posix_getpgid($PID));
@@ -103,7 +103,7 @@ class process {
      *   are dead, then deletes them from the database, or deletes the PID file.    
      */
     function CheckAll() {
-        if ($this->FileOnly === FALSE) {
+        if ($this->FileOnly === false) {
 //            $this->reset();
 //            $res = $this->getAll();
             $res = array();
@@ -153,12 +153,12 @@ class process {
     /**
      * Registers this process if it is not blocked.
      * @param $verbose Boolean Whether to spew a whole bunch of output out.
-     * @return TRUE if registered.  FALSE if blocked.
+     * @return true if registered.  false if blocked.
      */
-    function Register($verbose=TRUE) {
+    function Register($verbose=true) {
         $this->me['LastCheckin'] = date("Y-m-d H:i:s");
-        $this->dbRegistered = TRUE;
-        if ($this->FileOnly === FALSE) $this->dbRegister();
+        $this->dbRegistered = true;
+        if ($this->FileOnly === false) $this->dbRegister();
         $this->fileRegister();
         $this->Registered = $this->dbRegistered && $this->fileRegistered;
         return $this->Registered;
@@ -172,36 +172,36 @@ class process {
      *   
      */
     function Checkin() {
-        while(FALSE == $this->FastCheckin()) {
+        while(false == $this->FastCheckin()) {
             sleep(60);
         }
     }
     
     /**
      * Updates its information in the database
-     * @return bool TRUE on success, FALSE on failure
+     * @return bool true on success, false on failure
      *   
      *   If the information in the database is not updated periodically the process will lose
-     *   its registration and maybe get killed.  This tries once and if it fails it returns FALSE.    
+     *   its registration and maybe get killed.  This tries once and if it fails it returns false.    
      */
     function FastCheckin() {
-        if ($this->FileOnly === FALSE) {
+        if ($this->FileOnly === false) {
             if ($this->Registered) {
                 $info = $this->me;
                 $info["LastCheckin"] = date("Y-m-d H:i:s");        
                 $res = $this->save($this->me);
                 
-                if ($res === FALSE) {
+                if ($res === false) {
                     $return = $this->dbRegister();
                 } else {
-                    $return = TRUE;
+                    $return = true;
                 }
     
             } else {
-                $return = $this->Register(TRUE);
+                $return = $this->Register(true);
             }
         } else {
-            $return = TRUE;    
+            $return = true;    
         }
 
         return($return);
@@ -209,10 +209,10 @@ class process {
 
     /**
      * Registers with the database.
-     * @return bool TRUE if successful, FALSE if failed
+     * @return bool true if successful, false if failed
     */
     function dbRegister() {
-        if (($this->FileOnly === FALSE) && $this->CheckDB()) {
+        if (($this->FileOnly === false) && $this->CheckDB()) {
 
             $info = $this->me;
             $info["LastCheckin"] = date("Y-m-d H:i:s");
@@ -230,20 +230,20 @@ class process {
             
             return $this->dbRegistered;
         } else {
-            return(TRUE);    
+            return(true);    
         }
     }
     
     /**
      * Registers with the database.
-     * @return bool TRUE if successful, FALSE if failed
+     * @return bool true if successful, false if failed
     */
-    function dbUnregister($PID = NULL) {
+    function dbUnregister($PID = null) {
         if (is_null($PID)) {
             $PID = $this->me["PID"];
-            $me = TRUE;
+            $me = true;
         } else {
-            $me = FALSE;
+            $me = false;
         }
         $query = "DELETE FROM '".$this->table."' "
                 ." WHERE PID=".$this->_sqlite->quote($PID);
@@ -266,23 +266,23 @@ class process {
     function createTable() {
 
         $query = "CREATE TABLE '".$this->table."' (
-                      'PID' int(11) NOT NULL default '0',
-                      'Program' varchar(128) NOT NULL default '',
-                      'Started' datetime NOT NULL default '0000-00-00 00:00:00',
-                      'LastCheckin' datetime NOT NULL default '0000-00-00 00:00:00',
-                      'Block' varchar(32) NOT NULL default 'NORMAL',
+                      'PID' int(11) NOT null default '0',
+                      'Program' varchar(128) NOT null default '',
+                      'Started' datetime NOT null default '0000-00-00 00:00:00',
+                      'LastCheckin' datetime NOT null default '0000-00-00 00:00:00',
+                      'Block' varchar(32) NOT null default 'NORMAL',
                       PRIMARY KEY  ('PID')
                     );
                     ";
         $this->_sqlite->query($query);
 
         $query = "CREATE TABLE '".$this->statsTable."' (
-                      `PID` int(11) NOT NULL,
-                      `Program` varchar(32) NOT NULL,
-                      `stype` varchar(32) NOT NULL,
-                      `sdate` varchar(32) NOT NULL,
-                      `sname` varchar(128) NOT NULL,
-                      `svalue` text NOT NULL,
+                      `PID` int(11) NOT null,
+                      `Program` varchar(32) NOT null,
+                      `stype` varchar(32) NOT null,
+                      `sdate` varchar(32) NOT null,
+                      `sname` varchar(128) NOT null,
+                      `svalue` text NOT null,
                       PRIMARY KEY  (`PID`,`Program`,`stype`,`sdate`,`sname`)
                       );
                     ";
@@ -293,12 +293,12 @@ class process {
 
     /**
      * Checks to see if we are registered
-     * @param bool $dieonfailure Whether to die if failed to register.  Defaults to FALSE
-     * @param bool $verbose If set to TRUE It prints output for what it is doing.  Defaults to TRUE
-     * @todo Make this do something other than just print stuff if $dieonfailure is FALSE
+     * @param bool $dieonfailure Whether to die if failed to register.  Defaults to false
+     * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
+     * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
-    function CheckRegistered($dieonfailure=FALSE, $verbose=TRUE) {
-        if ($this->Registered == FALSE) {
+    function CheckRegistered($dieonfailure=false, $verbose=true) {
+        if ($this->Registered == false) {
             if ($verbose) print "[".$this->me["PID"]."] Registration Failed\r\n";
             if ($dieonfailure) die();
         } else {
@@ -309,12 +309,12 @@ class process {
 
     /**
      * Checks to see if we are unregistered
-     * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to FALSE
-     * @param bool $verbose If set to TRUE It prints output for what it is doing.  Defaults to TRUE
-     * @todo Make this do something other than just print stuff if $dieonfailure is FALSE
+     * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to false
+     * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
+     * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
-    function CheckUnregistered($dieonfailure=FALSE, $verbose=TRUE) {
-        if ($this->Registered == TRUE) {
+    function CheckUnregistered($dieonfailure=false, $verbose=true) {
+        if ($this->Registered == true) {
             if ($verbose) print "[".$this->me["PID"]."] Unregistration Failed\r\n";
             if ($dieonfailure) die();
         } else {
@@ -324,21 +324,21 @@ class process {
 
     /**
      * Creates a PID file
-     * @return bool TRUE on success, FALSE on failure
+     * @return bool true on success, false on failure
     */
     function fileRegister() {
         if ($this->checkFile()) {
 
             $file = fopen($this->me["File"], 'w');
-            if ($file !== FALSE) {
+            if ($file !== false) {
                 fwrite($file, $this->me["PID"]);
                 fclose($file);
-                $this->fileRegistered = TRUE;
+                $this->fileRegistered = true;
             } else {
-                $this->fileRegistered = FALSE;
+                $this->fileRegistered = false;
             }
         } else {
-            $this->fileRegistered = FALSE;
+            $this->fileRegistered = false;
         } 
         return $this->fileRegistered;
     }
@@ -352,20 +352,20 @@ class process {
 
     /**
      * Checks each PID in the PID file if they exist.
-     * @return bool TRUE if we can run, FALSE if we are blocked.        
+     * @return bool true if we can run, false if we are blocked.        
      *
      *   This function checks the PIDs in the PID file to make sure they are
      *   all still running.
     */
     function CheckFile() {
-        $return = TRUE;
+        $return = true;
         if (file_exists($this->me["File"])) {
             foreach (file($this->me["File"]) as $key => $val) {
                 if (is_numeric($val) && !empty($val)) {
                     print "[".$this->me["PID"]."] Checking ".$val." from ".$this->me["File"];
                     if ($this->CheckProcess($val)) {
                         print " Okay ";
-                        $return = FALSE;
+                        $return = false;
                     } else {
                         posix_kill($val, SIGKILL);
                         print " Killed ";
@@ -379,13 +379,13 @@ class process {
     }
     /**
      * Checks each PID in the PID file if they exist.
-     * @return bool TRUE if we can run, FALSE if we are blocked.        
+     * @return bool true if we can run, false if we are blocked.        
      *
      *   This function checks the PIDs in the PID file to make sure they are
      *   all still running.
      */
     function CheckDB() {
-        $return = TRUE;
+        $return = true;
         $query = "SELECT * FROM '".$this->table."' "
                  ." WHERE "
                 ." Program='".$this->me['Program']."' ";
@@ -397,7 +397,7 @@ class process {
                 print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
                 if ($this->CheckProcess($row["PID"])) {
                     print " Okay ";
-                    $return = FALSE;
+                    $return = false;
                 } else {
                     posix_kill($row['PID'], SIGKILL);
                     print " Killed ";
@@ -440,9 +440,9 @@ class process {
      * @return mixed The statistic in question
      */
     function getMyStat($name, $date="now", $type="stat") {
-        return $this->getStat($name, $this->me['Program'], $date, $type, TRUE);
+        return $this->getStat($name, $this->me['Program'], $date, $type, true);
     }
-    function getStat($name, $Program, $date="now", $type="stat", $PID=FALSE) {
+    function getStat($name, $Program, $date="now", $type="stat", $PID=false) {
         $query = "SELECT * FROM '".$this->statsTable."' "
                  ." WHERE "
                 ." Program='".$Program."' "

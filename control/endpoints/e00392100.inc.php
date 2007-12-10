@@ -39,36 +39,36 @@
 	if ($devInfo['FWPartNum'] == '0039-20-01-C') {
 		$form = new HTML_QuickForm('fetControl');
 		$form->addElement('hidden', 'DeviceKey', $DeviceKey);
-//		$form->addElement('hidden', 'noFetchSetup', TRUE);
-		$form->addElement('header', NULL, '0039-20-01-C HUGnet Controller Options');
-		$form->addElement('header', NULL, 'HUGnet Power');
+//		$form->addElement('hidden', 'noFetchSetup', true);
+		$form->addElement('header', null, '0039-20-01-C HUGnet Controller Options');
+		$form->addElement('header', null, 'HUGnet Power');
 		for($i = 0; $i < 2; $i++) {
 			$radio = array();
-			$radio[] = $form->createElement('radio', 'HUGnetPower['.$i.']', NULL, 'Off', 0);
-			$radio[] = $form->createElement('radio', 'HUGnetPower['.$i.']', NULL, 'On', 1);
-			$form->addGroup($radio, NULL, "Output ".($i+1));
+			$radio[] = $form->createElement('radio', 'HUGnetPower['.$i.']', null, 'Off', 0);
+			$radio[] = $form->createElement('radio', 'HUGnetPower['.$i.']', null, 'On', 1);
+			$form->addGroup($radio, null, "Output ".($i+1));
 		}
-		$form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', NULL, 'client');	
-		$form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', NULL, 'client');	
+		$form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');	
+		$form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');	
 		$form->setDefaults($devInfo);
 		$form->addElement('submit', 'postPower', 'Update');
 		if (isset($_REQUEST['postPower']) && $form->validate()) {
 			$power = $driver->setPower($devInfo, $_REQUEST['HUGnetPower'][0], $_REQUEST['HUGnetPower'][1]);
-			if ($power !== FALSE) header("Location: ".$returnTo);
+			if ($power !== false) header("Location: ".$returnTo);
 
 		}
 		print $form->toHTML();
 	}
 	$pForm = new HTML_QuickForm('ProgControl');
 	$pForm->addElement('hidden', 'DeviceKey', $DeviceKey);
-	$pForm->addElement('hidden', 'noFetchSetup', TRUE);
-	$pForm->addElement('header', NULL, 'Program Control');
+	$pForm->addElement('hidden', 'noFetchSetup', true);
+	$pForm->addElement('header', null, 'Program Control');
 	if ($devInfo['bootLoader']) {
 		$crc = $driver->GetApplicationCRC($devInfo);
 		if ($crc == $devInfo['CRC']) {
 			$pForm->addElement('submit', 'runProg', 'Run Application');
 		} else {
-			$pForm->addElement('static', NULL, NULL, '<span class="error">Bad Application ('.$crc.' != '.$devInfo['CRC'].').  Please reload</span>');
+			$pForm->addElement('static', null, null, '<span class="error">Bad Application ('.$crc.' != '.$devInfo['CRC'].').  Please reload</span>');
 		}
 	} else {
 		$pForm->addElement('submit', 'crashProg', 'Crash Application');	
@@ -87,11 +87,11 @@
 	$table = new dfTable();
 	
 	$table->createList($cols);
-	$found = FALSE;
+	$found = false;
 	$driver->firmware->reset();
 //	$driver->firmware->setDontSelect('FirmwareCode, FirmwareData');
 	$driver->firmware->addOrder('FWPartNum');
-	$driver->firmware->addOrder('FirmwareVersion', TRUE);
+	$driver->firmware->addOrder('FirmwareVersion', true);
 	$driver->firmware->addWhere("HWPartNum='0039-21'");
 	$driver->firmware->addWhere("FWPartNum<>'0039-20-06-C'");
 	$ret = $driver->firmware->getAll();
@@ -100,7 +100,7 @@
 			&& ($val['FWPartNum'] == $devInfo['FWPartNum']))
 		{
 			$val['load'] = "Running";
-			$found = TRUE;
+			$found = true;
 		} else {
 			if ($devInfo['bootLoader']) {
 				$val['load'] = '<a href="'.$_SERVER['PHP_SELF'].'?DeviceKey='.$DeviceKey.'&loadProg&FirmwareKey='.$val['FirmwareKey'].'&noFetchSetup">load</a>';
@@ -111,13 +111,13 @@
 		$table->addListRow($val);
 	}
 	if ($devInfo['bootLoader']) {
-		$pForm->addElement('static', NULL, NULL, '<span class="error">Bootloader Running: '.$devInfo['FWPartNum'].' v'.$devInfo['FWVersion'].'</span>');
+		$pForm->addElement('static', null, null, '<span class="error">Bootloader Running: '.$devInfo['FWPartNum'].' v'.$devInfo['FWVersion'].'</span>');
 	} else if (!$found) {
-		$pForm->addElement('static', NULL, NULL, '<span class="error">Unknown Application Found: '.$devInfo['FWPartNum'].' v'.$devInfo['FWVersion'].'</span>');
+		$pForm->addElement('static', null, null, '<span class="error">Unknown Application Found: '.$devInfo['FWPartNum'].' v'.$devInfo['FWVersion'].'</span>');
 	}
 
 	$table->finishList($format);
-	$pForm->addElement('static', NULL, NULL, $table->toHTML());
+	$pForm->addElement('static', null, null, $table->toHTML());
 	if (isset($_REQUEST['runProg']) && $pForm->validate()) {
 		$driver->RunApplication($devInfo);
 		header("Location: ".$returnTo);		

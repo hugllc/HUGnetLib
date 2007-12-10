@@ -207,7 +207,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      * data provider for dataConfigArray* functions
      */
-    public static function dataConfigArray($class=NULL) {
+    public static function dataConfigArray($class=null) {
         $o = driverTest::createDriver();
         if (empty($class)) return array();
         $return = array();
@@ -261,7 +261,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                 $this->assertThat($order, $this->lessThan($params["Sensors"]), "'$fw': Display order items must be less than the number of sensors.");
                 $this->assertThat($order, $this->greaterThanOrEqual(0), "'$fw': Display order items must be greater than or equal to 0");
                 $this->assertFalse(isset($doTmp[$order]), "'$fw': $order already duplicated!  All entries in display order must be unique");
-                $doTmp[$order] = TRUE;
+                $doTmp[$order] = true;
             }
         }
     }
@@ -305,8 +305,8 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
             array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD"), 1),
             array(
                 array(),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => NULL, "Data1" => NULL, "Data2" => NULL, "Data3" => NULL, "Data4" => NULL, "NumSensors" => 5),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => NULL, "Data1" => NULL, "Data2" => NULL, "Data3" => NULL, "Data4" => NULL, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5),
+                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
                 2,
             ),
             array(
@@ -355,11 +355,11 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                 ),
                 array("DeviceID" => "000025", "GatewayKey" => self::$socket),
                 array(
-                    "GetReply" => TRUE,
+                    "GetReply" => true,
                     "SentFrom" => "000020",
                     "SentTo" => "000025",
                     "sendCommand" => "5C",
-                    "group" => FALSE,
+                    "group" => false,
                     "packet" => array(
                         "to" => "000025",
                         "command" => "5C",
@@ -367,7 +367,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                     ),
                     "PacketTo" => "000025",
                     "GatewayKey" => self::$socket,
-                    "DeviceKey" => NULL,
+                    "DeviceKey" => null,
                     "Type" => "OUTGOING",
                     "RawData" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
                     "sentRawData" => "",
@@ -381,9 +381,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                     "CalcChecksum" => "9F",
                     "RawPacket" => "0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
                     "Socket" => 1,
-                    "Reply" => TRUE,
-                    "toMe" => TRUE,
-                    "isGateway" => FALSE,
+                    "Reply" => true,
+                    "toMe" => true,
+                    "isGateway" => false,
                 ),
                 1,
             ),
@@ -485,12 +485,12 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
             print '"'.$val.'"';
         } else if (is_bool($val)) {
             if ($val) {
-                print "TRUE";
+                print "true";
             } else {
-                print "FALSE";
+                print "false";
             }
         } else if (is_null($val)) {
-            print "NULL";
+            print "null";
         } else {
             print $val;
         }

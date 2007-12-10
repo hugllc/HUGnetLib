@@ -146,7 +146,7 @@ if (!class_exists('resistiveSensor')) {
          *   @return The resistance corresponding to the values given
          *  
          */
-        function getResistance($A, $TC, $Bias, $Tf = NULL, $D = NULL, $s = NULL, $Am=NULL)
+        function getResistance($A, $TC, $Bias, $Tf = null, $D = null, $s = null, $Am=null)
         {
             if (is_null($Tf)) $Tf = $this->Tf;    
             if (is_null($D)) $D = $this->D;    
@@ -183,16 +183,16 @@ if (!class_exists('resistiveSensor')) {
          *   @return float The temperature in degrees C.    
         
         */
-        function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=NULL) {
+        function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=null) {
             if (!is_array($extra)) $extra = array();
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $baseTherm = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $ohms = $this->getResistance($A, $TC, $Bias);
             $T = $this->BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
 
-            if (is_null($T)) return NULL;
-            if ($T > 150) return NULL;
-            if ($T < -40) return NULL;
+            if (is_null($T)) return null;
+            if ($T > 150) return null;
+            if ($T < -40) return null;
             $T = round ($T, 4);
             return $T;
         }
@@ -217,8 +217,8 @@ if (!class_exists('resistiveSensor')) {
         private function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
-            if ($R <= 0) return NULL;
-            if ($R0 == 0) return NULL;
+            if ($R <= 0) return null;
+            if ($R0 == 0) return null;
             $T = $A;
             $T += $B * log($R/$R0);
             $T += $C * pow(log($R/$R0),2);
@@ -246,18 +246,18 @@ if (!class_exists('resistiveSensor')) {
         function resisDoor($A, $sensor, $TC, $extra) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            if ($Fixed <= 0) return NULL;        
+            if ($Fixed <= 0) return null;        
             $Switched = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
-            if ($Switched <= 0) return NULL;        
+            if ($Switched <= 0) return null;        
             $R = $this->getResistance($A, $TC, $Bias);
             $R -= $Fixed;
             // Got something wrong here.  We shouldn't have a negative resistance.
-            if ($R < 0) return NULL;
+            if ($R < 0) return null;
             $perc = ($R / $Switched) * 100;
             // We need to limit this to between 0 and  100.
             // It can't be open more than all the time.
             // It can't be open less than none of the time.
-            if (($perc < 0) || ($perc > 100)) return NULL;
+            if (($perc < 0) || ($perc > 100)) return null;
             return round($perc, 2);
         }
 
@@ -279,7 +279,7 @@ if (!class_exists('resistiveSensor')) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
-            if ($Ry <= $Rr) return NULL;
+            if ($Ry <= $Rr) return null;
             $R = $this->getResistance($A, $TC, $Bias, 1, 1, 64);
             
             $M = $R;
@@ -323,7 +323,7 @@ if (!class_exists('resistiveSensor')) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
-            if ($Ry <= $Rr) return NULL;
+            if ($Ry <= $Rr) return null;
             $R = $this->getResistance($A, 1, $Bias);
 
     		if ($R == 0) return(35.0);
@@ -337,8 +337,8 @@ if (!class_exists('resistiveSensor')) {
     		
     		$M = $A + ($B * log($R));
             
-            if ($M > 35) return NULL;
-            if ($M < 0) return NULL;
+            if ($M > 35) return null;
+            if ($M < 0) return null;
             return round($M, 2);
         }
 

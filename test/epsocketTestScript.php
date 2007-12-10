@@ -64,12 +64,12 @@ if (($msgsock = socket_accept($sock)) === false) {
 }
 
 $stdin = fopen("php://stdin", "r");
-if ($stdin === FALSE) {
+if ($stdin === false) {
     echo "std in open failed";
     die();
 }
 
-stream_set_blocking($stdin, FALSE);
+stream_set_blocking($stdin, false);
 socket_set_nonblock($msgsock);
 $lbuf = "";
 $buf = "";
@@ -84,7 +84,7 @@ if (empty($msg)) {
         }
         // Local Stuff
         $lchar = fgetc($stdin);
-        if ($lchar !== FALSE) {
+        if ($lchar !== false) {
             socket_write($msgsock, $lchar, 1);
             if (strlen($lbuf) > 3) $buf = substr($lbuf, 1, 3);
             $lbuf .= trim($lchar);            

@@ -84,7 +84,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
         unset($this->o);
     }
 
-    public function &createDriver($socket=NULL) {
+    public function &createDriver($socket=null) {
         if (!is_numeric($socket)) $socket = self::$socket;
         $db = &ADONewConnection('mysqli');
         $driver = new driver($db);
@@ -110,10 +110,10 @@ class driverTest extends PHPUnit_Framework_TestCase {
     public static function dataRegisterDriver() {
         $classTest = new testDriver();
         return array(
-            array("testDriver", TRUE),
-            array("testDriverBad", FALSE),
-            array("testDriverNoDrivers", FALSE),
-            array($classTest, TRUE),
+            array("testDriver", true),
+            array("testDriverBad", false),
+            array("testDriverNoDrivers", false),
+            array($classTest, true),
         );
     }
     /**
@@ -250,7 +250,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 //        $this->o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$this->o));
         $this->o->registerDriver($this->getMock("testDriver", array("Test"), array(&$this->o)), "testDriver");
         $ret = $this->o->RunFunction($Info, "Test", "1", "2");
-        $this->assertEquals(NULL, $ret);
+        $this->assertEquals(null, $ret);
     }
 
     /**
@@ -262,7 +262,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 //        $this->o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$this->o));
         $this->o->registerDriver($this->getMock("testDriver", array("Test"), array(&$this->o)), "testDriver");
         $ret = $this->o->RunFunction($Info, "TestBad", "1", "2");
-        $this->assertEquals(FALSE, $ret);
+        $this->assertEquals(false, $ret);
     }
     /**
      * @dataProvider dataRunFunction().
@@ -273,7 +273,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 //        $this->o->drivers['testDriver'] = $this->getMock("testDriver", array("Test"), array(&$this->o));
         $this->o->registerDriver($this->getMock("testDriver", array("Test"), array(&$this->o)), "testDriver");
         $ret = $this->o->RunFunction($Info, "getError", "1", "2");
-        $this->assertEquals(FALSE, $ret);
+        $this->assertEquals(false, $ret);
     }
 
     /**
@@ -400,7 +400,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 
     public static function dataInterpConfig() {
         return array(
-            array("Bad", FALSE, 1),
+            array("Bad", false, 1),
             array(array(), array(), 2),
             array(
                 array(
@@ -439,7 +439,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
                 array(
                     "DeviceID" => "0000E8",
                     "DeviceKey" => 1,
-                    "CurrentGatewayKey" => NULL,
+                    "CurrentGatewayKey" => null,
                     "Date" => "2007-11-12 12:34:04",
                     "RawData" => Array(
                         "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
@@ -550,7 +550,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
-                    1 => array("Data0" => NULL,"Data2" => 4.0, "Data3" => -1.0, "Data4" => 6.5, "data" => array(NULL,NULL,4.0,-1.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
+                    1 => array("Data0" => null,"Data2" => 4.0, "Data3" => -1.0, "Data4" => 6.5, "data" => array(null,null,4.0,-1.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
                 ), // expectHistory
                 array(
                     "ActiveSensors" => 5, 
@@ -655,7 +655,7 @@ class testDriver extends eDEFAULT {
         return array("Errno" => 1, "Error" => "Test Error");
     }
     
-    public function __construct(&$driver = FALSE) {
+    public function __construct(&$driver = false) {
         if (is_object($driver)) {
             parent::__construct($driver);
         }

@@ -37,7 +37,7 @@ require_once 'HTML/QuickForm.php';
 */
 class dfQuickForm extends HTML_QuickForm
 {
-	var $_dfRenderer = NULL;   //!< The renderer that we are going to use;
+	var $_dfRenderer = null;   //!< The renderer that we are going to use;
 	var $_dfElements = array(
 		'default' => "\n\t<tr>\n\t\t<td class=\"formLabel\"><!-- BEGIN required --><span class=\"formRequired\">*</span><!-- END required -->{label}</td>\n\t\t<td class=\"formInput\"><!-- BEGIN error --><span style=\"color: #ff0000\">{error}</span><br /><!-- END error -->\t{element}</td>\n\t</tr>",
 		'fullWidth' => "\n\t<tr>\n\t\t<td class=\"formLabel\"><!-- BEGIN required --><span class=\"formRequired\">*</span><!-- END required -->{label}</td>\n\t</tr>\n\t<tr>\n\t\t<td colspan=\"2\" class=\"formInput\"><!-- BEGIN error --><span style=\"color: #ff0000\">{error}</span><br /><!-- END error -->\t{element}</td>\n\t</tr>",
@@ -50,7 +50,7 @@ class dfQuickForm extends HTML_QuickForm
 		@param $class1 string the class to use for every other row
 		@param $class2 string the class to use for the other rows.	
 	*/
-	function dfQuickForm($formName = '', $method = 'post', $action = '', $target = '_self', $attributes = NULL, $trackSubmit = FALSE, $renderer=NULL) 
+	function dfQuickForm($formName = '', $method = 'post', $action = '', $target = '_self', $attributes = null, $trackSubmit = false, $renderer=null) 
 	{
 		$this->HTML_QuickForm($formName, $method, $action, $target, $attributes, $trackSubmit);
 		if (!is_object($renderer)) {
@@ -85,7 +85,7 @@ class dfQuickForm extends HTML_QuickForm
 		@param $class2 string the class to use for the other rows.	
 	*/
 
-	function toHTML($text=NULL)
+	function toHTML($text=null)
 	{
 		$this->accept($this->_dfRenderer);
 		return $this->_dfRenderer->toHTML($text);

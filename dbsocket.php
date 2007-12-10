@@ -66,7 +66,7 @@ class dbsocket {
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
-    var $socket = NULL;
+    var $socket = null;
     /** @var int The error number.  0 if no error occurred */
     var $Errno = 0;
     /** @var string The error string */
@@ -84,7 +84,7 @@ class dbsocket {
     /** @var int The timeout for waiting for a packet in seconds */
     var $SockTimeout = 2;
     /** @var bool Whether we should print out a lot output */
-    var $verbose = FALSE;        
+    var $verbose = false;        
     /** @var int The default period for checking in with the servers */
     var $CheckPeriod = 60;        
     /** @var array Array of strings that we are reading */
@@ -101,7 +101,7 @@ class dbsocket {
      *   Write data out a socket
      *
      * @param string $data The data to send out the socket
-     * @return int The number of bytes written on success, FALSE on failure
+     * @return int The number of bytes written on success, false on failure
      */
     function Write($data, $pkt) {
         $id = rand(1, 24777216);  // Big random number for the id
@@ -109,8 +109,8 @@ class dbsocket {
         $this->packet[$id]["id"] = $id;
         $ret =  $this->insertPacket($this->packet[$id]);
 
-        if ($ret === FALSE) {
-            return FALSE;
+        if ($ret === false) {
+            return false;
         } else {
             return $id;
         }
@@ -135,8 +135,8 @@ class dbsocket {
         }
         $query = "INSERT INTO ".$this->table." (".implode(",", $fields).") VALUES (".implode(", ", $set).")";
         $ret = $this->db->Execute($query);
-        if ($ret === FALSE) return FALSE;
-        return TRUE;
+        if ($ret === false) return false;
+        return true;
     }
     /**
      *  
@@ -152,7 +152,7 @@ class dbsocket {
      */
     private function getPacket() {
         if (!is_string($this->replyPacket)) $this->replyPacket = "";
-        if (!empty($this->replyPacket)) return TRUE;
+        if (!empty($this->replyPacket)) return true;
         $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
         $res = $this->db->getArray($query);
         if (is_array($res)) {
@@ -161,11 +161,11 @@ class dbsocket {
                     $this->replyPacket = $this->packetify($pkt);
                     $this->reply = $pkt["id"];
                     $this->index = 0;
-                    return TRUE;
+                    return true;
                 }
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -185,11 +185,11 @@ class dbsocket {
      *   Read data from the server
      *
      * @param int $timeout The amount of time to wait for the server to respond
-     * @return int Read bytes on success, FALSE on failure
+     * @return int Read bytes on success, false on failure
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
-        $char = FALSE;
+        $char = false;
         if ($this->getPacket()) {
             if ($this->index < strlen($this->replyPacket)) {
                 $char = hexdec(substr($this->replyPacket, $this->index, 2));
@@ -221,7 +221,7 @@ class dbsocket {
      *   ep_socket::Connect().
      *
      * @uses ep_socket::Connect()
-     * @return bool TRUE if the connection is good, FALSE otherwise
+     * @return bool true if the connection is good, false otherwise
     */
     function CheckConnect() {
         return $this->db->IsConnected();
@@ -237,13 +237,13 @@ class dbsocket {
      * @param string $server Name or IP address of the server to connect to
      * @param int $port The TCP port on the server to connect to
      * @param int $timeout The time to wait before giving up on a bad connection
-     * @return bool TRUE if the connection is good, FALSE otherwise
+     * @return bool true if the connection is good, false otherwise
      */
     function Connect($server = "", $port = 0, $timeout=0) {
 
-        if ($this->CheckConnect()) return TRUE;
+        if ($this->CheckConnect()) return true;
         $this->Close();
-        return FALSE;
+        return false;
     }            
 
 
@@ -255,7 +255,7 @@ class dbsocket {
      *       the default port.
      * @param bool $verbose Make the class put out a lot of output
      */
-    function __construct(&$db, $verbose=FALSE) {
+    function __construct(&$db, $verbose=false) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
         $this->db = &$db;

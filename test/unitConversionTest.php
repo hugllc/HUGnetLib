@@ -222,7 +222,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         } else {
             return is_array($o->units[$cat][$units]);
         }
-        return FALSE;
+        return false;
     }
     /**
      */
@@ -239,18 +239,18 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         } else {
             return unitConversionTest::checkUnitModeRaw($o->units[$cat][$unit]['mode'], $mode);
         }
-        return FALSE;
+        return false;
     }
     /**
      */
     private function checkUnitModeRaw($modes, $mode) {
         if (is_null($modes)) {                        
-            return TRUE;
+            return true;
         } else {
-            if (stristr($modes, $mode) === FALSE) {
-                return FALSE;
+            if (stristr($modes, $mode) === false) {
+                return false;
             } else {
-                return TRUE;
+                return true;
             }
         }
     
@@ -259,17 +259,17 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     /**
      */
     private function checkvarType($vartype) {
-        if ($vartype == 'float') return TRUE;
-        if ($vartype == 'int') return TRUE;
-        if ($vartype == 'text') return TRUE;
-        return FALSE;
+        if ($vartype == 'float') return true;
+        if ($vartype == 'int') return true;
+        if ($vartype == 'text') return true;
+        return false;
     }
     /**
     */
     private function checkMode($mode) {
-        if ($mode == 'raw') return TRUE;
-        if ($mode == 'diff') return TRUE;
-        return FALSE;
+        if ($mode == 'raw') return true;
+        if ($mode == 'diff') return true;
+        return false;
     }
     /************************************************************
      *   Here we start checking functions
@@ -295,8 +295,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataGraphable() {
         return array(
-            array("&#176;C", TRUE),
-            array("Direction", FALSE),
+            array("&#176;C", true),
+            array("Direction", false),
         );
     }
     /**
@@ -311,7 +311,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     public static function dataFindUnit() {
         return array(
             array('&#176;F',array('longName' => '&#176;F','varType' => 'float','convert' => array('&#176;C' => 'FtoC'))),
-            array("ASDF", FALSE),
+            array("ASDF", false),
         );
     }
     /**
@@ -342,9 +342,9 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataConvert() {
         return array(
-            array(32, "&#176;F", "&#176;C", 0, "raw", NULL, 0.0, "&#176;C"),
-            array(32, "&#176;F", "&#176;F", 0, "diff", NULL, 32, "&#176;F"),
-            array(32, "&#176;F", "Direction", 0, "diff", NULL, 32, "&#176;F"),
+            array(32, "&#176;F", "&#176;C", 0, "raw", null, 0.0, "&#176;C"),
+            array(32, "&#176;F", "&#176;F", 0, "diff", null, 32, "&#176;F"),
+            array(32, "&#176;F", "Direction", 0, "diff", null, 32, "&#176;F"),
         );
     }
     /**
@@ -367,8 +367,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataGetPossConv() {
         return array(
-            array("raw", NULL, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C", "&#176;" => "Direction", "Direction" => "&#176;")),
-            array("diff", NULL, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C")),
+            array("raw", null, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C", "&#176;" => "Direction", "Direction" => "&#176;")),
+            array("diff", null, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C")),
             array("raw", "&#176;C", array("&#176;C" => "&#176;F", "&#176;C" => "&#176;C")),
             array("diff", "&#176;F", array("&#176;F" => "&#176;C", "&#176;F" => "&#176;F")),
             array("raw", "Direction", array("Direction" => "&#176;", "Direction" => "Direction")),
@@ -454,7 +454,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataCnttoRPM() {
         return array(
-            array(0, NULL, 0, "raw", 0),
+            array(0, null, 0, "raw", 0),
             array(50, 50, 60, "diff", 1),
             array(50, 25, 60, "diff", 2),
             array(50, 50, 60, "diff", 0),
@@ -529,8 +529,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function datakWhTokW() {
         return array(
-            array(100, 0, "diff", 0, NULL),
-            array(100, 0, "raw", 0, NULL),
+            array(100, 0, "diff", 0, null),
+            array(100, 0, "raw", 0, null),
             array(1, 360, "diff", 0, 10),
             array(100, -360, "diff", 0, 1000),
         );
@@ -547,8 +547,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      */
     public static function datakWhToW() {
         return array(
-            array(100, 0, "diff", 0, NULL),
-            array(100, 0, "raw", 0, NULL),
+            array(100, 0, "diff", 0, null),
+            array(100, 0, "raw", 0, null),
             array(1, 360, "diff", 0, 10000),
             array(100, -360, "diff", 0, 1000000),
         );

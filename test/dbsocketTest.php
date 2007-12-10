@@ -157,7 +157,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
                     "RawData" => "01020304",
                     "sentRawData" => "01020304",
                 ),
-                "expect" => FALSE,
+                "expect" => false,
             ),                
         );
     }
@@ -204,12 +204,12 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
         $this->s->packet[$id] = array(1,2,3,4);
         $str = "";
         // This calls readChar the way it was meant to be called.
-        // i.e. over and over until FALSE is returned.
+        // i.e. over and over until false is returned.
         do {
             $char = $this->s->readChar();
-            if ($char === FALSE) break;
+            if ($char === false) break;
             $str .= $char;
-        } while ($char !== FALSE);
+        } while ($char !== false);
         $this->assertSame($expect, devInfo::hexifyStr($str));
 
     }

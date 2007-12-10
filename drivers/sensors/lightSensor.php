@@ -101,7 +101,7 @@ if (!class_exists('lightSensor')) {
          * @param mixed $extra Extra parameters for the sensor
          * @return float Current rounded to 1 place
          */
-        function OSRAMBPW34($A, $sensor, $TC, $extra=NULL) {
+        function OSRAMBPW34($A, $sensor, $TC, $extra=null) {
     
             $den = $this->Am*$this->s*$this->D; 
             if ($den == 0) return(1500.0);

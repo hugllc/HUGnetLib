@@ -34,16 +34,16 @@
 //print get_stuff($devInfo);
 	$form = new HTML_QuickForm('fetControl');
 	$form->addElement('hidden', 'DeviceKey');
-	$form->addElement('hidden', 'noFetchSetup', TRUE);
-	$form->addElement('header', NULL, 'Device Specific Options');
+	$form->addElement('hidden', 'noFetchSetup', true);
+	$form->addElement('header', null, 'Device Specific Options');
 	$form->addElement('text', 'TimeConstant', 'Time Constant:', array('size' => 3, 'maxlength' => 3));
 	foreach($devInfo['Types'] as $sensor => $type) {
 
 		$options = $endpoint->drivers[$devInfo['Driver']]->sensorTypes;
 		$form->addElement('select', 'Types['.$sensor.']', "Sensor ".$sensor." Type:", $options);
 	}
-	$form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', NULL, 'client');	
-	$form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', NULL, 'client');	
+	$form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');	
+	$form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');	
 	$form->setDefaults($devInfo);
 	$form->addElement('submit', 'postSetup', 'Update');
 	if (isset($_REQUEST['postSetup']) && $form->validate()) {

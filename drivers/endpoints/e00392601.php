@@ -128,7 +128,7 @@ if (!class_exists("e00392601")) {
             $Info["doTotal"] = array();
             $Info["params"] = array();
             
-            $Info["isGateway"] = TRUE;
+            $Info["isGateway"] = true;
     
             $index = 0;
             $Info["Priority"] = $Info['BoredomThreshold'];

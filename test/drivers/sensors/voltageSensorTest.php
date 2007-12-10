@@ -112,7 +112,7 @@ class voltageSensorTest extends sensorTestBase {
             array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 1), 0, 0.1527),
             array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 0), 0, 0.1527),
             array(1000, array("extraDefault"=>array(1, 1)), 1, array(0, 1), 0, 0.1527),
-            array(1000, array("extraDefault"=>array(1, 1)), 1, NULL, 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1)), 1, null, 0, 0.1527),
         );
     }
     /**
@@ -128,8 +128,8 @@ class voltageSensorTest extends sensorTestBase {
      */
     public static function dataGetVoltage() {
         return array(
-            array(NULL, 1, 1, NULL),
-            array(1, 1, NULL, NULL),
+            array(null, 1, 1, null),
+            array(1, 1, null, null),
             array(1, 0, 1, 0.0),
             array(4000, 1, 10, 0.6109),
         );
@@ -150,10 +150,10 @@ class voltageSensorTest extends sensorTestBase {
     public static function dataCHSMSS() {
         return array(
             array(10000, array("extraDefault"=>1.1), 1, 1.1, 0, 16.8),
-            array(10000, array("extraDefault"=>1.1), 1, NULL, 0, 16.8),
+            array(10000, array("extraDefault"=>1.1), 1, null, 0, 16.8),
             array(10000, array("extraDefault"=>1.1), 1, 0, 0, 16.8),
             array(65535, array("extraDefault"=>1.1), 1, 1.1, 0, 110.11),
-            array(-10000, array("extraDefault"=>1.1), 1, 1.1, 0, NULL),
+            array(-10000, array("extraDefault"=>1.1), 1, 1.1, 0, null),
         );
     }
     /**

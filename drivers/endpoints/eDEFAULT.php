@@ -176,9 +176,9 @@ if (!class_exists('eDEFAULT')) {
             $Packets = $this->packet->SendPacket($Info, $packet);
             if (is_array($Packets)) {
                 $return = $this->InterpSensors($Info, $Packets);
-                if ($return == FALSE) $return = $Packets;
+                if ($return == false) $return = $Packets;
             } else {
-                $return = FALSE;
+                $return = false;
             }
             return($return);
         }
@@ -195,7 +195,7 @@ if (!class_exists('eDEFAULT')) {
                     if (!isset($packet['DeviceKey'])) $packet['DeviceKey'] = $Info['DeviceKey'];
                     $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
                 } else {
-                    $return = FALSE;
+                    $return = false;
                 }
             }
             return($return);
@@ -208,7 +208,7 @@ if (!class_exists('eDEFAULT')) {
          * @note This should only be defined in a driver that inherits this class if the packet differs
          */
         function updateConfig($Info) {
-            $return = TRUE;
+            $return = true;
             return($return);
         }
     
@@ -260,10 +260,10 @@ if (!class_exists('eDEFAULT')) {
             
             $Bad = 0;
     
-            $zero = TRUE;
+            $zero = true;
             for($i = 0; $i < $Rec['NumSensors']; $i ++) {
                 if (!is_null($Rec['Data'.$i])) {
-                    $zero = FALSE;
+                    $zero = false;
                     break;
                 }
             }
@@ -278,7 +278,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *  Gets the order of the sensors in an endpoint.
          */    
-        protected function getOrder($Info, $key, $rev = FALSE) {
+        protected function getOrder($Info, $key, $rev = false) {
             if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) { 
                 $Order = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
                 if ($rev) $Order = array_flip($Order);
@@ -353,13 +353,13 @@ if (!class_exists('eDEFAULT')) {
          * Does something with an unsolicited packet.
          *
          * @param array $Info Infomation about the device to use including the unsolicited packet.
-         * @return always TRUE
+         * @return always true
          * @note This method MUST be implemented by each driver that inherits this class
          */
         function Unsolicited($Info) {
             //add_debug_output("Unsolicited default failing silently.<br>\n");
             print "Unsolicited default failing silently.\n";
-            return(TRUE);    
+            return(true);    
         }
         
         /**
@@ -488,11 +488,11 @@ if (!class_exists('eDEFAULT')) {
          * Finds the correct error code for why it was called
          * @param array $Info Infomation about the device to use
          * @param string $fct The function that the code tried to run
-         * @return bool Always FALSE
+         * @return bool Always false
             @warning This function MUST NOT be implemented in any drivers that inherit this class
          */
         final function BadDriver($Info, $fct) {
-            return FALSE;
+            return false;
         }    
         
         /**
@@ -544,7 +544,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *  Gets bytes of data out of the raw data string
          */    
-        protected function InterpSensorsGetData($Data, &$index, $bytes, $width=NULL) {
+        protected function InterpSensorsGetData($Data, &$index, $bytes, $width=null) {
             if ($width < $bytes) $width = $bytes;
             $shift = 0;
             $byte = 0;
@@ -613,7 +613,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @param int $start Infomation about the device to use
          * @param mixed $data The data either as an array or in hexified form
-         * @return FALSE on failure, The packet in array form on success
+         * @return false on failure, The packet in array form on success
          * @todo Document this better.
          */
         function SetConfig($Info, $start, $data) {
@@ -681,7 +681,7 @@ if (!class_exists('eDEFAULT')) {
          * Gets the name of the history table for a particular device
          *
          * @param $Info Array Infomation about the device to use
-         * @return mixed The name of the table as a string on success, FALSE on failure
+         * @return mixed The name of the table as a string on success, false on failure
          */
         final public function getHistoryTable() {
             return $this->history_table;
@@ -691,7 +691,7 @@ if (!class_exists('eDEFAULT')) {
          * Gets the name of the average table for a particular device
          *
          * @param $Info Array Infomation about the device to use
-         * @return mixed The name of the table as a string on success, FALSE on failure
+         * @return mixed The name of the table as a string on success, false on failure
          */
         final public function getAverageTable() {
             return $this->average_table;
@@ -701,7 +701,7 @@ if (!class_exists('eDEFAULT')) {
          * Gets the name of the location table for a particular device
          *
          * @param $Info Array Infomation about the device to use
-         * @return mixed The name of the table as a string on success, FALSE on failure
+         * @return mixed The name of the table as a string on success, false on failure
          */
         final public function getLocationTable() {
             return $this->location_table;

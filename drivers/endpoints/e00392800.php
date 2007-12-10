@@ -181,7 +181,7 @@ if (!class_exists("e00392800")) {
             if (is_array($data["Data"])) {
                 $index = 3;
                 for ($i = 0; $i < $Info["NumSensors"]; $i++) {
-                    $key = $this->getOrder($Info, $i, TRUE);
+                    $key = $this->getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 0x6F) {
                         $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 1, 3);
                     } else {
