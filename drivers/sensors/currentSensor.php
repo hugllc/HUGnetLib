@@ -99,7 +99,7 @@ if (!class_exists('currentSensor')) {
          * @param mixed $extra Extra parameters for the sensor
          * @return float Current rounded to 1 place
          */
-        function FETBoard($val, $sensor, $TC, $extra=NULL) {
+        function FETBoard($val, $sensor, $TC, $extra=null) {
             $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $A = $this->getCurrent($val, $R, $G, $TC);

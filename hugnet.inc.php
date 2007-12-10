@@ -41,7 +41,7 @@ if (!defined("HUGNET_DATABASE")) {
     define("HUGNET_DATABASE", "HUGNet");
 }
 
-$temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
+$temp_file = tempnam( md5(uniqid(rand(), true)), '' );
 if ( $temp_file )
 {
     $temp_dir = realpath( dirname( $temp_file ) );
@@ -56,9 +56,9 @@ if (!defined("HUGNET_LOCAL_DATABASE")) {
 }
 
 if (include 'PHPUnit/Framework.php') {
-    $phpunit = TRUE;
+    $phpunit = true;
 } else {
-    $phpunit = FALSE;
+    $phpunit = false;
 }
 
 $inc = ini_get('include_path');

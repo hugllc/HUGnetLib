@@ -107,12 +107,12 @@ class resistiveSensorTest extends sensorTestBase {
      */
     public static function dataBCTherm2381_640_66103() {
         return array(
-            array(63570, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, NULL), // -40.1 degrees
-            array(1150, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, NULL),  // 150.9 degrees
+            array(63570, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, null), // -40.1 degrees
+            array(1150, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, null),  // 150.9 degrees
             array(5000, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, 93.3105),
             array(5000, array('extraDefault'=>array(10, 10)), 1, array(0, 10), 0, 93.3105),
             array(5000, array('extraDefault'=>array(10, 10)), 1, array(10, 0), 0, 93.3105),
-            array(5000, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0, NULL),
+            array(5000, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0, null),
         );
     }
     /**
@@ -129,15 +129,15 @@ class resistiveSensorTest extends sensorTestBase {
      */
     public static function dataResisDoor() {
         return array(
-            array(5000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, NULL), // R < Fixed
-            array(50000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, NULL), // % > 100
+            array(5000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // R < Fixed
+            array(50000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // % > 100
             array(40000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, 57.04), 
             array(40001, array('extraDefault'=>array(10, 10, 10)), 1, array(0, 10, 10), 0, 57.04),
             array(40002, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 0, 10), 0, 57.06),
             array(40003, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 0), 0, 57.07),
-            array(40004, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 10, 10), 0, NULL),
-            array(40005, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 0, 10), 0, NULL),
-            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 10, 0), 0, NULL),
+            array(40004, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 10, 10), 0, null),
+            array(40005, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 0, 10), 0, null),
+            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 10, 0), 0, null),
         );
     }
     /**
@@ -157,7 +157,7 @@ class resistiveSensorTest extends sensorTestBase {
             array(40001, array('extraDefault'=>array(1000, 10, 1000)), 1, array(0, 10, 1000), 0, 1570.4527),
             array(40002, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 0, 1000), 0, 1570.5536),
             array(40003, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 0), 0, 1570.6545),
-            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(1000, 10, 0), 0, NULL),
+            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(1000, 10, 0), 0, null),
         );
     }
     /**
@@ -177,7 +177,7 @@ class resistiveSensorTest extends sensorTestBase {
             array(4001, array('extraDefault'=>array(1000, 10, 1000)), 1, array(0, 10, 1000), 0, 6.56),
             array(4002, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 0, 1000), 0, 6.56),
             array(4003, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 0), 0, 6.56),
-            array(4006, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 0, 0), 0, NULL),
+            array(4006, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 0, 0), 0, null),
             array(0, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 35.0), 
         );
     }

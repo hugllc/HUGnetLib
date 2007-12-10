@@ -36,14 +36,14 @@
    	$gForm->addElement('hidden', 'module', $_REQUEST['module']);
 	$gForm->addElement('hidden', 'hugnetengr_op', $_REQUEST['hugnetengr_op']);
 	$gForm->addElement('hidden', 'DeviceKey');
-	$gForm->addElement('hidden', 'noFetchSetup', TRUE);
-	$gForm->addElement('header', NULL, "General Options");
+	$gForm->addElement('hidden', 'noFetchSetup', true);
+	$gForm->addElement('header', null, "General Options");
 	$gForm->addElement('text', 'DeviceGroup', "Group:", array('size' => 6, 'maxlength' => 6));
 	$gForm->addElement('text', 'BoredomThreshold', "Boredom:", array('size' => 3, 'maxlength' => 3));
-	$gForm->addRule('DeviceGroup', 'Group can not be empty', 'required', NULL, 'client');	
-	$gForm->addRule('DeviceGroup', 'Group must be alphanumeric', 'alphanumeric', NULL, 'client');	
-	$gForm->addRule('BoredomThreshold', 'Boredom can not be empty', 'required', NULL, 'client');	
-	$gForm->addRule('BoredomThreshold', 'Boredom must be numeric', 'numeric', NULL, 'client');	
+	$gForm->addRule('DeviceGroup', 'Group can not be empty', 'required', null, 'client');	
+	$gForm->addRule('DeviceGroup', 'Group must be alphanumeric', 'alphanumeric', null, 'client');	
+	$gForm->addRule('BoredomThreshold', 'Boredom can not be empty', 'required', null, 'client');	
+	$gForm->addRule('BoredomThreshold', 'Boredom must be numeric', 'numeric', null, 'client');	
 
 	$gForm->setDefaults($devInfo);
 	$gForm->addElement('submit', 'postGroup', 'Update');

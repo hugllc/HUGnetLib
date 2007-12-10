@@ -91,7 +91,7 @@ if (!class_exists('pulseSensor')) {
                     ),
                     "mult" => 0.01,
 //                    "checkFunction" => "pulseCheck",
-                    "doTotal" => TRUE,
+                    "doTotal" => true,
                 ),
                 'bravo3motion' => array(
                     "longName" => "DSC Bravo 3 Motion Sensor",
@@ -103,7 +103,7 @@ if (!class_exists('pulseSensor')) {
                         'PPM' => 'diff',
                     ),
                     "checkFunction" => "pulseCheck",
-                    "doTotal" => TRUE,
+                    "doTotal" => true,
                 ),
                 'wattnode' => array(
                     "longName" => "CCS WattNode Pulse Output Power Meter",
@@ -119,7 +119,7 @@ if (!class_exists('pulseSensor')) {
                     ),
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
-                    "doTotal" => TRUE,
+                    "doTotal" => true,
 //                     "checkFunction" => "pulseCheck",
                 ),
             ),
@@ -134,8 +134,8 @@ if (!class_exists('pulseSensor')) {
             
             Freq = Pulses/Time
         */
-        function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=NULL) {
-            if (empty($deltaT)) return NULL;
+        function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=null) {
+            if (empty($deltaT)) return null;
             if ($val <= 0) return 0;
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
             if ($speed < 0) $speed = 0;
@@ -143,20 +143,20 @@ if (!class_exists('pulseSensor')) {
         }
         
         function pulseCheck($value, $sensor, $units, $dType) {
-            if ($value < 0) return FALSE;
-            return TRUE;
+            if ($value < 0) return false;
+            return true;
         }
 
-        function WattNode($val, $sensor, $TC, $extra, $deltaT=NULL) {
+        function WattNode($val, $sensor, $TC, $extra, $deltaT=null) {
             $Wh = $val * $extra;
-            if ($Wh < 0) return NULL;
+            if ($Wh < 0) return null;
             return $Wh / 1000;
         }
 
         function getPPM($val, $sensor, $TC, $extra, $deltaT) {
-            if ($deltaT <= 0) return NULL;
+            if ($deltaT <= 0) return null;
             $ppm = ($val / $deltaT) * 60;
-            if ($ppm < 0) return NULL;
+            if ($ppm < 0) return null;
             return $ppm;
         }
 

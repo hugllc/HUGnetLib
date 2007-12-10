@@ -64,7 +64,7 @@
  *   The following are REQUIRED
  *     plugin_info["Functions"] Array Either an array of function names or an array of function information.  If the
  *            information exists, the function will not be called to get more information.  If this is an array of function
- *            names, the function will be called with the first argument being a boolean TRUE.  The function should return
+ *            names, the function will be called with the first argument being a boolean true.  The function should return
  *            an array of info about itself when called this way.  The information needed about the function consists of the
  *            following (the array will be called "info" but it should be either returned by your function or be set at
  *            plugin_info["Functions"][]):
@@ -273,7 +273,7 @@ class plugins {
                 $this->_debug("Running Plugin ".$function."\n", 4);
                 if (function_exists($function)) {
                     $command = "\$output = $function(";
-                    if ($fct["INFO"] === TRUE) $command .= "FALSE";
+                    if ($fct["INFO"] === true) $command .= "false";
                     $command .= "\$return";
                     $args = func_get_args();
                     for ($i = 2; $i < func_num_args(); $i++) {
@@ -305,12 +305,12 @@ class plugins {
     function run_function($Name) {
 
         $fct = $this->get_function($Name);
-        if ($fct !== FALSE) {
+        if ($fct !== false) {
             $this->_debug("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 4);
             $function = $fct["Name"];    
             if (function_exists($function)) {
                  $command = "\$output = ".$function."(";
-                if ($fct["INFO"] === TRUE) $command .= "FALSE";
+                if ($fct["INFO"] === true) $command .= "false";
                 $args = func_get_args();
                 for ($i = 1; $i < func_num_args(); $i++) {
                     $command .= ", \$args[".$i."]";
@@ -339,7 +339,7 @@ class plugins {
      */
     function get_function($Name) {
 
-        $return = FALSE;
+        $return = false;
         if (is_array($this->plugins["Functions"])) {
             foreach($this->plugins["Functions"] as $Type) {
                 if (is_array($Type)) {
@@ -351,7 +351,7 @@ class plugins {
                         }
                     }
                 }
-                if ($return !== FALSE) break;
+                if ($return !== false) break;
             }
         }
         return($return);
@@ -376,7 +376,7 @@ class plugins {
                 $this->_debug("Running Plugin ".$function."\n", 4);
                 if (function_exists($function)) {
                     $command = "\$output = $function(";
-                    if ($fct["INFO"] === TRUE) $command .= "FALSE";
+                    if ($fct["INFO"] === true) $command .= "false";
                     $args = func_get_args();
                     $sep = "";
                     for ($i = 1; $i < func_num_args(); $i++) {
@@ -427,9 +427,9 @@ class plugins {
      *   @return array An array of plugins of whatever type was sent to it, plus all plugins of type "ALL_TYPES".
      *   @param string $Type The type of generic plugins to return
      */
-    function get_menu($Type = FALSE) {
+    function get_menu($Type = false) {
         $return = array();
-        if ($Type !== FALSE) {
+        if ($Type !== false) {
             if (is_array($this->plugins["Menu"][$Type]) && is_array($this->plugins["Menu"]["ALL_TYPES"])) {
                 $return = array_merge($this->plugins["Menu"][$Type], $this->plugins["Menu"]["ALL_TYPES"]);
             } else {
@@ -521,7 +521,7 @@ class plugins {
      *   @param int $Level Depreciated
      *   @param bool $recursive Whether to be recursive or not
      */
-    function get_plugin_dir($basedir= ".", $webdir="plugins/", $Level = 0, $recursive=TRUE) {
+    function get_plugin_dir($basedir= ".", $webdir="plugins/", $Level = 0, $recursive=true) {
         $this->_debug("Checking for plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         if ($plugindir) {
@@ -548,7 +548,7 @@ class plugins {
                         }
                     } else if (($file != "CVS") && ($file != ".svn") && (is_dir($basefile))) {
                         $dName = str_replace($webdir, "", $webfile);
-                        if ((array_search($dName, $this->_skipDir) === FALSE) && ($recursive)) {
+                        if ((array_search($dName, $this->_skipDir) === false) && ($recursive)) {
                             $count += $this->get_plugin_dir($basefile."/", $webfile."/", $Level + 1);
                         } else {
                             $this->_debug("Skipping directory ".$dName."\n");
@@ -575,7 +575,7 @@ class plugins {
      */
     function include_file($file, $filedir = "", $webdir="") {
         global $debug;
-        $plugin_info = FALSE;
+        $plugin_info = false;
         $this->_debug("Checking File:  ".$file."\n", 4);
         // These files might need to be included more than once, so we use include
         $freturn = include $filedir.$file; 
@@ -584,7 +584,7 @@ class plugins {
             $this->_debug( "\tErrors encountered parsing file. Skipping ".$file.".\n", 4);
         } else {
             $this->file_count++;
-            $info = NULL;
+            $info = null;
             if (is_array($plugin_info)) {
                 $info = $plugin_info;
                 $this->plugin_info[$file] = $info;
@@ -596,8 +596,8 @@ class plugins {
                             }
                         } else {
                             if (function_exists($fct)) {
-                                $fctinfo = $fct(TRUE);
-                                $fctinfo["INFO"] = TRUE;
+                                $fctinfo = $fct(true);
+                                $fctinfo["INFO"] = true;
                                 $this->register_function_raw($fctinfo);
                             }
                         }

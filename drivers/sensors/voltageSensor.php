@@ -97,11 +97,11 @@ if (!class_exists('voltageSensor')) {
                 return round($Read, 4);
         }
 
-        function FETBoard($val, $sensor, $TC, $extra=NULL) {
+        function FETBoard($val, $sensor, $TC, $extra=null) {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $V = $this->getDividerVoltage($val, $R1, $R2, $TC);
-            if ($V < 0) $V = NULL;
+            if ($V < 0) $V = null;
     	    $V = round($V, 4);
             return $V;
         }    
@@ -116,8 +116,8 @@ if (!class_exists('voltageSensor')) {
     	*/
     	function getVoltage($A, $T, $Vref) 
     	{
-    	    if (is_null($A)) return NULL;
-    	    if (is_null($Vref)) return NULL;
+    	    if (is_null($A)) return null;
+    	    if (is_null($Vref)) return null;
     		$denom = $T * $this->Tf * $this->Am * $this->s;
     		if ($denom == 0) return 0.0;
     		$num = $A * $this->D * $Vref;
@@ -131,11 +131,11 @@ if (!class_exists('voltageSensor')) {
             This sensor returns us 10mV / % humidity
         */
         function CHSMSS($A, $sensor, $T, $extra) {
-            if (is_null($A)) return NULL;
+            if (is_null($A)) return null;
             $Vref = (empty($extra)) ? $sensor['extraDefault'] : $extra;            
             $volts = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
-            if ($humidity < 0) return NULL;
+            if ($humidity < 0) return null;
             $humidity = round($humidity, 4);
             return $humidity;
         }

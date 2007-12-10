@@ -446,7 +446,7 @@ class Driver
      *
      * @param mixed $class The name of the sensor class to register, or the actual object to register
      * @param string $name The name of the sensor class if the above is an object.  The default is the class name.
-     * @return bool TRUE on success, false on failure
+     * @return bool true on success, false on failure
      */
     public function registerDriver($class, $name=false) {
             if (is_string($class) && class_exists($class)) {
@@ -470,7 +470,7 @@ class Driver
                         }
                     }
                 }
-                return TRUE;
+                return true;
             } else {
                 return false;
             }
@@ -481,7 +481,7 @@ class Driver
     /**
      * Constructor    
      */
-    function driver(&$db=null, $plugins = "", $direct=TRUE) {        
+    function driver(&$db=null, $plugins = "", $direct=true) {        
 
         $this->db = &$db;
         if (is_object($this->db)) {

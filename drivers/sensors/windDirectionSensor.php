@@ -68,8 +68,8 @@ if (!class_exists('windDirectionSensor')) {
          * 45 degrees apart (0 sometimes counts as 360 because degrees are
          * circular).
          *
-         * - If the ordinal direction is NULL it returns the cardinal direction.
-         * - If the cardinal direction is NULL it returns the ordinal direction.
+         * - If the ordinal direction is null it returns the cardinal direction.
+         * - If the cardinal direction is null it returns the ordinal direction.
          * - Otherwise it retuns the average of the two.  This is only valid where
          *     the difference between the two is 45, so it checks this first.
          * - One special case is when the cardinal direction is north (0) and
@@ -86,17 +86,17 @@ if (!class_exists('windDirectionSensor')) {
     
             // Do the cardinal directions
             $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
-            $cDir = NULL;
-            $oDir = NULL;
+            $cDir = null;
+            $oDir = null;
             foreach($cDirections as $shift => $dir) {
                 // Do the cardinal direction
                 if ($bitField & (1<<$shift)) {
-                    if (!is_null($cDir)) return NULL;  // Can't have two cardinal directions!
+                    if (!is_null($cDir)) return null;  // Can't have two cardinal directions!
                     $cDir = $dir;
                 }
                 // Do the ordinal direction that is +45deg from the cardinal
                 if ($bitField & (1<<($shift+1))) {
-                    if (!is_null($oDir)) return NULL;  // Can't have two ordinal directions!
+                    if (!is_null($oDir)) return null;  // Can't have two ordinal directions!
                     $oDir = $dir + 45.0;
                 }
             }
@@ -109,7 +109,7 @@ if (!class_exists('windDirectionSensor')) {
             // One special case first.  (see notes in docblock
             if (($cDir == 0) && ($oDir == 315)) $cDir = 360;
             // If the difference is not 45 it is a bad reading
-            if (abs($cDir - $oDir) != 45) return NULL;
+            if (abs($cDir - $oDir) != 45) return null;
             // Return the average of the two directions.  This gives
             // us the inbetween readings.
             return ($cDir + $oDir)/2;

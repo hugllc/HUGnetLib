@@ -105,8 +105,8 @@ class windDirectionSensorTest extends sensorTestBase {
             array(0x30, array(), 0, 0, 0, 202.5),
             array(0x60, array(), 0, 0, 0, 247.5),
             array(0xC0, array(), 0, 0, 0, 292.5),
-            array(0x05, array(), 0, 0, 0, NULL),
-            array(0x00, array(), 0, 0, 0, NULL),
+            array(0x05, array(), 0, 0, 0, null),
+            array(0x00, array(), 0, 0, 0, null),
         );
     }
     /**

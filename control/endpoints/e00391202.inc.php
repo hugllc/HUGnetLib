@@ -33,14 +33,14 @@
 	include(dirname(__FILE__).'/../group.inc.php');
 	$form = new HTML_QuickForm('relayControl');
 	$form->addElement('hidden', 'DeviceKey');
-	$form->addElement('hidden', 'noFetchSetup', TRUE);
+	$form->addElement('hidden', 'noFetchSetup', true);
 	for($fet = 0; $fet < 2; $fet++) {
 		$location = (isset($devInfo['Location'][$fet])) ? $devInfo['Location'][$fet] : "Relay ".$fet;
-		$form->addElement('header', NULL, $location);
+		$form->addElement('header', null, $location);
 		$radio = array();
-		$radio[] = $form->createElement('radio', 'RELAY'.$fet, NULL, 'Off', 0);
-		$radio[] = $form->createElement('radio', 'RELAY'.$fet, NULL, 'On', 128);
-		$form->addGroup($radio, NULL, "Power:");
+		$radio[] = $form->createElement('radio', 'RELAY'.$fet, null, 'Off', 0);
+		$radio[] = $form->createElement('radio', 'RELAY'.$fet, null, 'On', 128);
+		$form->addGroup($radio, null, "Power:");
 	}
 	$form->setConstants($devInfo);
 	$form->addElement('submit', 'postSetup', 'Update');

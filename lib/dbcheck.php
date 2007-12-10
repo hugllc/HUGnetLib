@@ -56,7 +56,7 @@
 
 	while($row = $db->fetchRow($res, MDB_FETCHMODE_ASSOC)) {
 		foreach($row as $key => $val) {
-         if ((stristr($key, "slave") !== FALSE) || (stristr($key, "master_host") !== FALSE) || (stristr($key, "seconds_behind") !== FALSE)){
+         if ((stristr($key, "slave") !== false) || (stristr($key, "master_host") !== false) || (stristr($key, "seconds_behind") !== false)){
             print $key." -> ".$val."\n";
          }
       }

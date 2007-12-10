@@ -41,15 +41,15 @@ class dfTable
 
 	var $_altTableFormats = array('CSV');
 	var $_lineEnd = "\r\n";
-	var $_export = TRUE;
-	var $_filterForm = FALSE;
-	var $_filterRow = FALSE;
+	var $_export = true;
+	var $_filterForm = false;
+	var $_filterRow = false;
 	var $_sep = ',';
 	var $_rowType = array();
 	var $_subTotalCol = array();
-	var $_firstData = NULL;
+	var $_firstData = null;
 
-	function dfTable($name = 'Default', $attributes=NULL, $tabOffset=0) {
+	function dfTable($name = 'Default', $attributes=null, $tabOffset=0) {
 
 		$replace = array(' ', '"', "'");
 
@@ -58,7 +58,7 @@ class dfTable
 		$this->_tableName = $name;
 		$this->_tableFormatName = str_replace($replace, array(), $this->_tableName)."TableFormat";
 		$type = trim($_REQUEST[$this->_tableFormatName]);
-		if (array_search($type, $this->_altTableFormats) !== FALSE) {
+		if (array_search($type, $this->_altTableFormats) !== false) {
 			$this->_tableType = $type;
 		} else {
 			$this->_tableType = 'HTML';
@@ -120,7 +120,7 @@ class dfTable
 		
 	}
 
-	function setFilter($row=FALSE, $form=FALSE) {
+	function setFilter($row=false, $form=false) {
 		$this->_filterForm = (bool)$form;
 		$this->_filterRow = (bool)$row;
 	}
@@ -138,7 +138,7 @@ class dfTable
 		}
 		if (empty($return['field'])) list($return['field'], $tmp) = each($this->_listHead);
 		$return['contains'] = (bool)$return['contains'];
-		if (empty($return['filter'])) $this->_filterRow = FALSE;
+		if (empty($return['filter'])) $this->_filterRow = false;
 		return $return;
 	}
 	
@@ -146,7 +146,7 @@ class dfTable
 		if ($this->_filterRow) {
 			return (is_string(strstr($row[$this->_filter['field']], $this->_filter['filter'])) == $this->_filter['contains']);
 		} else {
-			return TRUE;
+			return true;
 		}
 	}
 	
@@ -159,7 +159,7 @@ class dfTable
 		$group[] = &$this->_filterForm->createElement('text', $this->_tableFormatName.'Filter', '');
 		$group[] = &$this->_filterForm->createElement('submit', $this->_tableFormatName.'Submit', 'Go');
 
-		$this->_filterForm->addGroup($group, NULL, "Filter By:");
+		$this->_filterForm->addGroup($group, null, "Filter By:");
 		
 		$def = $this->getFilter();
 		$def[$this->_tableFormatName.'Field'] = $def['field'];
@@ -176,7 +176,7 @@ class dfTable
 			define the order of the columns in the list.
 
 	*/
-	function createList($header, $fill=NULL, $headerPeriod=0, $addHeader=TRUE)
+	function createList($header, $fill=null, $headerPeriod=0, $addHeader=true)
 	{
 		switch($this->_tableType) {
 			case 'Excel':
@@ -188,8 +188,8 @@ class dfTable
 				break;
 			default:
 				$this->_HTML_Table = new HTML_Table($attributes, $tabOffset);
-				$this->_HTML_Table->setAutoGrow(TRUE);
-				if ($fill !== NULL) {
+				$this->_HTML_Table->setAutoGrow(true);
+				if ($fill !== null) {
 					$this->_HTML_Table->setAutoFill($fill);
 				}
 				break;
@@ -230,7 +230,7 @@ class dfTable
 						$sep = "";
 						$col = 0;
 						foreach($this->_listHead as $key => $val) {
-							if (array_search($key, $cols) !== FALSE) {
+							if (array_search($key, $cols) !== false) {
 								$formula .= $sep.$this->_getColLetter($col).($this->_listRow+1);
 								$sep = ",";
 							}
@@ -271,7 +271,7 @@ class dfTable
 	/**
 		@brief Adds a text divider to the list.	
 	*/
-	function addListDividerRow($text, $attrib=NULL, $export=TRUE) {
+	function addListDividerRow($text, $attrib=null, $export=true) {
 		switch($this->_tableType) {
 			case 'CSV':
 				break;
@@ -341,7 +341,7 @@ class dfTable
 	}
 
 
-	function addManyListRows($data, $checkAttrib=FALSE) {
+	function addManyListRows($data, $checkAttrib=false) {
 		if (is_array($data)) {
 			switch($this->_tableType) {
 				case 'CSV':
@@ -356,9 +356,9 @@ class dfTable
 					}
 				break;
 			}
-			return TRUE;
+			return true;
 		} else {
-			return FALSE;	
+			return false;	
 		}
 	}
 
@@ -367,7 +367,7 @@ class dfTable
 		@param $data array Data to use in the list.
 		@return The number of the row that was inserted
 	*/
-	function addListSubTotalRow($subCols, $type='data', $attrib=NULL, $mytype='subtotal') {
+	function addListSubTotalRow($subCols, $type='data', $attrib=null, $mytype='subtotal') {
 		$col = 0;
 		
 		switch($this->_tableType) {
@@ -384,7 +384,7 @@ class dfTable
 				$col = 0;
 				foreach(array_keys($this->_listHead) as $key) {
 
-					if ($subCols[$key] === TRUE) {
+					if ($subCols[$key] === true) {
 						$formula = '=SUM(';
 						$sep = "";
 						for($row = 0; $row < $this->_listRow; $row++) {
@@ -414,7 +414,7 @@ class dfTable
 				foreach(array_keys($this->_listHead) as $key) {
 
 					$subtotal = 0;
-					if ($subCols[$key] === TRUE) {
+					if ($subCols[$key] === true) {
 						for($row = 0; $row < $this->_listRow; $row++) {
 							if ($this->_rowType[$row] == $type) {
 								$subtotal += (float) strip_tags($this->_HTML_Table->getCellContents($row, $col));
@@ -441,7 +441,7 @@ class dfTable
 		@param $data array Data to use in the list.
 		@return The number of the row that was inserted
 	*/
-	function addListRow($data, $attrib=NULL, $type='data') {
+	function addListRow($data, $attrib=null, $type='data') {
 		$col = 0;
 		
 		if ($this->filter($data)) {
@@ -459,7 +459,7 @@ class dfTable
 					foreach(array_keys($this->_listHead) as $key) {
 						if (isset($data[$key])) {
 							$cell = stripslashes(strip_tags($data[$key]));
-						} else if ($this->_autoFill != NULL) {
+						} else if ($this->_autoFill != null) {
 							$cell = stripslashes(strip_tags($this->_autoFill));
 						} else {
 							unset($cell);
@@ -475,16 +475,16 @@ class dfTable
 					}
 					foreach(array_keys($this->_listHead) as $key) {
 						$this->_HTML_Table->setCellContents($this->_listRow, $col++, stripslashes($data[$key]));
-						if (is_array($attrib)) $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib, TRUE);
+						if (is_array($attrib)) $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib, true);
 					}					
 					break;
 			}
 			$this->_rowType[$this->_listRow] = $type;
 			$this->_getListSubTotalCols($data);
-			if ($this->_firstData == NULL) $this->_firstData = $this->_listRow;
+			if ($this->_firstData == null) $this->_firstData = $this->_listRow;
 			return $this->_listRow++;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -501,7 +501,7 @@ class dfTable
 			case 'Excel':
 				break;
 			default:
-				$this->_HTML_Table->altRowAttributes($this->_firstData, array('class' => $class1), array('class' => $class2), TRUE);
+				$this->_HTML_Table->altRowAttributes($this->_firstData, array('class' => $class1), array('class' => $class2), true);
 				
 				$col = 0;
 				foreach(array_keys($this->_listHead) as $key) {
@@ -521,13 +521,13 @@ class dfTable
 			define the order of the columns in the list.
 
 	*/
-	function createInfo($header=array(), $data=array(), $fill=NULL, $headerPeriod=0)
+	function createInfo($header=array(), $data=array(), $fill=null, $headerPeriod=0)
 	{
-		$this->setExport(FALSE);
-		$this->setFilter(FALSE);
+		$this->setExport(false);
+		$this->setFilter(false);
 		$this->_HTML_Table = new HTML_Table($attributes, $tabOffset);
-		$this->_HTML_Table->setAutoGrow(TRUE);
-		if ($fill !== NULL) {
+		$this->_HTML_Table->setAutoGrow(true);
+		if ($fill !== null) {
 			$this->_HTML_Table->setAutoFill($fill);
 		}
 
@@ -536,7 +536,7 @@ class dfTable
 		$this->addInfoData($data, $header);
 	}
 
-	function addInfoData($data, $header=NULL) {
+	function addInfoData($data, $header=null) {
 		$header = is_array($header) ? $header : $this->_infoHeader;
 		$col = 0;
 		foreach($header as $key => $head) {
@@ -564,7 +564,7 @@ class dfTable
 			}
 
 		} else {
-			if ($data !== NULL) {
+			if ($data !== null) {
 				$this->_HTML_Table->setHeaderContents($this->_infoRow, $col++, $head);
 				$this->_HTML_Table->setCellContents($this->_infoRow, $col++, stripslashes($data));
 				$this->_infoRow++;
@@ -580,7 +580,7 @@ class dfTable
 		@param $class2 string the class to use for the other rows.	
 	*/
 	function finishInfo($attrib = array(), $class1='row1', $class2='row2') {
-		$this->_HTML_Table->altRowAttributes(0, array('class' => $class1), array('class' => $class2), TRUE);
+		$this->_HTML_Table->altRowAttributes(0, array('class' => $class1), array('class' => $class2), true);
 		foreach($this->_infoKeys as $key => $row) {
 			if (isset($attrib[$row])) {
 				$this->_HTML_Table->updateRowAttributes($key, $attrib[$row]);

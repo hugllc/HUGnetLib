@@ -143,7 +143,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
         return array(
             array("", 6, "0", "000000"),
             array("12345678", 5, "0", "45678"),
-            array("12", 4, NULL, "0012"),
+            array("12", 4, null, "0012"),
         );
     }
 
@@ -229,7 +229,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     public static function dataHexify() {
         return array(
-            array(1, NULL, "01"),
+            array(1, null, "01"),
             array(-1, 4, "FFFF"),
             array(1024, 2, "00"),
             array(1024, 4, "0400"),

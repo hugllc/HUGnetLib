@@ -32,7 +32,7 @@
 if (!class_exists("e00391201")) {
 
 /*
-define("e00391106", TRUE);
+define("e00391106", true);
 define("e00391102B_EEPROM_READ", "0A");
 define("e00391102B_SRAM_READ", "0B");
 define("e00391106_SETCONFIG", "6F");

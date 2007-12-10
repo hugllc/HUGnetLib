@@ -35,26 +35,26 @@
     $form->addElement('hidden', 'module', $_REQUEST['module']);
 	$form->addElement('hidden', 'hugnetengr_op', $_REQUEST['hugnetengr_op']);
 	$form->addElement('hidden', 'DeviceKey');
-	$form->addElement('hidden', 'noFetchSetup', TRUE);
+	$form->addElement('hidden', 'noFetchSetup', true);
 	for($fet = 0; $fet < 4; $fet++) {
 		$location = (isset($devInfo['Location'][$fet])) ? $devInfo['Location'][$fet] : "FET ".$fet;
-		$form->addElement('header', NULL, $location." : ".$devInfo['FET'.$fet.'pMode']." Mode");
+		$form->addElement('header', null, $location." : ".$devInfo['FET'.$fet.'pMode']." Mode");
 		$options = array(0 => 'Digital', 1 => 'Analog - Hi Z', 2 => 'Analog - Voltage', 3 => 'Analog - Current');
 		$form->addElement('select', 'FET'.$fet.'Mode', "Mode:", $options);
 		switch($devInfo['FET'.$fet.'Mode'])
 		{
 			case 0:
 				$radio = array();
-				$radio[] = $form->createElement('radio', 'FET'.$fet, NULL, 'Off', 0);
-				$radio[] = $form->createElement('radio', 'FET'.$fet, NULL, 'On', 128);
-				$form->addGroup($radio, NULL, "Power:");
+				$radio[] = $form->createElement('radio', 'FET'.$fet, null, 'Off', 0);
+				$radio[] = $form->createElement('radio', 'FET'.$fet, null, 'On', 128);
+				$form->addGroup($radio, null, "Power:");
 				break;
 			case 1:
 				break;
 			default:
 				$form->addElement('text', 'FET'.$fet, "Set Point:", array('size' => 3, 'maxlength' => 3));
-				$form->addRule('FET'.$fet, "Set Point must be numeric", 'numeric', NULL, 'client');
-				$form->addRule('FET'.$fet, "Set Point can not be empty", 'required', NULL, 'client');
+				$form->addRule('FET'.$fet, "Set Point must be numeric", 'numeric', null, 'client');
+				$form->addRule('FET'.$fet, "Set Point can not be empty", 'required', null, 'client');
 				$form->addElement('select', 'FET'.$fet.'Mult', "Multiplier:", array(0,1,2,3));
 				break;
 		}

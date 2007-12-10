@@ -62,7 +62,7 @@ class epsocket {
     /** @var int How many times we retry the packet until we get a good one */
     var $Retries = 2;
     /** @var array Server information is stored here. */
-    var $socket = FALSE;
+    var $socket = false;
     /** @var int The error number.  0 if no error occurred */
     var $Errno = 0;
     /** @var string The error string */
@@ -79,7 +79,7 @@ class epsocket {
     /** @var int The timeout for waiting for a packet in seconds */
     var $SockTimeout = 2;
     /** @var bool Whether we should print out a lot output */
-    var $verbose = FALSE;        
+    var $verbose = false;        
     /** @var int The default period for checking in with the servers */
     var $CheckPeriod = 60;        
     /** @var array Array of strings that we are reading */
@@ -89,7 +89,7 @@ class epsocket {
      *   Write data out a socket
      *
      * @param string $data The data to send out the socket
-     * @return int The number of bytes written on success, FALSE on failure
+     * @return int The number of bytes written on success, false on failure
      */
     function Write($data) {
         if ($this->CheckConnect()) $this->Connect();
@@ -104,20 +104,20 @@ class epsocket {
      *   Read data from the server
      *
      * @param int $timeout The amount of time to wait for the server to respond
-     * @return int Read bytes on success, FALSE on failure
+     * @return int Read bytes on success, false on failure
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
 
         $read = array($this->socket);
-        $socks = @stream_select ($read, $write=NULL, $except=NULL, $timeout);
-        $char = FALSE;
-        if ($socks === FALSE) {
+        $socks = @stream_select ($read, $write=null, $except=null, $timeout);
+        $char = false;
+        if ($socks === false) {
             if ($this->verbose) print "Bad Connection\r\n";
         } else if (count($read) > 0) {
             foreach($read as $tsock) {
                 $char = @fread($tsock, 1);
-                if (($char === FALSE) || ($char === EOF)) return FALSE;
+                if (($char === false) || ($char === EOF)) return false;
 //                $char = ord($char);
             }
         }
@@ -129,10 +129,10 @@ class epsocket {
      *   
      */
     function Close() {
-        if ($this->socket === FALSE) return;
+        if ($this->socket === false) return;
         if ($this->verbose) print("Closing Connection\r\n");
         fclose($this->socket);
-        $this->socket = FALSE;
+        $this->socket = false;
     }
 
     /**
@@ -143,15 +143,15 @@ class epsocket {
      *   ep_socket::Connect().
      *
      * @uses ep_socket::Connect()
-     * @return bool TRUE if the connection is good, FALSE otherwise
+     * @return bool true if the connection is good, false otherwise
     */
     function CheckConnect() {
 
-        if ($this->socket === FALSE) return FALSE;
+        if ($this->socket === false) return false;
         if (feof($this->socket)) {
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }            
     }
     
@@ -165,17 +165,17 @@ class epsocket {
      * @param string $server Name or IP address of the server to connect to
      * @param int $port The TCP port on the server to connect to
      * @param int $timeout The time to wait before giving up on a bad connection
-     * @return bool TRUE if the connection is good, FALSE otherwise
+     * @return bool true if the connection is good, false otherwise
      */
     function Connect($server = "", $port = "", $timeout=0) {
         
-        if ($this->CheckConnect()) return TRUE;
+        if ($this->CheckConnect()) return true;
 
         $this->Close();
         if (!empty($server)) $this->Server = $server;
         if (!empty($port)) $this->Port = $port;
 
-        if (empty($this->Server) || empty($this->Port)) return FALSE;
+        if (empty($this->Server) || empty($this->Port)) return false;
         
         if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
         return $this->connectOpenSocket();
@@ -186,13 +186,13 @@ class epsocket {
      */
     private function connectOpenSocket() {
         $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-        if ($this->socket !== FALSE) {
-            stream_set_blocking($this->socket, FALSE);
+        if ($this->socket !== false) {
+            stream_set_blocking($this->socket, false);
             if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$this->Port."\n");
-            return TRUE;
+            return true;
         }
         if ($this->verbose) print("Connection to ".$this->Server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
-        return FALSE;
+        return false;
     
     }
 
@@ -204,7 +204,7 @@ class epsocket {
      *       the default port.
      * @param bool $verbose Make the class put out a lot of output
      */
-    function __construct($server="", $tcpport="", $verbose=FALSE) {
+    function __construct($server="", $tcpport="", $verbose=false) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
         if (empty($server)) $server = "127.0.0.1";

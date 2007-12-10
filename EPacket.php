@@ -136,7 +136,7 @@ class EPacket {
     var $SockTimeout = 2;
 
     /** Whether to be verbose */
-    var $verbose = FALSE;
+    var $verbose = false;
 
     /** The preamble byte */
     private static $preambleByte = "5A";
@@ -146,22 +146,22 @@ class EPacket {
     private $maxSN = 0x20;
 
     /** Whether or not to return ALL packets received. */
-    protected $_getAll = FALSE;
+    protected $_getAll = false;
     /** Whether or not to return unsolicited packets.*/
-    private $_getUnsolicited = FALSE;
+    private $_getUnsolicited = false;
     /** The ID that unsolicited packets will be sent to. */
     public $unsolicitedID = '000000'; 
 
     /** Object for the incoming packet callback */
-    private $callBackObject = NULL;
+    private $callBackObject = null;
     /** Method to use on above object (if it is an object) */
-    private $callBackFunction = NULL;
+    private $callBackFunction = null;
 
     /** Check to see if we are a unique serial number on this net */
-    protected $_DeviceIDCheck = TRUE;
+    protected $_DeviceIDCheck = true;
 
     /** @var bool Tells us whether to use direct access to the endpoints */
-    private $_direct = TRUE;
+    private $_direct = true;
 
     /**
      *   @private
@@ -179,12 +179,12 @@ class EPacket {
      *   ...
      *   </code> 
      */
-    function PacketBuild($Packet, $from=NULL) {
+    function PacketBuild($Packet, $from=null) {
         if (empty($from)) $from = $this->SN;
         if (!is_array($Packet)) $Packet = array();
         $string = "";
         $Packet = array_change_key_case($Packet, CASE_LOWER);
-        $return = FALSE;
+        $return = false;
         $Packet["to"] = trim($Packet["to"]);
         $Packet["to"] = substr($Packet["to"], 0, 6);
         if (strlen($Packet["to"]) > 0) {
@@ -238,10 +238,10 @@ class EPacket {
      *
      *   @param string $function The name of the function or method to call
      *   @param object $object The object to use if $function is a method.  If
-     *        this is NULL or unset the function will be called as a standard
+     *        this is null or unset the function will be called as a standard
      *        function.
      */
-    function packetSetCallBack($function, &$object = NULL) {
+    function packetSetCallBack($function, &$object = null) {
         $this->callBackFunction = $function;
         $this->callBackObject = &$object;
     }
@@ -317,7 +317,7 @@ class EPacket {
      *   @param array $Info The array with the device information in it
      *   @param array $Packet Array with packet information in it.
      *   @param bool $GetReply Whether or not to wait for a reply.
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
     /**
      *   Sends out a packet
@@ -325,13 +325,13 @@ class EPacket {
      *   @param array $Info The array with the device information in it
      *   @param array $Packet Array with packet information in it.
      *   @param bool $GetReply Whether or not to wait for a reply.
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
-    function SendPacket(&$Info, $PacketList, $GetReply=TRUE, $pktTimeout = NULL) {
+    function SendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) {
         $pktTimeout = $this->getReplyTimeout($pktTimeout);
 
         // Setup the packet array
-        if (!is_array($PacketList)) return FALSE;
+        if (!is_array($PacketList)) return false;
         $PacketList = array_change_key_case($PacketList, CASE_LOWER);
         if (isset($PacketList['to'])) {
             $PacketList = array($PacketList);
@@ -354,7 +354,7 @@ class EPacket {
             if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
         }
-        if ($ret == array()) return FALSE;
+        if ($ret == array()) return false;
         return $ret;
 
     }
@@ -362,7 +362,7 @@ class EPacket {
     /**
      * Does the actual packet sending and calls the receive function
      *
-     *  Returns an array of packet arrays on success, FALSE on failure
+     *  Returns an array of packet arrays on success, false on failure
      *
      * @param array $Info The devInfo array
      * @param int $socket The socket to use
@@ -371,8 +371,8 @@ class EPacket {
      * @return mixed
      */
     private function sendPacketWrite($socket, &$Packet, $index) {
-        $ret = FALSE;
-        for($count = 0; ($count < $this->Retries) && ($ret == FALSE); $count++) {
+        $ret = false;
+        for($count = 0; ($count < $this->Retries) && ($ret == false); $count++) {
             if ($this->verbose) print "Sending: ".devInfo::hexifyStr($Packet["PktStr"])."\n";
             $write = $this->socket[$socket]->Write($Packet["PktStr"], $this->Packets[$index]);
             if (empty($write)) continue;
@@ -384,7 +384,7 @@ class EPacket {
     /**
      *  Gets a reply from the endpoint.
      *
-     *  Returns an array of packet arrays on success, FALSE on failure
+     *  Returns an array of packet arrays on success, false on failure
      *
      * @param int $socket The socket to use
      * @param int $index The packet index to use
@@ -396,9 +396,9 @@ class EPacket {
             $pktRet = $this->RecvPacket($socket, $this->Packets[$index]["pktTimeout"]);
             if (is_array($pktRet)) {
                 $ret[] = $pktRet;
-                if ($pktRet["Reply"] === TRUE) break;
+                if ($pktRet["Reply"] === true) break;
             }
-        } while ($pktRet !== FALSE);
+        } while ($pktRet !== false);
         return $ret;
     }
 
@@ -422,9 +422,9 @@ class EPacket {
      *   @param array $Info The device Info array
      *   @param string|int $to The deviceID to send the packet to
      *   @param array|string $data The data to send with the packet.
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
-    function sendReply($Info, $to, $data=NULL) {
+    function sendReply($Info, $to, $data=null) {
         if (!is_string($to)) $to = devInfo::hexify($to, 6);
         
         if (is_array($data)) $data = $this->arrayToData($data);        
@@ -434,7 +434,7 @@ class EPacket {
             'Data' => $data,
             'Command' => PACKET_COMMAND_REPLY,
         );
-        return $this->sendPacket($Info, array($pkt), FALSE);
+        return $this->sendPacket($Info, array($pkt), false);
     }
 
     /**
@@ -473,13 +473,13 @@ class EPacket {
     private function checkSN($Info, $key) {
         $Info = array("DeviceID" => $this->SNArray[$key]);
         if ($this->verbose) print "Checking Serial Number ".$this->SNArray[$key]."\r\n";
-        $ret = $this->ping($Info, TRUE);
+        $ret = $this->ping($Info, true);
         if (is_array($ret)) {
             unset($this->SNArray[$key]);
-            return FALSE;
+            return false;
         } else {
             $this->SN = $this->SNArray[$key];
-            return TRUE;
+            return true;
         }
     }
     /**
@@ -488,10 +488,10 @@ class EPacket {
      *
      *   @param array $Info The device information array
      */
-    function ChangeSN($Info = NULL) {
+    function ChangeSN($Info = null) {
         if (!is_array($Info)) $Info = array();
         $getAll = $this->_getAll;
-        $this->getAll(FALSE);
+        $this->getAll(false);
         $count = count($this->SNArray);
         for($i = 0; $i < $count; $i++) {
             $key = array_rand($this->SNArray, 1);
@@ -518,18 +518,18 @@ class EPacket {
      *
      *   @param int $socket The socket to send it out of.  0 is the default.
      *   @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
-     *   @return bool FALSE on failure, the Packet array on success
+     *   @return bool false on failure, the Packet array on success
      */
     function RecvPacket($socket, $timeout=0) {
         $timeout = $this->getReplyTimeout($timeout);
         $Start = time();
-        $GotReply = FALSE;
-        if (!is_object($this->socket[$socket])) return FALSE;
+        $GotReply = false;
+        if (!is_object($this->socket[$socket])) return false;
 
         do {    
             if (!$this->recvPacketGetChar($socket, $timeout)) continue;
             $GotReply = $this->recvPacketCheckPkt($socket);
-            if ($GotReply !== FALSE) break;
+            if ($GotReply !== false) break;
         } while ((time() - $Start) < $timeout) ;
         return $GotReply;
 
@@ -537,25 +537,25 @@ class EPacket {
     /**
      *  Gets a character
      *
-     * Returns the packet array on success, and FALSE on failure
+     * Returns the packet array on success, and false on failure
      *
      *  @param int $socket The socket we are using
      *  @return mixed
      */
     private function recvPacketGetChar($socket, $timeout) {
         $char = $this->socket[$socket]->ReadChar($timeout);
-        if ($char !== FALSE) {
+        if ($char !== false) {
             $char = devInfo::hexify(ord($char));
             $this->socket[$socket]->buffer .= $char;
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }    
     }
     /**
      *  Checks to see if what is in the buffer is a packet
      *
-     * Returns the packet array on success, and FALSE on failure
+     * Returns the packet array on success, and false on failure
      *
      *  @param int $socket The socket we are using
      *  @return mixed
@@ -568,7 +568,7 @@ class EPacket {
             $this->socket[$socket]->buffer = "";
             return $GotReply;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
@@ -576,7 +576,7 @@ class EPacket {
     /**
      *  Finds a potential packet in a string
      *
-     * Returns the packet array on success, and FALSE on failure
+     * Returns the packet array on success, and false on failure
      *
      *  @param int $socket The socket we are using
      *  @return mixed
@@ -589,7 +589,7 @@ class EPacket {
             $ret = substr($pkt, 0, (9+$len)*2);
             return $ret;
         } else {
-            return FALSE;
+            return false;
         }
     
     }
@@ -598,7 +598,7 @@ class EPacket {
      *  Checks to see if a particular DeviceID is a gateway
      * 
      *  @param int|string $DeviceID The DeviceID to check
-     *  @return bool TRUE if the DeviceID belongs to a gateway, FALSE otherwise.
+     *  @return bool true if the DeviceID belongs to a gateway, false otherwise.
      */
     function isGateway($DeviceID) {
         if (is_string($DeviceID)) {
@@ -611,9 +611,9 @@ class EPacket {
      *  Sets the flag to get and return all packets.
      * 
      *  @param bool $DeviceID The DeviceID to check
-     *  @return bool TRUE if the DeviceID belongs to a gateway, FALSE otherwise.
+     *  @return bool true if the DeviceID belongs to a gateway, false otherwise.
      */
-    function getAll($val = TRUE) {
+    function getAll($val = true) {
         $this->_getAll = (bool) $val;
     }
 
@@ -632,16 +632,16 @@ class EPacket {
      * @param array $reply The packet returned
      */
     private function findReply($reply) {
-        if (!is_array($this->Packets)) return FALSE;
+        if (!is_array($this->Packets)) return false;
         foreach($this->Packets as $key => $pkt) {
             if ($this->isReply($pkt, $reply)) return $key;
         }
-        return FALSE;
+        return false;
     }
     /**
      * Checks to see if $reply is a reply to the packet $pkt 
      * that was sent out.  If it is, it sets all sorts of good
-     * parameters.  If it is not it returns FALSE.
+     * parameters.  If it is not it returns false.
      *
      * @param array $pkt The packet sent out
      * @param array $reply The packet returned
@@ -649,17 +649,17 @@ class EPacket {
      * @return mixed
      */
     private function checkPacketReply(&$reply, $socket) {
-        if ($reply['Command'] != PACKET_COMMAND_REPLY) return FALSE;
+        if ($reply['Command'] != PACKET_COMMAND_REPLY) return false;
         $key = $this->findReply($reply);
-        if ($key === FALSE) return FALSE;
+        if ($key === false) return false;
 
         $reply = array_merge($this->Packets[$key], $reply);
         $reply["ReplyTime"] = $reply["Time"] - $reply["SentTime"]; 
         $reply["Socket"] = $socket;
         $reply["GatewayKey"] = $socket;
         $reply["sendCommand"] = $this->Packets[$key]['sendCommand'];
-        $reply["Reply"] = TRUE;
-        $reply["toMe"] = TRUE;
+        $reply["Reply"] = true;
+        $reply["toMe"] = true;
         $reply["isGateway"] = $this->isGateway($reply["From"]);
     
         unset($this->Packets[$key]);
@@ -674,18 +674,18 @@ class EPacket {
      * @return mixed
      */
     private function checkPacketOther(&$pkt, $socket) {
-        if ($pkt["Reply"] !== TRUE) {
+        if ($pkt["Reply"] !== true) {
             $pkt["Unsolicited"] = (trim(strtoupper($pkt["To"])) == $this->unsolicitedID);
             $pkt["Socket"] = $socket;
             $pkt["GatewayKey"] = $socket;
-            $pkt["Reply"] = FALSE;
+            $pkt["Reply"] = false;
             $pkt["toMe"] = (trim(strtoupper($pkt["To"])) == $this->SN);
             $pkt["isGateway"] = $this->isGateway($pkt["From"]);
 
             $this->packetCallBack($pkt);
                 
             if (!($this->_getAll ||  ($pkt["Unsolicited"] && $this->_getUnsolicited))) {
-                $pkt = FALSE;
+                $pkt = false;
             }
         }
     }     
@@ -706,13 +706,13 @@ class EPacket {
      *
      *   @param string $data The raw packet data
      *   @param int $sock The socket we got the data on
-     *   @return bool|array FALSE on failure, The interpreted packet on success.
+     *   @return bool|array false on failure, The interpreted packet on success.
      */
     function InterpPacket($data, $sock=0) {
         $pkt = $this->UnbuildPacket($data);
         if ($pkt["Checksum"] != $pkt["CalcChecksum"]) {
             if ($this->verbose) print "Bad Packet Received: ".$data."\r\n";
-            return FALSE;
+            return false;
         }
         $this->checkPacketReply($pkt, $sock);
         $this->checkPacketTimeout();
@@ -777,11 +777,11 @@ class EPacket {
      *   @return string returns the packet it got.
      */
     function monitor($Info, $timeout = 0) {
-        $this->_getAll = TRUE;
+        $this->_getAll = true;
         if ($this->verbose) print("Waiting on Packets from ".$Info["GatewayName"].":".$Info["GatewayPort"]."\n");
         $return = $this->Connect($Info);
         $return = $this->RecvPacket($Info['GatewayKey'], $timeout);
-        $this->_getAll = FALSE;
+        $this->_getAll = false;
         return($return);
     }
     
@@ -790,13 +790,13 @@ class EPacket {
      *   Sends a ping out to the desired device
      * 
      *   @param array $Info Device information array
-     *   @param bool $find If TRUE this causes it to have the packet sent out by ALL
+     *   @param bool $find If true this causes it to have the packet sent out by ALL
      *        controller boards connected.  This is to find a device that may not be
      *        reporting because the controller board it is connected to doesn't know it
      *        exists.
-     *   @return bool Returns TRUE if it got a reply, FALSE otherwise
+     *   @return bool Returns true if it got a reply, false otherwise
      */
-    function ping($Info, $find=FALSE) {
+    function ping($Info, $find=false) {
         if ($this->verbose) print("Pinging ".$Info["DeviceID"]."\n");
 
         if ($find) {
@@ -815,32 +815,32 @@ class EPacket {
      *   Check if we are connected.  If not it connects to the gateway specified in $Info.
      *
      *   @param array $Info Array Infomation about the device to use            
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
     function Connect(&$Info) {
         if (empty($Info["GatewayKey"])) $Info["GatewayKey"] = 1;
-        if ($this->checkConnect($Info["GatewayKey"])) return TRUE;
+        if ($this->checkConnect($Info["GatewayKey"])) return true;
         $ret = $this->connectOpenSocket($Info);
         if ($ret) $ret = $this->socket[$Info["GatewayKey"]]->Connect();
         if ($ret) $this->connectSetSN($Info);
-        return TRUE;
+        return true;
     }
     
     function checkConnect($socket) {
-        if (!is_object($this->socket[$socket])) return FALSE;
+        if (!is_object($this->socket[$socket])) return false;
         return $this->socket[$socket]->CheckConnect();
     }
     /**
      *   Opens a socket depending on the value of $Info["socketType"]
      *
      *   @param array $Info Array Infomation about the device to use            
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
     private function connectOpenSocket($Info) {
         if ($Info['socketType'] == "db") {
             $this->socket[$Info['GatewayKey']] = new dbsocket($this->_db, $this->verbose);
         } else if ($Info['socketType'] == "test") {
-            if (!class_exists("epsocketMock")) return FALSE;
+            if (!class_exists("epsocketMock")) return false;
             $this->socket[$Info['GatewayKey']] = new epsocketMock($Info["GatewayIP"], $Info["GatewayPort"]);
         } else {
             $this->socket[$Info['GatewayKey']] = new epsocket($Info["GatewayIP"], $Info["GatewayPort"], $this->verbose);
@@ -852,11 +852,11 @@ class EPacket {
      *   Figures out if we need to check the serial number.
      *
      *   @param array $Info Array Infomation about the device to use            
-     *   @return bool FALSE on failure, TRUE on success
+     *   @return bool false on failure, true on success
      */
     private function connectSetSN(&$Info) {
         if ($this->_DeviceIDCheck) {
-            if (($this->SN == FALSE) || ((hexdec($this->SN) >= $this->maxSN) || (hexdec($this->SN) < 1))) {
+            if (($this->SN == false) || ((hexdec($this->SN) >= $this->maxSN) || (hexdec($this->SN) < 1))) {
                 $this->ChangeSN($Info);
                 if ($this->verbose) print "Using Serial Number ".$this->SN."\r\n";
                 // Put something here
@@ -879,10 +879,10 @@ class EPacket {
      *   If $Info is given it will try to connect to the server that is specified in it.
      *
      *   @param array $Info Infomation about the device to use
-     *   @param bool $verbose If TRUE a lot of stuff is printed out
+     *   @param bool $verbose If true a lot of stuff is printed out
      *   @param object $db adodb database object
      */
-    function __construct($Info=FALSE, $verbose=FALSE, &$db = NULL, $SNCheck=TRUE) {
+    function __construct($Info=false, $verbose=false, &$db = null, $SNCheck=true) {
         if (is_object($db)) {
             $this->_db = &$db;
         }
@@ -898,9 +898,9 @@ class EPacket {
      *  Set the flag as to whether to check the DeviceID.  If the DeviceID
      *  is not checked then it will be set to the default and stay that way.
      *
-     *  @param bool $val TRUE checks the serial number FALSE does not.
+     *  @param bool $val true checks the serial number false does not.
      */
-    function SNCheck($val=TRUE) {
+    function SNCheck($val=true) {
         $this->_DeviceIDCheck = (bool) $val;
     }
 

@@ -159,7 +159,7 @@ define("e00391102B_SENSORS", 9);
                 // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
                 for ($i = 0; $i < $data["NumSensors"]; $i++) {
-                    $key = $this->getOrder($Info, $i, TRUE);
+                    $key = $this->getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 1) {
                         $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 2);
                     } else {

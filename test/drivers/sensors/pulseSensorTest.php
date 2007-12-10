@@ -107,9 +107,9 @@ class pulseSensorTest extends sensorTestBase {
      */
     public static function dataPulseCheck() {
         return array(
-            array(1, array(), "PPM", "diff", TRUE),
-            array(0, array(), "PPM", "diff", TRUE),
-            array(-1, array(), "PPM", "diff", FALSE),
+            array(1, array(), "PPM", "diff", true),
+            array(0, array(), "PPM", "diff", true),
+            array(-1, array(), "PPM", "diff", false),
         );
     }
 

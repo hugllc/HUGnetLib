@@ -81,9 +81,9 @@ class filterTest extends PHPUnit_Framework_TestCase {
      */
     public static function dataRegisterFilter() {
         return array(
-            array("testFilter", TRUE),
-            array("testFilterBad", FALSE),
-            array("testFilterNoFilters", FALSE),
+            array("testFilter", true),
+            array("testFilterBad", false),
+            array("testFilterNoFilters", false),
         );
     }
     /**
@@ -171,7 +171,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
         return array(
             array("testType", "", "sameClass", "testType", "testFilter1"),
             array("testType", "testFilter2", "sameClass", "testType", "testFilter2"),
-            array("badType", "testFilter2", NULL, "badType", "testFilter2"),
+            array("badType", "testFilter2", null, "badType", "testFilter2"),
         );
     }
     /**

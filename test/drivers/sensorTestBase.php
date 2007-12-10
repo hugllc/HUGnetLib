@@ -182,7 +182,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
         foreach($sensor['unitModes'] as $unit => $mode) {
             // Check to make sure each unit in the mode list is also in the validUnits list
             $found = array_search($unit, $sensor['validUnits']);
-            if ($found !== FALSE) $found = TRUE;
+            if ($found !== false) $found = true;
             $this->assertTrue($found, $this->class.":".$type.":".$shortName.": Unit '$unit' not found in valid units list");
             // Check the modes based on the units.
             $this->assertType("string", $mode, $this->class.":".$type.":".$shortName.": Mode for unit '$unit' is not a string");
