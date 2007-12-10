@@ -288,7 +288,6 @@ class EPacket {
      */
     private function setupSendPacket(&$Info, &$Packet, $timeout, $getReply) {
         $Packet = array_change_key_case($Packet, CASE_LOWER);
-
         if (empty($Packet['data'])) $Packet['data'] = "";
         devInfo::setStringSize($Packet["to"], 6);
         devInfo::setStringSize($Packet["command"], 2);

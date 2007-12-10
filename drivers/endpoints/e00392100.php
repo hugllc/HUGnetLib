@@ -134,7 +134,7 @@ if (!class_exists("e00392100")) {
     
     	function ReadSensors($Info) {
     		$packet[0] = array(
-    			"Command" => eDEFAULT_SENSOR_READ,
+    			"Command" => EDEFAULT_SENSOR_READ,
     			"To" => $Info["DeviceID"],
     		);
     		switch ($Info['FWPartNum']) 

@@ -30,6 +30,12 @@
  *   @version $Id$    
  *
  */
+/** The default command to read config  */
+define("EDEFAULT_CONFIG_COMMAND", "5C");
+/** The default command to read sensors  */
+define("EDEFAULT_SENSOR_READ", "55");
+/** The default command to set the group  */
+define("EDEFAULT_SETGROUP", "5B");
 
 if (!class_exists('eDEFAULT')) {
     /**
@@ -164,7 +170,7 @@ if (!class_exists('eDEFAULT')) {
         function ReadSensors($Info) {
     
             $packet[0] = array(
-                "Command" => eDEFAULT_SENSOR_READ,
+                "Command" => EDEFAULT_SENSOR_READ,
                 "To" => $Info["DeviceID"],
             );
             $Packets = $this->packet->SendPacket($Info, $packet);
@@ -293,11 +299,11 @@ if (!class_exists('eDEFAULT')) {
         
             switch($Info["MemType"]) {
                 case EEPROM:
-                    $Type = eDEFAULT_EEPROM_READ;
+                    $Type = EDEFAULT_EEPROM_READ;
                     break;
                 case SRAM:
                 default:
-                    $Type = eDEFAULT_SRAM_READ;
+                    $Type = EDEFAULT_SRAM_READ;
                     break;
             }
             $return = array();

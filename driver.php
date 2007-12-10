@@ -46,12 +46,6 @@ define("ENDPOINT_GROUP", 36);
 define("ENDPOINT_BOREDOM", 42);
 /** Where in the config string the configuration ends  */
 define("ENDPOINT_CONFIGEND", 44);
-/** The default command to read config  */
-define("EDEFAULT_CONFIG_COMMAND", "5C");
-/** The default command to read sensors  */
-define("EDEFAULT_SENSOR_READ", "55");
-/** The default command to set the group  */
-define("EDEFAULT_SETGROUP", "5B");
 
 if (!defined(HUGNET_INCLUDE_PATH)) define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
 
