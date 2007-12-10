@@ -216,10 +216,10 @@ if (!class_exists("e00392100")) {
             $Info['ActiveSensors'] = $Info["NumSensors"];
             $this->InterpConfigParams($Info);
 
-            $this->InterpConfig00392006C($Info);
-            $this->InterpConfigSensors($Info);
-            $this->InterpConfigDownstream($Info);
-            $this->InterpConfigHUGnetPower($Info);
+            $this->_interpConfig00392006C($Info);
+            $this->_interpConfigSensors($Info);
+            $this->_interpConfigDownstream($Info);
+            $this->_interpConfigHUGnetPower($Info);
         }
 
         /**
@@ -229,7 +229,7 @@ if (!class_exists("e00392100")) {
          *
          * @return mixed
          */
-        private static function InterpConfig00392006C(&$Info) 
+        private static function _interpConfig00392006C(&$Info) 
         {
             if ($Info['FWPartNum'] == '0039-20-06-C') {
                 $Info['mcu'] = array(
@@ -253,7 +253,7 @@ if (!class_exists("e00392100")) {
          *
          * @return mixed
          */
-        private function InterpConfigSensors(&$Info) 
+        private function _interpConfigSensors(&$Info) 
         {
             $Info["Types"]                = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
@@ -273,7 +273,7 @@ if (!class_exists("e00392100")) {
          *
          * @return mixed
          */
-        private static function InterpConfigDownstream(&$Info) 
+        private static function _interpConfigDownstream(&$Info) 
         {
 
             if (!empty($Info["RawData"][PACKET_READDOWNSTREAMSN_COMMAND])) {
@@ -303,7 +303,7 @@ if (!class_exists("e00392100")) {
          *
          * @return mixed
          */
-        private static function InterpConfigHUGnetPower(&$Info) 
+        private static function _interpConfigHUGnetPower(&$Info) 
         {
             if (!empty($Info["RawData"][PACKET_HUGNETPOWER_COMMAND])) {
                 $pkt = &$Info["RawData"][PACKET_HUGNETPOWER_COMMAND];
