@@ -353,9 +353,9 @@ class driverTest extends PHPUnit_Framework_TestCase {
         $Info = array("DeviceID" => 1);
         
         // This has to go to eDEFAULT since it has no args.
-        $this->o->device = $this->getMock("device", array("UpdateDevice"), array(&$this->o));
+        $this->o->device = $this->getMock("device", array("updateDevice"), array(&$this->o));
         $this->o->device->expects($this->once())
-                  ->method('UpdateDevice')
+                  ->method('updateDevice')
                   ->with($this->arrayHasKey("DeviceID"));
         $this->o->UpdateDevice($Info);
     }
