@@ -36,8 +36,8 @@
  */
 
 // Call dbsocketTest::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "dbsocketTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "dbsocketTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -263,7 +263,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call dbsocketTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "dbsocketTest::main") {
+if (PHPUnit_MAIN_METHOD == "dbsocketTest::main") {
     dbsocketTest::main();
 }
 ?>

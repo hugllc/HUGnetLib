@@ -36,8 +36,8 @@
  */
 
 // Call EPacketTest::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "EPacketTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "EPacketTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -955,7 +955,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call EPacketTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "EPacketTest::main") {
+if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
     EPacketTest::main();
 }
 

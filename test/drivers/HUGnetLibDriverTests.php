@@ -35,8 +35,8 @@
  *
  */
 
-if (!defined('PHPUNIT_MAIN_METHOD')) {
-    define('PHPUNIT_MAIN_METHOD', 'HUGnetLibDriverTests::main');
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    define('PHPUnit_MAIN_METHOD', 'HUGnetLibDriverTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -101,7 +101,7 @@ class HUGnetLibDriverTests
     }
 }
  
-if (PHPUNIT_MAIN_METHOD == 'HUGnetLibDriverTests::main') {
+if (PHPUnit_MAIN_METHOD == 'HUGnetLibDriverTests::main') {
     HUGnetLibDriverTests::main();
 }
 ?>

@@ -36,8 +36,8 @@
  */
 
 // Call voltageSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "voltageSensorTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "voltageSensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -172,7 +172,7 @@ class voltageSensorTest extends sensorTestBase {
 }
 
 // Call voltageSensorTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "voltageSensorTest::main") {
+if (PHPUnit_MAIN_METHOD == "voltageSensorTest::main") {
     voltageSensorTest::main();
 }
 ?>
