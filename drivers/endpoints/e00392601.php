@@ -62,14 +62,14 @@ if (!class_exists("e00392601")) {
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
          */
-        function ReadConfig($Info) {
+        function readConfig($Info) {
             $packet = array(
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
                 ),
             );
-            $return = $this->packet->SendPacket($Info, $packet);
+            $return = $this->packet->sendPacket($Info, $packet);
 
             return($return);
         }
@@ -77,7 +77,7 @@ if (!class_exists("e00392601")) {
         /**
          *
           */
-        function CheckRecord($Info, &$Rec) {
+        function checkRecord($Info, &$Rec) {
         
             $Rec["Status"] = "BAD";
         }
@@ -113,7 +113,7 @@ if (!class_exists("e00392601")) {
         /**
          *
           */
-        function InterpConfig(&$Info) {
+        function interpConfig(&$Info) {
 
             $Info['HWName'] = $this->HWName;
 
@@ -121,7 +121,7 @@ if (!class_exists("e00392601")) {
             $Info["Function"] = $this->config["DEFAULT"]["Function"];
             $Info["Timeconstant"] = 0;
 
-            $Info['DriverInfo'] = substr($Info["RawSetup"], e00391102B_TC);
+            $Info['DriverInfo'] = substr($Info["RawSetup"], E00391102B_TC);
 
             $start = 46;
             $Info["Types"] = array();
@@ -158,7 +158,7 @@ if (!class_exists("e00392601")) {
         /**
          *
           */
-        function InterpSensors($Info, $Packets) {
+        function interpSensors($Info, $Packets) {
             return array();
         }
 

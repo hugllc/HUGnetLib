@@ -39,11 +39,11 @@
 if (!class_exists("e00391200")) {
 
 /** The location of the time constant in the setup string */
-define("e00391102B_TC", ENDPOINT_CONFIGEND);    
+define("E00391102B_TC", ENDPOINT_CONFIGEND);    
 /** The location of the types in the setup string */
-define("e00391102B_TYPES", ENDPOINT_CONFIGEND+4);
+define("E00391102B_TYPES", ENDPOINT_CONFIGEND+4);
 /** The number of sensors for this device */
-define("e00391102B_SENSORS", 9);
+define("E00391102B_SENSORS", 9);
 
     /**
      * Driver for the 0039-12 endpoint board and select firmwares
@@ -126,9 +126,9 @@ define("e00391102B_SENSORS", 9);
                                 "NumSensors" => "# Sensors",
                                 );
 
-        function CheckRecord($Info, &$Rec) {
+        function checkRecord($Info, &$Rec) {
 
-            parent::CheckRecordBase($Info, $Rec);    
+            parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -138,19 +138,19 @@ define("e00391102B_SENSORS", 9);
         
         }
         
-        function InterpConfig(&$Info) {
-            $this->InterpConfigDriverInfo($Info);
-            $this->InterpConfigHW($Info);
-            $this->InterpConfigFW($Info);
-            $this->InterpConfigParams($Info);
-            $this->InterpConfig00392012C($Info);
-            $this->InterpConfigTC($Info);
+        function interpConfig(&$Info) {
+            $this->interpConfigDriverInfo($Info);
+            $this->interpConfigHW($Info);
+            $this->interpConfigFW($Info);
+            $this->interpConfigParams($Info);
+            $this->__interpConfig00392012C($Info);
+            $this->interpConfigTC($Info);
             $this->InterpTypes($Info);
-            $this->InterpConfigSensorSetup($Info);
+            $this->interpConfigSensorSetup($Info);
 
         }
         
-        private function InterpConfig00392012C(&$Info) {
+        private function __interpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
@@ -159,16 +159,16 @@ define("e00391102B_SENSORS", 9);
         /**
          *
           */
-        private function InterpSensorsGetRaw(&$Info, &$data) {
+        private function __interpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
                 for ($i = 0; $i < $data["NumSensors"]; $i++) {
                     $key = $this->getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 1) {
-                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 2);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 2);
                     } else {
-                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 3);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 3);
                     }
  
                 }
@@ -177,14 +177,14 @@ define("e00391102B_SENSORS", 9);
 
         }
 //        function DecodeData($data) {
-        function InterpSensors($Info, $Packets) {
-            $this->InterpConfig($Info);
+        function interpSensors($Info, $Packets) {
+            $this->interpConfig($Info);
             $ret = array();
             foreach ($Packets as $key => $data) {
                 $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
-                    self::InterpSensorsSetData($Info, $data);
-                    self::InterpSensorsGetRaw($Info, $data);
+                    self::interpSensorsSetData($Info, $data);
+                    self::__interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
                     $ret[] = $data;

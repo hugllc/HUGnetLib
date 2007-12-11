@@ -36,8 +36,8 @@
  */
 
 // Call e00392800Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "eDEFAULTTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "eDEFAULTTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -68,16 +68,16 @@ class eDEFAULTTest extends endpointTestBase {
     public function testConfigArray() {
         // Do nothing here.  This test is not valid for the default driver
     }
-    public function testReadConfig() {
+    public function testreadConfig() {
         // Do nothing here.  This test is not valid for the default driver
     }
     public function testDevicesArray() {
         // Do nothing here.  This test is not valid for the default driver
     }
-    public function testInterpConfig() {
+    public function testinterpConfig() {
         // Do nothing here.  This test is not valid for the default driver
     }
-    public function testInterpSensors() {
+    public function testinterpSensors() {
         // Do nothing here.  This test is not valid for the default driver
     }
     public static function dataConfigArray() {
@@ -107,7 +107,7 @@ class eDEFAULTTest extends endpointTestBase {
     /**
      * @todo implement testGetCols()
       */
-    function testGetCols(){
+    function testGetCols() {
         $Info = array();
         $cols = $this->o->drivers[$this->class]->getCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
@@ -120,7 +120,7 @@ class eDEFAULTTest extends endpointTestBase {
     /**
      * @todo implement testGetEditCols()
       */
-    function testGetEditCols(){
+    function testGetEditCols() {
         $Info = array();
         $cols = $this->o->drivers[$this->class]->getEditCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
@@ -153,9 +153,9 @@ class eDEFAULTTest extends endpointTestBase {
     }        
 
     /**
-     * @dataProvider dataCheckRecord()
+     * @dataProvider datacheckRecord()
       */
-    function testCheckRecord() {
+    function testcheckRecord() {
         $Rec = array();
         $this->o->drivers[$this->class]->checkRecord(array(), $Rec);
         $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
@@ -220,7 +220,7 @@ class eDEFAULTTest extends endpointTestBase {
 }
 
 // Call eDEFAULTTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "eDEFAULTTest::main") {
+if (PHPUNIT_MAIN_METHOD == "eDEFAULTTest::main") {
     eDEFAULTTest::main();
 }
 

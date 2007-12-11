@@ -109,7 +109,7 @@ class dbsocket {
         $id = rand(1, 24777216);  // Big random number for the id
         $this->packet[$id] = $pkt;
         $this->packet[$id]["id"] = $id;
-        $ret =  $this->insertPacket($this->packet[$id]);
+        $ret =  $this->_insertPacket($this->packet[$id]);
 
         if ($ret === false) {
             return false;
@@ -118,7 +118,7 @@ class dbsocket {
         }
     }
 
-    private function insertPacket($pkt) {
+    private function _insertPacket($pkt) {
         $set = array();
         $fields = array();
         $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
@@ -143,7 +143,7 @@ class dbsocket {
     /**
      *  
       */
-    private function packetify(&$pkt) {
+    private function _packetify(&$pkt) {
         $pkt["To"] = $pkt["PacketTo"];
         $pkt["Data"] = $pkt["RawData"];
         return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
@@ -152,7 +152,7 @@ class dbsocket {
     /**
      *  Gets the first of the packets that is destined for us.
       */
-    private function getPacket() {
+    private function _getPacket() {
         if (!is_string($this->replyPacket)) $this->replyPacket = "";
         if (!empty($this->replyPacket)) return true;
         $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
@@ -160,7 +160,7 @@ class dbsocket {
         if (is_array($res)) {
             foreach ($res as $pkt) {
                 if (is_array($this->packet[$pkt["id"]])) {
-                    $this->replyPacket = $this->packetify($pkt);
+                    $this->replyPacket = $this->_packetify($pkt);
                     $this->reply = $pkt["id"];
                     $this->index = 0;
                     return true;
@@ -173,7 +173,7 @@ class dbsocket {
     /**
      *  removes the packet for the id given
       */
-    private function deletePacket($id) {
+    private function _deletePacket($id) {
         unset($this->packet[$id]);
         if ($this->reply == $id) {
             unset($this->reply);
@@ -192,12 +192,12 @@ class dbsocket {
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
         $char = false;
-        if ($this->getPacket()) {
+        if ($this->_getPacket()) {
             if ($this->index < strlen($this->replyPacket)) {
                 $char = hexdec(substr($this->replyPacket, $this->index, 2));
                 $this->index += 2;
                 if ($this->index >= strlen($this->replyPacket)) {
-                    $this->deletePacket($this->reply);
+                    $this->_deletePacket($this->reply);
                     $this->index = 0;
                     $this->replyPacket = "";
                 }

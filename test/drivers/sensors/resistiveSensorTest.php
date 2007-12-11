@@ -36,8 +36,8 @@
  */
 
 // Call resistiveSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "resistiveSensorTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "resistiveSensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -123,7 +123,7 @@ class resistiveSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataBCTherm2381_640_66103
      * @covers resistiveSensor::BCTherm2381_640_66103
-     * @covers resistiveSensor::BCTherm2322640Interpolate
+     * @covers resistiveSensor::_BCTherm2322640Interpolate
       */
     public function testBCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("resistiveSensor", "BCTherm2381_640_66103", $A, $sensor, $TC, $extra, $deltaT, $expect);
@@ -197,7 +197,7 @@ class resistiveSensorTest extends sensorTestBase {
 }
 
 // Call resistiveSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "resistiveSensorTest::main") {
+if (PHPUNIT_MAIN_METHOD == "resistiveSensorTest::main") {
     resistiveSensorTest::main();
 }
 ?>

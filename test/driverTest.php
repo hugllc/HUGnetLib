@@ -36,8 +36,8 @@
  */
 
 // Call driverTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "driverTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "driverTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -201,11 +201,11 @@ class driverTest extends PHPUnit_Framework_TestCase {
       */
     public function testRunFunctionDefaultCall() {
         $Info = array();
-        $this->o->registerDriver($this->getMock("eDEFAULT", array("InterpConfig"), array(&$this->o)), "eDEFAULT");
+        $this->o->registerDriver($this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)), "eDEFAULT");
         $this->o->drivers['eDEFAULT']->expects($this->once())
-                               ->method('InterpConfig')
+                               ->method('interpConfig')
                                ->with($this->arrayHasKey("Driver"));
-        $ret = $this->o->RunFunction($Info, "InterpConfig");
+        $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
      * @dataProvider dataRunFunction().
@@ -213,12 +213,12 @@ class driverTest extends PHPUnit_Framework_TestCase {
       */
     public function testRunFunctionBadDriverCall() {
         $Info = array("Driver" => "BadDriver");
-//        $this->o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("InterpConfig"), array(&$this->o));
-        $this->o->registerDriver($this->getMock("eDEFAULT", array("InterpConfig"), array(&$this->o)), "eDEFAULT");
+//        $this->o->drivers['eDEFAULT'] = $this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o));
+        $this->o->registerDriver($this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)), "eDEFAULT");
         $this->o->drivers['eDEFAULT']->expects($this->once())
-                               ->method('InterpConfig')
+                               ->method('interpConfig')
                                ->with($this->arrayHasKey("Driver"));
-        $ret = $this->o->RunFunction($Info, "InterpConfig");
+        $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
      * @dataProvider dataRunFunction().
@@ -226,12 +226,12 @@ class driverTest extends PHPUnit_Framework_TestCase {
       */
     public function testRunFunctionGoodDriverCall() {
         $Info = array("Driver" => "testDriver");
-//        $this->o->drivers['testDriver'] = $this->getMock("testDriver", array("InterpConfig"), array(&$this->o));
-        $this->o->registerDriver($this->getMock("testDriver", array("InterpConfig"), array(&$this->o)), "testDriver");
+//        $this->o->drivers['testDriver'] = $this->getMock("testDriver", array("interpConfig"), array(&$this->o));
+        $this->o->registerDriver($this->getMock("testDriver", array("interpConfig"), array(&$this->o)), "testDriver");
         $this->o->drivers['testDriver']->expects($this->once())
-                               ->method('InterpConfig')
+                               ->method('interpConfig')
                                ->with($this->arrayHasKey("Driver"));
-        $ret = $this->o->RunFunction($Info, "InterpConfig");
+        $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
      * @dataProvider dataRunFunction().
@@ -282,7 +282,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataReadConfig().
+     * @dataProvider datareadConfig().
      * @covers driver::__call
       */
     public function test__CallCall() {
@@ -296,7 +296,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataReadConfig().
+     * @dataProvider datareadConfig().
      * @covers driver::__call
       */
     public function test__Call() {
@@ -311,7 +311,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataReadConfig().
+     * @dataProvider datareadConfig().
      * @covers driver::__call
       */
     public function test__CallNoArgsCall() {
@@ -403,7 +403,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
         );
     }
 
-    public static function dataInterpConfig() {
+    public static function datainterpConfig() {
         return array(
             array("Bad", false, 1),
             array(array(), array(), 2),
@@ -470,13 +470,13 @@ class driverTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataInterpConfig().
-     * @covers driver::InterpConfig
+     * @dataProvider datainterpConfig().
+     * @covers driver::interpConfig
       */
-    public function testInterpConfig($packets, $expect) {
+    public function testinterpConfig($packets, $expect) {
         
         $this->o->registerDriver("testDriver");
-        $ret = $this->o->InterpConfig ($packets);
+        $ret = $this->o->interpConfig ($packets);
         $this->assertSame($expect, $ret);
     }
 
@@ -605,7 +605,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call driverTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "driverTest::main") {
+if (PHPUNIT_MAIN_METHOD == "driverTest::main") {
     driverTest::main();
 }
 /**
@@ -651,7 +651,7 @@ class testDriver extends eDEFAULT {
         return $arg1;
     }
     
-    public function InterpConfig(&$Info) {
+    public function interpConfig(&$Info) {
         $Info['HWName'] = "Phantom Test Hardware";
         return $Info;
     }

@@ -177,9 +177,9 @@ if (!class_exists('eDEFAULT')) {
                 "Command" => EDEFAULT_SENSOR_READ,
                 "To" => $Info["DeviceID"],
             );
-            $Packets = $this->packet->SendPacket($Info, $packet);
+            $Packets = $this->packet->sendPacket($Info, $packet);
             if (is_array($Packets)) {
-                $return = $this->InterpSensors($Info, $Packets);
+                $return = $this->interpSensors($Info, $Packets);
                 if ($return == false) $return = $Packets;
             } else {
                 $return = false;
@@ -195,7 +195,7 @@ if (!class_exists('eDEFAULT')) {
           */
         function saveSensorData($Info, $Packets) {
             foreach ($Packets as $packet) {
-                if (($packet["Status"] == "GOOD")){
+                if (($packet["Status"] == "GOOD")) {
                     if (!isset($packet['DeviceKey'])) $packet['DeviceKey'] = $Info['DeviceKey'];
                     $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
                 } else {
@@ -239,7 +239,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info The information array on the device
          * @param array $Rec The data record to check
            */
-        function CheckRecord($Info, &$Rec) {
+        function checkRecord($Info, &$Rec) {
             $Rec["Status"] = "UNRELIABLE";
         }    
         /**
@@ -250,7 +250,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info The information array on the device
          * @param array $Rec The data record to check
            */
-        protected function CheckRecordBase($Info, &$Rec) {
+        protected function checkRecordBase($Info, &$Rec) {
         
             if (isset($Rec['Status'])) {
                 $Rec['StatusOld'] = $Rec['Status'];
@@ -338,7 +338,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
           */
-        function ReadConfig($Info) {
+        function readConfig($Info) {
             $packet = array(
                 array(
                     "To" => $Info["DeviceID"],
@@ -349,7 +349,7 @@ if (!class_exists('eDEFAULT')) {
                     "Command" => PACKET_COMMAND_GETCALIBRATION,
                 ),
             );
-            $Packets = $this->packet->SendPacket($Info, $packet);
+            $Packets = $this->packet->sendPacket($Info, $packet);
             return($Packets);
         }
                 
@@ -370,8 +370,8 @@ if (!class_exists('eDEFAULT')) {
          * Interprets a config packet
          * @param array $Info devInfo array
           */
-        function InterpConfig(&$Info) {
-            eDEFAULT::InterpBaseConfig($Info);
+        function interpConfig(&$Info) {
+            eDEFAULT::interpBaseConfig($Info);
             eDEFAULT::InterpCalibration($Info);
         }
 
@@ -379,7 +379,7 @@ if (!class_exists('eDEFAULT')) {
          * This is the basic configuration that all endpoints have
          * @param array $Info devInfo array
           */
-        protected function InterpBaseConfig(&$Info) {
+        protected function interpBaseConfig(&$Info) {
             if (strlen($Info['RawData'][PACKET_COMMAND_GETSETUP]) > PACKET_CONFIG_MINSIZE) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
                 $Info["SerialNum"] = hexdec(substr($pkt, 0, 10));
@@ -390,7 +390,7 @@ if (!class_exists('eDEFAULT')) {
                 $Info["BoredomThreshold"] = hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
                 $Info["RawSetup"] = $pkt;
                 devInfo::setDate($Info, "LastConfig");
-                self::InterpConfigDriverInfo($Info);
+                self::interpConfigDriverInfo($Info);
             }
         
         }
@@ -398,7 +398,7 @@ if (!class_exists('eDEFAULT')) {
          * Adds the DriverInfo to the devInfo array
          * @param array $Info devInfo array
           */
-        protected function InterpConfigDriverInfo(&$Info) {
+        protected function interpConfigDriverInfo(&$Info) {
             if (empty($Info["DriverInfo"]) && !empty($Info["RawSetup"])) {
                 $Info["DriverInfo"] = substr($Info["RawSetup"], ENDPOINT_BOREDOM+2);
             }
@@ -408,21 +408,21 @@ if (!class_exists('eDEFAULT')) {
          * Adds the params to the devInfo array
          * @param array $Info devInfo array
           */
-        protected function InterpConfigParams(&$Info) {
+        protected function interpConfigParams(&$Info) {
             device::decodeParams($Info['params']);
         }
         /**
          * Adds the hardware information to the devInfo array
          * @param array $Info devInfo array
           */
-        protected function InterpConfigHW(&$Info) {
+        protected function interpConfigHW(&$Info) {
             $Info['HWName'] = $this->HWName;
         }
         /**
          * Adds the firmware information to the devInfo array
          * @param array $Info devInfo array
           */
-        protected function InterpConfigFW(&$Info) {
+        protected function interpConfigFW(&$Info) {
             if (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
                 $Info["Function"] = $this->config[$Info["FWPartNum"]]["Function"];
@@ -459,7 +459,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *
           */
-        protected function InterpConfigSensorSetup(&$Info) {
+        protected function interpConfigSensorSetup(&$Info) {
             $Info["unitType"] = array();
             $Info["Labels"] = array();
             $Info["Units"] = array();
@@ -477,10 +477,10 @@ if (!class_exists('eDEFAULT')) {
         /**
          *
           */
-        protected function InterpConfigTC(&$Info) {
+        protected function interpConfigTC(&$Info) {
             if ($Info["NumSensors"] > 0) {
                 $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
-                if ($Info["TimeConstant"] == 0) $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], e00391102B_TC, 4));
+                if ($Info["TimeConstant"] == 0) $Info["TimeConstant"] = hexdec(substr($Info["RawSetup"], E00391102B_TC, 4));
             } else {
                 $Info["TimeConstant"] = 0;
             }
@@ -511,17 +511,17 @@ if (!class_exists('eDEFAULT')) {
          * sensor readings from the endpoint.
          * 
           */
-        function InterpSensors($Info, $Packets) {
-            $Info = $this->InterpConfig($Info);
+        function interpSensors($Info, $Packets) {
+            $Info = $this->interpConfig($Info);
             $ret = array();
             foreach ($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
                     $index = 3;
-                    $this->InterpSensorsSetData($Info, $data);
-                    $this->InterpSensorsGetData($data["Data"], &$index, 3);
+                    $this->interpSensorsSetData($Info, $data);
+                    $this->interpSensorsGetData($data["Data"], &$index, 3);
     
-                    $return = $this->CheckRecord($Info, $data);
+                    $return = $this->checkRecord($Info, $data);
                     $ret[] = $data;
                 }
             }
@@ -532,7 +532,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *
           */
-        protected function InterpSensorsSetData(&$Info, &$data) {
+        protected function interpSensorsSetData(&$Info, &$data) {
             $data['NumSensors'] = $Info['NumSensors'];
             $data["ActiveSensors"] = $Info["ActiveSensors"];
             $data["Driver"] = $Info["Driver"];
@@ -548,7 +548,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          *  Gets bytes of data out of the raw data string
          */    
-        protected function InterpSensorsGetData($Data, &$index, $bytes, $width=null) {
+        protected function interpSensorsGetData($Data, &$index, $bytes, $width=null) {
             if ($width < $bytes) $width = $bytes;
             $shift = 0;
             $byte = 0;
@@ -567,7 +567,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * This is used to easily display the pertinent columns for any endpoint.
           */
-        final function GetCols($Info){
+        final function GetCols($Info) {
             $Columns = $this->defcols;
             if (is_array($this->cols)) {
                 $Columns = array_merge($Columns, $this->cols);
@@ -585,7 +585,7 @@ if (!class_exists('eDEFAULT')) {
          * @return array The columns that can be edited
          * @note Sound NOT be implemented in child classes that class needs it to work differently
           */
-        final function GetEditCols($Info){
+        final function GetEditCols($Info) {
             $Columns = $this->defeditcols;
             if (is_array($this->editcols)) {
                 $Columns = array_merge($Columns, $this->editcols);

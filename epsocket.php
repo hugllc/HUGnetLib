@@ -180,13 +180,13 @@ class epsocket {
         if (empty($this->Server) || empty($this->Port)) return false;
         
         if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-        return $this->connectOpenSocket();
+        return $this->__connectOpenSocket();
     }            
 
     /**
      * This actually opens the socket and sets blocking.
       */
-    private function connectOpenSocket() {
+    private function __connectOpenSocket() {
         $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
         if ($this->socket !== false) {
             stream_set_blocking($this->socket, false);

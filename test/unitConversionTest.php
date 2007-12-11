@@ -35,8 +35,8 @@
  *
  */
 // Call unitConversionTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "unitConversionTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "unitConversionTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -149,7 +149,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     public function testUnitArrayVarType($catName, $shortName, $unit) {
         // Var Type
         $this->assertType("string", $unit['varType'], $catName.":".$shortName.": Variable type is not a string");
-        $this->assertTrue($this->checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
+        $this->assertTrue($this->_checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
     }
 
     /**
@@ -167,7 +167,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     public function testUnitArrayMode($catName, $shortName, $unit) {
         if (isset($unit["mode"])) {
             $this->assertType("string", $unit["mode"], $catName.":".$shortName.": Mode is not a string");
-            $this->assertTrue($this->checkMode($unit["mode"]), $catName.":".$shortName.": Mode '".$unit['varType']."'is not valid");
+            $this->assertTrue($this->_checkMode($unit["mode"]), $catName.":".$shortName.": Mode '".$unit['varType']."'is not valid");
         }
     }
     /**
@@ -237,18 +237,18 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
             if (is_array($o->units)) {
                 foreach ($array as $catName => $cat) {
                     if (isset($cat[$unit])) {
-                        return unitConversionTest::checkUnitModeRaw($cat[$unit]['mode'], $mode);
+                        return unitConversionTest::_checkUnitModeRaw($cat[$unit]['mode'], $mode);
                     }
                 }
             }
         } else {
-            return unitConversionTest::checkUnitModeRaw($o->units[$cat][$unit]['mode'], $mode);
+            return unitConversionTest::_checkUnitModeRaw($o->units[$cat][$unit]['mode'], $mode);
         }
         return false;
     }
     /**
       */
-    private function checkUnitModeRaw($modes, $mode) {
+    private function _checkUnitModeRaw($modes, $mode) {
         if (is_null($modes)) {                        
             return true;
         } else {
@@ -263,7 +263,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
 
     /**
       */
-    private function checkvarType($vartype) {
+    private function _checkvarType($vartype) {
         if ($vartype == 'float') return true;
         if ($vartype == 'int') return true;
         if ($vartype == 'text') return true;
@@ -271,7 +271,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      */
-    private function checkMode($mode) {
+    private function _checkMode($mode) {
         if ($mode == 'raw') return true;
         if ($mode == 'diff') return true;
         return false;
@@ -568,7 +568,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call unitConversionTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "unitConversionTest::main") {
+if (PHPUNIT_MAIN_METHOD == "unitConversionTest::main") {
     unitConversionTest::main();
 }
 

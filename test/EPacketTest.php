@@ -36,8 +36,8 @@
  */
 
 // Call EPacketTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "EPacketTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "EPacketTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -368,7 +368,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($_SESSION['EPacketTest_CallBack_Function'], $string);
     }
 
-    public static function dataSendPacket() {
+    public static function datasendPacket() {
         return array(
             array(
                 // Info
@@ -672,9 +672,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataSendPacket().
+     * @dataProvider datasendPacket().
       */
-    public function testSendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = false) {
+    public function testsendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = false) {
         // This preloads our fake socket to send back the data we want
         if (is_array($pktStr)) {
             foreach ($pktStr as $k => $p) {
@@ -684,12 +684,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
             $this->o->socket[1]->setReply($pktStr, $replyStr);
         }
         if ($getAll) $this->o->getAll($getAll);
-        $rep = $this->o->SendPacket($Info, $pkt, true, null);
-        self::packetRemoveDates($rep);
+        $rep = $this->o->sendPacket($Info, $pkt, true, null);
+        self::_packetRemoveDates($rep);
         $this->assertSame($expect, $rep, "Return is not the same as expected");
     }
 
-    private function packetRemoveDates(&$rep) {
+    private function _packetRemoveDates(&$rep) {
         if (is_array($rep)) {
             foreach ($rep as $key => $val) {
                 unset($rep[$key]["Time"]);
@@ -702,26 +702,26 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testSendPacket().
+     * @todo Implement testsendPacket().
       */
-    public function testSendPacketWriteSocket() {
+    public function test_sendPacketWriteSocket() {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly(2))
                      ->method('Write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
-        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), false, null);
+        $rep = $this->o->sendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
 
     /**
-     * @todo Implement testSendPacket().
+     * @todo Implement testsendPacket().
       */
-    public function testSendPacketWriteRetry() {
+    public function test_sendPacketWriteRetry() {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->Retries = 4;
         $this->o->socket[2]->expects($this->any())
                      ->method('Write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
-        $rep = $this->o->SendPacket($Info, array($this->testPacketArray[0]), false, null);
+        $rep = $this->o->sendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
 
     /**
@@ -955,7 +955,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call EPacketTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
+if (PHPUNIT_MAIN_METHOD == "EPacketTest::main") {
     EPacketTest::main();
 }
 
@@ -980,7 +980,7 @@ class EPacketTXRXMock extends EPacket {
     
     }
     
-    public function SendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) {
+    public function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) {
         return array(
             "Info" => $Info,
             "PacketList" => $PacketList,

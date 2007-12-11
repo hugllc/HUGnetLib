@@ -36,8 +36,8 @@
  */
 
 // Call e00392601Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00392800Test::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "00392800Test::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -53,9 +53,9 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392601.php';
 class e00392601Test extends endpointTestBase {
     public $class = "e00392601";
     /**
-     *  Test cases for the InterpConfig routine
+     *  Test cases for the interpConfig routine
       */
-     var $InterpConfigTestCases = array(
+     var $interpConfigTestCases = array(
          array(
              "Info" => array(
                  "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
@@ -84,7 +84,7 @@ class e00392601Test extends endpointTestBase {
          ),
      );
 
-     var $InterpSensorsTestCases = array(
+     var $interpSensorsTestCases = array(
         array(
             "Info" => array(
             ),
@@ -132,13 +132,13 @@ class e00392601Test extends endpointTestBase {
         $ret = e00392601::getConfigStr($Info);
         $this->assertSame($expect, $ret);
     }
-    public function testCheckRecord() {
+    public function testcheckRecord() {
         // This test is meaningless on this driver
     }
 }
 
 // Call e00392601Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00392601Test::main") {
+if (PHPUNIT_MAIN_METHOD == "e00392601Test::main") {
     e00392601Test::main();
 }
 ?>

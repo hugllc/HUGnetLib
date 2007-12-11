@@ -36,8 +36,8 @@
  */
 
 // Call windDirectionSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "windDirectionSensorTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "windDirectionSensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -125,7 +125,7 @@ class windDirectionSensorTest extends sensorTestBase {
 }
 
 // Call windDirectionSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "windDirectionSensorTest::main") {
+if (PHPUNIT_MAIN_METHOD == "windDirectionSensorTest::main") {
     windDirectionSensorTest::main();
 }
 ?>
