@@ -278,12 +278,24 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         $this->assertFalse(isset($params["SensorLength"]), "'$fw': Parameter 'SensorLength' is not used anymore and should be removed.");
     }
     /**
-     * Test the read sensors routine
-     * @todo implement testReadSensors()
-      */
-    function testReadSensors() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+     * data provider for test readConfig
+     */
+    public static function datareadSensors() {
+        return array(
+            array(
+                array("DeviceID" => "000025"),
+                array(
+                    array("To" => "000025", "Command" => "55"),
+                ),
+            ),
+        );
+    }
+    /**
+     * @dataProvider datareadSensors
+     */
+    function testreadSensors($Info, $expect) {
+        $ret = $this->o->drivers[$this->class]->readSensors($Info);
+        $this->assertSame($expect, $ret);
     }
 
     /**
@@ -342,70 +354,31 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     
     /**
      * @todo implement testGetConfigVars()
-      */
+     */
     function testGetConfigVars() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
     
     /**
-     * data provider for testreadConfig
-      */
+     * data provider for test readConfig
+     */
     public static function datareadConfig() {
         return array(
             array(
+                array("DeviceID" => "000025"),
                 array(
-                    "5A5A5A5C0000250000200059" => "5A5A5A0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
-                    "5A5A5A4C0000250000200049" => "5A5A5AFF00002000002500FA",
+                    array("To" => "000025", "Command" => "5C"),
+                    array("To" => "000025", "Command" => "4C"),
                 ),
-                array("DeviceID" => "000025", "GatewayKey" => self::$socket),
-                array(
-                    "GetReply" => true,
-                    "SentFrom" => "000020",
-                    "SentTo" => "000025",
-                    "sendCommand" => "5C",
-                    "group" => false,
-                    "packet" => array(
-                        "to" => "000025",
-                        "command" => "5C",
-                        "data" => "",
-                    ),
-                    "PacketTo" => "000025",
-                    "GatewayKey" => self::$socket,
-                    "DeviceKey" => null,
-                    "Type" => "OUTGOING",
-                    "RawData" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                    "sentRawData" => "",
-                    "Parts" => 1,
-                    "Command" => "01",
-                    "To" => "000020",
-                    "From" => "000025",
-                    "Length" => 32,
-                    "Data" => array(0, 0, 0, 0, 37, 0, 57, 18, 2, 66, 0, 57, 32, 3, 67, 0, 0, 2, 255, 255, 255, 80, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                    "Checksum" => "9F",
-                    "CalcChecksum" => "9F",
-                    "RawPacket" => "0100002000002520000000002500391202420039200343000002FFFFFF50010000000000000000009F",
-                    "Socket" => 1,
-                    "Reply" => true,
-                    "toMe" => true,
-                    "isGateway" => false,
-                ),
-                1,
             ),
         );
     }
     /**
      * @dataProvider datareadConfig()
-      */
-    function testreadConfig($preload, $Info, $expect) {
-        $this->setUpPacket($preload);
+     */
+    function testreadConfig($Info, $expect) {
         $ret = $this->o->drivers[$this->class]->readConfig($Info);
-        $ret = $ret[0];
-        unset($ret["pktTimeout"]);
-        unset($ret["SentTime"]);
-        unset($ret["Date"]);
-        unset($ret["Time"]);
-        unset($ret["ReplyTime"]);
         $this->assertSame($expect, $ret);
     }
         

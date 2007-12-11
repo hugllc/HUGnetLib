@@ -171,20 +171,14 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
           */
-        function ReadSensors($Info) {
+        function readSensors($Info) {
     
-            $packet[0] = array(
-                "Command" => EDEFAULT_SENSOR_READ,
-                "To" => $Info["DeviceID"],
+            return array(
+                array(
+                    "To"      => $Info["DeviceID"],
+                    "Command" => EDEFAULT_SENSOR_READ,
+                ),
             );
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            if (is_array($Packets)) {
-                $return = $this->interpSensors($Info, $Packets);
-                if ($return == false) $return = $Packets;
-            } else {
-                $return = false;
-            }
-            return($return);
         }
     
         /**
@@ -339,7 +333,7 @@ if (!class_exists('eDEFAULT')) {
          * @note This should only be defined in a driver that inherits this class if the packet differs
           */
         function readConfig($Info) {
-            $packet = array(
+            return array(
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
@@ -349,8 +343,6 @@ if (!class_exists('eDEFAULT')) {
                     "Command" => PACKET_COMMAND_GETCALIBRATION,
                 ),
             );
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            return($Packets);
         }
                 
         /**

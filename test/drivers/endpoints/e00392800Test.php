@@ -206,6 +206,21 @@ class e00392800Test extends endpointTestBase {
         return parent::dataConfigArray("e00392800");
     }
 
+    /**
+     * data provider for test readConfig
+     */
+    public static function datareadConfig() {
+        return array(
+            array(
+                array("DeviceID" => "000025"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+                    array("To" => "000025", "Command" => "4C", "Data" => "00"),
+                    array("To" => "000025", "Command" => "4C", "Data" => "01"),
+                ),
+            ),
+        );
+    }
 
 }
 
