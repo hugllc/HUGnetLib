@@ -224,7 +224,7 @@ class Driver
 
         // Only one of these can run at any one time.
         $ret = $this->_callRead($args[0], $ret, $m);
-        $ret = $this->_callSet($args[0], $ret, $m);
+        $ret = $this->_callLoad($args[0], $ret, $m);
         return $ret;
         
     }
@@ -263,8 +263,8 @@ class Driver
      *
      * @return mixed
      */
-    private function _callSet($Info, $packet, $function) {
-        if (substr($function, 0, 3) == "set") {
+    private function _callLoad($Info, $packet, $function) {
+        if (substr($function, 0, 4) == "load") {
             // Send these packets
             $ret = $this->packet->sendPacket($Info, $packet);
             return $ret;

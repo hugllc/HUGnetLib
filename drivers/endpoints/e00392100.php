@@ -148,7 +148,7 @@ if (!class_exists("e00392100")) {
                     $Rec['Data'.$i] = null;
                 }
             }
-            parent::checkRecordBase($Info, $Rec);
+            parent::_checkRecordBase($Info, $Rec);
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["sendCommand"] == PACKET_COMMAND_GETDATA) {
                 if ($Rec["TimeConstant"] == 0) {
@@ -202,14 +202,14 @@ if (!class_exists("e00392100")) {
           */
         function interpConfig(&$Info) 
         {
-            $this->interpConfigDriverInfo($Info);
+            $this->_interpConfigDriverInfo($Info);
             $Info["Location"] = $this->deflocation;
-            $this->interpConfigHW($Info);
+            $this->_interpConfigHW($Info);
             $Info["PacketTimeout"] = 2;
-            $this->interpConfigFW($Info);
+            $this->_interpConfigFW($Info);
             
             $Info['ActiveSensors'] = $Info["NumSensors"];
-            $this->interpConfigParams($Info);
+            $this->_interpConfigParams($Info);
 
             $this->_interpConfig00392006C($Info);
             $this->_interpConfigSensors($Info);
@@ -252,7 +252,7 @@ if (!class_exists("e00392100")) {
         {
             $Info["Types"]                = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
-            $this->interpConfigSensorSetup($Info);
+            $this->_interpConfigSensorSetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Location"] = $this->labels[$Info["FWPartNum"]];
@@ -829,19 +829,18 @@ if (!class_exists("e00392100")) {
          *
          * @return true on success, false on failure
          */
-        function setPower($Info, $hugnet0=1, $hugnet1=1) 
+        function loadPower($Info, $hugnet0=1, $hugnet1=1) 
         {
-            /*
             $hugnet0 = ($hugnet0 == 0) ? '00' : '01';
             $hugnet1 = ($hugnet1 == 0) ? '00' : '01';
     
             $this->packet->Connect($Info);
             $pkt["To"] = $Info["DeviceID"];
-            $pkt["Command"] = "60";
+            $pkt["Command"] = PACKET_HUGNETPOWER_COMMAND;
             $pkt["Data"] = $hugnet0.$hugnet1;
     
             return $pkt;
-             */
+            
         }
     
         

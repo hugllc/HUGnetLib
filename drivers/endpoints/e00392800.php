@@ -113,7 +113,7 @@ if (!class_exists("e00392800")) {
          *
           */
         function checkRecord($Info, &$Rec) {
-            parent::checkRecordBase($Info, $Rec);    
+            parent::_checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -127,14 +127,14 @@ if (!class_exists("e00392800")) {
          *
           */
         function interpConfig(&$Info) {
-            $this->interpConfigDriverInfo($Info);
-            $this->interpConfigHW($Info);
-            $this->interpConfigFW($Info);
-            $this->interpConfigTC($Info);
-            $this->interpConfigParams($Info);
+            $this->_interpConfigDriverInfo($Info);
+            $this->_interpConfigHW($Info);
+            $this->_interpConfigFW($Info);
+            $this->_interpConfigTC($Info);
+            $this->_interpConfigParams($Info);
             $this->_interpConfig00392012C($Info);
-            $this->InterpTypes($Info);
-            $this->interpConfigSensorSetup($Info);
+            $this->_interpTypes($Info);
+            $this->_interpConfigSensorSetup($Info);
         }
         /**
          *
@@ -156,7 +156,7 @@ if (!class_exists("e00392800")) {
             foreach ($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
-                    self::interpSensorsSetData($Info, $data);
+                    self::_interpSensorsSetData($Info, $data);
                     $index = 3; 
                     self::_interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
@@ -174,11 +174,11 @@ if (!class_exists("e00392800")) {
             if (is_array($data["Data"])) {
                 $index = 3;
                 for ($i = 0; $i < $Info["NumSensors"]; $i++) {
-                    $key = $this->getOrder($Info, $i, true);
+                    $key = $this->_getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 0x6F) {
-                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 1, 3);
+                        $data["raw"][$key] = $this->_interpSensorsGetData($data["Data"], &$index, 1, 3);
                     } else {
-                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 3);
+                        $data["raw"][$key] = $this->_interpSensorsGetData($data["Data"], &$index, 3);
                     }
                 }
                 
