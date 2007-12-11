@@ -39,17 +39,17 @@
  * <b>Building Applications</b>
  * 
  * Adding plugin support to your application is easy.  Just figure out what different
- * types of plugins that you want for your application and put hooks in for those.  The
+ * types of Plugins that you want for your application and put hooks in for those.  The
  * "types" are any alphanumeric text that you make up.  That way plugin types can have
  * names that are meaningful in your application.  The following hooks are supported:
- * - <b>run_function</b> used to run one function
- * - <b>run_functions</b> used to run all functions of one type
- * - <b>run_filters</b> used to run all filters of one type
- * - <b>get_generic</b> used to get infomation on generic plugins of a certain type
- * - <b>get_functions</b> used to get infomation on all plugins of a certain type
+ * - <b>runFunction</b> used to run one function
+ * - <b>runFunctions</b> used to run all functions of one type
+ * - <b>runFilters</b> used to run all filters of one type
+ * - <b>getGeneric</b> used to get infomation on generic Plugins of a certain type
+ * - <b>getFunctions</b> used to get infomation on all Plugins of a certain type
  * 
  * These functions can be used to call functions, run filters (functions that take input and give output)
- * and get generic functions.  Here are the different categories of plugins and what they are good for:
+ * and get generic functions.  Here are the different categories of Plugins and what they are good for:
  *     
  * - Functions These are broken down into two different sub-categories
  * 1. Functions take no arguments and give no return
@@ -92,22 +92,22 @@
  *   - <b> plugin_info["Notes"]</b> String this should be any notes on the file
  *   - <b> plugin_info["Description"]</b> String the description of what the plugin does
  *         
- * Here is an example with multiple plugins each being added different ways.
+ * Here is an example with multiple Plugins each being added different ways.
  * 
  * <code>
  * global $debug;
  * if ($debug) {
  *
  *    function Hello() {
- *       print "Hello There!  This is a test plugin to make sure plugins are working.<BR>\n";
+ *       print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>\n";
  *    }
  * 
- *    $this->register_function("Hello", "", "Test Plugin", "This is a test plugin");
+ *    $this->registerFunction("Hello", "", "Test Plugin", "This is a test plugin");
  * 
  * 
  *    $plugin_info["Functions"][0]["Name"] = "Second_Test";
  *    $plugin_info["Functions"][0]["Title"] = "AutoPlugin Test";
- *    $plugin_info["Functions"][0]["Description"] = "This function tests the automatic loading of plugins via the$
+ *    $plugin_info["Functions"][0]["Description"] = "This function tests the automatic loading of Plugins via the$
  *    $plugin_info["Copyright"] = "(C) 2002 MeterTools.com";
  *    $plugin_info["Name"] = "AutoPlugin Test";
  *    $plugin_info["Author"] = "Scott L. Price (prices@dflytech.com)";
@@ -116,7 +116,7 @@
  *
  *    function Second_Test() {
  *
- *       print "Hello There!  This is a test plugin to make sure plugins are working.<BR>\n";
+ *       print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>\n";
  *
  *       print get_stuff($return, "Plugin Info");
  *    }
@@ -138,11 +138,11 @@ class Plugins
     var $plugins = array("Functions" => array(), "Menu" => array(), "Generic" => array()); /** 
     /** @var array This is where information on the plugin files is stored. */
     var $plugin_info = array();  
-    /** @var string This is the directory where plugins will be looked for. */
+    /** @var string This is the directory where Plugins will be looked for. */
     var $dir = "./plugins/"; 
     /** @var string The file extension of plugins. */
     var $extension = ".plugin.php";
-    /** @var int This is the total number of plugins registered */
+    /** @var int This is the total number of Plugins registered */
     var $plugin_count = 0;
     /** @var int This is the total number of plugin files parsed */
     var $file_count = 0;
@@ -169,7 +169,7 @@ class Plugins
      * 
      * @return none
      */
-    function add_menu_item($Name, $Link="", $Type="ALL_TYPES", $Show=1, $Help="") 
+    function addMenuItem($Name, $Link="", $Type="ALL_TYPES", $Show=1, $Help="") 
     {
         if (!is_array($Name)) {
             $this->_debug("\tRegistering Menu Item:  ".$Name."\t\tLink:  ".$Link." ", 4);
@@ -208,20 +208,20 @@ class Plugins
      * 
      * @return none
      */
-    function register_function($Name, $Type="", $Title="", $Desc="") 
+    function registerFunction($Name, $Type="", $Title="", $Desc="") 
     {
         if (is_array($Name)) {
-            $this->register_function_raw($Name);
+            $this->registerFunctionRaw($Name);
         } else {
             $info = array("Name" => $Name, "Types" => $Type, "Title" => $Title, "Description" => $Desc);
-            $this->register_function_raw($info);
+            $this->registerFunctionRaw($info);
         }
     }
     
     /**
      *  Registers a generic plugin
      *
-     * This routine was originally made to allow plugins to insert HTML code in different place inside my application. It
+     * This routine was originally made to allow Plugins to insert HTML code in different place inside my application. It
      * soon evolved into a generic plugin that could be used for a variety of things.
      *
      * @param mixed  $Name If an Array, it should contain at least Name["Name"] which is the name of the function.  The
@@ -235,14 +235,14 @@ class Plugins
      * 
      * @return none
      */
-    function add_generic($Name, $HTML="", $Type="") 
+    function addGeneric($Name, $HTML="", $Type="") 
     {
         if (!is_array($Name)) {
             $info = array("Name" => $Name, "HTML" => $HTML, "Type" => $Type);
         } else {
             $info = $Name;
         }
-        $this->add_generic_raw($info);
+        $this->addGenericRaw($info);
     }
 
     /**
@@ -263,12 +263,12 @@ class Plugins
      * 
      * @return none
      */
-    function add_about($Info, $Filename) 
+    function addAbout($Info, $Filename) 
     {
         if (is_array($Info)) {
             $Info["Filename"] = stristr($Filename, $this->webdir);
             $Info["Type"] = "about";
-            $this->add_generic_raw($Info);
+            $this->addGenericRaw($Info);
         }
     }
     /**
@@ -278,7 +278,7 @@ class Plugins
      *     except they take and argument and return a value.  They are registered just like any other
      *     function.  They are called filters because they were created to take in a value, modify it based
      *     on the plugin, then return it.  It is mostly used for filtering strings based on plugins.  In
-     *     DragonFlyMail filter plugins are used to add change how the subject in the mail_index is printed
+     *     DragonFlyMail filter Plugins are used to add change how the subject in the mail_index is printed
      *     out.  It is used by the msize plugin to add the number of lines and the size of the message after
      *     the subject.
      *
@@ -286,11 +286,11 @@ class Plugins
      *     in the order they are received.
      *
      * @param mixed  $Argument This is the argument to be sent to the filter
-     * @param string $Type     This is the type of plugins to run.
+     * @param string $Type     This is the type of Plugins to run.
      *
      * @return mixed Modified version of Argument
      */
-    function run_filter($Argument, $Type) 
+    function runFilter($Argument, $Type) 
     {    
         $return = $Argument;
         $this->_debug("Running Plugin Filters of Type: ".$Type."\n", 4);
@@ -324,17 +324,17 @@ class Plugins
      *  This runs one plugin function.
      * 
      * This routine is useful if you have a page where you only want to run one plugin at at time.
-     * It will run the function specified and exit.  This will not run filters correctly.  Use run_filter
+     * It will run the function specified and exit.  This will not run filters correctly.  Use runFilter
      * if it is available.
      *
      * @param string $Name The name of the function to run
      * 
      * @return none
      */
-    function run_function($Name) 
+    function runFunction($Name) 
     {
 
-        $fct = $this->get_function($Name);
+        $fct = $this->getFunction($Name);
         if ($fct !== false) {
             $this->_debug("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 4);
             $function = $fct["Name"];    
@@ -363,13 +363,13 @@ class Plugins
      * This finds the specified plugin and returns all of the info about it.
      * 
      * Used for finding information on a specific plugin.  It returns the array fed
-     * to register_function_raw, exactly as it was sent.
+     * to registerFunctionRaw, exactly as it was sent.
      *
      * @param string $Name The name of the function to find
      * 
      * @return none
      */
-    function get_function($Name) 
+    function getFunction($Name) 
     {
 
         $return = false;
@@ -393,20 +393,20 @@ class Plugins
     /**
      * Runs all functions of one type
      * 
-     * This function is the mainstay of running plugins.  It is used to run plugins in batches
+     * This function is the mainstay of running plugins.  It is used to run Plugins in batches
      * based on their type.
      *
      * @param string $Type The type of function to run
      *
      * @return int The number of functions run
      */
-    function run_functions($Type) 
+    function runFunctions($Type) 
     {
     
         $count = 0;
         $this->_debug("Running Plugins of Type: ".$Type."\n", 4);
         if (is_array($this->plugins["Functions"][$Type])) {
-            foreach ($this->get_functions($Type) as $fct) {
+            foreach ($this->getFunctions($Type) as $fct) {
                 $function = $fct["Name"];
                 $this->_debug("Running Plugin ".$function."\n", 4);
                 if (function_exists($function)) {
@@ -436,14 +436,14 @@ class Plugins
     /**
      * Gets all of the generic of one type.
      * 
-     * This returns an array of information on all of the generic plugins of a certain type, plus all generic
-     * plugins of type "ALL_TYPES".
+     * This returns an array of information on all of the generic Plugins of a certain type, plus all generic
+     * Plugins of type "ALL_TYPES".
      *
-     * @param string $Type The type of generic plugins to return
+     * @param string $Type The type of generic Plugins to return
      *
-     * @return array An array of plugins of whatever type was sent to it, plus all plugins of type "ALL_TYPES".
+     * @return array An array of Plugins of whatever type was sent to it, plus all Plugins of type "ALL_TYPES".
      */
-    function get_generic($Type) 
+    function getGeneric($Type) 
     {
         if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
             $return = array_merge($this->plugins["Generic"][$Type], $this->plugins["Generic"]["ALL_TYPES"]);
@@ -451,21 +451,21 @@ class Plugins
             $return = $this->plugins["Generic"][$Type];
         }
         if (!is_array($return)) $return = array();
-        $return = $this->sort_plugins($return);
+        $return = $this->sortPlugins($return);
         return($return);
     }
 
     /**
      * Gets all of the Menu's of one type.
      * 
-     * This returns an array of information on all of the menu plugins of a certain type, plus all menu
-     *     plugins of type "ALL_TYPES".  If no parameter is given, it returns everything it has for the menu.
+     * This returns an array of information on all of the menu Plugins of a certain type, plus all menu
+     *     Plugins of type "ALL_TYPES".  If no parameter is given, it returns everything it has for the menu.
      *
-     * @param string $Type The type of generic plugins to return
+     * @param string $Type The type of generic Plugins to return
      *
-     * @return array An array of plugins of whatever type was sent to it, plus all plugins of type "ALL_TYPES".
+     * @return array An array of Plugins of whatever type was sent to it, plus all Plugins of type "ALL_TYPES".
      */
-    function get_menu($Type = false) 
+    function getMenu($Type = false) 
     {
         $return = array();
         if ($Type !== false) {
@@ -474,11 +474,11 @@ class Plugins
             } else {
                 $return = $this->plugins["Menu"]["ALL_TYPES"];
             }
-            $return = $this->sort_plugins($return);
+            $return = $this->sortPlugins($return);
         } else {
             $return = $this->plugins["Menu"];
             foreach ($return as $key => $value) {
-                $return[$key] = $this->sort_plugins($value);
+                $return[$key] = $this->sortPlugins($value);
             }
         }
         if (!is_array($return)) $return = array();
@@ -488,14 +488,14 @@ class Plugins
     /**
      * Gets all of the functions of one type.
      * 
-     * This returns all plugins that would be run if run_functions was called with the same type.  It is used
+     * This returns all Plugins that would be run if runFunctions was called with the same type.  It is used
      * to get a list of functions.
      *
      * @param string $Type The type of functions to return
      *
-     * @return array An array of plugins of whatever type was sent to it, plus all plugins of type "ALL_TYPES".
+     * @return array An array of Plugins of whatever type was sent to it, plus all Plugins of type "ALL_TYPES".
      */
-    function get_functions($Type) 
+    function getFunctions($Type) 
     {
         if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
             $return = array_merge($this->plugins["Functions"][$Type], $this->plugins["Functions"]["ALL_TYPES"]);
@@ -503,21 +503,21 @@ class Plugins
             $return = $this->plugins["Functions"][$Type];
         }
         if (!is_array($return)) $return = array();
-        $return = $this->sort_plugins($return);
+        $return = $this->sortPlugins($return);
         return($return);
     }
     
     /**
-     * finds the plugins in this->dir
+     * finds the Plugins in this->dir
      * 
-     * calls get_plugin_dir to actually find the plugins.  This function should be called if you
-     * need to find new plugins after the constructor is run.  This function is called by the constructor.
+     * calls getPluginDir to actually find the plugins.  This function should be called if you
+     * need to find new Plugins after the constructor is run.  This function is called by the constructor.
      *
      * @return none
      */
-    function find_plugins() 
+    function findPlugins() 
     {
-        $count = $this->get_plugin_dir($this->dir, $this->webdir, 0);  
+        $count = $this->getPluginDir($this->dir, $this->webdir, 0);  
         $this->_debug("Registered ".$this->plugin_count." plugin(s) in ".$this->file_count." File(s)\n\n", 4);
         //$this->_debug(get_stuff($this->plugins, "plugins"), 5);
     }
@@ -529,7 +529,7 @@ class Plugins
      *
      * @return array Plugin information sorted in a natural order
      */
-    function sort_plugins($plugin_info, $key="Name") 
+    function sortPlugins($plugin_info, $key="Name") 
     {
          return($plugin_info);
     }
@@ -539,21 +539,21 @@ class Plugins
      *
      * This routine sets this->dir and this->extension then checks for plugins
      *
-     * @param string $basedir   the directory to look for plugins in.  Sets this->dir
+     * @param string $basedir   the directory to look for Plugins in.  Sets this->dir
      * @param string $extension the file extension to look for.  Sets this->extension
      * @param string $webdir    the directory that it will be in on the web site.
      * @param array  $skipDir   Array of Strings Directories to not look into for plugins.
      *
      * @return none
      */
-    function plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) 
+    function Plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) 
     {
         $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
         if (trim($basedir) != "" ) $this->dir = $basedir;
         if (trim($webdir) != "" ) $this->webdir = $webdir;
         if (trim($extension) != "" ) $this->extension = $extension;
         $this->_skipDir = $skipDir;
-        if (!is_array($this->plugins)) $this->find_plugins();
+        if (!is_array($this->plugins)) $this->findPlugins();
     }
 
     /**
@@ -571,9 +571,9 @@ class Plugins
      *
      * @return none
      */
-    function get_plugin_dir($basedir= ".", $webdir="plugins/", $Level = 0, $recursive=true) 
+    function getPluginDir($basedir= ".", $webdir="plugins/", $Level = 0, $recursive=true) 
     {
-        $this->_debug("Checking for plugins in ".$basedir."\n", 4);
+        $this->_debug("Checking for Plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         if ($plugindir) {
     
@@ -594,13 +594,13 @@ class Plugins
                             if (substr($file, 0, 2) == ".#") {
                                 $this->_debug("Skipping CVS file $file\n");
                             } else {
-                                $this->include_file($file, $basedir, $webdir);
+                                $this->includeFile($file, $basedir, $webdir);
                             }
                         }
                     } else if (($file != "CVS") && ($file != ".svn") && (is_dir($basefile))) {
                         $dName = str_replace($webdir, "", $webfile);
                         if ((array_search($dName, $this->_skipDir) === false) && ($recursive)) {
-                            $count += $this->get_plugin_dir($basefile."/", $webfile."/", $Level + 1);
+                            $count += $this->getPluginDir($basefile."/", $webfile."/", $Level + 1);
                         } else {
                             $this->_debug("Skipping directory ".$dName."\n");
                         }
@@ -618,7 +618,7 @@ class Plugins
     /**
      *  Deals with the plugin files.
      * 
-     * Includes files and registers any plugins it finds in those files.
+     * Includes files and registers any Plugins it finds in those files.
      *
      * @param string $file    The full or relative path to the file to be included.
      * @param string $filedir The filesystem directory where the files are located.
@@ -626,7 +626,7 @@ class Plugins
      *
      * @return none
      */
-    function include_file($file, $filedir = "", $webdir="") 
+    function includeFile($file, $filedir = "", $webdir="") 
     {
         global $debug;
         $plugin_info = false;
@@ -646,20 +646,20 @@ class Plugins
                     foreach ($info["Functions"] as $fct) {
                         if (is_array($fct) && !empty($fct["Name"])) {
                             if (function_exists($fct["Name"])) {
-                                $this->register_function_raw($fct);
+                                $this->registerFunctionRaw($fct);
                             }
                         } else {
                             if (function_exists($fct)) {
                                 $fctinfo = $fct(true);
                                 $fctinfo["INFO"] = true;
-                                $this->register_function_raw($fctinfo);
+                                $this->registerFunctionRaw($fctinfo);
                             }
                         }
                     }
                 }
                 if (is_array($info["Generics"])) {
                     foreach ($info["Generics"] as $gen) {
-                        $this->register_function_raw($gen);
+                        $this->registerFunctionRaw($gen);
                     }
                 }
             }
@@ -681,7 +681,7 @@ class Plugins
      *
      * @return none
      */
-    function register_function_raw($info) 
+    function registerFunctionRaw($info) 
     {
          $this->_debug("\tRegistering Function:  ".$info["Name"]."\t\tType:  ".$info["Types"]."\t\t", 4);
         if (is_array($info)) {
@@ -710,7 +710,7 @@ class Plugins
                 $this->_debug(" Failed (Name not set), 4");
             }
         } else {
-            $this->_debug(" Failed (Bad arguments to register_function)", 4);
+            $this->_debug(" Failed (Bad arguments to registerFunction)", 4);
         }
           $this->_debug("\n", 4);
     }
@@ -723,11 +723,11 @@ class Plugins
      * Copys the info parameter into its array of generic plugins.
      *
      * @param array $info this is all of the information about the plugin.  Only info["Name"] is required.  Everything
-     *     else is application dependent.  These plugins allow for doing almost anything.
+     *     else is application dependent.  These Plugins allow for doing almost anything.
      *
      * @return none
      */
-    function add_generic_raw($info) 
+    function addGenericRaw($info) 
     {
     
         $info["Name"] = trim($info["Name"]);
@@ -747,9 +747,9 @@ class Plugins
     
 
     /**
-     *  Used to compare plugins for sorting.
+     *  Used to compare Plugins for sorting.
      *  
-     * This function compares the names of the plugins and returns the output needed by usort.  It should only
+     * This function compares the names of the Plugins and returns the output needed by usort.  It should only
      * be used for this purpose.
      *
      * @param array $a The first argument for the compare
@@ -757,7 +757,7 @@ class Plugins
      *
      * @return none
      */
-    public function compare_plugins($a, $b) 
+    public function comparePlugins($a, $b) 
     {
         return(strnatcasecmp($a["Name"], $b["Name"]));
     }

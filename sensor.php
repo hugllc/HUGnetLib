@@ -47,7 +47,7 @@
 class Sensor
 {
     /**
-     * This registers the sensor plugins so we know what code we have available.
+     * This registers the sensor Plugins so we know what code we have available.
      *
      * @param object &$plugins This is a object of type plugin
      * 
@@ -59,7 +59,7 @@ class Sensor
             if (!isset($_SESSION["incdir"])) {
                 $_SESSION["incdir"] = dirname(__FILE__)."/";
             }
-            $plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
         }
 
         if (is_array($plugins->plugins["Generic"]["sensor"])) {

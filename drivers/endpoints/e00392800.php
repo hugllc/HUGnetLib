@@ -201,8 +201,8 @@ if (!class_exists("e00392800")) {
 }
 
 // Protect us in case this is included differently
-if (method_exists($this, 'add_generic')) {
-    $this->add_generic(array("Name" => "e00392800", "Type" => "driver", "Class" => "e00392800", "deviceJOIN" => "e00391200_location"));
+if (method_exists($this, 'addGeneric')) {
+    $this->addGeneric(array("Name" => "e00392800", "Type" => "driver", "Class" => "e00392800", "deviceJOIN" => "e00391200_location"));
 }
 
 ?>

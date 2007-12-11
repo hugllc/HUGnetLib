@@ -122,8 +122,8 @@ if (!class_exists('windDirectionSensor')) {
     }
 }
 
-if (method_exists($this, "add_generic")) {
-    $this->add_generic(array("Name" => "windDirectionSensor", "Type" => "sensor", "Class" => "windDirectionSensor"));
+if (method_exists($this, "addGeneric")) {
+    $this->addGeneric(array("Name" => "windDirectionSensor", "Type" => "sensor", "Class" => "windDirectionSensor"));
 }
 
 ?>

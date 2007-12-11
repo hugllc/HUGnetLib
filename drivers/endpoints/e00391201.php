@@ -260,8 +260,8 @@ define("E00391201_SENSORS", 9);
         }
     }
 }
-if (method_exists($this, "add_generic")) {
-    $this->add_generic(array("Name" => "e00391201", "Type" => "driver", "Class" => "e00391201", "deviceJOIN" => "e00391200_location"));
+if (method_exists($this, "addGeneric")) {
+    $this->addGeneric(array("Name" => "e00391201", "Type" => "driver", "Class" => "e00391201", "deviceJOIN" => "e00391200_location"));
 }
 
 ?>
