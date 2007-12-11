@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the filter class
+ * Tests the filter class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id: devInfoTest.php 442 2007-11-12 23:03:55Z prices $
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id: devInfoTest.php 442 2007-11-12 23:03:55Z prices $
  *
  */
 
@@ -50,7 +55,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -63,7 +68,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -72,7 +77,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
@@ -86,7 +91,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataDeviceID
-     */
+      */
     public function testDeviceID($Info, $expect) {
         $ret = devInfo::DeviceID($Info);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
@@ -104,7 +109,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataRawData
-     */
+      */
     public function testRawData($Info, $expect) {
         $ret = devInfo::RawData($Info);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
@@ -120,7 +125,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSetDate
-     */
+      */
     public function testSetDate($Info, $Field, $expect) {
         $ret = devInfo::SetDate($Info, $Field);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
@@ -130,7 +135,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * Tests the date as it is returned if no date is in Info
-     */
+      */
     public function testSetDateNotGiven() {
         $Info = array();
         $Field = "LastConfig";
@@ -149,7 +154,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSetStringSize
-     */
+      */
     public function testSetStringSize($value, $size, $pad, $expect) {
         if (is_null($pad)) {
             $ret = devInfo::setStringSize($value, $size);
@@ -169,7 +174,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataHexifyVersion
-     */
+      */
     public function testHexifyVersion($version, $expect) {
         $value = devInfo::hexifyVersion($version);
         $this->assertSame($expect, $value);
@@ -183,7 +188,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataHexifyPartNum
-     */
+      */
     public function testHexifyPartNum($partNum, $expect) {
         $value = devInfo::hexifyPartNum($partNum);
         $this->assertSame($expect, $value);
@@ -199,7 +204,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataDehexifyVersion
-     */
+      */
     public function testDehexifyVersion($version, $expect) {
         $value = devInfo::dehexifyVersion($version);
         $this->assertSame($expect, $value);
@@ -213,7 +218,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataDehexifyPartNum
-     */
+      */
     public function testDehexifyPartNum($partNum, $expect) {
         $value = devInfo::dehexifyPartNum($partNum);
         $this->assertSame($expect, $value);
@@ -237,7 +242,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataHexify
-     */
+      */
     public function testHexify($value, $width, $expect) {
         if (is_null($width)) {
             $ret = devInfo::hexify($value);
@@ -257,7 +262,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataHexifyStr
-     */
+      */
     public function testHexifyStr($str, $expect) {
         $ret = devInfo::hexifyStr($str);
         $this->assertEquals($expect, $ret);
@@ -266,7 +271,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataDehexify
-     */
+      */
     public function testDehexify($str, $expect) {
         $bin = devInfo::dehexify($str);
         $this->assertSame($expect, $bin);

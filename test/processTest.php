@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the process class
+ * Tests the process class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -50,7 +55,7 @@ class processTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -63,7 +68,7 @@ class processTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -72,13 +77,13 @@ class processTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
     /**
      * @todo Implement testGetMyInfo().
-     */
+      */
     public function testGetMyInfo() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -88,7 +93,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckProcess().
-     */
+      */
     public function testCheckProcess() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -98,7 +103,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckAll().
-     */
+      */
     public function testCheckAll() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -108,7 +113,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testRegister().
-     */
+      */
     public function testRegister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -118,7 +123,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckin().
-     */
+      */
     public function testCheckin() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -128,7 +133,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testFastCheckin().
-     */
+      */
     public function testFastCheckin() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -138,7 +143,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testDbRegister().
-     */
+      */
     public function testDbRegister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -148,7 +153,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testDbUnregister().
-     */
+      */
     public function testDbUnregister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -158,7 +163,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testUnregister().
-     */
+      */
     public function testUnregister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -168,7 +173,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCreateTable().
-     */
+      */
     public function testCreateTable() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -178,7 +183,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckRegistered().
-     */
+      */
     public function testCheckRegistered() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -188,7 +193,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckUnregistered().
-     */
+      */
     public function testCheckUnregistered() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -198,7 +203,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testFileRegister().
-     */
+      */
     public function testFileRegister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -208,7 +213,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testFileUnregister().
-     */
+      */
     public function testFileUnregister() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -218,7 +223,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckFile().
-     */
+      */
     public function testCheckFile() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -228,7 +233,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckDB().
-     */
+      */
     public function testCheckDB() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -238,7 +243,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testIncStat().
-     */
+      */
     public function testIncStat() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -248,7 +253,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testIncField().
-     */
+      */
     public function testIncField() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -258,7 +263,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetMyStat().
-     */
+      */
     public function testGetMyStat() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -268,7 +273,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetStat().
-     */
+      */
     public function testGetStat() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -278,7 +283,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSetStat().
-     */
+      */
     public function testSetStat() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -288,7 +293,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement test_setStat().
-     */
+      */
     public function test_setStat() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -298,7 +303,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testClearStats().
-     */
+      */
     public function testClearStats() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -308,7 +313,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetPeriodicStats().
-     */
+      */
     public function testGetPeriodicStats() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -318,7 +323,7 @@ class processTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetTotalStats().
-     */
+      */
     public function testGetTotalStats() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(

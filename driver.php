@@ -76,7 +76,7 @@ class Driver
 {
     /** This is the default number of decimal places to use if 
      *  it is not specified anywhere else 
-     */
+      */
     var $_decimalPlaces = 2;
 
     /** The error number.  0 if no error occurred  */ 
@@ -87,7 +87,7 @@ class Driver
     var $drivers = array();
     /** The drivers and what software and hardware they encompass are mapped here  */
     var $dev = array();
-    /** The display colors to use for different error codes     */
+    /** The display colors to use for different error codes      */
     var $ErrorColors = array(
         "DevOnBackup" => array(
             "Severity" => "Low", 
@@ -111,7 +111,7 @@ class Driver
      * @return string
      *
      * @see device::health
-     */
+      */
     function health($where, $days = 7, $start=null) 
     {
         return $this->device->health($where, $days, $start);
@@ -124,7 +124,7 @@ class Driver
      * @return string
      *
      * @see device::Diagnose
-     */
+      */
     function diagnose($Info) 
     {
         return $this->device->Diagnose($Info);
@@ -140,9 +140,9 @@ class Driver
      * @param string $function The name of the function to run
      *
      * @return false if the function does not exist.  Otherwise passes
-     *     the function return through.
+     *   the function return through.
      *
-     */
+      */
     function runFunction (&$Info, $function) 
     {
         if (!is_array($Info)) return false;
@@ -191,7 +191,7 @@ class Driver
      * @param array  $a The array of arguments
      *
      * @return mixed
-     */
+      */
     function __call($m, $a) 
     {
         if (is_array($a[0])) {
@@ -212,7 +212,7 @@ class Driver
     /**
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
-     */
+      */
     function SetConfig($Info, $start, $data) {
         //add_debug_output("Setting Configuration:<br>\n");
          $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
@@ -231,7 +231,7 @@ class Driver
         
     /**
      * Runs a function using the correct driver for the endpoint
-     */
+      */
     function done($Info) {
         $this->packet->Close($Info);
     }
@@ -240,7 +240,7 @@ class Driver
      * Runs a function using the correct driver for the endpoint
      * @param $Packet Array Array of information about the device with the data from the incoming packet
      * @param $force Boolean Force the update even if the serial number and hardware part number don't match
-     */
+      */
     function UpdateDevice($Packet, $force=false){
 
         return $this->device->UpdateDevice($Packet, $force);                    
@@ -260,7 +260,7 @@ class Driver
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
      * @param GatewayKey Int The gateway to try first.
-     */
+      */
     function GetInfo($Info, $GatewayKey = 0) {
         $DeviceID = $Info["DeviceID"];
         //add_debug_output("Getting Configuration for ".$Info["DeviceID"]."<BR>\n");
@@ -293,14 +293,14 @@ class Driver
      * @param $packet Array Infomation about the device to use plus a configuration packet            
      * @return Array of device information on success, false on failure 
      * @todo Move this back to the driver class?
-     */
+      */
     function InterpConfig ($packets, $forceDriver=null) {
 //        if (isset($packets['RawData'])) $packets = array($packets);
         if (!is_array($packets)) return false;
 
         $dev = array();
         $Info = array();
-        foreach($packets as $packet) {
+        foreach ($packets as $packet) {
 //            $Info = $packet;
             devInfo::DeviceID($packet);
             devInfo::RawData($packet);
@@ -341,7 +341,7 @@ class Driver
      * Adds the driver information to the array given to it
      * @param $Info Array Infomation about the device to use
      * @return Returns $Info with added information from the driver.
-     */
+      */
     function DriverInfo($Info) {
         $Info['sendCommand'] = EDEFAULT_CONFIG_COMMAND;
         $this->RunFunction($Info, "InterpConfig");
@@ -354,7 +354,7 @@ class Driver
     /**
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
-     */
+      */
     function FindDriver($Info) {
         if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]])) {
             $return = $this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]];
@@ -377,17 +377,17 @@ class Driver
      * @param int $dPlaces The maximum number of decimal places to show.
      * @param array $type The types to change to
      * @param array $units The units to change to
-     */
+      */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 
         $lastRecord = null;
         if (!is_array($history)) $history = array();
-        foreach($history as $key => $val) {
+        foreach ($history as $key => $val) {
            if (is_array($val)) {
                 if (($lastRecord !== null) || (count($history) < 2)) {
-                    for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if ($type[$i] != $devInfo["dType"][$i]) {
                             switch($type[$i]) {
                             case 'diff':
@@ -419,7 +419,7 @@ class Driver
                     unset($history[$key]);
                 }
                 if (isset($history[$key])) {
-                    for($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if (isset($units[$i]) && isset($history[$key]['Data'.$i])) {
                             if (!isset($cTo[$i])) $cTo[$i] = $units[$i];
 
@@ -435,7 +435,7 @@ class Driver
             }
         }
         if (is_array($cTo)) {
-            foreach($cTo as $key => $val) {
+            foreach ($cTo as $key => $val) {
                 $devInfo["Units"][$key] = $val;
             }
         }
@@ -447,7 +447,7 @@ class Driver
      * @param mixed $class The name of the sensor class to register, or the actual object to register
      * @param string $name The name of the sensor class if the above is an object.  The default is the class name.
      * @return bool true on success, false on failure
-     */
+      */
     public function registerDriver($class, $name=false) {
             if (is_string($class) && class_exists($class)) {
                 $this->drivers[$class] = new $class($this);
@@ -459,10 +459,10 @@ class Driver
                 return false;
             }
             if (is_array($this->drivers[$class]->devices)) {
-                foreach($this->drivers[$class]->devices as $fw => $Firm) {
-                    foreach($Firm as $hw => $ver) {
+                foreach ($this->drivers[$class]->devices as $fw => $Firm) {
+                    foreach ($Firm as $hw => $ver) {
                         $dev = explode(",", $ver);
-                        foreach($dev as $d) {
+                        foreach ($dev as $d) {
                             if (!isset($this->dev[$hw][$fw][$d])) {
                                 $this->dev[$hw][$fw][$d] = $class;
                                 //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
@@ -480,7 +480,7 @@ class Driver
     
     /**
      * Constructor    
-     */
+      */
     function driver(&$db=null, $plugins = "", $direct=true) {        
 
         $this->db = &$db;
@@ -507,7 +507,7 @@ class Driver
         // This has to go after the plugin registrations about
         $this->filters = new filter($plugins);
         if (is_array($plugins->plugins["Generic"]["driver"])) {
-            foreach($plugins->plugins["Generic"]["driver"] as $driver) {
+            foreach ($plugins->plugins["Generic"]["driver"] as $driver) {
                 $this->registerDriver($driver["Class"]);
             }
         } else {

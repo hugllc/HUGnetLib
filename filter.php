@@ -53,7 +53,7 @@ class Filter
      * @param object &$plugins This is an object of class plugins.
      *
      * @see plugins
-     */
+      */
     function __construct(&$plugins = "") 
     {
         if (!is_object($plugins)) {
@@ -73,7 +73,7 @@ class Filter
      * @param string $name  The name of the class if the above is an object.
      *
      * @return bool true on success, false on failure
-     */
+      */
     public function registerFilter($class, $name=false) 
     {
         if (is_string($class) && class_exists($class)) {
@@ -106,7 +106,7 @@ class Filter
      * @param string $filter Which filter to use
      *
      * @return array The filtered data
-    */
+     */
     function filterdata(&$data, $type, $filter=null) 
     {
         $class = $this->getClass($type, $filter);
@@ -131,7 +131,7 @@ class Filter
      * @param mixed  $return   This is the default value to return if the function is not found
      *
      * @return array The filtered data
-     */
+      */
     function runFunction(&$class, $function, &$args, $return = null) 
     {
         if (is_string($function)) {
@@ -152,7 +152,7 @@ class Filter
      * @param string &$filter The filter to implement.  This can be changed by this routine.
      *
      * @return object
-     */
+      */
     function &getClass($type, &$filter) 
     {
         $class = $this->dev[$type][$filter];
@@ -183,12 +183,12 @@ class Filter_Base
 {
     /**
         This defines all of the filters that this driver deals with...
-    */
+     */
     var $filters = array();
     
     /**
         Constructor.
-    */
+     */
     function __construct()
     {
 

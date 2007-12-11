@@ -1,32 +1,36 @@
 <?php
 /**
- *   This is the driver code for the 0039-28 endpoints.
+ * This is the driver code for the 0039-28 endpoints.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- ** @license http://opensource.org/licenses/gpl-license.php GNU Public License
- ** @package HUGnetLib
- ** @subpackage Endpoints
- ** @copyright 2007 Hunt Utilities Group, LLC
- ** @author Scott Price <prices@hugllc.com>
- ** @version $Id: e00392800.php 445 2007-11-13 16:53:06Z prices $    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: e00392100.php 528 2007-12-10 23:07:27Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
@@ -35,7 +39,7 @@ if (!class_exists("e00392601")) {
 
     /**
      * Driver for the polling script (0039-26-01-P)
-    */
+     */
     class e00392601 extends eDEFAULT{
         var $HWName = "0039-26 Gateway";
 
@@ -57,7 +61,7 @@ if (!class_exists("e00392601")) {
          * Returns the packet to send to read the configuration out of an endpoint
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
-        */
+         */
         function ReadConfig($Info) {
             $packet = array(
                 array(
@@ -72,7 +76,7 @@ if (!class_exists("e00392601")) {
 
         /**
          *
-         */
+          */
         function CheckRecord($Info, &$Rec) {
         
             $Rec["Status"] = "BAD";
@@ -99,7 +103,7 @@ if (!class_exists("e00392601")) {
      
             $myIP = explode(".", $Info["IP"]);
     
-            for($i = 0; $i < 4; $i++) {
+            for ($i = 0; $i < 4; $i++) {
                 $string .= devInfo::hexify($myIP[$i], 2);
             }
             return $string;
@@ -108,7 +112,7 @@ if (!class_exists("e00392601")) {
         
         /**
          *
-         */
+          */
         function InterpConfig(&$Info) {
 
             $Info['HWName'] = $this->HWName;
@@ -142,8 +146,8 @@ if (!class_exists("e00392601")) {
             $index += 4;
             $Info["Name"] = devInfo::deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
             $index += 60;
-			$IP = str_split(substr($Info["DriverInfo"], $index, 8), 2);
-            foreach($IP as $k => $v) {
+            $IP = str_split(substr($Info["DriverInfo"], $index, 8), 2);
+            foreach ($IP as $k => $v) {
                 $IP[$k] = hexdec($v); 
             }
             $Info['IP'] = implode(".", $IP);
@@ -153,7 +157,7 @@ if (!class_exists("e00392601")) {
 
         /**
          *
-         */
+          */
         function InterpSensors($Info, $Packets) {
             return array();
         }

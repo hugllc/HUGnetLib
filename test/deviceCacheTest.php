@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the device cache class
+ * Tests the device cache class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -49,7 +54,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -62,7 +67,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -71,13 +76,13 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
     /**
      *
-     */
+      */
     function testcreateTable() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -87,7 +92,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     function testaddArray() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -97,7 +102,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
     
     /**
      *
-     */
+      */
     function testadd() {    
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -107,7 +112,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     function testupdate() {    
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -118,7 +123,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     function testgetAll() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -128,7 +133,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     function testquery() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -138,7 +143,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     function testremove() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -147,7 +152,7 @@ class deviceCacheTest  extends PHPUnit_Framework_TestCase {
     
     }
     
-	
+    
 }
 
 

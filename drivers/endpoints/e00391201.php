@@ -1,32 +1,36 @@
 <?php
 /**
- *   Driver for the 0039-12 endpoints with the FET daughter board.
+ * Driver for the 0039-12 endpoints with the FET daughter board.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Endpoints
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists("e00391201")) {
@@ -59,97 +63,97 @@ define("e00391201_SENSORS", 9);
 
 
 
-	/**
-		@brief Driver for the 0039-12 endpoint board and select firmwares
-	*/
-	class e00391201 extends eDEFAULT{
+    /**
+     * Driver for the 0039-12 endpoint board and select firmwares
+     */
+    class e00391201 extends eDEFAULT{
 
         var $HWName = "0039-12 Endpoint";
 
         var $average_table = "e00391201_average";
         var $history_table = "e00391201_history";
 
-		var $devices = array(
-		
-			"0039-11-06-A" => array(
-				"0039-12-00-A" => "BAD",
-				"0039-12-01-A" => "BAD",
-				"0039-12-02-A" => "BAD",
-				"0039-12-01-B" => "DEFAULT",
-				"0039-12-02-B" => "DEFAULT",
-			),
-			"0039-11-07-A" => array(
-				"0039-12-00-A" => "BAD",
-				"0039-12-01-A" => "BAD",
-				"0039-12-02-A" => "BAD",
-				"0039-12-01-B" => "DEFAULT",
-				"0039-12-02-B" => "DEFAULT",
-			),
-			"0039-11-08-A" => array(
-				"0039-12-01-B" => "DEFAULT",
-				"0039-12-02-B" => "DEFAULT",
-			),
-			"0039-20-04-C" => array(
-				"0039-12-02-B" => "DEFAULT",
-			),
-			"0039-20-05-C" => array(
-				"0039-12-02-B" => "DEFAULT",
-			),
+        var $devices = array(
+        
+            "0039-11-06-A" => array(
+                "0039-12-00-A" => "BAD",
+                "0039-12-01-A" => "BAD",
+                "0039-12-02-A" => "BAD",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-11-07-A" => array(
+                "0039-12-00-A" => "BAD",
+                "0039-12-01-A" => "BAD",
+                "0039-12-02-A" => "BAD",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-11-08-A" => array(
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-04-C" => array(
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-05-C" => array(
+                "0039-12-02-B" => "DEFAULT",
+            ),
             "DEFAULT" => array(
             ),
-		);
-		
-		var $modes = array(
-			0 => 'Digital', 
-			1 => 'Analog - High Z', 
-			2 => 'Analog - Voltage', 
-			3 => 'Analog - Current'
-		);
-		
-		var $deflocation = array(
-			'0039-20-04-C' => array("Fan 1", "Fan 1", "Fan 2", "Fan 2", "Fan 3", "Fan 3", "Fan 4", "Fan 4", "Main"),
-			'DEFAULT' => array("Out 1 Current", "Out 1 Voltage", "Out 2 Current", "Out 2 Voltage", "Out 3 Current", "Out 3 Voltage", "Out 4 Current", "Out 4 Voltage", "Main Voltage"),
-		);
-
-		var $config = array(
-			"0039-11-06-A" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),		
-			"0039-20-04-C" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),		
-			"0039-11-07-A" => array("Function" => "Power Controller", "Sensors" => 9, "MainV" => 8),
-			"0039-11-08-A" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
-			"0039-20-05-C" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
-            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9),
-		);
-
-		var $caldata = array(
-			"DEFAULT" => array(1.79, 16, 1.79, 16, 1.79, 16, 1.79, 16, 16),
-			"0039-20-04-C" => array(3.58, 32, 3.58, 32, 3.58, 32, 3.58, 32, 32),
-			"0039-20-05-C" => array(3.58, 32, 3.58, 32, 32),
-			);
-		var $labels = array(
-			"DEFAULT" => array("Out1 Current", "Out1 Voltage", "Out2 Current", "Out2 Voltage", "Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
-			"0039-20-05-C" => array("Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
-			);
-		var $units = array(
-			"DEFAULT" => array("A", "V", "A", "V", "A", "V", "A", "V", "V"),
-			"0039-20-05-C" => array("A", "V", "A", "V", "V"),
-			);
-		var $types = array(
-			"DEFAULT" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
         );
-		var $sensorTypes = array(
+        
+        var $modes = array(
+            0 => 'Digital', 
+            1 => 'Analog - High Z', 
+            2 => 'Analog - Voltage', 
+            3 => 'Analog - Current'
+        );
+        
+        var $deflocation = array(
+            '0039-20-04-C' => array("Fan 1", "Fan 1", "Fan 2", "Fan 2", "Fan 3", "Fan 3", "Fan 4", "Fan 4", "Main"),
+            'DEFAULT' => array("Out 1 Current", "Out 1 Voltage", "Out 2 Current", "Out 2 Voltage", "Out 3 Current", "Out 3 Voltage", "Out 4 Current", "Out 4 Voltage", "Main Voltage"),
+        );
+
+        var $config = array(
+            "0039-11-06-A" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
+            "0039-20-04-C" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
+            "0039-11-07-A" => array("Function" => "Power Controller", "Sensors" => 9, "MainV" => 8),
+            "0039-11-08-A" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
+            "0039-20-05-C" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
+            "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9),
+        );
+
+        var $caldata = array(
+            "DEFAULT" => array(1.79, 16, 1.79, 16, 1.79, 16, 1.79, 16, 16),
+            "0039-20-04-C" => array(3.58, 32, 3.58, 32, 3.58, 32, 3.58, 32, 32),
+            "0039-20-05-C" => array(3.58, 32, 3.58, 32, 32),
+            );
+        var $labels = array(
+            "DEFAULT" => array("Out1 Current", "Out1 Voltage", "Out2 Current", "Out2 Voltage", "Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
+            "0039-20-05-C" => array("Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
+            );
+        var $units = array(
+            "DEFAULT" => array("A", "V", "A", "V", "A", "V", "A", "V", "V"),
+            "0039-20-05-C" => array("A", "V", "A", "V", "V"),
+            );
+        var $types = array(
+            "DEFAULT" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
+        );
+        var $sensorTypes = array(
             "DEFAULT" => array("FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard"),
         );
 
-		var $cols = array("FET0pMode" => "FET 0 Mode", 
-								"FET1pMode" => "FET 1 Mode", 
-								"FET2pMode" => "FET 2 Mode", 
-								"FET3pMode" => "FET 3 Mode", 
-								"NumSensors" => "# Sensors",
-								);
+        var $cols = array("FET0pMode" => "FET 0 Mode", 
+                                "FET1pMode" => "FET 1 Mode", 
+                                "FET2pMode" => "FET 2 Mode", 
+                                "FET3pMode" => "FET 3 Mode", 
+                                "NumSensors" => "# Sensors",
+                                );
 
 
 
-		function CheckRecord($Info, &$Rec) {
+        function CheckRecord($Info, &$Rec) {
             parent::CheckRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
@@ -158,15 +162,15 @@ define("e00391201_SENSORS", 9);
                 return;
             }
 
-		}
+        }
 
-		function InterpConfig(&$Info) {
+        function InterpConfig(&$Info) {
 
             $this->InterpConfigDriverInfo($Info);
             $this->InterpConfigHW($Info);
             $this->InterpConfigFW($Info);
 
-			$Info["ActiveSensors"] = $Info["NumSensors"];
+            $Info["ActiveSensors"] = $Info["NumSensors"];
 
             $this->InterpConfigFETSetup($Info);
             $this->InterpConfigParams($Info);
@@ -175,58 +179,58 @@ define("e00391201_SENSORS", 9);
 
             $this->InterpConfigSensorSetup($Info);
 
-			if (isset($this->labels[$Info["FWPartNum"]])) {
-				$Info["Labels"] = $this->labels[$Info["FWPartNum"]];
-			} else {
-				$Info["Labels"] = $this->labels["DEFAULT"];			
-			}
+            if (isset($this->labels[$Info["FWPartNum"]])) {
+                $Info["Labels"] = $this->labels[$Info["FWPartNum"]];
+            } else {
+                $Info["Labels"] = $this->labels["DEFAULT"];            
+            }
 
         }
         private function InterpConfigFETSetup(&$Info) {
-			$Info["Setup"] = hexdec(substr($Info["RawSetup"], e00391201_SETUP, 2));
-			for($i = 0; $i < 4; $i++) {
-				$mode = (($Info["Setup"]>>($i*2)) & 3);
-				$Info["FET".$i."Mode"] = $mode;
-				$Info["FET".$i."pMode"] = $this->modes[$mode];
-			}					
+            $Info["Setup"] = hexdec(substr($Info["RawSetup"], e00391201_SETUP, 2));
+            for ($i = 0; $i < 4; $i++) {
+                $mode = (($Info["Setup"]>>($i*2)) & 3);
+                $Info["FET".$i."Mode"] = $mode;
+                $Info["FET".$i."pMode"] = $this->modes[$mode];
+            }                    
 
-			$Info["FET0"] = hexdec(substr($Info["RawSetup"], e00391201_FET0, 2));
-			$Info["FET1"] = hexdec(substr($Info["RawSetup"], e00391201_FET1, 2));
-			$Info["FET2"] = hexdec(substr($Info["RawSetup"], e00391201_FET2, 2));
-			$Info["FET3"] = hexdec(substr($Info["RawSetup"], e00391201_FET3, 2));
-			$Info["FET0Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET0_MULT, 2));
-			$Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET1_MULT, 2));
-			$Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET2_MULT, 2));
-			$Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET3_MULT, 2));
+            $Info["FET0"] = hexdec(substr($Info["RawSetup"], e00391201_FET0, 2));
+            $Info["FET1"] = hexdec(substr($Info["RawSetup"], e00391201_FET1, 2));
+            $Info["FET2"] = hexdec(substr($Info["RawSetup"], e00391201_FET2, 2));
+            $Info["FET3"] = hexdec(substr($Info["RawSetup"], e00391201_FET3, 2));
+            $Info["FET0Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET0_MULT, 2));
+            $Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET1_MULT, 2));
+            $Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET2_MULT, 2));
+            $Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET3_MULT, 2));
         }
 
 
-	
-		function InterpSensors($Info, $Packets) {
+    
+        function InterpSensors($Info, $Packets) {
 
-			$this->InterpConfig($Info);
-		
-			$ret = array();
-			foreach($Packets as $data) {
-			    $data = $this->checkDataArray($data);
-				if (isset($data['RawData'])) {
-				    $index = 0;
-            		$data['NumSensors'] = $Info['NumSensors'];
-            		$data["ActiveSensors"] = $Info["ActiveSensors"];
-            		$data["Driver"] = $Info["Driver"];
-            		$data["DeviceKey"] = $Info["DeviceKey"];
-            		$data["Types"] = $Info["Types"];
-            		$data["DataIndex"] = $data["Data"][$index++];
-            		$data["TimeConstant"] = 1;
-		         
-					if (is_array($data["Data"])) {
-						for ($key = 0; $key < $Info["NumSensors"]; $key++) {
-							$data["raw"][$key] = $data["Data"][$index++];
-							$data["raw"][$key] += $data["Data"][$index++] << 8;
-						}
-						
-					}	
-    				$this->driver->sensors->decodeData($Info, $data);
+            $this->InterpConfig($Info);
+        
+            $ret = array();
+            foreach ($Packets as $data) {
+                $data = $this->checkDataArray($data);
+                if (isset($data['RawData'])) {
+                    $index = 0;
+                    $data['NumSensors'] = $Info['NumSensors'];
+                    $data["ActiveSensors"] = $Info["ActiveSensors"];
+                    $data["Driver"] = $Info["Driver"];
+                    $data["DeviceKey"] = $Info["DeviceKey"];
+                    $data["Types"] = $Info["Types"];
+                    $data["DataIndex"] = $data["Data"][$index++];
+                    $data["TimeConstant"] = 1;
+                 
+                    if (is_array($data["Data"])) {
+                        for ($key = 0; $key < $Info["NumSensors"]; $key++) {
+                            $data["raw"][$key] = $data["Data"][$index++];
+                            $data["raw"][$key] += $data["Data"][$index++] << 8;
+                        }
+                        
+                    }    
+                    $this->driver->sensors->decodeData($Info, $data);
                     // This changes the voltage across the FET into the output voltage
                     // Vo = Vmain - Vf 
                     $data["Data1"] = $data['data'][1] = round($data["Data8"] -  $data["Data1"], 4);
@@ -236,25 +240,25 @@ define("e00391201_SENSORS", 9);
 
                     // Check everything
                     $this->checkRecord($Info, $data);
-    				$ret[] = $data;
+                    $ret[] = $data;
 
-				}
-			}
-			return $ret;
-		}
-	
-	
-		/**
-			@brief Constructor
-			@param $db String The database to use
-			@param $servers Array The servers to use.
-			@param $options the database options to use.
-		*/
-		function e00391201 (&$driver) {
-//			$this->eDEFAULT($servers, $db, $options);
+                }
+            }
+            return $ret;
+        }
+    
+    
+        /**
+         * Constructor
+         * @param $db String The database to use
+         * @param $servers Array The servers to use.
+         * @param $options the database options to use.
+         */
+        function e00391201 (&$driver) {
+//            $this->eDEFAULT($servers, $db, $options);
             parent::__construct($driver);
-		}
-	}
+        }
+    }
 }
 if (method_exists($this, "add_generic")) {
     $this->add_generic(array("Name" => "e00391201", "Type" => "driver", "Class" => "e00391201", "deviceJOIN" => "e00391200_location"));

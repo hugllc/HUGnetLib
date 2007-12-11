@@ -1,36 +1,40 @@
 <?php
 /**
- *   Sensor driver for pulse counters
+ * Sensor driver for pulse counters
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id: unitConversion.inc.php 369 2007-10-12 15:05:32Z prices $    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: e00392100.php 528 2007-12-10 23:07:27Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /**
-	@brief class for dealing with resistive sensors.
+    @brief class for dealing with resistive sensors.
 */
 if (!class_exists('pulseSensor')) {
     
@@ -39,7 +43,7 @@ if (!class_exists('pulseSensor')) {
     
         /**
             This defines all of the sensors that this driver deals with...
-        */
+         */
         // PPM = Pulses per minute
         public $sensors = array(
             0x70 => array(
@@ -133,7 +137,7 @@ if (!class_exists('pulseSensor')) {
                 Speed = (Freq * 1.6965) - 0.1
             
             Freq = Pulses/Time
-        */
+         */
         function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=null) {
             if (empty($deltaT)) return null;
             if ($val <= 0) return 0;

@@ -1,31 +1,34 @@
 <?php
 /**
- *   Class to keep track of gateways.
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * Class to keep track of gateways.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Gateways
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * PHP Version 5
+ *
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage Gateways
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version SVN: $Id$    
  *
  */
 
@@ -46,7 +49,7 @@ class gateway {
      * Constructor
      * @param object $driver This is a object of class driver
      * @see driver
-    */
+     */
     function gateway(&$driver) 
     {
         $this->db = &$driver->db;
@@ -57,7 +60,7 @@ class gateway {
      * Try to automatically find out which gateway to use
      * @param bool $verbose Whether to send output to the terminal or not
      * @return false on failure, Array of gateway information on success
-    */
+     */
     function Find($verbose = false) {
         if (!is_object($this->db)) return false;
         $return = false;
@@ -85,8 +88,8 @@ class gateway {
      * @param $digits Integer The number of digits after the decimal point in the returned seconds
      * @return String The number of years, days, hours, minutes, and seconds in the original number of seconds.
      *
-     *   This is for uptime displays.
-     */
+     * This is for uptime displays.
+      */
     function get_ydhms ($seconds, $digits=0) {
         $years = (int)($seconds/60/60/24/365.25);
         $seconds -= $years*60*60*24*365.25;
@@ -112,7 +115,7 @@ class gateway {
      * @param $bytes Integer the original number of bytes
      * @param $digits Integer The number places to the right of the decimal point to show
      * @return String The number of bytes human readable.
-    */
+     */
     function get_bytes($bytes, $digits=2) {
         
         $labels = array("", " k", " M", " G", " T", " P");
@@ -131,7 +134,7 @@ class gateway {
      *
      * @param int $key The GatewayKey for th gateway to get
      * @return array The information about the gateway
-     */
+      */
     function get($key) {
         if (!is_object($this->db)) return false;
         $ret = $this->db->getArray("SELECT * from ".$this->table." where ".$this->id." = '".$key."'");
@@ -143,7 +146,7 @@ class gateway {
      * Get all gateways
      *
      * @return array An array of gateway information arrays
-     */
+      */
     function getAll() {
         if (!is_object($this->db)) return false;
         $ret = $this->db->getArray("SELECT * from ".$this->table."");
@@ -169,7 +172,7 @@ class gatewayCache {
      * @param string $file The file name to store the database in    
      * @param int $mode The octal mode to set the file to.
      * @param string $error A variable to store errors in.
-    */
+     */
     function __construct($file = null, $mode = 0666, $error = null) {
         if ($error == null) $error =& $this->lastError;
         
@@ -185,7 +188,7 @@ class gatewayCache {
         $ret = $this->_sqlite->query("PRAGMA table_info(".$this->table.")");
         if (is_object($ret)) $columns = $ret->fetchAll(PDO::FETCH_ASSOC);
         if (is_array($columns)) {
-            foreach($columns as $col) {
+            foreach ($columns as $col) {
                 $this->fields[$col['name']] = $col['type'];
             }
         }
@@ -193,7 +196,7 @@ class gatewayCache {
     
     /**
      *
-     */
+      */
     function createTable() {
         $query = "CREATE TABLE `gateways` (
                   `GatewayKey` int(11) NOT null auto_increment,
@@ -213,10 +216,10 @@ class gatewayCache {
 
     /**
      *
-     */
+      */
     function addArray($InfoArray) {
         if (is_array($InfoArray)) {
-            foreach($InfoArray as $info) {
+            foreach ($InfoArray as $info) {
                 $this->add($info);
             }
         }
@@ -224,7 +227,7 @@ class gatewayCache {
     
     /**
      *
-     */
+      */
     function add($info) {    
         if (isset($info['GatewayName']) 
                 && isset($info['GatewayIP']) 
@@ -233,7 +236,7 @@ class gatewayCache {
             $div = "";
             $fields = "";
             $values = "";
-            foreach($this->fields as $key => $val) {
+            foreach ($this->fields as $key => $val) {
                 if (isset($info[$key])) {
                     $fields .= $div.$key;
                     $values .= $div.$this->_sqlite->quote($info[$key]);
@@ -253,13 +256,13 @@ class gatewayCache {
 
     /**
      *
-     */
+      */
     function update($info) {    
         if (isset($info['GatewayKey'])) {
             $div = "";
             $fields = "";
             $values = "";
-            foreach($this->fields as $key => $val) {
+            foreach ($this->fields as $key => $val) {
                 if (isset($info[$key])) {
                     $fields .= $div.$key;
                     $values .= $div.$this->_sqlite->quote($info[$key]);
@@ -278,7 +281,7 @@ class gatewayCache {
 
     /**
      *
-     */
+      */
     function getAll() {
         $query = " SELECT * FROM '".$this->table."'; ";
         $ret = $this->_sqlite->query($query);
@@ -288,7 +291,7 @@ class gatewayCache {
 
     /**
      *
-     */
+      */
     function query($query) {
         $ret = $this->_sqlite->query($query);
         if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -296,13 +299,13 @@ class gatewayCache {
     }
     /**
      *
-     */
+      */
     function remove($info) {
         if (is_array($info))
         {
             $div = "";
             $where = "";
-            foreach($info as $key => $val) {
+            foreach ($info as $key => $val) {
                 $where .= $div.$key."='".$val."'";
                 $div = " AND ";
             }

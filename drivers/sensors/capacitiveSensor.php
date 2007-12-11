@@ -1,40 +1,44 @@
 <?php
 /**
- *   Sensor driver for capactive sensors
+ * Sensor driver for capactive sensors
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists('capacitiveSensor')) {
 
 
     /**
-     *   class for dealing with capacitive sensors.
-    */
+     * class for dealing with capacitive sensors.
+     */
     class capacitiveSensor extends sensor_base
     {
 
@@ -57,17 +61,17 @@ if (!class_exists('capacitiveSensor')) {
         );
     
         /**
-         *   This function takes in the AtoD value and returns the calculated
-         *   capacitance of the sensor.  It does this using a fairly complex
-         *   formula.  This formula and how it was derived is detailed at
-         *   {@link https://dev.hugllc.com/index.php/Project:HUGnet_Capacitive_Sensors Capacitive Sensors}
-         *   
-         *   @param int $A The AtoD reading
-         *   @param int $T The time constant used to get the reading
-         *   @param float $R The bias resistance in kOhms
-         *   @return float The resistance corresponding to the values given
-         *   
-        */
+         * This function takes in the AtoD value and returns the calculated
+         * capacitance of the sensor.  It does this using a fairly complex
+         * formula.  This formula and how it was derived is detailed at
+         * {@link https://dev.hugllc.com/index.php/Project:HUGnet_Capacitive_Sensors Capacitive Sensors}
+         * 
+         * @param int $A The AtoD reading
+         * @param int $T The time constant used to get the reading
+         * @param float $R The bias resistance in kOhms
+         * @return float The resistance corresponding to the values given
+         * 
+         */
         function getCapacitance($A, $T, $R, $t=1)
         {
             $Den1 = $this->Tf * $T * $this->s * $this->Am;
@@ -83,7 +87,7 @@ if (!class_exists('capacitiveSensor')) {
         }    
         
         /**
-         */
+          */
         function genericCap($val, $sensor, $TC, $extra=null) {
             return $val;
         }

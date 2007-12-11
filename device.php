@@ -54,7 +54,7 @@ class Device
 
     /** The table the analysis output is stored in */
     var $analysis_table = "analysis";
-    /** How many times the poll interval has to pass before we show an error on it     */
+    /** How many times the poll interval has to pass before we show an error on it      */
     var $PollWarningIntervals = 2;        
 
     /**
@@ -62,7 +62,7 @@ class Device
      * database object is taken from the driver object.
      *
      * @param object &$driver This should be an object of class driver
-    */
+     */
     function __construct(&$driver) 
     {
         $this->db      = &$driver->db;
@@ -75,7 +75,7 @@ class Device
      * @param array $stuff The stuff to update with
      *
      * @return bool
-     */
+      */
     public function update($key, $stuff) 
     {
         if (!is_array($stuff)) return false;
@@ -133,10 +133,10 @@ class Device
      *
      * @param mixed $id   This is either the DeviceID, DeviceName or DeviceKey
      * @param int   $type The type of the 'id' parameter.  It is "ID" for DeviceID,
-     *    "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
+     *  "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
      *
      * @return array
-     */
+      */
     function getDevice($id, $type="KEY") 
     {
         if (empty($id)) return array();
@@ -184,12 +184,12 @@ class Device
      * Runs a function using the correct driver for the endpoint
      *
      * @param array $Packet Array of information about the device 
-     *                      with the data from the incoming packet
+     *                    with the data from the incoming packet
      * @param bool  $force  Force the update even if the serial number 
-     *                      and hardware part number don't match
+     *                    and hardware part number don't match
      *
      * @return mixed
-     */
+      */
     function updateDevice($Packet, $force=false)
     {
 
@@ -281,7 +281,7 @@ class Device
      * @return mixed
      *
      * @uses device::encodeParams
-     */
+      */
     function setParams($DeviceKey, $params) 
     {
         if (is_array($params)) $params = device::encodeParams($params);
@@ -300,7 +300,7 @@ class Device
      * @param array &$info This is a device information array
      *
      * @return bool
-     */
+      */
     function isController(&$info)
     {
         return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
@@ -312,7 +312,7 @@ class Device
      * @param array &$params the parameter array to encode
      *
      * @return string
-     */
+      */
     function encodeParams(&$params) 
     {
         if (is_array($params)) {
@@ -330,7 +330,7 @@ class Device
      * @param string &$params the parameter array to decode
      *
      * @return array
-     */
+      */
     function decodeParams(&$params) 
     {
         if (is_string($params)) {
@@ -352,7 +352,7 @@ class Device
      * @return array The array of health information
      * 
      * @todo This should be moved to the device class
-     */
+      */
     function health($where, $days = 7, $start=null) 
     {
 
@@ -418,7 +418,7 @@ class Device
      * @param array $Info Infomation about the device to get stylesheet information for
      *
      * @return string The return should be put inside of style="" css tags in your HTML
-     */
+      */
     function diagnose($Info) 
     {
         $problem = array();
@@ -446,7 +446,7 @@ class Device
      * @param int   $digits  the number of places after the decimal point to have on the seconds
      *
      * @return string
-     */
+      */
     function get_ydhms ($seconds, $digits=0) 
     {
         $years    = (int)($seconds/60/60/24/365.25);
@@ -491,7 +491,7 @@ class DeviceCache
 
     /**
      *  These are the database fields
-     */
+      */
     var $fields = array(
             "DeviceKey" => "int(11)",
             "DeviceID" => "varchar(6)",
@@ -526,7 +526,7 @@ class DeviceCache
      * @param string $file  The database file to use (SQLite)
      * @param int    $mode  The file mode in octal (ex 0666)
      * @param string $error A variable to store an error message in
-     */
+      */
     function __construct($file = null, $mode = 0666, $error = null) 
     {
         if ($error == null) $error =& $this->lastError;
@@ -552,7 +552,7 @@ class DeviceCache
      * Creates the database table
      *
      * @return mixed
-     */
+      */
     function createTable() 
     {
         $query = "CREATE TABLE `".$this->table."` (
@@ -598,7 +598,7 @@ class DeviceCache
      * @param array $InfoArray An array of database rows to add
      *
      * @return none
-     */
+      */
     function addArray($InfoArray) 
     {
         if (is_array($InfoArray)) {
@@ -614,7 +614,7 @@ class DeviceCache
      * @param array $info The row in array form.
      *
      * @return mixed 
-     */
+      */
     function add($info) 
     {    
         if (isset($info['DeviceID']) 
@@ -653,7 +653,7 @@ class DeviceCache
      * @param array $info The row in array form.
      *
      * @return mixed 
-     */
+      */
     function update($info) 
     {    
         if (isset($info['DeviceKey'])) {
@@ -686,7 +686,7 @@ class DeviceCache
      * Gets all rows from the database
      *
      * @return array
-     */
+      */
     function getAll() 
     {
         $query = " SELECT * FROM '".$this->table."'; ";
@@ -704,7 +704,7 @@ class DeviceCache
      * @param string $query SQL query to send to the database
      *
      * @return mixed
-     */
+      */
     function query($query) 
     {
         $ret = $this->_sqlite->query($query);
@@ -718,7 +718,7 @@ class DeviceCache
      * @param array $info The row in array form.
      *
      * @return mixed 
-     */
+      */
     function remove($info) 
     {
         if (is_array($info)) {

@@ -60,7 +60,7 @@ class Plog
      *
      * @param string $name The name of the table to use.
      * @param string $file The name of the file to use.
-     */
+      */
     function __construct($name = null, $file=null) 
     {
         if (!empty($file)) {
@@ -88,7 +88,7 @@ class Plog
      * Gets the next ID to use from the table
      *
      * @return int
-     */
+      */
     function getID() 
     {
         if (!is_object($this->_sqlite)) return false;
@@ -107,7 +107,7 @@ class Plog
      * @param string $table The table to use in the query
      *
      * @return string
-     */
+      */
     function createPacketLogQuery($table="")
     {
         if (empty($table)) $table = $this->table;
@@ -136,7 +136,7 @@ class Plog
      * Creates the packet log table.
      *
      * @return mixed
-     */
+      */
     function createPacketLog() 
     {
         if (!is_object($this->_sqlite)) return false;
@@ -153,7 +153,7 @@ class Plog
      * @param int    $start The number of the entry to start on
      *
      * @return mixed
-     */
+      */
     function get($where, $limit=0, $start=0) 
     {
         if (!is_object($this->_sqlite)) return false;
@@ -175,7 +175,7 @@ class Plog
      * @param string $where a valid SQL where statement
      *
      * @return mixed
-     */
+      */
     function getOne($where = null) 
     {
         if (!is_object($this->_sqlite)) return false;
@@ -202,7 +202,7 @@ class Plog
      * @param array $info The row to insert into the database
      *
      * @return mixed
-     */
+      */
     function add($info) 
     {    
         if (!is_object($this->_sqlite)) return false;
@@ -250,7 +250,7 @@ class Plog
      * @param int $start The number of the entry to start on
      *
      * @return mixed
-     */
+      */
     function getAll($limit=0, $start=0) 
     {
         return $this->get(1, $limit, $start);
@@ -262,7 +262,7 @@ class Plog
      * @param array $info The row to insert into the database
      *
      * @return mixed
-     */
+      */
     function remove($info)
     {
         if (!is_object($this->_sqlite)) return false;
@@ -286,7 +286,7 @@ class Plog
      * @param string $Type    They type of packet it is.
      *
      * @return array
-     */
+      */
     public static function packetLogSetup($Packet, $Gateway, $Type="") 
     {
         if (empty($Type)) $Type = "UNSOLICITED";

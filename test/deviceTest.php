@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the device class
+ * Tests the device class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -50,7 +55,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -63,7 +68,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -72,14 +77,14 @@ class deviceTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
     /**
      * @dataProvider dataHealth().
      * @covers driver::testHealth
-     */
+      */
     public function testHealth() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -89,7 +94,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * data provider dataDiagnose
-     */
+      */
     public static function dataDiagnose() {
         return array(
         );
@@ -97,7 +102,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataDiagnose().
      * @covers device::testDiagnose
-     */
+      */
     public function testDiagnose($Info, $expect) {
         $o = new driver();
         $ret = $o->device->Get_diagnose($Info);
@@ -107,7 +112,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataDiagnose().
      * @covers driver::testDiagnose
-     */
+      */
     public function testDiagnoseDriver($Info, $expect) {
         $o = new driver();
         $ret = $o->Get_diagnose($Info);
@@ -116,7 +121,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * data provider for testGet_ydhms
-     */
+      */
     public static function dataGet_ydhms() {
         return array(
             array(5000.25, 2, "1h 23m 20.25s"),
@@ -126,7 +131,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataGet_ydhms().
      * @covers driver::Get_ydhms
-     */
+      */
     public function testGet_ydhms($seconds, $digits, $expect) {
         $o = new driver();
         $ret = $o->device->Get_ydhms($seconds, $digits);
@@ -136,7 +141,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSelectDevice().
-     */
+      */
     public function testSelectDevice() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -146,7 +151,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetDevice().
-     */
+      */
     public function testGetDevice() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -156,7 +161,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testUpdateDevice().
-     */
+      */
     public function testUpdateDevice() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -166,7 +171,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSetParams().
-     */
+      */
     public function testSetParams() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -176,7 +181,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testIsController().
-     */
+      */
     public function testIsController() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -186,7 +191,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     public static function dataEncodeParams() {
         return array(
             array(array("this"=>"is","a"=>"test"), "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"),
@@ -196,7 +201,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataEncodeParams
-     */
+      */
     public function testEncodeParams($params, $expect) {
         $ret = device::encodeParams($params);
         $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
@@ -205,7 +210,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     public static function dataDecodeParams() {
         return array(
             array("YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9", array("this"=>"is","a"=>"test")),
@@ -215,7 +220,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataDecodeParams
-     */
+      */
     public function testDecodeParams($params, $expect) {
         $ret = device::decodeParams($params);
         $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");

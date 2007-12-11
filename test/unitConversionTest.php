@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the unit conversion class
+ * Tests the unit conversion class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$    
  *
  */
 // Call unitConversionTest::main() if this source file is executed directly.
@@ -86,7 +91,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -99,7 +104,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
         $this->o = new unitConversion;
         $this->o->units = $this->testUnits;
@@ -110,19 +115,19 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
         unset($this->o);
     }
 
     /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
-     */
+      */
     public static function dataUnitArray() {
         $o = new unitConversion;
         $return = array();
-        foreach($o->units as $catName => $cat) {
-            foreach($cat as $shortName => $unit) {
+        foreach ($o->units as $catName => $cat) {
+            foreach ($cat as $shortName => $unit) {
                 $return[] = array($catName, $shortName, $unit);
             }
         }
@@ -131,7 +136,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayLongName($catName, $shortName, $unit) {
         // Long Name
         $this->assertType("string", $unit['longName'], $catName.":".$shortName.": Long name is not a string");
@@ -140,7 +145,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayVarType($catName, $shortName, $unit) {
         // Var Type
         $this->assertType("string", $unit['varType'], $catName.":".$shortName.": Variable type is not a string");
@@ -149,7 +154,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayConvert($catName, $shortName, $unit) {
         if (isset($unit["convert"])) {
             $this->assertType("array", $unit["convert"], $catName.":".$shortName.": Mode is not a string");
@@ -158,7 +163,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayMode($catName, $shortName, $unit) {
         if (isset($unit["mode"])) {
             $this->assertType("string", $unit["mode"], $catName.":".$shortName.": Mode is not a string");
@@ -167,7 +172,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayPreferred($catName, $shortName, $unit) {
         if (isset($unit["preferred"])) {
             $this->assertType("string", $unit["preferred"], $catName.":".$shortName.": Mode is not a string");
@@ -176,10 +181,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataUnitArray
-     */
+      */
     public function testUnitArrayValid($catName, $shortName, $unit) {
         $valid = array("mode", "convert", "longName", "varType", "preferred");
-        foreach($valid as $key) {
+        foreach ($valid as $key) {
             unset($unit[$key]);
         }
         $this->assertSame(array(), $unit);
@@ -187,14 +192,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     
     /**
      * data provider for testUnitArrayConvertFunct
-     */
+      */
     public static function dataUnitArrayConvertFunct() {
         $o = new unitConversion;
         $return = array();
-        foreach($o->units as $catName => $cat) {
-            foreach($cat as $shortName => $unit) {
+        foreach ($o->units as $catName => $cat) {
+            foreach ($cat as $shortName => $unit) {
                 if (is_array($unit['convert'])) {
-                    foreach($unit['convert'] as $to => $function) {
+                    foreach ($unit['convert'] as $to => $function) {
                         $return[] = array($catName, $shortName, $to, $function);
                     }
                 }
@@ -204,18 +209,18 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataUnitArrayConvertFunct
-     */
+      */
     public function testUnitArrayConvertFunct($catName, $shortName, $to, $function) {
         $this->assertTrue(method_exists($this->o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
         $this->assertTrue($this->findUnits($catName, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
     }
     /**
-     */
+      */
     public function findUnits($cat, $units) {
         $o = new unitConversion;
         if (is_null($cat)) {
             if (is_array($o->units)) {
-                foreach($array as $catName => $cat) {
+                foreach ($array as $catName => $cat) {
                     return isset($cat[$units]);
                 }
             }
@@ -225,12 +230,12 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         return false;
     }
     /**
-     */
+      */
     public function findUnitMode($cat, $unit, $mode) {
         $o = new unitConversion;
         if (is_null($cat)) {
             if (is_array($o->units)) {
-                foreach($array as $catName => $cat) {
+                foreach ($array as $catName => $cat) {
                     if (isset($cat[$unit])) {
                         return unitConversionTest::checkUnitModeRaw($cat[$unit]['mode'], $mode);
                     }
@@ -242,7 +247,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         return false;
     }
     /**
-     */
+      */
     private function checkUnitModeRaw($modes, $mode) {
         if (is_null($modes)) {                        
             return true;
@@ -257,7 +262,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     */
+      */
     private function checkvarType($vartype) {
         if ($vartype == 'float') return true;
         if ($vartype == 'int') return true;
@@ -265,18 +270,18 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         return false;
     }
     /**
-    */
+     */
     private function checkMode($mode) {
         if ($mode == 'raw') return true;
         if ($mode == 'diff') return true;
         return false;
     }
     /************************************************************
-     *   Here we start checking functions
+     * Here we start checking functions
      ************************************************************/
     /**
      *
-     */
+      */
     public static function dataPreferredUnit() {
         return array(
             array("&#176;F", "&#176;F"),
@@ -285,14 +290,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataPreferredUnit
-     */
+      */
     public function testPreferredUnit($unit, $expect) {
         $this->assertSame($expect, $this->o->preferredUnit($unit));
     }    
     
     /**
      *
-     */
+      */
     public static function dataGraphable() {
         return array(
             array("&#176;C", true),
@@ -301,13 +306,13 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataGraphable
-     */
+      */
     public function testGraphable($unit, $expect) {
         $this->assertSame($expect, $this->o->graphable($unit));
     }    
     /**
      *
-     */
+      */
     public static function dataFindUnit() {
         return array(
             array('&#176;F',array('longName' => '&#176;F','varType' => 'float','convert' => array('&#176;C' => 'FtoC'))),
@@ -316,14 +321,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataFindUnit
-     */
+      */
     public function testfindUnit($unit, $expect) {
         $this->assertSame($expect, $this->o->findUnit($unit));
     }
 
     /**
      *
-     */
+      */
     public static function dataDataType() {
         return array(
             array("&#176;C", "", "asdf", "asdf"),
@@ -332,14 +337,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataDataType
-     */
+      */
     public function testgetDataType($from, $to, $default, $expect) {
         $this->assertSame($expect, $this->o->getDataType($from, $to, $default));
     }
 
     /**
      *
-     */
+      */
     public static function dataConvert() {
         return array(
             array(32, "&#176;F", "&#176;C", 0, "raw", null, 0.0, "&#176;C"),
@@ -349,14 +354,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataConvert
-     */
+      */
     public function testConvert($val, $from, $to, $time, $type, $extra, $expect, $toExpect) {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
         $this->assertSame($expect, $ret);
     }
     /**
      * @dataProvider dataConvert
-     */
+      */
     public function testConvertTo($val, $from, $to, $time, $type, $extra, $expect, $toExpect) {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
         $this->assertSame($toExpect, $to);
@@ -364,7 +369,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     public static function dataGetPossConv() {
         return array(
             array("raw", null, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C", "&#176;" => "Direction", "Direction" => "&#176;")),
@@ -376,14 +381,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataGetPossConv
-     */
+      */
     public function testGetPossConv($type, $from, $expect) {
         $this->assertSame($expect, $this->o->getPossConv($type, $from));
     }
 
     /**
      *
-     */
+      */
     public static function dataTemperature() {
         return array(
             array(100, 212, 0, "raw"),
@@ -395,22 +400,22 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataTemperature
-     */
+      */
     public function testCtoF($c, $f, $time, $type) {
         $this->assertEquals($f, $this->o->CtoF($c, $time, $type));        
-	}
+    }
 
     /**
      * @dataProvider dataTemperature
-     */
-	public function testFtoC($c, $f, $time, $type) {
+      */
+    public function testFtoC($c, $f, $time, $type) {
         $this->assertEquals($c, $this->o->FtoC($f, $time, $type));        
-	}
+    }
 
 
     /**
      *
-     */
+      */
     public static function dataMilli() {
         return array(
             array(1, 1000, 0, "raw"),
@@ -420,20 +425,20 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataMilli
-     */
-	public function testtoMilli($v, $m, $time, $type) {
+      */
+    public function testtoMilli($v, $m, $time, $type) {
         $this->assertEquals($m, $this->o->toMilli($v, $time, $type));
-	}
+    }
     /**
      * @dataProvider dataMilli
-    */
-	public function testfromMilli($v, $m, $time, $type) {
+     */
+    public function testfromMilli($v, $m, $time, $type) {
         $this->assertEquals($v, $this->o->fromMilli($m, $time, $type));
-	}
+    }
 
     /**
      *
-     */
+      */
     public static function dataCenti() {
         return array(
             array(1, 100, 0, "raw"),
@@ -443,15 +448,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataCenti
-     */
-	public function testfromCenti($v, $c, $time, $type) {
+      */
+    public function testfromCenti($v, $c, $time, $type) {
         $this->assertEquals($v, $this->o->fromCenti($c, 0, 'raw'));
-	}
+    }
 
 
     /**
      *
-     */
+      */
     public static function dataCnttoRPM() {
         return array(
             array(0, null, 0, "raw", 0),
@@ -462,14 +467,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataCnttoRPM
-     */
+      */
     public function testCnttoRPM($cnt, $rpm, $time, $type, $cntperrev) {
         $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntperrev));
     }
 
     /**
      *
-     */
+      */
     public static function dataDirection() {
         // Put stuff that works either direction here.
         return array(
@@ -493,7 +498,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      *
-     */
+      */
     public static function dataDirtoNumDir() {
         $newStuff = array(
             array(0, "ASDF"),
@@ -502,14 +507,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataDirtoNumDir
-     */
+      */
     public function testDirtonumDir($numdir, $dir) {
         $this->assertSame($numdir, $this->o->DirtonumDir($dir, 0, 0));
     }
 
     /**
      *
-     */
+      */
     public static function dataNumDirtoDir() {
         $newStuff = array(
             array(360, "N"),
@@ -519,14 +524,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataNumDirtoDir
-     */
+      */
     public function testnumDirtoDir($numdir, $dir) {
         $this->assertSame($dir, $this->o->numDirtoDir($numdir, 0, 0));
     }
     
     /**
      *
-     */
+      */
     public static function datakWhTokW() {
         return array(
             array(100, 0, "diff", 0, null),
@@ -537,14 +542,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider datakWhTokW
-     */
+      */
     public function testkWhTokW ($val, $time, $type, $extra, $expect) {
         $this->assertEquals($expect, $this->o->kWhTokW($val, $time, $type, $extra));
     }
 
     /**
      *
-     */
+      */
     public static function datakWhToW() {
         return array(
             array(100, 0, "diff", 0, null),
@@ -555,7 +560,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider datakWhToW
-     */
+      */
     public function testkWhToW ($val, $time, $type, $extra, $expect) {
         $this->assertEquals($expect, $this->o->kWhToW($val, $time, $type, $extra));
     }

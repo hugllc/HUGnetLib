@@ -1,44 +1,46 @@
 <?php
 /**
- *   Random useful functions with no other home.
+ * Random useful functions with no other home.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Lib
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage Lib
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version SVN: $Id$    
  *
  */
 /**
- *    This function adds to the debug output
+ *  This function adds to the debug output
  *
- *    This function adds information to the file log in the debug info.    
- *    It must be the first function here, even preceeding the includes, as   
- *    all of the includes use it.                                            
+ *  This function adds information to the file log in the debug info.    
+ *  It must be the first function here, even preceeding the includes, as   
+ *  all of the includes use it.                                            
  *
- *    @param string $stuff This is what is actually added to the debug information
- *    @param int $level Between 0 and 10 this is the debug level at which to show it.
- *    @ingroup Debug
+ *  @param string $stuff This is what is actually added to the debug information
+ *  @param int $level Between 0 and 10 this is the debug level at which to show it.
+ *  @ingroup Debug
  */
 function add_debug_output($stuff, $level=10) {
    global $debug;
@@ -50,7 +52,7 @@ function add_debug_output($stuff, $level=10) {
 }
 
 /**
- *    Returns seconds as years days hours minutes seconds
+ *  Returns seconds as years days hours minutes seconds
  *
  * @param int $seconds The number of seconds
  * @param int $digits The number of digits to display after the decimal point
@@ -78,7 +80,7 @@ function get_ydhms ($seconds, $digits=0) {
 }
 
 /**
- *   Prints out the number of bytes using K, M, G, T, Etc
+ * Prints out the number of bytes using K, M, G, T, Etc
  *
  * @param int $bytes The number of bytes we have
  * @param int $digits The number of places beyond the decimal point to show
@@ -98,12 +100,12 @@ function get_bytes($bytes, $digits=2) {
     return($bytes);
 }
 /**
- *   Prints a string formated in the debug style
- *   Prints out the string in $stuff within tags that
- *   look like "\<DIV CLASS="debug">...\</DIV>"
+ * Prints a string formated in the debug style
+ * Prints out the string in $stuff within tags that
+ * look like "\<DIV CLASS="debug">...\</DIV>"
  *
- *   @param string $stuff The string to print out
- *   
+ * @param string $stuff The string to print out
+ * 
 */
 function print_debug($stuff) {
    print get_debug($stuff);
@@ -167,7 +169,7 @@ function print_debug_info() {
       $const = get_included_files();
       if (is_array($const) && (count($const) > 0)) {   
          $text .= "<b>".$strIncludedFiles."</b><br />\n";
-         foreach(array_keys($const) as $EKeys) {
+         foreach (array_keys($const) as $EKeys) {
             $text .= "&nbsp; &nbsp; &nbsp; <b>".$EKeys.":</b> ".$const[$EKeys]."<br />\n";
          }
       }
@@ -186,7 +188,7 @@ function print_debug_info() {
       $const = get_loaded_extensions();
       if (is_array($const) && (count($const) > 0)) {
          $text .= "<b>Loaded Extensions:</b><br />\n";
-         foreach(array_keys($const) as $EKeys) {
+         foreach (array_keys($const) as $EKeys) {
             $text .= "&nbsp; &nbsp; &nbsp; <b>".$EKeys.":</b> ".$const[$EKeys]."<br />\n";
          }
       }
@@ -227,7 +229,7 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
 
     if ($level > $levelLimit) return $levelLimit;
    if (is_array($array)) {
-      foreach(array_keys($array) as $key) {
+      foreach (array_keys($array) as $key) {
          if ((is_array($array[$key])) || (is_object($array[$key]))){
             if (is_array($array)) {
                $nextname = $name." [".$key."]";
@@ -242,7 +244,7 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
          }
       }
    } else if (is_object($array)) {
-      foreach(array_keys(get_object_vars($array)) as $key) {
+      foreach (array_keys(get_object_vars($array)) as $key) {
          if ((is_array($array->$key)) || (is_object($array->$key))){
             if (is_array($array)) {
                $nextname = $name." [".$key."]";
@@ -531,13 +533,13 @@ function get_args($skip="") {
    if (trim($skip) != "") $skip .= ",";
    $skip .= session_name().", name, password, passwd";
 
-   foreach(array_keys($_GET) as $key) {
+   foreach (array_keys($_GET) as $key) {
       if (stristr($skip, $key) === false) {
          $args .= $sep.$key."=".$_GET[$key];
          $sep = "&";
       }
    }
-   foreach(array_keys($_POST) as $key) {
+   foreach (array_keys($_POST) as $key) {
       if (stristr($skip, $key) === false) {
          $args .= $sep.$key."=".$_POST[$key];
          $sep = "&";
@@ -553,7 +555,7 @@ function get_args($skip="") {
 */
    function get_hidden_var_post($var, $name="") { 
       if (is_array($var)) {
-         foreach($var as $key => $value) {
+         foreach ($var as $key => $value) {
             if ((trim(strtolower($key)) != "password") && (trim(strtolower($key)) != "username")) {
                if (trim($name) == "") {
                   $usename = $key;

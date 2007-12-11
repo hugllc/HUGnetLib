@@ -7,17 +7,17 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- *   
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *   
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
@@ -46,7 +46,7 @@ if (!class_exists("devInfo")) {
      * @copyright  2007 Hunt Utilities Group, LLC
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-     */
+      */
     class DevInfo 
     {
         /**
@@ -58,7 +58,7 @@ if (!class_exists("devInfo")) {
          * @param array &$Info devInfo array
          *
          * @return string The DeviceID
-         */
+          */
         public static function deviceID(&$Info) 
         {
             if (empty($Info['DeviceID'])) {
@@ -84,7 +84,7 @@ if (!class_exists("devInfo")) {
          * @param array &$Info devInfo array
          *
          * @return string The RawData
-         */
+          */
         public static function rawData(&$Info) 
         {
             if (empty($Info["RawData"])) {
@@ -107,7 +107,7 @@ if (!class_exists("devInfo")) {
          * @param string $Field The field in the $Info array to set the date in.
          *
          * @return string The RawData
-         */
+          */
         public static function setDate(&$Info, $Field) 
         {
             if (!empty($Info["Date"])) {
@@ -125,15 +125,15 @@ if (!class_exists("devInfo")) {
          *  
          * - It will ALWAYS left pad the string if the string is too short.
          * - It will ALWAYS throw out the left end of the string if the string 
-         *    is too long
+         *  is too long
          *
          * @param string &$value The string to fix the size of
          * @param int    $size   The number of characters the string should be 
-         *                       fixed to
+         *                     fixed to
          * @param string $pad    The characters to pad to the LEFT end of the string
          *
          * @return string The modified string
-         */
+          */
         public static function setStringSize(&$value, $size, $pad="0") 
         {
             $value = trim($value);
@@ -149,12 +149,12 @@ if (!class_exists("devInfo")) {
          * @param string $version The version is x.y.z form
          *
          * @return string Hexified version (asciihex)
-         */
+          */
         public static function hexifyVersion($version) 
         {
             $ver = explode(".", $version);
             $str = "";
-            for($i = 0; $i < 3; $i++) $str .= self::setStringSize($ver[$i], 2);
+            for ($i = 0; $i < 3; $i++) $str .= self::setStringSize($ver[$i], 2);
             return $str;
         }
     
@@ -164,7 +164,7 @@ if (!class_exists("devInfo")) {
          * @param string $PartNum The part number in XXXX-XX-XX-A form
          *
          * @return string Hexified version (asciihex)
-         */
+          */
         public static function hexifyPartNum($PartNum) 
         {
             $part = explode("-", $PartNum);
@@ -185,12 +185,12 @@ if (!class_exists("devInfo")) {
          * @param string $version The version is x.y.z form
          *
          * @return string Hexified version (asciihex)
-         */
+          */
         public static function dehexifyVersion($version) 
         {
             $version = strtoupper($version);
             $str     = array();
-            for($i = 0; $i < 3; $i++) $str[] .= (int)substr($version, ($i*2), 2);
+            for ($i = 0; $i < 3; $i++) $str[] .= (int)substr($version, ($i*2), 2);
             return implode(".", $str);
         }
     
@@ -200,7 +200,7 @@ if (!class_exists("devInfo")) {
          * @param string $PartNum The part number in XXXXXXXXX form.
          *
          * @return string Hexified version (asciihex)
-         */
+          */
         public static function dehexifyPartNum($PartNum) 
         {
             $PartNum = strtoupper($PartNum);
@@ -213,7 +213,7 @@ if (!class_exists("devInfo")) {
         }
         /**
          * Turns a number into a text hexidecimal string
-         *   
+         * 
          * If the number comes out smaller than $width the string is padded 
          * on the left side with zeros.
          *
@@ -223,7 +223,7 @@ if (!class_exists("devInfo")) {
          * @param int $width The width of the final string
          *
          * @return string The hex string created.
-        */
+         */
         function hexify($value, $width=2) 
         {
             $value = dechex($value);
@@ -237,7 +237,7 @@ if (!class_exists("devInfo")) {
     
         /**
          * Turns a binary string into a text hexidecimal string
-         *   
+         * 
          * If the number comes out smaller than $width the string is padded 
          * on the left side with zeros.
          *
@@ -248,7 +248,7 @@ if (!class_exists("devInfo")) {
          * @param int    $width The width of the final string
          *
          * @return string The hex string created.
-        */
+         */
         function hexifyStr($str, $width=null) 
         {
             $value = "";
@@ -270,7 +270,7 @@ if (!class_exists("devInfo")) {
          * @param string $string The hex packet string
          *
          * @return string The binary string.
-         */
+          */
         
         function deHexify($string) 
         {

@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the epsocket class
+ * Tests the epsocket class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id: dbsocketTest.php 429 2007-11-05 15:59:46Z prices $
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id: dbsocketTest.php 429 2007-11-05 15:59:46Z prices $
  *
  */
 
@@ -52,7 +57,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -65,7 +70,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
         $this->dbfile = sys_get_temp_dir()."/dbsocket".mt_rand(12435, 5412451).".sq3";
         if (file_exists($this->dbfile)) unlink($this->dbfile);
@@ -84,7 +89,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
         $this->s->Close();
         unset($this->s);
@@ -128,14 +133,14 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataWrite
-     */
+      */
     public function testWrite($str, $pkt, $expect) {
         $id = $this->s->Write($str, $pkt);
         $query = "SELECT * FROM ".$this->table." WHERE id=".$id;
         $res = $this->db->GetAssoc($query);
         $res = $res[$id];
         if (is_array($res)) {
-            foreach($res as $key => $rec) {
+            foreach ($res as $key => $rec) {
                 if (is_numeric($key)) unset($res[$key]);
             }
         }
@@ -163,7 +168,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataWriteBadDB
-     */
+      */
     public function testWriteBadDB($str, $pkt, $expect) {
         $id = $this->sBadDB->Write($str, $pkt);
         $this->assertEquals($expect, $id);
@@ -196,9 +201,9 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataReadChar
-     */
+      */
     public function testReadChar($id, $queries, $expect) {
-        foreach($queries as $query) {
+        foreach ($queries as $query) {
             $this->db->Execute("INSERT INTO ".$this->table." ".$query);
         }
         $this->s->packet[$id] = array(1,2,3,4);
@@ -217,7 +222,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testReadChar().
-     */
+      */
     public function testReadCharNoChar() {
         $char = $this->s->readChar();
         $this->assertFalse($char);
@@ -225,7 +230,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testClose().
-     */
+      */
     public function testClose() {
         $this->s->packet = array(1,2,3,4);
         $this->s->Close();
@@ -234,7 +239,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckConnect().
-     */
+      */
     public function testCheckConnect() {
         $ret = $this->s->CheckConnect();
         $this->assertTrue($ret);
@@ -242,7 +247,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testConnect().
-     */
+      */
     public function testConnect() {
         $ret = $this->s->Connect();
         $this->assertTrue($ret);
@@ -250,7 +255,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testConnect().
-     */
+      */
     public function testConnectBadDB() {
         $ret = $this->sBadDB->Connect();
         $this->assertFalse($ret);

@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the 00392100 endpoint class
+ * Tests the 00392100 endpoint class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -49,7 +54,7 @@ class e00392100Test extends endpointTestBase {
     public $class = "e00392100";
     /**
      *  Test cases for the InterpConfig routine
-     */
+      */
     var $InterpConfigTestCases = array(
         array(
             "Info" => array(
@@ -121,13 +126,13 @@ class e00392100Test extends endpointTestBase {
                 "NumSensors" => 6,
                 "Function" => "HUGnet Controller",
                 "ActiveSensors" => 6,
-				'mcu' => array(
-				    "SRAM" => 0x400,
-				    "E2" => 0x1E0,
-				    "FLASH" => 0x3800,
-				    "FLASHPAGE" => 128,
-				    "PAGES" => 112,
-				),
+                'mcu' => array(
+                    "SRAM" => 0x400,
+                    "E2" => 0x1E0,
+                    "FLASH" => 0x3800,
+                    "FLASHPAGE" => 128,
+                    "PAGES" => 112,
+                ),
                 "CRC" => "8055",
                 "bootLoader" => true,
                 "Types" => array(64, 80, 2, 64, 80, 2),
@@ -264,7 +269,7 @@ class e00392100Test extends endpointTestBase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 

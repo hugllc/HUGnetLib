@@ -1,4 +1,39 @@
 <?php
+/**
+ * Tests the epsocket class
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ */
+
 // Call plogTest::main() if this source file is executed directly.
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'plogTest::main');
@@ -18,7 +53,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -31,7 +66,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -40,13 +75,13 @@ class plogTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
     /**
      * @todo Implement testGetID().
-     */
+      */
     public function testGetID() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -56,7 +91,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCreatePacketLog().
-     */
+      */
     public function testCreatePacketLog() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -66,7 +101,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGet().
-     */
+      */
     public function testGet() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -76,7 +111,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetOne().
-     */
+      */
     public function testGetOne() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -86,7 +121,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testAdd().
-     */
+      */
     public function testAdd() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -96,7 +131,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testGetAll().
-     */
+      */
     public function testGetAll() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -106,7 +141,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testRemove().
-     */
+      */
     public function testRemove() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -116,7 +151,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 
     /**
      * data provider for testFindDriver
-     */
+      */
     public static function dataPacketLog() {
         return array(
             array(
@@ -142,7 +177,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider dataPacketLog().
      * @covers driver::PacketLog
-     */
+      */
     public function testPacketLogSetup($Packet, $Gateway, $type, $expect) {
         if (is_null($type)) {
             $pkt = plog::PacketLogSetup($Packet, $Gateway);

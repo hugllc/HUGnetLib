@@ -1,31 +1,34 @@
 <?php
 /**
- *   Unix process information and manipulation
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * Unix process information and manipulation
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage unixProcess
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * PHP Version 5
+ *
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage unixProcess
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version SVN: $Id$    
  *
  */
 
@@ -49,7 +52,7 @@ class process {
     /**
      * constructor
      * @param string $file The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
-    */
+     */
     function __construct($file = null) {
         if (!is_null($file)) {
             $this->file = $file;
@@ -69,7 +72,7 @@ class process {
      * Sets up all the information about the current process.
      * @param string $block Type of blocking.  Default "NORMAL"
      * @param string $name The program name.  Automatically found if left out.    
-    */
+     */
     function getMyInfo($block="NORMAL", $name = false) {
         $stuff = posix_uname();
         $this->me["Host"] = $stuff["nodename"];
@@ -98,10 +101,10 @@ class process {
 
     /**
      * Checks all of the defined processes to see if they are running.
-     *   
-     *   Checks all defined processes.  If they are not running it makes sure they
-     *   are dead, then deletes them from the database, or deletes the PID file.    
-     */
+     * 
+     * Checks all defined processes.  If they are not running it makes sure they
+     * are dead, then deletes them from the database, or deletes the PID file.    
+      */
     function CheckAll() {
         if ($this->FileOnly === false) {
 //            $this->reset();
@@ -110,7 +113,7 @@ class process {
             $KillTime = $this->KillTime * 60;
             if ($KillTime < 600) $KillTime = 600;
             $setTime = time() - $KillTime;
-            foreach($res as $key => $val) {
+            foreach ($res as $key => $val) {
                 if ($val["Host"] != $this->me["Host"]) {
                     print "[".$this->me["PID"]."] Checking ".$val["Program"]." @ ".$val["Host"]." ";
                     if (($setTime > strtotime($val["LastCheckin"])) 
@@ -154,7 +157,7 @@ class process {
      * Registers this process if it is not blocked.
      * @param $verbose Boolean Whether to spew a whole bunch of output out.
      * @return true if registered.  false if blocked.
-     */
+      */
     function Register($verbose=true) {
         $this->me['LastCheckin'] = date("Y-m-d H:i:s");
         $this->dbRegistered = true;
@@ -168,9 +171,9 @@ class process {
      * Checks in with the database so that it won't get killed
      * @todo make it so this can't be an infinite loop.
      *
-     *   This function will continously try to check in by calling process::FastCheckin().
-     *   
-     */
+     * This function will continously try to check in by calling process::FastCheckin().
+     * 
+      */
     function Checkin() {
         while(false == $this->FastCheckin()) {
             sleep(60);
@@ -180,10 +183,10 @@ class process {
     /**
      * Updates its information in the database
      * @return bool true on success, false on failure
-     *   
-     *   If the information in the database is not updated periodically the process will lose
-     *   its registration and maybe get killed.  This tries once and if it fails it returns false.    
-     */
+     * 
+     * If the information in the database is not updated periodically the process will lose
+     * its registration and maybe get killed.  This tries once and if it fails it returns false.    
+      */
     function FastCheckin() {
         if ($this->FileOnly === false) {
             if ($this->Registered) {
@@ -210,7 +213,7 @@ class process {
     /**
      * Registers with the database.
      * @return bool true if successful, false if failed
-    */
+     */
     function dbRegister() {
         if (($this->FileOnly === false) && $this->CheckDB()) {
 
@@ -237,7 +240,7 @@ class process {
     /**
      * Registers with the database.
      * @return bool true if successful, false if failed
-    */
+     */
     function dbUnregister($PID = null) {
         if (is_null($PID)) {
             $PID = $this->me["PID"];
@@ -253,7 +256,7 @@ class process {
     }
     /**
      * Unregisters this process.    
-     */
+      */
     function Unregister() {
         $this->dbUnregister();
         $this->fileUnregister();
@@ -262,7 +265,7 @@ class process {
     
     /**
      * Creates the SQLite DB table
-     */
+      */
     function createTable() {
 
         $query = "CREATE TABLE '".$this->table."' (
@@ -296,7 +299,7 @@ class process {
      * @param bool $dieonfailure Whether to die if failed to register.  Defaults to false
      * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
      * @todo Make this do something other than just print stuff if $dieonfailure is false
-     */
+      */
     function CheckRegistered($dieonfailure=false, $verbose=true) {
         if ($this->Registered == false) {
             if ($verbose) print "[".$this->me["PID"]."] Registration Failed\r\n";
@@ -312,7 +315,7 @@ class process {
      * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to false
      * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
      * @todo Make this do something other than just print stuff if $dieonfailure is false
-     */
+      */
     function CheckUnregistered($dieonfailure=false, $verbose=true) {
         if ($this->Registered == true) {
             if ($verbose) print "[".$this->me["PID"]."] Unregistration Failed\r\n";
@@ -325,7 +328,7 @@ class process {
     /**
      * Creates a PID file
      * @return bool true on success, false on failure
-    */
+     */
     function fileRegister() {
         if ($this->checkFile()) {
 
@@ -345,7 +348,7 @@ class process {
 
     /**
      * Deletes the PID file
-    */
+     */
     function fileUnregister() {
         if (file_exists($this->me["File"])) unlink($this->me["File"]);
     }
@@ -354,9 +357,9 @@ class process {
      * Checks each PID in the PID file if they exist.
      * @return bool true if we can run, false if we are blocked.        
      *
-     *   This function checks the PIDs in the PID file to make sure they are
-     *   all still running.
-    */
+     * This function checks the PIDs in the PID file to make sure they are
+     * all still running.
+     */
     function CheckFile() {
         $return = true;
         if (file_exists($this->me["File"])) {
@@ -381,9 +384,9 @@ class process {
      * Checks each PID in the PID file if they exist.
      * @return bool true if we can run, false if we are blocked.        
      *
-     *   This function checks the PIDs in the PID file to make sure they are
-     *   all still running.
-     */
+     * This function checks the PIDs in the PID file to make sure they are
+     * all still running.
+      */
     function CheckDB() {
         $return = true;
         $query = "SELECT * FROM '".$this->table."' "
@@ -393,7 +396,7 @@ class process {
         $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
                 if ($this->CheckProcess($row["PID"])) {
                     print " Okay ";
@@ -412,11 +415,11 @@ class process {
 
     /**
      * Increments stats in the database
-     */
+      */
     function incStat($stat) {
 
         $this->incField('totals', $stat);
-        foreach($this->statPeriodic as $type => $format) {
+        foreach ($this->statPeriodic as $type => $format) {
             $this->incField($type, $stat, date($format));        
         }
     }
@@ -424,7 +427,7 @@ class process {
 
     /**
      * Increments fields in the database
-     */
+      */
     function incField($type, $name, $date="now") {
         $value = $this->getMyStat($name, $date, $type);
         $value++;
@@ -438,7 +441,7 @@ class process {
      * @param string $date The date of the statistic to get
      * @param string $type The type of statistic to get
      * @return mixed The statistic in question
-     */
+      */
     function getMyStat($name, $date="now", $type="stat") {
         return $this->getStat($name, $this->me['Program'], $date, $type, true);
     }
@@ -468,7 +471,7 @@ class process {
      * @param string $date The date of the statistic to get
      * @param string $type The type of statistic to get
      * @return mixed The statistic in question
-     */
+      */
     function setStat($name, $value, $date="now", $type="stat") {
         $this->_setStat($name, $value, $date, $type);
         $this->_setStat('StatDate', date("Y-m-d H:i:s"));
@@ -482,7 +485,7 @@ class process {
      * @param string $date The date of the statistic to get
      * @param string $type The type of statistic to get
      * @return mixed The statistic in question
-     */
+      */
     function _setStat($name, $value, $date="now", $type="stat") {
 
         $query = "REPLACE INTO '".$this->statsTable."' "
@@ -500,7 +503,7 @@ class process {
 
     /**
      * Clears all statistics
-     */
+      */
     function clearStats() {
         $query = "DELETE FROM '".$this->statsTable."' "
                 ." WHERE Program='".$this->me['Program']."' ";
@@ -512,14 +515,14 @@ class process {
      *
      * @param string $Program The name of the program to get stats for.
      * @return array An array of statistics.
-     */
+      */
     function getPeriodicStats($Program) {
         $query = "SELECT * FROM '".$this->statsTable."' "
                 ." WHERE "
                 ." Program='".$Program."' "
                 ." AND (";
         $sep = "";
-        foreach($this->statPeriodic as $key => $value) {
+        foreach ($this->statPeriodic as $key => $value) {
             $query .= $sep."stype='".$key."' ";
             $sep = " OR ";
         }
@@ -530,7 +533,7 @@ class process {
 
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 $return[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
             }
         }
@@ -543,7 +546,7 @@ class process {
      *
      * @param string $Program The name of the program to get stats for.
      * @return array An array of statistics.
-     */
+      */
     function getTotalStats($Program) {
         $query = "SELECT * FROM '".$this->statsTable."' "
                 ." WHERE "
@@ -555,7 +558,7 @@ class process {
         $return = array();
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 $return[$row['sname']] = $row['svalue'];
             }
 
