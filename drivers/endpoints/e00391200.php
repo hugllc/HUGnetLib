@@ -212,8 +212,8 @@ define("E00391102B_SENSORS", 9);
 
 }
 // Register this plugin    
-if (method_exists($this, 'add_generic')) {
-    $this->add_generic(array("Name" => "e00391200", "Type" => "driver", "Class" => "e00391200"));
+if (method_exists($this, 'addGeneric')) {
+    $this->addGeneric(array("Name" => "e00391200", "Type" => "driver", "Class" => "e00391200"));
 }
 
 ?>

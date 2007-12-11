@@ -376,8 +376,8 @@ if (!class_exists('resistiveSensor')) {
     }
 }
 
-if (method_exists($this, "add_generic")) {
-    $this->add_generic(array("Name" => "resistiveSensor", "Type" => "sensor", "Class" => "resistiveSensor"));
+if (method_exists($this, "addGeneric")) {
+    $this->addGeneric(array("Name" => "resistiveSensor", "Type" => "sensor", "Class" => "resistiveSensor"));
 }
 
 ?>

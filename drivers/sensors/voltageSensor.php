@@ -147,8 +147,8 @@ if (!class_exists('voltageSensor')) {
     }
 }
 
-if (method_exists($this, "add_generic")) {
-    $this->add_generic(array("Name" => "voltageSensor", "Type" => "sensor", "Class" => "voltageSensor"));
+if (method_exists($this, "addGeneric")) {
+    $this->addGeneric(array("Name" => "voltageSensor", "Type" => "sensor", "Class" => "voltageSensor"));
 }
 
 

@@ -58,7 +58,7 @@ class Filter
     {
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
-            $plugins = new plugins(dirname(__FILE__)."/drivers/", "php");
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
         }
 
         foreach ($plugins->plugins["Generic"]["filter"] as $driver) {
