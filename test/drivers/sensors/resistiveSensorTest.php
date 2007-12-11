@@ -36,8 +36,8 @@
  */
 
 // Call resistiveSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "resistiveSensorTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "resistiveSensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -197,7 +197,7 @@ class resistiveSensorTest extends sensorTestBase {
 }
 
 // Call resistiveSensorTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "resistiveSensorTest::main") {
+if (PHPUnit_MAIN_METHOD == "resistiveSensorTest::main") {
     resistiveSensorTest::main();
 }
 ?>

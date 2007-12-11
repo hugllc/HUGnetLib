@@ -36,8 +36,8 @@
  */
 
 // Call filterTest::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "filterTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "filterTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -198,7 +198,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call filterTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "filterTest::main") {
+if (PHPUnit_MAIN_METHOD == "filterTest::main") {
     filterTest::main();
 }
 

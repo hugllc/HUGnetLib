@@ -36,8 +36,8 @@
  */
 
 // Call e00392800Test::main() if this source file is executed directly.
-if (!defined("PHPUNIT_MAIN_METHOD")) {
-    define("PHPUNIT_MAIN_METHOD", "eDEFAULTTest::main");
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "eDEFAULTTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -220,7 +220,7 @@ class eDEFAULTTest extends endpointTestBase {
 }
 
 // Call eDEFAULTTest::main() if this source file is executed directly.
-if (PHPUNIT_MAIN_METHOD == "eDEFAULTTest::main") {
+if (PHPUnit_MAIN_METHOD == "eDEFAULTTest::main") {
     eDEFAULTTest::main();
 }
 
