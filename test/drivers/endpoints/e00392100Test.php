@@ -305,7 +305,6 @@ class e00392100Test extends endpointTestBase {
                 array("DeviceID" => "000025", "FWPartNum" => "0039-20-06-C"),
                 array(
                     array("To" => "000025", "Command" => "55"),
-                    array("To" => "000025", "Command" => "57"),
                 ),
             ),
             array(
@@ -313,6 +312,36 @@ class e00392100Test extends endpointTestBase {
                 array(
                     array("To" => "000025", "Command" => "55"),
                     array("To" => "000025", "Command" => "57"),
+                ),
+            ),
+        );
+    }
+    /**
+     * data provider for test readConfig
+     */
+    public static function datareadConfig() {
+        return array(
+            array(
+                array("DeviceID" => "000025"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+                    array("To" => "000025", "Command" => "4C"),
+                ),
+            ),
+            array(
+                array("DeviceID" => "000025", "FWPartNum" => "0039-20-06-C"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+                    array("To" => "000025", "Command" => "4C"),
+                ),
+            ),
+            array(
+                array("DeviceID" => "000025", "FWPartNum" => "0039-20-01-C"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+                    array("To" => "000025", "Command" => "4C"),
+                    array("To" => "000025", "Command" => "60"),
+                    array("To" => "000025", "Command" => "56"),
                 ),
             ),
         );
