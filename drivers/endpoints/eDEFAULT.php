@@ -51,7 +51,15 @@ if (!class_exists('eDEFAULT')) {
      *
      *  This class should only be created by the driver class.  It is specifically designed
      *  this way and creating it any other way will produce unexpected results.
-      */
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Endpoints
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
     class eDEFAULT {
         /**
          * Stores the device information for this driver
@@ -86,7 +94,7 @@ if (!class_exists('eDEFAULT')) {
          * 
          * );
          * @endcode
-          */
+         */
         public $devices = array();
     
         /** The hardware name */
@@ -96,7 +104,7 @@ if (!class_exists('eDEFAULT')) {
         protected $history_table = "history";
         /** location table
          *  @deprecated This is now stored in the 'params' field in the devices table
-          */
+         */
         protected $location_table = "location";
         /** Average Table */
         protected $average_table = "average";
@@ -153,6 +161,7 @@ if (!class_exists('eDEFAULT')) {
         /** The columns that are device specific go here */
         protected $cols = array();                    
 
+        /** Not sure here */
         var $var = array();            
     
         /** Default location variable definition  */
