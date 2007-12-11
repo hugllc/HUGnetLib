@@ -114,16 +114,17 @@ if (!class_exists("e00392100")) {
             );
             switch ($Info['FWPartNum']) 
             {
-            case '0039-20-06-C':
             case '0039-20-01-C':
-                $packet[] = array(
-                    "To" => $Info["DeviceID"],
-                    "Command" => PACKET_READDOWNSTREAMSN_COMMAND,
-                );
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_HUGNETPOWER_COMMAND,
                 );
+                $packet[] = array(
+                    "To" => $Info["DeviceID"],
+                    "Command" => PACKET_READDOWNSTREAMSN_COMMAND,
+                );
+                break;
+            case '0039-20-06-C':
                 break;
             default:
                 break;
@@ -176,12 +177,13 @@ if (!class_exists("e00392100")) {
             );
             switch ($Info['FWPartNum']) 
             {
-            case '0039-20-06-C':
             case '0039-20-01-C':
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_READPACKETSTATS_COMMAND,
                 );
+                break;
+            case '0039-20-06-C':
                 break;
             default:
                 break;
@@ -811,15 +813,11 @@ if (!class_exists("e00392100")) {
          *
          * @return bool true on success, false on failure
          */
-        function getPower($Info) 
+        function readPower($Info) 
         {
-            $this->packet->Connect($Info);
             $pkt["To"]      = $Info["DeviceID"];
-            $pkt["Command"] = "60";
-    
-            $retpkt = $this->packet->sendPacket($Info, $pkt);
-    
-            return($retpkt);
+            $pkt["Command"] = PACKET_HUGNETPOWER_COMMAND;
+            return $pkt;
         }
     
         /**
@@ -842,9 +840,7 @@ if (!class_exists("e00392100")) {
             $pkt["Command"] = "60";
             $pkt["Data"] = $hugnet0.$hugnet1;
     
-            $retpkt = $this->packet->sendPacket($Info, $pkt);
-    
-            return($retpkt);
+            return $pkt;
              */
         }
     

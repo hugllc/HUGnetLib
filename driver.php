@@ -139,7 +139,7 @@ class Driver
      * @param array  &$Info    Infomation about the device to use
      * @param string $function The name of the function to run
      *
-     * @return false if the function does not exist.  Otherwise passes
+     * @return mixed false if the function does not exist.  Otherwise passes
      *   the function return through.
      *
       */
@@ -148,23 +148,9 @@ class Driver
         if (!is_array($Info)) return false;
         $return     = array();
         $function   = trim($function);
-        $use_driver = isset($Info["Driver"]) ? $Info['Driver'] : 'eDEFAULT';
-        if ($use_driver == "eDEFAULT") {
-            $use_driver        = $this->FindDriver($Info);
-            $Info["OldDriver"] = $Info["Driver"];
-            $Info["Driver"]    = $use_driver;
-        }
 
-        if (is_object($this->drivers[$use_driver]) 
-            && method_exists($this->drivers[$use_driver], $function)) {
-            $use_class = $use_driver;
-        } else if (is_object($this->drivers["eDEFAULT"]) 
-            && method_exists($this->drivers["eDEFAULT"], $function)) {
-            $use_class = "eDEFAULT";
-        } else {
-            //add_debug_output("All Drivers (including eDEFAULT) failed.<BR>\n");
-            return(false);
-        }
+        $use_class = $this->_methodExists($Info, $function);
+        if ($use_class === false) return false;
 
         $args    = func_get_args();
         $args[0] = &$Info;
@@ -181,6 +167,35 @@ class Driver
         }
         return $return;
         
+    }
+
+    /**
+     * Returns the name of the driver to use for the function given or 
+     * 'false' if the function is not found
+     *
+     * @param array  &$Info    Infomation about the device to use
+     * @param string $function The name of the function to run
+     *
+     * @return mixed
+     */
+    private function _methodExists(&$Info, $function) {
+        $use_driver = isset($Info["Driver"]) ? $Info['Driver'] : 'eDEFAULT';
+        if ($use_driver == "eDEFAULT") {
+            $use_driver        = $this->FindDriver($Info);
+            $Info["OldDriver"] = $Info["Driver"];
+            $Info["Driver"]    = $use_driver;
+        }
+
+        if (is_object($this->drivers[$use_driver]) 
+            && method_exists($this->drivers[$use_driver], $function)) {
+            return $use_driver;
+        } else if (is_object($this->drivers["eDEFAULT"]) 
+            && method_exists($this->drivers["eDEFAULT"], $function)) {
+            return "eDEFAULT";
+        } else {
+            //add_debug_output("All Drivers (including eDEFAULT) failed.<BR>\n");
+            return false;
+        }    
     }
 
     /**
@@ -205,72 +220,54 @@ class Driver
             $args = array_merge($args, $a);
         }
 
-        return call_user_func_array(array($this, "RunFunction"), $args);
+        $ret = call_user_func_array(array($this, "RunFunction"), $args);
+
+        // Only one of these can run at any one time.
+        $ret = $this->_callRead($args[0], $ret, $m);
+        $ret = $this->_callSet($args[0], $ret, $m);
+        return $ret;
         
     }
 
-        /**
-         * Returns the packet to send to read the sensor data out of an endpoint
-         *
-         * @param array $Info Infomation about the device to use
-         * @note This should only be defined in a driver that inherits this class if the packet differs
-          */
-        function readSensors($Info) {
-    
-            $packet = $this->runFunction($Info, "readSensors");
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            if (is_array($Packets)) {
-                $return = $this->runFunction($Info, "interpSensors", $Packets);
-                if ($return == false) $return = $Packets;
-            } else {
-                $return = false;
-            }
-            return($return);
-        }
-
-        /**
-         * Returns the packet to send to read the sensor data out of an endpoint
-         *
-         * @param array $Info Infomation about the device to use
-         * @note This should only be defined in a driver that inherits this class if the packet differs
-          */
-        function readConfig($Info) {
-    
-            $packet = $this->runFunction($Info, "readConfig");
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            if (is_array($Packets)) {
-                $return = $this->runFunction($Info, "interpConfig", $Packets);
-                if ($return == false) $return = $Packets;
-            } else {
-                $return = false;
-            }
-            return($return);
-        }
-
-
     /**
-     * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-      */
-    function SetConfig($Info, $start, $data) {
-        //add_debug_output("Setting Configuration:<br>\n");
-         $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
-        $this->Error = "";
-        if ($pkts !== false) {
-            $return = $this->packet->sendPacket($Info, $pkts, false);
-            if ($return == false) {
-                $this->Error .= " Setting Config Failed. \n";
-                $this->Errno = -1;
-            }
+     * Deals with calling 'read' functions
+     *
+     * @param array  &$Info    Infomation about the device to use
+     * @param array  $packet   The packets to send
+     * @param string $function The name of the function that is being run
+     *
+     * @return mixed
+     */
+    private function _callRead($Info, $packet, $function) {
+        if (substr($function, 0, 4) == "read") {
+            $ret = $this->packet->sendPacket($Info, $packet);
+            if (!is_array($ret)) return $ret;
+            $interp = str_replace("read", "interp", $function);
+            $interpRet = $this->runFunction($Info, $interp, $ret);
+            if (is_array($interpRet)) return $interpRet;
+            return $ret;
         }
-        return($return);
+        return $packet;
     }
-        
-                
+    /**
+     * Deals with calling 'read' functions
+     *
+     * @param array &$Info  Infomation about the device to use
+     * @param array $packet The packets to send
+     *
+     * @return mixed
+     */
+    private function _callSet($Info, $packet, $function) {
+        if (substr($function, 0, 3) == "set") {
+            $ret = $this->packet->sendPacket($Info, $packet);
+            return $ret;
+        }
+        return $packet;
+    }                
         
     /**
      * Runs a function using the correct driver for the endpoint
-      */
+     */
     function done($Info) {
         $this->packet->Close($Info);
     }
@@ -279,7 +276,7 @@ class Driver
      * Runs a function using the correct driver for the endpoint
      * @param $Packet Array Array of information about the device with the data from the incoming packet
      * @param $force Boolean Force the update even if the serial number and hardware part number don't match
-      */
+     */
     function UpdateDevice($Packet, $force=false) {
 
         return $this->device->UpdateDevice($Packet, $force);                    
@@ -299,7 +296,7 @@ class Driver
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
      * @param GatewayKey Int The gateway to try first.
-      */
+     */
     function GetInfo($Info, $GatewayKey = 0) {
         $DeviceID = $Info["DeviceID"];
         //add_debug_output("Getting Configuration for ".$Info["DeviceID"]."<BR>\n");
