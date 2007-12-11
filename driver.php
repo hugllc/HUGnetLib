@@ -218,7 +218,7 @@ class Driver
          $pkts = $this->RunFunction($Info, "SetConfig", $start, $data);
         $this->Error = "";
         if ($pkts !== false) {
-            $return = $this->packet->SendPacket($Info, $pkts, false);
+            $return = $this->packet->sendPacket($Info, $pkts, false);
             if ($return == false) {
                 $this->Error .= " Setting Config Failed. \n";
                 $this->Errno = -1;
@@ -241,7 +241,7 @@ class Driver
      * @param $Packet Array Array of information about the device with the data from the incoming packet
      * @param $force Boolean Force the update even if the serial number and hardware part number don't match
       */
-    function UpdateDevice($Packet, $force=false){
+    function UpdateDevice($Packet, $force=false) {
 
         return $this->device->UpdateDevice($Packet, $force);                    
     }
@@ -277,9 +277,9 @@ class Driver
 
         if ($gw !== false) {
             $Info = array_merge($Info, $usegw);
-            $data = $this->ReadConfig($Info);
+            $data = $this->readConfig($Info);
             $this->Info[$DeviceID] = $gw;
-            $dev = $this->InterpConfig (array($Info));
+            $dev = $this->interpConfig (array($Info));
             if (is_array($dev[0])) {
                 $this->Info[$DeviceID] = array_merge($this->Info[$DeviceID], $dev[0]);
             }
@@ -294,7 +294,7 @@ class Driver
      * @return Array of device information on success, false on failure 
      * @todo Move this back to the driver class?
       */
-    function InterpConfig ($packets, $forceDriver=null) {
+    function interpConfig ($packets, $forceDriver=null) {
 //        if (isset($packets['RawData'])) $packets = array($packets);
         if (!is_array($packets)) return false;
 
@@ -329,7 +329,7 @@ class Driver
         }
 
         if (!empty($Info['Driver']) && ($Info['Driver'] != "eDEFAULT")) {
-            $this->RunFunction($Info, "InterpConfig");
+            $this->RunFunction($Info, "interpConfig");
         }
         return $Info;
     }
@@ -344,7 +344,7 @@ class Driver
       */
     function DriverInfo($Info) {
         $Info['sendCommand'] = EDEFAULT_CONFIG_COMMAND;
-        $this->RunFunction($Info, "InterpConfig");
+        $this->RunFunction($Info, "interpConfig");
         $Info['history_table'] = $this->getHistoryTable($Info);
         $Info['average_table'] = $this->getAverageTable($Info);
         $Info['location_table'] = $this->getLocationTable($Info);

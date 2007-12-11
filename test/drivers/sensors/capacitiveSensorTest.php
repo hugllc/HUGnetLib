@@ -36,8 +36,8 @@
  */
 
 // Call capacitiveSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "capacitiveSensorTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "capacitiveSensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -137,7 +137,7 @@ class capacitiveSensorTest extends sensorTestBase {
 
 }
 // Call capacitiveSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "capacitiveSensorTest::main") {
+if (PHPUNIT_MAIN_METHOD == "capacitiveSensorTest::main") {
     capacitiveSensorTest::main();
 }
 ?>

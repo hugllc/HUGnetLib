@@ -35,8 +35,8 @@
  */
 
 // Call plogTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'plogTest::main');
+if (!defined('PHPUNIT_MAIN_METHOD')) {
+    define('PHPUNIT_MAIN_METHOD', 'plogTest::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -189,7 +189,7 @@ class plogTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call plogTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == 'plogTest::main') {
+if (PHPUNIT_MAIN_METHOD == 'plogTest::main') {
     plogTest::main();
 }
 ?>

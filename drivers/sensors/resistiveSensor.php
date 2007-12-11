@@ -192,7 +192,7 @@ if (!class_exists('resistiveSensor')) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $baseTherm = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $ohms = $this->getResistance($A, $TC, $Bias);
-            $T = $this->BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
+            $T = $this->_BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
 
             if (is_null($T)) return null;
             if ($T > 150) return null;
@@ -218,7 +218,7 @@ if (!class_exists('resistiveSensor')) {
          * @return float The Temperature in degrees C
          * 
          */
-        private function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
+        private function _BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
             if ($R <= 0) return null;

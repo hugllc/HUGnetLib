@@ -92,14 +92,14 @@ if (!class_exists("e00392800")) {
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
          */
-        function ReadConfig($Info) {
+        function readConfig($Info) {
             $packet = array(
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
                 ),
             );
-            $return = $this->packet->SendPacket($Info, $packet);
+            $return = $this->packet->sendPacket($Info, $packet);
 
             if (is_array($return) && (count($return) > 0)) {
                 $packet = array();
@@ -110,7 +110,7 @@ if (!class_exists("e00392800")) {
                         "Data" => $this->packet->hexify($i),
                     );
                 }
-                $Packets = $this->packet->SendPacket($Info, $packet);
+                $Packets = $this->packet->sendPacket($Info, $packet);
                 if (count($Packets) == $this->calParts) {
                     $return['cal'] = $Packets[0];
                     for ($i = 1; $i < $this->calParts; $i++) {
@@ -123,8 +123,8 @@ if (!class_exists("e00392800")) {
         /**
          *
           */
-        function CheckRecord($Info, &$Rec) {
-            parent::CheckRecordBase($Info, $Rec);    
+        function checkRecord($Info, &$Rec) {
+            parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -137,20 +137,20 @@ if (!class_exists("e00392800")) {
         /**
          *
           */
-        function InterpConfig(&$Info) {
-            $this->InterpConfigDriverInfo($Info);
-            $this->InterpConfigHW($Info);
-            $this->InterpConfigFW($Info);
-            $this->InterpConfigTC($Info);
-            $this->InterpConfigParams($Info);
-            $this->InterpConfig00392012C($Info);
+        function interpConfig(&$Info) {
+            $this->interpConfigDriverInfo($Info);
+            $this->interpConfigHW($Info);
+            $this->interpConfigFW($Info);
+            $this->interpConfigTC($Info);
+            $this->interpConfigParams($Info);
+            $this->__interpConfig00392012C($Info);
             $this->InterpTypes($Info);
-            $this->InterpConfigSensorSetup($Info);
+            $this->interpConfigSensorSetup($Info);
         }
         /**
          *
           */
-        private function InterpConfig00392012C(&$Info) {
+        private function __interpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
@@ -159,17 +159,17 @@ if (!class_exists("e00392800")) {
         /**
          *
           */
-        function InterpSensors($Info, $Packets) {
-            $this->InterpConfig($Info);
+        function interpSensors($Info, $Packets) {
+            $this->interpConfig($Info);
             $ret = array();
 
             unset($lastPacket);
             foreach ($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
-                    self::InterpSensorsSetData($Info, $data);
+                    self::interpSensorsSetData($Info, $data);
                     $index = 3; 
-                    self::InterpSensorsGetRaw($Info, $data);
+                    self::__interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
                     $ret[] = $data;
@@ -181,15 +181,15 @@ if (!class_exists("e00392800")) {
         /**
          *
           */
-        private function InterpSensorsGetRaw(&$Info, &$data) {
+        private function __interpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 $index = 3;
                 for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                     $key = $this->getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 0x6F) {
-                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 1, 3);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 1, 3);
                     } else {
-                        $data["raw"][$key] = $this->InterpSensorsGetData($data["Data"], &$index, 3);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 3);
                     }
                 }
                 

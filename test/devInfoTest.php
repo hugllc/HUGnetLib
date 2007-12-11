@@ -36,8 +36,8 @@
  */
 
 // Call devInfoTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "devInfoTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "devInfoTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -281,7 +281,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call devInfoTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "devInfoTest::main") {
+if (PHPUNIT_MAIN_METHOD == "devInfoTest::main") {
     devInfoTest::main();
 }
 

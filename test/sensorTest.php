@@ -36,8 +36,8 @@
  */
 
 // Call sensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "sensorTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "sensorTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -793,9 +793,9 @@ class sensorTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * Data provider for testCheckRecord
+     * Data provider for testcheckRecord
       */
-    public static function dataCheckRecord() {
+    public static function datacheckRecord() {
         return array(
             array(
                 "data" => array(
@@ -830,9 +830,9 @@ class sensorTest extends PHPUnit_Framework_TestCase {
         );
     }
     /**
-     * @dataProvider dataCheckRecord
+     * @dataProvider datacheckRecord
       */
-    public function testCheckRecord($data, $expect, $run) {
+    public function testcheckRecord($data, $expect, $run) {
         $o = new sensor();
         $o->registerSensor("testSensor");
         $o->checkRecord($data);
@@ -861,7 +861,7 @@ class sensorTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call sensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "sensorTest::main") {
+if (PHPUNIT_MAIN_METHOD == "sensorTest::main") {
     sensorTest::main();
 }
 

@@ -36,8 +36,8 @@
  */
 
 // Call deviceTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "deviceTest::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "deviceTest::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -229,7 +229,7 @@ class deviceTest extends PHPUnit_Framework_TestCase {
 }
 
 // Call deviceTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "deviceTest::main") {
+if (PHPUNIT_MAIN_METHOD == "deviceTest::main") {
     deviceTest::main();
 }
 ?>

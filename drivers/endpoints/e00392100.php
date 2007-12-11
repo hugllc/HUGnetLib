@@ -128,7 +128,7 @@ if (!class_exists("e00392100")) {
             default:
                 break;
             };
-            $Packets = $this->packet->SendPacket($Info, $packet);
+            $Packets = $this->packet->sendPacket($Info, $packet);
             return($Packets);
         }
     
@@ -148,7 +148,7 @@ if (!class_exists("e00392100")) {
                     $Rec['Data'.$i] = null;
                 }
             }
-            parent::CheckRecordBase($Info, $Rec);
+            parent::checkRecordBase($Info, $Rec);
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["sendCommand"] == PACKET_COMMAND_GETDATA) {
                 if ($Rec["TimeConstant"] == 0) {
@@ -188,7 +188,7 @@ if (!class_exists("e00392100")) {
     
             $Info['sendCommand'] = PACKET_SEND_COMMAND;
     
-            $Packets = $this->packet->SendPacket($Info, $packet);
+            $Packets = $this->packet->sendPacket($Info, $packet);
             if (is_array($Packets)) {
                 $return = $this->interpSensors($Info, $Packets);
             } else {
@@ -207,14 +207,14 @@ if (!class_exists("e00392100")) {
           */
         function interpConfig(&$Info) 
         {
-            $this->InterpConfigDriverInfo($Info);
+            $this->interpConfigDriverInfo($Info);
             $Info["Location"] = $this->deflocation;
-            $this->InterpConfigHW($Info);
+            $this->interpConfigHW($Info);
             $Info["PacketTimeout"] = 2;
-            $this->InterpConfigFW($Info);
+            $this->interpConfigFW($Info);
             
             $Info['ActiveSensors'] = $Info["NumSensors"];
-            $this->InterpConfigParams($Info);
+            $this->interpConfigParams($Info);
 
             $this->_interpConfig00392006C($Info);
             $this->_interpConfigSensors($Info);
@@ -257,7 +257,7 @@ if (!class_exists("e00392100")) {
         {
             $Info["Types"]                = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
-            $this->InterpConfigSensorSetup($Info);
+            $this->interpConfigSensorSetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Location"] = $this->labels[$Info["FWPartNum"]];
@@ -481,7 +481,7 @@ if (!class_exists("e00392100")) {
                         break;
 
                     }
-                    $this->CheckRecord($Info, $data);
+                    $this->checkRecord($Info, $data);
                     $return[] = $data;
                 }
             }    
@@ -498,8 +498,8 @@ if (!class_exists("e00392100")) {
          */
         function getMCUInfo($Info) 
         {
-            $retpkt = $this->ReadConfig($Info);
-            $config = $this->driver->InterpConfig($retpkt);
+            $retpkt = $this->readConfig($Info);
+            $config = $this->driver->interpConfig($retpkt);
 
             $mcu = false;
             if (is_array($config['mcu'])) {
@@ -529,7 +529,7 @@ if (!class_exists("e00392100")) {
             $pkt["Data"]   .= str_pad(dechex($Addr & 0xFF), 2, "0", STR_PAD_LEFT);    
             $pkt["Data"]   .= $Val;
             
-            $retpkt = $this->packet->SendPacket($Info, array($pkt));
+            $retpkt = $this->packet->sendPacket($Info, array($pkt));
             $retpkt = $retpkt[0];
             if (strtoupper(trim($retpkt["RawData"])) == strtoupper(trim($Val))) {
                 $return = true;
@@ -564,7 +564,7 @@ if (!class_exists("e00392100")) {
             $pkt["Data"] .= str_pad(dechex($Addr & 0xFF), 2, "0", STR_PAD_LEFT);
             $pkt["Data"] .= $Val;
             
-            $retpkt = $this->packet->SendPacket($Info, array($pkt));
+            $retpkt = $this->packet->sendPacket($Info, array($pkt));
             $retpkt = $retpkt[0];
             if (strtoupper(trim($retpkt["RawData"])) == strtoupper(trim($Val))) {
                 return true;
@@ -586,7 +586,7 @@ if (!class_exists("e00392100")) {
             $pkt["To"]      = $Info["DeviceID"];
             $pkt["Command"] = "06";
     
-            $retpkt = $this->packet->SendPacket($Info, array($pkt));
+            $retpkt = $this->packet->sendPacket($Info, array($pkt));
             $retpkt = $retpkt[0];
             if (is_array($retpkt)) {
                 return $retpkt["RawData"];
@@ -608,7 +608,7 @@ if (!class_exists("e00392100")) {
             $pkt["To"]      = $Info["DeviceID"];
             $pkt["Command"] = "07";
     
-            $retpkt = $this->packet->SendPacket($Info, array($pkt));
+            $retpkt = $this->packet->sendPacket($Info, array($pkt));
             $retpkt = $retpkt[0];
             if (is_array($retpkt)) {
                 return $retpkt["RawData"];
@@ -631,7 +631,7 @@ if (!class_exists("e00392100")) {
             $pkt["To"]      = $Info["DeviceID"];
             $pkt["Command"] = "08";
     
-            $retpkt = $this->packet->SendPacket($Info, array($pkt), false);
+            $retpkt = $this->packet->sendPacket($Info, array($pkt), false);
             return $retpkt[0];
         }
     
@@ -652,7 +652,7 @@ if (!class_exists("e00392100")) {
             $pkt["To"]      = $Info["DeviceID"];
             $pkt["Command"] = "09";
             
-            $retpkt = $this->packet->SendPacket($Info, array($pkt));
+            $retpkt = $this->packet->sendPacket($Info, array($pkt));
             
             $this->ReplyTimeout = $RetT;
 
@@ -670,7 +670,7 @@ if (!class_exists("e00392100")) {
          */
         function checkProgram($Info, $dInfo, $update=false) 
         {
-            $this->InterpConfig($Info);    
+            $this->interpConfig($Info);    
             $return = false;
             if ($Info['bootLoader'] || $update) {
                 //print "\r\nGetting the latest firmware... ";
@@ -824,7 +824,7 @@ if (!class_exists("e00392100")) {
             $pkt["To"]      = $Info["DeviceID"];
             $pkt["Command"] = "60";
     
-            $retpkt = $this->packet->SendPacket($Info, $pkt);
+            $retpkt = $this->packet->sendPacket($Info, $pkt);
     
             return($retpkt);
         }
@@ -849,7 +849,7 @@ if (!class_exists("e00392100")) {
             $pkt["Command"] = "60";
             $pkt["Data"] = $hugnet0.$hugnet1;
     
-            $retpkt = $this->packet->SendPacket($Info, $pkt);
+            $retpkt = $this->packet->sendPacket($Info, $pkt);
     
             return($retpkt);
              */

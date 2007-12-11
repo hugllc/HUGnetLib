@@ -36,8 +36,8 @@
  */
 
 // Call e00392100Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00392100Test::main");
+if (!defined("PHPUNIT_MAIN_METHOD")) {
+    define("PHPUNIT_MAIN_METHOD", "00392100Test::main");
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
@@ -53,9 +53,9 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392100.php';
 class e00392100Test extends endpointTestBase {
     public $class = "e00392100";
     /**
-     *  Test cases for the InterpConfig routine
+     *  Test cases for the interpConfig routine
       */
-    var $InterpConfigTestCases = array(
+    var $interpConfigTestCases = array(
         array(
             "Info" => array(
                 "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
@@ -139,7 +139,7 @@ class e00392100Test extends endpointTestBase {
              ),
          ),
      );
-    var $InterpSensorsTestCases = array(
+    var $interpSensorsTestCases = array(
         array(
             "Info" => array(
                 "DeviceKey" => 150,
@@ -294,7 +294,7 @@ class e00392100Test extends endpointTestBase {
 }
 
 // Call e00392100Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00392100Test::main") {
+if (PHPUNIT_MAIN_METHOD == "e00392100Test::main") {
     e00392100Test::main();
 }
 ?>

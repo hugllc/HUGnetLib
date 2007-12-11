@@ -215,9 +215,9 @@ class Device
             if (is_array($val)) $Packet[$key] = array_merge($res, $val);
         }
 
-        // InterpConfig takes an array of packets and returns
+        // interpConfig takes an array of packets and returns
         // a single array of configuration data.
-        $ep     = $this->_driver->InterpConfig($Packet);
+        $ep     = $this->_driver->interpConfig($Packet);
         $return = true;
 
         if (is_array($ep)) {

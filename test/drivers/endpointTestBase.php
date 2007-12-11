@@ -305,7 +305,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
       */
-    public static function dataCheckRecord() {
+    public static function datacheckRecord() {
         return array(
             array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD"), 1),
             array(
@@ -324,9 +324,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider dataCheckRecord()
+     * @dataProvider datacheckRecord()
       */
-    function testCheckRecord($Info, $Rec, $expect) {
+    function testcheckRecord($Info, $Rec, $expect) {
         $this->o->drivers[$this->class]->checkRecord($Info, $Rec);
         $this->assertSame($expect, $Rec);
     }
@@ -349,9 +349,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     }
     
     /**
-     * data provider for testReadConfig
+     * data provider for testreadConfig
       */
-    public static function dataReadConfig() {
+    public static function datareadConfig() {
         return array(
             array(
                 array(
@@ -395,11 +395,11 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
         );
     }
     /**
-     * @dataProvider dataReadConfig()
+     * @dataProvider datareadConfig()
       */
-    function testReadConfig($preload, $Info, $expect) {
+    function testreadConfig($preload, $Info, $expect) {
         $this->setUpPacket($preload);
-        $ret = $this->o->drivers[$this->class]->ReadConfig($Info);
+        $ret = $this->o->drivers[$this->class]->readConfig($Info);
         $ret = $ret[0];
         unset($ret["pktTimeout"]);
         unset($ret["SentTime"]);
@@ -418,11 +418,11 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
       */
-    function testInterpConfig() {
-        if (is_array($this->InterpConfigTestCases) && (count($this->InterpConfigTestCases) > 0)) {
-            foreach ($this->InterpConfigTestCases as $key => $params) {
-                $ret = $this->o->drivers[$this->class]->InterpConfig($params["Info"]);
-                $this->checkInterpConfigReturn($params["Info"], $params['Return']);
+    function testinterpConfig() {
+        if (is_array($this->interpConfigTestCases) && (count($this->interpConfigTestCases) > 0)) {
+            foreach ($this->interpConfigTestCases as $key => $params) {
+                $ret = $this->o->drivers[$this->class]->interpConfig($params["Info"]);
+                $this->_checkinterpConfigReturn($params["Info"], $params['Return']);
             }
         } else {
             $this->markTestSkipped("Skipped do to lack of driver"); 
@@ -432,10 +432,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
       */
-    private function checkInterpConfigReturn($ret, $expected) {
+    private function _checkinterpConfigReturn($ret, $expected) {
         // Check the stuff we can predict
         foreach ($expected as $key => $val) {
-            $this->assertSame($val, $ret[$key], $this->class.": InterpConfig Failure in key $key");
+            $this->assertSame($val, $ret[$key], $this->class.": interpConfig Failure in key $key");
         }
         // Check the stuff we can't predict (it might change witout a change in this code)
         foreach (array("Labels", "Units", "unitType", "dType", "doTotal") as $type) {
@@ -512,14 +512,14 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
       */
-    function testInterpSensors() {
-        if (is_array($this->InterpSensorsTestCases)) {
-            foreach ($this->InterpSensorsTestCases as $key => $params) {
-                $ret = $this->o->drivers[$this->class]->InterpSensors($params["Info"], $params["Packets"]);
+    function testinterpSensors() {
+        if (is_array($this->interpSensorsTestCases)) {
+            foreach ($this->interpSensorsTestCases as $key => $params) {
+                $ret = $this->o->drivers[$this->class]->interpSensors($params["Info"], $params["Packets"]);
                 if (is_array($params["Return"])) {
                     $this->assertType("array", $ret, "Return was not an array");
                     foreach ($ret as $p => $pkt) {
-                        $this->checkInterpSensorsReturn($pkt, $params["Return"][$p], $p);
+                        $this->_checkinterpSensorsReturn($pkt, $params["Return"][$p], $p);
                     }
                 } else {
                     $this->assertSame($params["Return"], $ret);
@@ -533,11 +533,11 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
     /**
      *
       */
-    private function checkInterpSensorsReturn($ret, $expected, $p) {
+    private function _checkinterpSensorsReturn($ret, $expected, $p) {
         $this->assertType("array", $ret, $this->class." run $p: return is not an array");
         // Check the stuff we can predict
         foreach ($expected as $key => $val) {
-            $this->assertSame($val, $ret[$key], $this->class." run $p: InterpSensors Failure in key $key");
+            $this->assertSame($val, $ret[$key], $this->class." run $p: interpSensors Failure in key $key");
         }
         if (is_array($expected["Types"])) {
             $nSensors = (isset($expected['ActiveSensors'])) ? $expected['ActiveSensors'] : $expected['NumSensors'];
@@ -547,7 +547,7 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase {
                 }
             }
         } else {
-            $function = "checkInterpSensorsReturn".$expected["sendCommand"];
+            $function = "_checkinterpSensorsReturn".$expected["sendCommand"];
             if (method_exists($this, $function)) {
                 $this->$function($ret, $expected, $p);
             }

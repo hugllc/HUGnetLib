@@ -230,7 +230,7 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
     if ($level > $levelLimit) return $levelLimit;
    if (is_array($array)) {
       foreach (array_keys($array) as $key) {
-         if ((is_array($array[$key])) || (is_object($array[$key]))){
+         if ((is_array($array[$key])) || (is_object($array[$key]))) {
             if (is_array($array)) {
                $nextname = $name." [".$key."]";
             } else {
@@ -245,7 +245,7 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) {
       }
    } else if (is_object($array)) {
       foreach (array_keys(get_object_vars($array)) as $key) {
-         if ((is_array($array->$key)) || (is_object($array->$key))){
+         if ((is_array($array->$key)) || (is_object($array->$key))) {
             if (is_array($array)) {
                $nextname = $name." [".$key."]";
             } else {

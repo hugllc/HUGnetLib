@@ -49,16 +49,16 @@ define("e00391102B_SENSOR_LENGTH", 28);
 define("e00391103B_SENSOR_LENGTH", 33);
 define("e00391102B_GROUP", 36);
 */
-define("e00391201_SETUP", 44);
-define("e00391201_FET0", 46);
-define("e00391201_FET1", 48);
-define("e00391201_FET2", 50);
-define("e00391201_FET3", 52);
-define("e00391201_FET0_MULT", 54);
-define("e00391201_FET1_MULT", 56);
-define("e00391201_FET2_MULT", 58);
-define("e00391201_FET3_MULT", 60);
-define("e00391201_SENSORS", 9);
+define("E00391201_SETUP", 44);
+define("E00391201_FET0", 46);
+define("E00391201_FET1", 48);
+define("E00391201_FET2", 50);
+define("E00391201_FET3", 52);
+define("E00391201_FET0_MULT", 54);
+define("E00391201_FET1_MULT", 56);
+define("E00391201_FET2_MULT", 58);
+define("E00391201_FET3_MULT", 60);
+define("E00391201_SENSORS", 9);
 
 
 
@@ -153,8 +153,8 @@ define("e00391201_SENSORS", 9);
 
 
 
-        function CheckRecord($Info, &$Rec) {
-            parent::CheckRecordBase($Info, $Rec);    
+        function checkRecord($Info, &$Rec) {
+            parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -164,20 +164,20 @@ define("e00391201_SENSORS", 9);
 
         }
 
-        function InterpConfig(&$Info) {
+        function interpConfig(&$Info) {
 
-            $this->InterpConfigDriverInfo($Info);
-            $this->InterpConfigHW($Info);
-            $this->InterpConfigFW($Info);
+            $this->interpConfigDriverInfo($Info);
+            $this->interpConfigHW($Info);
+            $this->interpConfigFW($Info);
 
             $Info["ActiveSensors"] = $Info["NumSensors"];
 
-            $this->InterpConfigFETSetup($Info);
-            $this->InterpConfigParams($Info);
+            $this->_interpConfigFETSetup($Info);
+            $this->interpConfigParams($Info);
 
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
 
-            $this->InterpConfigSensorSetup($Info);
+            $this->interpConfigSensorSetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Labels"] = $this->labels[$Info["FWPartNum"]];
@@ -186,29 +186,29 @@ define("e00391201_SENSORS", 9);
             }
 
         }
-        private function InterpConfigFETSetup(&$Info) {
-            $Info["Setup"] = hexdec(substr($Info["RawSetup"], e00391201_SETUP, 2));
+        private function _interpConfigFETSetup(&$Info) {
+            $Info["Setup"] = hexdec(substr($Info["RawSetup"], E00391201_SETUP, 2));
             for ($i = 0; $i < 4; $i++) {
                 $mode = (($Info["Setup"]>>($i*2)) & 3);
                 $Info["FET".$i."Mode"] = $mode;
                 $Info["FET".$i."pMode"] = $this->modes[$mode];
             }                    
 
-            $Info["FET0"] = hexdec(substr($Info["RawSetup"], e00391201_FET0, 2));
-            $Info["FET1"] = hexdec(substr($Info["RawSetup"], e00391201_FET1, 2));
-            $Info["FET2"] = hexdec(substr($Info["RawSetup"], e00391201_FET2, 2));
-            $Info["FET3"] = hexdec(substr($Info["RawSetup"], e00391201_FET3, 2));
-            $Info["FET0Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET0_MULT, 2));
-            $Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET1_MULT, 2));
-            $Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET2_MULT, 2));
-            $Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], e00391201_FET3_MULT, 2));
+            $Info["FET0"] = hexdec(substr($Info["RawSetup"], E00391201_FET0, 2));
+            $Info["FET1"] = hexdec(substr($Info["RawSetup"], E00391201_FET1, 2));
+            $Info["FET2"] = hexdec(substr($Info["RawSetup"], E00391201_FET2, 2));
+            $Info["FET3"] = hexdec(substr($Info["RawSetup"], E00391201_FET3, 2));
+            $Info["FET0Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET0_MULT, 2));
+            $Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET1_MULT, 2));
+            $Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET2_MULT, 2));
+            $Info["FET3Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET3_MULT, 2));
         }
 
 
     
-        function InterpSensors($Info, $Packets) {
+        function interpSensors($Info, $Packets) {
 
-            $this->InterpConfig($Info);
+            $this->interpConfig($Info);
         
             $ret = array();
             foreach ($Packets as $data) {

@@ -35,8 +35,8 @@
  *
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HUGnetLibTests::main');
+if (!defined('PHPUNIT_MAIN_METHOD')) {
+    define('PHPUNIT_MAIN_METHOD', 'HUGnetLibTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -104,7 +104,7 @@ class HUGnetLibTests
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'HUGnetLibTests::main') {
+if (PHPUNIT_MAIN_METHOD == 'HUGnetLibTests::main') {
     HUGnetLibTests::main();
 }
 ?>
