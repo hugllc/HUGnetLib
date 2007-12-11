@@ -154,7 +154,7 @@ define("E00391201_SENSORS", 9);
 
 
         function checkRecord($Info, &$Rec) {
-            parent::checkRecordBase($Info, $Rec);    
+            parent::_checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -166,18 +166,18 @@ define("E00391201_SENSORS", 9);
 
         function interpConfig(&$Info) {
 
-            $this->interpConfigDriverInfo($Info);
-            $this->interpConfigHW($Info);
-            $this->interpConfigFW($Info);
+            $this->_interpConfigDriverInfo($Info);
+            $this->_interpConfigHW($Info);
+            $this->_interpConfigFW($Info);
 
             $Info["ActiveSensors"] = $Info["NumSensors"];
 
             $this->_interpConfigFETSetup($Info);
-            $this->interpConfigParams($Info);
+            $this->_interpConfigParams($Info);
 
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
 
-            $this->interpConfigSensorSetup($Info);
+            $this->_interpConfigSensorSetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Labels"] = $this->labels[$Info["FWPartNum"]];
