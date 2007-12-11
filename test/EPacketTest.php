@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the EPacket class
+ * Tests the EPacket class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -54,7 +59,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      *
      * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
-     */
+      */
     var $testPacketArray = array(
         array(
             "Command" => "55",
@@ -87,7 +92,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      *
      * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
-     */
+      */
     var $testPacketReplyArray = array(
         array(
             "Command" => "01",
@@ -115,11 +120,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         ),
     );
     /** 
-     *   Test Packets in string form 
+     * Test Packets in string form 
      *
      * This array needs to have the same keys as $testPacketArray and $testPacketReplyStr     
      * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray    
-     */
+      */
     var $testPacketStr = array(
         "5A5A5A55000ABC0000200401020304C3",
         "5A5A5A5C000ABC00002000CA",
@@ -130,7 +135,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      *
      * This array needs to have the same keys as $testPacketStr and $testPacketArray
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray    
-     */
+      */
     var $testPacketReplyStr = array(
         "5A5A5A01000020000ABC040102030497",
         "5A5A5A01000020000ABC0097",
@@ -141,7 +146,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -154,7 +159,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
         $db = $this->getMock("ADONewConnection", array(), array("sqlite"));
         $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"), false, $db, false);
@@ -172,7 +177,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
         unset($this->o);
 //print ob_get_clean();
@@ -189,7 +194,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     private function cleanTo($to) {
         $to = trim($to);
         $to = substr($to, 0, 6);
@@ -200,7 +205,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      *
-     */
+      */
     public function validPacketArray($a, $test=null, $keys = null) {
         $this->assertTrue(is_array($a), "This is not an array!");
         $this->assertTrue(is_string($a['Command']), "'".$a['Command']."': Packet command must be a string");
@@ -208,7 +213,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_string($a['To']), "'".$a['To']."': Packet to must be a string");
         $this->assertEquals(6, strlen($a['To']), "'".$a['To']."': Packet to must contain exactly 6 characters");
         if (is_array($test)) {
-            foreach($test as $key => $var) {
+            foreach ($test as $key => $var) {
                 // Check to see if the key was specified
                 if (is_array($keys)) {
                     // If it was not continue.
@@ -224,7 +229,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      *
-     */
+      */
     public function validPacketString($s, $a=null) {
         $this->assertTrue(is_string($s), "This is not a string!");
         $s = strtoupper($s);
@@ -243,7 +248,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      *
-     */
+      */
     public function getPreambleLength($pkt) {
         $length = 0;
         while (substr($pkt, ($length*2), 2) == "5A") $length++;    
@@ -292,7 +297,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataPacketBuild
-     */
+      */
     public function testPacketBuild($packet, $expect) {
         $pkt = $this->o->PacketBuild($packet);
         $this->assertSame($expect, $pkt);
@@ -315,7 +320,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataPacketGetChecksum
-     */
+      */
     public function testPacketGetChecksum($packet, $expect) {
         $cksum = $this->o->PacketGetChecksum($packet);
         $this->assertSame($expect, $cksum);
@@ -330,7 +335,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataBuildPacket
-     */
+      */
     public function testBuildPacket($command, $to, $data, $expect) {
         if (is_null($data)) {
             $pkt = $this->o->buildPacket($command, $to);
@@ -342,7 +347,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testPacketCallBack().
-     */
+      */
     public function testPacketCallBackMethod() {
         $t = $this->getMock('EPacketTest_CallBack_Class');
         $string = "ABCDE";
@@ -354,7 +359,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @todo Implement testPacketCallBack().
-     */
+      */
     public function testPacketCallBackFunction() {
         $string = "ABCDE";
 
@@ -668,11 +673,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSendPacket().
-     */
+      */
     public function testSendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = false) {
         // This preloads our fake socket to send back the data we want
         if (is_array($pktStr)) {
-            foreach($pktStr as $k => $p) {
+            foreach ($pktStr as $k => $p) {
                 $this->o->socket[1]->setReply($p, $replyStr[$k]);
             }
         } else {
@@ -686,7 +691,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     private function packetRemoveDates(&$rep) {
         if (is_array($rep)) {
-            foreach($rep as $key => $val) {
+            foreach ($rep as $key => $val) {
                 unset($rep[$key]["Time"]);
                 unset($rep[$key]["ReplyTime"]);
                 unset($rep[$key]["SentTime"]);
@@ -698,7 +703,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSendPacket().
-     */
+      */
     public function testSendPacketWriteSocket() {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly(2))
@@ -709,7 +714,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSendPacket().
-     */
+      */
     public function testSendPacketWriteRetry() {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->Retries = 4;
@@ -721,7 +726,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSendReply().
-     */
+      */
     public function testSendReply() {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly($this->o->Retries))
@@ -742,7 +747,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataArrayToData
-     */
+      */
     public function testArrayToDataValid($data, $expect) {
         $s = $this->o->arrayToData($data);
         $this->assertEquals($s, $expect);
@@ -750,7 +755,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
     /**
      * Test calling it directly
      * @dataProvider dataArrayToData
-     */
+      */
     public function testArrayToDataDirect($data, $expect) {
         $s = EPacket::arrayToData($data);
         $this->assertEquals($s, $expect);
@@ -765,12 +770,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataChangeSN($SN)
-     */
+      */
     public function testChangeSN($SN, $SNArray, $expect) {
         $this->o->SNArray = $SNArray;
         $Info = array("GatewayKey" => 1);
         // Load these packets up so that it always chooses $SN.
-        foreach($SNArray as $s) {
+        foreach ($SNArray as $s) {
             if ($s != $SN) {
                 $pkt = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s), "000020");
                 $reply = EPacket::PacketBuild(array("Command"=>"01", "To"=>"000020"), $s);
@@ -783,7 +788,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testPacketTime().
-     */
+      */
     public function testPacketTime() {
         $t = EPacket::PacketTime();
         $this->assertTrue(is_float($t), "Time not a floating point number");
@@ -792,7 +797,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testIsGateway().
-     */
+      */
     public function testIsGateway() {
         $o = new EPacket();
         $this->assertTrue($o->isGateway("000010"), "Doesn't take strings well inside range");
@@ -804,7 +809,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSNCheck().
-     */
+      */
     public function testGetAll1() {
         $this->o->getAll(false);
         $this->assertFalse($this->readAttribute($this->o, "_getAll"));
@@ -825,11 +830,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testUnbuildPacket().
-     */
+      */
     public function testUnbuildPacket() {
         $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
         $o = new EPacket();
-        foreach($this->testPacketStr as $key => $str) {
+        foreach ($this->testPacketStr as $key => $str) {
             $pkt = $o->unbuildPacket($str);
             $this->validPacketArray($pkt, $this->testPacketArray[$key], $check);
         }
@@ -859,7 +864,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataMonitor
-     */
+      */
     public function testMonitor($Info, $timeout, $expect) {
         if (is_null($timeout)) {
             $ret = $this->txrxMock->monitor($Info);
@@ -906,7 +911,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataPing
-     */
+      */
     public function testPing($Info, $find, $expect) {
         if (is_null($find)) {
             $ret = $this->txrxMock->ping($Info);
@@ -919,7 +924,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testClose().
-     */
+      */
     public function testClose() {
         $this->o->socket[2] = $this->getMock('epsocketMock');
         $this->o->socket[2]->expects($this->once())
@@ -930,7 +935,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testSNCheck().
-     */
+      */
     public function testSNCheck1() {
         $this->o->SNCheck(false);
         $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
@@ -1004,7 +1009,7 @@ class epsocketMock extends epsocket {
     }    
     /**
      *
-     */
+      */
     public function Connect($server = "", $port = 0, $timeout=0) {
         $return = false;
         if ($return === false) {
@@ -1025,21 +1030,21 @@ class epsocketMock extends epsocket {
     }
     /**
      *
-     */
+      */
     function CheckConnect() {
         return true;
     }
 
     /**
      *
-     */
+      */
     function Close() {
         $this->socket = false;
     }
 
     /**
      *
-     */
+      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
         
@@ -1062,7 +1067,7 @@ class epsocketMock extends epsocket {
     }
     /**
      *
-     */
+      */
     function Write($data) {
         $this->lastPacket = devInfo::hexifyStr($data);
 

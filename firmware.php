@@ -1,32 +1,34 @@
 <?php
 /**
- *   Class to keep track of firmware and store it in the database.
+ * Class to keep track of firmware and store it in the database.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Firmware
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package HUGnetLib
+ * @subpackage Firmware
+ * @copyright 2007 Hunt Utilities Group, LLC
+ * @author Scott Price <prices@hugllc.com>
+ * @version SVN: $Id$    
  *
  */
 /**
@@ -46,7 +48,7 @@ class firmware {
     /**
      * Constructor
      ** @param object $db ADODB database object
-    */
+     */
     function __construct(&$db) {
         $this->db = &$db;
     }
@@ -58,9 +60,9 @@ class firmware {
      * @param $MemBufferSize Int the total available space in the memory buffer
      * @param $PageSize Int the total number of bytes in 1 page of memory.  0 means no pages
      * @param $MemBufferEmpty String This is what a byte looks like when it is erased.
-     *      The default is for flash memory (FF);
+     *    The default is for flash memory (FF);
      * @return The raw memory buffer    
-    */
+     */
     function InterpSREC($srec, $MemBufferSize, $PageSize=0, $MemBufferEmpty="FF") {
         $MemBuffer = str_repeat($MemBufferEmpty, $MemBufferSize);
     
@@ -68,7 +70,7 @@ class firmware {
             $srec = explode("\n", $srec);
         }
         if (is_array($srec)) {
-            foreach($srec as $rec) {
+            foreach ($srec as $rec) {
                 switch(substr($rec, 0, 2)) {
                     case "S1":
                         $size = hexdec(substr($rec, 2, 2));
@@ -95,7 +97,7 @@ class firmware {
         if ($PageSize > 0) {
             $MemBuffer = str_split($MemBuffer, ($PageSize*2));
             $MemBuffer = array_reverse($MemBuffer);
-            foreach($MemBuffer as $pnum => $page) {
+            foreach ($MemBuffer as $pnum => $page) {
     //            $page = str_replace($MemBufferEmpty, "", $page);
                 while (strlen($page) > 0) {
                     if (substr($page, 0, 2) == $MemBufferEmpty) {
@@ -127,14 +129,14 @@ class firmware {
      * @param string $Status This is the status of the firmware
      * @param bool $All If this is true any firmware not listed as BAD is returned
      * @return array The array of firmware information
-    */
+     */
     function GetLatestFirmware($FWPartNum, $Status=null, $All=false) {
         /*
         $this->reset();
         $this->addWhere("FWPartNum='".$FWPartNum."'");
         $this->addWhere("FirmwareStatus='".$Status."'");
         $ret = $this->getAll();
-        */
+         */
 
         if ($ret = $this->cache($FWPartNum)) return $ret;
         
@@ -161,7 +163,7 @@ class firmware {
      * @param string $HWPartNum This is the part number of the firmware wanted
      * @param string $Status This is the status of the firmware
      * @return array The array of firmware information    
-    */
+     */
     function GetFirmwareFor($HWPartNum, $Status=null) {
         $HWPartNum = substr($HWPartNum, 0, 7);
 
@@ -185,7 +187,7 @@ class firmware {
      * @param string $Status This is the status of the firmware
      * @param string $version The particular version to get
      * @return array array of firmware information arrays    
-    */
+     */
     function GetFirmware($FWPartNum, $version=null, $Status=null) {
 
         if ($ret = $this->cache($FWPartNum)) return $ret;
@@ -212,7 +214,7 @@ class firmware {
      *
      * @param int $FWKey The database key of the firmware to retrieve.
      * @return array The array of firmware information
-     */
+      */
     function get($FWKey) {
         if ($ret = $this->cache($FWKey)) return $ret;
 
@@ -231,14 +233,14 @@ class firmware {
      * @param int $key The database key of the firmware.
      * @param array $save This is the information to save.  If left blank we retrieve information.
      * @return array The array of firmware information
-     */
+      */
     function cache($key, $save=false) {
         if ($save === false) {
             if ((time() - $this->cacheDate[$key]) > $this->cacheTimeout) return false;
             if (is_array($this->cache[$key])) {
                 return $this->cache[$key];
             } else {
-                foreach($this->cache as $val) {
+                foreach ($this->cache as $val) {
                     if ($val['FirmwareKey'] == $key) return $val;
                     if ($val['FWPartNum'] == $key) return $val;
                     if ($val['HWPartNum'] == $key) return $val;

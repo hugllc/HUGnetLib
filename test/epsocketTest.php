@@ -1,32 +1,36 @@
 <?php
 /**
- *   Tests the epsocket class
+ * Tests the epsocket class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
@@ -58,7 +62,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -71,7 +75,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
         $this->proc = proc_open("php ".dirname(__FILE__)."/epsocketTestScript.php", $this->descriptorspec, $this->pipes);
         $this->s = new epsocket($this->host, $this->port);
@@ -82,7 +86,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
         fwrite($this->pipes[0], "quit\r\n");
         fflush($this->pipes[0]);
@@ -100,7 +104,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testWrite().
-     */
+      */
     public function testWrite() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -110,7 +114,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testReadChar().
-     */
+      */
     public function testReadChar() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -120,7 +124,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testHexify().
-     */
+      */
     public function testHexify() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -130,7 +134,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testClose().
-     */
+      */
     public function testClose() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -140,7 +144,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testCheckConnect().
-     */
+      */
     public function testCheckConnect() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -150,7 +154,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testConnect().
-     */
+      */
     public function testConnect() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(
@@ -160,7 +164,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testEp_socket().
-     */
+      */
     public function testEp_socket() {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete(

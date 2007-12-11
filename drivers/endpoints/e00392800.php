@@ -1,32 +1,36 @@
 <?php
 /**
- *   This is the driver code for the 0039-28 endpoints.
+ * This is the driver code for the 0039-28 endpoints.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- ** @license http://opensource.org/licenses/gpl-license.php GNU Public License
- ** @package HUGnetLib
- ** @subpackage Endpoints
- ** @copyright 2007 Hunt Utilities Group, LLC
- ** @author Scott Price <prices@hugllc.com>
- ** @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
@@ -35,7 +39,7 @@ if (!class_exists("e00392800")) {
 
     /**
      * Driver for the 0039-12 endpoint board and select firmwares
-    */
+     */
     class e00392800 extends eDEFAULT{
 
         var $HWName = "0039-28 Endpoint";
@@ -73,11 +77,11 @@ if (!class_exists("e00392800")) {
 
         /**
          * Calibration data
-        */
+         */
     
         /**
          * Extra columns to display for these endpoints
-        */
+         */
         var $cols = array("TimeConstant" => "Time Constant", 
                                 "ActiveSensors" => "Active Sensors",
                                 "NumSensors" => "# Sensors",
@@ -87,7 +91,7 @@ if (!class_exists("e00392800")) {
          * Returns the packet to send to read the configuration out of an endpoint
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
-        */
+         */
         function ReadConfig($Info) {
             $packet = array(
                 array(
@@ -99,7 +103,7 @@ if (!class_exists("e00392800")) {
 
             if (is_array($return) && (count($return) > 0)) {
                 $packet = array();
-                for($i = 0; $i < $this->calParts; $i++) {
+                for ($i = 0; $i < $this->calParts; $i++) {
                     $packet[] = array(
                         "To" => $Info["DeviceID"],
                         "Command" => PACKET_COMMAND_GETCALIBRATION,
@@ -118,7 +122,7 @@ if (!class_exists("e00392800")) {
         }
         /**
          *
-         */
+          */
         function CheckRecord($Info, &$Rec) {
             parent::CheckRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
@@ -132,7 +136,7 @@ if (!class_exists("e00392800")) {
         
         /**
          *
-         */
+          */
         function InterpConfig(&$Info) {
             $this->InterpConfigDriverInfo($Info);
             $this->InterpConfigHW($Info);
@@ -145,7 +149,7 @@ if (!class_exists("e00392800")) {
         }
         /**
          *
-         */
+          */
         private function InterpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
@@ -154,15 +158,15 @@ if (!class_exists("e00392800")) {
 
         /**
          *
-         */
+          */
         function InterpSensors($Info, $Packets) {
             $this->InterpConfig($Info);
             $ret = array();
 
             unset($lastPacket);
-            foreach($Packets as $key => $data) {
+            foreach ($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
-                if(isset($data['RawData'])) {
+                if (isset($data['RawData'])) {
                     self::InterpSensorsSetData($Info, $data);
                     $index = 3; 
                     self::InterpSensorsGetRaw($Info, $data);
@@ -176,7 +180,7 @@ if (!class_exists("e00392800")) {
 
         /**
          *
-         */
+          */
         private function InterpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 $index = 3;

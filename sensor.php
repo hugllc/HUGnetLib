@@ -7,17 +7,17 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- *   
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *   
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -52,7 +52,7 @@ class Sensor
      * @param object &$plugins This is a object of type plugin
      * 
      * @see plugin
-     */
+      */
     function __construct(&$plugins = "") 
     {
         if (!is_object($plugins)) {
@@ -73,11 +73,11 @@ class Sensor
      * Register a sensor class.
      *
      * @param mixed  $class The name of the sensor class to register, 
-     *                    or the actual object
+     *                  or the actual object
      * @param string $name  The name of the class if the above is an object.
      *
      * @return bool true on success, false on failure
-     */
+      */
     public function registerSensor($class, $name=false) 
     {
         if (is_string($class) && class_exists($class)) {
@@ -117,7 +117,7 @@ class Sensor
      * @param int    $TC      The time constant
      *
      * @return mixed The cruched reading.
-     */
+      */
     function getReading($val, $type, &$sensor, $TC) 
     {
         $class = $this->getClass($type, $sensor);
@@ -145,7 +145,7 @@ class Sensor
      * @param mixed  $return   The default return value
      *
      * @return mixed The return value of the function
-     */
+      */
     function runFunction(&$class, $function, &$args, $return = null) 
     {
         if (is_string($function)) {
@@ -170,7 +170,7 @@ class Sensor
      * @param string &$sensor The short name of the sensor
      *
      * @return object A reference to the sensor object
-     */
+      */
     function &getClass(&$type, &$sensor) 
     {
         $type   = (int) $type;
@@ -202,7 +202,7 @@ class Sensor
      * @param string $unit    The unit to check.
      *
      * @return string A valid unit for the sensor given.
-     */
+      */
     function getUnits($type, &$sensor, $unit = false) 
     {
         $return = null;
@@ -224,8 +224,8 @@ class Sensor
      * <code>
      * array(
      *  0 => array(
-     *      'text' => "Text description of this field",
-     *      'default' => "default",
+     *    'text' => "Text description of this field",
+     *    'default' => "default",
      *  ),
      * );
      * </code>
@@ -237,7 +237,7 @@ class Sensor
      * @param string &$sensor The short name of the sensor
      *
      * @return array Array of information about the extra parameters of the sensor
-     */
+      */
     function getExtra($type, &$sensor) 
     {
         $return = array();
@@ -267,7 +267,7 @@ class Sensor
      * @param string &$sensor The short name of the sensor
      *
      * @return string The name of what the sensor is measuring.
-     */
+      */
     function getUnitType($type, &$sensor) 
     {
         $return = null;
@@ -290,7 +290,7 @@ class Sensor
      * @param string $sensor The short name of the sensor
      *
      * @return int The number of inputs on the endpoint that this sensor takes.
-     */
+      */
     function getSize($type, $sensor) 
     {
         $return = 1;
@@ -311,7 +311,7 @@ class Sensor
      * @param string $sensor The short name of the sensor
      *
      * @return bool Whether to total instead of average.  Returns false by default
-     */
+      */
     function doTotal($type, $sensor) 
     {
         $return = false;
@@ -334,7 +334,7 @@ class Sensor
      * @param string $mode    The mode to check
      *
      * @return string A valid mode for the sensor given.
-     */
+      */
     function getUnitMode($type, &$sensor, $unit=null, $mode=false) 
     {
         $return = array();
@@ -375,7 +375,7 @@ class Sensor
      * @param string $unit    The unit to check
      *
      * @return string
-     */
+      */
     function getUnitDefMode($type, &$sensor, $unit) 
     {
         $return = $this->getUnitMode($type, $sensor, $unit);
@@ -389,7 +389,7 @@ class Sensor
      * @param string &$sensor The short name of the sensor
      *
      * @return array
-     */
+      */
     function getAllUnits($type, &$sensor) 
     {
         $return = array();
@@ -407,7 +407,7 @@ class Sensor
      * @param int $type Int The type of sensor
      *
      * @return array
-     */
+      */
     function getAllSensors($type) 
     {
         $type    = (int)$type;
@@ -440,7 +440,7 @@ class Sensor
      * @param array &$mode   The mode to check
      *
      * @return none
-     */
+      */
     function checkUnits(&$type, &$sensor, &$units, &$mode) 
     {
         if (is_array($type)) {
@@ -484,7 +484,7 @@ class Sensor
      * @param array &$data The data to decode
      *
      * @return none
-     */
+      */
     function decodeData(&$Info, &$data) 
     {
         if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
@@ -541,7 +541,7 @@ class Sensor
      * @param array &$data The data to decode
      *
      * @return none
-     */
+      */
     function checkRecord(&$data) 
     {
         // Start with the assumption that the packet is good.
@@ -568,7 +568,7 @@ class Sensor
      * @param string $mode   The mode
      *
      * @return bool true if the record is good, false if it is not
-     */
+      */
     function checkPoint($value, $type, $sensor, $mode) 
     {
         $ret   = true;
@@ -627,7 +627,7 @@ abstract class Sensor_Base
      * @param int $s   See {@link sensor_base::$s}
      * @param int $Am  See {@link sensor_base::$Am}
      * @param int $Vcc See {@link sensor_base::$Vcc}
-    */
+     */
     function __construct($Tf=false, $D=false, $s=false, $Am=false, $Vcc=false)
     {
         if (is_numeric($Tf)) $this->Tf = $Tf;

@@ -1,45 +1,49 @@
 <?php
 /**
- *   Sensor driver for wind direction sensors
+ * Sensor driver for wind direction sensors
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists('windDirectionSensor')) {
 
     /**
      * This class deals with wind direction sensors.
-     */
+      */
     class windDirectionSensor extends sensor_base
     {
     
         /**
             This defines all of the sensors that this driver deals with...
-        */
+         */
         public $sensors = array(
             0x6F => array(
                 'maximum-inc' => array(
@@ -71,24 +75,24 @@ if (!class_exists('windDirectionSensor')) {
          * - If the ordinal direction is null it returns the cardinal direction.
          * - If the cardinal direction is null it returns the ordinal direction.
          * - Otherwise it retuns the average of the two.  This is only valid where
-         *     the difference between the two is 45, so it checks this first.
+         *   the difference between the two is 45, so it checks this first.
          * - One special case is when the cardinal direction is north (0) and
-         *     the ordinal direction is NW (315).  In this case the cardinal
-         *     direction needs to be changed to 360 for the averaging to work
-         *     properly.            
+         *   the ordinal direction is NW (315).  In this case the cardinal
+         *   direction needs to be changed to 360 for the averaging to work
+         *   properly.            
          *  
          * @param int $bitField This is an 8 bit bit field returned by the sensor
          * @param array $sensor this is the array of sensor information for this
-         *    sensor.  This is not used by this sensor.
+         *  sensor.  This is not used by this sensor.
          * @param int $TC The timeconstant.  This is not used by this sensor.
-         */
+          */
         function maximumIncSensor($bitField, $sensor, $TC) {
     
             // Do the cardinal directions
             $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
             $cDir = null;
             $oDir = null;
-            foreach($cDirections as $shift => $dir) {
+            foreach ($cDirections as $shift => $dir) {
                 // Do the cardinal direction
                 if ($bitField & (1<<$shift)) {
                     if (!is_null($cDir)) return null;  // Can't have two cardinal directions!

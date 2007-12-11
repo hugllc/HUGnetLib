@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the filter class
+ * Tests the filter class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -50,7 +55,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -63,7 +68,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -72,13 +77,13 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
 
     /**
      * dataProvider for testRegisterFilter
-     */
+      */
     public static function dataRegisterFilter() {
         return array(
             array("testFilter", true),
@@ -88,15 +93,15 @@ class filterTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataRegisterFilter
-     */
+      */
     public function testRegisterFilter($class, $expect) {
         $o = new filter();
         $ret = $o->registerFilter($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
             $this->assertThat($o->filters[$class], $this->isInstanceOf($class));
-            foreach($o->filters[$class]->filters as $type => $sInfo) {
-                foreach($sInfo as $filter => $val) {
+            foreach ($o->filters[$class]->filters as $type => $sInfo) {
+                foreach ($sInfo as $filter => $val) {
                     $this->assertSame($o->dev[$type][$filter], $class, "'$type->$filter': Not found");
                 }
             }
@@ -104,7 +109,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @todo Implement testGetReading().
-     */
+      */
     public function testFilterdataCall() {
         $o = new filter();
         $cName = "testFilter";
@@ -122,7 +127,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataFilterdata
-     */
+      */
     public function testFilterdata($data, $type, $filter, $expect) {
         $o = new filter();
         $o->registerFilter("testFilter");
@@ -132,7 +137,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
 
     /**
      * @todo Implement testRunFunction().
-     */
+      */
     public function testRunFunctionCall() {
         $o = new filter();
         $cName = "testFilter";
@@ -146,7 +151,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     public static function dataRunFunction() {
         return array(
             array("testFilter", "Test1", array(1,2,3,4), 24, 10),
@@ -156,7 +161,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataRunFunction
-     */
+      */
     public function testRunFunction($class, $function, $args, $default, $expect) {
         $o = new sensor();
         $o->registerSensor($class);
@@ -166,7 +171,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
-     */
+      */
     public static function dataGetClass() {
         return array(
             array("testType", "", "sameClass", "testType", "testFilter1"),
@@ -176,7 +181,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataGetClass().
-     */
+      */
     public function testGetClass($type, $sensor, $expect, $typeExpect, $sensorExpect) {
         $o = new filter();
         $cName = "testFilter";

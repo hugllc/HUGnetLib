@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the capacitive sensor class
+ * Tests the capacitive sensor class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -54,7 +59,7 @@ class capacitiveSensorTest extends sensorTestBase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -67,7 +72,7 @@ class capacitiveSensorTest extends sensorTestBase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -76,15 +81,15 @@ class capacitiveSensorTest extends sensorTestBase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
     
     public static function dataSensorArray() {
         $o = new capacitiveSensor();
         $return = array();
-        foreach($o->sensors as $catName => $cat) {
-            foreach($cat as $shortName => $sensor) {
+        foreach ($o->sensors as $catName => $cat) {
+            foreach ($cat as $shortName => $sensor) {
                 $return[] = array($catName, $shortName, $sensor);
             }
         }
@@ -93,7 +98,7 @@ class capacitiveSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testGetCapacitance
-     */
+      */
     public static function dataGetCapacitance() {
         return array(
             array(1, 2, 3, 4, 174591.3333),
@@ -104,7 +109,7 @@ class capacitiveSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGetCapacitance
-     */
+      */
     public function testGetCapacitance($A, $T, $R, $t, $expect) {
         $o = new capacitiveSensor();
         $ret = $o->getCapacitance($A, $T, $R, $t);
@@ -113,7 +118,7 @@ class capacitiveSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testGetCapacitance
-     */
+      */
     public static function dataGenericCap() {
         return array(
             array(1, 2, 3, 4, 1),
@@ -122,7 +127,7 @@ class capacitiveSensorTest extends sensorTestBase {
     }
     /**
      * @dataProvider dataGenericCap
-     */
+      */
     public function testGenericCap($val, $sensor, $TC, $extra, $expect) {
         $o = new capacitiveSensor();
         $ret = $o->genericCap($val, $sensor, $TC, $extra);

@@ -1,38 +1,42 @@
 <?php
 /**
- *   Sensor driver for current sensors
+ * Sensor driver for current sensors
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists('currentSensor')) {
     /**
      * Class for dealing with current sensors.
-    */
+     */
     class currentSensor extends sensor_base
     {
     
@@ -79,7 +83,7 @@ if (!class_exists('currentSensor')) {
          * @param float $G The gain of the circuit
          * @param int $T The time constant 
          * @return float The current sensed
-         */
+          */
         function getCurrent($A, $R, $G, $T) 
         {
             $denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
@@ -98,7 +102,7 @@ if (!class_exists('currentSensor')) {
          * @param int $TC The time constant
          * @param mixed $extra Extra parameters for the sensor
          * @return float Current rounded to 1 place
-         */
+          */
         function FETBoard($val, $sensor, $TC, $extra=null) {
             $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];

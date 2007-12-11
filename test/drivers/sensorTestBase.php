@@ -1,32 +1,37 @@
 <?php
 /**
- *   This is the basis for all sensor driver test classes.
+ * This is the basis for all sensor driver test classes.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -43,7 +48,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * 
-     */
+      */
     public function testSensorParent() {
         $o = new $this->class;
         // Long Name
@@ -52,18 +57,18 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     
     /**
      *
-     */
+      */
     public static function dataSensorArray() {
         return array();
     }
     /**
      *
-     */
+      */
     public static function sensorArrayDataSource($class) {
         $o = new $class();
         $return = array();
-        foreach($o->sensors as $catName => $cat) {
-            foreach($cat as $shortName => $sensor) {
+        foreach ($o->sensors as $catName => $cat) {
+            foreach ($cat as $shortName => $sensor) {
                 $return[] = array($catName, $shortName, $sensor);
             }
         }
@@ -71,7 +76,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayLongName($catName, $shortName, $sensor) {
         // Long Name
         $this->assertType("string", $sensor['longName'], $catName.":".$shortName.": Long name is not a string");
@@ -79,7 +84,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayFunction($catName, $shortName, $sensor) {
         $o = new $this->class;
         if (isset($sensor['function'])) {
@@ -88,7 +93,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayCheckFunction($catName, $shortName, $sensor) {
         $o = new $this->class;
         if (isset($sensor['checkFunction'])) {
@@ -97,7 +102,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayMult($catName, $shortName, $sensor) {
         if (isset($sensor['mult'])) {
             $this->assertType("numeric", $sensor['mult'], $this->class.":".$type.":".$shortName.": Multiplier must be numeric or not specified");            
@@ -105,7 +110,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayDoTotal($catName, $shortName, $sensor) {
         if (isset($sensor['doTotal'])) {
             $this->assertType("bool", $sensor['doTotal'], $this->class.":".$type.":".$shortName.": doTotal must be a boolean or not specified");            
@@ -114,7 +119,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorArrayInputSize($catName, $shortName, $sensor) {
         if (isset($sensor['inputSize'])) {
             $this->assertType("int", $sensor['inputSize'], $this->class.":".$type.":".$shortName.": inputSize must be an integer or not specified");            
@@ -124,7 +129,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorVariableExtra($catName, $shortName, $sensor) {
         if (isset($sensor["extraText"])) {
             if (is_array($sensor["extraText"])) {
@@ -139,7 +144,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorVariableUnitType($catName, $shortName, $sensor) {
         // Check unitType
         $this->assertType("string", $sensor['unitType'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
@@ -148,7 +153,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorVariableStorageUnit($catName, $shortName, $sensor) {
         // Check storage Unit
         $this->assertType("string", $sensor['storageUnit'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
@@ -158,12 +163,12 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorVariableValidUnits($catName, $shortName, $sensor) {
         // Check valid units
         $this->assertType("array", $sensor['validUnits'],  $this->class.":".$type.":".$shortName.": validUnits must be an array");
         $this->assertTrue(count($sensor['validUnits']) > 0, $this->class.":".$type.":".$shortName.": At least one unit must be defined");
-        foreach($sensor['validUnits'] as $unit) {
+        foreach ($sensor['validUnits'] as $unit) {
             $this->assertFalse(empty($unit), $this->class.":".$type.":".$shortName.": blank unit");            
             // Check to make sure the unit
             $this->assertTrue(unitConversionTest::findUnits($sensor['unitType'], $unit), $this->class.":".$type.":".$shortName.": unit ".$unit." not found in unitConversion");
@@ -174,12 +179,12 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider dataSensorArray
-     */
+      */
     public function testSensorVariableUnitMode($catName, $shortName, $sensor) {
         // Check unit modes
         $this->assertType("array", $sensor['unitModes'],  $this->class.":".$type.":".$shortName.": unitModes must be an array");
         $this->assertTrue(count($sensor['unitModes']) > 0, $this->class.":".$type.":".$shortName.": At least one mode must be defined");
-        foreach($sensor['unitModes'] as $unit => $mode) {
+        foreach ($sensor['unitModes'] as $unit => $mode) {
             // Check to make sure each unit in the mode list is also in the validUnits list
             $found = array_search($unit, $sensor['validUnits']);
             if ($found !== false) $found = true;
@@ -187,7 +192,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
             // Check the modes based on the units.
             $this->assertType("string", $mode, $this->class.":".$type.":".$shortName.": Mode for unit '$unit' is not a string");
             $mode = explode("'", $mode);
-            foreach($mode as $m) {
+            foreach ($mode as $m) {
                 $m = trim($m);
                 $this->assertTrue(unitConversionTest::findUnitMode($sensor['unitType'], $unit, $m), $this->class.":".$type.":".$shortName.": mode ".$m." not found for ".$unit."");
             }
@@ -198,7 +203,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
      * Generic function for testing sensor routines
      *
      * This is called by using parent::sensorTest()
-     */
+      */
     public function sensorTest($class, $method, $A, $sensor, $TC, $extra, $deltaT, $expect) {
         $o = new $class();
         $ret = $o->$method($A, $sensor, $TC, $extra, $deltaT);
@@ -209,7 +214,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
      * Generic function for testing sensor check routines.
      *
      * This is called by using parent::sensorCheckTest()
-     */
+      */
     public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) {
         $o = new $class();
         $ret = $o->$method($value, $sensor, $units, $dType) ;

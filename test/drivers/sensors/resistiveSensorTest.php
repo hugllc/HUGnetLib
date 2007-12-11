@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the resistive sensor class
+ * Tests the resistive sensor class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -52,7 +57,7 @@ class resistiveSensorTest extends sensorTestBase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -65,7 +70,7 @@ class resistiveSensorTest extends sensorTestBase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -74,7 +79,7 @@ class resistiveSensorTest extends sensorTestBase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
     /**
@@ -86,7 +91,7 @@ class resistiveSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testGetResistance
-     */
+      */
     public static function dataGetResistance() {
         return array(
             array(0, 0, 1, 0.0),
@@ -96,7 +101,7 @@ class resistiveSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataGetResistance
      * @covers resistiveSensor::GetResistance
-     */
+      */
     public function testGetResistance($A, $TC, $Bias, $expect) {
         $o = new resistiveSensor();
         $ret = $o->getResistance($A, $TC, $Bias);
@@ -104,7 +109,7 @@ class resistiveSensorTest extends sensorTestBase {
     }
     /**
      * Data provider for testBCTherm2381_640_66103
-     */
+      */
     public static function dataBCTherm2381_640_66103() {
         return array(
             array(63570, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, null), // -40.1 degrees
@@ -119,14 +124,14 @@ class resistiveSensorTest extends sensorTestBase {
      * @dataProvider dataBCTherm2381_640_66103
      * @covers resistiveSensor::BCTherm2381_640_66103
      * @covers resistiveSensor::BCTherm2322640Interpolate
-     */
+      */
     public function testBCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("resistiveSensor", "BCTherm2381_640_66103", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
      * Data provider for testResisDoor
-     */
+      */
     public static function dataResisDoor() {
         return array(
             array(5000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // R < Fixed
@@ -143,14 +148,14 @@ class resistiveSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataResisDoor
      * @covers resistiveSensor::ResisDoor
-     */
+      */
     public function testResisDoor($A, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("resistiveSensor", "resisDoor", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
      * Data provider for testgetMoistureV2
-     */
+      */
     public static function datagetMoistureV2() {
         return array(
             array(40000, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 1570.3518), 
@@ -163,14 +168,14 @@ class resistiveSensorTest extends sensorTestBase {
     /**
      * @dataProvider datagetMoistureV2
      * @covers resistiveSensor::GetMoistureV2
-     */
+      */
     public function testgetMoistureV2($A, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("resistiveSensor", "getMoistureV2", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
      * Data provider for testgetMoistureV1
-     */
+      */
     public static function datagetMoistureV1() {
         return array(
             array(4000, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 6.56), 
@@ -184,7 +189,7 @@ class resistiveSensorTest extends sensorTestBase {
     /**
      * @dataProvider datagetMoistureV1
      * @covers resistiveSensor::GetMoistureV1
-     */
+      */
     public function testgetMoistureV1($A, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("resistiveSensor", "getMoistureV1", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }

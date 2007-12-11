@@ -1,33 +1,37 @@
 <?php
 /**
- *   This is the default endpoint driver and the base for all other
- *   endpoint drivers.
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Endpoints
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** The default command to read config  */
@@ -40,14 +44,14 @@ define("EDEFAULT_SETGROUP", "5B");
 if (!class_exists('eDEFAULT')) {
     /**
      * The default driver class
-     *   
-     *   This is the default driver class.  All drivers MUST inherit this class.  They should
-     *   build on it.  The class has some necessary stuff that doesn't need to be duplicated
-     *   in each of the drivers themselves.
+     * 
+     * This is the default driver class.  All drivers MUST inherit this class.  They should
+     * build on it.  The class has some necessary stuff that doesn't need to be duplicated
+     * in each of the drivers themselves.
      *
      *  This class should only be created by the driver class.  It is specifically designed
      *  this way and creating it any other way will produce unexpected results.
-     */
+      */
     class eDEFAULT {
         /**
          * Stores the device information for this driver
@@ -56,9 +60,9 @@ if (!class_exists('eDEFAULT')) {
          * this driver supports.  The format is as follows:
          * @code
          * var $devices = array(
-         *     "Firmwware Part #" => array(
-         *         "Hardware Part #" => "Firmware version",
-         *     ),
+         *   "Firmwware Part #" => array(
+         *       "Hardware Part #" => "Firmware version",
+         *   ),
          * );
          * @endcode
          * Any of those can be set to the keyword "DEFAULT".  This matches anything
@@ -68,21 +72,21 @@ if (!class_exists('eDEFAULT')) {
          * @par Example
          * @code    
          * var $devices = array(
-         *     "0039-20-03-C" => array(
-         *         "0039-12-02-A" => "DEFAULT",
-         *         "0039-12-02-B" => "DEFAULT",
-         *     ),
-         *     "DEFAULT" => array(
-         *         "0039-12-00-A" => "DEFAULT",
-         *         "0039-12-01-A" => "DEFAULT",
-         *         "0039-12-02-A" => "DEFAULT",
-         *         "0039-12-01-B" => "DEFAULT",
-         *         "0039-12-02-B" => "DEFAULT",
-         *     ),
+         *   "0039-20-03-C" => array(
+         *       "0039-12-02-A" => "DEFAULT",
+         *       "0039-12-02-B" => "DEFAULT",
+         *   ),
+         *   "DEFAULT" => array(
+         *       "0039-12-00-A" => "DEFAULT",
+         *       "0039-12-01-A" => "DEFAULT",
+         *       "0039-12-02-A" => "DEFAULT",
+         *       "0039-12-01-B" => "DEFAULT",
+         *       "0039-12-02-B" => "DEFAULT",
+         *   ),
          * 
          * );
          * @endcode
-         */
+          */
         public $devices = array();
     
         /** The hardware name */
@@ -92,7 +96,7 @@ if (!class_exists('eDEFAULT')) {
         protected $history_table = "history";
         /** location table
          *  @deprecated This is now stored in the 'params' field in the devices table
-         */
+          */
         protected $location_table = "location";
         /** Average Table */
         protected $average_table = "average";
@@ -160,13 +164,13 @@ if (!class_exists('eDEFAULT')) {
     
         /** 
          * Default configuraion variable definition
-         */
+          */
         private $configvars = array();
         /**
          * Returns the packet to send to read the sensor data out of an endpoint
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
-         */
+          */
         function ReadSensors($Info) {
     
             $packet[0] = array(
@@ -188,9 +192,9 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @param array $packet The packet to save.
          * @note This should only be defined in a driver that inherits this class if the packet differs
-         */
+          */
         function saveSensorData($Info, $Packets) {
-            foreach($Packets as $packet) {
+            foreach ($Packets as $packet) {
                 if (($packet["Status"] == "GOOD")){
                     if (!isset($packet['DeviceKey'])) $packet['DeviceKey'] = $Info['DeviceKey'];
                     $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
@@ -206,7 +210,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @param array $packet The packet to save.
          * @note This should only be defined in a driver that inherits this class if the packet differs
-         */
+          */
         function updateConfig($Info) {
             $return = true;
             return($return);
@@ -216,7 +220,7 @@ if (!class_exists('eDEFAULT')) {
          * Checks a database record to see if it should be interpreted.
          * @param array $data a packet that might need the 'Data' array created
          * @return array The same packet with the 'Data' array created
-         */
+          */
         final function checkDataArray(&$work) {
             if (!is_array($work['Data'])) {
                 for ($i = 0; $i < (strlen($work["RawData"])/2); $i++) {
@@ -234,7 +238,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info The information array on the device
          * @param array $Rec The data record to check
-          */
+           */
         function CheckRecord($Info, &$Rec) {
             $Rec["Status"] = "UNRELIABLE";
         }    
@@ -245,7 +249,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info The information array on the device
          * @param array $Rec The data record to check
-          */
+           */
         protected function CheckRecordBase($Info, &$Rec) {
         
             if (isset($Rec['Status'])) {
@@ -261,7 +265,7 @@ if (!class_exists('eDEFAULT')) {
             $Bad = 0;
     
             $zero = true;
-            for($i = 0; $i < $Rec['NumSensors']; $i ++) {
+            for ($i = 0; $i < $Rec['NumSensors']; $i ++) {
                 if (!is_null($Rec['Data'.$i])) {
                     $zero = false;
                     break;
@@ -294,7 +298,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info The information array on the device
          * @return array A packet array to be sent to the packet structure ({@see EPacket})
-         */
+          */
         function ReadMem($Info) {
         
             switch($Info["MemType"]) {
@@ -322,7 +326,7 @@ if (!class_exists('eDEFAULT')) {
          * in the device itself, rather than in the database.
          *
          * @return array The names of all of the configuration variables
-         */
+          */
         function GetConfigVars() {
             $return = array_merge($this->defconfigvars, $this->configvars);
             return($return);    
@@ -333,7 +337,7 @@ if (!class_exists('eDEFAULT')) {
          * Returns the packet to send to read the configuration out of an endpoint
          * @param array $Info Infomation about the device to use
          * @note This should only be defined in a driver that inherits this class if the packet differs
-         */
+          */
         function ReadConfig($Info) {
             $packet = array(
                 array(
@@ -355,7 +359,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use including the unsolicited packet.
          * @return always true
          * @note This method MUST be implemented by each driver that inherits this class
-         */
+          */
         function Unsolicited($Info) {
             //add_debug_output("Unsolicited default failing silently.<br>\n");
             print "Unsolicited default failing silently.\n";
@@ -365,7 +369,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Interprets a config packet
          * @param array $Info devInfo array
-         */
+          */
         function InterpConfig(&$Info) {
             eDEFAULT::InterpBaseConfig($Info);
             eDEFAULT::InterpCalibration($Info);
@@ -374,7 +378,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * This is the basic configuration that all endpoints have
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpBaseConfig(&$Info) {
             if (strlen($Info['RawData'][PACKET_COMMAND_GETSETUP]) > PACKET_CONFIG_MINSIZE) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
@@ -393,7 +397,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the DriverInfo to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpConfigDriverInfo(&$Info) {
             if (empty($Info["DriverInfo"]) && !empty($Info["RawSetup"])) {
                 $Info["DriverInfo"] = substr($Info["RawSetup"], ENDPOINT_BOREDOM+2);
@@ -403,21 +407,21 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the params to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpConfigParams(&$Info) {
             device::decodeParams($Info['params']);
         }
         /**
          * Adds the hardware information to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpConfigHW(&$Info) {
             $Info['HWName'] = $this->HWName;
         }
         /**
          * Adds the firmware information to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpConfigFW(&$Info) {
             if (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
@@ -430,7 +434,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the calibration information to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpCalibration(&$Info) {
             if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
@@ -441,7 +445,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the Types array to the devInfo array
          * @param array $Info devInfo array
-         */
+          */
         protected function InterpTypes(&$Info) {
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 
@@ -454,7 +458,7 @@ if (!class_exists('eDEFAULT')) {
         }
         /**
          *
-         */
+          */
         protected function InterpConfigSensorSetup(&$Info) {
             $Info["unitType"] = array();
             $Info["Labels"] = array();
@@ -472,7 +476,7 @@ if (!class_exists('eDEFAULT')) {
         }
         /**
          *
-         */
+          */
         protected function InterpConfigTC(&$Info) {
             if ($Info["NumSensors"] > 0) {
                 $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
@@ -489,8 +493,8 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @param string $fct The function that the code tried to run
          * @return bool Always false
-            @warning This function MUST NOT be implemented in any drivers that inherit this class
-         */
+         * @warning This function MUST NOT be implemented in any drivers that inherit this class
+          */
         final function BadDriver($Info, $fct) {
             return false;
         }    
@@ -501,18 +505,18 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Packets An array of packets to interpret
          * @note This method MUST be implemented by each driver that inherits this class.
          *
-         *   This is a minimal implementation that only picks out the common things
-         *   in all packets: DataIndex.  This happens so that if there is a driver that 
-         *   the polling software doesn't know about, it will still at least try to download
-         *   sensor readings from the endpoint.
-         *   
-         */
+         * This is a minimal implementation that only picks out the common things
+         * in all packets: DataIndex.  This happens so that if there is a driver that 
+         * the polling software doesn't know about, it will still at least try to download
+         * sensor readings from the endpoint.
+         * 
+          */
         function InterpSensors($Info, $Packets) {
             $Info = $this->InterpConfig($Info);
             $ret = array();
-            foreach($Packets as $key => $data) {
+            foreach ($Packets as $key => $data) {
                 $data = $this->checkDataArray($data);
-                if(isset($data['RawData'])) {
+                if (isset($data['RawData'])) {
                     $index = 3;
                     $this->InterpSensorsSetData($Info, $data);
                     $this->InterpSensorsGetData($data["Data"], &$index, 3);
@@ -527,7 +531,7 @@ if (!class_exists('eDEFAULT')) {
     
         /**
          *
-         */
+          */
         protected function InterpSensorsSetData(&$Info, &$data) {
             $data['NumSensors'] = $Info['NumSensors'];
             $data["ActiveSensors"] = $Info["ActiveSensors"];
@@ -548,7 +552,7 @@ if (!class_exists('eDEFAULT')) {
             if ($width < $bytes) $width = $bytes;
             $shift = 0;
             $byte = 0;
-            for($i = 0; $i < $bytes; $i++) {
+            for ($i = 0; $i < $bytes; $i++) {
                 $byte += $Data[$index++] << $shift;
                 $shift += 8;
             }
@@ -561,8 +565,8 @@ if (!class_exists('eDEFAULT')) {
          * @return array The columns that pertain to this endpoint
          * @note Sound NOT be implemented in child classes that class needs it to work differently
          *
-         *   This is used to easily display the pertinent columns for any endpoint.
-         */
+         * This is used to easily display the pertinent columns for any endpoint.
+          */
         final function GetCols($Info){
             $Columns = $this->defcols;
             if (is_array($this->cols)) {
@@ -574,13 +578,13 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Get the columns in the database that are editable by the user
          *
-         *   This function is here so that it is easy to create pages that allow these
-         *   columns to be changed.
+         * This function is here so that it is easy to create pages that allow these
+         * columns to be changed.
          *
          * @param array $Info Infomation about the device to use
          * @return array The columns that can be edited
          * @note Sound NOT be implemented in child classes that class needs it to work differently
-         */
+          */
         final function GetEditCols($Info){
             $Columns = $this->defeditcols;
             if (is_array($this->editcols)) {
@@ -594,8 +598,8 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info Infomation about the device to use
          * @todo Figure out what this function was supposed to do and
-         *    either fix it or remove it.
-         */
+         *  either fix it or remove it.
+          */
         function SetAllConfig($Info) {
         }
         /**
@@ -603,7 +607,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info Infomation about the device to use
          * @param string $rawcal The raw calibration data to use
          * @todo make this function work?
-         */
+          */
         function GetCalibration($Info, $rawcal) {
         }
     
@@ -615,7 +619,7 @@ if (!class_exists('eDEFAULT')) {
          * @param mixed $data The data either as an array or in hexified form
          * @return false on failure, The packet in array form on success
          * @todo Document this better.
-         */
+          */
         function SetConfig($Info, $start, $data) {
     
             $buffersize = 7;
@@ -623,7 +627,7 @@ if (!class_exists('eDEFAULT')) {
     
             if (is_array($data)) {
                 $pktData = '';
-                foreach($data as $val) {
+                foreach ($data as $val) {
                     if (is_int($val)) {
                         $val = dechex($val);
                         $val = substr($val, 0, 2);
@@ -662,7 +666,7 @@ if (!class_exists('eDEFAULT')) {
          * @param string $ver1 The first version to use in the compare
          * @param string $ver2 The second version to use in the compare        
          * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
-         */
+          */
         final function CompareFWVersion($ver1, $ver2) {
             $v1 = explode(".", $ver1);
             $v2 = explode(".", $ver2);
@@ -682,7 +686,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param $Info Array Infomation about the device to use
          * @return mixed The name of the table as a string on success, false on failure
-         */
+          */
         final public function getHistoryTable() {
             return $this->history_table;
         }
@@ -692,7 +696,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param $Info Array Infomation about the device to use
          * @return mixed The name of the table as a string on success, false on failure
-         */
+          */
         final public function getAverageTable() {
             return $this->average_table;
         }
@@ -702,7 +706,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param $Info Array Infomation about the device to use
          * @return mixed The name of the table as a string on success, false on failure
-         */
+          */
         final public function getLocationTable() {
             return $this->location_table;
         }
@@ -710,12 +714,12 @@ if (!class_exists('eDEFAULT')) {
         
         /**
          * Constructor.
-         *   
-         *   This function sets up $this->history, $this->location, and $this->averages to
-         *   their default value.
+         * 
+         * This function sets up $this->history, $this->location, and $this->averages to
+         * their default value.
          *
          * @param object $driver An object of class Driver.
-         */
+          */
         function __construct(&$driver) {
     
             $this->driver =& $driver;

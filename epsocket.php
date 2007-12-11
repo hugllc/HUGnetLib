@@ -1,32 +1,34 @@
 <?php
 /**
- *   Communicates with the tcp to serial driver
+ * Communicates with the tcp to serial driver
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
+ *
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package HUGnetLib
  * @subpackage Socket
  * @copyright 2007 Hunt Utilities Group, LLC
  * @author Scott Price <prices@hugllc.com>
- * @version $Id$    
+ * @version SVN: $Id$    
  *
  */
 
@@ -51,8 +53,8 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 if (!class_exists("epsocket")) {
 /**
- *   Class for talking with HUGNet endpoints through unix sockets
- *   
+ * Class for talking with HUGNet endpoints through unix sockets
+ * 
  * This class is meant to talk to something like {@link http://ser2net.sourceforge.net/ ser2net}
  * or any of the serial to ethernet servers from {@link http://www.bb-elec.com/ B&B Electronics}.
  * Other methods might work, but they are untested.  It basically expects a raw
@@ -86,11 +88,11 @@ class epsocket {
     var $readstr = array();        
 
     /**
-     *   Write data out a socket
+     * Write data out a socket
      *
      * @param string $data The data to send out the socket
      * @return int The number of bytes written on success, false on failure
-     */
+      */
     function Write($data) {
         if ($this->CheckConnect()) $this->Connect();
         usleep(mt_rand(500, 10000));
@@ -101,11 +103,11 @@ class epsocket {
 
 
     /**
-     *   Read data from the server
+     * Read data from the server
      *
      * @param int $timeout The amount of time to wait for the server to respond
      * @return int Read bytes on success, false on failure
-     */
+      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
 
@@ -115,7 +117,7 @@ class epsocket {
         if ($socks === false) {
             if ($this->verbose) print "Bad Connection\r\n";
         } else if (count($read) > 0) {
-            foreach($read as $tsock) {
+            foreach ($read as $tsock) {
                 $char = @fread($tsock, 1);
                 if (($char === false) || ($char === EOF)) return false;
 //                $char = ord($char);
@@ -125,9 +127,9 @@ class epsocket {
     }     
     
     /**
-     *   Closes the socket connection
-     *   
-     */
+     * Closes the socket connection
+     * 
+      */
     function Close() {
         if ($this->socket === false) return;
         if ($this->verbose) print("Closing Connection\r\n");
@@ -136,15 +138,15 @@ class epsocket {
     }
 
     /**
-     *   Checks to make sure that all we are connected to the server
-     *   
-     *   This routine only checks the connection.  It does nothing else.  If you want to
-     *   have the script automatically connect if it is not connected already then use
-     *   ep_socket::Connect().
+     * Checks to make sure that all we are connected to the server
+     * 
+     * This routine only checks the connection.  It does nothing else.  If you want to
+     * have the script automatically connect if it is not connected already then use
+     * ep_socket::Connect().
      *
      * @uses ep_socket::Connect()
      * @return bool true if the connection is good, false otherwise
-    */
+     */
     function CheckConnect() {
 
         if ($this->socket === false) return false;
@@ -156,17 +158,17 @@ class epsocket {
     }
     
     /**
-     *   Connects to the server
-     *   
-     *   This function first checks the connection.  If you are planning on checking the
-     *   connection and want the server to automatically connect if not connectd, use this
-     *   routine.  If you just want to check the connection, use ep_socket::CheckConnect.
+     * Connects to the server
+     * 
+     * This function first checks the connection.  If you are planning on checking the
+     * connection and want the server to automatically connect if not connectd, use this
+     * routine.  If you just want to check the connection, use ep_socket::CheckConnect.
      *
      * @param string $server Name or IP address of the server to connect to
      * @param int $port The TCP port on the server to connect to
      * @param int $timeout The time to wait before giving up on a bad connection
      * @return bool true if the connection is good, false otherwise
-     */
+      */
     function Connect($server = "", $port = "", $timeout=0) {
         
         if ($this->CheckConnect()) return true;
@@ -183,7 +185,7 @@ class epsocket {
 
     /**
      * This actually opens the socket and sets blocking.
-     */
+      */
     private function connectOpenSocket() {
         $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
         if ($this->socket !== false) {
@@ -197,13 +199,13 @@ class epsocket {
     }
 
     /**
-     *   Constructor
-     *   
+     * Constructor
+     * 
      * @param string $server The name or IP of the server to connect to
      * @param int $tcpport The TCP port to connect to on the server. Set to 0 for
-     *       the default port.
+     *     the default port.
      * @param bool $verbose Make the class put out a lot of output
-     */
+      */
     function __construct($server="", $tcpport="", $verbose=false) {
         $this->verbose = $verbose;
         if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";

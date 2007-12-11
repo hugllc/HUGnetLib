@@ -58,7 +58,7 @@ if (!class_exists("e00392100")) {
      * @copyright  2007 Hunt Utilities Group, LLC
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-    */
+     */
     class e00392100 extends eDEFAULT
     {
     
@@ -99,7 +99,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         function readConfig($Info)
         {
              $packet = array(
@@ -139,7 +139,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Rec The database record to check
          *
          * @return none
-         */
+          */
         function checkRecord($Info, &$Rec)
         {
 
@@ -166,7 +166,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         function readSensors($Info) 
         {
             $packet[0] = array(
@@ -204,7 +204,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         function interpConfig(&$Info) 
         {
             $this->InterpConfigDriverInfo($Info);
@@ -228,7 +228,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         private static function _interpConfig00392006C(&$Info) 
         {
             if ($Info['FWPartNum'] == '0039-20-06-C') {
@@ -252,7 +252,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         private function _interpConfigSensors(&$Info) 
         {
             $Info["Types"]                = $this->Types["fake"];
@@ -272,7 +272,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         private static function _interpConfigDownstream(&$Info) 
         {
 
@@ -302,7 +302,7 @@ if (!class_exists("e00392100")) {
          * @param array &$Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         private static function _interpConfigHUGnetPower(&$Info) 
         {
             if (!empty($Info["RawData"][PACKET_HUGNETPOWER_COMMAND])) {
@@ -319,7 +319,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info devInfo array of the endpoint to read the configuration of
          *
          * @return mixed
-         */
+          */
         function updateConfig($Info) 
         {
             $return = true;
@@ -350,7 +350,7 @@ if (!class_exists("e00392100")) {
          * @param array $Packets Array of packet data to save
          *
          * @return mixed
-         */
+          */
         function saveSensorData($Info, $Packets) 
         {
             foreach ($Packets as $packet) {            
@@ -375,7 +375,7 @@ if (!class_exists("e00392100")) {
          * @param array $Packets Array of packet data to save
          *
          * @return mixed
-         */
+          */
         function interpSensors($Info, $Packets) 
         {
             $return = array();
@@ -495,7 +495,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info Infomation about the device to use            
          *
          * @return Array of MCU information on success, false on failure 
-        */
+         */
         function getMCUInfo($Info) 
         {
             $retpkt = $this->ReadConfig($Info);
@@ -519,7 +519,7 @@ if (!class_exists("e00392100")) {
          * @param string $Val  The data to program into E2 as a hex string
          *
          * @return true on success, false on failure 
-         */
+          */
         function programFlashPage($Info, $Addr, $Val) 
         {
             $this->packet->Connect($Info);
@@ -547,7 +547,7 @@ if (!class_exists("e00392100")) {
          * @param string $Val  The data to program into E2 as a hex string
          *
          * @return true on success, false on failure 
-         */
+          */
         function programE2Page($Info, $Addr, $Val) 
         {
             $this->packet->Connect($Info);
@@ -579,7 +579,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info Infomation about the device to use            
          *
          * @return The CRC on success, false on failure 
-        */
+         */
         function getApplicationCRC($Info) 
         {
             $this->packet->Connect($Info);
@@ -601,7 +601,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info Infomation about the device to use            
          *
          * @return The CRC on success, false on failure 
-        */
+         */
         function setApplicationCRC($Info)
         {
             $this->packet->Connect($Info);
@@ -624,7 +624,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info Infomation about the device to use            
          *
          * @return bool true on success, false on failure
-        */
+         */
         function runApplication($Info) 
         {
             $this->packet->Connect($Info);
@@ -642,7 +642,7 @@ if (!class_exists("e00392100")) {
          *
          * @return mixed Reply Packet on success, false on failure
          *
-        */
+         */
         function runBootloader($Info)
         {
             $RetT = $this->packet->ReplyTimeout;
@@ -667,7 +667,7 @@ if (!class_exists("e00392100")) {
          * @param bool  $update Whether or not to update the device if it needs it.
          *
          * @return bool true on success, false on failure
-        */
+         */
         function checkProgram($Info, $dInfo, $update=false) 
         {
             $this->InterpConfig($Info);    
@@ -707,7 +707,7 @@ if (!class_exists("e00392100")) {
          * @param int   $FirmwareKey The firmware key of the program to load into memory
          *
          * @return bool true on success, false on failure
-        */
+         */
         function loadProgram($Info, $gw=null, $FirmwareKey) 
         {
 
@@ -817,7 +817,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info Infomation about the device to use
          *
          * @return bool true on success, false on failure
-        */
+         */
         function getPower($Info) 
         {
             $this->packet->Connect($Info);
@@ -837,7 +837,7 @@ if (!class_exists("e00392100")) {
          * @param int   $hugnet1 1 to turn the power on, 0 to turn the power off
          *
          * @return true on success, false on failure
-        */
+         */
         function setPower($Info, $hugnet0=1, $hugnet1=1) 
         {
             /*
@@ -852,7 +852,7 @@ if (!class_exists("e00392100")) {
             $retpkt = $this->packet->SendPacket($Info, $pkt);
     
             return($retpkt);
-            */
+             */
         }
     
         
@@ -860,7 +860,7 @@ if (!class_exists("e00392100")) {
          * Constructor
          *
          * @param object &$driver Driver
-        */
+         */
         function e00392100 (&$driver)
         {
             parent::__construct($driver);            

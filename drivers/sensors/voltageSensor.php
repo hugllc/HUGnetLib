@@ -1,44 +1,48 @@
 <?php
 /**
- *   Sensor driver for voltage sensors.
+ * Sensor driver for voltage sensors.
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists('voltageSensor')) {
 
     /**
-    	@brief class for dealing with resistive sensors.
-    */
+     * class for dealing with resistive sensors.
+     */
     class voltageSensor extends sensor_base
     {
         /**
             This defines all of the sensors that this driver deals with...
-        */
+         */
         public $sensors = array(
             0x10 => array(
                 'CHSMSS' => array(
@@ -102,34 +106,34 @@ if (!class_exists('voltageSensor')) {
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $V = $this->getDividerVoltage($val, $R1, $R2, $TC);
             if ($V < 0) $V = null;
-    	    $V = round($V, 4);
+            $V = round($V, 4);
             return $V;
         }    
     
-    	/**
-    		@public
-    		@brief Gets the units for a sensor
-    		@param $type Int The type of sensor.
-    		@return The units for a particular sensor type
-    	
-    		@par Introduction
-    	*/
-    	function getVoltage($A, $T, $Vref) 
-    	{
-    	    if (is_null($A)) return null;
-    	    if (is_null($Vref)) return null;
-    		$denom = $T * $this->Tf * $this->Am * $this->s;
-    		if ($denom == 0) return 0.0;
-    		$num = $A * $this->D * $Vref;
-    	    
-    	    $volts = $num / $denom;
-    		return round($volts, 4);
-    	}
+        /**
+         * @public
+         * Gets the units for a sensor
+         * @param $type Int The type of sensor.
+         * @return The units for a particular sensor type
+        
+         * @par Introduction
+         */
+        function getVoltage($A, $T, $Vref) 
+        {
+            if (is_null($A)) return null;
+            if (is_null($Vref)) return null;
+            $denom = $T * $this->Tf * $this->Am * $this->s;
+            if ($denom == 0) return 0.0;
+            $num = $A * $this->D * $Vref;
+            
+            $volts = $num / $denom;
+            return round($volts, 4);
+        }
     
     
         /**
             This sensor returns us 10mV / % humidity
-        */
+         */
         function CHSMSS($A, $sensor, $T, $extra) {
             if (is_null($A)) return null;
             $Vref = (empty($extra)) ? $sensor['extraDefault'] : $extra;            

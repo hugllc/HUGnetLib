@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the eDEFAULT endpoint class
+ * Tests the eDEFAULT endpoint class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -52,7 +57,7 @@ class eDEFAULTTest extends endpointTestBase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -81,7 +86,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * data provider for testCheckDataArray
-     */
+      */
     public static function dataCheckDataArray() {
         return array(
             array(
@@ -92,7 +97,7 @@ class eDEFAULTTest extends endpointTestBase {
     }
     /**
      * @dataProvider dataCheckDataArray()
-     */
+      */
     function testcheckDataArray($work, $expect) {
         $this->o->drivers[$this->class]->checkDataArray($work);
         $this->assertSame($expect, $work);
@@ -101,12 +106,12 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * @todo implement testGetCols()
-     */
+      */
     function testGetCols(){
         $Info = array();
         $cols = $this->o->drivers[$this->class]->getCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
-        foreach($cols as $key => $val) {
+        foreach ($cols as $key => $val) {
             $this->assertType("string", $key, "Array key must be an string");                
             $this->assertType("string", $val, "Array value must be an string");                
         }
@@ -114,12 +119,12 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * @todo implement testGetEditCols()
-     */
+      */
     function testGetEditCols(){
         $Info = array();
         $cols = $this->o->drivers[$this->class]->getEditCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
-        foreach($cols as $key => $val) {
+        foreach ($cols as $key => $val) {
             $this->assertType("string", $key, "Array key must be an string");                
             $this->assertType("string", $val, "Array value must be an string");                
         }
@@ -127,7 +132,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * data provider for testCompareFWVesrion
-     */
+      */
     public static function dataCompareFWVersion() {
         return array(
             array("1.2.3", "1.2.3", 0),
@@ -141,7 +146,7 @@ class eDEFAULTTest extends endpointTestBase {
     }
     /**
      * @dataProvider dataCompareFWVersion
-     */
+      */
     function testCompareFWVersion($v1, $v2, $expect) {
         $ret = $this->o->drivers[$this->class]->CompareFWVersion($v1, $v2);
         $this->assertEquals($expect, $ret);
@@ -149,7 +154,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * @dataProvider dataCheckRecord()
-     */
+      */
     function testCheckRecord() {
         $Rec = array();
         $this->o->drivers[$this->class]->checkRecord(array(), $Rec);
@@ -158,7 +163,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * data provider for testGetHistoryTable
-     */
+      */
     public static function dataGetHistoryTable() {
         return array(
             array("testDriver", "testhistory"),
@@ -167,7 +172,7 @@ class eDEFAULTTest extends endpointTestBase {
     /**
      * @dataProvider dataGetHistoryTable().
      * @covers driver::GetHistoryTable
-     */
+      */
     public function testGetHistoryTable($driver, $table) {
         $Info = array("Driver" => $driver);
         
@@ -177,7 +182,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * data provider for testGetHistoryTable
-     */
+      */
     public static function dataGetAverageTable() {
         return array(
             array("testDriver", "testaverage"),
@@ -185,7 +190,7 @@ class eDEFAULTTest extends endpointTestBase {
     }
     /**
      * @dataProvider dataGetAverageTable().
-     */
+      */
     public function testGetAverageTable($driver, $table) {
         $Info = array("Driver" => $driver);
         
@@ -195,7 +200,7 @@ class eDEFAULTTest extends endpointTestBase {
 
     /**
      * data provider for testGetLocationTable
-     */
+      */
     public static function dataGetLocationTable() {
         return array(
             array("testDriver", "testlocation"),
@@ -203,7 +208,7 @@ class eDEFAULTTest extends endpointTestBase {
     }
     /**
      * @dataProvider dataGetLocationTable().
-     */
+      */
     public function testGetLocationTable($driver, $table) {
         $Info = array("Driver" => $driver);
         

@@ -1,43 +1,47 @@
 <?php
 /**
- *   Sensor driver for resistive sensors
+ * Sensor driver for resistive sensors
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Sensors
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists('resistiveSensor')) {
 
     /**
-     *   class for dealing with resistive sensors.
+     * class for dealing with resistive sensors.
      *
      *  This class deals with all resistive sensors.  This includes thermistors,
      *  resistive door sensors, and other resistors.
      *
-     */
+      */
     class resistiveSensor extends sensor_base
     {
         /** @var float Moisture red zone % */
@@ -55,7 +59,7 @@ if (!class_exists('resistiveSensor')) {
          * to deal with the change in bias resistors on the same sensor type.  The
          * two entries should be kept identical except for the first extraDefault, which
          * should be 100 under the 0x00 type and 10 under the 0x02 type.
-         */
+          */
         public $sensors = array(
             0x00 => array(
                 'BCTherm2322640' => array(
@@ -130,22 +134,22 @@ if (!class_exists('resistiveSensor')) {
         );
     
         /**
-         *   Converts a raw AtoD reading into resistance
+         * Converts a raw AtoD reading into resistance
          *
-         *   This function takes in the AtoD value and returns the calculated
-         *   resistance of the sensor.  It does this using a fairly complex
-         *   formula.  This formula and how it was derived is detailed in 
+         * This function takes in the AtoD value and returns the calculated
+         * resistance of the sensor.  It does this using a fairly complex
+         * formula.  This formula and how it was derived is detailed in 
          *
-         *   @param $A Integer The AtoD reading
-         *   @param $TC Integer The time constant used to get the reading
-         *   @param $Bias Float The bias resistance in kOhms
-         *   @param int $Tf See {@link sensor_base::$Tf}
-         *   @param int $D See {@link sensor_base::$D}
-         *   @param int $s See {@link sensor_base::$s}
-         *   @param int $Am See {@link sensor_base::$Am}
-         *   @return The resistance corresponding to the values given
+         * @param $A Integer The AtoD reading
+         * @param $TC Integer The time constant used to get the reading
+         * @param $Bias Float The bias resistance in kOhms
+         * @param int $Tf See {@link sensor_base::$Tf}
+         * @param int $D See {@link sensor_base::$D}
+         * @param int $s See {@link sensor_base::$s}
+         * @param int $Am See {@link sensor_base::$Am}
+         * @return The resistance corresponding to the values given
          *  
-         */
+          */
         function getResistance($A, $TC, $Bias, $Tf = null, $D = null, $s = null, $Am=null)
         {
             if (is_null($Tf)) $Tf = $this->Tf;    
@@ -161,28 +165,28 @@ if (!class_exists('resistiveSensor')) {
         }
         
         /**
-         *   Converts resistance to temperature for BC Components #2322 640 66103 10K thermistor.
+         * Converts resistance to temperature for BC Components #2322 640 66103 10K thermistor.
          *
-         *   <b>BC Components #2322 640 series</b>
+         * <b>BC Components #2322 640 series</b>
          *
-         *   This function implements the formula in $this->BCThermInterpolate
-         *   for a is from BCcomponents PDF file for thermistor
-         *   #2322 640 series datasheet on page 6.  
+         * This function implements the formula in $this->BCThermInterpolate
+         * for a is from BCcomponents PDF file for thermistor
+         * #2322 640 series datasheet on page 6.  
          *
-         *   <b>Thermistors available:</b>
-         *   
-         *   -# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor 0 in the type code.                
-         *       - R0 10
-         *       - A 3.354016e-3
-         *       - B 2.569355e-4
-         *       - C 2.626311e-6
-         *       - D 0.675278e-7
+         * <b>Thermistors available:</b>
+         * 
+         * -# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor 0 in the type code.                
+         *     - R0 10
+         *     - A 3.354016e-3
+         *     - B 2.569355e-4
+         *     - C 2.626311e-6
+         *     - D 0.675278e-7
          *
-         *   @param float $R The current resistance of the thermistor
-         *   @param int $type The type of sensor.
-         *   @return float The temperature in degrees C.    
+         * @param float $R The current resistance of the thermistor
+         * @param int $type The type of sensor.
+         * @return float The temperature in degrees C.    
         
-        */
+         */
         function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=null) {
             if (!is_array($extra)) $extra = array();
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
@@ -198,22 +202,22 @@ if (!class_exists('resistiveSensor')) {
         }
     
         /**
-         *   This formula is from BCcomponents PDF file for the
-         *   # 2322 640 thermistor series on page 6.  See the data sheet for
-         *   more information.
-         *    
-         *   This function should be called with the values set for the specific
-         *   thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
+         * This formula is from BCcomponents PDF file for the
+         * # 2322 640 thermistor series on page 6.  See the data sheet for
+         * more information.
+         *  
+         * This function should be called with the values set for the specific
+         * thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
          *
-         *   @param float $R The current resistance of the thermistor.
-         *   @param float $R0 The resistance of the thermistor at 25C
-         *   @param float $A Thermistor Constant A (From datasheet)
-         *   @param float $B Thermistor Constant B (From datasheet)
-         *   @param float $C Thermistor Constant C (From datasheet)
-         *   @param float $D Thermistor Constant D (From datasheet)
-         *   @return float The Temperature in degrees C
+         * @param float $R The current resistance of the thermistor.
+         * @param float $R0 The resistance of the thermistor at 25C
+         * @param float $A Thermistor Constant A (From datasheet)
+         * @param float $B Thermistor Constant B (From datasheet)
+         * @param float $C Thermistor Constant C (From datasheet)
+         * @param float $D Thermistor Constant D (From datasheet)
+         * @return float The Temperature in degrees C
          * 
-        */
+         */
         private function BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
@@ -326,16 +330,16 @@ if (!class_exists('resistiveSensor')) {
             if ($Ry <= $Rr) return null;
             $R = $this->getResistance($A, 1, $Bias);
 
-    		if ($R == 0) return(35.0);
-    		//$R is coming in k Ohms.  We need Ohms.
-    		$R = $R * 1000;
-    		$num = $this->My - $this->Mr;
-    		$den = log($Ry) - log($Rr);
-    		if ($den == 0) return(35.0);
-    		$B = $num / $den;
-    		$A = $this->Mr - ($B * log($Rr));
-    		
-    		$M = $A + ($B * log($R));
+            if ($R == 0) return(35.0);
+            //$R is coming in k Ohms.  We need Ohms.
+            $R = $R * 1000;
+            $num = $this->My - $this->Mr;
+            $den = log($Ry) - log($Rr);
+            if ($den == 0) return(35.0);
+            $B = $num / $den;
+            $A = $this->Mr - ($B * log($Rr));
+            
+            $M = $A + ($B * log($R));
             
             if ($M > 35) return null;
             if ($M < 0) return null;
@@ -351,22 +355,22 @@ if (!class_exists('resistiveSensor')) {
          * @param float $R Resistance in kOhms
          * @return float % bale moisure by weight
          * @deprecated
-         */
+          */
 /*
-    	function getMoistureV1($R)
-    	{
-    		if ($R == 0) return(35);
-    		//$R is coming in k Ohms.  We need Ohms.
-    		$R = $R * 1000;
-    		$num = $this->My - $this->Mr;
-    		$den = log($this->Ry) - log($this->Rr);
-    		if ($den == 0) return(35);
-    		$B = $num / $den;
-    		$A = $this->Mr - ($B * log($this->Rr));
-    		
-    		$M = $A + ($B * log($R));
-    		return $M;
-    	}
+        function getMoistureV1($R)
+        {
+            if ($R == 0) return(35);
+            //$R is coming in k Ohms.  We need Ohms.
+            $R = $R * 1000;
+            $num = $this->My - $this->Mr;
+            $den = log($this->Ry) - log($this->Rr);
+            if ($den == 0) return(35);
+            $B = $num / $den;
+            $A = $this->Mr - ($B * log($this->Rr));
+            
+            $M = $A + ($B * log($R));
+            return $M;
+        }
 */
     
     }

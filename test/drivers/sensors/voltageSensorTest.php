@@ -1,32 +1,37 @@
 <?php
 /**
- *   Tests the voltage sensor class
+ * Tests the voltage sensor class
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
+ * PHP Version 5
  *
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Test
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$
  *
  */
 
@@ -52,7 +57,7 @@ class voltageSensorTest extends sensorTestBase {
      *
      * @access public
      * @static
-     */
+      */
     public static function main() {
         require_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -65,7 +70,7 @@ class voltageSensorTest extends sensorTestBase {
      * This method is called before a test is executed.
      *
      * @access protected
-     */
+      */
     protected function setUp() {
     }
 
@@ -74,7 +79,7 @@ class voltageSensorTest extends sensorTestBase {
      * This method is called after a test is executed.
      *
      * @access protected
-     */
+      */
     protected function tearDown() {
     }
     /**
@@ -86,7 +91,7 @@ class voltageSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testGetDividerVoltage
-     */
+      */
     public static function dataGetDividerVoltage() {
         return array(
             array(1, 1, 0, 1, 0.0),
@@ -97,7 +102,7 @@ class voltageSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataGetDividerVoltage
      * @covers voltageSensor::GetDividerVoltage
-     */
+      */
     public function testGetDividerVoltage($A, $R1, $R2, $T, $expect) {
         $o = new voltageSensor();
         $ret = $o->getDividerVoltage($A, $R1, $R2, $T);
@@ -106,7 +111,7 @@ class voltageSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testFETBoard
-     */
+      */
     public static function dataFETBoard() {
         return array(
             array(1000, array("extraDefault"=>array(1, 1)), 1, array(1, 1), 0, 0.1527),
@@ -118,14 +123,14 @@ class voltageSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataFETBoard
      * @covers voltageSensor::FETBoard
-     */
+      */
     public function testFETBoard($val, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("voltageSensor", "FETBoard", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
     /**
      * Data provider for GetVoltage
-     */
+      */
     public static function dataGetVoltage() {
         return array(
             array(null, 1, 1, null),
@@ -137,7 +142,7 @@ class voltageSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataGetVoltage
      * @covers voltageSensor::GetVoltage
-     */
+      */
     public function testGetVoltage($A, $T, $Vref, $expect) {
         $o = new voltageSensor();
         $ret = $o->getVoltage($A, $T, $Vref);
@@ -146,7 +151,7 @@ class voltageSensorTest extends sensorTestBase {
 
     /**
      * Data provider for testCHSMSS
-     */
+      */
     public static function dataCHSMSS() {
         return array(
             array(10000, array("extraDefault"=>1.1), 1, 1.1, 0, 16.8),
@@ -159,7 +164,7 @@ class voltageSensorTest extends sensorTestBase {
     /**
      * @dataProvider dataCHSMSS
      * @covers voltageSensor::CHSMSS
-     */
+      */
     public function testCHSMSS($val, $sensor, $TC, $extra, $deltaT, $expect) {
         parent::sensorTest("voltageSensor", "CHSMSS", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }

@@ -7,7 +7,7 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
@@ -34,12 +34,12 @@
  *
  */
 /**
- *   Class for doing unit conversions and storing unit information
- *   
- *   All units must be added to this class if they are to be used in HUGnet
- *   code.  This is because this tells everything else how to deal with these
- *   units and how to convert between them.  If units are not added here then
- *   many things will not work with the units.
+ * Class for doing unit conversions and storing unit information
+ * 
+ * All units must be added to this class if they are to be used in HUGnet
+ * code.  This is because this tells everything else how to deal with these
+ * units and how to convert between them.  If units are not added here then
+ * many things will not work with the units.
  *
  * @category   Misc
  * @package    HUGnetLib
@@ -57,7 +57,7 @@ class UnitConversion
      * display and use them.
      *  @var array
      *
-     */
+      */
     var $units = array(
         'Temperature' => array(
             '&#176;C' => array(
@@ -240,7 +240,7 @@ class UnitConversion
      * @param string $unit The unit to check
      *
      * @return string The preferred unit
-     */
+      */
     public function preferredUnit($unit)
     {
         $u = $this->findUnit($unit);
@@ -257,7 +257,7 @@ class UnitConversion
      * @param string $unit The unit to check
      *
      * @return bool Whether the unit can be graphed or not
-     */
+      */
     public function graphable($unit) 
     {
         $unit = trim($unit);
@@ -277,7 +277,7 @@ class UnitConversion
      * @param string $unit The unit to find
      *
      * @return array the array of unit information if it is found
-     */
+      */
     public function findUnit($unit) 
     {
 
@@ -296,7 +296,7 @@ class UnitConversion
      * @param string $default The data type to use if none is specified
      *
      * @return string The data type to use
-     */
+      */
     public function getDataType($from, $to, $default = 'all') 
     {
         if (trim(strtolower($default)) == 'ignore') return $default;
@@ -317,7 +317,7 @@ class UnitConversion
      * @param string $type The data type to use
      *
      * @return string null if no function exists, the function name otherwise. 
-     */
+      */
     protected function getConvFunct($from, $to, $type) 
     {
         if ($to == $from) return null;
@@ -340,7 +340,7 @@ class UnitConversion
      * @param mixed  $extra Any extra stuff we might need.
      *
      * @return mixed
-     */
+      */
     public function convert($val, $from, &$to, $time, $type, $extra) 
     {
         $func = $this->getConvFunct($from, $to, $type);
@@ -360,7 +360,7 @@ class UnitConversion
      * @param string $from The starting unit
      *
      * @return array The possible conversions
-     */
+      */
 
     public function getPossConv($type, $from=null) 
     {
@@ -397,7 +397,7 @@ class UnitConversion
      * @param string $type The type of data (diff, raw, etc)
      *
      * @return float The temperature in F
-     */
+      */
     public function cToF($c, $time, $type) 
     {
         $F = ((9*$c)/5);
@@ -417,7 +417,7 @@ class UnitConversion
      * @param string $type The type of data (diff, raw, etc)
      *
      * @return float The temperature in C
-     */
+      */
     public function fToC($f, $time, $type) 
     {
         if ($type != 'diff') $f -= 32;
@@ -433,7 +433,7 @@ class UnitConversion
      *
      * @return float null if not differential data, the RPM otherwise
      *
-    */
+     */
     public function cntToRPM ($cnt, $time, $type, $cntPerRev) 
     {
         if ($cntPerRev <= 0) $cntPerRev = 1;
@@ -447,12 +447,12 @@ class UnitConversion
 
     /**
      * The following formula is given in the datasheet
-     *   AC Freq = (MPH + 0.1) / 1.6965
-     *   
-     *   MPH = ACFreq * 1.6965 - 0.1    
+     * AC Freq = (MPH + 0.1) / 1.6965
+     * 
+     * MPH = ACFreq * 1.6965 - 0.1    
      *
      *  This function has moved to the driver for pulse counters.
-     *   
+     * 
      * @param int    $cnt       The number of counts since the last record.
      * @param int    $time      The time in seconds between this record and the last.
      * @param string $type      The type of data (diff, raw, etc)
@@ -461,7 +461,7 @@ class UnitConversion
      * @return float null if data is not differential, MPH otherwise
      *
      * @deprecated
-    */
+     */
     /*
     public function CnttoMPH ($cnt, $time, $type, $cntPerRev) 
     {
@@ -475,7 +475,7 @@ class UnitConversion
             return(null);        
         }    
     }
-    */
+     */
 
     /**
      * Converts a unit to milli.  meters to millimeters for example.
@@ -486,7 +486,7 @@ class UnitConversion
      *
      * @return float W*1000
      *
-    */
+     */
     public function toMilli($W, $time, $type) 
     {
         return $W*1000;
@@ -500,7 +500,7 @@ class UnitConversion
      *
      * @return float W/1000
      *
-    */
+     */
     public function fromMilli($W, $time, $type) 
     {
         return $W/1000;
@@ -515,7 +515,7 @@ class UnitConversion
      *
      * @return float W/100
      * 
-    */
+     */
     public function fromCenti($W, $time, $type) 
     {
         return $W/100 ;
@@ -538,7 +538,7 @@ class UnitConversion
      *
      * @return string The text direction
      *
-    */
+     */
     public function numDirtoDir($ndir, $time, $type) 
     {
         if ($ndir <= 0) return "N";
@@ -565,7 +565,7 @@ class UnitConversion
      * compass direction.
      *
      * So this converts 'N' into 0 &#176; into 'N', 'NNE' into 22.5 &#176;, etc.
-     *     
+     *   
      * This function returns 0 if it gets an abbreviation that it does not 
      * understand.
      *
@@ -575,7 +575,7 @@ class UnitConversion
      *
      * @return float The text direction from 0 to 360 &#176;
      *
-    */
+     */
     public function dirToNumDir($ndir, $time, $type) 
     {
         $ndir = trim(strtoupper($ndir));
@@ -610,7 +610,7 @@ class UnitConversion
      * @param mixed  $extra The extra information from the sensor.
      *
      * @return float The kW value
-     */
+      */
     public function kWhTokW ($val, $time, $type, $extra) 
     {
         if (empty($time)) return null;
@@ -629,7 +629,7 @@ class UnitConversion
      * @return float The W value
      *
      * @uses unitConversion::kWhTokW()
-     */
+      */
     public function kWhToW ($val, $time, $type, $extra) 
     {
         $val = unitConversion::kWhTokW($val, $time, $type, $extra);

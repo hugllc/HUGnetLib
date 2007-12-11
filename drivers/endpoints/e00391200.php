@@ -1,32 +1,37 @@
 <?php
 /**
- *   Driver for the 0039-12 endpoints with the temperature daughter board
+ * Driver for the 0039-12 endpoints with the temperature daughter board
  *
- *   <pre>
- *   HUGnetLib is a library of HUGnet code
- *   Copyright (C) 2007 Hunt Utilities Group, LLC
- *   
- *   This program is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU General Public License
- *   as published by the Free Software Foundation; either version 3
- *   of the License, or (at your option) any later version.
- *   
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *   
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *   </pre>
+ * PHP Version 5
  *
- *   @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *   @package HUGnetLib
- *   @subpackage Endpoints
- *   @copyright 2007 Hunt Utilities Group, LLC
- *   @author Scott Price <prices@hugllc.com>
- *   @version $Id$    
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Endpoints
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @version SVN: $Id$    
  *
  */
 
@@ -42,7 +47,7 @@ define("e00391102B_SENSORS", 9);
 
     /**
      * Driver for the 0039-12 endpoint board and select firmwares
-     */
+      */
     class e00391200 extends eDEFAULT{
 
         /** @var string The name of this hardware */
@@ -55,7 +60,7 @@ define("e00391102B_SENSORS", 9);
         /** 
          *  The array of devices and versions that this driver handles.
          *  @var array
-         */
+          */
         var $devices = array(
         
             "0039-11-02-B" => array(
@@ -101,7 +106,7 @@ define("e00391102B_SENSORS", 9);
         /** 
          *  Some configurations for the endpoints based on the firmware they are running
          *  @var array
-         */
+          */
         var $config = array(
             "0039-11-02-B" => array("Function" => "Temperature/Moisture Sensor", "Sensors" => 9),        
             "0039-11-03-B" => array("Function" => "Temperature Sensor", "Sensors" => 9),        
@@ -115,7 +120,7 @@ define("e00391102B_SENSORS", 9);
         /**
          * Extra columns to display for these endpoints
          * @var array
-        */
+         */
         var $cols = array("TimeConstant" => "Time Constant", 
                                 "ActiveSensors" => "Active Sensors",
                                 "NumSensors" => "# Sensors",
@@ -153,7 +158,7 @@ define("e00391102B_SENSORS", 9);
 
         /**
          *
-         */
+          */
         private function InterpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 // 3 puts us past the DataIndex and the timeConstant
@@ -175,9 +180,9 @@ define("e00391102B_SENSORS", 9);
         function InterpSensors($Info, $Packets) {
             $this->InterpConfig($Info);
             $ret = array();
-            foreach($Packets as $key => $data) {
+            foreach ($Packets as $key => $data) {
                 $this->checkDataArray($data);
-                if(isset($data['RawData'])) {
+                if (isset($data['RawData'])) {
                     self::InterpSensorsSetData($Info, $data);
                     self::InterpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
@@ -193,9 +198,9 @@ define("e00391102B_SENSORS", 9);
 
         /**
          * Constructor
-            @param $db String The database to use
-            @param $servers Array The servers to use.
-            @param $options the database options to use.
+         * @param $db String The database to use
+         * @param $servers Array The servers to use.
+         * @param $options the database options to use.
         */    
         function e00391200 (&$driver) {
 //            $this->eDEFAULT($servers, $db, $options);
