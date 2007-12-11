@@ -240,13 +240,19 @@ class Driver
      */
     private function _callRead($Info, $packet, $function) {
         if (substr($function, 0, 4) == "read") {
+            // Send these packets
             $ret = $this->packet->sendPacket($Info, $packet);
+            // If we don't get anything, return
             if (!is_array($ret)) return $ret;
+            // Check to see if there is a corresponding 'interp' function.
             $interp = str_replace("read", "interp", $function);
             $interpRet = $this->runFunction($Info, $interp, $ret);
+            // If we got an array back, return that.
             if (is_array($interpRet)) return $interpRet;
+            // Otherwise, return what we got before.
             return $ret;
         }
+        // If this is not a read or set function just return what we were given
         return $packet;
     }
     /**
@@ -259,9 +265,11 @@ class Driver
      */
     private function _callSet($Info, $packet, $function) {
         if (substr($function, 0, 3) == "set") {
+            // Send these packets
             $ret = $this->packet->sendPacket($Info, $packet);
             return $ret;
         }
+        // If this is not a read or set function just return what we were given
         return $packet;
     }                
         
