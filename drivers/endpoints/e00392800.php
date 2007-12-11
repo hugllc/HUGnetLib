@@ -78,7 +78,7 @@ if (!class_exists("e00392800")) {
         /**
          * Calibration data
          */
-    
+        private $calParts = 2;
         /**
          * Extra columns to display for these endpoints
          */
@@ -99,26 +99,15 @@ if (!class_exists("e00392800")) {
                     "Command" => PACKET_COMMAND_GETSETUP,
                 ),
             );
-            $return = $this->packet->sendPacket($Info, $packet);
 
-            if (is_array($return) && (count($return) > 0)) {
-                $packet = array();
-                for ($i = 0; $i < $this->calParts; $i++) {
-                    $packet[] = array(
-                        "To" => $Info["DeviceID"],
-                        "Command" => PACKET_COMMAND_GETCALIBRATION,
-                        "Data" => $this->packet->hexify($i),
-                    );
-                }
-                $Packets = $this->packet->sendPacket($Info, $packet);
-                if (count($Packets) == $this->calParts) {
-                    $return['cal'] = $Packets[0];
-                    for ($i = 1; $i < $this->calParts; $i++) {
-                        $return['cal']['RawData'] .= $Packets[$i]['RawData'];
-                    }
-                }
+            for ($i = 0; $i < $this->calParts; $i++) {
+                $packet[] = array(
+                    "To" => $Info["DeviceID"],
+                    "Command" => PACKET_COMMAND_GETCALIBRATION,
+                    "Data" => devInfo::hexify($i),
+                );
             }
-            return($return);
+            return $packet;
         }
         /**
          *
@@ -143,14 +132,14 @@ if (!class_exists("e00392800")) {
             $this->interpConfigFW($Info);
             $this->interpConfigTC($Info);
             $this->interpConfigParams($Info);
-            $this->__interpConfig00392012C($Info);
+            $this->_interpConfig00392012C($Info);
             $this->InterpTypes($Info);
             $this->interpConfigSensorSetup($Info);
         }
         /**
          *
           */
-        private function __interpConfig00392012C(&$Info) {
+        private function _interpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
@@ -169,7 +158,7 @@ if (!class_exists("e00392800")) {
                 if (isset($data['RawData'])) {
                     self::interpSensorsSetData($Info, $data);
                     $index = 3; 
-                    self::__interpSensorsGetRaw($Info, $data);
+                    self::_interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
                     $ret[] = $data;
@@ -181,7 +170,7 @@ if (!class_exists("e00392800")) {
         /**
          *
           */
-        private function __interpSensorsGetRaw(&$Info, &$data) {
+        private function _interpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 $index = 3;
                 for ($i = 0; $i < $Info["NumSensors"]; $i++) {

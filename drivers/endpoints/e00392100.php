@@ -128,8 +128,7 @@ if (!class_exists("e00392100")) {
             default:
                 break;
             };
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            return($Packets);
+            return $packet;
         }
     
         /**
@@ -169,15 +168,17 @@ if (!class_exists("e00392100")) {
           */
         function readSensors($Info) 
         {
-            $packet[0] = array(
-                "Command" => EDEFAULT_SENSOR_READ,
-                "To" => $Info["DeviceID"],
+            $packet = array(
+                array(
+                    "To"      => $Info["DeviceID"],
+                    "Command" => EDEFAULT_SENSOR_READ,
+                ),
             );
             switch ($Info['FWPartNum']) 
             {
             case '0039-20-06-C':
             case '0039-20-01-C':
-                $packet[1] = array(
+                $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_READPACKETSTATS_COMMAND,
                 );
@@ -186,15 +187,7 @@ if (!class_exists("e00392100")) {
                 break;
             };
     
-            $Info['sendCommand'] = PACKET_SEND_COMMAND;
-    
-            $Packets = $this->packet->sendPacket($Info, $packet);
-            if (is_array($Packets)) {
-                $return = $this->interpSensors($Info, $Packets);
-            } else {
-                $return = false;
-            }
-            return($return);
+            return $packet;
         }
     
     

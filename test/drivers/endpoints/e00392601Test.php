@@ -126,6 +126,21 @@ class e00392601Test extends endpointTestBase {
         );
     }
     /**
+     * data provider for test readConfig
+     */
+    public static function datareadConfig() {
+        return array(
+            array(
+                array("DeviceID" => "000025"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+                ),
+            ),
+        );
+    }
+    
+    
+    /**
      * @dataProvider dataGetConfigStr
       */
     function testGetConfigStr($Info, $expect) {

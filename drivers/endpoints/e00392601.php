@@ -63,15 +63,12 @@ if (!class_exists("e00392601")) {
          * @note This should only be defined in a driver that inherits this class if the packet differs
          */
         function readConfig($Info) {
-            $packet = array(
+            return array(
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
                 ),
             );
-            $return = $this->packet->sendPacket($Info, $packet);
-
-            return($return);
         }
 
         /**

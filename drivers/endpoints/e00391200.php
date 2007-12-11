@@ -143,14 +143,14 @@ define("E00391102B_SENSORS", 9);
             $this->interpConfigHW($Info);
             $this->interpConfigFW($Info);
             $this->interpConfigParams($Info);
-            $this->__interpConfig00392012C($Info);
+            $this->_interpConfig00392012C($Info);
             $this->interpConfigTC($Info);
             $this->InterpTypes($Info);
             $this->interpConfigSensorSetup($Info);
 
         }
         
-        private function __interpConfig00392012C(&$Info) {
+        private function _interpConfig00392012C(&$Info) {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
@@ -159,7 +159,7 @@ define("E00391102B_SENSORS", 9);
         /**
          *
           */
-        private function __interpSensorsGetRaw(&$Info, &$data) {
+        private function _interpSensorsGetRaw(&$Info, &$data) {
             if (is_array($data["Data"])) {
                 // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
@@ -184,7 +184,7 @@ define("E00391102B_SENSORS", 9);
                 $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
                     self::interpSensorsSetData($Info, $data);
-                    self::__interpSensorsGetRaw($Info, $data);
+                    self::_interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
                     $ret[] = $data;

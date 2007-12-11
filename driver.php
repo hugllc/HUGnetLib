@@ -209,6 +209,45 @@ class Driver
         
     }
 
+        /**
+         * Returns the packet to send to read the sensor data out of an endpoint
+         *
+         * @param array $Info Infomation about the device to use
+         * @note This should only be defined in a driver that inherits this class if the packet differs
+          */
+        function readSensors($Info) {
+    
+            $packet = $this->runFunction($Info, "readSensors");
+            $Packets = $this->packet->sendPacket($Info, $packet);
+            if (is_array($Packets)) {
+                $return = $this->runFunction($Info, "interpSensors", $Packets);
+                if ($return == false) $return = $Packets;
+            } else {
+                $return = false;
+            }
+            return($return);
+        }
+
+        /**
+         * Returns the packet to send to read the sensor data out of an endpoint
+         *
+         * @param array $Info Infomation about the device to use
+         * @note This should only be defined in a driver that inherits this class if the packet differs
+          */
+        function readConfig($Info) {
+    
+            $packet = $this->runFunction($Info, "readConfig");
+            $Packets = $this->packet->sendPacket($Info, $packet);
+            if (is_array($Packets)) {
+                $return = $this->runFunction($Info, "interpConfig", $Packets);
+                if ($return == false) $return = $Packets;
+            } else {
+                $return = false;
+            }
+            return($return);
+        }
+
+
     /**
      * Runs a function using the correct driver for the endpoint
      * @param $Info Array Infomation about the device to use
@@ -379,6 +418,77 @@ class Driver
      * @param array $units The units to change to
       */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
+        // This uses defaults if nothing exists for a particular sensor
+        $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
+
+        $lastRecord = null;
+        if (!is_array($history)) $history = array();
+        foreach ($history as $key => $val) {
+           if (is_array($val)) {
+                if (($lastRecord !== null) || (count($history) < 2)) {
+                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                        if ($type[$i] != $devInfo["dType"][$i]) {
+                            switch($type[$i]) {
+                            case 'diff':
+                                if (!isset($val['deltaT'])) $history[$key]['deltaT'] = strtotime($val['Date']) - strtotime($lastRecord['Date']);
+                                $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
+                                break;
+                            case 'ignore':
+                                unset($history[$key]["Data".$i]);
+                                break;
+                            default:
+                                 // Do nothing by default.
+                                 // That means we need to make sure we change the data type
+                                 // in the $type array to reflect what we have not done.  ;)
+                                if (!empty($devInfo["dType"][$i])) {
+                                    $type[$i] = $devInfo["dType"][$i];
+                                }
+                                break;
+                            }
+                        }
+  
+                        if (!$this->sensors->checkPoint($history[$key]['Data'.$i], $devInfo['Types'][$i], $devInfo['params']['sensorType'][$i], $devInfo['Units'][$i], $devInfo['dType'][$i])) {
+                            $history[$key]['Data'.$i] = null;
+                            $history[$key]['data'][$i] = null;
+                        }
+                    }            
+                    $lastRecord = $val;
+                } else {
+                    $lastRecord = $val;
+                    unset($history[$key]);
+                }
+                if (isset($history[$key])) {
+                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                        if (isset($units[$i]) && isset($history[$key]['Data'.$i])) {
+                            if (!isset($cTo[$i])) $cTo[$i] = $units[$i];
+
+                            $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
+                            $history[$key]['Data'.$i] = $this->unit->convert($history[$key]['Data'.$i], $from, $cTo[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
+                        }
+                        if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
+                            $history[$key]["Data".$i] = round($history[$key]["Data".$i], $dPlaces);
+                        }
+                        $history[$key]['data'][$i] = $history[$key]['Data'.$i];
+                    }
+                }
+            }
+        }
+        if (is_array($cTo)) {
+            foreach ($cTo as $key => $val) {
+                $devInfo["Units"][$key] = $val;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param array $history The history to modify.  This array gets directly modified.
+     * @param array $devInfo The devInfo array to modify.  This array gets directly modified.
+     * @param int $dPlaces The maximum number of decimal places to show.
+     * @param array $type The types to change to
+     * @param array $units The units to change to
+      */
+    function filter(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
 
