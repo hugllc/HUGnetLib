@@ -23,13 +23,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package HUGnetLib
+ * @category   Database
+ * @package    HUGnetLib
  * @subpackage Socket
- * @copyright 2007 Hunt Utilities Group, LLC
- * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id: dbsocket.php 464 2007-11-16 17:42:46Z prices $    
- *
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id: driver.php 545 2007-12-11 21:50:55Z prices $    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
 /** The default port for connection to seriald */
@@ -51,219 +52,262 @@ define("PACKET_ERROR_BADC_NO", -4);
 /** Error message for not getting a packet back */
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
-require_once(HUGNET_INCLUDE_PATH."/devInfo.php");
+require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 
 if (!class_exists("dbsocket")) {
-/**
- * Class for talking with HUGNet endpoints through unix sockets
- * 
- * This class is meant to talk to something like {@link http://ser2net.sourceforge.net/ ser2net}
- * or any of the serial to ethernet servers from {@link http://www.bb-elec.com/ B&B Electronics}.
- * Other methods might work, but they are untested.  It basically expects a raw
- * serial port that is accessable through a unix socket.  
- */
-class dbsocket {
-    /** @var string The database table to use */
-    private $table = "PacketSend";
-    /** @var int How many times we retry the packet until we get a good one */
-    var $Retries = 2;
-    /** @var array Server information is stored here. */
-    var $socket = null;
-    /** @var int The error number.  0 if no error occurred */
-    var $Errno = 0;
-    /** @var string The error string */
-    var $Error = "";
-    /** @var int The port number.   This is the default */
-    var $Port = 2000;
-    /** @var string The server string */
-    var $Server = "";
-
-
-    /** @var int The timeout for waiting for a packet in seconds */
-    var $PacketTimeout = 5;
-    /** @var int The timeout for waiting for a packet in seconds */
-    var $AckTimeout = 2;
-    /** @var int The timeout for waiting for a packet in seconds */
-    var $SockTimeout = 2;
-    /** @var bool Whether we should print out a lot output */
-    var $verbose = false;        
-    /** @var int The default period for checking in with the servers */
-    var $CheckPeriod = 60;        
-    /** @var array Array of strings that we are reading */
-    var $readstr = array();        
-
-    /** @var array The packet we are currently sending out */
-    var $packet = array();
-
-    /** @var int The index of the reply array */
-    private $replyIndex = 0;
-    
-    private $index = 0;
     /**
-     * Write data out a socket
-     *
-     * @param string $data The data to send out the socket
-     * @return int The number of bytes written on success, false on failure
-      */
-    function Write($data, $pkt) {
-        $id = rand(1, 24777216);  // Big random number for the id
-        $this->packet[$id] = $pkt;
-        $this->packet[$id]["id"] = $id;
-        $ret =  $this->_insertPacket($this->packet[$id]);
-
-        if ($ret === false) {
-            return false;
-        } else {
-            return $id;
-        }
-    }
-
-    private function _insertPacket($pkt) {
-        $set = array();
-        $fields = array();
-        $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
-                        , 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData'
-                        , 'Type', 'ReplyTime', 'Checked');
-        foreach ($checkFields as $field) {
-            if (isset($pkt[$field])) {
-                if (is_string($pkt[$field])) {
-                    $val = $this->db->qstr($pkt[$field]);
-                } else {
-                    $val = $pkt[$field];
-                }
-                $set[] = $val;
-                $fields[] = $field;
-            }
-        }
-        $query = "INSERT INTO ".$this->table." (".implode(",", $fields).") VALUES (".implode(", ", $set).")";
-        $ret = $this->db->Execute($query);
-        if ($ret === false) return false;
-        return true;
-    }
-    /**
-     *  
-      */
-    private function _packetify(&$pkt) {
-        $pkt["To"] = $pkt["PacketTo"];
-        $pkt["Data"] = $pkt["RawData"];
-        return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
-    }
-
-    /**
-     *  Gets the first of the packets that is destined for us.
-      */
-    private function _getPacket() {
-        if (!is_string($this->replyPacket)) $this->replyPacket = "";
-        if (!empty($this->replyPacket)) return true;
-        $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
-        $res = $this->db->getArray($query);
-        if (is_array($res)) {
-            foreach ($res as $pkt) {
-                if (is_array($this->packet[$pkt["id"]])) {
-                    $this->replyPacket = $this->_packetify($pkt);
-                    $this->reply = $pkt["id"];
-                    $this->index = 0;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     *  removes the packet for the id given
-      */
-    private function _deletePacket($id) {
-        unset($this->packet[$id]);
-        if ($this->reply == $id) {
-            unset($this->reply);
-            $this->index = 0;
-        }
-        $query = "DELETE FROM ".$this->table." WHERE id = '".$id."' ";
-        $this->db->execute($query);
-
-    }
-    /**
-     * Read data from the server
-     *
-     * @param int $timeout The amount of time to wait for the server to respond
-     * @return int Read bytes on success, false on failure
-      */
-    function readChar($timeout=-1) {
-        if ($timeout < 0) $timeout = $this->PacketTimeout;
-        $char = false;
-        if ($this->_getPacket()) {
-            if ($this->index < strlen($this->replyPacket)) {
-                $char = hexdec(substr($this->replyPacket, $this->index, 2));
-                $this->index += 2;
-                if ($this->index >= strlen($this->replyPacket)) {
-                    $this->_deletePacket($this->reply);
-                    $this->index = 0;
-                    $this->replyPacket = "";
-                }
-                $char = chr($char);
-            }
-        }
-        return $char;
-    }     
-    
-    /**
-     * Closes the socket connection
+     * Class for talking with HUGNet endpoints through unix sockets
      * 
-      */
-    function Close() {
-        $this->packet = array();
-    }
-
-    /**
-     * Checks to make sure that all we are connected to the server
-     * 
-     * This routine only checks the connection.  It does nothing else.  If you want to
-     * have the script automatically connect if it is not connected already then use
-     * ep_socket::Connect().
+     * This class is meant to talk to something like {@link http://ser2net.sourceforge.net/ ser2net}
+     * or any of the serial to ethernet servers from {@link http://www.bb-elec.com/ B&B Electronics}.
+     * Other methods might work, but they are untested.  It basically expects a raw
+     * serial port that is accessable through a unix socket.  
      *
-     * @uses ep_socket::Connect()
-     * @return bool true if the connection is good, false otherwise
+     * @category   Database
+     * @package    HUGnetLib
+     * @subpackage Socket
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    function CheckConnect() {
-        return $this->db->IsConnected();
-    }
+    class DbSocket
+    {
+        /** @var string The database table to use */
+        private $table = "PacketSend";
+        /** @var int How many times we retry the packet until we get a good one */
+        var $Retries = 2;
+        /** @var array Server information is stored here. */
+        var $socket = null;
+        /** @var int The error number.  0 if no error occurred */
+        var $Errno = 0;
+        /** @var string The error string */
+        var $Error = "";
+        /** @var int The port number.   This is the default */
+        var $Port = 2000;
+        /** @var string The server string */
+        var $Server = "";
     
-    /**
-     * Connects to the server
-     * 
-     * This function first checks the connection.  If you are planning on checking the
-     * connection and want the server to automatically connect if not connectd, use this
-     * routine.  If you just want to check the connection, use ep_socket::CheckConnect.
-     *
-     * @param string $server Name or IP address of the server to connect to
-     * @param int $port The TCP port on the server to connect to
-     * @param int $timeout The time to wait before giving up on a bad connection
-     * @return bool true if the connection is good, false otherwise
-      */
-    function Connect($server = "", $port = 0, $timeout=0) {
-
-        if ($this->CheckConnect()) return true;
-        $this->Close();
-        return false;
-    }            
-
-
-    /**
-     * Constructor
-     * 
-     * @param string $server The name or IP of the server to connect to
-     * @param int $tcpport The TCP port to connect to on the server. Set to 0 for
-     *     the default port.
-     * @param bool $verbose Make the class put out a lot of output
-      */
-    function __construct(&$db, $verbose=false) {
-        $this->verbose = $verbose;
-        if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-        $this->db = &$db;
-        if ($this->verbose) print "Done\r\n";
-    }
     
-}
+        /** @var int The timeout for waiting for a packet in seconds */
+        var $PacketTimeout = 5;
+        /** @var int The timeout for waiting for a packet in seconds */
+        var $AckTimeout = 2;
+        /** @var int The timeout for waiting for a packet in seconds */
+        var $SockTimeout = 2;
+        /** @var bool Whether we should print out a lot output */
+        var $verbose = false;        
+        /** @var int The default period for checking in with the servers */
+        var $CheckPeriod = 60;        
+        /** @var array Array of strings that we are reading */
+        var $readstr = array();        
+    
+        /** @var array The packet we are currently sending out */
+        var $packet = array();
+    
+        /** @var int The index of the reply array */
+        private $replyIndex = 0;
+        
+        private $index = 0;
+        /**
+         * Write data out a socket.  
+         *
+         * Returns the random id on success, false on failure.
+         *
+         * @param string $data The data to send out the socket in string form
+         * @param array  $pkt  The data to send out the socket in array form
+         *
+         * @return mixed
+         */
+        public function Write($data, $pkt) 
+        {
+            $id                      = rand(1, 24777216);  // Big random number for the id
+            $this->packet[$id]       = $pkt;
+            $this->packet[$id]["id"] = $id;
+    
+            $ret = $this->_insertPacket($this->packet[$id]);
+    
+            if ($ret === false) {
+                return false;
+            } else {
+                return $id;
+            }
+        }
+    
+        /**
+         * Write data out a socket
+         *
+         * @param array $pkt The data to send out the socket in array form
+         *
+         * @return bool
+         */
+        private function _insertPacket($pkt) 
+        {
+            $set         = array();
+            $fields      = array();
+            $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
+                            , 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData'
+                            , 'Type', 'ReplyTime', 'Checked');
+            foreach ($checkFields as $field) {
+                if (isset($pkt[$field])) {
+                    if (is_string($pkt[$field])) {
+                        $val = $this->db->qstr($pkt[$field]);
+                    } else {
+                        $val = $pkt[$field];
+                    }
+                    $set[]    = $val;
+                    $fields[] = $field;
+                }
+            }
+            $query = "INSERT INTO ".$this->table." (".implode(",", $fields).") VALUES (".implode(", ", $set).")";
+            $ret = $this->db->Execute($query);
+            if ($ret === false) return false;
+            return true;
+        }
+        /**
+         * Turns an array into a packet.
+         *
+         * @param array  $pkt  The data to send out the socket in array form
+         *
+         * @return string
+         */
+        private function _packetify(&$pkt) 
+        {
+            $pkt["To"]   = $pkt["PacketTo"];
+            $pkt["Data"] = $pkt["RawData"];
+            return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
+        }
+    
+        /**
+         *  Gets the first of the packets that is destined for us.
+         *
+         * @return bool
+         */
+        private function _getPacket() 
+        {
+            if (!is_string($this->replyPacket)) $this->replyPacket = "";
+            if (!empty($this->replyPacket)) return true;
+            $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
+            $res = $this->db->getArray($query);
+            if (is_array($res)) {
+                foreach ($res as $pkt) {
+                    if (is_array($this->packet[$pkt["id"]])) {
+                        $this->replyPacket = $this->_packetify($pkt);
+                        $this->reply       = $pkt["id"];
+                        $this->index       = 0;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    
+        /**
+         *  removes the packet for the id given
+         *
+         * @param int $id The random id of the packet to delete.
+         *
+         * @return none
+         */
+        private function _deletePacket($id) {
+            unset($this->packet[$id]);
+            if ($this->reply == $id) {
+                unset($this->reply);
+                $this->index = 0;
+            }
+            $query = "DELETE FROM ".$this->table." WHERE id = '".$id."' ";
+            $this->db->execute($query);
+    
+        }
+        /**
+         * Read data from the server
+         *
+         * @param int $timeout The amount of time to wait for the server to respond
+         *
+         * @return mixed Read bytes on success, false on failure
+         */
+        public function readChar($timeout=-1) 
+        {
+            if ($timeout < 0) $timeout = $this->PacketTimeout;
+            $char = false;
+            if ($this->_getPacket()) {
+                if ($this->index < strlen($this->replyPacket)) {
+                    $char = hexdec(substr($this->replyPacket, $this->index, 2));
+                    
+                    $this->index += 2;
+                    if ($this->index >= strlen($this->replyPacket)) {
+                        $this->_deletePacket($this->reply);
+                        $this->index       = 0;
+                        $this->replyPacket = "";
+                    }
+                    $char = chr($char);
+                }
+            }
+            return $char;
+        }     
+        
+        /**
+         * Closes the socket connection
+         * 
+         * @return none
+         */
+        public function Close() 
+        {
+            $this->packet = array();
+        }
+    
+        /**
+         * Checks to make sure that all we are connected to the server
+         * 
+         * This routine only checks the connection.  It does nothing else.  If you want to
+         * have the script automatically connect if it is not connected already then use
+         * dbsocket::Connect().
+         *
+         * @return bool true if the connection is good, false otherwise
+         */
+        public function CheckConnect() 
+        {
+            return $this->db->IsConnected();
+        }
+        
+        /**
+         * Connects to the server
+         * 
+         * This function first checks the connection.  If you are planning on checking the
+         * connection and want the server to automatically connect if not connectd, use this
+         * routine.  If you just want to check the connection, use ep_socket::CheckConnect.
+         *
+         * @param string $server  Name or IP address of the server to connect to
+         * @param int    $port    The TCP port on the server to connect to
+         * @param int    $timeout The time to wait before giving up on a bad connection
+         *
+         * @return bool true if the connection is good, false otherwise
+         */
+        public function Connect($server = "", $port = 0, $timeout=0) 
+        {
+    
+            if ($this->CheckConnect()) return true;
+            $this->Close();
+            return false;
+        }            
+    
+    
+        /**
+         * Constructor
+         * 
+         * @param object $db      Adodb connect object
+         * @param bool   $verbose Whether to give a lot of output.
+         *
+         * @return none
+         */
+        public function __construct(&$db, $verbose=false) 
+        {
+            $this->verbose = $verbose;
+            if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
+            $this->db = &$db;
+            if ($this->verbose) print "Done\r\n";
+        }
+        
+    }
 }
 ?>
