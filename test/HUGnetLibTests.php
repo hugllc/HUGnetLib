@@ -50,8 +50,6 @@ require_once 'deviceTest.php';
 require_once 'deviceCacheTest.php'; 
 require_once 'driverTest.php'; 
 require_once 'EPacketTest.php'; 
-require_once 'dbsocketTest.php'; 
-require_once 'epsocketTest.php'; 
 require_once 'filterTest.php'; 
 require_once 'firmwareTest.php'; 
 require_once 'gatewayTest.php'; 
@@ -87,8 +85,6 @@ class HUGnetLibTests
         $suite->addTestSuite('deviceTest');
         $suite->addTestSuite('deviceCacheTest');
         $suite->addTestSuite('EPacketTest');
-        $suite->addTestSuite('dbsocketTest');
-        $suite->addTestSuite('epsocketTest');
         $suite->addTestSuite('filterTest');
         $suite->addTestSuite('firmwareTest');
         $suite->addTestSuite('gatewayTest');
