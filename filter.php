@@ -98,6 +98,21 @@ class Filter
         }
      
     }
+
+    /**
+     * Filters the history given to it based on the filters specified
+     *
+     * @param array &$history The history to filter
+     * @param array &$devInfo The devInfo array for the device
+     *
+     * @return none
+     */
+    public function filter(&$history, $devInfo) 
+    {
+        
+    }
+         
+    
     /**
      * This function does the actual filtering of the data based on the input given.
      *
