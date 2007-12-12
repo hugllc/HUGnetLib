@@ -93,17 +93,31 @@ class filterTestBase extends PHPUnit_Framework_TestCase {
      * Data provider stub for testFilterVariable
      *
      *  This should be redifined in subclasses.
-      */
+     */
     public static function dataFilterVariable() {
         return array();
     }
     /**
      * @dataProvider dataFilterVariable
-      */
+     */
     public function testFilterVariableLongName($catName, $shortName, $filter) {
         // Long Name
         $this->assertType("string", $filter['longName'], $catName.":".$shortName.": Long name is not a string");
         $this->assertThat(strlen($filter['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");    
+    }
+    /**
+     * @dataProvider dataFilterVariable
+     */
+    public function testFilterVariableExtra($catName, $shortName, $sensor) {
+        if (isset($sensor["extraText"])) {
+            if (is_array($sensor["extraText"])) {
+                $this->assertType("array", $sensor['extraDefault'], $this->class.":".$type.":".$shortName.": If extraText is an array extraDefault must also be an array.");
+                $this->assertEquals(count($sensor['extraText']), count($sensor['extraDefault']), $this->class.":".$type.":".$shortName.": extraText and extraDefault must have the same number of elements");
+            } else {
+                $this->assertType("string", $sensor['extraText'], $this->class.":".$type.":".$shortName.": extraText must either be an array or a string");
+                $this->assertNotType("array", $sensor['extraDefault'], $this->class.":".$type.":".$shortName.": If extraText is not an array extraDefault must also not be an array.");
+            }
+        }
     }
 
     /**

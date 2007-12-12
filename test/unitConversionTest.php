@@ -565,6 +565,79 @@ class unitConversionTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expect, $this->o->kWhToW($val, $time, $type, $extra));
     }
 
+    public function &modifyUnitsSetup() {        
+        return $this->o;
+    }
+
+    /**
+     * data provider for testModifyUnits
+      */
+    public static function dataModifyUnits() {
+        return array(
+            array(
+                array(
+                    0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
+                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
+                ), // History
+                array(
+                    "ActiveSensors" => 5, 
+                    "dType" => array("raw","diff","diff","raw","diff"), 
+                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
+                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "Units" => array("E", "B", "E", "D", "E"),
+                ), // DevInfo
+                2, // dPlaces
+                array("raw", "ignore", "diff", "diff", "raw"), // Type
+                array("E", "B", "E", "D", "E"), // Units
+                array(
+                    1 => array("Data0" => 3.0,"Data2" => 4.0, "Data3" => -2.0, "Data4" => 6.5, "data" => array(3.0,null,4.0,-2.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
+                ), // expectHistory
+                array(
+                    "ActiveSensors" => 5, 
+                    "dType" => array("raw","diff","diff","raw","diff"), 
+                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
+                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "Units" => array("E", "B", "E", "D", "E"),
+                ), // expectDevInfo
+                array("raw", "ignore", "diff", "diff", "diff"), // expectType
+                array("E", "B", "E", "D","E"), // expectUnits
+            ),
+        );
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+      */
+    public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectHistory, $history);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+      */
+    public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectDevInfo, $devInfo);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+      */
+    public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectType, $type);
+    }
+    /**
+     * @dataProvider dataModifyUnits().
+     * @covers driver::ModifyUnits
+      */
+    public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) {
+        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
+        $this->assertSame($expectUnits, $units);
+    }
+
+
 }
 
 // Call unitConversionTest::main() if this source file is executed directly.
