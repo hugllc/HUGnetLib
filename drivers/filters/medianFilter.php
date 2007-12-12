@@ -72,6 +72,7 @@ if (!class_exists('medianFilter') && class_exists("filter_base")) {
                 $history[$keys[$key]]["Data".$index] = $this->_getMedian($mArray, $active);
                 $history[$keys[$key]]["data"][$index] = $history[$keys[$key]]["Data".$index]; 
             }
+            return $history;
         }
         
         /**

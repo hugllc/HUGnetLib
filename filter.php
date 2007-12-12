@@ -103,13 +103,16 @@ class Filter
      * Filters the history given to it based on the filters specified
      *
      * @param array &$history The history to filter
-     * @param array &$devInfo The devInfo array for the device
+     * @param array $filters The array of filters to use
      *
      * @return none
      */
-    public function filter(&$history, $devInfo) 
+    public function filter(&$history, $filters) 
     {
-        
+        if (!is_array($filters)) return;
+        foreach($filters as $key => $filter) {
+            $this->_filterData($history, $key, $filter);
+        }
     }
          
     
@@ -117,24 +120,20 @@ class Filter
      * This function does the actual filtering of the data based on the input given.
      *
      * @param array  &$data  The data to filter
-     * @param string $type   The type array for the data
+     * @param int    $index  The index to use in the data array
      * @param string $filter Which filter to use
      *
-     * @return array The filtered data
+     * @return none
      */
-    function filterdata(&$data, $type, $filter=null) 
+    private function _filterData(&$data, $index, $filter=null) 
     {
         $class = $this->getClass($type, $filter);
-        if (is_object($class)) {
-            $args = func_get_args();
-            $args[1]; // Remove the $type
-            unset($args[2]); // Remove the $filter
-            $stuff   = $class->filters[$type][$filter];
-            $args[1] = $stuff;
-            $args    = array_merge($args); // Compacts the array
-            $val     = $this->runFunction($class, $stuff['function'], $args, $args[0]);
-        }
-        return $val;
+        if (!is_object($class)) return;
+        $args = func_get_args();
+        unset($args[2]); // Remove the $filter
+        $stuff   = $class->filters[$type][$filter];
+        $args[2] = $stuff;
+        $this->runFunction($class, $stuff['function'], $args);
     }
 
     /**
@@ -143,19 +142,15 @@ class Filter
      * @param object &$class   This is the filter class to run the function on
      * @param string $function This is the method to call on the class
      * @param array  &$args    The array of arguments for the function
-     * @param mixed  $return   This is the default value to return if the function is not found
      *
-     * @return array The filtered data
+     * @return none
       */
-    function runFunction(&$class, $function, &$args, $return = null) 
+    function runFunction(&$class, $function, &$args) 
     {
-        if (is_string($function)) {
-            if (method_exists($class, $function)) {
-                $fct    = array(&$class, $function);
-                $return = call_user_func_array($fct, $args);
-            }
-        }
-        return $return;
+        if (!is_string($function)) return;
+        if (!method_exists($class, $function)) return;
+        $ret = call_user_func_array(array(&$class, $function), $args);
+        if (!empty($ret)) $args[0] = $ret;
     }
 
     /**

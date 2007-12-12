@@ -70,6 +70,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * @access protected
       */
     protected function setUp() {
+        $this->o = new filter();
     }
 
     /**
@@ -79,6 +80,7 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * @access protected
       */
     protected function tearDown() {
+        unset($this->o);
     }
 
     /**
@@ -95,43 +97,28 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataRegisterFilter
       */
     public function testRegisterFilter($class, $expect) {
-        $o = new filter();
-        $ret = $o->registerFilter($class);
+        $ret = $this->o->registerFilter($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
-            $this->assertThat($o->filters[$class], $this->isInstanceOf($class));
-            foreach ($o->filters[$class]->filters as $type => $sInfo) {
+            $this->assertThat($this->o->filters[$class], $this->isInstanceOf($class));
+            foreach ($this->o->filters[$class]->filters as $type => $sInfo) {
                 foreach ($sInfo as $filter => $val) {
-                    $this->assertSame($o->dev[$type][$filter], $class, "'$type->$filter': Not found");
+                    $this->assertSame($this->o->dev[$type][$filter], $class, "'$type->$filter': Not found");
                 }
             }
         }
     }
-    /**
-     * @todo Implement testGetReading().
-      */
-    public function testFilterdataCall() {
-        $o = new filter();
-        $cName = "testFilter";
-        $val = 1;
-        $o->registerFilter($this->getMock($cName), $cName);
-        $o->filters[$cName]->expects($this->once())
-                           ->method('Test1')
-                           ->with($this->equalTo($val), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
-        $ret = $o->Filterdata($val, "testType", "testSensor1", 10, "extra");
-    }
-    public static function dataFilterdata() {
+    public static function dataFilter() {
         return array(
         );
     }
 
     /**
-     * @dataProvider dataFilterdata
+     * @dataProvider dataFilter
       */
-    public function testFilterdata($data, $type, $filter, $expect) {
-        $o = new filter();
-        $o->registerFilter("testFilter");
-        $ret = $o->filterdata($data, $type, $filter);
+    public function testFilter($data, $type, $filter, $expect) {
+        $this->o->registerFilter("testFilter");
+        $ret = $this->o->filter($data, $type, $filter);
         $this->assertSame($expect, $ret);
     }
 
@@ -139,14 +126,13 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * @todo Implement testRunFunction().
       */
     public function testRunFunctionCall() {
-        $o = new filter();
         $cName = "testFilter";
-        $o->registerFilter($this->getMock($cName), $cName);
-        $o->filters[$cName]->expects($this->once())
+        $this->o->registerFilter($this->getMock($cName), $cName);
+        $this->o->filters[$cName]->expects($this->once())
                            ->method('Test1')
                            ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4));
         $args = array(1,2,3,4);
-        $ret = $o->runFunction($o->filters[$cName], 'Test1', $args, "2");
+        $ret = $this->o->runFunction($this->o->filters[$cName], 'Test1', $args, "2");
     }
 
     /**
@@ -154,19 +140,19 @@ class filterTest extends PHPUnit_Framework_TestCase {
       */
     public static function dataRunFunction() {
         return array(
-            array("testFilter", "Test1", array(1,2,3,4), 24, 10),
-            array("testFilter", "badFunction", array(1,2,3,4), 5, 5),
-            array("badClass", "Test1", array(1,2,3,4), 7, 7),
+            array("testFilter", "Test1", array(array(2,1,0),2,3,4,), array(0,1,2)),
+            array("testFilter", "badFunction", array(array(1,2,3),2,3,4), array(1,2,3)),
+            array("badClass", "Test1", array(array(1),2,3,4), array(1)),
         );
     }
     /**
      * @dataProvider dataRunFunction
       */
-    public function testRunFunction($class, $function, $args, $default, $expect) {
-        $o = new sensor();
-        $o->registerSensor($class);
-        $ret = $o->runFunction($o->sensors[$class], $function, $args, $default);
-        $this->assertSame($expect, $ret);
+    public function testRunFunction($class, $function, $args, $expect) {
+        $this->o->registerFilter($class);
+        $this->o->runFunction($this->o->filters[$class], $function, $args);
+        // The history is modified in $args[0];
+        $this->assertSame($expect, $args[0]);
     }
 
     /**
@@ -183,12 +169,11 @@ class filterTest extends PHPUnit_Framework_TestCase {
      * @dataProvider dataGetClass().
       */
     public function testGetClass($type, $sensor, $expect, $typeExpect, $sensorExpect) {
-        $o = new filter();
         $cName = "testFilter";
-        $o->registerFilter($cName);
-        $class = $o->getClass($type, $sensor);
+        $this->o->registerFilter($cName);
+        $class = $this->o->getClass($type, $sensor);
         if ($expect === "sameClass") {
-            $expect = $o->filters[$cName];
+            $expect = $this->o->filters[$cName];
         }
         $this->assertSame($class, $expect, "Wrong object returned");
         $this->assertEquals($type, $typeExpect, "Type changed incorrectly");
@@ -210,29 +195,13 @@ class testFilter extends filter_base {
         "testType" => array(
             "testFilter1" => array(
                 "longName" => "Generic Test Sensor 1",
-                "unitType" => "TestType",
-                "validUnits" => array('A', 'B', 'C'),
-                "storageUnit" =>  'B',
                 "function" => "Test1",
-                "extra" => "extraTest",
+                "extraText" => "extraTest",
                 "extraDefault" => "extraDefaultTest",
-                "unitModes" => array(
-                    'A' => 'raw,diff',
-                    'B' => 'diff',
-                    'C' => 'raw',
-                ),
             ),
             "testFilter2" => array(
                 "longName" => "Generic Test Sensor 2",
-                "unitType" => "TestType",
-                "validUnits" => array('D', 'E', 'F'),
-                "storageUnit" =>  'E',
                 "function" => "Test2",
-                "unitModes" => array(
-                    'E' => 'raw,diff',
-                    'D' => 'diff',
-                    'F' => 'raw',
-                ),
             ),
         ),
     );
@@ -240,12 +209,13 @@ class testFilter extends filter_base {
     /**
      * 
      */    
-    public function Test1($val, $sensor, $TC, $extra) {
+    public function Test1(&$history, $index, $filter, $extra, $deltaT = null)
+    {
         // This must stay the same. 
-        return $val*10;
+        return array_reverse($history);
     }
-    public function Test2($val, $sensor, $TC, $extra) {
-        return $val;
+    public function Test2(&$history, $index, $filter, $extra, $deltaT = null) 
+    {
     }
 }
 /**
