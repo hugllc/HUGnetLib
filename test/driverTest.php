@@ -45,7 +45,7 @@ require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
 require_once dirname(__FILE__).'/unitConversionTest.php';
-require_once dirname(__FILE__).'/epsocketTest.php';
+require_once dirname(__FILE__).'/drivers/socket/epsocketTest.php';
 require_once dirname(__FILE__).'/EPacketTest.php';
 require_once dirname(__FILE__).'/gatewayTest.php';
 require_once 'adodb/adodb.inc.php';

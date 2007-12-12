@@ -60,6 +60,9 @@ require_once 'sensors/pulseSensorTest.php';
 require_once 'sensors/resistiveSensorTest.php';
 require_once 'sensors/voltageSensorTest.php';
 require_once 'sensors/windDirectionSensorTest.php';
+// Sockets
+require_once 'socket/dbsocketTest.php'; 
+require_once 'socket/epsocketTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -96,6 +99,11 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('resistiveSensorTest');
         $suite->addTestSuite('voltageSensorTest');
         $suite->addTestSuite('windDirectionSensorTest');
+        
+        // Sockets
+        $suite->addTestSuite('dbsocketTest');
+        $suite->addTestSuite('epsocketTest');
+ 
  
         return $suite;
     }
