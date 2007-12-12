@@ -164,9 +164,18 @@ class medianFilterTest extends filterTestBase {
     /**
      * @dataProvider dataMedian
      */
-    public function testMedian($history, $index, $filter, $extra, $deltaT, $expect) {
-        $this->o->median($history, $index, $filter, $extra, $deltaT);
+    public function testMedianHistory($history, $index, $filter, $extra, $deltaT, $expect) {
+        $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
         $this->assertSame($expect, $history);
+    }
+
+    /**
+     * @dataProvider dataMedian
+     */
+    public function testMedianReturn($history, $index, $filter, $extra, $deltaT, $expect) {
+        $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
+        $this->assertSame($expect, $history, "history is wrong");
+        $this->assertSame($expect, $ret);
     }
 
 }

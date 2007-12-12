@@ -437,9 +437,10 @@ class Driver
      * @param array $type The types to change to
      * @param array $units The units to change to
       */
-    function filter(&$history, &$devInfo) {
+    function filter(&$history, &$devInfo, $filters = null) {
         // This uses defaults if nothing exists for a particular sensor
-        $this->filters->filter($history, $devInfo);
+        $this->filters->filter($history, $devInfo["params"]["filters"]);
+        $this->filters->filter($history, $filters);
     }
 
     /**
