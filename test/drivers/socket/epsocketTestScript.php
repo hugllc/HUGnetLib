@@ -36,6 +36,7 @@
  */
 
 $msg = $argv[1];
+$timeout = 5;
 
 error_reporting(E_ALL);
 
@@ -78,6 +79,7 @@ stream_set_blocking($stdin, false);
 socket_set_nonblock($msgsock);
 $lbuf = "";
 $buf = "";
+$start = time();
 if (empty($msg)) {
     do {
         // remote stuff
@@ -96,7 +98,7 @@ if (empty($msg)) {
         }
         usleep(50000);
         
-    } while (($buf != "quit") && ($lbuf != "quit"));
+    } while (($buf != "quit") && ($lbuf != "quit") && ((time() - $start) < $timeout));
 } else {
     socket_write($msgsock, $msg, strlen($msg));
 }
