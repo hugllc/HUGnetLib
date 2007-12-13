@@ -366,6 +366,62 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
 
+    /**
+     * Data provider for testGetWhere
+     */
+    public static function dataGetWhere() 
+    {
+        return array(
+            array(
+                array(),
+                "1",
+                null,
+                array(),
+            ),
+            array(
+                array(
+                    array(1, "hello", "there"),
+                ),
+                "name = 'hello'",
+                null,
+                array(
+                    array("id" => "1", "name" => "hello", "value" => "there"),
+                ),
+            ),
+            array(
+                array(
+                    array(1, "hello", "there"),
+                    array(2, "I", "am"),
+                    array(3, "taking", "the"),
+                    array(4, "trouble", "to"),
+                    array(5, "change", "these"),
+                ),
+                "id = ?",
+                array(3),
+                array(
+                    array("id" => "3", "name" => "taking", "value" => "the"),
+                ),
+            ),
+        );
+    }
+    /**
+     * @dataProvider dataGetWhere
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   The database key to get the record from
+     * @param array  $expect  The info to expect returned
+     */
+    public function testGetWhere($preload, $where, $data, $expect) 
+    {
+        $this->load($preload);
+        if (!is_null($data)) {
+            $ret = $this->o->getWhere($where, $data);
+        } else {
+            $ret = $this->o->getWhere($where);        
+        }
+        $this->assertSame($expect, $ret);
+    }
+
 
     /**
      * @todo Implement testQuery().
@@ -428,6 +484,31 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
         $ret = $this->_getAll();
         $this->assertSame($expect, $ret);
     }
+
+    /**
+     * Data provider for testRemove
+     */
+    public static function dataVerbose() 
+    {
+        return array(
+            array(0, 0),
+            array(15, 15),
+            array(false, 0),
+            array(true, 1),
+        );
+    }
+    /**
+     * @dataProvider dataVerbose
+     *
+     * @param int $val     The database key to get the record from
+     * @param int $expect  The info to expect returned
+     */
+    public function testVerbose($val, $expect) 
+    {
+        $this->o->verbose($val);
+        $this->assertSame($expect, $this->readAttribute($this->o, "verbose"));
+    }
+
 
 }
 

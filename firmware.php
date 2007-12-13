@@ -23,19 +23,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package HUGnetLib
+ * @category   Database
+ * @package    HUGnetLib
  * @subpackage Firmware
- * @copyright 2007 Hunt Utilities Group, LLC
- * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id$    
- *
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This where our base class lives */
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+
 /**
  * Class for storing and retrieving firmware.
  *
+ * @category   Database
+ * @package    HUGnetLib
+ * @subpackage Gateways
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class firmware {
+class firmware extends DbBase
+{
     /** The table to use */
     var $table = "firmware";
     /** This is the Field name for the key of the record */
@@ -44,14 +56,6 @@ class firmware {
     var $cache = array();
     /** Cache times out every day. */
     var $cacheTimeout = 86400;
-
-    /**
-     * Constructor
-     ** @param object $db ADODB database object
-     */
-    function __construct(&$db) {
-        $this->db = &$db;
-    }
 
 
     /**
@@ -152,7 +156,7 @@ class firmware {
         }
         $query .= " ORDER BY Date DESC "
                 ." LIMIT 0,1 ";
-        $ret = $this->db->getArray($query);
+        $ret = $this->query($query);
         $this->cache($FWPartNum, $ret[0]);
         return $ret[0];
     }
@@ -176,7 +180,7 @@ class firmware {
                     ." FirmwareStatus='".$Status."' ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        $ret = $this->db->getArray($query);
+        $ret = $this->query($query);
         $this->cache($HWPartNum, $ret);
         return $ret;
     }
@@ -204,26 +208,9 @@ class firmware {
                     ." FirmwareStatus='".$Status."' ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        $ret = $this->db->getArray($query);
+        $ret = $this->query($query);
         $this->cache($FWPartNum, $ret);
         return $ret;
-    }
-
-    /**
-     * Retrieves a piece of firmware based on the key given. 
-     *
-     * @param int $FWKey The database key of the firmware to retrieve.
-     * @return array The array of firmware information
-      */
-    function get($FWKey) {
-        if ($ret = $this->cache($FWKey)) return $ret;
-
-        $query = "SELECT * FROM ".$this->table
-                ." WHERE "
-                ." FirmwareKey=".(int)$FWKey." ";
-        $ret = $this->db->getArray($query);
-        $this->cache($FWKey, $ret[0]);
-        return $ret[0];
     }
 
     /**
