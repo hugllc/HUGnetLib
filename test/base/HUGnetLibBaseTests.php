@@ -1,6 +1,6 @@
 <?php
 /**
- * Main driver for the filters
+ * This runs all of the tests associated with HUGnetLib.
  *
  * PHP Version 5
  *
@@ -23,41 +23,52 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Filters
+ * @category   Test
  * @package    HUGnetLib
- * @subpackage Filters
+ * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: plog.php 524 2007-12-04 14:25:26Z prices $    
+ * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-/**
- * Base class for filters.
+ * @version SVN: $Id: AllTests.php 442 2007-11-12 23:03:55Z prices $    
  *
- * @category   Filters
- * @package    HUGnetLib
- * @subpackage Filters
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*/
-class FilterBase
-{
-    /**
-        This defines all of the filters that this driver deals with...
-     */
-    var $filters = array();
-    
-    /**
-        Constructor.
-     */
-    function __construct()
-    {
+ */
 
-    }
-
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    define('PHPUnit_MAIN_METHOD', 'HUGnetLibBaseTests::main');
 }
 
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/TextUI/TestRunner.php';
+
+require_once 'FilterBaseTest.php'; 
+require_once 'SensorBaseTest.php'; 
+require_once 'DbBaseTest.php'; 
+
+/**
+ *  This class runs all of the tests.  This must be done with no errors
+ * before the software is ever released.
+ */
+class HUGnetLibBaseTests
+{
+    public static function main()
+    {
+        PHPUnit_TextUI_TestRunner::run(self::suite());
+    }
+ 
+    public static function suite()
+    {
+        $suite = new PHPUnit_Framework_TestSuite('HUGnetLibBase');
+        $suite->addTestSuite('SensorBaseTest');
+        $suite->addTestSuite('FilterBaseTest');
+        $suite->addTestSuite('DbBaseTest');
+  
+        return $suite;
+    }
+}
+ 
+if (PHPUnit_MAIN_METHOD == 'HUGnetLibBaseTests::main') {
+    HUGnetLibBaseTests::main();
+}
 ?>

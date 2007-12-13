@@ -537,9 +537,9 @@ class DeviceCache
             $this->file = HUGNET_LOCAL_DATABASE;
         }
         if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
-        $this->_sqlite = new PDO("sqlite:".$this->file);
+        $this->_db = new PDO("sqlite:".$this->file);
         $this->createTable();
-        $ret = $this->_sqlite->query("PRAGMA table_info(".$this->table.")");
+        $ret = $this->_db->query("PRAGMA table_info(".$this->table.")");
         if (is_object($ret)) $columns = $ret->fetchAll(PDO::FETCH_ASSOC);
         if (is_array($columns)) {
             foreach ($columns as $col) {
@@ -586,9 +586,9 @@ class DeviceCache
                     );
                     ";
                     
-        $ret = $this->_sqlite->query($query);
-        $ret = $this->_sqlite->query('CREATE UNIQUE INDEX `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
-        $ret = $this->_sqlite->query('CREATE UNIQUE INDEX `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
+        $ret = $this->_db->query($query);
+        $ret = $this->_db->query('CREATE UNIQUE INDEX `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
+        $ret = $this->_db->query('CREATE UNIQUE INDEX `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
         return $ret;
     }
 
@@ -629,9 +629,9 @@ class DeviceCache
                     $fields .= $div.$key;
                     if ($key == "params") {
                         $info[$key] = device::encodeParams($info[$key]);
-                        $values    .= $div.$this->_sqlite->quote($info[$key]);
+                        $values    .= $div.$this->_db->quote($info[$key]);
                     } else {
-                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                        $values .= $div.$this->_db->quote($info[$key]);
                     }
                     $div = ", ";
                 }
@@ -639,7 +639,7 @@ class DeviceCache
 
 
             $query = " REPLACE INTO '".$this->table."' (".$fields.") VALUES (".$values.")";
-            $ret   = $this->_sqlite->query($query);
+            $ret   = $this->_db->query($query);
             return $ret;
 
         } else {
@@ -665,9 +665,9 @@ class DeviceCache
                     $fields .= $div.$key;
                     if ($key == "params") {
                         $info[$key] = device::encodeParams($info[$key]);
-                        $values    .= $div.$this->_sqlite->quote($info[$key]);
+                        $values    .= $div.$this->_db->quote($info[$key]);
                     } else {
-                        $values .= $div.$this->_sqlite->quote($info[$key]);
+                        $values .= $div.$this->_db->quote($info[$key]);
                     }
                     $div = ", ";
                 }
@@ -675,7 +675,7 @@ class DeviceCache
 
 
             $query = " UPDATE '".$this->table."' SET (".$fields.") VALUES (".$values.") WHERE ".$this->id."=".$info['DeviceKey'];
-            return $this->_sqlite->query($query);
+            return $this->_db->query($query);
         } else {
             return false;
         }
@@ -690,7 +690,7 @@ class DeviceCache
     function getAll() 
     {
         $query = " SELECT * FROM '".$this->table."'; ";
-        $ret   = $this->_sqlite->query($query);
+        $ret   = $this->_db->query($query);
         if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
         foreach ($ret as $key => $val) {
             $ret[$key]["params"] = device::decodeParams($ret[$key]["params"]);
@@ -707,7 +707,7 @@ class DeviceCache
       */
     function query($query) 
     {
-        $ret = $this->_sqlite->query($query);
+        $ret = $this->_db->query($query);
         if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
         return $ret;
     }
@@ -731,7 +731,7 @@ class DeviceCache
             if (empty($where)) return false;
 
             $query = " DELETE FROM '".$this->table."' WHERE ".$where;
-            $ret   = $this->_sqlite->query($query);
+            $ret   = $this->_db->query($query);
             if (is_object($ret)) $ret = true;
             return $ret;
         } else {

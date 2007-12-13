@@ -55,7 +55,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-abstract class SensorBase
+class SensorBase
 {
 
     /** @var int The maximum value for the AtoD convertor from */
@@ -70,8 +70,6 @@ abstract class SensorBase
     var $Vcc = 5;
     /** @var array This defines all of the sensors that this driver deals with... */
     public $sensors = array();
-    /** @var array This is the default sensor if no sensor is defined... */
-    var $defaultSensors = array();
     
     /**
      * Constructor.
@@ -87,7 +85,7 @@ abstract class SensorBase
     function __construct($Tf=false, $D=false, $s=false, $Am=false, $Vcc=false)
     {
         if (is_numeric($Tf)) $this->Tf = $Tf;
-        if (is_numeric($Vcc))$this->D = $D;
+        if (is_numeric($D))$this->D = $D;
         if (is_numeric($Am)) $this->Am = $Am;
         if (is_numeric($Vcc)) $this->Vcc = $Vcc;
         if (is_numeric($s)) $this->s = $s;
