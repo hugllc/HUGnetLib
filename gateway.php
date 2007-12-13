@@ -74,9 +74,7 @@ class Gateway extends DbBase
             $stuff = posix_uname();
             // Lookup up a gateway based on our host name
             if ($verbose) print "Looking for ".$stuff['nodename']."...\r\n";
-            $res = $this->query('select  * from '.$this->table.' where '.
-                                    "GatewayIP='".gethostbyname($stuff["nodename"])."'"
-                                    );
+            $res = $this->getWhere("GatewayIP = ? ", array(gethostbyname($stuff["nodename"])));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
                 $return = $res[0];
