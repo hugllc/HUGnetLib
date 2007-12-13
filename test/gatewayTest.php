@@ -92,26 +92,6 @@ class gatewayTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo Implement testGet_ydhms().
-      */
-    public function testGet_ydhms() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
-     * @todo Implement testGet_bytes().
-      */
-    public function testGet_bytes() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
-
-    /**
      * @todo Implement testGet().
       */
     public function testGet() {

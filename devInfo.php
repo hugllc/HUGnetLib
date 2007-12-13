@@ -282,6 +282,62 @@ if (!class_exists("devInfo")) {
             return $bin;
         }
     
+        /**
+         * Changes seconds into YDHMS
+         *
+         * This is for uptime displays.
+         *
+         * @param float $seconds The number of seconds
+         * @param int   $digits  The number of digits after the decimal point in the returned seconds
+         *
+         * @return string The number of years, days, hours, minutes, and seconds in the original number of seconds.
+         */
+        function getYdhms ($seconds, $digits=0)
+        {
+            $seconds  = (float) $seconds;
+            $years    = (int)($seconds/60/60/24/365.25);
+            $seconds -= $years*60*60*24*365.25;
+            $days     = (int)($seconds/60/60/24);
+            $seconds -= $days*60*60*24;
+            $hours    = (int)($seconds/60/60);
+            $seconds -= $hours*60*60;
+            $minutes  = (int)($seconds/60);
+            $seconds -= $minutes*60;
+            $seconds  = number_format($seconds, $digits);
+    
+            $return = "";
+            if ($years > 0)   $return .= $years."Y ";
+            if ($days > 0)    $return .= $days."d ";
+            if ($hours > 0)   $return .= $hours."h ";
+            if ($minutes > 0) $return .= $minutes."m ";
+            $return .= $seconds."s";
+            return $return;
+        }
+
+        /**
+         * Changes number of bytes into human readable numbers using K, M, G, T, Etc
+         *
+         * @param int $bytes  The original number of bytes
+         * @param int $digits The number places to the right of the decimal point to show
+         *
+         * @return String The number of bytes human readable.
+         */
+        function getBytes($bytes, $digits=2) 
+        {
+            
+            $bytes = (int) $bytes;
+            $labels = array("", " k", " M", " G", " T", " P");
+            
+            $index == 0;
+            while ($bytes > 1024) {
+                    $bytes = $bytes/1024;
+                    $index ++;
+            }
+            $bytes  = number_format($bytes, $digits);
+            $bytes .= $labels[$index]." bytes";
+            return $bytes;
+        }
+    
     
     }
 }

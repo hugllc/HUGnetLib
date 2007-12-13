@@ -50,9 +50,9 @@
 class DbBase
 {
     /** @var string The database table to use */
-    var $table = "none";
+    protected $table = "none";
     /** @var string This is the Field name for the key of the record */
-    var $id = "id";
+    protected $id = "id";
 
     /**
      *  These are the database fields
@@ -61,17 +61,29 @@ class DbBase
      *
      * @var array
      */
-    var $fields = array();
+    protected $fields = array();
 
     /** 
      * This is used only with SQLite and other databases that create local files
      *
      * @var string
      */
-    private $file = "";
+    protected $file = "";
     
     /** @var string This is the name of the current driver */
-    private $driver = "";
+    protected $driver = "";
+
+    /** @var object The database object */
+    protected $_db = null;
+
+    /** @var object The database object for the cache */
+    protected $_cacheDb = null;
+
+    /** @var object The cache */
+    protected $_cache = null;
+
+    /** @var object The cache */
+    protected $_doCache = false;
 
     /**
      * This function sets up the driver object, and the database object.  The
@@ -81,12 +93,22 @@ class DbBase
      */
     function __construct(&$db = null, $table = false, $id = false) 
     {
-        $this->_db     = &$db;
+        // Set it here since it needs a call to sys_get_temp_dir
+        if (is_string($db)) {
+            $this->file = $db;
+        } else {
+            $this->file = sys_get_temp_dir()."/HUGnetLocal.db";
+        }
+        
+        if (get_class($db) == "PDO") {
+            $this->_db = &$db;
+        } else {
+            // We got the wrong database.  Punt.  ;)
+            $this->_db = new PDO("sqlite:".$this->file);    
+        }
+
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
-
-        // Set it here since it needs a call to sys_get_temp_dir
-        $this->file = sys_get_temp_dir()."/HUGnetLocal.db";
 
         $this->driver = $this->_db->getAttribute(PDO::ATTR_DRIVER_NAME);
         
@@ -100,13 +122,15 @@ class DbBase
       */
     function createCache($file = null) 
     {
-        if (is_string($file)) {
-            $this->file = $file;
-        }
+        // Can't cache a sqlite database server
+        if ($this->driver == "sqlite") return;
+
+        if (is_string($file)) $this->file = $file;
         if (!is_string($this->file)) $this->file = ":memory";
-        $this->_db = new PDO("sqlite:".$this->file);
-        $this->createTable();
-        $this->_getColumns();
+        $this->_cacheDb = new PDO("sqlite:".$this->file);
+        $class = get_class($this);
+        $this->_cache = new $class($this->_cacheDb);
+        $this->_doCache = true;
     }
 
 
@@ -155,30 +179,18 @@ class DbBase
      *
      * @return bool
      */
-    function createTable() 
+    public function createTable() 
     {
-        $ret = $this->query($this->createTableQuery($this->table));
-        $this->_getColumns();
-        return $ret;
-    }
-
-    /**
-     * Creates the database table.
-     *
-     * This function MUST be overwritten by child classes.  The values
-     * here are ONLY for test purposes.
-     *
-     * @return bool Always false
-     */
-    function createTableQuery($table) 
-    {
-        return "CREATE TABLE `".$table."` (
+        $query = "CREATE TABLE `".$this->table."` (
               `id` int(11) NOT null,
               `name` varchar(16) NOT null default '',
               `value` text NOT null,
               PRIMARY KEY  (`id`)
             );";
-                    
+
+        $ret = $this->query($query);
+        $this->_getColumns();
+        return $ret;
     }
 
     /**
@@ -280,8 +292,7 @@ class DbBase
       */
     function getAll() 
     {
-        $query = " SELECT * FROM '".$this->table."'; ";
-        return $this->query($query);
+        return $this->getWhere("1");
     }
 
     /**
@@ -294,6 +305,18 @@ class DbBase
         $query = " SELECT * FROM '".$this->table."' WHERE ".$this->id."= ? ;";
         return $this->query($query, array($id));
     }
+
+    /**
+     * Gets all rows from the database
+     *
+     * @return array
+      */
+    function getWhere($where, $data = array()) 
+    {
+        $query = " SELECT * FROM '".$this->table."' WHERE ".$where;
+        return $this->query($query, $data);
+    }
+
 
     /**
      * Sets the error code for the last query
@@ -318,7 +341,8 @@ class DbBase
     function query($query, $data=array()) 
     {
 
-        if (!is_array($data)) return FALSE;
+        if (!is_array($data)) return false;
+        if (!is_object($this->_db)) return false;
         // Clear out the error
         $this->_errorInfo(true); 
                
@@ -348,6 +372,15 @@ class DbBase
         return $this->query($query, array($id));
     }
     
+    /**
+     * Sets the verbosity
+     *
+     * @param int $level The verbosity level
+     */    
+    public function verbose($level=0)
+    {
+        $this->verbose = (int) $level;
+    }
     
 }
 
