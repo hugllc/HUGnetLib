@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id: AllTests.php 442 2007-11-12 23:03:55Z prices $    
  *
  */
 

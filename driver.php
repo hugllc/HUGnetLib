@@ -483,7 +483,7 @@ class Driver
     /**
      * Constructor    
       */
-    function driver(&$db=null, $plugins = "", $direct=true) {        
+    function __construct(&$db=null, $plugins = "", $direct=true) {        
 
         $this->db = &$db;
         if (is_object($this->db)) {

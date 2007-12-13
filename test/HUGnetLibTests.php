@@ -61,6 +61,9 @@ require_once 'unitConversionTest.php';
 // Drivers
 require_once 'drivers/HUGnetLibDriverTests.php';
 
+// Base
+require_once 'base/HUGnetLibBaseTests.php';
+
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
@@ -95,6 +98,7 @@ class HUGnetLibTests
  
         // Driver Tests 
         $suite->addTest(HUGnetLibDriverTests::suite());
+        $suite->addTest(HUGnetLibBaseTests::suite());
  
         return $suite;
     }
