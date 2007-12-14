@@ -246,14 +246,14 @@ if (!class_exists("dbsocket")) {
          * dbsocket::Connect().
          *
          * @return bool true if the connection is good, false otherwise
+         *
+         * @todo How do I make this check the connection when the connection might be
+         *      
          */
         public function CheckConnect() 
         {
-/*
-            $ret = @$this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
-            if (is_null($ret)) return true;
-*/
-            return true;            
+            if ($this->driver == "sqlite") return true;
+            return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
         }
         
         /**
