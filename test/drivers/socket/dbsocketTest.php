@@ -75,7 +75,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
         $this->dbfile = sys_get_temp_dir()."/dbsocket".mt_rand(12435, 5412451).".sq3";
         if (file_exists($this->dbfile)) unlink($this->dbfile);
         $this->db = new PDO('sqlite::memory');
-        $query = plog::createPacketLogQuery($this->table);
+        $query = plog::createTableQuery($this->table);
         $this->db->query($query);
         $this->s = new dbsocket($this->db);
 

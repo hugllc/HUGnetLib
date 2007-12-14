@@ -32,6 +32,8 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** The base for all database classes */
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 
 /**
  * This class logs packets into the database
@@ -44,14 +46,14 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Plog
+class Plog extends DbBase
 {
     /** @var string Database table to use */
-    private $table = "PacketLog";
+    protected $table = "PacketLog";
     /** @var int Some kind of index */
     private $index = 1;
     /** @var mixed The file to find the SQLite database in */
-    private $file = null;
+    protected $file = null;
     /** @var mixed The description of the critical error that just happened. */ 
     public $criticalError = false;
 
@@ -70,13 +72,10 @@ class Plog
         }
                 
         if (is_writable($this->file)) {
-            $this->_sqlite = new PDO("sqlite:".$this->file);
-            if (!empty($name)) {
-                $this->table = $name;
-            }
-    
-            @$this->createPacketLog();
+            $db = new PDO("sqlite:".$this->file);
 
+            parent::__construct($db, $name);
+            
             $this->getID();
         } else {
             $this->criticalError = "Database Not Writable!";
@@ -91,12 +90,8 @@ class Plog
       */
     function getID() 
     {
-        if (!is_object($this->_sqlite)) return false;
         $query = "SELECT MAX(id) as id from '".$this->table."'";    
-        $ret   = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        if (is_object($ret)) {
-            $ret = $ret->fetchAll(PDO::FETCH_ASSOC);       
-        }
+        $ret   = $this->query($query);
         $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 1 ;
         return $newID + 1;
     }
@@ -108,7 +103,7 @@ class Plog
      *
      * @return string
       */
-    function createPacketLogQuery($table="")
+    function createTableQuery($table="")
     {
         if (empty($table)) $table = $this->table;
         $query = " CREATE TABLE '".$table."' (
@@ -132,18 +127,6 @@ class Plog
         return $query;
     }
 
-    /**
-     * Creates the packet log table.
-     *
-     * @return mixed
-      */
-    function createPacketLog() 
-    {
-        if (!is_object($this->_sqlite)) return false;
-        $query = $this->createPacketLogQuery();        
-        $ret   = @$this->_sqlite->query($query);
-        return $ret;
-    }
 
     /**
      * Returns the rows the where statement finds
@@ -160,13 +143,7 @@ class Plog
 
         $query = "SELECT * FROM '".$this->table."' WHERE ".$where;
         if ($limit > 0) $query .= " limit ".$start.", ".$limit;
-        $res = $this->_sqlite->query($query);
-        if (is_object($res)) {
-            $ret = $res->fetchAll(PDO::FETCH_ASSOC);
-            return $ret;
-        } else {
-            return false;
-        }
+        return $this->query($query);
     }
 
     /**
@@ -183,16 +160,8 @@ class Plog
         $query = "SELECT * FROM '".$this->table."' ";
         if (!empty($where)) $query .= " WHERE ".$where;
 
-        $res = $this->_sqlite->query($query);
-        if (is_object($res)) {
-            $ret = $res->fetch(PDO::FETCH_ASSOC);
-
-            if (isset($ret)) {
-                return $ret;
-            } else {
-                return false;
-            }
-        }
+        $res = $this->query($query);
+        return $res[0];
     }
 
 
@@ -214,46 +183,11 @@ class Plog
                 && !empty($info['sendCommand'])
                 ) {
 
-            $div    = "";
-            $fields = "";
-            $values = "";
-            $doId   = true;
-            foreach ($info as $key => $val) {
-                if (!is_null($val)) {
-                    $fields .= $div.$key;
-                    $values .= $div."'".$val."'";
-                    $div = ", ";
-                    if ($key == "id") $doId = false;
-                }
-            }
-            if ($doId) {
-                $fields .= $div."id";
-                $values .= $div."'".$this->index."'";
-                $this->index++;
-            }
-            $query = " REPLACE INTO '".$this->table."' (".$fields.") VALUES (".$values.")";
-            $ret   = $this->_sqlite->query($query);
-            return $ret;
-
+            parent::add($info, true);
 
         } else {
             return false;
         }
-    }
-
-
-
-    /**
-     * Returns all of the rows from te database
-     *
-     * @param int $limit The max number of rows to return
-     * @param int $start The number of the entry to start on
-     *
-     * @return mixed
-      */
-    function getAll($limit=0, $start=0) 
-    {
-        return $this->get(1, $limit, $start);
     }
 
     /**
@@ -265,13 +199,8 @@ class Plog
       */
     function remove($info)
     {
-        if (!is_object($this->_sqlite)) return false;
-        if (is_array($info) && isset($info['id'])) {
-            $where = " id=".$info['id'];
-            $query = " DELETE FROM '".$this->table."' WHERE ".$where;
-            $ret   = $this->_sqlite->query($query);
-            if (is_object($ret)) $ret = true;
-            return $ret;
+        if (is_array($info) && isset($info[$this->id])) {
+            return parent::remove($info[$this->id]);
         } else {
             return false;
         }
