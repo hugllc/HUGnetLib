@@ -486,9 +486,6 @@ class Driver
     function __construct(&$db=null, $plugins = "", $direct=true) {        
 
         $this->db = &$db;
-        if (is_object($this->db)) {
-            $this->db->SetFetchMode(ADODB_FETCH_ASSOC);
-        }
         if ($direct) {
             $this->packet = new EPacket(null, $this->verbose);
         } else {
