@@ -48,7 +48,6 @@ require_once dirname(__FILE__).'/unitConversionTest.php';
 require_once dirname(__FILE__).'/drivers/socket/epsocketTest.php';
 require_once dirname(__FILE__).'/EPacketTest.php';
 require_once dirname(__FILE__).'/gatewayTest.php';
-require_once 'adodb/adodb.inc.php';
 
 /**
  * Test class for driver.
@@ -91,7 +90,7 @@ class driverTest extends PHPUnit_Framework_TestCase {
 
     public function &createDriver($socket=null) {
         if (!is_numeric($socket)) $socket = self::$socket;
-        $db = &ADONewConnection('mysqli');
+        $db = new PDO("sqlite::memory");
         $driver = new driver($db);
         $driver->unit = new unitConversionMock();
         $driver->gateway = new gatewayMock($driver);

@@ -53,6 +53,7 @@ define("PACKET_ERROR_BADC_NO", -4);
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 
 if (!class_exists("dbsocket")) {
     /**
@@ -71,10 +72,12 @@ if (!class_exists("dbsocket")) {
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class DbSocket
+    class DbSocket extends DbBase
     {
         /** @var string The database table to use */
-        private $table = "PacketSend";
+        protected $table = "PacketSend";
+        /** @var string The database table to use */
+        protected $id = "id";
         /** @var int How many times we retry the packet until we get a good one */
         var $Retries = 2;
         /** @var array Server information is stored here. */
@@ -143,26 +146,7 @@ if (!class_exists("dbsocket")) {
          */
         private function _insertPacket($pkt) 
         {
-            $set         = array();
-            $fields      = array();
-            $checkFields = array('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand'
-                            , 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData'
-                            , 'Type', 'ReplyTime', 'Checked');
-            foreach ($checkFields as $field) {
-                if (isset($pkt[$field])) {
-                    if (is_string($pkt[$field])) {
-                        $val = $this->db->qstr($pkt[$field]);
-                    } else {
-                        $val = $pkt[$field];
-                    }
-                    $set[]    = $val;
-                    $fields[] = $field;
-                }
-            }
-            $query = "INSERT INTO ".$this->table." (".implode(",", $fields).") VALUES (".implode(", ", $set).")";
-            $ret = $this->db->Execute($query);
-            if ($ret === false) return false;
-            return true;
+            return $this->add($pkt);
         }
         /**
          * Turns an array into a packet.
@@ -187,8 +171,7 @@ if (!class_exists("dbsocket")) {
         {
             if (!is_string($this->replyPacket)) $this->replyPacket = "";
             if (!empty($this->replyPacket)) return true;
-            $query = "SELECT * FROM ".$this->table." WHERE Type = 'REPLY'";
-            $res = $this->db->getArray($query);
+            $res = $this->getWhere(" Type = 'REPLY'");
             if (is_array($res)) {
                 foreach ($res as $pkt) {
                     if (is_array($this->packet[$pkt["id"]])) {
@@ -215,8 +198,7 @@ if (!class_exists("dbsocket")) {
                 unset($this->reply);
                 $this->index = 0;
             }
-            $query = "DELETE FROM ".$this->table." WHERE id = '".$id."' ";
-            $this->db->execute($query);
+            $this->remove($id);
     
         }
         /**
@@ -267,7 +249,11 @@ if (!class_exists("dbsocket")) {
          */
         public function CheckConnect() 
         {
-            return $this->db->IsConnected();
+/*
+            $ret = @$this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
+            if (is_null($ret)) return true;
+*/
+            return true;            
         }
         
         /**
@@ -302,10 +288,8 @@ if (!class_exists("dbsocket")) {
          */
         public function __construct(&$db, $verbose=false) 
         {
-            $this->verbose = $verbose;
-            if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-            $this->db = &$db;
-            if ($this->verbose) print "Done\r\n";
+            $this->verbose($verbose);
+            parent::__construct($db);
         }
         
     }
