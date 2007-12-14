@@ -120,26 +120,6 @@ class deviceTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * data provider for testGet_ydhms
-      */
-    public static function dataGet_ydhms() {
-        return array(
-            array(5000.25, 2, "1h 23m 20.25s"),
-            array(50000000, 0, "1Y 213d 10h 53m 20s"),
-        );
-    }
-    /**
-     * @dataProvider dataGet_ydhms().
-     * @covers driver::Get_ydhms
-      */
-    public function testGet_ydhms($seconds, $digits, $expect) {
-        $o = new driver();
-        $ret = $o->device->Get_ydhms($seconds, $digits);
-        $this->assertSame($expect, $ret);
-    }
-
-
-    /**
      * @todo Implement testSelectDevice().
       */
     public function testSelectDevice() {

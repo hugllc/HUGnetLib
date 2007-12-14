@@ -275,6 +275,8 @@ class Driver
         
     /**
      * Runs a function using the correct driver for the endpoint
+     *
+     * @param array  $Info    Infomation about the device to use
      */
     function done($Info) {
         $this->packet->Close($Info);
@@ -282,8 +284,11 @@ class Driver
     
     /**
      * Runs a function using the correct driver for the endpoint
-     * @param $Packet Array Array of information about the device with the data from the incoming packet
-     * @param $force Boolean Force the update even if the serial number and hardware part number don't match
+     *
+     * @param array $Packet Array of information about the device with the data from the incoming packet
+     * @param bool  $force  Force the update even if the serial number and hardware part number don't match
+     *
+     * @return bool
      */
     function UpdateDevice($Packet, $force=false) {
 
