@@ -52,7 +52,9 @@ define("PACKET_ERROR_BADC_NO", -4);
 /** Error message for not getting a packet back */
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
+/** Used for manipulating devInfo arrays */
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
+/** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 
 if (!class_exists("dbsocket")) {

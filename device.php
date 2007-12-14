@@ -33,7 +33,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
+/** The base for all database classes */
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 /**
  * Class for talking with HUGNet endpoints
  *
@@ -45,12 +46,12 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Device
+class Device extends DbBase
 {
     /** The table devices are stored in */
     var $table = "devices";
     /** The key used for the table */
-    var $primaryCol = "DeviceKey";
+    var $id = "DeviceKey";
 
     /** The table the analysis output is stored in */
     var $analysis_table = "analysis";
@@ -67,36 +68,8 @@ class Device
     {
         $this->db      = &$driver->db;
         $this->_driver = &$driver;
+        parent::__construct($this->db);
     }
-    /**
-     * Updates a database record
-     *
-     * @param int   $key   The database key
-     * @param array $stuff The stuff to update with
-     *
-     * @return bool
-      */
-    public function update($key, $stuff) 
-    {
-        if (!is_array($stuff)) return false;
-        $sep = "";
-        $set = "";
-        foreach ($stuff as $field => $value) {
-            $set .= $sep.$field." = ".$this->db->qstr($value)." ";
-            $sep  = ", ";
-        }
-        if (empty($set)) return false;
-        $query = " UPDATE ".$this->table.
-                 " SET " . $set .
-                 " WHERE " .
-                 " DeviceKey=".$key;
-        if ($this->db->Execute($query)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    } 
 
     /**
      * This returns an array setup for a HTML select list using the adodb
@@ -117,13 +90,7 @@ class Device
         } else {
             $query .= " GatewayKey='".$GatewayKey."'";            
         }
-        $rs = $this->db->Execute($query);
-        if (is_null($name)) {
-            $res = $rs->GetAssoc();
-            return $res;
-        } else {
-            return $rs->GetMenu($name, $selected);
-        }
+        return $this->query($query);
     }    
     
     /**
@@ -144,24 +111,25 @@ class Device
 
         switch (trim(strtoupper($type))) {
         case "ID":
-            $query = "select * from devices where DeviceID='".$id."'";            
+            $field = "DeviceID";            
             break;
         case "NAME":
-            $query = "select * from devices where DeviceName='".$id."'";            
+            $field = "DeviceName";            
             break;
         case "KEY":
         default:
-            $query = "select * from devices where DeviceKey='".$id."'";
+            $field = "DeviceKey";
             break;
         }
-        $devInfo = $this->db->getArray($query);
+        $devInfo = $this->getWhere($field." = ? ", array($id));
+//        $devInfo = $this->db->getArray($query);
         if (is_array($devInfo)) {
             $devInfo = $devInfo[0];
             $devInfo = $this->_driver->DriverInfo($devInfo);
 
             $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
 
-            $cal                    = $this->db->getArray($query);
+            $cal                    = $this->query($query);
             $devInfo["Calibration"] = array();
             if (is_array($cal[0])) {
                 $devInfo["Calibration"] = $this->getCalibration($devInfo, $cal[0]['RawCalibration']);
@@ -169,7 +137,7 @@ class Device
 
             $query = "select * from gateways where GatewayKey='".$devInfo['GatewayKey']."'";
 
-            $gw = $this->db->getArray($query);
+            $gw = $this->query($query);
             if (is_array($gw)) {
                 $devInfo['Gateway'] = $gw[0];
             }
@@ -245,27 +213,21 @@ class Device
                 if (!is_null($GatewayKey)) $ep['GatewayKey'] = $GatewayKey;
                 if (!empty($ep['DeviceKey'])) {
                     unset($ep['params']);
-                    $return = $this->db->AutoExecute('devices', $ep, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
+                    $return = $this->update($ep);
+                    //$return = $this->db->AutoExecute('devices', $ep, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
                 } else {
                     if (!empty($ep["HWPartNum"])) {
                         if (!empty($ep["FWPartNum"])) {
                             if (!empty($ep["SerialNum"])) {
                                 unset($ep['DeviceKey']);
                                 unset($ep['params']);
-                                $return = $this->db->AutoExecute('devices', $ep, 'INSERT');
+                                //$return = $this->db->AutoExecute('devices', $ep, 'INSERT');
+                                $return = $this->insert($ep);
                             }
                         }
                     }
                 }
             }                    
-            if (!$return) {
-                print "Error (".$this->db->MetaErrorNo.") ".$this->db->MetaErrorMsg."\n";
-                $this->Errno = $this->db->MetaErrorNo;
-                $this->Error = $this->db->MetaErrorMsg;
-            }
-            if (isset($ep['Driver']) && ($ep['Driver'] != "eDEFAULT")) {
-                $return = $this->_driver->RunFunction($ep, 'updateConfig');
-            }
         }
         return $return;                    
     }
@@ -285,13 +247,18 @@ class Device
     function setParams($DeviceKey, $params) 
     {
         if (is_array($params)) $params = device::encodeParams($params);
-        $params = $this->db->qstr($this->encodeParams($params));
+        $info   = array(
+            "DeviceKey" => $DeviceKey,
+            "params"    => $this->encodeParams($params),
+        );
+        /*
         $return = $this->db->Execute("UPDATE ".$this->table." SET params = ".$params." WHERE DeviceKey=".$DeviceKey);
         if ($return === false) {
             $this->Errno = $this->db->MetaError();
             $this->Error = $this->db->MetaErrorMsg($this->Errno);
         }
-        return $return;
+        */
+        return $this->update($info);
     }
 
     /**
@@ -365,7 +332,7 @@ class Device
         $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->table." ";
         $cquery .= " WHERE PollInterval > 0 ";
         if (!empty($where)) $cquery .= " AND ".$where;
-        $res   = $this->db->getArray($cquery);
+        $res   = $this->query($cquery);
         $count = $res[0]['count'];
         if (empty($count)) $count = 1;
         
@@ -402,7 +369,7 @@ class Device
     
         if (!empty($where)) $query .= " AND ".$where;
 
-        $res = $this->db->getArray($query);
+        $res = $this->query($query);
         if (isset($res[0])) $res = $res[0];
         return $res;
     }
@@ -440,32 +407,47 @@ class Device
         return($problem);        
     }
     /**
-     * Puts seconds into a human readable Hours minutes seconds
+     * Creates the database table
      *
-     * @param float $seconds The number of seconds
-     * @param int   $digits  the number of places after the decimal point to have on the seconds
-     *
-     * @return string
+     * @return mixed
       */
-    function get_ydhms ($seconds, $digits=0) 
+    function createTable() 
     {
-        $years    = (int)($seconds/60/60/24/365.25);
-        $seconds -= $years*60*60*24*365.25;
-        $days     = (int)($seconds/60/60/24);
-        $seconds -= $days*60*60*24;
-        $hours    = (int)($seconds/60/60);
-        $seconds -= $hours*60*60;
-        $minutes  = (int)($seconds/60);
-        $seconds -= $minutes*60;
-        $seconds  = number_format($seconds, $digits);
-
-        $return = "";
-        if ($years > 0) $return .= $years."Y ";
-        if ($days > 0) $return .= $days."d ";
-        if ($hours > 0) $return .= $hours."h ";
-        if ($minutes > 0) $return .= $minutes."m ";
-        $return .= $seconds."s";
-        return($return);
+        $query = "CREATE TABLE `".$this->table."` (
+                      `DeviceKey` int(11) NOT null,
+                      `DeviceID` varchar(6) NOT null default '',
+                      `DeviceName` varchar(128) NOT null default '',
+                      `SerialNum` bigint(20) NOT null default '0',
+                      `HWPartNum` varchar(12) NOT null default '',
+                      `FWPartNum` varchar(12) NOT null default '',
+                      `FWVersion` varchar(8) NOT null default '',
+                      `RawSetup` varchar(128) NOT null default '',
+                      `Active` varchar(4) NOT null default 'YES',
+                      `GatewayKey` int(11) NOT null default '0',
+                      `ControllerKey` int(11) NOT null default '0',
+                      `ControllerIndex` tinyint(4) NOT null default '0',
+                      `DeviceLocation` varchar(64) NOT null default '',
+                      `DeviceJob` varchar(64) NOT null default '',
+                      `Driver` varchar(32) NOT null default '',
+                      `PollInterval` mediumint(9) NOT null default '0',
+                      `ActiveSensors` smallint(6) NOT null default '0',
+                      `DeviceGroup` varchar(6) NOT null default '',
+                      `BoredomThreshold` tinyint(4) NOT null default '0',
+                      `LastConfig` datetime NOT null default '0000-00-00 00:00:00',
+                      `LastPoll` datetime NOT null default '0000-00-00 00:00:00',
+                      `LastHistory` datetime NOT null default '0000-00-00 00:00:00',
+                      `LastAnalysis` datetime NOT null default '0000-00-00 00:00:00',
+                      `MinAverage` varcar(16) NOT null default '15MIN',
+                      `CurrentGatewayKey` int(11) NOT null default '0',
+                      `params` text NOT null,
+                      PRIMARY KEY  (`DeviceKey`)
+                    );
+                    ";
+                    
+        $ret = $this->query($query);
+        $ret = $this->query('CREATE UNIQUE INDEX `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
+        $ret = $this->query('CREATE UNIQUE INDEX `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
+        return $ret;
     }
 
 }
@@ -482,12 +464,12 @@ class Device
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceCache
+class DeviceCache extends DbBase
 {
     /** @var string The database table to use */
     var $table = "devices";                
     /** @var string This is the Field name for the key of the record */
-    var $primaryCol = "DeviceKey";
+    var $id = "DeviceKey";
 
     /**
      *  These are the database fields
