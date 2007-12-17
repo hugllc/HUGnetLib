@@ -60,14 +60,17 @@ class firmware extends DbBase
 
     /**
      * Changes an SREC source into a raw memory buffer
-     * @param $srec String The S record to change.
-     * @param $MemBufferSize Int the total available space in the memory buffer
-     * @param $PageSize Int the total number of bytes in 1 page of memory.  0 means no pages
-     * @param $MemBufferEmpty String This is what a byte looks like when it is erased.
+     *
+     * @param string $srec           The S record to change.
+     * @param int    $MemBufferSize  The total available space in the memory buffer
+     * @param int    $PageSize       The total number of bytes in 1 page of memory.  0 means no pages
+     * @param string $MemBufferEmpty This is what a byte looks like when it is erased.
      *    The default is for flash memory (FF);
-     * @return The raw memory buffer    
+     *
+     * @return string The raw memory buffer    
      */
-    function InterpSREC($srec, $MemBufferSize, $PageSize=0, $MemBufferEmpty="FF") {
+    function InterpSREC($srec, $MemBufferSize, $PageSize=0, $MemBufferEmpty="FF") 
+    {
         $MemBuffer = str_repeat($MemBufferEmpty, $MemBufferSize);
     
         if (!is_array($srec)) {
@@ -122,7 +125,7 @@ class firmware extends DbBase
                 $MemBuffer = substr($MemBuffer, 0, (strlen($MemBuffer)-2));
             }
         }
-        return($MemBuffer);
+        return $MemBuffer;
     }
 
 
@@ -130,11 +133,13 @@ class firmware extends DbBase
      * Returns the latest firmware for the part number given
      * 
      * @param string $FWPartNum This is the part number of the firmware wanted
-     * @param string $Status This is the status of the firmware
-     * @param bool $All If this is true any firmware not listed as BAD is returned
+     * @param string $Status    This is the status of the firmware
+     * @param bool   $All       If this is true any firmware not listed as BAD is returned
+     *
      * @return array The array of firmware information
      */
-    function GetLatestFirmware($FWPartNum, $Status=null, $All=false) {
+    function GetLatestFirmware($FWPartNum, $Status=null, $All=false) 
+    {
         /*
         $this->reset();
         $this->addWhere("FWPartNum='".$FWPartNum."'");
@@ -142,8 +147,6 @@ class firmware extends DbBase
         $ret = $this->getAll();
          */
 
-        if ($ret = $this->cache($FWPartNum)) return $ret;
-        
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." FWPartNum='".$FWPartNum."' ";
@@ -156,8 +159,7 @@ class firmware extends DbBase
         }
         $query .= " ORDER BY Date DESC "
                 ." LIMIT 0,1 ";
-        $ret = $this->query($query);
-        $this->cache($FWPartNum, $ret[0]);
+        $ret    = $this->query($query);
         return $ret[0];
     }
 
@@ -165,13 +167,14 @@ class firmware extends DbBase
      * This get the firmware for a particular piece of hardware.
      * 
      * @param string $HWPartNum This is the part number of the firmware wanted
-     * @param string $Status This is the status of the firmware
+     * @param string $Status    This is the status of the firmware
+     *
      * @return array The array of firmware information    
      */
-    function GetFirmwareFor($HWPartNum, $Status=null) {
+    function GetFirmwareFor($HWPartNum, $Status=null) 
+    {
         $HWPartNum = substr($HWPartNum, 0, 7);
 
-        if ($ret = $this->cache($HWPartNum)) return $ret;
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
                 ." HWPartNum='".$HWPartNum."' ";
@@ -180,21 +183,20 @@ class firmware extends DbBase
                     ." FirmwareStatus='".$Status."' ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        $ret = $this->query($query);
-        $this->cache($HWPartNum, $ret);
+        $ret    = $this->query($query);
         return $ret;
     }
 
     /**
      * 
      * @param string $FWPartNum This is the part number of the firmware wanted
-     * @param string $Status This is the status of the firmware
-     * @param string $version The particular version to get
+     * @param string $Status    This is the status of the firmware
+     * @param string $version   The particular version to get
+     *
      * @return array array of firmware information arrays    
      */
-    function GetFirmware($FWPartNum, $version=null, $Status=null) {
-
-        if ($ret = $this->cache($FWPartNum)) return $ret;
+    function GetFirmware($FWPartNum, $version=null, $Status=null) 
+    {
 
         $query = "SELECT * FROM ".$this->table
                 ." WHERE "
@@ -208,42 +210,10 @@ class firmware extends DbBase
                     ." FirmwareStatus='".$Status."' ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        $ret = $this->query($query);
-        $this->cache($FWPartNum, $ret);
+        $ret    = $this->query($query);
         return $ret;
     }
 
-    /**
-     * Caches the database results in the session.  This way multiple lookups only
-     * get done once.
-     *
-     * @param int $key The database key of the firmware.
-     * @param array $save This is the information to save.  If left blank we retrieve information.
-     * @return array The array of firmware information
-      */
-    function cache($key, $save=false) {
-        if ($save === false) {
-            if ((time() - $this->cacheDate[$key]) > $this->cacheTimeout) return false;
-            if (is_array($this->cache[$key])) {
-                return $this->cache[$key];
-            } else {
-                foreach ($this->cache as $val) {
-                    if ($val['FirmwareKey'] == $key) return $val;
-                    if ($val['FWPartNum'] == $key) return $val;
-                    if ($val['HWPartNum'] == $key) return $val;
-                }
-                return false;
-            }
-        } else {
-            if (is_array($save) && (count($save) > 0)) {
-                $this->cache[$key] = $save;
-            }
-            // Reset the cache time whether we got data or not.  That way if
-            // we lose connection to the database we will just continue to use
-            // the cached value.
-            $this->cacheDate[$key] = time();
-        }
-    }
 
 }
 

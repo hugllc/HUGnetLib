@@ -51,6 +51,15 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->pdo = new PDO('sqlite::memory');
+        $this->createTable();
+        $this->o = new DbBase($this->pdo, "DbBaseTest");
+
+        // Clear out the database
+        $this->pdo->query("DELETE FROM ".$this->table);
+    }
+
+    protected function createTable() 
+    {
         $query = "CREATE TABLE `".$this->table."` (
               `id` int(11) NOT null,
               `name` varchar(16) NOT null default '',
@@ -58,12 +67,7 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
               PRIMARY KEY  (`id`)
             );";
 
-        $ret = $this->pdo->query($query);
-
-        $this->o = new DbBase($this->pdo, "DbBaseTest");
-
-        // Clear out the database
-        $this->pdo->query("DELETE FROM ".$this->table);
+        $ret = $this->pdo->query($query);    
     }
 
     /**
