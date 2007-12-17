@@ -68,11 +68,11 @@ $inc .= ":".dirname(__FILE__)."/lib/pear";
 ini_set('include_path', $inc);
  
 
-//require_once(HUGNET_INCLUDE_PATH."/device.php");
+//require_once HUGNET_INCLUDE_PATH."/database/device.php";
 /** Include the gateway code */
-require_once(HUGNET_INCLUDE_PATH."/gateway.php");
+require_once HUGNET_INCLUDE_PATH."/database/gateway.php";
 /** Include the endpoint driver code */
-require_once(HUGNET_INCLUDE_PATH."/driver.php");
+require_once HUGNET_INCLUDE_PATH."/driver.php";
 
 
 ?>

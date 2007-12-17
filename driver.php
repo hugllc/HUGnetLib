@@ -53,7 +53,7 @@ require_once HUGNET_INCLUDE_PATH."/EPacket.php";
 require_once HUGNET_INCLUDE_PATH."/sensor.php";
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 require_once HUGNET_INCLUDE_PATH."/filter.php";
-require_once HUGNET_INCLUDE_PATH."/device.php";
+require_once HUGNET_INCLUDE_PATH."/database/device.php";
 require_once HUGNET_INCLUDE_PATH."/unitConversion.php";
 require_once HUGNET_INCLUDE_PATH."/lib/plugins.inc.php";
 require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
