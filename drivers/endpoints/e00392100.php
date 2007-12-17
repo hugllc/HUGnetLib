@@ -352,7 +352,7 @@ if (!class_exists("e00392100")) {
                 if (isset($packet['DataIndex'])) {
                     if (($packet["Status"] == "GOOD")) {
                         if ($packet['sendCommand'] == '55') {                        
-                            $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
+                            $return = $this->history->add($packet);
                         }
                     } else {
                         $return = false;
@@ -849,7 +849,7 @@ if (!class_exists("e00392100")) {
          *
          * @param object &$driver Driver
          */
-        function e00392100 (&$driver)
+        function __construct (&$driver)
         {
             parent::__construct($driver);            
             $this->firmware = new firmware($driver->db);

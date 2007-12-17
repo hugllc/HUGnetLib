@@ -97,9 +97,9 @@ class DbBase
         if (is_string($db)) {
             $this->file = $db;
         } else {
-            $this->file = sys_get_temp_dir()."/HUGnetLocal.db";
+            $this->file = HUGNET_LOCAL_DATABASE;
         }
-        
+                
         if (get_class($db) == "PDO") {
             $this->_db = &$db;
         } else {
@@ -131,6 +131,8 @@ class DbBase
         $class = get_class($this);
         $this->_cache = new $class($this->_cacheDb);
         $this->_doCache = true;
+        $this->_cache->verbose($this->verbose);
+        $this->_cache->createTable();
     }
 
 
@@ -140,7 +142,7 @@ class DbBase
      *
      * @return none
      */
-    private function _getColumns() {
+    protected function _getColumns() {
         $this->_getColumnsSQLite();
         $this->_getColumnsMySQL();
     }
@@ -149,7 +151,7 @@ class DbBase
      *
      * @return none
      */
-    private function _getColumnsSQLite()
+    protected function _getColumnsSQLite()
     {
         if ($this->driver != "sqlite") return;
         $columns = $this->query("PRAGMA table_info(".$this->table.")");
@@ -164,7 +166,7 @@ class DbBase
      *
      * @return none
      */
-    private function _getColumnsMySQL() {
+    protected function _getColumnsMySQL() {
         if ($this->driver != "mysql") return;
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table);
         if (!is_array($columns)) return;
@@ -181,13 +183,14 @@ class DbBase
      */
     public function createTable() 
     {
+/*
         $query = "CREATE TABLE `".$this->table."` (
               `id` int(11) NOT null,
               `name` varchar(16) NOT null default '',
               `value` text NOT null,
               PRIMARY KEY  (`id`)
             );";
-
+*/
         $ret = $this->query($query);
         $this->_getColumns();
         return $ret;
@@ -219,7 +222,7 @@ class DbBase
      *
      * @return bool
       */
-    function add($info, $replace = FALSE) 
+    function add($info, $replace = false) 
     {    
         $div    = "";
         $fields = "";
@@ -232,14 +235,19 @@ class DbBase
             $values[] = $info[$key];
             $div = ", ";
         }
+        // Don't do the query if there is nothing to query.
+        if (empty($fields)) return false;
 
+        // Do we replace or insert?
         if ($replace) {
             $query = "REPLACE";
         } else {
             $query = "INSERT";
         }
-        $query .= " INTO '".$this->table."' (".$fields.") VALUES (".$v.")";
-        return $this->query($query, $values);
+        // Build the rest of the query.
+        $query .= " INTO `".$this->table."` (".$fields.") VALUES (".$v.")";
+
+        return $this->query($query, $values, false);
     }
 
     /**
@@ -280,8 +288,8 @@ class DbBase
         }
 
         $values[] = $info[$this->id];
-        $query    = " UPDATE ".$this->table." SET ".$fields." WHERE ".$this->id."= ? ";
-        return $this->query($query, $values);
+        $query    = " UPDATE `".$this->table."` SET ".$fields." WHERE ".$this->id."= ? ";
+        return $this->query($query, $values, false);
     }
 
 
@@ -302,8 +310,7 @@ class DbBase
       */
     function get($id) 
     {
-        $query = " SELECT * FROM '".$this->table."' WHERE ".$this->id."= ? ;";
-        return $this->query($query, array($id));
+        return $this->getWhere($this->id."= ? ", array($id));
     }
 
     /**
@@ -313,7 +320,7 @@ class DbBase
       */
     function getWhere($where, $data = array()) 
     {
-        $query = " SELECT * FROM '".$this->table."' WHERE ".$where;
+        $query = " SELECT * FROM `".$this->table."` WHERE ".$where;
         return $this->query($query, $data);
     }
 
@@ -323,12 +330,23 @@ class DbBase
      *
      * @param bool $clear Clears the error
      */
-    protected function _errorInfo($clear=false)
+    protected function _errorInfo($clear=false, $obj = null)
     {
-        if (!$clear) $err = $this->_db->errorInfo();
+        if (!$clear) {
+            if (!is_object($obj)) {
+                $err = $this->_db->errorInfo();
+            } else {
+                $err = $obj->errorInfo();
+            }
+        }
         $this->errorState = $err[0];
         $this->error      = $err[1];
         $this->errorMsg   = $err[2];
+        if ($this->verbose) {
+            if (!empty($this->errorState)) $this->vprint("Error State: ".$this->errorState);
+            if (!empty($this->error)) $this->vprint("Error: ".$this->error);
+            if (!empty($this->errorMsg)) $this->vprint("Error Message: ".$this->errorMsg);
+        }
         
     }
     /**
@@ -338,24 +356,87 @@ class DbBase
      *
      * @return mixed
      */
-    function query($query, $data=array()) 
+    function query($query, $data=array(), $getRet=true) 
     {
-
         if (!is_array($data)) return false;
         if (!is_object($this->_db)) return false;
+        $this->test = false;
+
+        $this->cacheQuery($query, $data, $getRet);
         // Clear out the error
         $this->_errorInfo(true); 
-               
+        $this->vprint("Sending Query: ".$query."\n");
+        $this->vprint("With Data: ".print_r($data, true)."\n");
         $ret = $this->_db->prepare($query);
         if (is_object($ret)) {
-            if ($ret->execute($data)) return $ret->fetchAll(PDO::FETCH_ASSOC);
+            $res = $ret->execute($data);
+            if ($getRet) {
+                if ($res) {
+                    $res = $ret->fetchAll(PDO::FETCH_ASSOC);
+                    $this->vprint("Query Returned: ".count($res)." rows");
+                    $this->cacheResult($res);
+                    return $res;
+                } else {
+                    // Set the error
+                    $this->_errorInfo(false, $ret);
+                
+                }
+            } else {
+                // Set the error
+                $this->_errorInfo(false, $ret);
+                return $res;
+            }
+        } else {
+            $this->_errorInfo();        
         }
         
-        // Set the error
-        $this->_errorInfo();
         
-        return array();
+        if ($getRet) {
+            return array();
+        } else {
+            return false;
+        }
     }
+
+    /**
+     * Queries the database
+     *
+     * @param string $query SQL query to send to the database
+     *
+     * @return mixed
+     */
+    function cacheQuery($query, $data=array(), $getRet=true) 
+    {
+        if (!is_array($data)) return false;
+        if (!is_object($this->_cache)) return false;
+        if (!$this->_doCache) return false;
+
+        $ret = $this->_cache->query($query, $data, $getRet);
+        return $ret;
+    }
+
+    /**
+     * Queries the database
+     *
+     * @param string $query SQL query to send to the database
+     *
+     * @return mixed
+     */
+    function cacheResult($res) 
+    {
+        if (!is_array($res)) return false;
+        if (!is_object($this->_cache)) return false;
+        if (!$this->_doCache) return false;
+        $count = 0;
+        $tries = 0; 
+        foreach ($res as $data) {
+            if ($this->_cache->replace($data)) $count++;
+            $try++;
+        }
+        $this->vprint("Cache entry: $count/$tries");        
+        
+    }
+
 
     /**
      * Removes a row from the database.
@@ -369,7 +450,7 @@ class DbBase
     function remove($id) 
     {
         $query = " DELETE FROM '".$this->table."' WHERE ".$this->id."= ? ;";
-        return $this->query($query, array($id));
+        return $this->query($query, array($id), false);
     }
     
     /**
@@ -380,6 +461,22 @@ class DbBase
     public function verbose($level=0)
     {
         $this->verbose = (int) $level;
+    }
+
+    /**
+     * Prints out a string
+     *
+     * @param string $str The string to print out
+     *
+     * @return none
+     */
+    protected function vprint($str) {
+        if (!$this->verbose) return;
+        if (empty($str)) return;
+        $class = get_class($this);
+        $driver = $this->driver;
+        if ($driver == "sqlite") $file = $this->file;
+        print "(".$class." - ".$driver." ".$file.") ".$str."\n";
     }
     
 }

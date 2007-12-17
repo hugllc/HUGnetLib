@@ -51,8 +51,17 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->pdo = new PDO('sqlite::memory');
+        $query = "CREATE TABLE `".$this->table."` (
+              `id` int(11) NOT null,
+              `name` varchar(16) NOT null default '',
+              `value` text NOT null,
+              PRIMARY KEY  (`id`)
+            );";
+
+        $ret = $this->pdo->query($query);
+
         $this->o = new DbBase($this->pdo, "DbBaseTest");
-        $this->o->createTable();
+
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
     }
@@ -77,6 +86,7 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
     {
         $query  = "INSERT INTO ".$this->table." (id, name, value) VALUES(?, ?, ?);";
         $res = $this->pdo->prepare($query);
+        if (!is_object($res)) return;
         foreach($values as $val) {
             $res->execute($val);
         }
@@ -112,6 +122,7 @@ class DbBaseTest extends PHPUnit_Framework_TestCase
     {
         $query = "SELECT * FROM ".$this->table.";";
         $res = $this->pdo->query($query);
+        if (!is_object($res)) return false;
         return $res->fetchAll(PDO::FETCH_ASSOC);    
     }
 

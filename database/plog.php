@@ -58,32 +58,6 @@ class Plog extends DbBase
     public $criticalError = false;
 
     /**
-     * Constructor
-     *
-     * @param string $name The name of the table to use.
-     * @param string $file The name of the file to use.
-      */
-    function __construct($name = null, $file=null) 
-    {
-        if (!empty($file)) {
-            $this->file = $file;
-        } else {
-            $this->file = HUGNET_LOCAL_DATABASE;
-        }
-                
-        if (is_writable($this->file)) {
-            $db = new PDO("sqlite:".$this->file);
-
-            parent::__construct($db, $name);
-            
-            $this->getID();
-        } else {
-            $this->criticalError = "Database Not Writable!";
-        }
-       
-    }
-
-    /**
      * Gets the next ID to use from the table
      *
      * @return int
@@ -103,7 +77,7 @@ class Plog extends DbBase
      *
      * @return string
       */
-    function createTableQuery($table="")
+    function createTable($table="")
     {
         if (empty($table)) $table = $this->table;
         $query = " CREATE TABLE '".$table."' (
@@ -124,6 +98,8 @@ class Plog extends DbBase
                       PRIMARY KEY  ('id')
                     );
                     ";
+        $this->query($query);
+        $this->_getColumns();
         return $query;
     }
 
@@ -139,9 +115,8 @@ class Plog extends DbBase
       */
     function get($where, $limit=0, $start=0) 
     {
-        if (!is_object($this->_sqlite)) return false;
 
-        $query = "SELECT * FROM '".$this->table."' WHERE ".$where;
+        $query = "SELECT * FROM ".$this->table." WHERE ".$where;
         if ($limit > 0) $query .= " limit ".$start.", ".$limit;
         return $this->query($query);
     }
@@ -155,8 +130,6 @@ class Plog extends DbBase
       */
     function getOne($where = null) 
     {
-        if (!is_object($this->_sqlite)) return false;
-
         $query = "SELECT * FROM '".$this->table."' ";
         if (!empty($where)) $query .= " WHERE ".$where;
 
@@ -171,10 +144,10 @@ class Plog extends DbBase
      * @param array $info The row to insert into the database
      *
      * @return mixed
-      */
+     */
+    
     function add($info) 
     {    
-        if (!is_object($this->_sqlite)) return false;
         if (isset($info['PacketFrom']) 
                 && isset($info['PacketFrom']) 
                 && !empty($info['GatewayKey']) 
@@ -182,30 +155,14 @@ class Plog extends DbBase
                 && isset($info['Command']) 
                 && !empty($info['sendCommand'])
                 ) {
-
-            parent::add($info, true);
+            if (!isset($info[$this->id])) $info[$this->id] = $this->index++;
+            return parent::add($info, true);
 
         } else {
             return false;
         }
     }
-
-    /**
-     * Removes a row from the database
-     *
-     * @param array $info The row to insert into the database
-     *
-     * @return mixed
-      */
-    function remove($info)
-    {
-        if (is_array($info) && isset($info[$this->id])) {
-            return parent::remove($info[$this->id]);
-        } else {
-            return false;
-        }
     
-    }
 
     /**
      * Converts a packet array into an array for inserting into the packet log tables in the database.

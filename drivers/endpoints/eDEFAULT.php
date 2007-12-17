@@ -102,6 +102,8 @@ if (!class_exists('eDEFAULT')) {
         
         /** history table */
         protected $history_table = "history";
+        /** history id */
+        protected $history_id = "HistoryKey";
         /** location table
          *  @deprecated This is now stored in the 'params' field in the devices table
          */
@@ -209,7 +211,7 @@ if (!class_exists('eDEFAULT')) {
             foreach ($Packets as $packet) {
                 if (($packet["Status"] == "GOOD")) {
                     if (!isset($packet['DeviceKey'])) $packet['DeviceKey'] = $Info['DeviceKey'];
-                    $return = $this->driver->db->AutoExecute($this->history_table, $packet, 'INSERT');
+                    $return = $this->history->add($packet);
                 } else {
                     $return = false;
                 }
@@ -499,9 +501,7 @@ if (!class_exists('eDEFAULT')) {
         protected function _interpCalibration(&$Info) 
         {
             if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
-                $pkt = &$Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
-
-                $Info['RawCalibration'] = $pkt;
+                $Info['RawCalibration'] = $Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
             }        
         }
 
@@ -850,6 +850,7 @@ if (!class_exists('eDEFAULT')) {
             $this->packet =& $driver->packet;
             $this->device =& $driver->device;
             $this->sensors =& $driver->sensors;
+            $this->history = new DbBase($driver->db, $this->history_table, $this->history_id);
         }
     }    
 }
