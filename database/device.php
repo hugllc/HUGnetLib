@@ -64,11 +64,15 @@ class Device extends DbBase
      *
      * @param object &$driver This should be an object of class driver
      */
-    function __construct(&$driver) 
+    function __construct(&$driver = null) 
     {
-        $this->db      = &$driver->db;
-        $this->_driver = &$driver;
-        parent::__construct($this->db);
+        if (is_object($driver)) {
+            $this->db      = &$driver->db;
+            $this->_driver = &$driver;
+            parent::__construct($this->db);
+        } else {
+            parent::__construct();        
+        }
     }
 
     /**
@@ -671,9 +675,7 @@ class DeviceCache extends DbBase
       */
     function getAll() 
     {
-        $query = " SELECT * FROM '".$this->table."'; ";
-        $ret   = $this->_db->query($query);
-        if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
+        $ret = parent::getAll();
         foreach ($ret as $key => $val) {
             $ret[$key]["params"] = device::decodeParams($ret[$key]["params"]);
         }

@@ -93,13 +93,13 @@ class Gateway extends DbBase
         if (is_string($table)) $this->table = $table;
 
         $query = "CREATE TABLE `".$this->table."` (
-                  `GatewayKey` int(11) NOT null auto_increment,
+                  `GatewayKey` int(11) NOT null,
                   `GatewayIP` varchar(15) NOT null default '',
                   `GatewayName` varchar(30) NOT null default '',
                   `GatewayLocation` varchar(64) NOT null default '',
                   `database` varchar(64) NOT null default '',
                   `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
-                  PRIMARY KEY  (`GatewayKey`),
+                  PRIMARY KEY  (`GatewayKey`)
                 );
                     ";
         $ret = $this->query($query);
