@@ -29,44 +29,29 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
+ * @version SVN: $Id: AllTests.php 442 2007-11-12 23:03:55Z prices $    
  *
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HUGnetLibTests::main');
+    define('PHPUnit_MAIN_METHOD', 'HUGnetLibDatabaseTests::main');
 }
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-require_once 'otherTest.php';
-
-// Main Files
-require_once 'devInfoTest.php'; 
-require_once 'driverTest.php'; 
-require_once 'EPacketTest.php'; 
-require_once 'filterTest.php'; 
-require_once 'processTest.php'; 
-require_once 'sensorTest.php'; 
-require_once 'unitConversionTest.php';
-
-// Drivers
-require_once 'drivers/HUGnetLibDriverTests.php';
-
-// Base
-require_once 'base/HUGnetLibBaseTests.php';
-
-// database
-require_once 'database/HUGnetLibDatabaseTests.php';
+require_once 'deviceTest.php'; 
+require_once 'firmwareTest.php'; 
+require_once 'gatewayTest.php'; 
+require_once 'plogTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
  */
-class HUGnetLibTests
+class HUGnetLibDatabaseTests
 {
     public static function main()
     {
@@ -75,32 +60,17 @@ class HUGnetLibTests
  
     public static function suite()
     {
-        PHPUnit_Util_Filter::addDirectoryToFilter('*adodb/', '.php');
-        PHPUnit_Util_Filter::addDirectoryToFilter('HUGnetLib/test/', '.php');
-        $suite = new PHPUnit_Framework_TestSuite('HUGnetLib');
-
-        $suite->addTestSuite('otherTest');
-        // Main file Tests 
-        $suite->addTestSuite('devInfoTest');
-        $suite->addTestSuite('driverTest');
-        $suite->addTestSuite('EPacketTest');
-        $suite->addTestSuite('filterTest');
-        $suite->addTestSuite('processTest');
-        $suite->addTestSuite('sensorTest');
-        $suite->addTestSuite('unitConversionTest');
- 
-        // Base class tests
-        $suite->addTest(HUGnetLibBaseTests::suite());
-        // Database Class Tests 
-        $suite->addTest(HUGnetLibDatabaseTests::suite());
-        // Driver Tests
-        $suite->addTest(HUGnetLibDriverTests::suite());
- 
+        $suite = new PHPUnit_Framework_TestSuite('HUGnetLibDatabase');
+        $suite->addTestSuite('deviceTest');
+        $suite->addTestSuite('firmwareTest');
+        $suite->addTestSuite('gatewayTest');
+        $suite->addTestSuite('plogTest');
+  
         return $suite;
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'HUGnetLibTests::main') {
-    HUGnetLibTests::main();
+if (PHPUnit_MAIN_METHOD == 'HUGnetLibDatabaseTests::main') {
+    HUGnetLibDatabaseTests::main();
 }
 ?>

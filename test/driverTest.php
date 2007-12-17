@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/../hugnet.inc.php';
 require_once dirname(__FILE__).'/unitConversionTest.php';
 require_once dirname(__FILE__).'/drivers/socket/epsocketTest.php';
 require_once dirname(__FILE__).'/EPacketTest.php';
-require_once dirname(__FILE__).'/gatewayTest.php';
+require_once dirname(__FILE__).'/database/gatewayTest.php';
 
 /**
  * Test class for driver.
