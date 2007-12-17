@@ -179,21 +179,13 @@ class DbBase
     /**
      * Creates the database table.
      *
+     * Must be defined in child classes
+     *
      * @return bool
      */
     public function createTable() 
     {
-/*
-        $query = "CREATE TABLE `".$this->table."` (
-              `id` int(11) NOT null,
-              `name` varchar(16) NOT null default '',
-              `value` text NOT null,
-              PRIMARY KEY  (`id`)
-            );";
-*/
-        $ret = $this->query($query);
-        $this->_getColumns();
-        return $ret;
+        return false;
     }
 
     /**
@@ -203,15 +195,28 @@ class DbBase
      *
      * @return none
       */
-    function addArray($InfoArray) 
+    function addArray($infoArray, $replace = false) 
     {
-        if (!is_array($InfoArray)) return;
-
-        foreach ($InfoArray as $info) {
-            $this->add($info);
+        if (!is_array($infoArray)) return;
+        $query = $this->_addQuery($infoArray[0], $keys, $replace);
+        $ret = $this->_db->prepare($query);
+        foreach ($infoArray as $info) {
+            $this->queryExecute($ret, $this->_prepareData($info, $keys));
         }
     }
     
+    
+    /**
+     * Prepares data to be inserted into the
+     */
+    protected function _prepareData($data, $keys) {
+        if (!is_array($keys)) return array();
+        $ret = array();
+        foreach ($keys as $k) {
+            $ret[] = $data[$k];
+        }
+        return $ret;
+    }
     /**
      * Adds an row to the database
      *
@@ -221,18 +226,26 @@ class DbBase
      *                       databases support "REPLACE".
      *
      * @return bool
-      */
-    function add($info, $replace = false) 
+     */
+    function add($info, $replace = false)
+    {
+        $query = $this->_addQuery($info, $keys, $replace);
+        $values = $this->_prepareData($info, $keys);
+        return $this->query($query, $values, false);    
+    }
+
+    function _addQuery($info, &$keys, $replace = false) 
     {    
         $div    = "";
         $fields = "";
         $values = array();
         $v      = "";
+        $keys   = array();
         foreach ($this->fields as $key => $val) {
             if (!isset($info[$key])) continue;
             $fields .= $div.$key;
             $v.= $div." ? ";
-            $values[] = $info[$key];
+            $keys[] = $key;
             $div = ", ";
         }
         // Don't do the query if there is nothing to query.
@@ -246,8 +259,8 @@ class DbBase
         }
         // Build the rest of the query.
         $query .= " INTO `".$this->table."` (".$fields.") VALUES (".$v.")";
-
-        return $this->query($query, $values, false);
+        
+        return $query;
     }
 
     /**
@@ -369,35 +382,42 @@ class DbBase
         $this->vprint("With Data: ".print_r($data, true)."\n");
         $ret = $this->_db->prepare($query);
         if (is_object($ret)) {
-            $res = $ret->execute($data);
-            if ($getRet) {
-                if ($res) {
-                    $res = $ret->fetchAll(PDO::FETCH_ASSOC);
-                    $this->vprint("Query Returned: ".count($res)." rows");
-                    $this->cacheResult($res);
-                    return $res;
-                } else {
-                    // Set the error
-                    $this->_errorInfo(false, $ret);
-                
-                }
-            } else {
-                // Set the error
-                $this->_errorInfo(false, $ret);
-                return $res;
-            }
+            return $this->queryExecute($ret, $data, $getRet);
         } else {
             $this->_errorInfo();        
         }
         
-        
-        if ($getRet) {
-            return array();
-        } else {
-            return false;
-        }
+        if ($getRet) return array();
+        return false;
     }
 
+    /**
+     * This function actually executes a query.
+     *
+     * @param object &$ret   The database query object
+     * @param array  &$data  The data array to insert
+     * @param bool   $getRes Whether to expect a result back.
+     *
+     * @return mixed
+     */
+     protected function queryExecute(&$ret, &$data, $getRes = false)
+     {
+        if (!is_object($ret)) return false;
+        $res = $ret->execute($data);
+        if ($getRes) {
+            if ($res) {
+                $res = $ret->fetchAll(PDO::FETCH_ASSOC);
+                $this->vprint("Query Returned: ".count($res)." rows");
+                $this->cacheResult($res);
+                return $res;
+            }
+            // Set the error
+            $this->_errorInfo(false, $ret);
+            return array();
+        } 
+        $this->_errorInfo(false, $ret);
+        return $res;
+    }
     /**
      * Queries the database
      *

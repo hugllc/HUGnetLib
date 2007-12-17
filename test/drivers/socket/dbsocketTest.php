@@ -72,11 +72,10 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
      * @access protected
       */
     protected function setUp() {
-        $this->dbfile = sys_get_temp_dir()."/dbsocket".mt_rand(12435, 5412451).".sq3";
-        if (file_exists($this->dbfile)) unlink($this->dbfile);
         $this->db = new PDO('sqlite::memory');
-        $this->plog = new plog($this->db, $this->table);
-        $this->plog->createTable();
+        $this->plog = new plog($this->db);
+        $this->plog->createTable($this->table);
+        $this->db->query($query);
         $this->s = new dbsocket($this->db);
 
 //        $this->BadDB = new PDO('mysql');
@@ -92,9 +91,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase {
     protected function tearDown() {
         $this->s->Close();
         unset($this->s);
-        unset($this->plog);
 //        unset($this->sBadDB);
-        if (file_exists($this->dbfile)) unlink($this->dbfile);
     }
 
     public static function dataWrite() {
