@@ -207,9 +207,15 @@ class DbBase
     
     
     /**
-     * Prepares data to be inserted into the
-     */
-    protected function _prepareData($data, $keys) {
+     * Returns an array made for the execute query
+     *
+     * @param array $data The data to prepare
+     * @param array $keys The keys to use
+     * 
+     * @return array
+     */    
+    protected function _prepareData($data, $keys) 
+    {
         if (!is_array($keys)) return array();
         $ret = array();
         foreach ($keys as $k) {
