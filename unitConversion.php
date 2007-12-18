@@ -360,8 +360,7 @@ class UnitConversion
      * @param string $from The starting unit
      *
      * @return array The possible conversions
-      */
-
+     */
     public function getPossConv($type, $from=null) 
     {
 

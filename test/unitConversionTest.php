@@ -157,6 +157,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
     
     /**
+     * Checks that LongName is set correctly
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayLongName($catName, $shortName, $unit) 
@@ -167,6 +175,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
     
     /**
+     * Checks that varType is set correctly
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayVarType($catName, $shortName, $unit) 
@@ -177,8 +193,16 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Checks that the convert array is set correctly
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
-      */
+     */
     public function testUnitArrayConvert($catName, $shortName, $unit) 
     {
         if (isset($unit["convert"])) {
@@ -187,6 +211,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
     
     /**
+     * Checks that mode is set correctly
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayMode($catName, $shortName, $unit) 
@@ -197,6 +229,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Checks that preferred unit is set correctly
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayPreferred($catName, $shortName, $unit) 
@@ -207,6 +247,14 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         }
     }
     /**
+     * Checks that only certain array keys are set
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit
+     * @param string $unit      The unit to check
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArray
      */
     public function testUnitArrayValid($catName, $shortName, $unit) 
@@ -239,6 +287,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return $return;
     }
     /**
+     * Tests that the convert function exists and is actually correctly set up
+     *
+     * @param string $catName   The category name to check
+     * @param string $shortName The short name of the unit to convert from
+     * @param string $to        The unit to convert to
+     * @param string $function  The function to use to convert
+     *
+     * @return none
+     *
      * @dataProvider dataUnitArrayConvertFunct
      */
     public function testUnitArrayConvertFunct($catName, $shortName, $to, $function) 
@@ -247,6 +304,12 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->findUnits($catName, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
     }
     /**
+     * Returns true if it finds the units.
+     *
+     * @param string $cat  The category to check in
+     * @param string $units The unit to check
+     *
+     * @return bool
      */
     public function findUnits($cat, $units) 
     {
@@ -263,6 +326,13 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return false;
     }
     /**
+     * Finds a unit and returns whether the mode is valid for the units.
+     *
+     * @param string $cat  The category to check in
+     * @param string $unit The unit to check
+     * @param string $mode The mode to check
+     *
+     * @return bool
      */
     public function findUnitMode($cat, $unit, $mode) 
     {
@@ -281,6 +351,12 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return false;
     }
     /**
+     * Checks to make sure a mode is valid
+     *
+     * @param string $modes The list of modes to check against
+     * @param string $mode  The mode to check
+     *
+     * @return bool
      */
     private function _checkUnitModeRaw($modes, $mode) 
     {
@@ -297,6 +373,11 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Checks to make sure a vartype is valid
+     *
+     * @param string $vartype The variable type to check
+     *
+     * @return bool
      */
     private function _checkvarType($vartype) 
     {
@@ -306,7 +387,12 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return false;
     }
     /**
-    */
+     * Checks to make sure a mode is valid
+     *
+     * @param string $mode The mode to check
+     *
+     * @return bool
+     */
     private function _checkMode($mode) 
     {
         if ($mode == 'raw') return true;
@@ -329,6 +415,13 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test preferredUnit()
+     *
+     * @param string $unit The unit to find
+     * @param array  $expect  What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataPreferredUnit
      */
     public function testPreferredUnit($unit, $expect) 
@@ -349,6 +442,13 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test Graphable()
+     *
+     * @param string $unit The unit to find
+     * @param array  $expect  What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataGraphable
      */
     public function testGraphable($unit, $expect) 
@@ -368,8 +468,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test findUnit()
+     *
+     * @param string $unit The unit to find
+     * @param array  $expect  What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataFindUnit
-      */
+     */
     public function testfindUnit($unit, $expect) 
     {
         $this->assertSame($expect, $this->o->findUnit($unit));
@@ -388,8 +495,17 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Tests getDataType()
+     *
+     * @param string $from    The starting unit
+     * @param string $to      The unit to be converted into
+     * @param string $default The data type to use if none is specified
+     * @param array  $expect  What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataDataType
-      */
+     */
     public function testgetDataType($from, $to, $default, $expect) 
     {
         $this->assertSame($expect, $this->o->getDataType($from, $to, $default));
@@ -409,16 +525,43 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    /**
+     * Tests Convert()
+     *
+     * @param mixed  $val      The value to convert
+     * @param string $from     The starting unit
+     * @param string &$to      The unit to be converted into
+     * @param int    $time     The time in seconds between this record and the last.
+     * @param string $type     The data type to use
+     * @param mixed  $extra    Any extra stuff we might need.
+     * @param array  $expect   What expect returned
+     * @param array  $toExpect What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataConvert
-      */
+     */
     public function testConvert($val, $from, $to, $time, $type, $extra, $expect, $toExpect) 
     {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
         $this->assertSame($expect, $ret);
     }
     /**
+     * Tests Convert()
+     *
+     * @param mixed  $val      The value to convert
+     * @param string $from     The starting unit
+     * @param string &$to      The unit to be converted into
+     * @param int    $time     The time in seconds between this record and the last.
+     * @param string $type     The data type to use
+     * @param mixed  $extra    Any extra stuff we might need.
+     * @param array  $expect   What expect returned
+     * @param array  $toExpect What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataConvert
-      */
+     */
     public function testConvertTo($val, $from, $to, $time, $type, $extra, $expect, $toExpect) 
     {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
@@ -441,15 +584,23 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Tests getPossConv()
+     *
+     * @param string $type   The data type to use if none is specified
+     * @param string $from   The starting unit
+     * @param array  $expect What expect returned
+     *
+     * @return none
+     *
      * @dataProvider dataGetPossConv
-      */
+     */
     public function testGetPossConv($type, $from, $expect) 
     {
         $this->assertSame($expect, $this->o->getPossConv($type, $from));
     }
 
     /**
-     * Data provider for testFindUnit
+     * Data provider for testFtoC() and testCtoF()
      *
      * @return array
      */
@@ -464,16 +615,34 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * test CtoF()
+     *
+     * @param float  $c    The temperature in C
+     * @param float  $f    The temperature in F
+     * @param int    $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     *
+     * @return none
+     *
      * @dataProvider dataTemperature
-      */
+     */
     public function testCtoF($c, $f, $time, $type) 
     {
         $this->assertEquals($f, $this->o->CtoF($c, $time, $type));        
     }
 
     /**
+     * test FtoC()
+     *
+     * @param float  $f    The temperature in F
+     * @param float  $c    The temperature in C
+     * @param int    $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     *
+     * @return none
+     *
      * @dataProvider dataTemperature
-      */
+     */
     public function testFtoC($c, $f, $time, $type) 
     {
         $this->assertEquals($c, $this->o->FtoC($f, $time, $type));        
@@ -481,7 +650,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * Data provider for testFindUnit
+     * Data provider for testFromMilli() and testToMilli()
      *
      * @return array
      */
@@ -494,6 +663,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test toMilli
+     *
+     * @param float  $v    The number to work on
+     * @param float  $m    The number expected
+     * @param int    $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     *
+     * @return none
+     * 
      * @dataProvider dataMilli
      */
     public function testtoMilli($v, $m, $time, $type) 
@@ -501,6 +679,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($m, $this->o->toMilli($v, $time, $type));
     }
     /**
+     * Test fromMilli
+     *
+     * @param float  $v    The number to work on
+     * @param float  $m    The number expected
+     * @param int    $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     *
+     * @return none
+     * 
      * @dataProvider dataMilli
      */
     public function testfromMilli($v, $m, $time, $type) 
@@ -522,6 +709,15 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test fromCenti
+     *
+     * @param float  $v    The number to work on
+     * @param float  $c    The number expected
+     * @param int    $time The time in seconds between this record and the last.
+     * @param string $type The type of data (diff, raw, etc)
+     *
+     * @return none
+     * 
      * @dataProvider dataCenti
      */
     public function testfromCenti($v, $c, $time, $type) 
