@@ -41,8 +41,15 @@ if (!class_exists('resistiveSensor')) {
      *  This class deals with all resistive sensors.  This includes thermistors,
      *  resistive door sensors, and other resistors.
      *
-      */
-    class resistiveSensor extends sensor_base
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
+    class ResistiveSensor extends sensor_base
     {
         /** @var float Moisture red zone % */
         private $Mr = 18;
@@ -202,7 +209,7 @@ if (!class_exists('resistiveSensor')) {
             if (is_null($T)) return null;
             if ($T > 150) return null;
             if ($T < -40) return null;
-            $T = round ($T, 4);
+            $T = round($T, 4);
             return $T;
         }
     
@@ -230,7 +237,7 @@ if (!class_exists('resistiveSensor')) {
             if ($R0 == 0) return null;
             $T  = $A;
             $T += $B * log($R/$R0);
-            $T += $C * pow(log($R/$R0),2);
+            $T += $C * pow(log($R/$R0), 2);
             $T += $D * pow(log($R/$R0), 3);
             $T  = pow($T, -1);
     
