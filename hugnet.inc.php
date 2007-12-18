@@ -24,12 +24,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package HUGnetLib
- * @copyright 2007 Hunt Utilities Group, LLC
- * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id$    
- *
+ * @category   Base
+ * @package    HUGnetLib
+ * @subpackage Base
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The version define for all of HUGnetLib */
 define("HUGNET_LIB_VERSION", "0.7.3");    
@@ -43,14 +45,7 @@ if (!defined("HUGNET_DATABASE")) {
     define("HUGNET_DATABASE", "HUGNet");
 }
 
-$temp_file = tempnam( md5(uniqid(rand(), true)), '' );
-if ( $temp_file )
-{
-    $temp_dir = realpath( dirname( $temp_file ) );
-    unlink( $temp_file );
-} else {
-    $temp_dir = "/tmp";
-}
+$temp_dir = sys_get_temp_dir();
 
 if (!defined("HUGNET_LOCAL_DATABASE")) {
     /** The name of the default local (sqlite) HUGnet Database */

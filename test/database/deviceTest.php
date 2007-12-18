@@ -74,6 +74,8 @@ class deviceTest extends databaseTest {
       */
     protected function setUp() {
         parent::setUp();
+        $this->o = new device($this->pdo);
+        $this->o->createTable();
     }
 
     /**
@@ -84,6 +86,7 @@ class deviceTest extends databaseTest {
       */
     protected function tearDown() {
         parent::tearDown();
+        unset($this->o);
     }
 
     /**

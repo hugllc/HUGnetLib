@@ -124,7 +124,7 @@ if (!class_exists("dbsocket")) {
          *
          * @return mixed
          */
-        public function Write($data, $pkt) 
+        public function write($data, $pkt) 
         {
             $id                      = rand(1, 24777216);  // Big random number for the id
             $this->packet[$id]       = $pkt;
@@ -153,7 +153,7 @@ if (!class_exists("dbsocket")) {
         /**
          * Turns an array into a packet.
          *
-         * @param array  $pkt  The data to send out the socket in array form
+         * @param array &$pkt The data to send out the socket in array form
          *
          * @return string
          */
@@ -194,7 +194,8 @@ if (!class_exists("dbsocket")) {
          *
          * @return none
          */
-        private function _deletePacket($id) {
+        private function _deletePacket($id) 
+        {
             unset($this->packet[$id]);
             if ($this->reply == $id) {
                 unset($this->reply);
@@ -235,7 +236,7 @@ if (!class_exists("dbsocket")) {
          * 
          * @return none
          */
-        public function Close() 
+        public function close() 
         {
             $this->packet = array();
         }
@@ -252,7 +253,7 @@ if (!class_exists("dbsocket")) {
          * @todo How do I make this check the connection when the connection might be
          *      
          */
-        public function CheckConnect() 
+        public function checkConnect() 
         {
             if ($this->driver == "sqlite") return true;
             return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
@@ -271,7 +272,7 @@ if (!class_exists("dbsocket")) {
          *
          * @return bool true if the connection is good, false otherwise
          */
-        public function Connect($server = "", $port = 0, $timeout=0) 
+        public function connect($server = "", $port = 0, $timeout=0) 
         {
     
             if ($this->CheckConnect()) return true;
@@ -283,7 +284,7 @@ if (!class_exists("dbsocket")) {
         /**
          * Constructor
          * 
-         * @param object $db      Adodb connect object
+         * @param object &$db     PDO connection object
          * @param bool   $verbose Whether to give a lot of output.
          *
          * @return none

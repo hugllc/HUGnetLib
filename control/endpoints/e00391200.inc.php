@@ -31,40 +31,39 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
- *
  */
 
-    include(dirname(__FILE__).'/../group.inc.php');
+require dirname(__FILE__).'/../group.inc.php';
+
 //print get_stuff($devInfo);
-    $form = new HTML_QuickForm('fetControl');
-    $form->addElement('hidden', 'DeviceKey');
-    $form->addElement('hidden', 'noFetchSetup', true);
-    $form->addElement('header', null, 'Device Specific Options');
-    $form->addElement('text', 'TimeConstant', 'Time Constant:', array('size' => 3, 'maxlength' => 3));
-    foreach ($devInfo['Types'] as $sensor => $type) {
+$form = new HTML_QuickForm('fetControl');
+$form->addElement('hidden', 'DeviceKey');
+$form->addElement('hidden', 'noFetchSetup', true);
+$form->addElement('header', null, 'Device Specific Options');
+$form->addElement('text', 'TimeConstant', 'Time Constant:', array('size' => 3, 'maxlength' => 3));
+foreach ($devInfo['Types'] as $sensor => $type) {
 
-        $options = $endpoint->drivers[$devInfo['Driver']]->sensorTypes;
-        $form->addElement('select', 'Types['.$sensor.']', "Sensor ".$sensor." Type:", $options);
+    $options = $endpoint->drivers[$devInfo['Driver']]->sensorTypes;
+    $form->addElement('select', 'Types['.$sensor.']', "Sensor ".$sensor." Type:", $options);
+}
+$form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');    
+$form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');    
+$form->setDefaults($devInfo);
+$form->addElement('submit', 'postSetup', 'Update');
+if (isset($_REQUEST['postSetup']) && $form->validate()) {
+
+    $pktData     = (is_array($_REQUEST['Types'])) ? $_REQUEST['Types'] : array();
+    $pktData[-1] = (int) $_REQUEST['TimeConstant'];
+    ksort($pktData);
+    foreach ($pktData as $key => $val) {
+        $pktData[$key] = (int) $val;        
     }
-    $form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');    
-    $form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');    
-    $form->setDefaults($devInfo);
-    $form->addElement('submit', 'postSetup', 'Update');
-    if (isset($_REQUEST['postSetup']) && $form->validate()) {
+    $return = $endpoint->setConfig($devInfo, 4, $pktData);
 
-        $pktData = (is_array($_REQUEST['Types'])) ? $_REQUEST['Types'] : array();
-        $pktData[-1] = (int) $_REQUEST['TimeConstant'];
-        ksort($pktData);
-        foreach ($pktData as $key => $val) {
-            $pktData[$key] = (int) $val;        
-        }
-        $return = $endpoint->setConfig($devInfo, 4, $pktData);
+    if ($return) header("Location: ".$_SERVER['PHP_SELF']."?DeviceKey=".$devInfo['DeviceKey']);
 
-        if ($return) header("Location: ".$_SERVER['PHP_SELF']."?DeviceKey=".$devInfo['DeviceKey']);
+}
+print $text.$form->toHTML();
 
-    }
-    print $text.$form->toHTML();
-    
 
 ?>

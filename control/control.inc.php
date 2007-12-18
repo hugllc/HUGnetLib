@@ -1,7 +1,6 @@
 <?php
 /**
  * Control interface
- * 
  *
  * PHP Version 5
  *
@@ -32,21 +31,10 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
  *
  */
-/**
- *    @cond WEBDOC
- */
-
-    if (!@include("endpoints/".$devInfo['Driver'].".inc.php"))
-    {
-        print "I don't know how to control this endpoint<br>";
-    }
-    
-//    die ("ASDF");
-/**
- *    @endcond
- */
+if (!@include "endpoints/".$devInfo['Driver'].".inc.php") {
+    print "I don't know how to control this endpoint<br>";
+}
 
 ?>

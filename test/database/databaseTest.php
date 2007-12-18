@@ -134,7 +134,49 @@ class databaseTest extends PHPUnit_Framework_TestCase {
         return $res->fetchAll(PDO::FETCH_ASSOC);    
     }
 
+    /**
+     * Test the table variable
+     *
+     * @return none
+     */
+    public function testTableString() 
+    {
+        $table = $this->readAttribute($this->o, "table");
+        $this->assertType("string", $table);
+    }
 
+    /**
+     * Test the table variable
+     *
+     * @return none
+     */
+    public function testTableEmpty() 
+    {
+        $table = $this->readAttribute($this->o, "table");
+        $this->assertFalse(empty($table));
+    }
+
+    /**
+     * Test the table variable
+     *
+     * @return none
+     */
+    public function testIdString() 
+    {
+        $id = $this->readAttribute($this->o, "id");
+        $this->assertType("string", $id);
+    }
+
+    /**
+     * Test the table variable
+     *
+     * @return none
+     */
+    public function testIdEmpty() 
+    {
+        $id = $this->readAttribute($this->o, "id");
+        $this->assertFalse(empty($id));
+    }
 
 }
 

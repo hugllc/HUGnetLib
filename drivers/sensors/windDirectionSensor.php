@@ -37,12 +37,21 @@ if (!class_exists('windDirectionSensor')) {
 
     /**
      * This class deals with wind direction sensors.
-      */
-    class windDirectionSensor extends sensor_base
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @version    SVN: $Id$    
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
+    class WindDirectionSensor extends sensor_base
     {
     
         /**
-            This defines all of the sensors that this driver deals with...
+         * This defines all of the sensors that this driver deals with...
          */
         public $sensors = array(
             0x6F => array(
@@ -60,7 +69,6 @@ if (!class_exists('windDirectionSensor')) {
                 ),
             ),
         );
-        var $defaultSensor = 'maximum-inc';    
     
         /**
          * Returns a numeric direction in degrees from the numeric bit 
@@ -81,12 +89,15 @@ if (!class_exists('windDirectionSensor')) {
          *   direction needs to be changed to 360 for the averaging to work
          *   properly.            
          *  
-         * @param int $bitField This is an 8 bit bit field returned by the sensor
-         * @param array $sensor this is the array of sensor information for this
+         * @param int   $bitField This is an 8 bit bit field returned by the sensor
+         * @param array $sensor   This is the array of sensor information for this
          *  sensor.  This is not used by this sensor.
-         * @param int $TC The timeconstant.  This is not used by this sensor.
-          */
-        function maximumIncSensor($bitField, $sensor, $TC) {
+         * @param int   $TC       The timeconstant.  This is not used by this sensor.
+         *
+         * @return float
+         */
+        function maximumIncSensor($bitField, $sensor, $TC)
+        {
     
             // Do the cardinal directions
             $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
