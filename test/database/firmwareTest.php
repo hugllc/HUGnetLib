@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$
  *
  */
 
@@ -53,7 +52,7 @@ require_once dirname(__FILE__).'/databaseTest.php';
 class firmwareTest extends databaseTest {
     /** The table to use */
     protected $table = "firmware";
-
+    /** Preload data */
     public static $preload = array(
         array(
             "FirmwareKey" => 1,

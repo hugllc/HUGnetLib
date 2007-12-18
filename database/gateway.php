@@ -62,26 +62,24 @@ class Gateway extends DbBase
     /**
      * Try to automatically find out which gateway to use
      *
-     * @param bool $verbose Whether to send output to the terminal or not
-     *
-     * @return false on failure, Array of gateway information on success
+     * @return mixed false on failure, Array of gateway information on success
      */
-    function Find($verbose = false) 
+    function Find() 
     {
-        $return = false;
         if (function_exists("posix_uname")) {
-            if ($verbose) print "Trying to figure out which gateway to use...\r\n";
+            $this->vprint("Trying to figure out which gateway to use...");
             $stuff = posix_uname();
             // Lookup up a gateway based on our host name
-            if ($verbose) print "Looking for ".$stuff['nodename']."...\r\n";
-            $res = $this->getWhere("GatewayIP = ? ", array(gethostbyname($stuff["nodename"])));
+            $this->vprint("Looking for ".$stuff['nodename']."...");
+            $ip = gethostbyname($stuff["nodename"]);
+            $res = $this->getWhere("GatewayIP = ? ", array($ip));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
-                $return = $res[0];
-                if ($verbose) print "Using ".$res[0]["GatewayName"].".  I hope that is what you wanted.\r\n";
+                $this->vprint("Using ".$res[0]["GatewayName"].".  I hope that is what you wanted.");
+                return $res[0];
             }
         }
-        return $return;
+        return false;
     }
 
     /**
@@ -111,44 +109,4 @@ class Gateway extends DbBase
 
 
 }
-/**
- * This will go away
- *
- * @category   Database
- * @package    HUGnetLib
- * @subpackage Gateways
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-class gatewayCache extends DbBase {
-    var $table = "gateways";                //!< The database table to use
-    var $in = "GatewayKey";     //!< This is the Field name for the key of the record
-
-    /**
-     * Constructor
-     * @param string $file The file name to store the database in    
-     * @param int $mode The octal mode to set the file to.
-     * @param string $error A variable to store errors in.
-     */
-    function __construct($file = null) {
-        if (is_string($file)) $this->file = $file;
-        
-        $this->_db = new PDO("sqlite:".$this->file.".sq3");
-        parent::__construct($this->db);
-
-    }
-    
-    /**
-     *
-      */
-    function createTable() {
-        Gateway::createTable();
-        return $ret;
-    }    
-}
-
-
 ?>

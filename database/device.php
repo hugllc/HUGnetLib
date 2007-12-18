@@ -87,14 +87,16 @@ class Device extends DbBase
      */    
     function selectDevice($name=null, $selected=null, $GatewayKey=null) 
     {
-    
+        $data = array();
         $query = "SELECT DeviceKey, DeviceID FROM devices WHERE";
         if (is_null($GatewayKey)) {
-            $query .= " GatewayKey<>'0'";            
+            $data[] = 0;
+            $query .= " GatewayKey <> ?";            
         } else {
-            $query .= " GatewayKey='".$GatewayKey."'";            
+            $data[] = $GatewayKey;
+            $query .= " GatewayKey= ? ";            
         }
-        return $this->query($query);
+        return $this->query($query, $data);
     }    
     
     /**
@@ -104,7 +106,7 @@ class Device extends DbBase
      *
      * @param mixed $id   This is either the DeviceID, DeviceName or DeviceKey
      * @param int   $type The type of the 'id' parameter.  It is "ID" for DeviceID,
-     *  "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
+     *         "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
      *
      * @return array
       */
