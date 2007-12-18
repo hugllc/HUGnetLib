@@ -46,7 +46,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class firmware extends DbBase
+class Firmware extends DbBase
 {
     /** The table to use */
     var $table = "firmware";
@@ -80,11 +80,11 @@ class firmware extends DbBase
             foreach ($srec as $rec) {
                 $head = substr($rec, 0, 2);
                 if ($head == "S1") {
-                    $size = hexdec(substr($rec, 2, 2));
+                    $size  = hexdec(substr($rec, 2, 2));
                     $size -= 3;
-                    $addr = hexdec(substr($rec, 4, 4));
-                    $data = substr($rec, 8, ($size*2));
-                    $csum = hexdec(substr($rec, (8+($size*2)), 2));
+                    $addr  = hexdec(substr($rec, 4, 4));
+                    $data  = substr($rec, 8, ($size*2));
+                    $csum  = hexdec(substr($rec, (8+($size*2)), 2));
                 } else {
                     // Ignore it.
                     $data = false;
@@ -101,7 +101,6 @@ class firmware extends DbBase
             $MemBuffer = str_split($MemBuffer, ($PageSize*2));
             $MemBuffer = array_reverse($MemBuffer);
             foreach ($MemBuffer as $pnum => $page) {
-    //            $page = str_replace($MemBufferEmpty, "", $page);
                 while (strlen($page) > 0) {
                     if (substr($page, 0, 2) == $MemBufferEmpty) {
                         $page = substr($page, 2);
@@ -129,8 +128,10 @@ class firmware extends DbBase
      *
      * @param string $table The table name to use
      *
+     * @return none
      */
-    function createTable($table="") {
+    function createTable($table="") 
+    {
         if (!empty($table)) $this->table = $table;
         $query = "CREATE TABLE IF NOT EXISTS `firmware` (
                   `FirmwareKey` mediumint(9) NOT NULL,
@@ -162,7 +163,7 @@ class firmware extends DbBase
      */
     function getLatestFirmware($FWPartNum, $Status=null, $All=false) 
     {
-        $data = array($FWPartNum);
+        $data  = array($FWPartNum);
         $query = " FWPartNum= ? ";
         if ($Status !== null) {
             $data[] = $Status;
@@ -189,7 +190,7 @@ class firmware extends DbBase
     function getFirmwareFor($HWPartNum, $Status=null) 
     {
         $HWPartNum = substr($HWPartNum, 0, 7);
-        $data = array($HWPartNum);
+        $data      = array($HWPartNum);
 
         $query = " HWPartNum= ? ";
         if ($Status !== null) {
@@ -198,7 +199,7 @@ class firmware extends DbBase
                     ." FirmwareStatus= ? ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        $ret =  $this->getWhere($query, $data);
+        $ret    =  $this->getWhere($query, $data);
         return $ret;
     }
 
@@ -206,15 +207,15 @@ class firmware extends DbBase
      * Returns a piece of firmware
      * 
      * @param string $FWPartNum This is the part number of the firmware wanted
-     * @param string $Status    This is the status of the firmware
      * @param string $version   The particular version to get
+     * @param string $Status    This is the status of the firmware
      *
      * @return array array of firmware information arrays    
      */
     function getFirmware($FWPartNum, $version=null, $Status=null) 
     {
 
-        $data = array($FWPartNum);
+        $data  = array($FWPartNum);
         $query = " FWPartNum= ? ";
         if ($version !== null) {
             $data[] = $version;

@@ -23,19 +23,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package HUGnetLib
- * @subpackage Filters
- * @copyright 2007 Hunt Utilities Group, LLC
- * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id$    
  *
+ * @category   Filters
+ * @package    HUGnetLib
+ * @subpackage Drivers
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
 if (!class_exists('medianFilter') && class_exists("filter_base")) {
-    
+    /**
+     * Implements a median filter
+     *
+     * @category   Misc
+     * @package    HUGnetLib
+     * @subpackage UnitConversion
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
     class MedianFilter extends filter_base
     {
+        /** @var array Filter information array
         var $filters = array(
             "numeric" => array(
                 "medianFilter" => array(
@@ -55,21 +68,23 @@ if (!class_exists('medianFilter') && class_exists("filter_base")) {
          * @param array $filter   Information on the filter we are implementing
          * @param mixed $extra    Extra setup information on the filter
          * @param int   $deltaT   The difference in time between this record and the last one
+         *
+         * @return array
          */
         public function median(&$history, $index, $filter, $extra, $deltaT=null) 
         {
-            $poles  = is_int($extra[0]) ? $extra[0] : $filter["extraDefault"][0];
-            $active = is_int($extra[1]) ? $extra[1] : $filter["extraDefault"][1];
-            $keys   = array_keys($history);
+            $poles   = is_int($extra[0]) ? $extra[0] : $filter["extraDefault"][0];
+            $active  = is_int($extra[1]) ? $extra[1] : $filter["extraDefault"][1];
+            $keys    = array_keys($history);
             $lastKey = (count($keys) - $active);
             for ($key = $active; $key < $lastKey; $key++) {
                 $mArray = array();
-                $start = $key - $active;
-                $end   = $start + $poles;
-                for($i = $start; $i < $end; $i++) {
+                $start  = $key - $active;
+                $end    = $start + $poles;
+                for ($i = $start; $i < $end; $i++) {
                     $mArray[] = $history[$keys[$i]]["Data".$index];
                 }
-                $history[$keys[$key]]["Data".$index] = $this->_getMedian($mArray, $active);
+                $history[$keys[$key]]["Data".$index]  = $this->_getMedian($mArray, $active);
                 $history[$keys[$key]]["data"][$index] = $history[$keys[$key]]["Data".$index]; 
             }
             return $history;

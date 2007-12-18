@@ -59,7 +59,7 @@ if (!class_exists('resistiveSensor')) {
          * to deal with the change in bias resistors on the same sensor type.  The
          * two entries should be kept identical except for the first extraDefault, which
          * should be 100 under the 0x00 type and 10 under the 0x02 type.
-          */
+         */
         public $sensors = array(
             0x00 => array(
                 'BCTherm2322640' => array(
@@ -140,16 +140,16 @@ if (!class_exists('resistiveSensor')) {
          * resistance of the sensor.  It does this using a fairly complex
          * formula.  This formula and how it was derived is detailed in 
          *
-         * @param $A Integer The AtoD reading
-         * @param $TC Integer The time constant used to get the reading
-         * @param $Bias Float The bias resistance in kOhms
-         * @param int $Tf See {@link sensor_base::$Tf}
-         * @param int $D See {@link sensor_base::$D}
-         * @param int $s See {@link sensor_base::$s}
-         * @param int $Am See {@link sensor_base::$Am}
+         * @param int   $A    Integer The AtoD reading
+         * @param int   $TC   Integer The time constant used to get the reading
+         * @param float $Bias Float The bias resistance in kOhms
+         * @param int   $Tf   See {@link sensor_base::$Tf}
+         * @param int   $D    See {@link sensor_base::$D}
+         * @param int   $s    See {@link sensor_base::$s}
+         * @param int   $Am   See {@link sensor_base::$Am}
+         *
          * @return The resistance corresponding to the values given
-         *  
-          */
+         */
         function getResistance($A, $TC, $Bias, $Tf = null, $D = null, $s = null, $Am=null)
         {
             if (is_null($Tf)) $Tf = $this->Tf;    
@@ -182,17 +182,22 @@ if (!class_exists('resistiveSensor')) {
          *     - C 2.626311e-6
          *     - D 0.675278e-7
          *
-         * @param float $R The current resistance of the thermistor
-         * @param int $type The type of sensor.
+         * @param int   $A      Output of the A to D converter
+         * @param array $sensor The sensor information array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra sensor information
+         * @param float $deltaT The time delta in seconds between this record
+         *                      and the last one
+         *
          * @return float The temperature in degrees C.    
-        
          */
-        function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=null) {
+        function BCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT=null) 
+        {
             if (!is_array($extra)) $extra = array();
-            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $Bias      = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $baseTherm = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $ohms = $this->getResistance($A, $TC, $Bias);
-            $T = $this->_BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
+            $ohms      = $this->getResistance($A, $TC, $Bias);
+            $T         = $this->_BCTherm2322640Interpolate($ohms, $baseTherm, 3.354016e-3, 2.569355e-4, 2.626311e-6, 0.675278e-7);
 
             if (is_null($T)) return null;
             if ($T > 150) return null;
@@ -209,25 +214,25 @@ if (!class_exists('resistiveSensor')) {
          * This function should be called with the values set for the specific
          * thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
          *
-         * @param float $R The current resistance of the thermistor.
+         * @param float $R  The current resistance of the thermistor.
          * @param float $R0 The resistance of the thermistor at 25C
-         * @param float $A Thermistor Constant A (From datasheet)
-         * @param float $B Thermistor Constant B (From datasheet)
-         * @param float $C Thermistor Constant C (From datasheet)
-         * @param float $D Thermistor Constant D (From datasheet)
+         * @param float $A  Thermistor Constant A (From datasheet)
+         * @param float $B  Thermistor Constant B (From datasheet)
+         * @param float $C  Thermistor Constant C (From datasheet)
+         * @param float $D  Thermistor Constant D (From datasheet)
+         *
          * @return float The Temperature in degrees C
-         * 
          */
         private function _BCTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
             if ($R <= 0) return null;
             if ($R0 == 0) return null;
-            $T = $A;
+            $T  = $A;
             $T += $B * log($R/$R0);
             $T += $C * pow(log($R/$R0),2);
             $T += $D * pow(log($R/$R0), 3);
-            $T = pow($T, -1);
+            $T  = pow($T, -1);
     
             $T -= 273.15;
             return($T);
@@ -241,19 +246,21 @@ if (!class_exists('resistiveSensor')) {
          *  1. The fixed resistor
          *  2. The switched resistor
          *
-         * @param float $A The incoming value
+         * @param int   $A      The incoming value
          * @param array $sensor The sensor setup array
-         * @param int $TC The time constant
-         * @param mixed $extra Extra parameters for the sensor
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
          * @return float The percentage of time the door is open
          */ 
-        function resisDoor($A, $sensor, $TC, $extra) {
-            $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+        function resisDoor($A, $sensor, $TC, $extra) 
+        {
+            $Bias  = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             if ($Fixed <= 0) return null;        
             $Switched = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
             if ($Switched <= 0) return null;        
-            $R = $this->getResistance($A, $TC, $Bias);
+            $R  = $this->getResistance($A, $TC, $Bias);
             $R -= $Fixed;
             // Got something wrong here.  We shouldn't have a negative resistance.
             if ($R < 0) return null;
@@ -273,19 +280,20 @@ if (!class_exists('resistiveSensor')) {
          *  1. The red zone resistance
          *  2. The yellow zone resistance
          *
-         * @param float $A The incoming value
+         * @param float $A      The incoming value
          * @param array $sensor The sensor setup array
-         * @param int $TC The time constant
-         * @param mixed $extra Extra parameters for the sensor
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
          * @return float The percentage of time the door is open
          */ 
-        function getMoistureV2($A, $sensor, $TC, $extra) {
+        function getMoistureV2($A, $sensor, $TC, $extra) 
+        {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
-            $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Ry   = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
             if ($Ry <= $Rr) return null;
-            $R = $this->getResistance($A, $TC, $Bias, 1, 1, 64);
-            
+            $R = $this->getResistance($A, $TC, $Bias, 1, 1, 64);            
             $M = $R;
             return $M;
         }
@@ -317,61 +325,35 @@ if (!class_exists('resistiveSensor')) {
          * (Ry, My) and (Rr, Mr).  Resistance and Moiture have an inverse
          * relationship.
          *
-         * @param float $A The incoming value
+         * @param float $A      The incoming value
          * @param array $sensor The sensor setup array
-         * @param int $TC The time constant
-         * @param mixed $extra Extra parameters for the sensor
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
          * @return float The percentage of time the door is open
          */ 
-        function getMoistureV1($A, $sensor, $TC, $extra) {
+        function getMoistureV1($A, $sensor, $TC, $extra) 
+        {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
-            $Rr = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $Ry = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Ry   = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
             if ($Ry <= $Rr) return null;
             $R = $this->getResistance($A, 1, $Bias);
 
             if ($R == 0) return(35.0);
             //$R is coming in k Ohms.  We need Ohms.
-            $R = $R * 1000;
+            $R   = $R * 1000;
             $num = $this->My - $this->Mr;
             $den = log($Ry) - log($Rr);
             if ($den == 0) return(35.0);
             $B = $num / $den;
             $A = $this->Mr - ($B * log($Rr));
-            
             $M = $A + ($B * log($R));
             
             if ($M > 35) return null;
             if ($M < 0) return null;
             return round($M, 2);
         }
-
-
-        /**
-         * This is the bale moisture sensor V1 routine.
-         *
-         * I wish I had documented this better...
-         *
-         * @param float $R Resistance in kOhms
-         * @return float % bale moisure by weight
-         * @deprecated
-          */
-/*
-        function getMoistureV1($R)
-        {
-            if ($R == 0) return(35);
-            //$R is coming in k Ohms.  We need Ohms.
-            $R = $R * 1000;
-            $num = $this->My - $this->Mr;
-            $den = log($this->Ry) - log($this->Rr);
-            if ($den == 0) return(35);
-            $B = $num / $den;
-            $A = $this->Mr - ($B * log($this->Rr));
-            
-            $M = $A + ($B * log($R));
-            return $M;
-        }
-*/
     
     }
 }

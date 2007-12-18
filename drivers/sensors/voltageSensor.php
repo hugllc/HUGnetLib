@@ -37,8 +37,17 @@ if (!class_exists('voltageSensor')) {
 
     /**
      * class for dealing with resistive sensors.
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @version    SVN: $Id$    
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class voltageSensor extends sensor_base
+    class VoltageSensor extends sensor_base
     {
         /**
             This defines all of the sensors that this driver deals with...
@@ -91,6 +100,16 @@ if (!class_exists('voltageSensor')) {
             ),
         );
     
+        /**
+         * This sensor returns us 10mV / % humidity
+         *
+         * @param int   $A  The incoming value
+         * @param float $R1 The resistor to the voltage
+         * @param float $R2 The resistor to ground
+         * @param int   $T  The time constant
+         *
+         * @return float Voltage rounded to 4 places
+         */        
         function getDividerVoltage($A, $R1, $R2, $T)
         {
                 $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
@@ -101,22 +120,34 @@ if (!class_exists('voltageSensor')) {
                 return round($Read, 4);
         }
 
-        function FETBoard($val, $sensor, $TC, $extra=null) {
+        /**
+         * Volgate for the FET board voltage dividers
+         *
+         * @param float $val    The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Voltage rounded to 4 places
+         */
+        function FETBoard($val, $sensor, $TC, $extra=null) 
+        {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $V = $this->getDividerVoltage($val, $R1, $R2, $TC);
+            $V  = $this->getDividerVoltage($val, $R1, $R2, $TC);
             if ($V < 0) $V = null;
             $V = round($V, 4);
             return $V;
         }    
     
         /**
-         * @public
          * Gets the units for a sensor
-         * @param $type Int The type of sensor.
+         *
+         * @param int   $A    The AtoD reading
+         * @param int   $T    The time constant
+         * @param float $Vref The voltage reference
+         *
          * @return The units for a particular sensor type
-        
-         * @par Introduction
          */
         function getVoltage($A, $T, $Vref) 
         {
@@ -132,12 +163,20 @@ if (!class_exists('voltageSensor')) {
     
     
         /**
-            This sensor returns us 10mV / % humidity
+         * This sensor returns us 10mV / % humidity
+         *
+         * @param float $val    The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Relative Humidity rounded to 4 places
          */
-        function CHSMSS($A, $sensor, $T, $extra) {
+        function CHSMSS($A, $sensor, $T, $extra) 
+        {
             if (is_null($A)) return null;
-            $Vref = (empty($extra)) ? $sensor['extraDefault'] : $extra;            
-            $volts = $this->getVoltage($A, $T, (float) $Vref);
+            $Vref     = (empty($extra)) ? $sensor['extraDefault'] : $extra;            
+            $volts    = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
             if ($humidity < 0) return null;
             $humidity = round($humidity, 4);

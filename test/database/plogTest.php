@@ -56,13 +56,15 @@ require_once dirname(__FILE__).'/databaseTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class plogTest extends databaseTest
+class PlogTest extends databaseTest
 {
     /** The table to use */
     protected $table = "plog";
 
     /**
      * Runs the test methods of this class.
+     *
+     * @return none
      *
      * @access public
      * @static
@@ -79,6 +81,8 @@ class plogTest extends databaseTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
+     * @return none
+     *
      * @access protected
      */
     protected function setUp() 
@@ -92,6 +96,8 @@ class plogTest extends databaseTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      *
+     * @return none
+     *
      * @access protected
      */
     protected function tearDown() 
@@ -101,26 +107,30 @@ class plogTest extends databaseTest
     }
 
     /**
+     * Tests plog::getID()
+     *
+     * @return none
+     *
      * @todo Implement testGetID().
      */
     public function testGetID() 
     {
         // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
 
     /**
+     * Tests plog::getOne()
+     *
+     * @return none
+     *
      * @todo Implement testGetOne().
      */
     public function testGetOne() 
     {
         // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     /**
@@ -158,6 +168,8 @@ class plogTest extends databaseTest
      * @param array  $Gateway The gateway array
      * @param string $type    The type of packet it is
      * @param array  $expect  The return value to expect
+     *
+     * @return none
      *
      * @dataProvider dataPacketLog().
      * @covers driver::PacketLogSetup

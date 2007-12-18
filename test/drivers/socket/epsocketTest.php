@@ -122,7 +122,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function getstring() 
+    private function _getstring() 
     {
     
     }
