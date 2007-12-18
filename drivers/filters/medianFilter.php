@@ -23,7 +23,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- *
  * @category   Filters
  * @package    HUGnetLib
  * @subpackage Drivers
@@ -48,7 +47,7 @@ if (!class_exists('medianFilter') && class_exists("filter_base")) {
      */
     class MedianFilter extends filter_base
     {
-        /** @var array Filter information array
+        /** @var array Filter information array */
         var $filters = array(
             "numeric" => array(
                 "medianFilter" => array(
