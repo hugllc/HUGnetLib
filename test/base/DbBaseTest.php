@@ -151,7 +151,7 @@ class DbBaseTest extends databaseTest
     {
         $this->load($preload);
         $this->o->addArray($info);
-        $ret = $this->_getAll();
+        $ret = $this->getAll();
         $this->assertSame($expect, $ret);
     }
 
@@ -460,7 +460,7 @@ class DbBaseTest extends databaseTest
     {
         $this->load($preload);
         $this->o->remove($key);
-        $ret = $this->_getAll();
+        $ret = $this->getAll();
         $this->assertSame($expect, $ret);
     }
 
