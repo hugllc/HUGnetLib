@@ -80,7 +80,7 @@ class Plog extends DbBase
     function createTable($table="")
     {
         if (empty($table)) $table = $this->table;
-        $query = " CREATE TABLE '".$table."' (
+        $query = " CREATE TABLE IF NOT EXISTS '".$table."' (
                       'id' int(11) NOT null,
                       'DeviceKey' int(11) NOT null default '0',
                       'GatewayKey' int(11) NOT null default '0',

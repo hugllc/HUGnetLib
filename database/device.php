@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
@@ -67,9 +66,8 @@ class Device extends DbBase
     function __construct(&$driver = null) 
     {
         if (is_object($driver)) {
-            $this->db      = &$driver->db;
             $this->_driver = &$driver;
-            parent::__construct($this->db);
+            parent::__construct($driver->db);
         } else {
             parent::__construct();        
         }
@@ -109,11 +107,10 @@ class Device extends DbBase
      *         "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
      *
      * @return array
-      */
+     */
     function getDevice($id, $type="KEY") 
     {
         if (empty($id)) return array();
-        if (isset($this->_devCache[$id])) return($this->_devCache[$id]);
 
         switch (trim(strtoupper($type))) {
         case "ID":
@@ -149,7 +146,6 @@ class Device extends DbBase
             }
             $devInfo["params"] = $this->decodeParams($devInfo["params"]);
 
-            $this->_devCache[$id] = $devInfo;
         }
         return $devInfo;
     }
@@ -163,7 +159,7 @@ class Device extends DbBase
      *                    and hardware part number don't match
      *
      * @return mixed
-      */
+     */
     function updateDevice($Packet, $force=false)
     {
 
@@ -249,7 +245,7 @@ class Device extends DbBase
      * @return mixed
      *
      * @uses device::encodeParams
-      */
+     */
     function setParams($DeviceKey, $params) 
     {
         if (is_array($params)) $params = device::encodeParams($params);
@@ -257,13 +253,6 @@ class Device extends DbBase
             "DeviceKey" => $DeviceKey,
             "params"    => $this->encodeParams($params),
         );
-        /*
-        $return = $this->db->Execute("UPDATE ".$this->table." SET params = ".$params." WHERE DeviceKey=".$DeviceKey);
-        if ($return === false) {
-            $this->Errno = $this->db->MetaError();
-            $this->Error = $this->db->MetaErrorMsg($this->Errno);
-        }
-        */
         return $this->update($info);
     }
 
@@ -273,7 +262,7 @@ class Device extends DbBase
      * @param array &$info This is a device information array
      *
      * @return bool
-      */
+     */
     function isController(&$info)
     {
         return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
@@ -285,7 +274,7 @@ class Device extends DbBase
      * @param array &$params the parameter array to encode
      *
      * @return string
-      */
+     */
     function encodeParams(&$params) 
     {
         if (is_array($params)) {
@@ -303,7 +292,7 @@ class Device extends DbBase
      * @param string &$params the parameter array to decode
      *
      * @return array
-      */
+     */
     function decodeParams(&$params) 
     {
         if (is_string($params)) {
@@ -325,7 +314,7 @@ class Device extends DbBase
      * @return array The array of health information
      * 
      * @todo This should be moved to the device class
-      */
+     */
     function health($where, $days = 7, $start=null) 
     {
 
@@ -391,7 +380,7 @@ class Device extends DbBase
      * @param array $Info Infomation about the device to get stylesheet information for
      *
      * @return string The return should be put inside of style="" css tags in your HTML
-      */
+     */
     function diagnose($Info) 
     {
         $problem = array();
@@ -419,7 +408,7 @@ class Device extends DbBase
       */
     function createTable() 
     {
-        $query = "CREATE TABLE `".$this->table."` (
+        $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                       `DeviceKey` int(11) NOT null,
                       `DeviceID` varchar(6) NOT null default '',
                       `DeviceName` varchar(128) NOT null default '',
@@ -451,283 +440,15 @@ class Device extends DbBase
                     ";
                     
         $ret = $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
-        $ret = $this->query('CREATE UNIQUE INDEX `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
+        $this->_getColumns();
         return $ret;
     }
 
 }
 
 
-/**
- * Cache class
- *
- * @category   DatabaseCache
- * @package    HUGnetLib
- * @subpackage Endpoints
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-class DeviceCache extends DbBase
-{
-    /** @var string The database table to use */
-    var $table = "devices";                
-    /** @var string This is the Field name for the key of the record */
-    var $id = "DeviceKey";
-
-    /**
-     *  These are the database fields
-      */
-    var $fields = array(
-            "DeviceKey" => "int(11)",
-            "DeviceID" => "varchar(6)",
-            "DeviceName" => "varchar(128)",
-            "SerialNum" => "bigint(20)",
-            "HWPartNum" => "varchar(12)",
-            "FWPartNum" => "varchar(12)",
-            "FWVersion" => "varchar(8)",
-            "RawSetup" => "varchar(128)",
-            "Active" => "varchar(4)",
-            "GatewayKey" => "int(11)",
-            "ControllerKey" => "int(11)",
-            "ControllerIndex" => "tinyint(4)",
-            "DeviceLocation" => "varchar(64)",
-            "DeviceJob" => "varchar(64)",
-            "Driver" => "varchar(32)",
-            "PollInterval" => "mediumint(9)",
-            "ActiveSensors" => "smallint(6)",
-            "DeviceGroup" => "varchar(6)",
-            "BoredomThreshold" => "tinyint(4)",
-            "LastConfig" => "datetime",
-            "LastPoll" => "datetime",
-            "LastHistory" => "datetime",
-            "LastAnalysis" => "datetime",
-            "MinAverage" => "varcar(16)",
-            "CurrentGatewayKey" => "int(11)",
-            "params" => "text",
-        );
-    /**
-     * Constructor
-     *
-     * @param string $file  The database file to use (SQLite)
-     * @param int    $mode  The file mode in octal (ex 0666)
-     * @param string $error A variable to store an error message in
-      */
-    function __construct($file = null, $mode = 0666, $error = null) 
-    {
-        if ($error == null) $error =& $this->lastError;
-        
-        if (!is_null($file)) {
-            $this->file = $file;
-        } else {
-            $this->file = HUGNET_LOCAL_DATABASE;
-        }
-        if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
-        $this->_db = new PDO("sqlite:".$this->file);
-        $this->createTable();
-        $ret = $this->_db->query("PRAGMA table_info(".$this->table.")");
-        if (is_object($ret)) $columns = $ret->fetchAll(PDO::FETCH_ASSOC);
-        if (is_array($columns)) {
-            foreach ($columns as $col) {
-                $this->fields[$col['name']] = $col['type'];
-            }
-        }
-    }
-    
-    /**
-     * Creates the database table
-     *
-     * @return mixed
-      */
-    function createTable() 
-    {
-        $query = "CREATE TABLE `".$this->table."` (
-                      `DeviceKey` int(11) NOT null,
-                      `DeviceID` varchar(6) NOT null default '',
-                      `DeviceName` varchar(128) NOT null default '',
-                      `SerialNum` bigint(20) NOT null default '0',
-                      `HWPartNum` varchar(12) NOT null default '',
-                      `FWPartNum` varchar(12) NOT null default '',
-                      `FWVersion` varchar(8) NOT null default '',
-                      `RawSetup` varchar(128) NOT null default '',
-                      `Active` varchar(4) NOT null default 'YES',
-                      `GatewayKey` int(11) NOT null default '0',
-                      `ControllerKey` int(11) NOT null default '0',
-                      `ControllerIndex` tinyint(4) NOT null default '0',
-                      `DeviceLocation` varchar(64) NOT null default '',
-                      `DeviceJob` varchar(64) NOT null default '',
-                      `Driver` varchar(32) NOT null default '',
-                      `PollInterval` mediumint(9) NOT null default '0',
-                      `ActiveSensors` smallint(6) NOT null default '0',
-                      `DeviceGroup` varchar(6) NOT null default '',
-                      `BoredomThreshold` tinyint(4) NOT null default '0',
-                      `LastConfig` datetime NOT null default '0000-00-00 00:00:00',
-                      `LastPoll` datetime NOT null default '0000-00-00 00:00:00',
-                      `LastHistory` datetime NOT null default '0000-00-00 00:00:00',
-                      `LastAnalysis` datetime NOT null default '0000-00-00 00:00:00',
-                      `MinAverage` varcar(16) NOT null default '15MIN',
-                      `CurrentGatewayKey` int(11) NOT null default '0',
-                      `params` text NOT null,
-                      PRIMARY KEY  (`DeviceKey`)
-                    );
-                    ";
-                    
-        $ret = $this->_db->query($query);
-        $ret = $this->_db->query('CREATE UNIQUE INDEX `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
-        $ret = $this->_db->query('CREATE UNIQUE INDEX `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
-        return $ret;
-    }
-
-    /**
-     * Adds each element in the array as a row in the database
-     *
-     * @param array $InfoArray An array of database rows to add
-     *
-     * @return none
-      */
-    function addArray($InfoArray) 
-    {
-        if (is_array($InfoArray)) {
-            foreach ($InfoArray as $info) {
-                $this->add($info);
-            }
-        }
-    }
-    
-    /**
-     * Adds an row to the database
-     *
-     * @param array $info The row in array form.
-     *
-     * @return mixed 
-      */
-    function add($info) 
-    {    
-        if (isset($info['DeviceID']) 
-                && isset($info['GatewayKey']) 
-                && isset($info['SerialNum']) 
-                ) {
-            $div    = "";
-            $fields = "";
-            $values = "";
-            foreach ($this->fields as $key => $val) {
-                if (isset($info[$key])) {
-                    $fields .= $div.$key;
-                    if ($key == "params") {
-                        $info[$key] = device::encodeParams($info[$key]);
-                        $values    .= $div.$this->_db->quote($info[$key]);
-                    } else {
-                        $values .= $div.$this->_db->quote($info[$key]);
-                    }
-                    $div = ", ";
-                }
-            }
-
-
-            $query = " REPLACE INTO '".$this->table."' (".$fields.") VALUES (".$values.")";
-            $ret   = $this->_db->query($query);
-            return $ret;
-
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Updates a row in the database.
-     *
-     * @param array $info The row in array form.
-     *
-     * @return mixed 
-      */
-    function update($info) 
-    {    
-        if (isset($info['DeviceKey'])) {
-            $div    = "";
-            $fields = "";
-            $values = "";
-            foreach ($this->fields as $key => $val) {
-                if (isset($info[$key])) {
-                    $fields .= $div.$key;
-                    if ($key == "params") {
-                        $info[$key] = device::encodeParams($info[$key]);
-                        $values    .= $div.$this->_db->quote($info[$key]);
-                    } else {
-                        $values .= $div.$this->_db->quote($info[$key]);
-                    }
-                    $div = ", ";
-                }
-            }
-
-
-            $query = " UPDATE '".$this->table."' SET (".$fields.") VALUES (".$values.") WHERE ".$this->id."=".$info['DeviceKey'];
-            return $this->_db->query($query);
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Gets all rows from the database
-     *
-     * @return array
-      */
-    function getAll() 
-    {
-        $ret = parent::getAll();
-        foreach ($ret as $key => $val) {
-            $ret[$key]["params"] = device::decodeParams($ret[$key]["params"]);
-        }
-        return $ret;
-    }
-
-    /**
-     * Queries the database
-     *
-     * @param string $query SQL query to send to the database
-     *
-     * @return mixed
-      */
-    function query($query) 
-    {
-        $ret = $this->_db->query($query);
-        if (is_object($ret)) $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
-        return $ret;
-    }
-
-    /**
-     * Removes a row from the database.
-     *
-     * @param array $info The row in array form.
-     *
-     * @return mixed 
-      */
-    function remove($info) 
-    {
-        if (is_array($info)) {
-            $div   = "";
-            $where = "";
-            foreach ($info as $key => $val) {
-                $where .= $div.$key."='".$val."'";
-                $div    = " AND ";
-            }
-            if (empty($where)) return false;
-
-            $query = " DELETE FROM '".$this->table."' WHERE ".$where;
-            $ret   = $this->_db->query($query);
-            if (is_object($ret)) $ret = true;
-            return $ret;
-        } else {
-            return false;
-        }
-    
-    }
-    
-    
-}
 
 
 ?>
