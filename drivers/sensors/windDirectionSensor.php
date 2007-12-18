@@ -44,7 +44,6 @@ if (!class_exists('windDirectionSensor')) {
      * @author     Scott Price <prices@hugllc.com>
      * @copyright  2007 Hunt Utilities Group, LLC
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @version    SVN: $Id$    
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
     class WindDirectionSensor extends sensor_base
@@ -101,8 +100,8 @@ if (!class_exists('windDirectionSensor')) {
     
             // Do the cardinal directions
             $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
-            $cDir = null;
-            $oDir = null;
+            $cDir        = null;
+            $oDir        = null;
             foreach ($cDirections as $shift => $dir) {
                 // Do the cardinal direction
                 if ($bitField & (1<<$shift)) {

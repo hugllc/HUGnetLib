@@ -36,10 +36,20 @@
 if (!class_exists('currentSensor')) {
     /**
      * Class for dealing with current sensors.
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class currentSensor extends sensor_base
+    class CurrentSensor extends sensor_base
     {
-    
+        /**
+         * Sensor information array
+         */
         public $sensors = array(
             0x50 => array(
                 "FETBoard" => array(
@@ -78,12 +88,13 @@ if (!class_exists('currentSensor')) {
          * This is further documented at: {@link 
          * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current Sensors }
          *
-         * @param int $A The raw AtoD reading
+         * @param int   $A The raw AtoD reading
          * @param float $R The resistance of the current sensing resistor
          * @param float $G The gain of the circuit
-         * @param int $T The time constant 
+         * @param int   $T The time constant 
+         *
          * @return float The current sensed
-          */
+         */
         function getCurrent($A, $R, $G, $T) 
         {
             $denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
@@ -97,13 +108,15 @@ if (!class_exists('currentSensor')) {
         /**
          *  This is specifically for the current sensor in the FET board.
          *
-         * @param float $val The incoming value
+         * @param float $val    The incoming value
          * @param array $sensor The sensor setup array
-         * @param int $TC The time constant
-         * @param mixed $extra Extra parameters for the sensor
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
          * @return float Current rounded to 1 place
-          */
-        function FETBoard($val, $sensor, $TC, $extra=null) {
+         */
+        function FETBoard($val, $sensor, $TC, $extra=null) 
+        {
             $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $A = $this->getCurrent($val, $R, $G, $TC);

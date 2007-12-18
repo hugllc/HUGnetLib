@@ -37,14 +37,26 @@
     @brief class for dealing with resistive sensors.
 */
 if (!class_exists('pulseSensor')) {
-    
-    class pulseSensor extends sensor_base
+    /**
+     * Class for dealing with pulse sensors
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @version    SVN: $Id$    
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
+    class PulseSensor extends sensor_base
     {
     
         /**
-            This defines all of the sensors that this driver deals with...
+         * This defines all of the sensors that this driver deals with...
+         *
+         * PPM = Pulses per minute
          */
-        // PPM = Pulses per minute
         public $sensors = array(
             0x70 => array(
                 'generic' => array(
@@ -83,7 +95,6 @@ if (!class_exists('pulseSensor')) {
                         'MPH' => 'diff',
                     ),
                     "function" => "maximumAnemometer",
-//                    "checkFunction" => "pulseCheck",
                 ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
@@ -94,7 +105,6 @@ if (!class_exists('pulseSensor')) {
                         '&#34;' => 'diff',
                     ),
                     "mult" => 0.01,
-//                    "checkFunction" => "pulseCheck",
                     "doTotal" => true,
                 ),
                 'bravo3motion' => array(
@@ -124,21 +134,32 @@ if (!class_exists('pulseSensor')) {
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => true,
-//                     "checkFunction" => "pulseCheck",
                 ),
             ),
         );
     
 
         /**
-            This implements the function:
-                Freq = (Speed + 0.1)/1.6965
-            or:
-                Speed = (Freq * 1.6965) - 0.1
-            
-            Freq = Pulses/Time
+         * Sensor reading function for maxumum Inc. anemometers
+         * 
+         * This implements the function:
+         *    Freq = (Speed + 0.1)/1.6965
+         * or:
+         *    Speed = (Freq * 1.6965) - 0.1
+         *  
+         * Freq = Pulses/Time
+         *
+         * @param int   $val    Output of the A to D converter
+         * @param array $sensor The sensor information array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra sensor information
+         * @param float $deltaT The time delta in seconds between this record
+         *                      and the last one
+         *
+         * @return float
          */
-        function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=null) {
+        function maximumAnemometer($val, $sensor, $TC, $extra, $deltaT=null) 
+        {
             if (empty($deltaT)) return null;
             if ($val <= 0) return 0;
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
@@ -146,18 +167,55 @@ if (!class_exists('pulseSensor')) {
             return $speed;
         }
         
-        function pulseCheck($value, $sensor, $units, $dType) {
+        /**
+         * Returns whether the reading is valid
+         *
+         * @param int    $value  The current sensor value
+         * @param array  $sensor The sensor information array
+         * @param string $units  The units the current value are in
+         * @param mixed  $dType  The data mode
+         *
+         * @return bool
+         */
+        function pulseCheck($value, $sensor, $units, $dType) 
+        {
             if ($value < 0) return false;
             return true;
         }
 
-        function WattNode($val, $sensor, $TC, $extra, $deltaT=null) {
+        /**
+         * Crunchs the numbers for the WattNode
+         *
+         * @param int   $val    Output of the A to D converter
+         * @param array $sensor The sensor information array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra sensor information
+         * @param float $deltaT The time delta in seconds between this record
+         *                      and the last one
+         *
+         * @return float
+         */
+        function WattNode($val, $sensor, $TC, $extra, $deltaT=null) 
+        {
             $Wh = $val * $extra;
             if ($Wh < 0) return null;
             return $Wh / 1000;
         }
 
-        function getPPM($val, $sensor, $TC, $extra, $deltaT) {
+        /**
+         * This is for a generic pulse counter
+         *
+         * @param int   $val    Output of the A to D converter
+         * @param array $sensor The sensor information array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra sensor information
+         * @param float $deltaT The time delta in seconds between this record
+         *                      and the last one
+         *
+         * @return float
+         */
+        function getPPM($val, $sensor, $TC, $extra, $deltaT) 
+        {
             if ($deltaT <= 0) return null;
             $ppm = ($val / $deltaT) * 60;
             if ($ppm < 0) return null;

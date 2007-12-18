@@ -642,19 +642,20 @@ class UnitConversion
      *
      * This expects all the units to be correct.
      *
-     * @param array $history The history to modify.  This array gets directly modified.
-     * @param array $devInfo The devInfo array to modify.  This array gets directly modified.
-     * @param int $dPlaces The maximum number of decimal places to show.
-     * @param array $type The types to change to
-     * @param array $units The units to change to
+     * @param array &$history The history to modify.  This array gets directly modified.
+     * @param array &$devInfo The devInfo array to modify.  This array gets directly modified.
+     * @param int   $dPlaces  The maximum number of decimal places to show.
+     * @param array &$type    The types to change to
+     * @param array &$units   The units to change to
      *
      * @return none
      */
-    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
+    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
+    {
         $lastRecord = null;
         if (!is_array($history)) $history = array();
         foreach ($history as $key => $val) {
-           if (is_array($val)) {
+            if (is_array($val)) {
                 if (($lastRecord !== null) || (count($history) < 2)) {
                     for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if ($type[$i] != $devInfo["dType"][$i]) {

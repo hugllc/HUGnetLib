@@ -37,10 +37,17 @@ if (!class_exists('lightSensor')) {
     /**
      * This class implements photo sensors.
      *
-      */
-    class lightSensor extends sensor_base
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
+    class LightSensor extends sensor_base
     {
-        var $defaultSensor = 'OSRAM BPW-34';
+        /** @var array Sensor information array */
         public $sensors = array(
             0x30 => array(
                 'OSRAM BPW-34' => array(
@@ -60,35 +67,34 @@ if (!class_exists('lightSensor')) {
         /**
          * This takes the raw AtoD reading and converts it into light.
          *
-         * @param int $A The raw AtoD reading
+         * @param int $A  The raw AtoD reading
          * @param int $TC The time constant used to get the reading
+         *
          * @return float The light seen in W/m^2
-          */
+         */
         function getLight($A, $TC)
         {
-        /*
+            /*
             $den = $this->Am * $this->s * $this->*this->Tf * $T;
             if ($den == 0) return(1500);
             $L = (-1500)*$this->D*$A;
             $L = $L / $den;
             $L += 1500;
-     */
-    /*
+            */
+            /*
             $den = $this->Am * $this->s * $this->Tf * $TC;
             if ($den == 0) return(1500);
             $L = (-1500)*$this->s*$this->D*$A;
             $L = $L / $den;
             $L += 1500;
-     */
-    
-    
+             */
             // I am not sure why this is here.  It seems to be the
             // wrong formula according to the docs  2006-12-15 SLP
             // This formula is correct.
             $den = $this->Am*$this->s*$this->D; 
             if ($den == 0) return(1500.0);
-            $L = (-1500.0)*$A * $this->Tf * $TC;
-            $L = $L / $den;
+            $L  = (-1500.0)*$A * $this->Tf * $TC;
+            $L  = $L / $den;
             $L += 1500.0;
     
             return round($L, 4);
@@ -99,18 +105,20 @@ if (!class_exists('lightSensor')) {
          *
          * This routine doesn't use the extra field.
          *
-         * @param float $A The incoming value
+         * @param float $A      The incoming value
          * @param array $sensor The sensor setup array
-         * @param int $TC The time constant
-         * @param mixed $extra Extra parameters for the sensor
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
          * @return float Current rounded to 1 place
-          */
-        function OSRAMBPW34($A, $sensor, $TC, $extra=null) {
+         */
+        function OSRAMBPW34($A, $sensor, $TC, $extra=null) 
+        {
     
             $den = $this->Am*$this->s*$this->D; 
             if ($den == 0) return(1500.0);
-            $L = (-1500.0)*$A * $this->Tf * $TC;
-            $L = $L / $den;
+            $L  = (-1500.0)*$A * $this->Tf * $TC;
+            $L  = $L / $den;
             $L += 1500.0;
     
             return round($L, 4);    
