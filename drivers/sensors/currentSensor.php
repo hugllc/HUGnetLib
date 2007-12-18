@@ -102,7 +102,7 @@ if (!class_exists('currentSensor')) {
             $numer = $A * $this->D * $this->Vcc;
     
             $Read = $numer/$denom;
-            return round($Read, 4) ;
+            return round($Read, 4);
         }
     
         /**
