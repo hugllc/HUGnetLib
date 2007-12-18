@@ -142,7 +142,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *
-     * return array
+     * @return array
      */
     public static function dataUnitArray() 
     {
@@ -221,7 +221,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * data provider for testUnitArrayConvertFunct
      *
-     * return array
+     * @return array
      */
     public static function dataUnitArrayConvertFunct() 
     {
@@ -319,7 +319,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Data provider for testPreferredUnit
      *
-     * return array
+     * @return array
      */
     public static function dataPreferredUnit()
     {
@@ -339,7 +339,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Data provider for testGraphable
      *
-     * return array
+     * @return array
      */
     public static function dataGraphable() 
     {
@@ -358,7 +358,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Data provider for testFindUnit
      *
-     * return array
+     * @return array
      */
     public static function dataFindUnit() 
     {
@@ -376,8 +376,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataDataType() 
     {
         return array(
@@ -394,8 +396,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataConvert() 
     {
         return array(
@@ -422,8 +426,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataGetPossConv() 
     {
         return array(
@@ -443,8 +449,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataTemperature() 
     {
         return array(
@@ -473,8 +481,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataMilli() 
     {
         return array(
@@ -485,7 +495,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
     /**
      * @dataProvider dataMilli
-      */
+     */
     public function testtoMilli($v, $m, $time, $type) 
     {
         $this->assertEquals($m, $this->o->toMilli($v, $time, $type));
@@ -499,7 +509,9 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for testFindUnit
      *
+     * @return array
      */
     public static function dataCenti() 
     {
@@ -511,7 +523,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     }
     /**
      * @dataProvider dataCenti
-      */
+     */
     public function testfromCenti($v, $c, $time, $type) 
     {
         $this->assertEquals($v, $this->o->fromCenti($c, 0, 'raw'));
@@ -519,8 +531,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataCnttoRPM() 
     {
         return array(
@@ -531,15 +545,27 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Tests cnttoRPM
+     *
+     * @param int    $cnt       The number of counts
+     * @param float  $rpm       The RPM expected
+     * @param int    $time      The time in seconds between this record and the last.
+     * @param string $type      The type of data (diff, raw, etc)
+     * @param int    $cntPerRev the number of counts per revolution
+     *
+     * @return none
+     *
      * @dataProvider dataCnttoRPM
-      */
+     */
     public function testCnttoRPM($cnt, $rpm, $time, $type, $cntperrev) 
     {
         $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntperrev));
     }
 
     /**
+     * Data provider for testFindUnit
      *
+     * @return array
      */
     public static function dataDirection() 
     {
@@ -564,8 +590,10 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataDirtoNumDir() 
     {
         $newStuff = array(
@@ -574,16 +602,25 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return array_merge(unitConversionTest::dataDirection(), $newStuff);
     }
     /**
+     * Test dirTonumDir
+     *
+     * @param float  $numdir The text direction
+     * @param string $dir    The value to expect
+     *
+     * @return none
+     *
      * @dataProvider dataDirtoNumDir
-      */
+     */
     public function testDirtonumDir($numdir, $dir) 
     {
         $this->assertSame($numdir, $this->o->DirtonumDir($dir, 0, 0));
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function dataNumDirtoDir() 
     {
         $newStuff = array(
@@ -593,16 +630,25 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         return array_merge(unitConversionTest::dataDirection(), $newStuff);
     }
     /**
+     * Test numDirToDir
+     *
+     * @param float $numdir The text direction
+     * @param int   $dir    The value to expect
+     *
+     * @return none
+     *
      * @dataProvider dataNumDirtoDir
-      */
+     */
     public function testnumDirtoDir($numdir, $dir) 
     {
         $this->assertSame($dir, $this->o->numDirtoDir($numdir, 0, 0));
     }
     
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function datakWhTokW() 
     {
         return array(
@@ -613,16 +659,28 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test kWhTokW
+     *
+     * @param float  $val    The input value
+     * @param int    $time   The time in seconds between this record and the last.
+     * @param string $type   The type of data (diff, raw, etc)
+     * @param mixed  $extra  The extra information from the sensor.
+     * @param float  $expect The extra information from the sensor.
+     *
+     * @return none
+     *
      * @dataProvider datakWhTokW
-      */
+     */
     public function testkWhTokW ($val, $time, $type, $extra, $expect) 
     {
         $this->assertEquals($expect, $this->o->kWhTokW($val, $time, $type, $extra));
     }
 
     /**
+     * Data provider for testFindUnit
      *
-      */
+     * @return array
+     */
     public static function datakWhToW() 
     {
         return array(
@@ -633,21 +691,36 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test kWhToW
+     *
+     * @param float  $val    The input value
+     * @param int    $time   The time in seconds between this record and the last.
+     * @param string $type   The type of data (diff, raw, etc)
+     * @param mixed  $extra  The extra information from the sensor.
+     * @param float  $expect The extra information from the sensor.
+     *
+     * @return none
+     *
      * @dataProvider datakWhToW
-      */
+     */
     public function testkWhToW ($val, $time, $type, $extra, $expect) 
     {
         $this->assertEquals($expect, $this->o->kWhToW($val, $time, $type, $extra));
     }
 
+    /**
+     * Setup modifyUnits
+     */
     public function &modifyUnitsSetup() 
     {        
         return $this->o;
     }
 
     /**
-     * data provider for testModifyUnits
-      */
+     * Data provider for testFindUnit
+     *
+     * @return array
+     */
     public static function dataModifyUnits() 
     {
         return array(
@@ -682,36 +755,92 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+     * Test the history from modifyUnits
+     *
+     * @param array $history       The history to modify.
+     * @param array $devInfo       The devInfo array to modify.
+     * @param int   $dPlaces       The maximum number of decimal places to show.
+     * @param array $type          The types to change to
+     * @param array $units         The units to change to
+     * @param array $expectHistory The history we expect after mofication
+     * @param array $expectDevInfo The devInfo array we expect after mofication
+     * @param array $expectType    The types we expect after mofication
+     * @param array $expectUnits   The units we expect after mofication
+     *
+     * @return none
+     *
      * @dataProvider dataModifyUnits().
      * @covers driver::ModifyUnits
-      */
+     */
     public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectHistory, $history);
     }
     /**
+     * Test the history from modifyUnits
+     *
+     * @param array $history       The history to modify.
+     * @param array $devInfo       The devInfo array to modify.
+     * @param int   $dPlaces       The maximum number of decimal places to show.
+     * @param array $type          The types to change to
+     * @param array $units         The units to change to
+     * @param array $expectHistory The history we expect after mofication
+     * @param array $expectDevInfo The devInfo array we expect after mofication
+     * @param array $expectType    The types we expect after mofication
+     * @param array $expectUnits   The units we expect after mofication
+     *
+     * @return none
+     *
      * @dataProvider dataModifyUnits().
      * @covers driver::ModifyUnits
-      */
+     */
     public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectDevInfo, $devInfo);
     }
     /**
+     * Test the history from modifyUnits
+     *
+     * @param array $history       The history to modify.
+     * @param array $devInfo       The devInfo array to modify.
+     * @param int   $dPlaces       The maximum number of decimal places to show.
+     * @param array $type          The types to change to
+     * @param array $units         The units to change to
+     * @param array $expectHistory The history we expect after mofication
+     * @param array $expectDevInfo The devInfo array we expect after mofication
+     * @param array $expectType    The types we expect after mofication
+     * @param array $expectUnits   The units we expect after mofication
+     *
+     * @return none
+     *
      * @dataProvider dataModifyUnits().
      * @covers driver::ModifyUnits
-      */
+     */
     public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectType, $type);
     }
     /**
+     * Test the history from modifyUnits
+     *
+     * @param array $history       The history to modify.
+     * @param array $devInfo       The devInfo array to modify.
+     * @param int   $dPlaces       The maximum number of decimal places to show.
+     * @param array $type          The types to change to
+     * @param array $units         The units to change to
+     * @param array $expectHistory The history we expect after mofication
+     * @param array $expectDevInfo The devInfo array we expect after mofication
+     * @param array $expectType    The types we expect after mofication
+     * @param array $expectUnits   The units we expect after mofication
+     *
+     * @return none
+     *
      * @dataProvider dataModifyUnits().
      * @covers driver::ModifyUnits
-      */
+     */
     public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
