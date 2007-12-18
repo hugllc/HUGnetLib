@@ -118,32 +118,4 @@ if (PHPUnit_MAIN_METHOD == "AnalysisTest::main") {
     AnalysisTest::main();
 }
 
-/**
- * Mock gateway class
- *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-class GatewayMock extends gateway
-{
-    /**
-     * Mock getAll that always returns localhost.
-     */
-    function getAll() 
-    {
-        return array(
-            array(
-                "GatewayKey" => 1,
-                "GatewayName" => "Test Gateway",
-                "GatewayIP" => "127.0.0.1",
-                "GatewayPort" => "2000",
-            ),
-        );
-    }
-}
 ?>

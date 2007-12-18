@@ -60,7 +60,7 @@ require_once dirname(__FILE__).'/databaseTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class gatewayTest extends databaseTest
+class GatewayTest extends databaseTest
 {
     /** The table to use */
     protected $table = "gateways";
@@ -75,7 +75,7 @@ class gatewayTest extends databaseTest
      */
     public static function main() 
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("gatewayTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
@@ -191,6 +191,9 @@ if (PHPUnit_MAIN_METHOD == "gatewayTest::main") {
  */
 class GatewayMock extends gateway
 {
+    /**
+     * Mock getAll that always returns localhost.
+     */
     function getAll() 
     {
         return array(

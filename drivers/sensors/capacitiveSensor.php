@@ -38,8 +38,16 @@ if (!class_exists('capacitiveSensor')) {
 
     /**
      * class for dealing with capacitive sensors.
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Sensors
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class capacitiveSensor extends sensor_base
+    class CapacitiveSensor extends sensor_base
     {
 
         public $sensors = array(
@@ -66,11 +74,12 @@ if (!class_exists('capacitiveSensor')) {
          * formula.  This formula and how it was derived is detailed at
          * {@link https://dev.hugllc.com/index.php/Project:HUGnet_Capacitive_Sensors Capacitive Sensors}
          * 
-         * @param int $A The AtoD reading
-         * @param int $T The time constant used to get the reading
+         * @param int   $A The AtoD reading
+         * @param int   $T The time constant used to get the reading
          * @param float $R The bias resistance in kOhms
-         * @return float The resistance corresponding to the values given
-         * 
+         * @param int   $t The time reading from the sensor
+         *
+         * @return float
          */
         function getCapacitance($A, $T, $R, $t=1)
         {
@@ -87,8 +96,17 @@ if (!class_exists('capacitiveSensor')) {
         }    
         
         /**
-          */
-        function genericCap($val, $sensor, $TC, $extra=null) {
+         * Sensor function for generic capacitors
+         * 
+         * @param float $val    The reading
+         * @param array $sensor Sensor information array
+         * @param int   $TC     The time constant
+         * @param array $extra  Extra information from the sensor
+         *
+         * @return float
+         */
+        function genericCap($val, $sensor, $TC, $extra=null) 
+        {
             return $val;
         }
     }

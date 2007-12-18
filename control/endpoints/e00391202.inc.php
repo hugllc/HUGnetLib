@@ -33,7 +33,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-include dirname(__FILE__).'/../group.inc.php';
+require dirname(__FILE__).'/../group.inc.php';
+
 $form = new HTML_QuickForm('relayControl');
 $form->addElement('hidden', 'DeviceKey');
 $form->addElement('hidden', 'noFetchSetup', true);

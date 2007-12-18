@@ -40,6 +40,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
+require_once 'AnalysisTest.php'; 
 require_once 'deviceTest.php'; 
 require_once 'firmwareTest.php'; 
 require_once 'gatewayTest.php'; 
@@ -77,6 +78,7 @@ class HUGnetLibDatabaseTests
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibDatabase');
+        $suite->addTestSuite('AnalysisTest');
         $suite->addTestSuite('deviceTest');
         $suite->addTestSuite('firmwareTest');
         $suite->addTestSuite('gatewayTest');

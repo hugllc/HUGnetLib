@@ -84,6 +84,8 @@ class plogTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
+        $this->o = new plog($this->pdo);
+        $this->o->createTable();
     }
 
     /**
@@ -95,6 +97,7 @@ class plogTest extends databaseTest
     protected function tearDown() 
     {
         parent::tearDown();
+        unset($this->o);
     }
 
     /**

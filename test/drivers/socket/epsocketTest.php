@@ -53,10 +53,9 @@ require_once dirname(__FILE__).'/../../../drivers/socket/epsocket.php';
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class epsocketTest extends PHPUnit_Framework_TestCase 
+class EpsocketTest extends PHPUnit_Framework_TestCase
 {
     /** @var int The TCP port number for the test */
     protected $port = 35000;
@@ -78,7 +77,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
       */
     public static function main() 
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("epsocketTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
@@ -138,9 +137,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
     public function testWrite() 
     {
         // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
@@ -153,9 +150,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
     public function testReadChar() 
     {
         // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
 
@@ -169,9 +164,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
     public function testClose() 
     {
         // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
@@ -184,9 +177,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
     public function testCheckConnect() 
     {
         // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
@@ -199,9 +190,7 @@ class epsocketTest extends PHPUnit_Framework_TestCase
     public function testConnect() 
     {
         // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
 }

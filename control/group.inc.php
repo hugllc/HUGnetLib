@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
  */
 
  
