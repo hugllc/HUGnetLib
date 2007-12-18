@@ -28,7 +28,7 @@
  * @subpackage Filters
  * @copyright 2007 Hunt Utilities Group, LLC
  * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id: unitConversion.inc.php 369 2007-10-12 15:05:32Z prices $    
+ * @version SVN: $Id$    
  *
  */
 
