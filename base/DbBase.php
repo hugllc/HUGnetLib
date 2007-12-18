@@ -455,10 +455,7 @@ class DbBase
         if (!$this->_doCache) return false;
         $count = 0;
         $tries = 0; 
-        foreach ($res as $data) {
-            if ($this->_cache->replace($data)) $count++;
-            $try++;
-        }
+        $this->_cache->addArray($res);
         $this->vprint("Cache entry: $count/$tries");        
         
     }
@@ -503,6 +500,16 @@ class DbBase
         $driver = $this->driver;
         if ($driver == "sqlite") $file = $this->file;
         print "(".$class." - ".$driver." ".$file.") ".$str."\n";
+    }
+ 
+    /**
+     * Tells us if the database is still connected
+     *
+     * @return bool
+     */
+    public function isConnected() {
+        if ($this->driver == "sqlite") return true;
+        return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
     
 }

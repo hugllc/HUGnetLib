@@ -90,7 +90,7 @@ class Gateway extends DbBase
     function createTable($table = null) {
         if (is_string($table)) $this->table = $table;
 
-        $query = "CREATE TABLE `".$this->table."` (
+        $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                   `GatewayKey` int(11) NOT null,
                   `GatewayIP` varchar(15) NOT null default '',
                   `GatewayName` varchar(30) NOT null default '',
@@ -101,8 +101,8 @@ class Gateway extends DbBase
                 );
                     ";
         $ret = $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
-        $ret = $this->query('CREATE UNIQUE INDEX `GatewayName` ON `'.$this->table.'` (`GatewayName`)');
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'.$this->table.'` (`GatewayName`)');
         $this->_getColumns();
         return $ret;
     }
