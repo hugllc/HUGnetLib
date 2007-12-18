@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 // Call FilterBaseTest::main() if this source file is executed directly.
 if (!defined('PHPUnit_MAIN_METHOD')) {
@@ -65,6 +64,8 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
+     * @return none
+     *
      * @access public
      * @static
      */
@@ -80,6 +81,8 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
+     * @return none
+     *
      * @access protected
      */
     protected function setUp()
@@ -90,6 +93,8 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
+     *
+     * @return none
      *
      * @access protected
      */
@@ -103,7 +108,8 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function testFilterssArray() {
+    public function testFilterssArray() 
+    {
         $this->assertSame(array(), $this->o->filters);
     }
 

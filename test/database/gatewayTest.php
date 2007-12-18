@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 
 // Call gatewayTest::main() if this source file is executed directly.
@@ -59,7 +58,6 @@ require_once dirname(__FILE__).'/databaseTest.php';
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class gatewayTest extends databaseTest
@@ -69,6 +67,8 @@ class gatewayTest extends databaseTest
 
     /**
      * Runs the test methods of this class.
+     *
+     * @return none
      *
      * @access public
      * @static
@@ -85,6 +85,8 @@ class gatewayTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
+     * @return none
+     *
      * @access protected
      */
     protected function setUp() 
@@ -98,6 +100,8 @@ class gatewayTest extends databaseTest
     /**
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
+     *
+     * @return none
      *
      * @access protected
      */
@@ -115,7 +119,7 @@ class gatewayTest extends databaseTest
     public static function dataFind() 
     {
         $stuff = posix_uname();
-        $ip = gethostbyname($stuff["nodename"]);
+        $ip    = gethostbyname($stuff["nodename"]);
 
         return array(
             array(array(), false),
@@ -156,6 +160,8 @@ class gatewayTest extends databaseTest
      * @param array $preload The data to preload into the database
      * @param array $expect  The return value to expect
      *
+     * @return none
+     *
      * @dataProvider dataFind().
      */
     public function testFind($preload, $expect) 
@@ -181,10 +187,9 @@ if (PHPUnit_MAIN_METHOD == "gatewayTest::main") {
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class gatewayMock extends gateway
+class GatewayMock extends gateway
 {
     function getAll() 
     {

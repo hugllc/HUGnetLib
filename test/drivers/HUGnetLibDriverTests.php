@@ -66,14 +66,32 @@ require_once 'socket/epsocketTest.php';
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class HUGnetLibDriverTests
 {
+    /**
+     * main function
+     *
+     * @return none
+     */
     public static function main()
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
  
+    /**
+     * test suite
+     *
+     * @return none
+     */
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibDriver');

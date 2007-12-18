@@ -31,7 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 
 /** This where our base class lives */
@@ -51,7 +50,6 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class Gateway extends DbBase
@@ -64,14 +62,14 @@ class Gateway extends DbBase
      *
      * @return mixed false on failure, Array of gateway information on success
      */
-    function Find() 
+    function find() 
     {
         if (function_exists("posix_uname")) {
             $this->vprint("Trying to figure out which gateway to use...");
             $stuff = posix_uname();
             // Lookup up a gateway based on our host name
             $this->vprint("Looking for ".$stuff['nodename']."...");
-            $ip = gethostbyname($stuff["nodename"]);
+            $ip  = gethostbyname($stuff["nodename"]);
             $res = $this->getWhere("GatewayIP = ? ", array($ip));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
@@ -85,9 +83,12 @@ class Gateway extends DbBase
     /**
      * This function creates the table in the database
      *
+     * @param string $table The table to use if not the default
+     *
      * @return mixed The output of the last SQL statement
      */
-    function createTable($table = null) {
+    function createTable($table = null) 
+    {
         if (is_string($table)) $this->table = $table;
 
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
@@ -98,8 +99,8 @@ class Gateway extends DbBase
                   `database` varchar(64) NOT null default '',
                   `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
                   PRIMARY KEY  (`GatewayKey`)
-                );
-                    ";
+                );";
+                    
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'.$this->table.'` (`GatewayName`)');

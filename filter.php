@@ -103,14 +103,14 @@ class Filter
      * Filters the history given to it based on the filters specified
      *
      * @param array &$history The history to filter
-     * @param array $filters The array of filters to use
+     * @param array $filters  The array of filters to use
      *
      * @return none
      */
     public function filter(&$history, $filters) 
     {
         if (!is_array($filters)) return;
-        foreach($filters as $key => $filter) {
+        foreach ($filters as $key => $filter) {
             $this->_filterData($history, $key, $filter);
         }
     }
