@@ -31,11 +31,9 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id: epsocketTest.php 507 2007-11-27 20:59:12Z prices $
- *
  */
 
-$msg = $argv[1];
+$msg     = $argv[1];
 $timeout = 5;
 
 error_reporting(E_ALL);
@@ -48,7 +46,7 @@ set_time_limit(0);
 ob_implicit_flush();
 
 $address = '127.0.0.1';
-$port = 35000;
+$port    = 35000;
 
 if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
     echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
@@ -77,8 +75,8 @@ if ($stdin === false) {
 
 stream_set_blocking($stdin, false);
 socket_set_nonblock($msgsock);
-$lbuf = "";
-$buf = "";
+$lbuf  = "";
+$buf   = "";
 $start = time();
 if (empty($msg)) {
     do {

@@ -325,7 +325,7 @@ if (!class_exists("devInfo")) {
         function getBytes($bytes, $digits=2) 
         {
             
-            $bytes = (int) $bytes;
+            $bytes  = (int) $bytes;
             $labels = array("", " k", " M", " G", " T", " P");
             
             $index == 0;

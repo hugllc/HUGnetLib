@@ -31,8 +31,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
- *
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
@@ -65,14 +63,33 @@ require_once 'database/HUGnetLibDatabaseTests.php';
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class HUGnetLibTests
 {
+    /**
+     * main function
+     *
+     * @return none
+     */
     public static function main()
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
  
+    /**
+     * test suite
+     *
+     * @return none
+     */
     public static function suite()
     {
         PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');

@@ -32,38 +32,36 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @version SVN: $Id$    
- *
  */
 
  
-    $gForm = new HTML_QuickForm('Group');
+$gForm = new HTML_QuickForm('Group');
 
-       $gForm->addElement('hidden', 'module', $_REQUEST['module']);
-    $gForm->addElement('hidden', 'hugnetengr_op', $_REQUEST['hugnetengr_op']);
-    $gForm->addElement('hidden', 'DeviceKey');
-    $gForm->addElement('hidden', 'noFetchSetup', true);
-    $gForm->addElement('header', null, "General Options");
-    $gForm->addElement('text', 'DeviceGroup', "Group:", array('size' => 6, 'maxlength' => 6));
-    $gForm->addElement('text', 'BoredomThreshold', "Boredom:", array('size' => 3, 'maxlength' => 3));
-    $gForm->addRule('DeviceGroup', 'Group can not be empty', 'required', null, 'client');    
-    $gForm->addRule('DeviceGroup', 'Group must be alphanumeric', 'alphanumeric', null, 'client');    
-    $gForm->addRule('BoredomThreshold', 'Boredom can not be empty', 'required', null, 'client');    
-    $gForm->addRule('BoredomThreshold', 'Boredom must be numeric', 'numeric', null, 'client');    
+$gForm->addElement('hidden', 'module', $_REQUEST['module']);
+$gForm->addElement('hidden', 'hugnetengr_op', $_REQUEST['hugnetengr_op']);
+$gForm->addElement('hidden', 'DeviceKey');
+$gForm->addElement('hidden', 'noFetchSetup', true);
+$gForm->addElement('header', null, "General Options");
+$gForm->addElement('text', 'DeviceGroup', "Group:", array('size' => 6, 'maxlength' => 6));
+$gForm->addElement('text', 'BoredomThreshold', "Boredom:", array('size' => 3, 'maxlength' => 3));
+$gForm->addRule('DeviceGroup', 'Group can not be empty', 'required', null, 'client');    
+$gForm->addRule('DeviceGroup', 'Group must be alphanumeric', 'alphanumeric', null, 'client');    
+$gForm->addRule('BoredomThreshold', 'Boredom can not be empty', 'required', null, 'client');    
+$gForm->addRule('BoredomThreshold', 'Boredom must be numeric', 'numeric', null, 'client');    
 
-    $gForm->setDefaults($devInfo);
-    $gForm->addElement('submit', 'postGroup', 'Update');
+$gForm->setDefaults($devInfo);
+$gForm->addElement('submit', 'postGroup', 'Update');
 
 
-    if (isset($_REQUEST['postGroup']) && $gForm->validate()) {
-        $DeviceGroup = (string) $_REQUEST['DeviceGroup'];
-        $DeviceGroup = substr($DeviceGroup, 0, 6);
-        $DeviceGroup = str_pad($DeviceGroup, 6, "0", STR_PAD_LEFT);
-        $Boredom = (int) $_REQUEST['BoredomThreshold'];
-        $return = $endpoint->setConfig($devInfo, 0, array($DeviceGroup, $Boredom));
-        if ($return) header("Location: ".$_SERVER['PHP_SELF']."?DeviceKey=".$devInfo['DeviceKey']);
+if (isset($_REQUEST['postGroup']) && $gForm->validate()) {
+    $DeviceGroup = (string) $_REQUEST['DeviceGroup'];
+    $DeviceGroup = substr($DeviceGroup, 0, 6);
+    $DeviceGroup = str_pad($DeviceGroup, 6, "0", STR_PAD_LEFT);
+    $Boredom     = (int) $_REQUEST['BoredomThreshold'];
+    $return      = $endpoint->setConfig($devInfo, 0, array($DeviceGroup, $Boredom));
+    if ($return) header("Location: ".$_SERVER['PHP_SELF']."?DeviceKey=".$devInfo['DeviceKey']);
 
-    }
-    print $gForm->toHTML();
-    
+}
+print $gForm->toHTML();
 
 ?>
