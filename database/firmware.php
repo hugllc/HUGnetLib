@@ -78,23 +78,19 @@ class firmware extends DbBase
         }
         if (is_array($srec)) {
             foreach ($srec as $rec) {
-                switch(substr($rec, 0, 2)) {
-                    case "S1":
-                        $size = hexdec(substr($rec, 2, 2));
-                        $size -= 3;
-                        $addr = hexdec(substr($rec, 4, 4));
-                        $data = substr($rec, 8, ($size*2));
-                        $csum = hexdec(substr($rec, (8+($size*2)), 2));                    
-                        break;
-                    case "S9":
-                    case "S1":
-                    default:
-                        // Ignore it.
-                        $data = false;
-                        $addr = false;
-                        $size = false;
-                        $csum = false;
-                        break;
+                $head = substr($rec, 0, 2);
+                if ($head == "S1") {
+                    $size = hexdec(substr($rec, 2, 2));
+                    $size -= 3;
+                    $addr = hexdec(substr($rec, 4, 4));
+                    $data = substr($rec, 8, ($size*2));
+                    $csum = hexdec(substr($rec, (8+($size*2)), 2));
+                } else {
+                    // Ignore it.
+                    $data = false;
+                    $addr = false;
+                    $size = false;
+                    $csum = false;
                 }
                 if ($data != false) {
                     $MemBuffer = substr_replace($MemBuffer, $data, ($addr*2), ($size*2));
@@ -137,21 +133,21 @@ class firmware extends DbBase
     function createTable($table="") {
         if (!empty($table)) $this->table = $table;
         $query = "CREATE TABLE IF NOT EXISTS `firmware` (
-                  `FirmwareKey` mediumint(9) NOT NULL auto_increment,
+                  `FirmwareKey` mediumint(9) NOT NULL,
                   `FirmwareVersion` varchar(8) NOT NULL default '',
                   `FirmwareCode` longtext NOT NULL,
                   `FirmwareData` longtext NOT NULL,
                   `FWPartNum` varchar(12) NOT NULL default '',
                   `HWPartNum` varchar(12) NOT NULL default '',
                   `Date` datetime default '0000-00-00 00:00:00',
-                  `FirmwareFileType` enum('SREC','IHEX','RAW') NOT NULL default 'SREC',
-                  `FirmwareStatus` enum('DEV','BETA','RELEASE','BAD') NOT NULL default 'DEV',
+                  `FirmwareFileType` varcar(4) NOT NULL default 'SREC',
+                  `FirmwareStatus` varcar(8) NOT NULL default 'DEV',
                   `FirmwareCVSTag` varchar(64) NOT NULL default '',
                   `Target` varchar(16) NOT NULL default 'attiny26',
-                  PRIMARY KEY  (`FirmwareKey`),
-                  UNIQUE KEY `FirmwareVersion` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)
+                  PRIMARY KEY  (`FirmwareKey`)
                   );";
         $this->query($query);
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'.$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)');
         $this->_getColumns();
     }
     
@@ -164,19 +160,21 @@ class firmware extends DbBase
      *
      * @return array The array of firmware information
      */
-    function GetLatestFirmware($FWPartNum, $Status=null, $All=false) 
+    function getLatestFirmware($FWPartNum, $Status=null, $All=false) 
     {
-        $query = " FWPartNum='".$FWPartNum."' ";
+        $data = array($FWPartNum);
+        $query = " FWPartNum= ? ";
         if ($Status !== null) {
+            $data[] = $Status;
             $query .= " AND "
-                    ." FirmwareStatus='".$Status."' ";
+                    ." FirmwareStatus= ? ";
         } else if (!$All) {
             $query .= " AND "
                     ." FirmwareStatus<>'BAD' ";
         }
         $query .= " ORDER BY Date DESC "
                 ." LIMIT 0,1 ";
-        $ret    = $this->getWhere($query);
+        $ret    = $this->getWhere($query, $data);
         return $ret[0];
     }
 
@@ -188,20 +186,24 @@ class firmware extends DbBase
      *
      * @return array The array of firmware information    
      */
-    function GetFirmwareFor($HWPartNum, $Status=null) 
+    function getFirmwareFor($HWPartNum, $Status=null) 
     {
         $HWPartNum = substr($HWPartNum, 0, 7);
+        $data = array($HWPartNum);
 
-        $query = " HWPartNum='".$HWPartNum."' ";
+        $query = " HWPartNum= ? ";
         if ($Status !== null) {
+            $data[] = $Status;
             $query .= " AND "
-                    ." FirmwareStatus='".$Status."' ";
+                    ." FirmwareStatus= ? ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        return $this->getWhere($query);
+        $ret =  $this->getWhere($query, $data);
+        return $ret;
     }
 
     /**
+     * Returns a piece of firmware
      * 
      * @param string $FWPartNum This is the part number of the firmware wanted
      * @param string $Status    This is the status of the firmware
@@ -209,20 +211,23 @@ class firmware extends DbBase
      *
      * @return array array of firmware information arrays    
      */
-    function GetFirmware($FWPartNum, $version=null, $Status=null) 
+    function getFirmware($FWPartNum, $version=null, $Status=null) 
     {
 
-        $query = " FWPartNum='".$FWPartNum."' ";
+        $data = array($FWPartNum);
+        $query = " FWPartNum= ? ";
         if ($version !== null) {
+            $data[] = $version;
             $query .= " AND "
-                    ." FirmwareVersion='".$version."' ";
+                    ." FirmwareVersion= ? ";
         }
         if ($Status !== null) {
+            $data[] = $Status;
             $query .= " AND "
-                    ." FirmwareStatus='".$Status."' ";
+                    ." FirmwareStatus= ? ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
-        return $this->getWhere($query);
+        return $this->getWhere($query, $data);
     }
 
 
