@@ -966,7 +966,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      * @return none
      *
      * @dataProvider dataModifyUnits().
-     * @covers driver::ModifyUnits
      */
     public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
@@ -989,7 +988,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      * @return none
      *
      * @dataProvider dataModifyUnits().
-     * @covers driver::ModifyUnits
      */
     public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
@@ -1012,7 +1010,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      * @return none
      *
      * @dataProvider dataModifyUnits().
-     * @covers driver::ModifyUnits
      */
     public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
@@ -1035,7 +1032,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      * @return none
      *
      * @dataProvider dataModifyUnits().
-     * @covers driver::ModifyUnits
      */
     public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits) 
     {
