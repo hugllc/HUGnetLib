@@ -54,6 +54,7 @@ class databaseTest extends PHPUnit_Framework_TestCase {
      * @access protected
       */
     protected function setUp() {
+        if (empty($this->table)) die(get_class($this)."->table not defined!");
         $this->pdo = new PDO("sqlite::memory");
     }
 

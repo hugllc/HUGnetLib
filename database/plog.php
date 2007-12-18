@@ -165,14 +165,15 @@ class Plog extends DbBase
     
 
     /**
-     * Converts a packet array into an array for inserting into the packet log tables in the database.
+     * Converts a packet array into an array for inserting into the 
+     * packet log tables in the database.
      *
      * @param array  $Packet  The packet that came in.
      * @param int    $Gateway The gateway key of the gateway this packet came from
      * @param string $Type    They type of packet it is.
      *
      * @return array
-      */
+     */
     public static function packetLogSetup($Packet, $Gateway, $Type="") 
     {
         if (empty($Type)) $Type = "UNSOLICITED";
