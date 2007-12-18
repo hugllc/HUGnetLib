@@ -29,9 +29,9 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: driver.php 529 2007-12-10 23:12:39Z prices $    
+ * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id: dbsocketTest.php 429 2007-11-05 15:59:46Z prices $
+ * @version SVN: $Id$
  *
  */
 
