@@ -71,7 +71,7 @@ class PlogTest extends databaseTest
      */
     public static function main() 
     {
-        require_once 'PHPUnit/TextUI/TestRunner.php';
+        include_once 'PHPUnit/TextUI/TestRunner.php';
 
         $suite  = new PHPUnit_Framework_TestSuite('plogTest');
         $result = PHPUnit_TextUI_TestRunner::run($suite);

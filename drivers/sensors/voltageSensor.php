@@ -44,7 +44,6 @@ if (!class_exists('voltageSensor')) {
      * @author     Scott Price <prices@hugllc.com>
      * @copyright  2007 Hunt Utilities Group, LLC
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @version    SVN: $Id$    
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
     class VoltageSensor extends sensor_base
@@ -165,9 +164,9 @@ if (!class_exists('voltageSensor')) {
         /**
          * This sensor returns us 10mV / % humidity
          *
-         * @param float $val    The incoming value
+         * @param float $A      The incoming value
          * @param array $sensor The sensor setup array
-         * @param int   $TC     The time constant
+         * @param int   $T      The time constant
          * @param mixed $extra  Extra parameters for the sensor
          *
          * @return float Relative Humidity rounded to 4 places

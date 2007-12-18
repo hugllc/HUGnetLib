@@ -689,6 +689,7 @@ class UnitConversion
                             if (!isset($cTo[$i])) $cTo[$i] = $units[$i];
 
                             $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
+
                             $history[$key]['Data'.$i] = $this->convert($history[$key]['Data'.$i], $from, $cTo[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
                         }
                         if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
