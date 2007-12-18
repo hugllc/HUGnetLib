@@ -67,7 +67,6 @@ if (!class_exists("epsocket")) {
      * @author     Scott Price <prices@hugllc.com>
      * @copyright  2007 Hunt Utilities Group, LLC
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @version    SVN: $Id$    
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
     class EpSocket 
@@ -105,7 +104,7 @@ if (!class_exists("epsocket")) {
          *
          * @return int The number of bytes written on success, false on failure
          */
-        function Write($data) 
+        function write($data) 
         {
             if ($this->CheckConnect()) $this->Connect();
             usleep(mt_rand(500, 10000));
@@ -126,16 +125,15 @@ if (!class_exists("epsocket")) {
         {
             if ($timeout < 0) $timeout = $this->PacketTimeout;
     
-            $read = array($this->socket);
+            $read  = array($this->socket);
             $socks = @stream_select ($read, $write=null, $except=null, $timeout);
-            $char = false;
+            $char  = false;
             if ($socks === false) {
                 if ($this->verbose) print "Bad Connection\r\n";
             } else if (count($read) > 0) {
                 foreach ($read as $tsock) {
                     $char = @fread($tsock, 1);
                     if (($char === false) || ($char === EOF)) return false;
-    //                $char = ord($char);
                 }
             }
             return ($char);
@@ -146,7 +144,7 @@ if (!class_exists("epsocket")) {
          * 
          * @return none
          */
-        function Close() 
+        function close() 
         {
             if ($this->socket === false) return;
             if ($this->verbose) print("Closing Connection\r\n");
@@ -163,7 +161,7 @@ if (!class_exists("epsocket")) {
          *
          * @return bool true if the connection is good, false otherwise
          */
-        function CheckConnect() 
+        function checkConnect() 
         {
             if ($this->socket === false) return false;
             if (feof($this->socket)) {
@@ -186,7 +184,7 @@ if (!class_exists("epsocket")) {
          *
          * @return bool true if the connection is good, false otherwise
          */
-        function Connect($server = "", $port = "", $timeout=0) 
+        function connect($server = "", $port = "", $timeout=0) 
         {
             
             if ($this->CheckConnect()) return true;
@@ -198,7 +196,7 @@ if (!class_exists("epsocket")) {
             if (empty($this->Server) || empty($this->Port)) return false;
             
             if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
-            return $this->__connectOpenSocket();
+            return $this->_connectOpenSocket();
         }            
     
         /**
@@ -206,7 +204,7 @@ if (!class_exists("epsocket")) {
          *
          * @return bool
          */
-        private function __connectOpenSocket() 
+        private function _connectOpenSocket() 
         {
             $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
             if ($this->socket !== false) {
@@ -226,6 +224,8 @@ if (!class_exists("epsocket")) {
          * @param int    $tcpport The TCP port to connect to on the server. Set to 0 for
          *     the default port.
          * @param bool   $verbose Make the class put out a lot of output
+         *
+         * @return none
          */
         function __construct($server="", $tcpport="", $verbose=false) 
         {

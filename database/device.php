@@ -85,7 +85,7 @@ class Device extends DbBase
      */    
     function selectDevice($name=null, $selected=null, $GatewayKey=null) 
     {
-        $data = array();
+        $data  = array();
         $query = "SELECT DeviceKey, DeviceID FROM devices WHERE";
         if (is_null($GatewayKey)) {
             $data[] = 0;
@@ -125,7 +125,6 @@ class Device extends DbBase
             break;
         }
         $devInfo = $this->getWhere($field." = ? ", array($id));
-//        $devInfo = $this->db->getArray($query);
         if (is_array($devInfo)) {
             $devInfo = $devInfo[0];
             $devInfo = $this->_driver->DriverInfo($devInfo);
@@ -249,7 +248,7 @@ class Device extends DbBase
     function setParams($DeviceKey, $params) 
     {
         if (is_array($params)) $params = device::encodeParams($params);
-        $info   = array(
+        $info = array(
             "DeviceKey" => $DeviceKey,
             "params"    => $this->encodeParams($params),
         );

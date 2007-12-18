@@ -111,12 +111,12 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @static
      */
-     public static function dataConstructorTf() {
-         return array(
-             array(1,1),
-             array(false, 65536),
-         );
-     }
+    public static function dataConstructorTf() {
+        return array(
+            array(1,1),
+            array(false, 65536),
+        );
+    }
     /**
      * @dataProvider dataConstructorTf
      *
@@ -136,21 +136,25 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @static
      */
-     public static function dataConstructorD() {
+     public static function dataConstructorD() 
+     {
          return array(
              array(1,1),
              array(false, 65536),
          );
      }
     /**
+     * Test the constructor
+     *
      * @dataProvider dataConstructorD
      *
-     * @param int $D     The value to test
+     * @param int $D      The value to test
      * @param int $expect The expected value
      *
      * @return none
      */
-    public function testConstructorD($D, $expect) {
+    public function testConstructorD($D, $expect) 
+    {
         $o = new SensorBase(false, $D);
         $this->assertSame($expect, $this->readAttribute($o, "D"));
     }
@@ -161,13 +165,16 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorS() {
+     public static function dataConstructorS() 
+     {
          return array(
              array(1,1),
              array(false, 64),
          );
      }
     /**
+     * Test the constructor
+     *
      * @dataProvider dataConstructorS
      *
      * @param int $s     The value to test
@@ -175,7 +182,8 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function testConstructorS($s, $expect) {
+    public function testConstructorS($s, $expect) 
+    {
         $o = new SensorBase(false, false, $s);
         $this->assertSame($expect, $this->readAttribute($o, "s"));
     }
@@ -186,7 +194,8 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorAm() {
+     public static function dataConstructorAm() 
+     {
          return array(
              array(1,1),
              array(false, 1023),
@@ -200,7 +209,8 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function testConstructorAm($Am, $expect) {
+    public function testConstructorAm($Am, $expect) 
+    {
         $o = new SensorBase(false, false, false, $Am);
         $this->assertSame($expect, $this->readAttribute($o, "Am"));
     }
@@ -211,13 +221,16 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorVcc() {
+     public static function dataConstructorVcc() 
+     {
          return array(
              array(1,1),
              array(false, 5),
          );
      }
     /**
+     * Test the vcc value in the constructor 
+     *
      * @dataProvider dataConstructorVcc
      *
      * @param float $Vcc    The value to test
@@ -225,7 +238,8 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function testConstructorVcc($Vcc, $expect) {
+    public function testConstructorVcc($Vcc, $expect) 
+    {
         $o = new SensorBase(false, false, false, false, $Vcc);
         $this->assertSame($expect, $this->readAttribute($o, "Vcc"));
     }
@@ -234,7 +248,8 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function testSensorsArray() {
+    public function testSensorsArray() 
+    {
         $this->assertSame(array(), $this->o->sensors);
     }
 }
