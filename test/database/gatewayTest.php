@@ -94,15 +94,6 @@ class gatewayTest extends databaseTest {
         );
     }
 
-    /**
-     * @todo Implement testGet().
-      */
-    public function testGet() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
-    }
 }
 
 // Call gatewayTest::main() if this source file is executed directly.

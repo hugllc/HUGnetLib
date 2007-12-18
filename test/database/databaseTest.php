@@ -64,6 +64,7 @@ class databaseTest extends PHPUnit_Framework_TestCase {
      * @access protected
       */
     protected function tearDown() {
+        $this->pdo->query("delete from ".$this->table);
         $this->pdo = null;
     }
 
@@ -84,7 +85,8 @@ class databaseTest extends PHPUnit_Framework_TestCase {
         $res = $this->pdo->prepare($query);
         if (!is_object($res)) return;
         foreach($values as $val) {
-            $res->execute($this->prepareData($val, $keys));
+            $data = $this->prepareData($val, $keys);
+            $res->execute($data);
         }
     }
 
