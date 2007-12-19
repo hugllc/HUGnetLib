@@ -352,14 +352,6 @@ class EPacket
     /**
      * Sends out a packet
      *
-     * @param array $Info The array with the device information in it
-     * @param array $Packet Array with packet information in it.
-     * @param bool $GetReply Whether or not to wait for a reply.
-     * @return bool false on failure, true on success
-      */
-    /**
-     * Sends out a packet
-     *
      * @param array &$Info      The array with the device information in it
      * @param array $Packet     Array with packet information in it.
      * @param bool  $GetReply   Whether or not to wait for a reply.
