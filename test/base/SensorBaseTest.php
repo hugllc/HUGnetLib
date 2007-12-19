@@ -121,14 +121,12 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
-     *
-     * @dataProvider dataConstructorTf
-     *
      * @param int $Tf     The value to test
      * @param int $expect The expected value
      *
      * @return none
+     *
+     * @dataProvider dataConstructorTf
      */
     public function testConstructorTf($Tf, $expect) 
     {
@@ -210,14 +208,12 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
-     *
-     * @dataProvider dataConstructorAm
-     *
      * @param int $Am     The value to test
      * @param int $expect The expected value
      *
      * @return none
+     *
+     * @dataProvider dataConstructorAm
      */
     public function testConstructorAm($Am, $expect) 
     {
