@@ -60,7 +60,8 @@ if (!class_exists('eDEFAULT')) {
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class eDEFAULT {
+    class eDEFAULT
+    {
         /**
          * Stores the device information for this driver
         
@@ -185,10 +186,10 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info Infomation about the device to use
          *
-         * @return none
+         * @return array
          */
-        public function readSensors($Info) {
-    
+        public function readSensors($Info) 
+        {
             return array(
                 array(
                     "To"      => $Info["DeviceID"],
@@ -207,7 +208,8 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return bool
          */
-        public function saveSensorData($Info, $Packets) {
+        public function saveSensorData($Info, $Packets) 
+        {
             foreach ($Packets as $packet) {
                 if (($packet["Status"] == "GOOD")) {
                     if (!isset($packet['DeviceKey'])) $packet['DeviceKey'] = $Info['DeviceKey'];
@@ -235,7 +237,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Checks a database record to see if it should be interpreted.
          *
-         * @param array $data a packet that might need the 'Data' array created
+         * @param array &$work the data to work on
          *
          * @return array The same packet with the 'Data' array created
          */
@@ -256,7 +258,7 @@ if (!class_exists('eDEFAULT')) {
          * is the status that the record had originally.
          *
          * @param array $Info The information array on the device
-         * @param array $Rec The data record to check
+         * @param array &$Rec The data record to check
          *
          * @return none
          */
@@ -270,7 +272,7 @@ if (!class_exists('eDEFAULT')) {
          * is the status that the record had originally.
          *
          * @param array $Info The information array on the device
-         * @param array $Rec The data record to check
+         * @param array &$Rec The data record to check
          *
          * @return none
          */
@@ -418,7 +420,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * This is the basic configuration that all endpoints have
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -441,7 +443,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the DriverInfo to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -455,7 +457,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the params to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -466,7 +468,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the hardware information to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -477,7 +479,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the firmware information to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -494,7 +496,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the calibration information to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -508,7 +510,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Adds the Types array to the devInfo array
          *
-         * @param array $Info devInfo array
+         * @param array &$Info devInfo array
          *
          * @return none
          */
@@ -568,8 +570,8 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Finds the correct error code for why it was called
          *
-         * @param array $Info Infomation about the device to use
-         * @param string $fct The function that the code tried to run
+         * @param array  $Info Infomation about the device to use
+         * @param string $fct  The function that the code tried to run
          *
          * @return bool Always false
          */
@@ -588,7 +590,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * This method MUST be implemented by each driver that inherits this class.
          * 
-         * @param array $Info The device info array
+         * @param array $Info    The device info array
          * @param array $Packets An array of packets to interpret
          *
          * @return array
@@ -713,7 +715,7 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Gets calibration data for this endpoint
          *
-         * @param array $Info Infomation about the device to use
+         * @param array  $Info   Infomation about the device to use
          * @param string $rawcal The raw calibration data to use
          *
          * @return none
@@ -727,15 +729,16 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Returns a packet that will set the configuration data in an endpoint
          *
-         * @param array $Info Infomation about the device to use
-         * @param int $start Infomation about the device to use
-         * @param mixed $data The data either as an array or in hexified form
+         * @param array $Info  Infomation about the device to use
+         * @param int   $start Infomation about the device to use
+         * @param mixed $data  The data either as an array or in hexified form
          *
          * @return false on failure, The packet in array form on success
          *
          * @todo Document this better.
          */
-        public function loadConfig($Info, $start, $data) {
+        public function loadConfig($Info, $start, $data) 
+        {
     
             $buffersize = 7;
     
@@ -800,8 +803,6 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Gets the name of the history table for a particular device
          *
-         * @param $Info Array Infomation about the device to use
-         *
          * @return mixed The name of the table as a string on success, false on failure
          */
         final public function getHistoryTable() 
@@ -812,8 +813,6 @@ if (!class_exists('eDEFAULT')) {
         /**
          * Gets the name of the average table for a particular device
          *
-         * @param $Info Array Infomation about the device to use
-         *
          * @return mixed The name of the table as a string on success, false on failure
          */
         final public function getAverageTable() 
@@ -823,8 +822,6 @@ if (!class_exists('eDEFAULT')) {
     
         /**
          * Gets the name of the location table for a particular device
-         *
-         * @param $Info Array Infomation about the device to use
          *
          * @return mixed The name of the table as a string on success, false on failure
          */
