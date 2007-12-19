@@ -126,6 +126,9 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $class The class to use
+     * @param mixed   $expect What to expect
+     *
      * @return none
      *
      * @dataProvider dataRegisterSensor
@@ -178,6 +181,14 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param int   $val          Output of the A to D converter
+     * @param int   $type         The type of the sensor
+     * @param array $sensor       The sensor information array
+     * @param int   $TC           The time constant
+     * @param mixed $extra        Extra sensor information
+     * @param mixed $expect       The output to expect
+     * @param mixed $sensorExpect The change in the sensors to expect
      *
      * @return none
      *
@@ -254,6 +265,12 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $typeExpect   The change in the type to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
+     *
      * @return none
      *
      * @dataProvider dataGetClass().
@@ -287,6 +304,12 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $unit         The units
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
      *
      * @return none
      *
@@ -337,6 +360,11 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
+     *
      * @return none
      *
      * @dataProvider dataGetExtra
@@ -365,6 +393,11 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
      *
      * @return none
      *
@@ -396,6 +429,10 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
+     *
      * @return none
      *
      * @dataProvider dataGetSize
@@ -424,6 +461,10 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
      *
      * @return none
      *
@@ -456,6 +497,13 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param string $unit         The units
+     * @param string $mode         The mode
+     * @param mixed  $expect       The output to expect
+     * @param string $sensor       The sensor name
+     * @param int    $type         The type of the sensor
+     * @param mixed  $sensorExpect The change in the sensors to expect
      *
      * @return none
      *
@@ -490,6 +538,12 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $unit         The units
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
+     *
      * @return none
      *
      * @dataProvider dataGetUnitDefMode
@@ -522,6 +576,11 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param mixed  $expect       The output to expect
+     * @param mixed  $sensorExpect The change in the sensors to expect
      *
      * @return none
      *
@@ -569,6 +628,9 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param mixed  $expect       The output to expect
+     *
      * @return none
      *
      * @dataProvider dataGetAllSensors
@@ -600,19 +662,90 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $units        The units
+     * @param string $mode         The mode
+     * @param mixed  $expectSensor The change in the sensors to expect
+     * @param mixed  $expectUnits  The change in the units to expect
+     * @param mixed  $expectMode   The change in the mode to expect
+     *
      * @return none
      *
      * @dataProvider dataCheckUnits
      */
-    public function testCheckUnits($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
+    public function testCheckUnitsType($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
     {
         $o = new sensor();
         $o->registerSensor("testSensor");
         $expectType = $type;
         $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectType, $type, "Type is not the same");
+    }
+    /**
+     * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $units        The units
+     * @param string $mode         The mode
+     * @param mixed  $expectSensor The change in the sensors to expect
+     * @param mixed  $expectUnits  The change in the units to expect
+     * @param mixed  $expectMode   The change in the mode to expect
+     *
+     * @return none
+     *
+     * @dataProvider dataCheckUnits
+     */
+    public function testCheckUnitsSensor($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
+    {
+        $o = new sensor();
+        $o->registerSensor("testSensor");
+        $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectSensor, $sensor, "Sensor is not the same");
+    }
+    /**
+     * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $units        The units
+     * @param string $mode         The mode
+     * @param mixed  $expectSensor The change in the sensors to expect
+     * @param mixed  $expectUnits  The change in the units to expect
+     * @param mixed  $expectMode   The change in the mode to expect
+     *
+     * @return none
+     *
+     * @dataProvider dataCheckUnits
+     */
+    public function testCheckUnitsUnits($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
+    {
+        $o = new sensor();
+        $o->registerSensor("testSensor");
+        $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectUnits, $units, "Units is not the same");
+    }
+    /**
+     * test
+     *
+     * @param int    $type         The type of the sensor
+     * @param string $sensor       The sensor name
+     * @param string $units        The units
+     * @param string $mode         The mode
+     * @param mixed  $expectSensor The change in the sensors to expect
+     * @param mixed  $expectUnits  The change in the units to expect
+     * @param mixed  $expectMode   The change in the mode to expect
+     *
+     * @return none
+     *
+     * @dataProvider dataCheckUnits
+     */
+    public function testCheckUnitsMode($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
+    {
+        $o = new sensor();
+        $o->registerSensor("testSensor");
+        $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectMode, $mode, "Mode is not the same");
     }
 
@@ -936,11 +1069,16 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param array $info       devInfo array for the device
+     * @param array $data       Data to decode
+     * @param array $expectInfo expected change in the devInfo array
+     * @param array $expectData expected change in the Data
+     *
      * @return none
      *
      * @dataProvider dataDecodeData
      */
-    public function testDecodeData($info, $data, $expectInfo, $expectData, $run) 
+    public function testDecodeData($info, $data, $expectInfo, $expectData) 
     {
         // Run is not used.  It is there so that the particular run is printed.
         // Otherwise we don't know which run failed.  It should be incremented
@@ -1002,11 +1140,14 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param array $data   Data to decode
+     * @param array $expect expected change in the Data
+     *
      * @return none
      *
      * @dataProvider datacheckRecord
      */
-    public function testcheckRecord($data, $expect, $run) 
+    public function testcheckRecord($data, $expect) 
     {
         $o = new sensor();
         $o->registerSensor("testSensor");
@@ -1029,6 +1170,12 @@ class sensorTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param mixed  $value  The value to check
+     * @param int    $type   The type of the sensor
+     * @param string $sensor The sensor name
+     * @param string $mode   The mode
+     * @param mixed  $expect The output to expect
      *
      * @return none
      *
@@ -1127,6 +1274,11 @@ class testSensor extends sensor_base
     /**
      * Some Function
      *
+     * @param float $val    The reading
+     * @param array $sensor Sensor information array
+     * @param int   $TC     The time constant
+     * @param array $extra  Extra information from the sensor
+     *
      * @return none
      */
     public function Test1($val, $sensor, $TC, $extra) 
@@ -1137,6 +1289,11 @@ class testSensor extends sensor_base
     /**
      * Some Function
      *
+     * @param float $val    The reading
+     * @param array $sensor Sensor information array
+     * @param int   $TC     The time constant
+     * @param array $extra  Extra information from the sensor
+     *
      * @return none
      */
     public function Test2($val, $sensor, $TC, $extra) 
@@ -1146,9 +1303,14 @@ class testSensor extends sensor_base
     /**
      * Some Function
      *
+     * @param int    $value  The current sensor value
+     * @param array  $sensor The sensor information array
+     * @param string $units  The units the current value are in
+     * @param mixed  $dType  The data mode
+     *
      * @return none
      */
-    public function s2Check($val, $sensor, $sensorType, $mode) 
+    public function s2Check($val, $sensor, $units, $dType) 
     {
         if ($val == 3) return false;
         return true;
