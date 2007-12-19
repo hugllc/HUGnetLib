@@ -23,18 +23,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   Base
+ * @package    HUGnetLibTest
+ * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$
  *
  */
+/** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
+/** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../../sensor.php';
@@ -43,28 +44,42 @@ require_once dirname(__FILE__).'/../unitConversionTest.php';
  * This class is the basis for all sensor driver tests.  This class should be
  * inherited by all sensor test driver classes.  Tests in here can be overridden
  * if necessary, but this class should still be inherited.
+ *
+ * @category   Base
+ * @package    HUGnetLibTest
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
+abstract class sensorTestBase extends PHPUnit_Framework_TestCase
+{
 
     /**
      * 
-      */
-    public function testSensorParent() {
+     */
+    public function testSensorParent() 
+    {
         $o = new $this->class;
         // Long Name
         $this->assertEquals("Sensor_Base", get_parent_class($o), $this->class." parent class must be 'Sensor_Base'");
     }
     
     /**
+     * data provider
      *
-      */
-    public static function dataSensorArray() {
+     * @return array
+     */
+    public static function dataSensorArray() 
+    {
         return array();
     }
     /**
      *
-      */
-    public static function sensorArrayDataSource($class) {
+     */
+    public static function sensorArrayDataSource($class) 
+    {
         $o = new $class();
         $return = array();
         foreach ($o->sensors as $catName => $cat) {
@@ -75,52 +90,82 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
         return $return;
     }
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayLongName($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayLongName($catName, $shortName, $sensor) 
+    {
         // Long Name
         $this->assertType("string", $sensor['longName'], $catName.":".$shortName.": Long name is not a string");
         $this->assertThat(strlen($sensor['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
     }
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayFunction($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayFunction($catName, $shortName, $sensor) 
+    {
         $o = new $this->class;
         if (isset($sensor['function'])) {
             $this->assertTrue(method_exists($o, $sensor['function']), $this->class.":".$type.":".$shortName.": Method ".$sensor['function']." does not exist");            
         }
     }
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayCheckFunction($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayCheckFunction($catName, $shortName, $sensor) 
+    {
         $o = new $this->class;
         if (isset($sensor['checkFunction'])) {
             $this->assertTrue(method_exists($o, $sensor['checkFunction']), $this->class.":".$type.":".$shortName.": Method ".$sensor['checkFunction']." does not exist");            
         }
     }
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayMult($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayMult($catName, $shortName, $sensor) 
+    {
         if (isset($sensor['mult'])) {
             $this->assertType("numeric", $sensor['mult'], $this->class.":".$type.":".$shortName.": Multiplier must be numeric or not specified");            
         }
     }
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayDoTotal($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayDoTotal($catName, $shortName, $sensor) 
+    {
         if (isset($sensor['doTotal'])) {
             $this->assertType("bool", $sensor['doTotal'], $this->class.":".$type.":".$shortName.": doTotal must be a boolean or not specified");            
         }
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorArrayInputSize($catName, $shortName, $sensor) {
+     */
+    public function testSensorArrayInputSize($catName, $shortName, $sensor) 
+    {
         if (isset($sensor['inputSize'])) {
             $this->assertType("int", $sensor['inputSize'], $this->class.":".$type.":".$shortName.": inputSize must be an integer or not specified");            
             $this->assertThat($sensor['inputSize'], $this->greaterThan(0), $this->class.":".$type.":".$shortName.": inputSize must be greater than 0 or not specified");
@@ -128,9 +173,14 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorVariableExtra($catName, $shortName, $sensor) {
+     */
+    public function testSensorVariableExtra($catName, $shortName, $sensor) 
+    {
         if (isset($sensor["extraText"])) {
             if (is_array($sensor["extraText"])) {
                 $this->assertType("array", $sensor['extraDefault'], $this->class.":".$type.":".$shortName.": If extraText is an array extraDefault must also be an array.");
@@ -143,18 +193,28 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorVariableUnitType($catName, $shortName, $sensor) {
+     */
+    public function testSensorVariableUnitType($catName, $shortName, $sensor) 
+    {
         // Check unitType
         $this->assertType("string", $sensor['unitType'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
         $this->assertTrue(unitConversionTest::findUnits($sensor['unitType'], $sensor['storageUnit']), $this->class.":".$type.":".$shortName.": unit ".$sensor['storageUnit']." of type ".$sensor['unitType']." not found in unitConversion");
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorVariableStorageUnit($catName, $shortName, $sensor) {
+     */
+    public function testSensorVariableStorageUnit($catName, $shortName, $sensor) 
+    {
         // Check storage Unit
         $this->assertType("string", $sensor['storageUnit'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
         // Check to make sure the storage unit is also a valid unit.
@@ -162,9 +222,14 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorVariableValidUnits($catName, $shortName, $sensor) {
+     */
+    public function testSensorVariableValidUnits($catName, $shortName, $sensor) 
+    {
         // Check valid units
         $this->assertType("array", $sensor['validUnits'],  $this->class.":".$type.":".$shortName.": validUnits must be an array");
         $this->assertTrue(count($sensor['validUnits']) > 0, $this->class.":".$type.":".$shortName.": At least one unit must be defined");
@@ -178,9 +243,14 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * test
+     *
+     * @return none
+     *
      * @dataProvider dataSensorArray
-      */
-    public function testSensorVariableUnitMode($catName, $shortName, $sensor) {
+     */
+    public function testSensorVariableUnitMode($catName, $shortName, $sensor) 
+    {
         // Check unit modes
         $this->assertType("array", $sensor['unitModes'],  $this->class.":".$type.":".$shortName.": unitModes must be an array");
         $this->assertTrue(count($sensor['unitModes']) > 0, $this->class.":".$type.":".$shortName.": At least one mode must be defined");
@@ -203,8 +273,9 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
      * Generic function for testing sensor routines
      *
      * This is called by using parent::sensorTest()
-      */
-    public function sensorTest($class, $method, $A, $sensor, $TC, $extra, $deltaT, $expect) {
+     */
+    public function sensorTest($class, $method, $A, $sensor, $TC, $extra, $deltaT, $expect) 
+    {
         $o = new $class();
         $ret = $o->$method($A, $sensor, $TC, $extra, $deltaT);
         $this->assertSame($expect, $ret);
@@ -214,8 +285,9 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase {
      * Generic function for testing sensor check routines.
      *
      * This is called by using parent::sensorCheckTest()
-      */
-    public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) {
+     */
+    public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) 
+    {
         $o = new $class();
         $ret = $o->$method($value, $sensor, $units, $dType) ;
         $this->assertType("bool", $expect, "sensorCheck functions MUST return a boolean");

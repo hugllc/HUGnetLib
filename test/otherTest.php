@@ -23,9 +23,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   Other
+ * @package    HUGnetLibTest
+ * @subpackage Other
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -39,7 +39,9 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
     define("PHPUnit_MAIN_METHOD", "epsocketTest::main");
 }
 
+/** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
+/** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
@@ -47,13 +49,12 @@ require_once dirname(__FILE__).'/../hugnet.inc.php';
 /**
  * Test class for other stuff
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   Other
+ * @package    HUGnetLibTest
+ * @subpackage Other
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class otherTest extends PHPUnit_Framework_TestCase

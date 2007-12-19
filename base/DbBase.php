@@ -39,9 +39,9 @@
  *
  * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
  *
- * @category   DatabaseCache
+ * @category   Base
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License

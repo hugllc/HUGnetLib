@@ -23,9 +23,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   UnitConversion
+ * @package    HUGnetLibTest
+ * @subpackage UnitConversion
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -38,7 +38,9 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
     define("PHPUnit_MAIN_METHOD", "unitConversionTest::main");
 }
 
+/** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
+/** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitConversion.php';
@@ -46,13 +48,12 @@ require_once dirname(__FILE__).'/../unitConversion.php';
 /**
  * Test class for unitConversion.
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   UnitConversion
+ * @package    HUGnetLibTest
+ * @subpackage UnitConversion
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class unitConversionTest extends PHPUnit_Framework_TestCase
@@ -524,7 +525,6 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
             array(32, "&#176;F", "Direction", 0, "diff", null, 32, "&#176;F"),
         );
     }
-    /**
     /**
      * Tests Convert()
      *
