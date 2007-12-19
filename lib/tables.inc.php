@@ -108,49 +108,49 @@ class dfTable
     {
         switch($this->_tableType)
         {
-            case 'CSV':
-                if ($this->_export) {
-                    ob_end_clean();                     // End buffering and discard
+        case 'CSV':
+            if ($this->_export) {
+                ob_end_clean();                     // End buffering and discard
 
-                    header("Content-Type: text/x-csv");
-                    header('Content-Disposition: attachment; filename="'.$this->_tableName.'.csv";');
-                    print $this->_CSVBuffer;
-                    die();
-                }
-            case 'Excel':
-                if ($this->_export) {
-                    ob_end_clean();                     // End buffering and discard
-                    // sending HTTP headers
-                    $this->_ExcelWorkbook->send($this->_tableName.'.xls');
-                    // Let's send the file
-                    $this->_ExcelWorkbook->close();
-                    die();
-                    break;
-                }
-            default:
-                $return = '';
-                if (is_object($this->_HTML_Table)) {
-                    $table = $this->_HTML_Table->toHTML();
-                }
-                if (!empty($table)) {
-                    if ($this->_filterForm) {
-                        $return .= $this->getFilterForm();
-                    }                
-                    if ($this->_export) {
-                        $return .= "<div>Export table to: ";
-                        $url = getMyURL(array($this->_tableFormatName));
-                        $sep = "";
-                        foreach ($this->_altTableFormats as $format) {
-                            $return .= $sep;
-                            $return .= '<a href="'.$url.$this->_tableFormatName.'='.urlencode($format).'">'.$format.'</a>';
-                            $sep = " | ";
-                        }
-                        $return .= '</div>';
-                    }
-                }
-                $return .= $table;
-                return $return;
+                header("Content-Type: text/x-csv");
+                header('Content-Disposition: attachment; filename="'.$this->_tableName.'.csv";');
+                print $this->_CSVBuffer;
+                die();
+            }
+        case 'Excel':
+            if ($this->_export) {
+                ob_end_clean();                     // End buffering and discard
+                // sending HTTP headers
+                $this->_ExcelWorkbook->send($this->_tableName.'.xls');
+                // Let's send the file
+                $this->_ExcelWorkbook->close();
+                die();
                 break;
+            }
+        default:
+            $return = '';
+            if (is_object($this->_HTML_Table)) {
+                $table = $this->_HTML_Table->toHTML();
+            }
+            if (!empty($table)) {
+                if ($this->_filterForm) {
+                    $return .= $this->getFilterForm();
+                }                
+                if ($this->_export) {
+                    $return .= "<div>Export table to: ";
+                    $url = getMyURL(array($this->_tableFormatName));
+                    $sep = "";
+                    foreach ($this->_altTableFormats as $format) {
+                        $return .= $sep;
+                        $return .= '<a href="'.$url.$this->_tableFormatName.'='.urlencode($format).'">'.$format.'</a>';
+                        $sep = " | ";
+                    }
+                    $return .= '</div>';
+                }
+            }
+            $return .= $table;
+            return $return;
+            break;
         }
         
     }
@@ -234,20 +234,20 @@ class dfTable
     function createList($header, $fill=null, $headerPeriod=0, $addHeader=true)
     {
         switch($this->_tableType) {
-            case 'Excel':
-                $this->_ExcelWorkbook = new Spreadsheet_Excel_Writer();
-                $this->_autoFill = $fill;
-                break;
-            case 'CSV':
-                $this->_CSVBuffer = "";
-                break;
-            default:
-                $this->_HTML_Table = new HTML_Table($attributes, $tabOffset);
-                $this->_HTML_Table->setAutoGrow(true);
-                if ($fill !== null) {
-                    $this->_HTML_Table->setAutoFill($fill);
-                }
-                break;
+        case 'Excel':
+            $this->_ExcelWorkbook = new Spreadsheet_Excel_Writer();
+            $this->_autoFill = $fill;
+            break;
+        case 'CSV':
+            $this->_CSVBuffer = "";
+            break;
+        default:
+            $this->_HTML_Table = new HTML_Table($attributes, $tabOffset);
+            $this->_HTML_Table->setAutoGrow(true);
+            if ($fill !== null) {
+                $this->_HTML_Table->setAutoFill($fill);
+            }
+            break;
         }
         $this->_listPage = 'Default';
         $this->_listRow = 0;
@@ -293,48 +293,48 @@ class dfTable
     function _getListSubTotalCols($data) 
     {
         switch($this->_tableType) {
-            case 'Excel':
-                foreach ($this->_subTotalCol as $subCol => $cols) {
-                    if (!isset($data[$subCol])) {
-                        $formula = "";
-                        $sep = "";
-                        $col = 0;
-                        foreach ($this->_listHead as $key => $val) {
-                            if (array_search($key, $cols) !== false) {
-                                $formula .= $sep.$this->_getColLetter($col).($this->_listRow+1);
-                                $sep = ",";
-                            }
-                            $col++;
+        case 'Excel':
+            foreach ($this->_subTotalCol as $subCol => $cols) {
+                if (!isset($data[$subCol])) {
+                    $formula = "";
+                    $sep = "";
+                    $col = 0;
+                    foreach ($this->_listHead as $key => $val) {
+                        if (array_search($key, $cols) !== false) {
+                            $formula .= $sep.$this->_getColLetter($col).($this->_listRow+1);
+                            $sep = ",";
                         }
-                        $formula = "=SUM(".$formula.")";
-                        $col = 0;
-                        foreach ($this->_listHead as $key => $val) {
-                            if ($key == $subCol) break;
-                            $col++;
-                        }
-                        $format =& $this->_ExcelWorkbook->addFormat();
-                        $format->setBorder(1);
-                        $format->setAlign('center');
-                        $this->_ExcelWorksheet->writeFormula($this->_listRow, $col, $formula, $format);
+                        $col++;
                     }
-                }
-                break;
-            default:
-                foreach ($this->_subTotalCol as $subCol => $cols) {
-                    if (!isset($data[$subCol])) {
-                        $subtotal = 0;
-                        foreach ($cols as $colName) {
-                            $subtotal += (float)strip_tags($data[$colName]);
-                        }
-                        $col = 0;
-                        foreach ($this->_listHead as $key => $val) {
-                            if ($key == $subCol) break;
-                            $col++;
-                        }
-                        $this->_HTML_Table->setCellContents($this->_listRow, $col, (string) $subtotal);
+                    $formula = "=SUM(".$formula.")";
+                    $col = 0;
+                    foreach ($this->_listHead as $key => $val) {
+                        if ($key == $subCol) break;
+                        $col++;
                     }
+                    $format =& $this->_ExcelWorkbook->addFormat();
+                    $format->setBorder(1);
+                    $format->setAlign('center');
+                    $this->_ExcelWorksheet->writeFormula($this->_listRow, $col, $formula, $format);
                 }
-                break;
+            }
+            break;
+        default:
+            foreach ($this->_subTotalCol as $subCol => $cols) {
+                if (!isset($data[$subCol])) {
+                    $subtotal = 0;
+                    foreach ($cols as $colName) {
+                        $subtotal += (float)strip_tags($data[$colName]);
+                    }
+                    $col = 0;
+                    foreach ($this->_listHead as $key => $val) {
+                        if ($key == $subCol) break;
+                        $col++;
+                    }
+                    $this->_HTML_Table->setCellContents($this->_listRow, $col, (string) $subtotal);
+                }
+            }
+            break;
         }
     } 
 
@@ -344,19 +344,19 @@ class dfTable
     function addListDividerRow($text, $attrib=null, $export=true) 
     {
         switch($this->_tableType) {
-            case 'CSV':
-                break;
-            case 'Excel':
-                if ($export) {
-                    $this->_ExcelWorksheet =& $this->_ExcelWorkbook->addWorksheet($text);
-                    $this->_listRow = -1;
-                }
-                break;
-            default:
-                $this->_HTML_Table->setCellContents($this->_listRow, 0, stripslashes($text));
-    
-                $attrib['colspan'] = count($this->_listHead);
-                $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib);
+        case 'CSV':
+            break;
+        case 'Excel':
+            if ($export) {
+                $this->_ExcelWorksheet =& $this->_ExcelWorkbook->addWorksheet($text);
+                $this->_listRow = -1;
+            }
+            break;
+        default:
+            $this->_HTML_Table->setCellContents($this->_listRow, 0, stripslashes($text));
+
+            $attrib['colspan'] = count($this->_listHead);
+            $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib);
         }
         $this->_rowType[$this->_listRow] = 'divider';
         return $this->_listRow++;
@@ -371,28 +371,28 @@ class dfTable
     {
         $col = 0;
         switch($this->_tableType) {
-            case 'CSV':
-                $sep = "";
-                foreach ($this->_listHead as $head) {
-                    $this->_CSVBuffer .= $sep.strip_tags($head);
-                    $sep = ",";
-                }
-                $this->_CSVBuffer .= $this->_lineEnd;
-                break;
-            case 'Excel':
-                if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
-                $format =& $this->_ExcelWorkbook->addFormat();
-                $format->setBold();
-                $format->setAlign('center');
-                $format->setPattern(4);
-                foreach ($this->_listHead as $head) {
-                    $this->_ExcelWorksheet->writeString($this->_listRow, $col++, strip_tags($head), $format);
-                }
-                break;
-            default:
-                foreach ($this->_listHead as $head) {
-                    $this->_HTML_Table->setHeaderContents($this->_listRow, $col++, $head);
-                }
+        case 'CSV':
+            $sep = "";
+            foreach ($this->_listHead as $head) {
+                $this->_CSVBuffer .= $sep.strip_tags($head);
+                $sep = ",";
+            }
+            $this->_CSVBuffer .= $this->_lineEnd;
+            break;
+        case 'Excel':
+            if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
+            $format =& $this->_ExcelWorkbook->addFormat();
+            $format->setBold();
+            $format->setAlign('center');
+            $format->setPattern(4);
+            foreach ($this->_listHead as $head) {
+                $this->_ExcelWorksheet->writeString($this->_listRow, $col++, strip_tags($head), $format);
+            }
+            break;
+        default:
+            foreach ($this->_listHead as $head) {
+                $this->_HTML_Table->setHeaderContents($this->_listRow, $col++, $head);
+            }
         }
         $this->_rowType[$this->_listRow] = 'header';
         return $this->_listRow++;
@@ -424,17 +424,17 @@ class dfTable
     {
         if (is_array($data)) {
             switch($this->_tableType) {
-                case 'CSV':
-                case 'Excel':
-                    foreach ($data as $row) {
-                        $listRow = $this->addListRow($row);    
-                    }
-                    break;
-                default:
-                    foreach ($data as $row) {
-                        $listRow = $this->addListRow($row, $row['attributes']);    
-                    }
+            case 'CSV':
+            case 'Excel':
+                foreach ($data as $row) {
+                    $listRow = $this->addListRow($row);    
+                }
                 break;
+            default:
+                foreach ($data as $row) {
+                    $listRow = $this->addListRow($row, $row['attributes']);    
+                }
+            break;
             }
             return true;
         } else {
@@ -452,66 +452,66 @@ class dfTable
         $col = 0;
         
         switch($this->_tableType) {
-            case 'CSV':
-                $sep = "";
-                foreach (array_keys($this->_listHead) as $key) {
-                    $this->_CSVBuffer .= $sep.stripslashes(strip_tags($data[$key]));
-                    $sep = $this->_sep;
+        case 'CSV':
+            $sep = "";
+            foreach (array_keys($this->_listHead) as $key) {
+                $this->_CSVBuffer .= $sep.stripslashes(strip_tags($data[$key]));
+                $sep = $this->_sep;
+            }
+            $this->_CSVBuffer .= $this->_lineEnd;
+            break;
+        case 'Excel':
+            if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
+            $col = 0;
+            foreach (array_keys($this->_listHead) as $key) {
+
+                if ($subCols[$key] === true) {
+                    $formula = '';
+                    $sep = "";
+                    for ($row = 0; $row < $this->_listRow; $row++) {
+                        if ($this->_rowType[$row] == $type) {
+                            $formula .= $sep.$this->_getColLetter($col).($row+1);
+                            $sep = ",";
+                        }
+                    }
+                    $formula = "=SUM(".$formula.")";
+                    $format =& $this->_ExcelWorkbook->addFormat();
+                    $format->setBorder(1);
+                    $format->setAlign('center');
+                    $this->_ExcelWorksheet->writeFormula($this->_listRow, $col, $formula, $format);
+                } else {
+                    $format =& $this->_ExcelWorkbook->addFormat();
+                    $format->setBold();
+                    $format->setAlign('center');
+                    $format->setPattern(4);
+                    $subtotal = $subCols[$key];
+                    $this->_ExcelWorksheet->writeString($this->_listRow, $col, $subtotal, $format);
                 }
-                $this->_CSVBuffer .= $this->_lineEnd;
-                break;
-            case 'Excel':
-                if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
-                $col = 0;
-                foreach (array_keys($this->_listHead) as $key) {
+                $col++;
+            }                    
+            break;
+        default:
+            $col = 0;
+            foreach (array_keys($this->_listHead) as $key) {
 
-                    if ($subCols[$key] === true) {
-                        $formula = '';
-                        $sep = "";
-                        for ($row = 0; $row < $this->_listRow; $row++) {
-                            if ($this->_rowType[$row] == $type) {
-                                $formula .= $sep.$this->_getColLetter($col).($row+1);
-                                $sep = ",";
-                            }
+                $subtotal = 0;
+                if ($subCols[$key] === true) {
+                    for ($row = 0; $row < $this->_listRow; $row++) {
+                        if ($this->_rowType[$row] == $type) {
+                            $subtotal += (float) strip_tags($this->_HTML_Table->getCellContents($row, $col));
                         }
-                        $formula = "=SUM(".$formula.")";
-                        $format =& $this->_ExcelWorkbook->addFormat();
-                        $format->setBorder(1);
-                        $format->setAlign('center');
-                        $this->_ExcelWorksheet->writeFormula($this->_listRow, $col, $formula, $format);
-                    } else {
-                        $format =& $this->_ExcelWorkbook->addFormat();
-                        $format->setBold();
-                        $format->setAlign('center');
-                        $format->setPattern(4);
-                        $subtotal = $subCols[$key];
-                        $this->_ExcelWorksheet->writeString($this->_listRow, $col, $subtotal, $format);
                     }
-                    $col++;
-                }                    
-                break;
-            default:
-                $col = 0;
-                foreach (array_keys($this->_listHead) as $key) {
-
-                    $subtotal = 0;
-                    if ($subCols[$key] === true) {
-                        for ($row = 0; $row < $this->_listRow; $row++) {
-                            if ($this->_rowType[$row] == $type) {
-                                $subtotal += (float) strip_tags($this->_HTML_Table->getCellContents($row, $col));
-                            }
-                        }
-                    } else if (empty($subCols[$key])) {
-                        $subtotal = '&nbsp;';
-                        $this->_HTML_Table->setCellAttributes($this->_listRow, $col, array('class' => 'header'));
-                    } else {
-                        $subtotal = $subCols[$key];
-                        $this->_HTML_Table->setCellAttributes($this->_listRow, $col, array('class' => 'header'));
-                    }
-                    $this->_HTML_Table->setCellContents($this->_listRow, $col, (string)$subtotal);
-                    $col++;
-                }                    
-                break;
+                } else if (empty($subCols[$key])) {
+                    $subtotal = '&nbsp;';
+                    $this->_HTML_Table->setCellAttributes($this->_listRow, $col, array('class' => 'header'));
+                } else {
+                    $subtotal = $subCols[$key];
+                    $this->_HTML_Table->setCellAttributes($this->_listRow, $col, array('class' => 'header'));
+                }
+                $this->_HTML_Table->setCellContents($this->_listRow, $col, (string)$subtotal);
+                $col++;
+            }                    
+            break;
         }
         $this->_rowType[$this->_listRow] = $mytype;
         return $this->_listRow++;
@@ -528,38 +528,38 @@ class dfTable
         
         if ($this->filter($data)) {
             switch($this->_tableType) {
-                case 'CSV':
-                    $sep = "";
-                    foreach (array_keys($this->_listHead) as $key) {
-                        $this->_CSVBuffer .= $sep.stripslashes(strip_tags($data[$key]));
-                        $sep = $this->_sep;
+            case 'CSV':
+                $sep = "";
+                foreach (array_keys($this->_listHead) as $key) {
+                    $this->_CSVBuffer .= $sep.stripslashes(strip_tags($data[$key]));
+                    $sep = $this->_sep;
+                }
+                $this->_CSVBuffer .= $this->_lineEnd;
+                break;
+            case 'Excel':
+                if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
+                foreach (array_keys($this->_listHead) as $key) {
+                    if (isset($data[$key])) {
+                        $cell = stripslashes(strip_tags($data[$key]));
+                    } else if ($this->_autoFill != null) {
+                        $cell = stripslashes(strip_tags($this->_autoFill));
+                    } else {
+                        unset($cell);
                     }
-                    $this->_CSVBuffer .= $this->_lineEnd;
-                    break;
-                case 'Excel':
-                    if (!is_object($this->_ExcelWorksheet)) $this->addListDividerRow($this->_tableName);
-                    foreach (array_keys($this->_listHead) as $key) {
-                        if (isset($data[$key])) {
-                            $cell = stripslashes(strip_tags($data[$key]));
-                        } else if ($this->_autoFill != null) {
-                            $cell = stripslashes(strip_tags($this->_autoFill));
-                        } else {
-                            unset($cell);
-                        }
 
-                        $this->_ExcelWorksheet->write($this->_listRow, $col++, $cell);
-                    }
-                    break;
-                default:
-                    if ((($this->_listRow % $this->_headerPeriod) == 0) && ($this->_headerPeriod != 0))
-                    {
-                        $this->addListHeaderRow();
-                    }
-                    foreach (array_keys($this->_listHead) as $key) {
-                        $this->_HTML_Table->setCellContents($this->_listRow, $col++, stripslashes($data[$key]));
-                        if (is_array($attrib)) $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib, true);
-                    }                    
-                    break;
+                    $this->_ExcelWorksheet->write($this->_listRow, $col++, $cell);
+                }
+                break;
+            default:
+                if ((($this->_listRow % $this->_headerPeriod) == 0) && ($this->_headerPeriod != 0))
+                {
+                    $this->addListHeaderRow();
+                }
+                foreach (array_keys($this->_listHead) as $key) {
+                    $this->_HTML_Table->setCellContents($this->_listRow, $col++, stripslashes($data[$key]));
+                    if (is_array($attrib)) $this->_HTML_Table->setRowAttributes($this->_listRow, $attrib, true);
+                }                    
+                break;
             }
             $this->_rowType[$this->_listRow] = $type;
             $this->_getListSubTotalCols($data);
@@ -579,21 +579,21 @@ class dfTable
     function finishList($attrib = array(), $class1='row1', $class2='row2') 
     {
         switch($this->_tableType) {
-            case 'CSV':
-                break;
-            case 'Excel':
-                break;
-            default:
-                $this->_HTML_Table->altRowAttributes($this->_firstData, array('class' => $class1), array('class' => $class2), true);
-                
-                $col = 0;
-                foreach (array_keys($this->_listHead) as $key) {
-                    if (isset($attrib[$key])) {
-                        $this->_HTML_Table->updateColAttributes($col, $attrib[$key]);
-                    }
-                    $col++;
-                }    
-                break;
+        case 'CSV':
+            break;
+        case 'Excel':
+            break;
+        default:
+            $this->_HTML_Table->altRowAttributes($this->_firstData, array('class' => $class1), array('class' => $class2), true);
+            
+            $col = 0;
+            foreach (array_keys($this->_listHead) as $key) {
+                if (isset($attrib[$key])) {
+                    $this->_HTML_Table->updateColAttributes($col, $attrib[$key]);
+                }
+                $col++;
+            }    
+            break;
         }
     }
 
