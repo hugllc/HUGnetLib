@@ -57,7 +57,7 @@ require_once dirname(__FILE__).'/../sensor.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class sensorTest extends PHPUnit_Framework_TestCase
+class SensorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Runs the test methods of this class.
@@ -106,7 +106,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testGetReading().
      */
-    public function testSensorVar() 
+    public function TestSensorVar() 
     {
     }
     /**
@@ -118,16 +118,16 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataRegisterSensor() 
     {
         return array(
-            array("testSensor", true),
-            array("testSensorBad", false),
-            array("testSensorNoSensors", false),
+            array("TestSensor", true),
+            array("TestSensorBad", false),
+            array("TestSensorNoSensors", false),
         );
     }
     /**
      * test
      *
-     * @param string $class The class to use
-     * @param mixed   $expect What to expect
+     * @param string $class  The class to use
+     * @param mixed  $expect What to expect
      *
      * @return none
      *
@@ -135,7 +135,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
      */
     public function testRegisterSensor($class, $expect) 
     {
-        $o = new sensor();
+        $o   = new sensor();
         $ret = $o->registerSensor($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
@@ -157,14 +157,14 @@ class sensorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetReadingCall() 
     {
-        $o = new sensor();
-        $cName = "testSensor";
+        $o     = new sensor();
+        $cName = "TestSensor";
         $o->registerSensor($this->getMock($cName), $cName);
         $o->sensors[$cName]->expects($this->once())
-                           ->method('Test1')
+                           ->method('test1')
                            ->with($this->equalTo(1), $this->arrayHasKey("longName"), $this->equalTo(10), $this->equalTo("extra"));
-        $sensor = "testSensor1";
-        $ret = $o->getReading(1, 0x100, $sensor, 10, "extra");
+        $sensor = "TestSensor1";
+        $ret    = $o->getReading(1, 0x100, $sensor, 10, "extra");
     }
     /**
      * data Provider for testGetReading
@@ -175,8 +175,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetReading() 
     {
         return array(
-            array(1, 0x400, "testSensor1", 10, 1, 1, "testSensor1"),
-            array(5, 0x100, "testSensor1", 6, 10, 50, "testSensor1"),
+            array(1, 0x400, "TestSensor1", 10, 1, 1, "TestSensor1"),
+            array(5, 0x100, "TestSensor1", 6, 10, 50, "TestSensor1"),
         );
     }
     /**
@@ -197,7 +197,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetReadingBadType($val, $type, $sensor, $TC, $extra, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getReading($val, $type, $sensor, $TC, $extra);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -213,14 +213,14 @@ class sensorTest extends PHPUnit_Framework_TestCase
      */
     public function testRunFunctionCall() 
     {
-        $o = new sensor();
-        $cName = "testSensor";
+        $o     = new sensor();
+        $cName = "TestSensor";
         $o->registerSensor($this->getMock($cName), $cName);
         $o->sensors[$cName]->expects($this->once())
-                           ->method('Test1')
+                           ->method('test1')
                            ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4));
         $args = array(1,2,3,4);
-        $ret = $o->runFunction($o->sensors[$cName], 'Test1', $args, "2");
+        $ret  = $o->runFunction($o->sensors[$cName], 'Test1', $args, "2");
     }
     /**
      * data provider
@@ -230,13 +230,19 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataRunFunction() 
     {
         return array(
-            array("testSensor", "Test2", array(1,2,3,4), 24, 1),
-            array("testSensor", "badFunction", array(1,2,3,4), 5, 5),
+            array("TestSensor", "Test2", array(1,2,3,4), 24, 1),
+            array("TestSensor", "badFunction", array(1,2,3,4), 5, 5),
             array("badClass", "Test1", array(1,2,3,4), 7, 7),
         );
     }
     /**
      * test
+     *
+     * @param object $class    Reference to the class the function is a method of
+     * @param string $function the name of the function to call
+     * @param array  $args     The arguments to send to that function
+     * @param mixed  $default  The default return value
+     * @param mixed  $expect   Expected function return
      *
      * @return none
      *
@@ -257,9 +263,9 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetClass() 
     {
         return array(
-            array(0x100, "", "sameClass", 0x100, "testSensor1"),
-            array(0x100, "testSensor2", "sameClass", 0x100, "testSensor2"),
-            array(0x400, "testSensor2", null, 0x400, "testSensor2"),
+            array(0x100, "", "sameClass", 0x100, "TestSensor1"),
+            array(0x100, "TestSensor2", "sameClass", 0x100, "TestSensor2"),
+            array(0x400, "TestSensor2", null, 0x400, "TestSensor2"),
         );
     }
     /**
@@ -277,8 +283,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetClass($type, $sensor, $expect, $typeExpect, $sensorExpect) 
     {
-        $o = new sensor();
-        $cName = "testSensor";
+        $o     = new sensor();
+        $cName = "TestSensor";
         $o->registerSensor($cName);
         $class = $o->getClass($type, $sensor);
         if ($expect === "sameClass") {
@@ -298,8 +304,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetUnits() 
     {
         return array(
-            array(0x100, "testSensor1", "Q", "B", "testSensor1"),
-            array(0x100, "testSensor1", "A", "A", "testSensor1"),
+            array(0x100, "TestSensor1", "Q", "B", "TestSensor1"),
+            array(0x100, "TestSensor1", "A", "A", "TestSensor1"),
         );
     }
     /**
@@ -318,7 +324,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetUnits($type, $sensor, $unit, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getUnits($type, $sensor, $unit);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -351,10 +357,10 @@ class sensorTest extends PHPUnit_Framework_TestCase
         );
 
         return array(
-            array(0x100, "testSensor3", $expect[0], "testSensor3"),
-            array(0x100, "testSensor1", $expect[1], "testSensor1"),
-            array(0x100, "testSensor2", array(), "testSensor2"),
-            array(0x400, "testSensor3", array(), "testSensor3"),
+            array(0x100, "TestSensor3", $expect[0], "TestSensor3"),
+            array(0x100, "TestSensor1", $expect[1], "TestSensor1"),
+            array(0x100, "TestSensor2", array(), "TestSensor2"),
+            array(0x400, "TestSensor3", array(), "TestSensor3"),
         );
     }
     /**
@@ -372,7 +378,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetExtra($type, $sensor, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getExtra($type, $sensor);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -387,8 +393,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetUnitType() 
     {
         return array(
-            array(0x100, "testSensor3", "Test", "testSensor3"),
-            array(0x400, "testSensor3", null, "testSensor3"),
+            array(0x100, "TestSensor3", "Test", "TestSensor3"),
+            array(0x400, "TestSensor3", null, "TestSensor3"),
         );
     }
     /**
@@ -406,7 +412,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetUnitType($type, $sensor, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getUnitType($type, $sensor);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -421,17 +427,17 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetSize() 
     {
         return array(
-            array(0x100, "testSensor3", 3),
-            array(0x100, "testSensor1", 1),
-            array(0x400, "testSensor3", 1),
+            array(0x100, "TestSensor3", 3),
+            array(0x100, "TestSensor1", 1),
+            array(0x400, "TestSensor3", 1),
         );
     }
     /**
      * test
      *
-     * @param int    $type         The type of the sensor
-     * @param string $sensor       The sensor name
-     * @param mixed  $expect       The output to expect
+     * @param int    $type   The type of the sensor
+     * @param string $sensor The sensor name
+     * @param mixed  $expect The output to expect
      *
      * @return none
      *
@@ -440,7 +446,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetSize($type, $sensor, $expect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getSize($type, $sensor);
         $this->assertSame($expect, $ret);
     }
@@ -454,17 +460,17 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataDoTotal() 
     {
         return array(
-            array(0x100, "testSensor3", true),
-            array(0x100, "testSensor1", false),
-            array(0x400, "testSensor3", false),
+            array(0x100, "TestSensor3", true),
+            array(0x100, "TestSensor1", false),
+            array(0x400, "TestSensor3", false),
         );
     }
     /**
      * test
      *
-     * @param int    $type         The type of the sensor
-     * @param string $sensor       The sensor name
-     * @param mixed  $expect       The output to expect
+     * @param int    $type   The type of the sensor
+     * @param string $sensor The sensor name
+     * @param mixed  $expect The output to expect
      *
      * @return none
      *
@@ -473,7 +479,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testDoTotal($type, $sensor, $expect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->doTotal($type, $sensor);
         $this->assertSame($expect, $ret);
     }
@@ -486,13 +492,13 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetUnitMode() 
     {
         return array(
-            array("A", "raw", "ignore", "testSensor2", 0x100, "testSensor2"), // Wrong unit for this sensor
-            array("A", "raw", "raw", "testSensor1", 0x100, "testSensor1"),
-            array("B", "raw", "diff", "testSensor1", 0x100, "testSensor1"),
-            array("B", "diff", "diff", "testSensor1", 0x100, "testSensor1"),
-            array(null, false, array("A"=>array("raw", "diff")), "testSensor3", 0x100, "testSensor3"),
-            array("A", false, array("raw", "diff"), "testSensor3", 0x100, "testSensor3"),
-            array("A", "ignore", "ignore", "testSensor3", 0x100, "testSensor3"),
+            array("A", "raw", "ignore", "TestSensor2", 0x100, "TestSensor2"), // Wrong unit for this sensor
+            array("A", "raw", "raw", "TestSensor1", 0x100, "TestSensor1"),
+            array("B", "raw", "diff", "TestSensor1", 0x100, "TestSensor1"),
+            array("B", "diff", "diff", "TestSensor1", 0x100, "TestSensor1"),
+            array(null, false, array("A"=>array("raw", "diff")), "TestSensor3", 0x100, "TestSensor3"),
+            array("A", false, array("raw", "diff"), "TestSensor3", 0x100, "TestSensor3"),
+            array("A", "ignore", "ignore", "TestSensor3", 0x100, "TestSensor3"),
         );
     }
     /**
@@ -512,7 +518,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetUnitMode($unit, $mode, $expect, $sensor, $type, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getUnitMode($type, $sensor, $unit, $mode);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -529,10 +535,10 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetUnitDefMode() 
     {
         return array(
-            array(0x100, "testSensor1", "A", "raw", "testSensor1"),
-            array(0x100, "testSensor1", "B", "diff", "testSensor1"),
-            array(0x100, "testSensor1", null, null, "testSensor1"),
-            array(0x100, "testSensorBad", null, null, "testSensor1"),
+            array(0x100, "TestSensor1", "A", "raw", "TestSensor1"),
+            array(0x100, "TestSensor1", "B", "diff", "TestSensor1"),
+            array(0x100, "TestSensor1", null, null, "TestSensor1"),
+            array(0x100, "TestSensorBad", null, null, "TestSensor1"),
         );
     }
     /**
@@ -551,7 +557,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetUnitDefMode($type, $sensor, $unit, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getUnitDefMode($type, $sensor, $unit);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -568,10 +574,10 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataGetAllUnits() 
     {
         return array(
-            array(0x100, "testSensor1", array("A","B","C"), "testSensor1"),
-            array(0x100, "testSensor2", array("D","E","F"), "testSensor2"),
-            array(0x100, "testSensorBad", array("A","B","C"), "testSensor1"),
-            array(0x400, "testSensorBad", array(), "testSensorBad"),
+            array(0x100, "TestSensor1", array("A","B","C"), "TestSensor1"),
+            array(0x100, "TestSensor2", array("D","E","F"), "TestSensor2"),
+            array(0x100, "TestSensorBad", array("A","B","C"), "TestSensor1"),
+            array(0x400, "TestSensorBad", array(), "TestSensorBad"),
         );
     }
     /**
@@ -589,7 +595,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetAllUnits($type, $sensor, $expect, $sensorExpect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->getAllUnits($type, $sensor);
         $this->assertSame($expect, $ret);
         // Sensor is passed by reference so it can change.
@@ -628,8 +634,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @param int    $type         The type of the sensor
-     * @param mixed  $expect       The output to expect
+     * @param int   $type   The type of the sensor
+     * @param mixed $expect The output to expect
      *
      * @return none
      *
@@ -638,8 +644,8 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testGetAllSensors($type, $expect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
-        $o->registerSensor("testSensorExtraSensors");
+        $o->registerSensor("TestSensor");
+        $o->registerSensor("TestSensorExtraSensors");
         $ret = $o->getAllSensors($type);
         $this->assertSame($expect, $ret);
 
@@ -654,9 +660,9 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataCheckUnits() 
     {
         return array(
-            array(0x100, "testSensor1", "A", "diff", "testSensor1", "A", "diff"),
-            array(array(0x100, 0x100), "testSensor1", "A", "diff", array("testSensor1", "testSensor1"), array("B", "B"), array("diff", "diff")),
-            array(array(0x100, 0x100), array("testSensor1", "testSensor2"), array("B", "A"), array("raw", "diff"), array("testSensor1", "testSensor2"), array("B", "E"), array("diff", "diff")),
+            array(0x100, "TestSensor1", "A", "diff", "TestSensor1", "A", "diff"),
+            array(array(0x100, 0x100), "TestSensor1", "A", "diff", array("TestSensor1", "TestSensor1"), array("B", "B"), array("diff", "diff")),
+            array(array(0x100, 0x100), array("TestSensor1", "TestSensor2"), array("B", "A"), array("raw", "diff"), array("TestSensor1", "TestSensor2"), array("B", "E"), array("diff", "diff")),
         );
     }
     /**
@@ -677,7 +683,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testCheckUnitsType($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $expectType = $type;
         $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectType, $type, "Type is not the same");
@@ -700,7 +706,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testCheckUnitsSensor($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectSensor, $sensor, "Sensor is not the same");
     }
@@ -722,7 +728,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testCheckUnitsUnits($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectUnits, $units, "Units is not the same");
     }
@@ -744,7 +750,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testCheckUnitsMode($type, $sensor, $units, $mode, $expectSensor, $expectUnits, $expectMode) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $o->checkUnits($type, $sensor, $units, $mode);
         $this->assertSame($expectMode, $mode, "Mode is not the same");
     }
@@ -767,7 +773,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
                 "info" => array(
                     1 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2", "TestSensor3", "TestSensor2"),
                             "Extra" => array(5,4,3,2,1),
                         ),
                     ),
@@ -804,7 +810,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
                 "expectInfo" => array(
                     1 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2", "TestSensor3", "TestSensor2"),
                             "Extra" => array(5,4,3,2,1),
                         ),
                     ),
@@ -872,13 +878,13 @@ class sensorTest extends PHPUnit_Framework_TestCase
                 "info" => array(
                     1 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2", "TestSensor3", "TestSensor2"),
                             "Extra" => array(5,4,3,2,1),
                         ),
                     ),
                     2 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor2", "testSensor2", "testSensor1", "testSensor1", "testSensor1"),
+                            "sensorType" => array("TestSensor2", "TestSensor2", "TestSensor1", "TestSensor1", "TestSensor1"),
                             "Extra" => array(11,12,2,3,4),
                         ),
                     ),
@@ -942,13 +948,13 @@ class sensorTest extends PHPUnit_Framework_TestCase
                 "expectInfo" => array(
                     1 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor1", "testSensor1", "testSensor2", "testSensor3", "testSensor2"),
+                            "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2", "TestSensor3", "TestSensor2"),
                             "Extra" => array(5,4,3,2,1),
                         ),
                     ),
                     2 => array(
                         "params" => array(
-                            "sensorType" => array("testSensor2", "testSensor2", "testSensor1", "testSensor1", "testSensor1"),
+                            "sensorType" => array("TestSensor2", "TestSensor2", "TestSensor1", "TestSensor1", "TestSensor1"),
                             "Extra" => array(11,12,2,3,4),
                         ),
                     ),
@@ -1084,9 +1090,9 @@ class sensorTest extends PHPUnit_Framework_TestCase
         // Otherwise we don't know which run failed.  It should be incremented
         // for each test case.
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $expectType = $type;
-        $newData = array();
+        $newData    = array();
         foreach ($data as $d) {
             $o->DecodeData($info[$d['DeviceKey']], $d);
             $newData[$d['DeviceKey']][] = $d;
@@ -1114,7 +1120,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
                     "data" => array(1,2,3),
                     "Types" => array(0x100, 0x100, 0x100),
                     "params" => array(
-                        "sensorType" => array("testSensor1", "testSensor1", "testSensor2"),
+                        "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2"),
                     ),
                     "Units" => array("A", "B", "D"),
                     "dType" => array("raw", "diff", "raw"),
@@ -1127,13 +1133,12 @@ class sensorTest extends PHPUnit_Framework_TestCase
                     "data" => array(1,2,null),
                     "Types" => array(0x100, 0x100, 0x100),
                     "params" => array(
-                        "sensorType" => array("testSensor1", "testSensor1", "testSensor2"),
+                        "sensorType" => array("TestSensor1", "TestSensor1", "TestSensor2"),
                     ),
                     "Units" => array("A", "B", "D"),
                     "dType" => array("raw", "diff", "raw"),
                     "Status" => "GOOD",
                 ),
-                run => 1,
              ),
         );
     }
@@ -1150,7 +1155,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testcheckRecord($data, $expect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $o->checkRecord($data);
         $this->assertSame($expect, $data);
     }
@@ -1165,7 +1170,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public static function dataCheckPoint() 
     {
         return array(
-            array(1, 0x100, "testSensor1", "diff", true),
+            array(1, 0x100, "TestSensor1", "diff", true),
         );
     }
     /**
@@ -1184,7 +1189,7 @@ class sensorTest extends PHPUnit_Framework_TestCase
     public function testCheckPoint($value, $type, $sensor, $mode, $expect) 
     {
         $o = new sensor();
-        $o->registerSensor("testSensor");
+        $o->registerSensor("TestSensor");
         $ret = $o->checkPoint($value, $type, $sensor, $mode);
         $this->assertSame($expect, $ret);
     }
@@ -1207,11 +1212,11 @@ if (PHPUnit_MAIN_METHOD == "sensorTest::main") {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class testSensor extends sensor_base
+class TestSensor extends sensor_base
 {
     var $sensors = array(
         0x100 => array(
-            "testSensor1" => array(
+            "TestSensor1" => array(
                 "longName" => "Generic Test Sensor 1",
                 "unitType" => "Test",
                 "validUnits" => array('A', 'B', 'C'),
@@ -1225,7 +1230,7 @@ class testSensor extends sensor_base
                     'C' => 'raw',
                 ),
             ),
-            "testSensor2" => array(
+            "TestSensor2" => array(
                 "longName" => "Generic Test Sensor 2",
                 "unitType" => "Test2",
                 "validUnits" => array('D', 'E', 'F'),
@@ -1239,7 +1244,7 @@ class testSensor extends sensor_base
                     'F' => 'raw',
                 ),
             ),
-            "testSensor3" => array(
+            "TestSensor3" => array(
                 "longName" => "Generic Test Sensor 3",
                 "unitType" => "Test",
                 "validUnits" => array('A'),
@@ -1281,7 +1286,7 @@ class testSensor extends sensor_base
      *
      * @return none
      */
-    public function Test1($val, $sensor, $TC, $extra) 
+    public function test1($val, $sensor, $TC, $extra) 
     {
         // This must stay the same. 
         return $val*$extra;
@@ -1296,14 +1301,14 @@ class testSensor extends sensor_base
      *
      * @return none
      */
-    public function Test2($val, $sensor, $TC, $extra) 
+    public function test2($val, $sensor, $TC, $extra) 
     {
         return $val;
     }
     /**
      * Some Function
      *
-     * @param int    $value  The current sensor value
+     * @param int    $val    The current sensor value
      * @param array  $sensor The sensor information array
      * @param string $units  The units the current value are in
      * @param mixed  $dType  The data mode
@@ -1328,7 +1333,7 @@ class testSensor extends sensor_base
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class testSensorExtraSensors extends sensor_base
+class TestSensorExtraSensors extends sensor_base
 {
     /** Sensors array */
     var $sensors = array(
@@ -1350,7 +1355,7 @@ class testSensorExtraSensors extends sensor_base
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class testSensorNoSensors extends sensor_base 
+class TestSensorNoSensors extends sensor_base
 {
     /**
      * This is here so that it won't run the sensor_base constructor

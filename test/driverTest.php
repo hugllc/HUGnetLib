@@ -123,7 +123,7 @@ class driverTest extends PHPUnit_Framework_TestCase
         $driver->gateway = new gatewayMock($driver);
         $driver->packet->socket[$socket] = new epsocketMock();
         $driver->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
-        $driver->sensors->registerSensor("testSensor");
+        $driver->sensors->registerSensor("TestSensor");
         return $driver;
     }
 
@@ -710,7 +710,7 @@ class driverTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
-                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "E", "E"),
                 ), // DevInfo
                 2, // dPlaces
@@ -723,7 +723,7 @@ class driverTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
-                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
                 ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff"), // expectType

@@ -58,7 +58,7 @@ require_once dirname(__FILE__).'/../../../drivers/filters/medianFilter.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class medianFilterTest extends filterTestBase
+class MedianFilterTest extends filterTestBase
 {
     /** @var string Tells what class this is testing */
     public $class = "medianFilter";
@@ -107,6 +107,8 @@ class medianFilterTest extends filterTestBase
 
     /**
      * data provider for dataFilterVariable* 
+     *
+     * @return array
      */
     public static function dataFilterVariable() 
     {
@@ -190,6 +192,13 @@ class medianFilterTest extends filterTestBase
     /**
      * test
      *
+     * @param array &$history The history to filter
+     * @param int   $index    The index in the history to use
+     * @param array $filter   Information on the filter we are implementing
+     * @param mixed $extra    Extra setup information on the filter
+     * @param int   $deltaT   The difference in time between this record and the last one
+     * @param array $expect   What we expect the history to look like
+     *
      * @return none
      *
      * @dataProvider dataMedian
@@ -202,6 +211,13 @@ class medianFilterTest extends filterTestBase
 
     /**
      * test
+     *
+     * @param array &$history The history to filter
+     * @param int   $index    The index in the history to use
+     * @param array $filter   Information on the filter we are implementing
+     * @param mixed $extra    Extra setup information on the filter
+     * @param int   $deltaT   The difference in time between this record and the last one
+     * @param array $expect   What we expect the history to look like
      *
      * @return none
      *
