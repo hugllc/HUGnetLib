@@ -127,7 +127,7 @@ define("E00391102B_SENSORS", 9);
 
         function checkRecord($Info, &$Rec) {
 
-            parent::_checkRecordBase($Info, $Rec);    
+            parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"] = "BAD";
@@ -138,14 +138,14 @@ define("E00391102B_SENSORS", 9);
         }
         
         function interpConfig(&$Info) {
-            $this->_interpConfigDriverInfo($Info);
-            $this->_interpConfigHW($Info);
-            $this->_interpConfigFW($Info);
-            $this->_interpConfigParams($Info);
+            $this->interpConfigDriverInfo($Info);
+            $this->interpConfigHW($Info);
+            $this->interpConfigFW($Info);
+            $this->interpConfigParams($Info);
             $this->_interpConfig00392012C($Info);
-            $this->_interpConfigTC($Info);
-            $this->_interpTypes($Info);
-            $this->_interpConfigSensorSetup($Info);
+            $this->interpConfigTC($Info);
+            $this->interpTypes($Info);
+            $this->interpConfigSensorSetup($Info);
 
         }
         
@@ -163,11 +163,11 @@ define("E00391102B_SENSORS", 9);
                 // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
                 for ($i = 0; $i < $data["NumSensors"]; $i++) {
-                    $key = $this->_getOrder($Info, $i, true);
+                    $key = $this->getOrder($Info, $i, true);
                     if ($Info["Types"][$key] == 1) {
-                        $data["raw"][$key] = $this->_interpSensorsGetData($data["Data"], &$index, 2);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 2);
                     } else {
-                        $data["raw"][$key] = $this->_interpSensorsGetData($data["Data"], &$index, 3);
+                        $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 3);
                     }
  
                 }
@@ -182,7 +182,7 @@ define("E00391102B_SENSORS", 9);
             foreach ($Packets as $key => $data) {
                 $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
-                    self::_interpSensorsSetData($Info, $data);
+                    self::interpsensorssetdata($Info, $data);
                     self::_interpSensorsGetRaw($Info, $data);
                     $this->driver->sensors->decodeData($Info, $data);
                     $this->checkRecord($Info, $data);
