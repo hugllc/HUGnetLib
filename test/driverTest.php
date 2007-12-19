@@ -451,7 +451,7 @@ class driverTest extends PHPUnit_Framework_TestCase
         // This has to go to eDEFAULT since it has no args.
         $this->o->packet = $this->getMock("EPacket", array(), array("socketType" => "test"));
         $this->o->packet->expects($this->once())
-                  ->method('Close')
+                  ->method('close')
                   ->with($this->arrayHasKey("GatewayKey"));
         $this->o->done($Info);
     }
