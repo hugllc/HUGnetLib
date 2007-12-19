@@ -929,7 +929,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
-                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
                 ), // DevInfo
                 2, // dPlaces
@@ -942,7 +942,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
-                    "params"=> array("sensorType"=>array("testSensor2", "testSensor1", "testSensor2", "testSensor2", "testSensor2")),
+                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
                 ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff"), // expectType
