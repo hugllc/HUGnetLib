@@ -76,7 +76,11 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
         return array();
     }
     /**
+     * Returns sensor data
      *
+     * @param string $class The class to get the sensor array out of
+     *
+     * @return array
      */
     public static function sensorArrayDataSource($class) 
     {
@@ -92,6 +96,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return none
      *
      * @dataProvider dataSensorArray
@@ -104,6 +112,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -119,6 +131,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return none
      *
      * @dataProvider dataSensorArray
@@ -133,6 +149,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return none
      *
      * @dataProvider dataSensorArray
@@ -145,6 +165,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -160,6 +184,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return none
      *
      * @dataProvider dataSensorArray
@@ -174,6 +202,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
 
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -195,6 +227,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return none
      *
      * @dataProvider dataSensorArray
@@ -208,6 +244,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
 
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -223,6 +263,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
 
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -244,6 +288,10 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
 
     /**
      * test
+     *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
      *
      * @return none
      *
@@ -273,6 +321,17 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
      * Generic function for testing sensor routines
      *
      * This is called by using parent::sensorTest()
+     *
+     * @param string $class  The name of the class
+     * @param string $mothod The method to test
+     * @param mixed  $A      Data for the sensor to work on
+     * @param array  $sensor The sensor array
+     * @param int    $TC     The time constant
+     * @param mixed  $extra  The extra data for the sensor
+     * @param float  $deltaT The time differenct
+     * @param mixed  $expect The return data to expect
+     *
+     * @return none
      */
     public function sensorTest($class, $method, $A, $sensor, $TC, $extra, $deltaT, $expect) 
     {
@@ -285,6 +344,16 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
      * Generic function for testing sensor check routines.
      *
      * This is called by using parent::sensorCheckTest()
+     *
+     * @param string $class  The name of the class
+     * @param string $mothod The method to test
+     * @param mixed  $value  Data for the sensor to work on
+     * @param array  $sensor The sensor array
+     * @param int    $units  Units that $value is in
+     * @param mixed  $dType  data type (mode) that $value is in
+     * @param mixed  $expect The return data to expect
+     *
+     * @return none
      */
     public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) 
     {
