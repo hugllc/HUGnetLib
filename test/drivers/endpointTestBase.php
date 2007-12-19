@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/../unitConversionTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class endpointTestBase extends PHPUnit_Framework_TestCase
+abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
 {
     /** Socket to use in testing */
     static $socket = 1;
@@ -96,10 +96,13 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     {
         $driver = driverTest::createDriver();
         $driver->registerDriver("testDriver");
-        $class = $this->class;
-        $this->o = new $class($driver);
         $driver->packet->socket[self::$socket] = new epsocketMock;
-        $driver->packet->ReplyTimeout=1;  // The reply timeout can be short becuase we should get an instant reply.
+        // The reply timeout can be short becuase we should get an instant reply.
+        $driver->packet->ReplyTimeout = 1;
+        
+        $class   = $this->class;
+        $this->o = new $class($driver);
+
     }
 
     /**
@@ -134,6 +137,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      *  A subclass should call this routine in the dataDevicesArray function
      *  parent::devicesCheckVersion($class)
+     *
+     * @param string $class The class to use
+     * @param string $var   The variable to return ("fw", "hw", or "ver")
      *
      * @return array
      */
@@ -180,6 +186,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param string $fw      The firmware string
+     * @param string $hw      The hardware string
+     * @param string $version The version string
+     *
      * @return none
      *
      * @dataProvider dataDevicesVersion
@@ -199,6 +209,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * Test
+     *
+     * @param string $fw      The firmware string
+     * @param array  $firm    The firmware array
      *
      * @return none
      *
@@ -220,6 +233,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * Test
+     *
+     * @param string $fw  The firmware string
+     * @param string $hw  The hardware string
+     * @param string $Ver The version string
      *
      * @return none
      *
@@ -275,6 +292,8 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * data provider for dataConfigArray* functions
      *
+     * @param string $class The class to use
+     *
      * @return array
      */
     public static function dataConfigArray($class=null) 
@@ -296,6 +315,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param string $class  The class to use
+     * @param string $fw     The firmware string
+     * @param string $params Firmware parameters
+     *
      * @return none
      *
      * @dataProvider dataConfigArray
@@ -310,6 +333,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param string $class  The class to use
+     * @param string $fw     The firmware string
+     * @param string $params Firmware parameters
+     *
      * @return none
      *
      * @dataProvider dataConfigArray
@@ -323,6 +350,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param string $class  The class to use
+     * @param string $fw     The firmware string
+     * @param string $params Firmware parameters
+     *
      * @return none
      *
      * @dataProvider dataConfigArray
@@ -334,6 +365,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * Test
+     *
+     * @param string $class  The class to use
+     * @param string $fw     The firmware string
+     * @param string $params Firmware parameters
      *
      * @return none
      *
@@ -357,6 +392,10 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * Test
+     *
+     * @param string $class  The class to use
+     * @param string $fw     The firmware string
+     * @param string $params Firmware parameters
      *
      * @return none
      *
@@ -385,6 +424,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     }
     /**
      * Test
+     *
+     * @param array $Info   The devInfo array for the device
+     * @param array $expect The expected return
      *
      * @return none
      *
@@ -426,24 +468,26 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     public static function datacheckRecord() 
     {
         return array(
-            array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD"), 1),
+            array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD")),
             array(
                 array(),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
-                2,
             ),
             array(
                 array(),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1, "Status" => "BAD", "StatusCode" => "Bad TC"),
-                3,
             ),
         );
     }
 
     /**
      * Test
+     *
+     * @param array $Info   The devInfo array for the device
+     * @param array $Rec    The record to check
+     * @param array $expect The expected return
      *
      * @return none
      *
@@ -498,6 +542,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param array $Info   The devInfo array for the device
+     * @param array $expect The expected return
+     *
      * @return none
      *
      * @dataProvider datareadConfig()
@@ -538,6 +585,9 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param array $ret      The returned value
+     * @param array $expected The expected return
+     *
      * @return none
      */
     private function _checkinterpConfigReturn($ret, $expected) 
@@ -566,6 +616,8 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @param array $ret The returned value
+     *
      * @return none
      */
     function printArray($ret) 
@@ -581,6 +633,8 @@ abstract class endpointTestBase extends PHPUnit_Framework_TestCase
     
     /**
      * Test
+     *
+     * @param array $val The array to print
      *
      * @return none
      */
