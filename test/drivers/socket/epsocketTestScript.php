@@ -33,6 +33,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
+die();
+
 $msg     = $argv[1];
 $timeout = 5;
 
