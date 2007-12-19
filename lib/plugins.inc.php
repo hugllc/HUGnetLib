@@ -132,10 +132,10 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Plugins 
+class Plugins
 {
     /** @var array Plugin Functions */
-    var $plugins = array("Functions" => array(), "Menu" => array(), "Generic" => array()); /** 
+    var $plugins = array("Functions" => array(), "Menu" => array(), "Generic" => array());
     /** @var array This is where information on the plugin files is stored. */
     var $plugin_info = array();  
     /** @var string This is the directory where Plugins will be looked for. */
@@ -157,8 +157,6 @@ class Plugins
      * This function adds a menu item.  It is fairly flexible.  If it is sent an array it will support anything that you give
      * it as long as the menu system does.  It all depends on how the menus are added into the code.
      *
-     * @deprecated
-     *
      * @param mixed  $Name If an Array, it should contain at least Name["Name"].  Other valid items are Name["Link"]
      *     Name["Show"], and Name["Help"].  None of the other paramters are used in this case.  If it is a string, it is 
      *     just the name of the item.  The other paramters must be used to set the other items.
@@ -168,6 +166,8 @@ class Plugins
      * @param string $Help The help text to show in a popup.  Not used if Name is an array.
      * 
      * @return none
+     *
+     * @deprecated
      */
     function addMenuItem($Name, $Link="", $Type="ALL_TYPES", $Show=1, $Help="") 
     {
@@ -267,7 +267,7 @@ class Plugins
     {
         if (is_array($Info)) {
             $Info["Filename"] = stristr($Filename, $this->webdir);
-            $Info["Type"] = "about";
+            $Info["Type"]     = "about";
             $this->addGenericRaw($Info);
         }
     }
@@ -302,7 +302,7 @@ class Plugins
                     $command = "\$output = $function(";
                     if ($fct["INFO"] === true) $command .= "false";
                     $command .= "\$return";
-                    $args = func_get_args();
+                    $args     = func_get_args();
                     for ($i = 2; $i < func_num_args(); $i++) {
                         $command .= ", \$args[".$i."]";
                     }
@@ -377,8 +377,8 @@ class Plugins
             foreach ($this->plugins["Functions"] as $Type) {
                 if (is_array($Type)) {
                     foreach ($Type as $fct) {
-                          if ($fct["Name"] == $Name) {
-                            $return = $fct;
+                        if ($fct["Name"] == $Name) {
+                            $return         = $fct;
                             $return["Type"] = $Type;
                             break;
                         }
@@ -387,7 +387,7 @@ class Plugins
                 if ($return !== false) break;
             }
         }
-        return($return);
+        return $return;
     }
 
     /**
@@ -413,10 +413,10 @@ class Plugins
                     $command = "\$output = $function(";
                     if ($fct["INFO"] === true) $command .= "false";
                     $args = func_get_args();
-                    $sep = "";
+                    $sep  = "";
                     for ($i = 1; $i < func_num_args(); $i++) {
                         $command .= $sep." \$args[".$i."]";
-                        $sep = ",";
+                        $sep      = ",";
                     }
                     $command .= ");";
                     $this->_debug("Running command:\n".$command."\n", 4);
@@ -524,8 +524,8 @@ class Plugins
     /**
      *  Sorts the plugin arrays.
      *
-     * @param array $plugin_info Array Plugin information
-     * @param string $key        depreciated.
+     * @param array  $plugin_info Plugin information
+     * @param string $key         depreciated.
      *
      * @return array Plugin information sorted in a natural order
      */
@@ -584,8 +584,8 @@ class Plugins
             natcasesort($files);
             $count = 0;
             foreach ($files as $file) {
-                $file = str_replace("/", "", trim($file));
-                $webfile = str_replace("//", "/", $webdir."/".$file);
+                $file     = str_replace("/", "", trim($file));
+                $webfile  = str_replace("//", "/", $webdir."/".$file);
                 $basefile = str_replace("//", "/", $basedir."/".$file);
                 
                 if (($file != "..") && ($file != ".")) { 
@@ -609,7 +609,7 @@ class Plugins
             }
             $return = $count;
         } else {
-            $this->_debug( "Error:  Directory ".$basedir." not found.\n\n", 4);
+            $this->_debug("Error:  Directory ".$basedir." not found.\n\n", 4);
             $return = 0;
         }
         return($return);
@@ -635,13 +635,15 @@ class Plugins
         $freturn = include $filedir.$file; 
         if (!$freturn) {
             $this->_debug($freturn, 4);
-            $this->_debug( "\tErrors encountered parsing file. Skipping ".$file.".\n", 4);
+            $this->_debug("\tErrors encountered parsing file. Skipping ".$file.".\n", 4);
         } else {
             $this->file_count++;
             $info = null;
             if (is_array($plugin_info)) {
                 $info = $plugin_info;
+
                 $this->plugin_info[$file] = $info;
+
                 if (is_array($info["Functions"])) {
                     foreach ($info["Functions"] as $fct) {
                         if (is_array($fct) && !empty($fct["Name"])) {
@@ -650,7 +652,7 @@ class Plugins
                             }
                         } else {
                             if (function_exists($fct)) {
-                                $fctinfo = $fct(true);
+                                $fctinfo         = $fct(true);
                                 $fctinfo["INFO"] = true;
                                 $this->registerFunctionRaw($fctinfo);
                             }
