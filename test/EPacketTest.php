@@ -58,7 +58,7 @@ require_once dirname(__FILE__).'/../EPacket.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EPacketTest extends PHPUnit_Framework_TestCase 
+class EPacketTest extends PHPUnit_Framework_TestCase
 {
     /** default devInfo array */
     private $Info = array(
@@ -218,8 +218,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase
 
     /**
      * Cleans the 'to' field to make it presentable.  Will also work on 'from'
+     * 
+     * @param string $to The 'to' string
+     *
+     * @return string
      */
-    private function cleanTo($to) 
+    private function _cleanTo($to) 
     {
         $to = trim($to);
         $to = substr($to, 0, 6);
@@ -253,7 +257,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                     // Drop through if it was specified, or if nothing was specified.
                 }
                 if (trim(strtolower($key)) == "to") {
-                    $var = $this->cleanTo($var);
+                    $var = $this->_cleanTo($var);
                 }
                 $this->assertEquals($var, $a[$key], "'$key' field is not the same");
             }
@@ -278,7 +282,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(($totalLength * 2), strlen($s), count($a['command']), "Packet command must contain exactly 2 characters");
         if (is_array($a)) {
             $a = array_change_key_case($a, CASE_LOWER);
-            $to = $this->cleanTo($a["to"]);
+            $to = $this->_cleanTo($a["to"]);
             $pTo = substr($s, ($preambleLength+1) * 2, 6);
             $this->assertEquals($to, $pTo, "To field is Wrong.  '$to' != '$pTo'");
             $this->assertEquals($length * 2, strlen(trim($a['data'])), "Wrong length parameter.");
@@ -777,7 +781,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param array $pkt      The packet to send
      * @param array $pktStr   array of packet strings
      * @param array $replyStr array of packet replies
-     * @param mixed $expedt   what to expect
+     * @param mixed $expect   what to expect
      * @param bool  $getAll   Whether to get all of the packets returned, or only the reply
      *
      * @return none
@@ -825,7 +829,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function test_sendPacketWriteSocket() 
+    public function test_SendPacketWriteSocket() 
     {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly(2))
@@ -839,7 +843,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function test_sendPacketWriteRetry() 
+    public function test_SendPacketWriteRetry() 
     {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->Retries = 4;
@@ -1184,7 +1188,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testSNCheck1() 
     {
         $this->o->SNCheck(false);
-        $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
+        $this->assertFalse($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
      * Test SNCheck
@@ -1194,7 +1198,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testSNCheck2() 
     {
         $this->o->SNCheck(true);
-        $this->assertTrue($this->readAttribute($this->o,"_DeviceIDCheck"));
+        $this->assertTrue($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
      * Test SNCheck
@@ -1204,7 +1208,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testSNCheck3() 
     {
         $this->o->SNCheck(0);
-        $this->assertFalse($this->readAttribute($this->o,"_DeviceIDCheck"));
+        $this->assertFalse($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
      * Test SNCheck
@@ -1214,7 +1218,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testSNCheck4() 
     {
         $this->o->SNCheck(1);
-        $this->assertTrue($this->readAttribute($this->o,"_DeviceIDCheck"));
+        $this->assertTrue($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
 }
 
@@ -1232,7 +1236,6 @@ if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class EPacketTest_CallBack_Class
@@ -1260,7 +1263,6 @@ class EPacketTest_CallBack_Class
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class EPacketTXRXMock extends EPacket
@@ -1273,6 +1275,11 @@ class EPacketTXRXMock extends EPacket
     }
     /**
      * Some Function
+     *
+     * @param array &$Info      The array with the device information in it
+     * @param array $Packet     Array with packet information in it.
+     * @param bool  $GetReply   Whether or not to wait for a reply.
+     * @param int   $pktTimeout The timeout value to use
      *
      * @return none
      */
@@ -1287,6 +1294,9 @@ class EPacketTXRXMock extends EPacket
     }
     /**
      * Some Function
+     *
+     * @param int $socket  The socket to send it out of.  0 is the default.
+     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
      *
      * @return none
      */
@@ -1308,7 +1318,6 @@ class EPacketTXRXMock extends EPacket
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class epsocketMock extends epsocket
@@ -1317,11 +1326,29 @@ class epsocketMock extends epsocket
     var $socket = false;
     var $index = 0;
 
+    /**
+     * Sets replies for packets received
+     *
+     * @param string $data  The data we will receive
+     * @param string $reply The data to return
+     *
+     * @return none
+     */
     public function setReply($data, $reply) {
         $this->reply[trim($data)] = trim($reply);
     }    
+        
     /**
+     * Connects to the server
+     * 
      *
+     * @param string $server  Name or IP address of the server to connect to
+     * @param int    $port    The TCP port on the server to connect to
+     * @param int    $timeout The time to wait before giving up on a bad connection
+     *
+     * @return bool true if the connection is good, false otherwise
+     *
+     * @see epsocket::Connect()
      */
     public function Connect($server = "", $port = 0, $timeout=0) {
         $return = false;
@@ -1342,21 +1369,33 @@ class epsocketMock extends epsocket
 
     }
     /**
+     * Checks to make sure that all we are connected to the server
+     * 
+     * This routine only checks the connection.  It does nothing else.  If you want to
+     * have the script automatically connect if it is not connected already then use
+     * epsocket::Connect().
      *
+     * @return bool true if the connection is good, false otherwise
      */
     function CheckConnect() {
         return true;
     }
 
     /**
-     *
+     * Closes the socket connection
+     * 
+     * @return none
      */
     function Close() {
         $this->socket = false;
     }
 
     /**
+     * Read data from the server
      *
+     * @param int $timeout The amount of time to wait for the server to respond
+     *
+     * @return int Read bytes on success, false on failure
      */
     function readChar($timeout=-1) {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
@@ -1379,7 +1418,11 @@ class epsocketMock extends epsocket
         return $char;
     }
     /**
+     * Write data out a socket
      *
+     * @param string $data The data to send out the socket
+     *
+     * @return int The number of bytes written on success, false on failure
      */
     function Write($data) {
         $this->lastPacket = devInfo::hexifyStr($data);
@@ -1391,7 +1434,17 @@ class epsocketMock extends epsocket
         return true;
     }
 
-    function __construct($server="", $port="") {
+   /**
+    * Constructor
+    * 
+    * @param string $server  The name or IP of the server to connect to
+    * @param int    $tcpport The TCP port to connect to on the server. Set to 0 for
+    *     the default port.
+    * @param bool   $verbose Make the class put out a lot of output
+    *
+    * @return none
+    */
+   function __construct($server="", $port="") {
         if (empty($server)) $server = "127.0.0.1";
         if (empty($port)) $port = "2000";
         $this->Connect($server, $port);
