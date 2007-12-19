@@ -42,14 +42,13 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class process
+class Process
 {
     /** Database table to use */
     var $table = "process";
-    /** Database id to use
+    /** Database id to use */
     var $id = "ProcessKey";
     /** Stats table to use */
     var $statsTable = 'procStats';
@@ -90,24 +89,24 @@ class process
      * Sets up all the information about the current process.
      *
      * @param string $block Type of blocking.  Default "NORMAL"
-     * @param string $name The program name.  Automatically found if left out.
+     * @param string $name  The program name.  Automatically found if left out.
      *
      * @return none 
      */
     function getMyInfo($block="NORMAL", $name = false) 
     {
-        $stuff = posix_uname();
-        $this->me["Host"] = $stuff["nodename"];
+        $stuff              = posix_uname();
+        $this->me["Host"]   = $stuff["nodename"];
         $this->me["Domain"] = $stuff["domainname"];
-        $this->me["OS"] = $stuff["sysname"];
-        $this->me["PID"] = getmypid();
+        $this->me["OS"]     = $stuff["sysname"];
+        $this->me["PID"]    = getmypid();
         if ($name === false) {
             $this->me["Program"] = basename($_SERVER["SCRIPT_NAME"]);
         } else {
             $this->me["Program"] = $name;
         }
-        $this->me["File"] = dirname($this->file)."/".trim($this->me["Program"]).".pid";
-        $this->me["Block"] = $block;
+        $this->me["File"]    = dirname($this->file)."/".trim($this->me["Program"]).".pid";
+        $this->me["Block"]   = $block;
         $this->me["Started"] = date("Y-m-d H:i:s");
         
     }
@@ -115,11 +114,11 @@ class process
     /**
      * Check to see if a process is running on the local machine.
      *
-     * @param $PID Integer The process ID of the process to check.
+     * @param int $PID The process ID of the process to check.
      *
      * @return bool true if the process is running, false otherwise
     */    
-    function CheckProcess($PID) 
+    function checkProcess($PID) 
     {
         return(posix_getpgid($PID));
     }
@@ -132,7 +131,8 @@ class process
      *
      * @return none
      */
-    function CheckAll() {
+    function checkAll() 
+    {
         if ($this->FileOnly === false) {
             $res = array();
             $KillTime = $this->KillTime * 60;
@@ -182,10 +182,10 @@ class process
      *
      * @return bool true if registered.  false if blocked.
      */
-    function Register($verbose=true) 
+    function register($verbose=true) 
     {
         $this->me['LastCheckin'] = date("Y-m-d H:i:s");
-        $this->dbRegistered = true;
+        $this->dbRegistered      = true;
         if ($this->FileOnly === false) $this->dbRegister();
         $this->fileRegister();
         $this->Registered = $this->dbRegistered && $this->fileRegistered;
@@ -201,9 +201,9 @@ class process
      *
      * @todo make it so this can't be an infinite loop.
      */
-    function Checkin() 
+    function checkin() 
     {
-        while(false == $this->FastCheckin()) {
+        while (false == $this->FastCheckin()) {
             sleep(60);
         }
     }
@@ -216,13 +216,13 @@ class process
      *
      * @return bool true on success, false on failure
      */
-    function FastCheckin() 
+    function fastCheckin() 
     {
         if ($this->FileOnly === false) {
             if ($this->Registered) {
-                $info = $this->me;
+                $info                = $this->me;
                 $info["LastCheckin"] = date("Y-m-d H:i:s");        
-                $res = $this->save($this->me);
+                $res                 = $this->save($this->me);
                 
                 if ($res === false) {
                     $return = $this->dbRegister();
@@ -249,9 +249,9 @@ class process
     {
         if (($this->FileOnly === false) && $this->CheckDB()) {
 
-            $info = $this->me;
+            $info                = $this->me;
             $info["LastCheckin"] = date("Y-m-d H:i:s");
-//            $this->me["ProcessKey"] = $this->save($info);
+
             $query = "INSERT INTO '".$this->table."' "
                     ." (PID, Program, Started, LastCheckin, Block) "
                     ." VALUES ("
@@ -261,6 +261,7 @@ class process
                     .", ".$this->_sqlite->quote($this->me['LastCheckin'])." "
                     .", ".$this->_sqlite->quote($this->me['Block'])." "
                     .")";
+
             $this->dbRegistered = $this->_sqlite->query($query);
             
             return $this->dbRegistered;
@@ -280,7 +281,7 @@ class process
     {
         if (is_null($PID)) {
             $PID = $this->me["PID"];
-            $me = true;
+            $me  = true;
         } else {
             $me = false;
         }
@@ -295,7 +296,7 @@ class process
      *
      * @return none
      */
-    function Unregister() 
+    function unregister() 
     {
         $this->dbUnregister();
         $this->fileUnregister();
@@ -304,7 +305,9 @@ class process
     
     /**
      * Creates the SQLite DB table
-      */
+     * 
+     * @return none
+     */
     function createTable() 
     {
 
@@ -336,13 +339,13 @@ class process
      * Checks to see if we are registered
      *
      * @param bool $dieonfailure Whether to die if failed to register.  Defaults to false
-     * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
+     * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
      *
      * @return none
      *
      * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
-    function CheckRegistered($dieonfailure=false, $verbose=true) 
+    function checkRegistered($dieonfailure=false, $verbose=true) 
     {
         if ($this->Registered == false) {
             if ($verbose) print "[".$this->me["PID"]."] Registration Failed\r\n";
@@ -357,13 +360,13 @@ class process
      * Checks to see if we are unregistered
      *
      * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to false
-     * @param bool $verbose If set to true It prints output for what it is doing.  Defaults to true
+     * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
      *
      * @return none
      *
      * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
-    function CheckUnregistered($dieonfailure=false, $verbose=true) 
+    function checkUnregistered($dieonfailure=false, $verbose=true) 
     {
         if ($this->Registered == true) {
             if ($verbose) print "[".$this->me["PID"]."] Unregistration Failed\r\n";
@@ -414,7 +417,7 @@ class process
      *
      * @return bool true if we can run, false if we are blocked.     
      */
-    function CheckFile() 
+    function checkFile() 
     {
         $return = true;
         if (file_exists($this->me["File"])) {
@@ -443,12 +446,12 @@ class process
      *
      * @return bool true if we can run, false if we are blocked.        
      */
-    function CheckDB() 
+    function checkDB()
     {
         $return = true;
-        $query = "SELECT * FROM '".$this->table."' "
+        $query  = "SELECT * FROM '".$this->table."' "
                  ." WHERE "
-                ." Program='".$this->me['Program']."' ";
+                 ." Program='".$this->me['Program']."' ";
 
         $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
         if (is_object($ret)) {
@@ -473,6 +476,8 @@ class process
     /**
      * Increments stats in the database
      *
+     * @param string $stat The stat to use
+     *
      * @return none
      */
     function incStat($stat) 
@@ -487,6 +492,10 @@ class process
 
     /**
      * Increments fields in the database
+     *
+     * @param string $type The type of stat
+     * @param string $name The name of the stat
+     * @param string $date The date
      *
      * @return none
      */
@@ -544,10 +553,10 @@ class process
     /**
      * Saves a statistic
      *
-     * @param string $name The name of the statistic to get
-     * @param mixed  $name The name of the statistic to get
-     * @param string $date The date of the statistic to get
-     * @param string $type The type of statistic to get
+     * @param string $name  The name of the statistic to get
+     * @param mixed  $value The name of the statistic to get
+     * @param string $date  The date of the statistic to get
+     * @param string $type  The type of statistic to get
      *
      * @return mixed The statistic in question
      */
@@ -560,16 +569,15 @@ class process
     /**
      * Saves a statistic
      *
-     * @param string $name The name of the statistic to get
-     * @param mixed  $name The name of the statistic to get
-     * @param string $date The date of the statistic to get
-     * @param string $type The type of statistic to get
+     * @param string $name  The name of the statistic to get
+     * @param mixed  $value The name of the statistic to get
+     * @param string $date  The date of the statistic to get
+     * @param string $type  The type of statistic to get
      *
      * @return mixed The statistic in question
      */
-    function _setStat($name, $value, $date="now", $type="stat") 
+    private function _setStat($name, $value, $date="now", $type="stat") 
     {
-
         $query = "REPLACE INTO '".$this->statsTable."' "
                 ." (PID, Program, stype, sdate, sname, svalue) "
                 ." VALUES ("
@@ -580,7 +588,7 @@ class process
                 .", ".$this->_sqlite->quote($name)." "
                 .", ".$this->_sqlite->quote($value)." "
                 .")";
-       $this->_sqlite->query($query);
+        $this->_sqlite->query($query);
     }
 
     /**
@@ -608,14 +616,14 @@ class process
                 ." WHERE "
                 ." Program='".$Program."' "
                 ." AND (";
-        $sep = "";
+        $sep   = "";
         foreach ($this->statPeriodic as $key => $value) {
             $query .= $sep."stype='".$key."' ";
-            $sep = " OR ";
+            $sep    = " OR ";
         }
         $query .= ") ORDER BY sdate desc";
 
-        $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
+        $ret    = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
         $return = array();
 
         if (is_object($ret)) {
@@ -637,13 +645,13 @@ class process
      */
     function getTotalStats($Program) 
     {
-        $query = "SELECT * FROM '".$this->statsTable."' "
-                ." WHERE "
-                ." Program='".$Program."' "
-                ." AND "
-                ." stype='totals' ";
+        $query  = "SELECT * FROM '".$this->statsTable."' "
+                 ." WHERE "
+                 ." Program='".$Program."' "
+                 ." AND "
+                 ." stype='totals' ";
 
-        $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
+        $ret    = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
         $return = array();
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
