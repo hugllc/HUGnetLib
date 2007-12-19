@@ -23,9 +23,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   Base
+ * @package    HUGnetLibTest
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -34,15 +34,17 @@
  */
 
 
+/** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
+/** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
 /**
  * General test class for database classes
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Test
+ * @category   Base
+ * @package    HUGnetLibTest
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -61,7 +63,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() {
+    protected function setUp() 
+    {
         if (empty($this->table)) die(get_class($this)."->table not defined!");
         $this->pdo = new PDO("sqlite::memory");
     }
@@ -74,7 +77,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown() {
+    protected function tearDown() 
+    {
         $this->pdo->query("delete from ".$this->table);
         $this->pdo = null;
     }

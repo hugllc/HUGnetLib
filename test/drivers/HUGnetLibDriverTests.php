@@ -24,7 +24,7 @@
  * </pre>
  *
  * @category   Test
- * @package    HUGnetLib
+ * @package    HUGnetLibTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
@@ -37,8 +37,9 @@
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'HUGnetLibDriverTests::main');
 }
-
+/** Test framework */
 require_once 'PHPUnit/Framework.php';
+/** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 // Drivers
@@ -68,7 +69,7 @@ require_once 'socket/epsocketTest.php';
  * before the software is ever released.
  *
  * @category   Test
- * @package    HUGnetLib
+ * @package    HUGnetLibTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
