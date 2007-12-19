@@ -178,10 +178,14 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp() 
     {
-        $db = $this->getMock("ADONewConnection", array(), array("sqlite"));
+        $db      = $this->getMock("ADONewConnection", array(), array("sqlite"));
         $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"), false, $db, false);
-        $this->o->socket[2] = $this->getMock('epsocketMock', array("Connect", "Close", "ReadChar", "Write"), array("socketType"=>"test"));
-        $this->o->ReplyTimeout = 1; // This is a fast system.  It doesn't need a long timeout
+
+
+        // This is a fast system.  It doesn't need a long timeout
+        $this->o->socket[2] = $this->getMock('epsocketMock', array("connect", "close", "readChar", "write"), array("socketType"=>"test"));
+
+        $this->o->ReplyTimeout = 1; 
         
         $this->txrxMock = new EPacketTXRXMock();
     }
@@ -206,7 +210,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    private function deHexifyArray($string) 
+    private function _deHexifyArray($string) 
     {
         $index = 0;
         $array = array();
@@ -274,15 +278,15 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function validPacketString($s, $a=null) 
     {
         $this->assertTrue(is_string($s), "This is not a string!");
-        $s = strtoupper($s);
+        $s              = strtoupper($s);
         $preambleLength = EPacketTest::getPreambleLength($s);
         $this->assertTrue((($preambleLength >= 2) && ($preambleLength <= 3)), "Preamble must be 2 or 3 characters");
-        $length = hexdec(substr($s, ($preambleLength + 7) * 2, 2));
+        $length      = hexdec(substr($s, ($preambleLength + 7) * 2, 2));
         $totalLength = $preambleLength + 8 + $length + 1;
         $this->assertEquals(($totalLength * 2), strlen($s), count($a['command']), "Packet command must contain exactly 2 characters");
         if (is_array($a)) {
-            $a = array_change_key_case($a, CASE_LOWER);
-            $to = $this->_cleanTo($a["to"]);
+            $a   = array_change_key_case($a, CASE_LOWER);
+            $to  = $this->_cleanTo($a["to"]);
             $pTo = substr($s, ($preambleLength+1) * 2, 6);
             $this->assertEquals($to, $pTo, "To field is Wrong.  '$to' != '$pTo'");
             $this->assertEquals($length * 2, strlen(trim($a['data'])), "Wrong length parameter.");
@@ -443,12 +447,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      */
     public function testPacketCallBackMethod() 
     {
-        $t = $this->getMock('EPacketTest_CallBack_Class');
+        $t      = $this->getMock('EPacketTest_CallBack_Class');
         $string = "ABCDE";
         $t->expects($this->once())
-          ->method('Test')
+          ->method('test')
           ->with($this->equalTo($string));
-        $this->o->PacketSetCallBack("Test", $t);
+        $this->o->PacketSetCallBack("test", $t);
         $this->o->PacketCallBack($string);
     }
     /**
@@ -460,7 +464,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     {
         $string = "ABCDE";
 
-        $this->o->PacketSetCallBack("EPacketTest_CallBack_Function");
+        $this->o->PacketSetCallBack("EPacketTest_CallBack_function");
         $this->o->PacketCallBack($string);
         $this->assertEquals($_SESSION['EPacketTest_CallBack_Function'], $string);
     }
@@ -829,11 +833,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function test_SendPacketWriteSocket() 
+    public function testSendPacketWriteSocket() 
     {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly(2))
-                     ->method('Write')
+                     ->method('write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
         $rep = $this->o->sendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
@@ -843,12 +847,12 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @return none
      */
-    public function test_SendPacketWriteRetry() 
+    public function testSendPacketWriteRetry() 
     {
-        $Info = array("GatewayKey" => 2, "socketType" => "test");
+        $Info             = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->Retries = 4;
         $this->o->socket[2]->expects($this->any())
-                     ->method('Write')
+                     ->method('write')
                      ->with($this->equalTo(devInfo::deHexify($this->testPacketStr[0])));
         $rep = $this->o->sendPacket($Info, array($this->testPacketArray[0]), false, null);
     }
@@ -862,7 +866,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     {
         $Info = array("GatewayKey" => 2, "socketType" => "test");
         $this->o->socket[2]->expects($this->exactly($this->o->Retries))
-                     ->method('Write')
+                     ->method('write')
                      ->with($this->equalTo(devInfo::deHexify("5A5A5A01000ABC000020040102030497")));
         $rep = $this->o->SendReply($Info, "000ABC", "01020304");
     }
@@ -941,11 +945,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testChangeSN($SN, $SNArray, $expect) 
     {
         $this->o->SNArray = $SNArray;
-        $Info = array("GatewayKey" => 1);
+        $Info             = array("GatewayKey" => 1);
         // Load these packets up so that it always chooses $SN.
         foreach ($SNArray as $s) {
             if ($s != $SN) {
-                $pkt = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s), "000020");
+                $pkt   = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s), "000020");
                 $reply = EPacket::PacketBuild(array("Command"=>"01", "To"=>"000020"), $s);
                 $this->o->socket[1]->setReply($pkt, $reply);
             }
@@ -1047,7 +1051,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testUnbuildPacket() 
     {
         $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
-        $o = new EPacket();
+        $o     = new EPacket();
         foreach ($this->testPacketStr as $key => $str) {
             $pkt = $o->unbuildPacket($str);
             $this->validPacketArray($pkt, $this->testPacketArray[$key], $check);
@@ -1175,9 +1179,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     {
         $this->o->socket[2] = $this->getMock('epsocketMock');
         $this->o->socket[2]->expects($this->once())
-                     ->method('Close');
+                     ->method('close');
         $Info = array("GatewayKey" => 2);
-        $rep = $this->o->Close($Info);
+        $rep  = $this->o->Close($Info);
     }
 
     /**
@@ -1247,7 +1251,7 @@ class EPacketTest_CallBack_Class
      *
      * @return none
      */
-    public function Test($pkt)
+    public function test($pkt)
     {
         $this->TestVar = $pkt;
     }
@@ -1270,14 +1274,15 @@ class EPacketTXRXMock extends EPacket
     /**
      * constructor
      */
-    function __construct() {
+    function __construct() 
+    {
     
     }
     /**
      * Some Function
      *
      * @param array &$Info      The array with the device information in it
-     * @param array $Packet     Array with packet information in it.
+     * @param array $PacketList Array with packet information in it.
      * @param bool  $GetReply   Whether or not to wait for a reply.
      * @param int   $pktTimeout The timeout value to use
      *
@@ -1300,7 +1305,7 @@ class EPacketTXRXMock extends EPacket
      *
      * @return none
      */
-    public function RecvPacket($socket, $timeout = 0)
+    public function recvPacket($socket, $timeout = 0)
     {
         return array(
             "socket" => $socket,
@@ -1320,10 +1325,11 @@ class EPacketTXRXMock extends EPacket
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class epsocketMock extends epsocket
+class EpSocketMock extends EpSocket
 {
-
+    /** Socket to use */
     var $socket = false;
+    /** Current socket index */
     var $index = 0;
 
     /**
@@ -1350,22 +1356,19 @@ class epsocketMock extends epsocket
      *
      * @see epsocket::Connect()
      */
-    public function Connect($server = "", $port = 0, $timeout=0) {
-        $return = false;
-        if ($return === false) {
-            if (!empty($server)) $this->Server = $server;
-            if (!empty($port)) $this->Port = $port;
+    public function connect($server = "", $port = 0, $timeout=0) 
+    {
+        if (!empty($server)) $this->Server = $server;
+        if (!empty($port)) $this->Port = $port;
 
-            if (!empty($this->Server) && !empty($this->Port)) {
-                $this->socket = true;
-                $return = true;
-            } else {
-                $this->Errno = -1;
-                $this->Error = "No server specified";
-                $return = false;
-            }
-        }        
-        return($return);
+        if (!empty($this->Server) && !empty($this->Port)) {
+            $this->socket = true;
+            return true;
+        } else {
+            $this->Errno = -1;
+            $this->Error = "No server specified";
+            return false;
+        }
 
     }
     /**
@@ -1377,7 +1380,8 @@ class epsocketMock extends epsocket
      *
      * @return bool true if the connection is good, false otherwise
      */
-    function CheckConnect() {
+    function checkConnect() 
+    {
         return true;
     }
 
@@ -1386,7 +1390,8 @@ class epsocketMock extends epsocket
      * 
      * @return none
      */
-    function Close() {
+    function close() 
+    {
         $this->socket = false;
     }
 
@@ -1397,21 +1402,22 @@ class epsocketMock extends epsocket
      *
      * @return int Read bytes on success, false on failure
      */
-    function readChar($timeout=-1) {
+    function readChar($timeout=-1) 
+    {
         if ($timeout < 0) $timeout = $this->PacketTimeout;
         
         $char = false;
         if (($this->index == 0) && (!empty($this->lastPacket))) {
             if (is_string($this->reply[$this->lastPacket])) {
-                $char = chr(hexdec(substr($this->reply[$this->lastPacket], $this->index, 2)));
-                $this->index+=2;
+                $char         = chr(hexdec(substr($this->reply[$this->lastPacket], $this->index, 2)));
+                $this->index += 2;
             }
         } else {
             if ($this->index < strlen($this->reply[$this->lastPacket])) { 
-                $char = chr(hexdec(substr($this->reply[$this->lastPacket], $this->index, 2)));
-                $this->index+=2;
+                $char         = chr(hexdec(substr($this->reply[$this->lastPacket], $this->index, 2)));
+                $this->index += 2;
             } else {
-                $this->index = 0;
+                $this->index      = 0;
                 $this->lastPacket = "";
             }
         }
@@ -1424,27 +1430,28 @@ class epsocketMock extends epsocket
      *
      * @return int The number of bytes written on success, false on failure
      */
-    function Write($data) {
+    function write($data) 
+    {
         $this->lastPacket = devInfo::hexifyStr($data);
 
         if (!isset($this->reply[$this->lastPacket])) {
-//            print "\nGot: ".$this->lastPacket."\n";
+            //print "\nGot: ".$this->lastPacket."\n";
         }
         $this->index = 0;
         return true;
     }
 
-   /**
-    * Constructor
-    * 
-    * @param string $server  The name or IP of the server to connect to
-    * @param int    $tcpport The TCP port to connect to on the server. Set to 0 for
-    *     the default port.
-    * @param bool   $verbose Make the class put out a lot of output
-    *
-    * @return none
-    */
-   function __construct($server="", $port="") {
+    /**
+     * Constructor
+     * 
+     * @param string $server  The name or IP of the server to connect to
+     * @param int    $port The TCP port to connect to on the server. Set to 0 for
+     *     the default port.
+     *
+     * @return none
+     */
+    function __construct($server="", $port="") 
+    {
         if (empty($server)) $server = "127.0.0.1";
         if (empty($port)) $port = "2000";
         $this->Connect($server, $port);
@@ -1459,7 +1466,7 @@ class epsocketMock extends epsocket
  * @return none
  *
  */
-function EPacketTest_CallBack_Function($pkt) 
+function EPacketTest_CallBack_function($pkt) 
 {
     $_SESSION['EPacketTest_CallBack_Function'] = $pkt;
 }
