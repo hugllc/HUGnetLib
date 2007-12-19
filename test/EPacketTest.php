@@ -1225,12 +1225,27 @@ if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
 
 /**
  * This class is for testing callback
+ *
+ * @category   PacketStructure
+ * @package    HUGnetLibTest
+ * @subpackage PacketStructure
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EPacketTest_CallBack_Class {
-/**
- * This function is for testing callback
- */
-    public function Test($pkt) {
+class EPacketTest_CallBack_Class
+{
+    /**
+     * This function is for testing callback
+     *
+     * @param array $pkt The packet
+     *
+     * @return none
+     */
+    public function Test($pkt)
+    {
         $this->TestVar = $pkt;
     }
 }
@@ -1238,8 +1253,18 @@ class EPacketTest_CallBack_Class {
 /**
  * This class overrides epsocket so that we can test EPacket without
  * actually using a socket connection.
+ *
+ * @category   PacketStructure
+ * @package    HUGnetLibTest
+ * @subpackage PacketStructure
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EPacketTXRXMock extends EPacket {
+class EPacketTXRXMock extends EPacket
+{
     /**
      * constructor
      */
@@ -1251,7 +1276,8 @@ class EPacketTXRXMock extends EPacket {
      *
      * @return none
      */
-    public function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) {
+    public function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null)
+    {
         return array(
             "Info" => $Info,
             "PacketList" => $PacketList,
@@ -1264,7 +1290,8 @@ class EPacketTXRXMock extends EPacket {
      *
      * @return none
      */
-    public function RecvPacket($socket, $timeout = 0) {
+    public function RecvPacket($socket, $timeout = 0)
+    {
         return array(
             "socket" => $socket,
             "timeout" => $timeout,
@@ -1274,8 +1301,18 @@ class EPacketTXRXMock extends EPacket {
 /**
  * This class overrides epsocket so that we can test EPacket without
  * actually using a socket connection.
+ *
+ * @category   PacketStructure
+ * @package    HUGnetLibTest
+ * @subpackage PacketStructure
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class epsocketMock extends epsocket {
+class epsocketMock extends epsocket
+{
 
     var $socket = false;
     var $index = 0;
@@ -1363,8 +1400,14 @@ class epsocketMock extends epsocket {
 
 /**
  * This function is for testing callback
+ *
+ * @param array $pkt The packet array
+ *
+ * @return none
+ *
  */
-function EPacketTest_CallBack_Function($pkt) {
+function EPacketTest_CallBack_Function($pkt) 
+{
     $_SESSION['EPacketTest_CallBack_Function'] = $pkt;
 }
 

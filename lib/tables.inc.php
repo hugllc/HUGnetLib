@@ -23,12 +23,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package HUGnetLib
+ * @category   Tables
+ * @package    HUGnetLib
  * @subpackage Lib
- * @copyright 2007 Hunt Utilities Group, LLC
- * @author Scott Price <prices@hugllc.com>
- * @version SVN: $Id$    
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 require_once 'HTML/Table.php';
@@ -36,22 +38,43 @@ require_once 'HTML/Table.php';
 require_once('lib/forms.inc.php');
 
 /**
-    Creates a popup window inside the browser window.
+ * Creates a popup window inside the browser window.
+ *
+ * @category   Tables
+ * @package    HUGnetLib
+ * @subpackage Lib
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class dfTable
 {
-
-    var $_altTableFormats = array('CSV');
-    var $_lineEnd = "\r\n";
-    var $_export = true;
-    var $_filterForm = false;
-    var $_filterRow = false;
-    var $_sep = ',';
-    var $_rowType = array();
-    var $_subTotalCol = array();
-    var $_firstData = null;
-
-    function dfTable($name = 'Default', $attributes=null, $tabOffset=0) {
+    /** @var array Alternate table formats */
+    private $_altTableFormats = array('CSV');
+    /** @var string Line end characters */
+    private $_lineEnd = "\r\n";
+    /** @var bool Whether to allow exporting */
+    private $_export = true;
+    /** @var bool Whether to add the filters */
+    private $_filterForm = false;
+    /** @var bool Whether to do the filtering */
+    private $_filterRow = false;
+    /** @var string Separator for CSV */
+    private $_sep = ',';
+    /** @var array Row Type */
+    private $_rowType = array();
+    /** @var array Subtotal columns */
+    private $_subTotalCol = array();
+    /** @var mixed Data */
+    private $_firstData = null;
+    /**
+     * function
+     *
+     * @return none
+     */
+    function dfTable($name = 'Default', $attributes=null, $tabOffset=0)
+    {
 
         $replace = array(' ', '"', "'");
 
@@ -67,12 +90,22 @@ class dfTable
         }
 
     }
-
-    function setExport($val) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function setExport($val) 
+    {
         $this->_export = (bool) $val;
     }
-
-    function toHTML() {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function toHTML() 
+    {
         switch($this->_tableType)
         {
             case 'CSV':
@@ -121,13 +154,23 @@ class dfTable
         }
         
     }
-
-    function setFilter($row=false, $form=false) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function setFilter($row=false, $form=false) 
+    {
         $this->_filterForm = (bool)$form;
         $this->_filterRow = (bool)$row;
     }
-        
-    function getFilter() {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function getFilter() 
+    {
 
         foreach (array('Field', 'Contains', 'Filter') as $field) {
             $lfield = strtolower($field);
@@ -143,16 +186,26 @@ class dfTable
         if (empty($return['filter'])) $this->_filterRow = false;
         return $return;
     }
-    
-    function filter($row) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function filter($row) 
+    {
         if ($this->_filterRow) {
             return (is_string(strstr($row[$this->_filter['field']], $this->_filter['filter'])) == $this->_filter['contains']);
         } else {
             return true;
         }
     }
-    
-    function getFilterForm() {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function getFilterForm() 
+    {
         $url = getMyUrl();
         $this->_filterForm = new dfQuickForm($this->_tableName.'Filter', 'post', $url);
         $group[] = &$this->_filterForm->createElement('select', $this->_tableFormatName.'Field', '', $this->_listHead);
@@ -207,13 +260,23 @@ class dfTable
         $this->_filter = $this->getFilter();
         if ($addHeader) $this->addListHeaderRow();
     }
-
-    function addListSubTotalCol($subCol, $cols) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function addListSubTotalCol($subCol, $cols) 
+    {
         if (!is_array($cols)) return;
         $this->_subTotalCol[$subCol] = array_keys($cols);
     }
-
-    function _getColLetter($col) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function _getColLetter($col) 
+    {
         if ($col <= 26) {
             return chr(ord('A') + $col);
         } else {
@@ -222,13 +285,18 @@ class dfTable
             return $ret;
         }
     }
-
-    function _getListSubTotalCols($data) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function _getListSubTotalCols($data) 
+    {
         switch($this->_tableType) {
             case 'Excel':
                 foreach ($this->_subTotalCol as $subCol => $cols) {
                     if (!isset($data[$subCol])) {
-                        $formula = '=SUM(';
+                        $formula = "";
                         $sep = "";
                         $col = 0;
                         foreach ($this->_listHead as $key => $val) {
@@ -238,7 +306,7 @@ class dfTable
                             }
                             $col++;
                         }
-                        $formula .= ")";
+                        $formula = "=SUM(".$formula.")";
                         $col = 0;
                         foreach ($this->_listHead as $key => $val) {
                             if ($key == $subCol) break;
@@ -273,7 +341,8 @@ class dfTable
     /**
      * Adds a text divider to the list.    
      */
-    function addListDividerRow($text, $attrib=null, $export=true) {
+    function addListDividerRow($text, $attrib=null, $export=true) 
+    {
         switch($this->_tableType) {
             case 'CSV':
                 break;
@@ -295,10 +364,11 @@ class dfTable
 
     /**
      * Adds a row to the list.
-     * @param $data array Data to use in the list.
+     *
      * @return The number of the row that was inserted
      */
-    function addListHeaderRow() {
+    function addListHeaderRow() 
+    {
         $col = 0;
         switch($this->_tableType) {
             case 'CSV':
@@ -330,10 +400,13 @@ class dfTable
 
     /**
      * Adds a row to the list.
-     * @param $data array Data to use in the list.
+     *
+     * @param array $header array Data to use in the list.
+     *
      * @return The number of the row that was inserted
      */
-    function updateListHeader($header) {
+    function updateListHeader($header) 
+    {
         $col = 0;
         foreach ($this->_listHead as $key => $head) {
             if (isset($header[$key])) {
@@ -342,8 +415,13 @@ class dfTable
         }
     }
 
-
-    function addManyListRows($data, $checkAttrib=false) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function addManyListRows($data, $checkAttrib=false) 
+    {
         if (is_array($data)) {
             switch($this->_tableType) {
                 case 'CSV':
@@ -369,7 +447,8 @@ class dfTable
      * @param $data array Data to use in the list.
      * @return The number of the row that was inserted
      */
-    function addListSubTotalRow($subCols, $type='data', $attrib=null, $mytype='subtotal') {
+    function addListSubTotalRow($subCols, $type='data', $attrib=null, $mytype='subtotal') 
+    {
         $col = 0;
         
         switch($this->_tableType) {
@@ -387,7 +466,7 @@ class dfTable
                 foreach (array_keys($this->_listHead) as $key) {
 
                     if ($subCols[$key] === true) {
-                        $formula = '=SUM(';
+                        $formula = '';
                         $sep = "";
                         for ($row = 0; $row < $this->_listRow; $row++) {
                             if ($this->_rowType[$row] == $type) {
@@ -395,7 +474,7 @@ class dfTable
                                 $sep = ",";
                             }
                         }
-                        $formula .= ")";
+                        $formula = "=SUM(".$formula.")";
                         $format =& $this->_ExcelWorkbook->addFormat();
                         $format->setBorder(1);
                         $format->setAlign('center');
@@ -443,7 +522,8 @@ class dfTable
      * @param $data array Data to use in the list.
      * @return The number of the row that was inserted
      */
-    function addListRow($data, $attrib=null, $type='data') {
+    function addListRow($data, $attrib=null, $type='data') 
+    {
         $col = 0;
         
         if ($this->filter($data)) {
@@ -496,7 +576,8 @@ class dfTable
      * @param $class1 string the class to use for every other row
      * @param $class2 string the class to use for the other rows.    
      */
-    function finishList($attrib = array(), $class1='row1', $class2='row2') {
+    function finishList($attrib = array(), $class1='row1', $class2='row2') 
+    {
         switch($this->_tableType) {
             case 'CSV':
                 break;
@@ -520,8 +601,8 @@ class dfTable
     /**
      * Sets up a list and builds the header.
      * @param $header array Array of $colName => $headerText pairs.  The order these are in
-            define the order of the columns in the list.
-
+     *       define the order of the columns in the list.
+     *
      */
     function createInfo($header=array(), $data=array(), $fill=null, $headerPeriod=0)
     {
@@ -537,8 +618,13 @@ class dfTable
         $this->_infoHeader = $header;
         $this->addInfoData($data, $header);
     }
-
-    function addInfoData($data, $header=null) {
+    /**
+     * function
+     *
+     * @return none
+     */
+    function addInfoData($data, $header=null) 
+    {
         $header = is_array($header) ? $header : $this->_infoHeader;
         $col = 0;
         foreach ($header as $key => $head) {
@@ -554,7 +640,8 @@ class dfTable
      * @param $data array Data to use in the list.
      * @return The number of the row that was inserted
      */
-    function addInfoRow($head, $data) {
+    function addInfoRow($head, $data) 
+    {
         $col = 0;
         if (is_array($data)) {
             $this->_HTML_Table->setHeaderContents($this->_infoRow, $col, $head);
@@ -581,7 +668,8 @@ class dfTable
      * @param $class1 string the class to use for every other row
      * @param $class2 string the class to use for the other rows.    
      */
-    function finishInfo($attrib = array(), $class1='row1', $class2='row2') {
+    function finishInfo($attrib = array(), $class1='row1', $class2='row2') 
+    {
         $this->_HTML_Table->altRowAttributes(0, array('class' => $class1), array('class' => $class2), true);
         foreach ($this->_infoKeys as $key => $row) {
             if (isset($attrib[$row])) {
