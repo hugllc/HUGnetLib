@@ -35,38 +35,48 @@
  */
 if (!class_exists("e00391201")) {
 
-/*
-define("e00391106", true);
-define("e00391102B_EEPROM_READ", "0A");
-define("e00391102B_SRAM_READ", "0B");
-define("e00391106_SETCONFIG", "6F");
-define("e00391106_SETFET0", "6E");
-define("e00391106_SETFET1", "6D");
-define("e00391106_SETFET2", "6C");
-define("e00391106_SETFET3", "6B");
-
-define("e00391102B_SENSOR_LENGTH", 28);
-define("e00391103B_SENSOR_LENGTH", 33);
-define("e00391102B_GROUP", 36);
-*/
-define("E00391201_SETUP", 44);
-define("E00391201_FET0", 46);
-define("E00391201_FET1", 48);
-define("E00391201_FET2", 50);
-define("E00391201_FET3", 52);
-define("E00391201_FET0_MULT", 54);
-define("E00391201_FET1_MULT", 56);
-define("E00391201_FET2_MULT", 58);
-define("E00391201_FET3_MULT", 60);
-define("E00391201_SENSORS", 9);
+    /*
+    define("e00391106", true);
+    define("e00391102B_EEPROM_READ", "0A");
+    define("e00391102B_SRAM_READ", "0B");
+    define("e00391106_SETCONFIG", "6F");
+    define("e00391106_SETFET0", "6E");
+    define("e00391106_SETFET1", "6D");
+    define("e00391106_SETFET2", "6C");
+    define("e00391106_SETFET3", "6B");
+    
+    define("e00391102B_SENSOR_LENGTH", 28);
+    define("e00391103B_SENSOR_LENGTH", 33);
+    define("e00391102B_GROUP", 36);
+    */
+    define("E00391201_SETUP", 44);
+    define("E00391201_FET0", 46);
+    define("E00391201_FET1", 48);
+    define("E00391201_FET2", 50);
+    define("E00391201_FET3", 52);
+    define("E00391201_FET0_MULT", 54);
+    define("E00391201_FET1_MULT", 56);
+    define("E00391201_FET2_MULT", 58);
+    define("E00391201_FET3_MULT", 60);
+    define("E00391201_SENSORS", 9);
 
 
 
 
     /**
      * Driver for the 0039-12 endpoint board and select firmwares
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Endpoints
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @version    SVN: $Id$    
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class e00391201 extends eDEFAULT{
+    class e00391201 extends eDEFAULT
+    {
 
         var $HWName = "0039-12 Endpoint";
 
@@ -153,18 +163,37 @@ define("E00391201_SENSORS", 9);
 
 
 
-        function checkRecord($Info, &$Rec) {
+        /**
+         * Checks a data record to determine what its status is.  It changes
+         * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
+         * is the status that the record had originally.
+         *
+         * @param array $Info The information array on the device
+         * @param array &$Rec The data record to check
+         *
+         * @return none
+         */
+        function checkRecord($Info, &$Rec)
+        {
             parent::_checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
-                $Rec["Status"] = "BAD";
+                $Rec["Status"]     = "BAD";
                 $Rec["StatusCode"] = "Bad TC";
                 return;
             }
 
         }
 
-        function interpConfig(&$Info) {
+        /**
+         * Interprets a config packet
+         *
+         * @param array &$Info devInfo array
+         *
+         * @return none
+         */
+        function interpConfig(&$Info)
+        {
 
             $this->_interpConfigDriverInfo($Info);
             $this->_interpConfigHW($Info);
@@ -186,18 +215,26 @@ define("E00391201_SENSORS", 9);
             }
 
         }
-        private function _interpConfigFETSetup(&$Info) {
+        /**
+         * Interprets a config packet
+         *
+         * @param array &$Info devInfo array
+         *
+         * @return none
+         */
+        private function _interpConfigFETSetup(&$Info) 
+        {
             $Info["Setup"] = hexdec(substr($Info["RawSetup"], E00391201_SETUP, 2));
             for ($i = 0; $i < 4; $i++) {
-                $mode = (($Info["Setup"]>>($i*2)) & 3);
-                $Info["FET".$i."Mode"] = $mode;
+                $mode                   = (($Info["Setup"]>>($i*2)) & 3);
+                $Info["FET".$i."Mode"]  = $mode;
                 $Info["FET".$i."pMode"] = $this->modes[$mode];
             }                    
 
-            $Info["FET0"] = hexdec(substr($Info["RawSetup"], E00391201_FET0, 2));
-            $Info["FET1"] = hexdec(substr($Info["RawSetup"], E00391201_FET1, 2));
-            $Info["FET2"] = hexdec(substr($Info["RawSetup"], E00391201_FET2, 2));
-            $Info["FET3"] = hexdec(substr($Info["RawSetup"], E00391201_FET3, 2));
+            $Info["FET0"]     = hexdec(substr($Info["RawSetup"], E00391201_FET0, 2));
+            $Info["FET1"]     = hexdec(substr($Info["RawSetup"], E00391201_FET1, 2));
+            $Info["FET2"]     = hexdec(substr($Info["RawSetup"], E00391201_FET2, 2));
+            $Info["FET3"]     = hexdec(substr($Info["RawSetup"], E00391201_FET3, 2));
             $Info["FET0Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET0_MULT, 2));
             $Info["FET1Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET1_MULT, 2));
             $Info["FET2Mult"] = hexdec(substr($Info["RawSetup"], E00391201_FET2_MULT, 2));
@@ -206,8 +243,17 @@ define("E00391201_SENSORS", 9);
 
 
     
-        function interpSensors($Info, $Packets) {
-
+        /**
+         * The routine that interprets returned sensor data
+         * 
+         * @param array $Info    The device info array
+         * @param array $Packets An array of packets to interpret
+         *
+         * @return array
+         */
+        function interpSensors($Info, $Packets) 
+        {
+ 
             $this->interpConfig($Info);
         
             $ret = array();
@@ -215,17 +261,17 @@ define("E00391201_SENSORS", 9);
                 $data = $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
                     $index = 0;
-                    $data['NumSensors'] = $Info['NumSensors'];
+                    $data['NumSensors']    = $Info['NumSensors'];
                     $data["ActiveSensors"] = $Info["ActiveSensors"];
-                    $data["Driver"] = $Info["Driver"];
-                    $data["DeviceKey"] = $Info["DeviceKey"];
-                    $data["Types"] = $Info["Types"];
-                    $data["DataIndex"] = $data["Data"][$index++];
-                    $data["TimeConstant"] = 1;
+                    $data["Driver"]        = $Info["Driver"];
+                    $data["DeviceKey"]     = $Info["DeviceKey"];
+                    $data["Types"]         = $Info["Types"];
+                    $data["DataIndex"]     = $data["Data"][$index++];
+                    $data["TimeConstant"]  = 1;
                  
                     if (is_array($data["Data"])) {
                         for ($key = 0; $key < $Info["NumSensors"]; $key++) {
-                            $data["raw"][$key] = $data["Data"][$index++];
+                            $data["raw"][$key]  = $data["Data"][$index++];
                             $data["raw"][$key] += $data["Data"][$index++] << 8;
                         }
                         
@@ -250,12 +296,12 @@ define("E00391201_SENSORS", 9);
     
         /**
          * Constructor
-         * @param $db String The database to use
-         * @param $servers Array The servers to use.
-         * @param $options the database options to use.
+         *
+         * @param object $driver An object of class Driver.
+         *
          */
-        function e00391201 (&$driver) {
-//            $this->eDEFAULT($servers, $db, $options);
+        function e00391201(&$driver) 
+        {
             parent::__construct($driver);
         }
     }
