@@ -34,8 +34,8 @@
  *
  */
 require_once 'HTML/Table.php';
-@include_once 'Spreadsheet/Excel/Writer.php';
-require_once('lib/forms.inc.php');
+@require_once 'Spreadsheet/Excel/Writer.php';
+require_once 'lib/forms.inc.php';
 
 /**
  * Creates a popup window inside the browser window.
@@ -48,7 +48,7 @@ require_once('lib/forms.inc.php');
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class dfTable
+class DfTable
 {
     /** @var array Alternate table formats */
     private $_altTableFormats = array('CSV');
@@ -71,6 +71,10 @@ class dfTable
     /**
      * function
      *
+     * @param string $name       The name of the table
+     * @param array  $attributes Table attributes
+     * @param int    $tabOffset  deprecated 
+     *
      * @return none
      */
     function dfTable($name = 'Default', $attributes=null, $tabOffset=0)
@@ -92,6 +96,8 @@ class dfTable
     }
     /**
      * function
+     *
+     * @param bool $val Value to set _export to
      *
      * @return none
      */
@@ -157,6 +163,9 @@ class dfTable
     /**
      * function
      *
+     * @param bool $row  Set whether to filter rows
+     * @param bool $form Set whether to have the filter form
+     *
      * @return none
      */
     function setFilter($row=false, $form=false) 
@@ -189,7 +198,9 @@ class dfTable
     /**
      * function
      *
-     * @return none
+     * @param array $row the row to filter
+     *
+     * @return bool
      */
     function filter($row) 
     {
@@ -227,9 +238,14 @@ class dfTable
 
     /**
      * Sets up a list and builds the header.
-     * @param $header array Array of $colName => $headerText pairs.  The order these are in
-            define the order of the columns in the list.
-
+     *
+     * @param array  $header       Array of $colName => $headerText pairs.  The order these are in
+     *       define the order of the columns in the list.
+     * @param string $fill         String to fill into empty cells
+     * @param int    $headerPeriod The number of rows until the header is printed again
+     * @param bool   $addHeader    Whether the header should be included at the top
+     *
+     * @return none
      */
     function createList($header, $fill=null, $headerPeriod=0, $addHeader=true)
     {
@@ -263,6 +279,10 @@ class dfTable
     /**
      * function
      *
+     * @param string $subCol the name of the subtotal column
+     * @param array  $cols   The array keys for this will be used as the
+     *                       columns to subtotal
+     *
      * @return none
      */
     function addListSubTotalCol($subCol, $cols) 
@@ -271,9 +291,11 @@ class dfTable
         $this->_subTotalCol[$subCol] = array_keys($cols);
     }
     /**
-     * function
+     * Returns a letter designation for the column number
      *
-     * @return none
+     * @param int $col The column number
+     *
+     * @return string
      */
     function _getColLetter($col) 
     {
@@ -287,6 +309,8 @@ class dfTable
     }
     /**
      * function
+     *
+     * @param array $data The column information
      *
      * @return none
      */
@@ -340,6 +364,12 @@ class dfTable
 
     /**
      * Adds a text divider to the list.    
+     *
+     * @param string $text   The text to put in the divider row
+     * @param array  $attrib Attribute array for the HTML version
+     * @param bool   $export Should this line be exported
+     *
+     * @return int The row
      */
     function addListDividerRow($text, $attrib=null, $export=true) 
     {
@@ -365,7 +395,7 @@ class dfTable
     /**
      * Adds a row to the list.
      *
-     * @return The number of the row that was inserted
+     * @return int The number of the row that was inserted
      */
     function addListHeaderRow() 
     {
@@ -403,7 +433,7 @@ class dfTable
      *
      * @param array $header array Data to use in the list.
      *
-     * @return The number of the row that was inserted
+     * @return int The number of the row that was inserted
      */
     function updateListHeader($header) 
     {
@@ -417,6 +447,9 @@ class dfTable
 
     /**
      * function
+     *
+     * @param array $data        Array of row arrays
+     * @param bool  $checkAtrrib deprecated
      *
      * @return none
      */
@@ -444,8 +477,13 @@ class dfTable
 
     /**
      * Adds a row to the list.
-     * @param $data array Data to use in the list.
-     * @return The number of the row that was inserted
+     *
+     * @param array  $subCols The columns to total in the row
+     * @param string $type    The type of rows we should total
+     * @param array  $attrib  The attributes to add to the row
+     * @param string $mytype  The type of this row
+     *
+     * @return int The number of the row that was inserted
      */
     function addListSubTotalRow($subCols, $type='data', $attrib=null, $mytype='subtotal') 
     {
@@ -519,7 +557,11 @@ class dfTable
 
     /**
      * Adds a row to the list.
+     *
      * @param $data array Data to use in the list.
+     * @param array  $attrib  The attributes to add to the row
+     * @param string $type    The type of rows we should add
+     *
      * @return The number of the row that was inserted
      */
     function addListRow($data, $attrib=null, $type='data') 
@@ -572,9 +614,12 @@ class dfTable
 
     /**
      * Finishes the list table.
+     *
      * @param $attrib array Attribute array with $colName => $attributes pairs.
      * @param $class1 string the class to use for every other row
      * @param $class2 string the class to use for the other rows.    
+     *
+     * @return none
      */
     function finishList($attrib = array(), $class1='row1', $class2='row2') 
     {
@@ -600,9 +645,13 @@ class dfTable
 
     /**
      * Sets up a list and builds the header.
-     * @param $header array Array of $colName => $headerText pairs.  The order these are in
+     * @param array  $header       Array of $colName => $headerText pairs.  The order these are in
      *       define the order of the columns in the list.
+     * @param array  $data         Data to put into the info table
+     * @param string $fill         String to fill into empty cells
+     * @param int    $headerPeriod The number of rows until the header is printed again
      *
+     * @return none
      */
     function createInfo($header=array(), $data=array(), $fill=null, $headerPeriod=0)
     {
@@ -621,6 +670,10 @@ class dfTable
     /**
      * function
      *
+     * @param array  $data   Data to put into the info table
+     * @param array  $header Array of $colName => $headerText pairs.  The order these are in
+     *       define the order of the columns in the list.
+     *
      * @return none
      */
     function addInfoData($data, $header=null) 
@@ -637,7 +690,10 @@ class dfTable
 
     /**
      * Adds a row to the list.
-     * @param $data array Data to use in the list.
+     *
+     * @param string $head The header to add the data to.
+     * @param string $data Data to use.
+     *
      * @return The number of the row that was inserted
      */
     function addInfoRow($head, $data) 
@@ -664,9 +720,12 @@ class dfTable
 
     /**
      * Finishes the list table.
+     *
      * @param $attrib array Attribute array with $colName => $attributes pairs.
      * @param $class1 string the class to use for every other row
      * @param $class2 string the class to use for the other rows.    
+     *
+     * @return none
      */
     function finishInfo($attrib = array(), $class1='row1', $class2='row2') 
     {
