@@ -449,7 +449,7 @@ class DfTable
      * function
      *
      * @param array $data        Array of row arrays
-     * @param bool  $checkAtrrib deprecated
+     * @param bool  $checkAttrib deprecated
      *
      * @return none
      */
@@ -467,7 +467,7 @@ class DfTable
                 foreach ($data as $row) {
                     $listRow = $this->addListRow($row, $row['attributes']);    
                 }
-            break;
+                break;
             }
             return true;
         } else {
@@ -558,7 +558,7 @@ class DfTable
     /**
      * Adds a row to the list.
      *
-     * @param $data array Data to use in the list.
+     * @param array  $data    Data to use in the list.
      * @param array  $attrib  The attributes to add to the row
      * @param string $type    The type of rows we should add
      *
@@ -593,8 +593,7 @@ class DfTable
                 }
                 break;
             default:
-                if ((($this->_listRow % $this->_headerPeriod) == 0) && ($this->_headerPeriod != 0))
-                {
+                if ((($this->_listRow % $this->_headerPeriod) == 0) && ($this->_headerPeriod != 0)) {
                     $this->addListHeaderRow();
                 }
                 foreach (array_keys($this->_listHead) as $key) {
@@ -615,9 +614,9 @@ class DfTable
     /**
      * Finishes the list table.
      *
-     * @param $attrib array Attribute array with $colName => $attributes pairs.
-     * @param $class1 string the class to use for every other row
-     * @param $class2 string the class to use for the other rows.    
+     * @param array  $attrib Attribute array with $colName => $attributes pairs.
+     * @param string $class1 the class to use for every other row
+     * @param string $class2 the class to use for the other rows.    
      *
      * @return none
      */
@@ -645,6 +644,7 @@ class DfTable
 
     /**
      * Sets up a list and builds the header.
+     *
      * @param array  $header       Array of $colName => $headerText pairs.  The order these are in
      *       define the order of the columns in the list.
      * @param array  $data         Data to put into the info table
@@ -670,8 +670,8 @@ class DfTable
     /**
      * function
      *
-     * @param array  $data   Data to put into the info table
-     * @param array  $header Array of $colName => $headerText pairs.  The order these are in
+     * @param array $data   Data to put into the info table
+     * @param array $header Array of $colName => $headerText pairs.  The order these are in
      *       define the order of the columns in the list.
      *
      * @return none
@@ -721,9 +721,9 @@ class DfTable
     /**
      * Finishes the list table.
      *
-     * @param $attrib array Attribute array with $colName => $attributes pairs.
-     * @param $class1 string the class to use for every other row
-     * @param $class2 string the class to use for the other rows.    
+     * @param array  $attrib Attribute array with $colName => $attributes pairs.
+     * @param string $class1 the class to use for every other row
+     * @param string $class2 the class to use for the other rows.    
      *
      * @return none
      */
