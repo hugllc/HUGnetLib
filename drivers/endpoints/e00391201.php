@@ -78,11 +78,14 @@ if (!class_exists("e00391201")) {
     class e00391201 extends eDEFAULT
     {
 
+        /** The hardware name */
         var $HWName = "0039-12 Endpoint";
 
+        /** Average Table */
         var $average_table = "e00391201_average";
+        /** history table */
         var $history_table = "e00391201_history";
-
+        /** Devices served by this driver */
         var $devices = array(
         
             "0039-11-06-A" => array(
@@ -112,7 +115,7 @@ if (!class_exists("e00391201")) {
             "DEFAULT" => array(
             ),
         );
-        
+        /** Modes for the FET */        
         var $modes = array(
             0 => 'Digital', 
             1 => 'Analog - High Z', 
@@ -120,11 +123,14 @@ if (!class_exists("e00391201")) {
             3 => 'Analog - Current'
         );
         
+        
+        /** Default location variable definition  */
         var $deflocation = array(
             '0039-20-04-C' => array("Fan 1", "Fan 1", "Fan 2", "Fan 2", "Fan 3", "Fan 3", "Fan 4", "Fan 4", "Main"),
             'DEFAULT' => array("Out 1 Current", "Out 1 Voltage", "Out 2 Current", "Out 2 Voltage", "Out 3 Current", "Out 3 Voltage", "Out 4 Current", "Out 4 Voltage", "Main Voltage"),
         );
 
+        /** This is where the hardware devices default configurations go. */
         var $config = array(
             "0039-11-06-A" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
             "0039-20-04-C" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
@@ -134,26 +140,32 @@ if (!class_exists("e00391201")) {
             "DEFAULT" => array("Function" => "Unknown", "Sensors" => 9),
         );
 
+        /** Calibration data */
         var $caldata = array(
             "DEFAULT" => array(1.79, 16, 1.79, 16, 1.79, 16, 1.79, 16, 16),
             "0039-20-04-C" => array(3.58, 32, 3.58, 32, 3.58, 32, 3.58, 32, 32),
             "0039-20-05-C" => array(3.58, 32, 3.58, 32, 32),
             );
+        /** The default labels for the sensor outputs. */
         var $labels = array(
             "DEFAULT" => array("Out1 Current", "Out1 Voltage", "Out2 Current", "Out2 Voltage", "Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
             "0039-20-05-C" => array("Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
             );
+        /** The default  for the sensor outputs. */
         var $units = array(
             "DEFAULT" => array("A", "V", "A", "V", "A", "V", "A", "V", "V"),
             "0039-20-05-C" => array("A", "V", "A", "V", "V"),
             );
+        /** The default types for the sensor outputs. */
         var $types = array(
             "DEFAULT" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
         );
+        /** The default sensor types for the sensor outputs. */
         var $sensorTypes = array(
             "DEFAULT" => array("FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard", "FETBoard"),
         );
 
+        /** The columns that are device specific go here */
         var $cols = array("FET0pMode" => "FET 0 Mode", 
                                 "FET1pMode" => "FET 1 Mode", 
                                 "FET2pMode" => "FET 2 Mode", 
@@ -175,7 +187,7 @@ if (!class_exists("e00391201")) {
          */
         function checkRecord($Info, &$Rec)
         {
-            parent::_checkRecordBase($Info, $Rec);    
+            parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"]     = "BAD";
@@ -195,18 +207,18 @@ if (!class_exists("e00391201")) {
         function interpConfig(&$Info)
         {
 
-            $this->_interpConfigDriverInfo($Info);
-            $this->_interpConfigHW($Info);
-            $this->_interpConfigFW($Info);
+            $this->interpConfigDriverInfo($Info);
+            $this->interpConfigHW($Info);
+            $this->interpConfigFW($Info);
 
             $Info["ActiveSensors"] = $Info["NumSensors"];
 
             $this->_interpConfigFETSetup($Info);
-            $this->_interpConfigParams($Info);
+            $this->interpConfigParams($Info);
 
             $Info["Types"] = (isset($this->types[$Info["FWPartNum"]])) ? $this->types[$Info["FWPartNum"]] : $this->types["DEFAULT"];
 
-            $this->_interpConfigSensorSetup($Info);
+            $this->interpConfigSensorSetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Labels"] = $this->labels[$Info["FWPartNum"]];

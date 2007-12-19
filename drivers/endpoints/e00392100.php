@@ -148,7 +148,7 @@ if (!class_exists("e00392100")) {
                     $Rec['Data'.$i] = null;
                 }
             }
-            parent::_checkRecordBase($Info, $Rec);
+            parent::checkRecordBase($Info, $Rec);
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["sendCommand"] == PACKET_COMMAND_GETDATA) {
                 if ($Rec["TimeConstant"] == 0) {
@@ -202,14 +202,14 @@ if (!class_exists("e00392100")) {
           */
         function interpConfig(&$Info) 
         {
-            $this->_interpConfigDriverInfo($Info);
+            $this->interpConfigDriverInfo($Info);
             $Info["Location"] = $this->deflocation;
-            $this->_interpConfigHW($Info);
+            $this->interpConfigHW($Info);
             $Info["PacketTimeout"] = 2;
-            $this->_interpConfigFW($Info);
+            $this->interpConfigFW($Info);
             
             $Info['ActiveSensors'] = $Info["NumSensors"];
-            $this->_interpConfigParams($Info);
+            $this->interpConfigParams($Info);
 
             $this->_interpConfig00392006C($Info);
             $this->_interpConfigSensors($Info);
@@ -252,7 +252,7 @@ if (!class_exists("e00392100")) {
         {
             $Info["Types"]                = $this->Types["fake"];
             $Info['params']['sensorType'] = $this->sensorType["fake"];
-            $this->_interpConfigSensorSetup($Info);
+            $this->interpConfigSensorsetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Location"] = $this->labels[$Info["FWPartNum"]];

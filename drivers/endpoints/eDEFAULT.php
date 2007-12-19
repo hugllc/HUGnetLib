@@ -203,8 +203,8 @@ if (!class_exists('eDEFAULT')) {
          *
          * This should only be defined in a driver that inherits this class if the packet differs
          *
-         * @param array $Info Infomation about the device to use
-         * @param array $packet The packet to save.
+         * @param array $Info    Infomation about the device to use
+         * @param array $Packets The packet to save.
          *
          * @return bool
          */
@@ -225,7 +225,6 @@ if (!class_exists('eDEFAULT')) {
          * Not sure what this function was supposed to do
          *
          * @param array $Info Infomation about the device to use
-         * @param array $packet The packet to save.
          *
          * @return bool Always true
          */
@@ -276,7 +275,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _checkRecordBase($Info, &$Rec) 
+        protected function checkRecordBase($Info, &$Rec) 
         {
         
             if (isset($Rec['Status'])) {
@@ -300,7 +299,7 @@ if (!class_exists('eDEFAULT')) {
             }
     
             if ($zero && ($i > 3)) {
-                $Rec["Status"] = "BAD";
+                $Rec["Status"]     = "BAD";
                 $Rec["StatusCode"] = "All Bad";
                 return;
             }
@@ -315,7 +314,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return int
          */    
-        protected function _getOrder($Info, $key, $rev = false) 
+        protected function getOrder($Info, $key, $rev = false) 
         {
             if (isset($this->config[$Info["FWPartNum"]]["DisplayOrder"])) { 
                 $Order = explode(",", $this->config[$Info["FWPartNum"]]["DisplayOrder"]);
@@ -337,15 +336,15 @@ if (!class_exists('eDEFAULT')) {
         {
         
             switch($Info["MemType"]) {
-                case EEPROM:
-                    $Type = EDEFAULT_EEPROM_READ;
-                    break;
-                case SRAM:
-                default:
-                    $Type = EDEFAULT_SRAM_READ;
-                    break;
+            case EEPROM:
+                $Type = EDEFAULT_EEPROM_READ;
+                break;
+            case SRAM:
+            default:
+                $Type = EDEFAULT_SRAM_READ;
+                break;
             }
-            $return = array();
+            $return          = array();
             $Info["Command"] = $Type;
             $Info["To"]      = $Info["DeviceID"];
             $Info["Data"][0] = "00" ;
@@ -371,9 +370,14 @@ if (!class_exists('eDEFAULT')) {
         
         /**
          * Returns the packet to send to read the configuration out of an endpoint
+         *
+         * This should only be defined in a driver that inherits this class if the 
+         * packet differs
+         *
          * @param array $Info Infomation about the device to use
-         * @note This should only be defined in a driver that inherits this class if the packet differs
-          */
+         *
+         * @return array
+         */
         public function readConfig($Info) 
         {
             return array(
@@ -393,7 +397,8 @@ if (!class_exists('eDEFAULT')) {
          *
          * This method MUST be implemented by each driver that inherits this class
          *
-         * @param array $Info Infomation about the device to use including the unsolicited packet.
+         * @param array $Info Infomation about the device to use including the 
+         *                    unsolicited packet.
          *
          * @return always true
          */
@@ -413,8 +418,8 @@ if (!class_exists('eDEFAULT')) {
          */
         public function interpConfig(&$Info) 
         {
-            eDEFAULT::_interpBaseConfig($Info);
-            eDEFAULT::_interpCalibration($Info);
+            eDEFAULT::interpBaseConfig($Info);
+            eDEFAULT::interpCalibration($Info);
         }
 
         /**
@@ -424,7 +429,8 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpBaseConfig(&$Info) {
+        protected function interpBaseConfig(&$Info)
+        {
             if (strlen($Info['RawData'][PACKET_COMMAND_GETSETUP]) > PACKET_CONFIG_MINSIZE) {
                 $pkt = &$Info['RawData'][PACKET_COMMAND_GETSETUP];
                 
@@ -436,7 +442,7 @@ if (!class_exists('eDEFAULT')) {
                 $Info["BoredomThreshold"] = hexdec(trim(strtoupper(substr($pkt, ENDPOINT_BOREDOM, 2))));
                 $Info["RawSetup"]         = $pkt;
                 devInfo::setDate($Info, "LastConfig");
-                self::_interpConfigDriverInfo($Info);
+                self::interpConfigDriverInfo($Info);
             }
         
         }
@@ -447,7 +453,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigDriverInfo(&$Info) 
+        protected function interpConfigDriverInfo(&$Info) 
         {
             if (empty($Info["DriverInfo"]) && !empty($Info["RawSetup"])) {
                 $Info["DriverInfo"] = substr($Info["RawSetup"], ENDPOINT_BOREDOM+2);
@@ -461,7 +467,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigParams(&$Info) 
+        protected function interpConfigParams(&$Info) 
         {
             device::decodeParams($Info['params']);
         }
@@ -472,7 +478,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigHW(&$Info) 
+        protected function interpConfigHW(&$Info) 
         {
             $Info['HWName'] = $this->HWName;
         }
@@ -483,7 +489,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigFW(&$Info) 
+        protected function interpConfigFW(&$Info) 
         {
             if (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
@@ -500,7 +506,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpCalibration(&$Info) 
+        protected function interpCalibration(&$Info) 
         {
             if (isset($Info['RawData'][PACKET_COMMAND_GETCALIBRATION])) {
                 $Info['RawCalibration'] = $Info['RawData'][PACKET_COMMAND_GETCALIBRATION];
@@ -514,11 +520,11 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpTypes(&$Info) 
+        protected function interpTypes(&$Info) 
         {
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 
-                $key = $this->_getOrder($Info, $i);
+                $key = $this->getOrder($Info, $i);
                 
                 if (!isset($Info['Types'][$i])) {
                     $Info["Types"][$i] = hexdec(substr($Info["DriverInfo"], (($key*2)+2), 2));
@@ -532,7 +538,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigSensorSetup(&$Info) 
+        protected function interpConfigSensorSetup(&$Info) 
         {
             $Info["unitType"] = array();
             $Info["Labels"]   = array();
@@ -555,7 +561,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpConfigTC(&$Info) 
+        protected function interpConfigTC(&$Info) 
         {
             if ($Info["NumSensors"] > 0) {
                 $Info["TimeConstant"] = hexdec(substr($Info["DriverInfo"], 0, 2));
@@ -575,7 +581,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return bool Always false
          */
-        final public function BadDriver($Info, $fct) 
+        final public function badDriver($Info, $fct) 
         {
             return false;
         }    
@@ -603,8 +609,8 @@ if (!class_exists('eDEFAULT')) {
                 $data = $this->checkDataArray($data);
                 if (isset($data['RawData'])) {
                     $index = 3;
-                    $this->_interpSensorsSetData($Info, $data);
-                    $this->_interpSensorsGetData($data["Data"], &$index, 3);
+                    $this->interpSensorsSetData($Info, $data);
+                    $this->interpSensorsGetData($data["Data"], &$index, 3);
     
                     $return = $this->checkRecord($Info, $data);
                     $ret[]  = $data;
@@ -622,7 +628,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return none
          */
-        protected function _interpSensorsSetData(&$Info, &$data) 
+        protected function interpSensorsSetData(&$Info, &$data) 
         {
             $data['NumSensors']    = $Info['NumSensors'];
             $data["ActiveSensors"] = $Info["ActiveSensors"];
@@ -646,7 +652,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return int
          */    
-        protected function _interpSensorsGetData($Data, &$index, $bytes, $width=null) 
+        protected function interpSensorsGetData($Data, &$index, $bytes, $width=null) 
         {
             if ($width < $bytes) $width = $bytes;
             $shift = 0;
@@ -669,7 +675,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return array The columns that pertain to this endpoint
          */
-        final public function GetCols($Info) 
+        final public function getCols($Info) 
         {
             $Columns = $this->defcols;
             if (is_array($this->cols)) {
@@ -785,7 +791,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
          */
-        final public function CompareFWVersion($ver1, $ver2) 
+        final public function compareFWVersion($ver1, $ver2) 
         {
             $v1 = explode(".", $ver1);
             $v2 = explode(".", $ver2);
@@ -843,9 +849,9 @@ if (!class_exists('eDEFAULT')) {
          */
         public function __construct(&$driver) 
         {
-            $this->driver =& $driver;
-            $this->packet =& $driver->packet;
-            $this->device =& $driver->device;
+            $this->driver  =& $driver;
+            $this->packet  =& $driver->packet;
+            $this->device  =& $driver->device;
             $this->sensors =& $driver->sensors;
             $this->history = new DbBase($driver->db, $this->history_table, $this->history_id);
         }
