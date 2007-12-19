@@ -192,12 +192,12 @@ class MedianFilterTest extends filterTestBase
     /**
      * test
      *
-     * @param array &$history The history to filter
-     * @param int   $index    The index in the history to use
-     * @param array $filter   Information on the filter we are implementing
-     * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last one
-     * @param array $expect   What we expect the history to look like
+     * @param array $history The history to filter
+     * @param int   $index   The index in the history to use
+     * @param array $filter  Information on the filter we are implementing
+     * @param mixed $extra   Extra setup information on the filter
+     * @param int   $deltaT  The difference in time between this record and the last one
+     * @param array $expect  What we expect the history to look like
      *
      * @return none
      *
@@ -212,12 +212,12 @@ class MedianFilterTest extends filterTestBase
     /**
      * test
      *
-     * @param array &$history The history to filter
-     * @param int   $index    The index in the history to use
-     * @param array $filter   Information on the filter we are implementing
-     * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last one
-     * @param array $expect   What we expect the history to look like
+     * @param array $history The history to filter
+     * @param int   $index   The index in the history to use
+     * @param array $filter  Information on the filter we are implementing
+     * @param mixed $extra   Extra setup information on the filter
+     * @param int   $deltaT  The difference in time between this record and the last one
+     * @param array $expect  What we expect the history to look like
      *
      * @return none
      *

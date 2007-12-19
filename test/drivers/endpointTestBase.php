@@ -146,7 +146,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     public static function devicesArrayDataSource($class, $var) 
     {
         $driver = driverTest::createDriver();
-        $o = new $class($driver);
+        $o      = new $class($driver);
         $return = array();
         if (isset($o->devices)) {
             foreach ($o->devices as $fw => $Firm) {
@@ -210,8 +210,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @param string $fw      The firmware string
-     * @param array  $firm    The firmware array
+     * @param string $fw   The firmware string
+     * @param array  $Firm The firmware array
      *
      * @return none
      *
@@ -299,7 +299,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     public static function dataConfigArray($class=null) 
     {
         $driver = driverTest::createDriver();
-        $o = new $class($driver);
+        $o      = new $class($driver);
         if (empty($class)) return array();
         $return = array();
         if (is_array($o->config)) {
@@ -737,7 +737,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      */
     public function testGetHistoryTable() 
     {
-        $Info = array("Driver" => get_class($this->o));
+        $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "history_table");
         $this->assertSame($expect, $this->o->getHistoryTable());
     }
@@ -749,7 +749,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      */
     public function testGetAverageTable() 
     {
-        $Info = array("Driver" => get_class($this->o));
+        $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "average_table");
         $this->assertSame($expect, $this->o->getAverageTable());
     }
@@ -761,7 +761,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      */
     public function testGetLocationTable() 
     {
-        $Info = array("Driver" => get_class($this->o));
+        $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "location_table");
         $this->assertSame($expect, $this->o->getLocationTable());
     }
@@ -780,7 +780,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class driverMock 
+class DriverMock
 {
     public $packet = "packet";
     public $device = "device";
