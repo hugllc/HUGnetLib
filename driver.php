@@ -69,7 +69,6 @@ require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.7.3    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class Driver
@@ -178,7 +177,8 @@ class Driver
      *
      * @return mixed
      */
-    private function _methodExists(&$Info, $function) {
+    private function _methodExists(&$Info, $function) 
+    {
         $use_driver = isset($Info["Driver"]) ? $Info['Driver'] : 'eDEFAULT';
         if ($use_driver == "eDEFAULT") {
             $use_driver        = $this->FindDriver($Info);
@@ -232,13 +232,14 @@ class Driver
     /**
      * Deals with calling 'read' functions
      *
-     * @param array  &$Info    Infomation about the device to use
+     * @param array  $Info     Infomation about the device to use
      * @param array  $packet   The packets to send
      * @param string $function The name of the function that is being run
      *
      * @return mixed
      */
-    private function _callRead($Info, $packet, $function) {
+    private function _callRead($Info, $packet, $function) 
+    {
         if (substr($function, 0, 4) == "read") {
             // Send these packets
             $ret = $this->packet->sendPacket($Info, $packet);
@@ -258,12 +259,14 @@ class Driver
     /**
      * Deals with calling 'read' functions
      *
-     * @param array &$Info  Infomation about the device to use
-     * @param array $packet The packets to send
+     * @param array  $Info     Infomation about the device to use
+     * @param array  $packet   The packets to send
+     * @param string $function The name of the function that is being run
      *
      * @return mixed
      */
-    private function _callLoad($Info, $packet, $function) {
+    private function _callLoad($Info, $packet, $function) 
+    {
         if (substr($function, 0, 4) == "load") {
             // Send these packets
             $ret = $this->packet->sendPacket($Info, $packet);
@@ -277,8 +280,11 @@ class Driver
      * Runs a function using the correct driver for the endpoint
      *
      * @param array  $Info    Infomation about the device to use
+     *
+     * @return none
      */
-    function done($Info) {
+    function done($Info) 
+    {
         $this->packet->Close($Info);
     }
     
@@ -290,7 +296,8 @@ class Driver
      *
      * @return bool
      */
-    function UpdateDevice($Packet, $force=false) {
+    function UpdateDevice($Packet, $force=false) 
+    {
 
         return $this->device->UpdateDevice($Packet, $force);                    
     }
@@ -299,18 +306,29 @@ class Driver
      * Wrapper for device::getDevice
      *
      * @see device::getDevice
+     *
+     * @param mixed $id   This is either the DeviceID, DeviceName or DeviceKey
+     * @param int   $type The type of the 'id' parameter.  It is "ID" for DeviceID,
+     *         "NAME" for DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
+     *
+     * @return array
      */    
-    function getDevice($id, $type="KEY") {
+    function getDevice($id, $type="KEY") 
+    {
 
         return $this->device->getDevice($id, $type);
     }
 
     /**
      * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-     * @param GatewayKey Int The gateway to try first.
+     *
+     * @param array $Info       Infomation about the device to use
+     * @param int   $GatewayKey The gateway to try first.
+     *
+     * @return array
      */
-    function GetInfo($Info, $GatewayKey = 0) {
+    function GetInfo($Info, $GatewayKey = 0) 
+    {
         $DeviceID = $Info["DeviceID"];
         //add_debug_output("Getting Configuration for ".$Info["DeviceID"]."<BR>\n");
         if ($GatewayKey == 0) {
@@ -339,11 +357,15 @@ class Driver
     }
     /**
      * Interpret a configuration packet.
-     * @param $packet Array Infomation about the device to use plus a configuration packet            
-     * @return Array of device information on success, false on failure 
+     *
+     * @param array $packets Infomation about the device to use plus a configuration packet            
+     *
+     * @return mixed array of device information on success, false on failure 
+     *
      * @todo Move this back to the driver class?
-      */
-    function interpConfig ($packets, $forceDriver=null) {
+     */
+    function interpConfig ($packets) 
+    {
 //        if (isset($packets['RawData'])) $packets = array($packets);
         if (!is_array($packets)) return false;
 
@@ -388,10 +410,13 @@ class Driver
 
     /**
      * Adds the driver information to the array given to it
-     * @param $Info Array Infomation about the device to use
-     * @return Returns $Info with added information from the driver.
-      */
-    function DriverInfo($Info) {
+     *
+     * @param array $Info Infomation about the device to use
+     *
+     * @return array Returns $Info with added information from the driver.
+     */
+    function DriverInfo($Info) 
+    {
         $Info['sendCommand'] = EDEFAULT_CONFIG_COMMAND;
         $this->RunFunction($Info, "interpConfig");
         $Info['history_table'] = $this->getHistoryTable($Info);
@@ -402,9 +427,13 @@ class Driver
 
     /**
      * Runs a function using the correct driver for the endpoint
-     * @param $Info Array Infomation about the device to use
-      */
-    function FindDriver($Info) {
+     *
+     * @param array $Info Infomation about the device to use
+     *
+     * @return string
+     */
+    function FindDriver($Info) 
+    {
         if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]])) {
             $return = $this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]][$Info["FWVersion"]];
         }else if (isset($this->dev[$Info["HWPartNum"]][$Info["FWPartNum"]]["BAD"])) {
@@ -419,30 +448,34 @@ class Driver
         return $return;
     }
     /**
+     * Wrapper for UnitConversion::modifyUnits()
      *
-     * @param array $history The history to modify.  This array gets directly modified.
-     * @param array $devInfo The devInfo array to modify.  This array gets directly modified.
-     * @param int $dPlaces The maximum number of decimal places to show.
-     * @param array $type The types to change to
-     * @param array $units The units to change to
+     * @param array &$history The history to modify.  This array gets directly modified.
+     * @param array &$devInfo The devInfo array to modify.  This array gets directly modified.
+     * @param int   $dPlaces  The maximum number of decimal places to show.
+     * @param array &$type    The types to change to
+     * @param array &$units   The units to change to
      *
      * @return none
      */
-    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) {
+    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
+    {
         // This uses defaults if nothing exists for a particular sensor
         $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
         $this->unit->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
     }    
 
     /**
+     * Wrapper for filter::filter()
      *
      * @param array $history The history to modify.  This array gets directly modified.
      * @param array $devInfo The devInfo array to modify.  This array gets directly modified.
-     * @param int $dPlaces The maximum number of decimal places to show.
-     * @param array $type The types to change to
-     * @param array $units The units to change to
-      */
-    function filter(&$history, &$devInfo, $filters = null) {
+     * @param array $filters Extra filters to use
+     *
+     * return none
+     */
+    function filter(&$history, &$devInfo, $filters = null) 
+    {
         // This uses defaults if nothing exists for a particular sensor
         $this->filters->filter($history, $devInfo["params"]["filters"]);
         $this->filters->filter($history, $filters);
@@ -453,49 +486,51 @@ class Driver
      *
      * @param mixed $class The name of the sensor class to register, or the actual object to register
      * @param string $name The name of the sensor class if the above is an object.  The default is the class name.
+     *
      * @return bool true on success, false on failure
-      */
-    public function registerDriver($class, $name=false) {
-            if (is_string($class) && class_exists($class)) {
-                $this->drivers[$class] = new $class($this);
-            } else if (is_object($class)) {
-                if (empty($name)) $name = get_class($class);
-                $this->drivers[$name] = $class;
-                $class = $name;
-            } else {
-                return false;
-            }
-            if (is_array($this->drivers[$class]->devices)) {
-                foreach ($this->drivers[$class]->devices as $fw => $Firm) {
-                    foreach ($Firm as $hw => $ver) {
-                        $dev = explode(",", $ver);
-                        foreach ($dev as $d) {
-                            if (!isset($this->dev[$hw][$fw][$d])) {
-                                $this->dev[$hw][$fw][$d] = $class;
-                                //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
-                            }
+     */
+    public function registerDriver($class, $name=false) 
+    {
+        if (is_string($class) && class_exists($class)) {
+            $this->drivers[$class] = new $class($this);
+        } else if (is_object($class)) {
+            if (empty($name)) $name = get_class($class);
+            $this->drivers[$name] = $class;
+            $class = $name;
+        } else {
+            return false;
+        }
+        if (is_array($this->drivers[$class]->devices)) {
+            foreach ($this->drivers[$class]->devices as $fw => $Firm) {
+                foreach ($Firm as $hw => $ver) {
+                    $dev = explode(",", $ver);
+                    foreach ($dev as $d) {
+                        if (!isset($this->dev[$hw][$fw][$d])) {
+                            $this->dev[$hw][$fw][$d] = $class;
+                            //add_debug_output("Found driver for Hardware ".$hw." Firmware ".$fw." Version ".$d."<BR>\n");
                         }
                     }
                 }
-                return true;
-            } else {
-                return false;
             }
+            return true;
+        } else {
+            return false;
+        }
     
     }
 
     
     /**
      * Constructor    
-      */
-    function __construct(&$db=null, $plugins = "", $direct=true) {        
+     *
+     * @param mixed  $db      Either a PDO object, or a file name for the sqlite driver
+     * @param object $plugins A plugin object
+     */
+    function __construct(&$db=null, $plugins = "") 
+    {
 
         $this->db = &$db;
-        if ($direct) {
-            $this->packet = new EPacket(null, $this->verbose);
-        } else {
-            $this->packet = new EPacket(null, $this->verbose, $this->db);
-        }
+        $this->packet = new EPacket(null, $this->verbose);
         $this->gateway = new gateway($this);
         $this->device = new device($this);
         $this->unit = new unitConversion();
