@@ -53,11 +53,13 @@ require_once dirname(__FILE__).'/../unitConversionTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class sensorTestBase extends PHPUnit_Framework_TestCase
+abstract class SensorTestBase extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * 
+     *  This function makes sure the parent of the class is correct
+     *
+     * @return none
      */
     public function testSensorParent() 
     {
@@ -238,7 +240,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     public function testSensorVariableUnitType($catName, $shortName, $sensor) 
     {
         // Check unitType
-        $this->assertType("string", $sensor['unitType'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
+        $this->assertType("string", $sensor['unitType'], $this->class.":".$type.":".$shortName.": unitType must be a string");
         $this->assertTrue(unitConversionTest::findUnits($sensor['unitType'], $sensor['storageUnit']), $this->class.":".$type.":".$shortName.": unit ".$sensor['storageUnit']." of type ".$sensor['unitType']." not found in unitConversion");
     }
 
@@ -256,7 +258,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     public function testSensorVariableStorageUnit($catName, $shortName, $sensor) 
     {
         // Check storage Unit
-        $this->assertType("string", $sensor['storageUnit'],  $this->class.":".$type.":".$shortName.": unitType must be a string");
+        $this->assertType("string", $sensor['storageUnit'], $this->class.":".$type.":".$shortName.": unitType must be a string");
         // Check to make sure the storage unit is also a valid unit.
         $this->assertContains($sensor['storageUnit'], $sensor['validUnits'], $this->class.":".$type.":".$shortName.": Unit '$unit' not found in valid units list");
     }
@@ -275,7 +277,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     public function testSensorVariableValidUnits($catName, $shortName, $sensor) 
     {
         // Check valid units
-        $this->assertType("array", $sensor['validUnits'],  $this->class.":".$type.":".$shortName.": validUnits must be an array");
+        $this->assertType("array", $sensor['validUnits'], $this->class.":".$type.":".$shortName.": validUnits must be an array");
         $this->assertTrue(count($sensor['validUnits']) > 0, $this->class.":".$type.":".$shortName.": At least one unit must be defined");
         foreach ($sensor['validUnits'] as $unit) {
             $this->assertFalse(empty($unit), $this->class.":".$type.":".$shortName.": blank unit");            
@@ -300,7 +302,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
     public function testSensorVariableUnitMode($catName, $shortName, $sensor) 
     {
         // Check unit modes
-        $this->assertType("array", $sensor['unitModes'],  $this->class.":".$type.":".$shortName.": unitModes must be an array");
+        $this->assertType("array", $sensor['unitModes'], $this->class.":".$type.":".$shortName.": unitModes must be an array");
         $this->assertTrue(count($sensor['unitModes']) > 0, $this->class.":".$type.":".$shortName.": At least one mode must be defined");
         foreach ($sensor['unitModes'] as $unit => $mode) {
             // Check to make sure each unit in the mode list is also in the validUnits list
@@ -323,7 +325,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
      * This is called by using parent::sensorTest()
      *
      * @param string $class  The name of the class
-     * @param string $mothod The method to test
+     * @param string $method The method to test
      * @param mixed  $A      Data for the sensor to work on
      * @param array  $sensor The sensor array
      * @param int    $TC     The time constant
@@ -346,7 +348,7 @@ abstract class sensorTestBase extends PHPUnit_Framework_TestCase
      * This is called by using parent::sensorCheckTest()
      *
      * @param string $class  The name of the class
-     * @param string $mothod The method to test
+     * @param string $method The method to test
      * @param mixed  $value  Data for the sensor to work on
      * @param array  $sensor The sensor array
      * @param int    $units  Units that $value is in
