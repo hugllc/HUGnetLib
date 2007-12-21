@@ -44,22 +44,12 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Process
+class Process extends DbBase
 {
     /** Database table to use */
-    var $table = "process";
+    protected $table = "process";
     /** Database id to use */
-    var $id = "ProcessKey";
-    /** Stats table to use */
-    var $statsTable = 'procStats';
-    /** Stats period date formats */
-    var $statPeriodic = array(
-            'Daily' => 'Y-m-d',
-            'Monthly' => 'Y-m',
-            'Yearly' => 'Y',
-        );
-    /** file to use */
-    var $file = null;
+    protected $id = "ProcessKey";
     /** file only */
     var $FileOnly = false;
 
@@ -71,44 +61,36 @@ class Process
      */
     function __construct($file = null) 
     {
-        if (!is_null($file)) {
-            $this->file = $file;
-        } else {
-            $this->file = HUGNET_LOCAL_DATABASE;
-        }
-        if (!is_string($this->file)) $this->file = "/tmp/HUGnetLocal";
-        if (!is_long($mode)) $mode = 0666;
-        if ($error == null) $error =& $this->lastError;
-        $this->getMyInfo();
-
-        $this->_sqlite = new PDO("sqlite:".$this->file);
+        if (!is_string($file)) $file = null;
+        parent::__construct($file);
         $this->createTable();
+        $this->me = self::getMyInfo();
     }
     
     /**
-     * Sets up all the information about the current process.
+     * Sets up all the information about the current process and returns it as anarray
      *
      * @param string $block Type of blocking.  Default "NORMAL"
      * @param string $name  The program name.  Automatically found if left out.
      *
-     * @return none 
+     * @return array
      */
-    function getMyInfo($block="NORMAL", $name = false) 
+    static public function getMyInfo($block="NORMAL", $name = false) 
     {
         $stuff              = posix_uname();
-        $this->me["Host"]   = $stuff["nodename"];
-        $this->me["Domain"] = $stuff["domainname"];
-        $this->me["OS"]     = $stuff["sysname"];
-        $this->me["PID"]    = getmypid();
+        $me["Host"]   = $stuff["nodename"];
+        $me["Domain"] = $stuff["domainname"];
+        $me["OS"]     = $stuff["sysname"];
+        $me["PID"]    = getmypid();
         if ($name === false) {
-            $this->me["Program"] = basename($_SERVER["SCRIPT_NAME"]);
+            $me["Program"] = basename($_SERVER["SCRIPT_NAME"]);
         } else {
-            $this->me["Program"] = $name;
+            $me["Program"] = $name;
         }
-        $this->me["File"]    = dirname($this->file)."/".trim($this->me["Program"]).".pid";
-        $this->me["Block"]   = $block;
-        $this->me["Started"] = date("Y-m-d H:i:s");
-        
+        $me["File"]    = sys_get_temp_dir()."/".trim($me["Program"]).".pid";
+        $me["Block"]   = $block;
+        $me["Started"] = date("Y-m-d H:i:s");
+        return $me;
     }
 
     /**
@@ -251,20 +233,21 @@ class Process
 
             $info                = $this->me;
             $info["LastCheckin"] = date("Y-m-d H:i:s");
-
+/*
             $query = "INSERT INTO '".$this->table."' "
                     ." (PID, Program, Started, LastCheckin, Block) "
                     ." VALUES ("
                     .(int) $this->me['PID']
-                    .", ".$this->_sqlite->quote($this->me['Program'])." "
-                    .", ".$this->_sqlite->quote($this->me['Started'])." "
-                    .", ".$this->_sqlite->quote($this->me['LastCheckin'])." "
-                    .", ".$this->_sqlite->quote($this->me['Block'])." "
+                    .", ".($this->me['Program'])." "
+                    .", ".($this->me['Started'])." "
+                    .", ".($this->me['LastCheckin'])." "
+                    .", ".($this->me['Block'])." "
                     .")";
 
-            $this->dbRegistered = $this->_sqlite->query($query);
-            
+            $this->dbRegistered = $this->query($query);
             return $this->dbRegistered;
+*/            
+            return $this->insert($info);
         } else {
             return(true);    
         }
@@ -286,8 +269,8 @@ class Process
             $me = false;
         }
         $query = "DELETE FROM '".$this->table."' "
-                ." WHERE PID=".$this->_sqlite->quote($PID);
-        $return = $this->_sqlite->query($query);            
+                ." WHERE PID=".($PID);
+        $return = $this->query($query);            
         if ($me) $this->Registered = !$return;
         return $return;
     }
@@ -320,19 +303,8 @@ class Process
                       PRIMARY KEY  ('PID')
                     );
                     ";
-        $this->_sqlite->query($query);
-
-        $query = "CREATE TABLE '".$this->statsTable."' (
-                      `PID` int(11) NOT null,
-                      `Program` varchar(32) NOT null,
-                      `stype` varchar(32) NOT null,
-                      `sdate` varchar(32) NOT null,
-                      `sname` varchar(128) NOT null,
-                      `svalue` text NOT null,
-                      PRIMARY KEY  (`PID`,`Program`,`stype`,`sdate`,`sname`)
-                      );
-                    ";
-        $this->_sqlite->query($query);        
+        $this->query($query);
+        $this->_getColumns();
     }
 
     /**
@@ -449,219 +421,28 @@ class Process
     function checkDB()
     {
         $return = true;
+        /*
         $query  = "SELECT * FROM '".$this->table."' "
                  ." WHERE "
                  ." Program='".$this->me['Program']."' ";
 
-        $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        if (is_object($ret)) {
-            $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row) {
-                print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
-                if ($this->CheckProcess($row["PID"])) {
-                    print " Okay ";
-                    $return = false;
-                } else {
-                    posix_kill($row['PID'], SIGKILL);
-                    print " Killed ";
-                    $this->dbUnregister($row['PID']);                    
+        $ret = $this->query($query, PDO::FETCH_ASSOC);
+        */
+        $rows = $this->getWhere(" Program = ? ", array($this->me['Program']));
+        foreach ($rows as $row) {
+            print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
+            if ($this->CheckProcess($row["PID"])) {
+                print " Okay ";
+                $return = false;
+            } else {
+                posix_kill($row['PID'], SIGKILL);
+                print " Killed ";
+                $this->dbUnregister($row['PID']);                    
 
-                }
-                  print "\r\n";
             }
-        }
-        return($return);
-    }
-
-    /**
-     * Increments stats in the database
-     *
-     * @param string $stat The stat to use
-     *
-     * @return none
-     */
-    function incStat($stat) 
-    {
-
-        $this->incField('totals', $stat);
-        foreach ($this->statPeriodic as $type => $format) {
-            $this->incField($type, $stat, date($format));        
-        }
-    }
-
-
-    /**
-     * Increments fields in the database
-     *
-     * @param string $type The type of stat
-     * @param string $name The name of the stat
-     * @param string $date The date
-     *
-     * @return none
-     */
-    function incField($type, $name, $date="now") 
-    {
-        $value = $this->getMyStat($name, $date, $type);
-        $value++;
-        $this->setStat($name, $value, $date, $type);
-    }
-
-    /**
-     * Retrieves a statistic
-     *
-     * @param string $name The name of the statistic to get
-     * @param string $date The date of the statistic to get
-     * @param string $type The type of statistic to get
-     *
-     * @return mixed The statistic in question
-     */
-    function getMyStat($name, $date="now", $type="stat") 
-    {
-        return $this->getStat($name, $this->me['Program'], $date, $type, true);
-    }
-    
-    /**
-     * Retrieves a statistic
-     *
-     * @param string $name    The name of the statistic to get
-     * @param string $Program The name of the program
-     * @param string $date    The date of the statistic to get
-     * @param string $type    The type of statistic to get
-     * @param int    $PID     The process id
-     *
-     * @return mixed The statistic in question
-     */
-    function getStat($name, $Program, $date="now", $type="stat", $PID=false) 
-    {
-        $query = "SELECT * FROM '".$this->statsTable."' "
-                 ." WHERE "
-                ." Program='".$Program."' "
-                ." AND stype='".$type."' "
-                ." AND sdate='".$date."' "
-                ." AND sname='".$name."' ";
-        if ($PID)$query .= " AND PID=".$this->me['PID'];
-        $ret = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        if (is_object($ret)) {
-            $row = $ret->fetch(PDO::FETCH_ASSOC);
-        } else {
-            var_dump($this->_sqlite->errorInfo());
-            $row['svalue'] = 0;
-        }
-        return $row['svalue'];    
-    }
-
-    /**
-     * Saves a statistic
-     *
-     * @param string $name  The name of the statistic to get
-     * @param mixed  $value The name of the statistic to get
-     * @param string $date  The date of the statistic to get
-     * @param string $type  The type of statistic to get
-     *
-     * @return mixed The statistic in question
-     */
-    function setStat($name, $value, $date="now", $type="stat") 
-    {
-        $this->_setStat($name, $value, $date, $type);
-        $this->_setStat('StatDate', date("Y-m-d H:i:s"));
-    }
-
-    /**
-     * Saves a statistic
-     *
-     * @param string $name  The name of the statistic to get
-     * @param mixed  $value The name of the statistic to get
-     * @param string $date  The date of the statistic to get
-     * @param string $type  The type of statistic to get
-     *
-     * @return mixed The statistic in question
-     */
-    private function _setStat($name, $value, $date="now", $type="stat") 
-    {
-        $query = "REPLACE INTO '".$this->statsTable."' "
-                ." (PID, Program, stype, sdate, sname, svalue) "
-                ." VALUES ("
-                .$this->me['PID']
-                .", ".$this->_sqlite->quote($this->me['Program'])." "
-                .", ".$this->_sqlite->quote($type)." "
-                .", ".$this->_sqlite->quote($date)." "
-                .", ".$this->_sqlite->quote($name)." "
-                .", ".$this->_sqlite->quote($value)." "
-                .")";
-        $this->_sqlite->query($query);
-    }
-
-    /**
-     * Clears all statistics
-     *
-     * @return none
-     */
-    function clearStats() 
-    {
-        $query = "DELETE FROM '".$this->statsTable."' "
-                ." WHERE Program='".$this->me['Program']."' ";
-        $this->_sqlite->query($query);
-    }
-
-    /**
-     * gets all statistics for a program
-     *
-     * @param string $Program The name of the program to get stats for.
-     *
-     * @return array An array of statistics.
-     */
-    function getPeriodicStats($Program) 
-    {
-        $query = "SELECT * FROM '".$this->statsTable."' "
-                ." WHERE "
-                ." Program='".$Program."' "
-                ." AND (";
-        $sep   = "";
-        foreach ($this->statPeriodic as $key => $value) {
-            $query .= $sep."stype='".$key."' ";
-            $sep    = " OR ";
-        }
-        $query .= ") ORDER BY sdate desc";
-
-        $ret    = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        $return = array();
-
-        if (is_object($ret)) {
-            $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row) {
-                $return[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
-            }
+              print "\r\n";
         }
         return $return;
-
-    }
-
-    /**
-     * gets all statistics for a program
-     *
-     * @param string $Program The name of the program to get stats for.
-     *
-     * @return array An array of statistics.
-     */
-    function getTotalStats($Program) 
-    {
-        $query  = "SELECT * FROM '".$this->statsTable."' "
-                 ." WHERE "
-                 ." Program='".$Program."' "
-                 ." AND "
-                 ." stype='totals' ";
-
-        $ret    = $this->_sqlite->query($query, PDO::FETCH_ASSOC);
-        $return = array();
-        if (is_object($ret)) {
-            $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row) {
-                $return[$row['sname']] = $row['svalue'];
-            }
-
-        }
-        return $return;
-
     }
 
 }
