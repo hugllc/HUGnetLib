@@ -715,9 +715,12 @@ class DbBaseTest extends databaseTest
         $this->o->printError();
         $ret = ob_get_contents();
         ob_end_clean();
-        $this->assertSame("(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error State: ABCDE
-(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error: -1
-(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error Message: This is an error
+        $file   = $this->readAttribute($this->o, "file");
+        $class  = get_class($this->o);
+        $driver = $this->readAttribute($this->o, "driver");
+        $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE
+(".$class." - ".$driver." ".$file.") Error: -1
+(".$class." - ".$driver." ".$file.") Error Message: This is an error
 ", $ret);
     }
 
