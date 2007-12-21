@@ -45,6 +45,7 @@ require_once 'AnalysisTest.php';
 require_once 'deviceTest.php'; 
 require_once 'firmwareTest.php'; 
 require_once 'gatewayTest.php'; 
+require_once 'historyTest.php'; 
 require_once 'plogTest.php'; 
 require_once 'processTest.php'; 
 require_once 'procstatsTest.php'; 
@@ -85,6 +86,7 @@ class HUGnetLibDatabaseTests
         $suite->addTestSuite('DeviceTest');
         $suite->addTestSuite('FirmwareTest');
         $suite->addTestSuite('GatewayTest');
+        $suite->addTestSuite('HistoryTest');
         $suite->addTestSuite('PlogTest');
         $suite->addTestSuite('ProcessTest');
         $suite->addTestSuite('ProcStatsTest');
