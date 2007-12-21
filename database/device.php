@@ -63,14 +63,14 @@ class Device extends DbBase
      *
      * @param object &$driver This should be an object of class driver
      */
-    function __construct(&$driver = null) 
+    function __construct(&$driver = null, $table=null, $id=null, $verbose=false) 
     {
         if (is_object($driver)) {
             $this->_driver = &$driver;
-            parent::__construct($driver->db);
+            parent::__construct($driver->db, $table, $id, $verbose);
         } else {
             if (is_string($driver)) $this->file = $driver;
-            parent::__construct($this->file);
+            parent::__construct($this->file, $table, $id, $verbose);
         }
     }
 
