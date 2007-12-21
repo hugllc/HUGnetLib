@@ -69,7 +69,8 @@ class Device extends DbBase
             $this->_driver = &$driver;
             parent::__construct($driver->db);
         } else {
-            parent::__construct();        
+            if (is_string($driver)) $this->file = $driver;
+            parent::__construct($this->file);
         }
     }
 

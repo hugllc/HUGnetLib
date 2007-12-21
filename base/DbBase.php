@@ -89,17 +89,23 @@ class DbBase
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
      *
-     * @param object &$driver This should be an object of class driver
+     * @param mixed  &$db   This should be an object of class driver
+     * @param string $table The database table to use
+     * @param string $id    The 'id' column to use
+     *
      */
     function __construct(&$db = null, $table = false, $id = false) 
     {
         // Set it here since it needs a call to sys_get_temp_dir
         if (is_string($db)) {
             $this->file = $db;
-            $this->_db = DbBase::createPDO("sqlite:".$this->file);    
         } else {
             $this->file = HUGNET_LOCAL_DATABASE;
+        }
+        if (is_object($db)) {
             $this->_db = &$db;
+        } else {
+            $this->_db = DbBase::createPDO("sqlite:".$this->file);
         }
                 
         if (is_string($table)) $this->table = $table;
@@ -151,7 +157,8 @@ class DbBase
         if (is_string($file)) $this->file = $file;
         if (!is_string($this->file)) $this->file = ":memory";
         $class = get_class($this);
-        $this->_cache = new $class($this->file);
+        $this->_cache = new $class($this->file, $this->table, $this->id);
+        $this->_cache->createTable();
         $this->_doCache = true;
         $this->_cache->verbose($this->verbose);
         $this->_cache->createTable();
@@ -215,17 +222,21 @@ class DbBase
      *
      * @param array $InfoArray An array of database rows to add
      *
-     * @return none
+     * @return int The number of successful inserts
       */
     function addArray($infoArray, $replace = false) 
     {
-        if (!$this->_checkDb()) return;
-        if (!is_array($infoArray)) return;
+        if (!$this->_checkDb()) return 0;
+        if (!is_array($infoArray)) return 0;
         $query = $this->_addQuery($infoArray[0], $keys, $replace);
         $ret = $this->_db->prepare($query);
+        $count = 0;
         foreach ($infoArray as $info) {
-            $this->queryExecute($query, $ret, $this->_prepareData($info, $keys));
+            $data = $this->_prepareData($info, $keys);
+            $val = $this->queryExecute($query, $ret, $data, false);
+            if ($val) $count++;
         }
+        return $count;
     }
     
     /**
@@ -504,9 +515,8 @@ class DbBase
         if (!is_array($res)) return false;
         if (!is_object($this->_cache)) return false;
         if (!$this->_doCache) return false;
-        $count = 0;
-        $tries = 0; 
-        $this->_cache->addArray($res);
+        $tries = count($res); 
+        $count = $this->_cache->addArray($res, true);
         $this->vprint("Cache entry: $count/$tries");        
         
     }
