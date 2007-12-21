@@ -95,23 +95,10 @@ class DbBaseTest extends databaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->createTable();
-        $this->o = new DbBase($this->pdo, "DbBaseTest");
-
+        $this->o = new DbBaseClassTest($this->pdo, $this->table, $this->id);
+        $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
-    }
-
-    protected function createTable() 
-    {
-        $query = "CREATE TABLE `".$this->table."` (
-              `id` int(11) NOT null,
-              `name` varchar(16) NOT null default '',
-              `value` text NOT null,
-              PRIMARY KEY  (`id`)
-            );";
-
-        $ret = $this->pdo->query($query);    
     }
 
     /**
@@ -128,20 +115,26 @@ class DbBaseTest extends databaseTest
     }
 
     /**
-     * test
+     * Tests to make sure this function fails if
+     * someone tries to make a cache from a memory
+     * sqlite instance.
      *
      * @return none
-     *
-     * @todo Implement testCreateCache().
      */
-    public function testCreateCache() 
+    public function testCreateCacheMemory() 
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        $file = ":MeMoRy:";
+        $o = new DbBaseClassTest($file);
+        $ret = $o->createCache();
+        $this->assertFalse($ret);
+        unset($o);
     }
+
 
     /**
      * Tests if getColumns works correctly
+     *
+     * @return none
      */
     public function testGetColumns() 
     {
@@ -156,6 +149,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testAddArray
+     *
+     * @return array
      */
     public static function dataAddArray() 
     {
@@ -207,6 +202,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testAdd
+     *
+     * @return array
      */
     public static function dataAdd() 
     {
@@ -246,6 +243,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testAdd
+     *
+     * @return array
      */
     public static function dataReplace() 
     {
@@ -285,6 +284,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testUpdate
+     *
+     * @return array
      */
     public static function dataUpdate() 
     {
@@ -327,6 +328,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testGetAll
+     *
+     * @return array
      */
     public static function dataGetAll() 
     {
@@ -364,6 +367,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testGet
+     *
+     * @return array
      */
     public static function dataGet() 
     {
@@ -400,13 +405,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return none
-     *
-     * @dataProvider dataGet
-     *
      * @param array $preload Data to preload into the database
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataGet
      */
     public function testGet($preload, $key, $expect) 
     {
@@ -417,6 +422,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testGetWhere
+     *
+     * @return array
      */
     public static function dataGetWhere() 
     {
@@ -456,41 +463,149 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   The database key to get the record from
+     * @param array  $data    The data to send with the query
+     * @param array  $expect  The info to expect returned
+     *
      * @return none
      *
      * @dataProvider dataGetWhere
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $where   The database key to get the record from
-     * @param array  $expect  The info to expect returned
      */
     public function testGetWhere($preload, $where, $data, $expect) 
     {
         $this->load($preload);
-        if (!is_null($data)) {
-            $ret = $this->o->getWhere($where, $data);
-        } else {
-            $ret = $this->o->getWhere($where);        
-        }
+        $ret = $this->o->getWhere($where, $data);
         $this->assertSame($expect, $ret);
     }
 
-
+    /**
+     * Data provider for DbBaseTest::testQuery()
+     *
+     * @return array
+     */
+    public static function dataQuery() {
+        return array(
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "SELECT * FROM BadTableName WHERE id = 3",
+                null,
+                true,
+                array(),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "SELECT * FROM BadTableName WHERE id = ?",
+                array(1,2,3,4,5),
+                false,
+                false,
+            ),
+        );
+    }
     /**
      * test
      *
+     * @param array  $preload Data to preload into the database
+     * @param string $query   The query to perform
+     * @param array  $data    The data to send with the query
+     * @param bool   $getRet  Whether to expect a return
+     * @param array  $expect  The info to expect returned
+     *
      * @return none
      *
-     * @todo Implement testQuery().
+     * @dataProvider dataQuery().
      */
-    public function testQuery() 
+    public function testQuery($preload, $query, $data, $getRet, $expect) 
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        $this->load($preload);
+        $ret = $this->o->query($query, $data, $getRet);
+        $this->assertSame($expect, $ret);        
+    }
+
+    /**
+     * Data provider for DbBaseTest::testQueryCache()
+     *
+     * @return array
+     */
+    public static function dataQueryCache() {
+        return array(
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "SELECT * FROM `DbBaseTest` WHERE id = 3",
+                null,
+                true,
+                array(
+                    array("id" => "3", "name" => "taking", "value" => "the"),
+                ),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "SELECT * FROM `DbBaseTest` WHERE id = ?",
+                array(1),
+                true,
+                array(
+                    array("id" => "1", "name" => "hello", "value" => "there"),
+                ),
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $query   The query to perform
+     * @param array  $data    The data to send with the query
+     * @param bool   $getRet  Whether to expect a return
+     * @param array  $expect  The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataQueryCache().
+     */
+    public function testQueryCache($preload, $query, $data, $getRet, $expect) 
+    {
+        $this->o->createCache();
+
+        // Preload the database
+        $this->load($preload);
+        // Preload the cache
+        $this->o->getAll();
+        // Erase what is in the database without touching the cache
+        $this->pdo->query("delete from ".$this->table);
+        // Query from the database (this should hit the cache)
+        $ret = $this->o->query($query, $data, $getRet);
+
+        $this->assertSame($expect, $ret);        
     }
 
     /**
      * Data provider for testRemove
+     *
+     * @return array
      */
     public static function dataRemove() 
     {
@@ -546,6 +661,8 @@ class DbBaseTest extends databaseTest
 
     /**
      * Data provider for testRemove
+     *
+     * @return array
      */
     public static function dataVerbose() 
     {
@@ -572,11 +689,118 @@ class DbBaseTest extends databaseTest
         $this->assertSame($expect, $this->readAttribute($this->o, "verbose"));
     }
 
+    /**
+     * test
+     *
+     * @return none
+     */
+    public function testIsConnected() 
+    {
+        $ret = $this->o->isConnected();
+        $this->assertTrue($ret);
+    }
+
+    /**
+     * test
+     *
+     * @return none
+     */
+    public function testPrintError() 
+    {
+        $this->o->verbose(true);
+        $this->o->errorState = "ABCDE";
+        $this->o->error      = -1;
+        $this->o->errorMsg   = "This is an error";
+        ob_start();
+        $this->o->printError();
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertSame("(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error State: ABCDE
+(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error: -1
+(DbBaseClassTest - sqlite /tmp/HUGnetLocal.sq3) Error Message: This is an error
+", $ret);
+    }
+
+    /**
+     * Tests print out when there is no error
+     *
+     * @return none
+     */
+    public function testPrintErrorNone() 
+    {
+        $this->o->verbose(true);
+        $this->o->errorState = "00000";
+        $this->o->error      = 0;
+        $this->o->errorMsg   = "";
+        ob_start();
+        $this->o->printError();
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertSame("", $ret);
+    }
+
+    /**
+     * tests printout when verbose is off
+     *
+     * @return none
+     */
+    public function testPrintErrorNotVerbose() 
+    {
+        ob_start();
+        $this->o->printError();
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertSame("", $ret);
+    }
+
+    
 
 }
 
 // Call DbBaseTest::main() if this source file is executed directly.
 if (PHPUnit_MAIN_METHOD == 'DbBaseTest::main') {
     DbBaseTest::main();
+}
+
+/**
+ * Test class for DbBase.
+ * Generated by PHPUnit on 2007-12-13 at 10:28:11.
+ *
+ * @category   Test
+ * @package    HUGnetLibTest
+ * @subpackage Database
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class DbBaseClassTest extends DbBase
+{
+    /**
+     * The name of the table we are using
+     */
+    protected $table = "DbBaseTest";
+    
+    /**
+     * Creates the database table.
+     *
+     * Must be defined in child classes
+     *
+     * @return bool
+     */
+    public function createTable($table="") 
+    {
+        if (!empty($table)) $this->table = $table;
+        $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
+              `id` int(11) NOT null,
+              `name` varchar(16) NOT null default '',
+              `value` text NOT null,
+              PRIMARY KEY  (`id`)
+            );";
+
+        $ret = $this->query($query, false); 
+        $this->_getColumns();   
+    }
+    
 }
 ?>

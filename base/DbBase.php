@@ -69,6 +69,13 @@ class DbBase
      * @var string
      */
     protected $file = "";
+
+    /** 
+     * This is the file used for the cache
+     *
+     * @var string
+     */
+    protected $cacheFile = "";
     
     /** @var string This is the name of the current driver */
     protected $driver = "";
@@ -94,8 +101,10 @@ class DbBase
      * @param string $id    The 'id' column to use
      *
      */
-    function __construct(&$db = null, $table = false, $id = false) 
+    function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
     {
+
+        $this->verbose($verbose);
         // Set it here since it needs a call to sys_get_temp_dir
         if (is_string($db)) {
             $this->file = $db;
@@ -107,7 +116,6 @@ class DbBase
         } else {
             $this->_db = DbBase::createPDO("sqlite:".$this->file);
         }
-                
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
 
@@ -138,7 +146,10 @@ class DbBase
      */
     private function _checkDb() 
     {
-        return is_object($this->_db);
+        if (!is_object($this->_db)) return false;
+        $class = get_class($this->_db);
+        if (trim(strtoupper($class)) !== "PDO") return false;
+        return true;
     }     
 
 
@@ -147,21 +158,32 @@ class DbBase
      *
      * @param string $file The database file to use (SQLite)
      *
-     * @return none
+     * @return bool
      */
     function createCache($file = null) 
     {
         // Can't cache a sqlite database server
-        if ($this->driver == "sqlite") return;
+        if ($this->driver == "sqlite") {
+            $file = substr(trim(strtolower($this->file)), 0, 7);
+            if ($file == ":memory") {
+                return false;
+            } else {
+                $this->cacheFile = ":memory:";
+            }
+        } else {
+            if (is_string($file) && !empty($file)) $this->cacheFile = $file;
+        }
+        if (!is_string($this->cacheFile)|| empty($this->cacheFile)) $this->cacheFile = ":memory:";
+        if (empty($this->cacheFile)) $this->cacheFile = ":memory:";
 
-        if (is_string($file)) $this->file = $file;
-        if (!is_string($this->file)) $this->file = ":memory";
+        $this->vprint("Creating a cache at ".$this->cacheFile);
         $class = get_class($this);
-        $this->_cache = new $class($this->file, $this->table, $this->id);
-        $this->_cache->createTable();
+        $this->_cache = new $class($this->cacheFile, $this->table, $this->id);
+        $this->_cache->createTable($this->table);
         $this->_doCache = true;
         $this->_cache->verbose($this->verbose);
         $this->_cache->createTable();
+        return true;
     }
 
 
@@ -286,6 +308,17 @@ class DbBase
         return $this->query($query, $values, false);    
     }
 
+    /**
+     * Creates an add query
+     *
+     * @param array $info    The row in array form
+     * @param array &$keys   The column names to use
+     * @param bool  $replace If true it replaces the "INSERT" 
+     *                       keyword with "REPLACE".  Not all
+     *                       databases support "REPLACE".
+     *
+     * @return string
+     */
     function _addQuery($info, &$keys, $replace = false) 
     {    
         $div    = "";
@@ -405,11 +438,20 @@ class DbBase
      * Sets the error code for the last query
      *
      * @param bool $clear Clears the error
+     *
+     * @return none
      */
     protected function _errorInfo($clear=false, $obj = null)
     {
+        if (!$this->_checkDB()) {
+            $this->errorState = "NODBE";
+            $this->error      = -1;
+            $this->errorMsg   = "Database Not Connected";
+            $this->printError();
+            return;
+        }
         if (!$clear) {
-            if (!is_object($obj)) {
+            if (!method_exists($obj, "errorInfo")) {
                 $err = $this->_db->errorInfo();
             } else {
                 $err = $obj->errorInfo();
@@ -418,12 +460,21 @@ class DbBase
         $this->errorState = $err[0];
         $this->error      = $err[1];
         $this->errorMsg   = $err[2];
+
+        $this->printError();
+    }
+    /**
+     * Print Errors
+     *
+     * @return none
+     */
+    public function printError() 
+    {
         if ($this->verbose) {
-            if (!empty($this->errorState)) $this->vprint("Error State: ".$this->errorState);
+            if ($this->errorState != "00000") $this->vprint("Error State: ".$this->errorState);
             if (!empty($this->error)) $this->vprint("Error: ".$this->error);
             if (!empty($this->errorMsg)) $this->vprint("Error Message: ".$this->errorMsg);
-        }
-        
+        }        
     }
     /**
      * Queries the database
@@ -436,9 +487,9 @@ class DbBase
     {
         $badRet = false;
         if ($getRet) $badRet = array();
-        if (!is_array($data)) return $badRet;
         if (!$this->_checkDb()) return $badRet;
-        $this->test = false;
+
+        if (!is_array($data)) $data = array();
 
         $this->cacheQuery($query, $data, $getRet);
         // Clear out the error
@@ -469,18 +520,14 @@ class DbBase
      protected function queryExecute($query, &$ret, &$data, $getRes = false)
      {
         if (!is_object($ret)) return false;
-        $res = $ret->execute($data);
+        $ret->execute($data);
         if ($getRes) {
-            if ($res) {
-                $res = $ret->fetchAll(PDO::FETCH_ASSOC);
-                if (empty($res)) $res = $this->cacheQuery($query, $data, $getRes);
-                $this->vprint("Query Returned: ".count($res)." rows");
-                $this->cacheResult($res);
-                return $res;
-            }
-            // Set the error
+            $res = $ret->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($res)) $res = $this->cacheQuery($query, $data, $getRes);
+            $this->vprint("Query Returned: ".count($res)." rows");
+            $this->cacheResult($res);
             $this->_errorInfo(false, $ret);
-            return array();
+            return $res;
         } 
         $this->_errorInfo(false, $ret);
         return $res;

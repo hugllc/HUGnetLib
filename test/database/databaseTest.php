@@ -66,7 +66,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     protected function setUp() 
     {
         if (empty($this->table)) die(get_class($this)."->table not defined!");
-        $this->pdo = new PDO("sqlite::memory");
+        $this->file = tempnam(sys_get_temp_dir(), get_class($this));
+        $this->pdo = new PDO("sqlite:".$this->file);
     }
 
     /**
@@ -81,6 +82,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     {
         $this->pdo->query("delete from ".$this->table);
         $this->pdo = null;
+        if (file_exists($this->file)) unlink($this->file);
     }
 
     /**
@@ -104,7 +106,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
             $qMarks .= $sep." ? ";
             $sep     = ",";
         }
-        $query  = "INSERT INTO ".$this->table." (".implode($keys, ",").") VALUES(".$qMarks.");";
+        $query  = "INSERT INTO `".$this->table."` (".implode($keys, ",").") VALUES(".$qMarks.");";
         $res    = $this->pdo->prepare($query);
         if (!is_object($res)) return;
         foreach ($values as $val) {
