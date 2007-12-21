@@ -165,11 +165,8 @@ class DbBase
         // Can't cache a sqlite database server
         if ($this->driver == "sqlite") {
             $file = substr(trim(strtolower($this->file)), 0, 7);
-            if ($file == ":memory") {
-                return false;
-            } else {
-                $this->cacheFile = ":memory:";
-            }
+            if ($file == ":memory") return false;
+            $this->cacheFile = ":memory:";
         } else {
             if (is_string($file) && !empty($file)) $this->cacheFile = $file;
         }
@@ -178,10 +175,9 @@ class DbBase
 
         $this->vprint("Creating a cache at ".$this->cacheFile);
         $class = get_class($this);
-        $this->_cache = new $class($this->cacheFile, $this->table, $this->id);
+        $this->_cache = new $class($this->cacheFile, $this->table, $this->id, $this->verbose);
         $this->_cache->createTable($this->table);
         $this->_doCache = true;
-        $this->_cache->verbose($this->verbose);
         $this->_cache->createTable();
         return true;
     }

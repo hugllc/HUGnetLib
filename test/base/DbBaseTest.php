@@ -718,10 +718,10 @@ class DbBaseTest extends databaseTest
         $file   = $this->readAttribute($this->o, "file");
         $class  = get_class($this->o);
         $driver = $this->readAttribute($this->o, "driver");
-        $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE
-(".$class." - ".$driver." ".$file.") Error: -1
-(".$class." - ".$driver." ".$file.") Error Message: This is an error
-", $ret);
+        $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
+                         ."(".$class." - ".$driver." ".$file.") Error: -1\n"
+                         ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
+                          , $ret);
     }
 
     /**
