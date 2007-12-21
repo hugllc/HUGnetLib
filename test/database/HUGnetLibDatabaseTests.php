@@ -46,6 +46,7 @@ require_once 'deviceTest.php';
 require_once 'firmwareTest.php'; 
 require_once 'gatewayTest.php'; 
 require_once 'plogTest.php'; 
+require_once 'processTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -84,6 +85,7 @@ class HUGnetLibDatabaseTests
         $suite->addTestSuite('firmwareTest');
         $suite->addTestSuite('gatewayTest');
         $suite->addTestSuite('plogTest');
+        $suite->addTestSuite('processTest');
   
         return $suite;
     }

@@ -48,7 +48,6 @@ require_once 'devInfoTest.php';
 require_once 'driverTest.php'; 
 require_once 'EPacketTest.php'; 
 require_once 'filterTest.php'; 
-require_once 'processTest.php'; 
 require_once 'sensorTest.php'; 
 require_once 'unitConversionTest.php';
 
@@ -101,7 +100,6 @@ class HUGnetLibTests
         $suite->addTestSuite('driverTest');
         $suite->addTestSuite('EPacketTest');
         $suite->addTestSuite('filterTest');
-        $suite->addTestSuite('processTest');
         $suite->addTestSuite('sensorTest');
         $suite->addTestSuite('unitConversionTest');
  
