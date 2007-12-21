@@ -49,9 +49,83 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  */
 class History extends DbBase
 {
-    var $table = "history";            //!< The database table to use
-    var $id = "HistoryKey";     //!< This is the Field name for the key of the record
+    /** The database table to use */
+    var $table = "history";
+    /** This is the Field name for the key of the record */
+    var $id = "HistoryKey";    
    
+   /**
+    * Gets history between two dates and returns it as an array
+    *
+    * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
+    * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+    * @param int   $maxRec    The max number of records to return
+    *
+    * @return array
+    */
+   public function getDates($startDate, $endDate = "NOW", $max=0) 
+   {
+   
+   }
+   
+   
+    /**
+     * Creates the database table
+     *
+     * @param string $table    The table to use
+     * @param mixed  $elements The number of data fields
+     *
+     * @return none
+     */   
+    public function createTable($table=null, $elements=16)
+    {
+        if (is_string($table) && !empty($table)) $this->table = $table;
+        $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
+                  `DeviceKey` int(11) NOT NULL default '0',
+                  `Date` datetime NOT NULL default '0000-00-00 00:00:00',
+                  `deltaT` int(11) NOT NULL,
+                  ";
+        for ($i = 0; $i < $elements; $i++) {
+            $query .= "`Data0` float default NULL,\n";
+        }
+        $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
+                   );";
+        $ret = $this->query($query, false);
+        $this->_getColumns();
+        return $ret;
+    }
+
+    /**
+     * Creates the database table
+     *
+     * @param string $table    The table to use
+     * @param mixed  $elements The number of data fields
+     *
+     * @return none
+     */   
+    public function createTableRaw($table=null, $elements=16)
+    {
+        if (is_string($table) && !empty($table)) $this->table = $table;
+        $query = "CREATE TABLE IF NOT EXISTS `history_raw` (
+                  `HistoryRawKey` int(11) NOT NULL auto_increment,
+                  `DeviceKey` int(11) NOT NULL default '0',
+                  `Date` datetime NOT NULL default '0000-00-00 00:00:00',
+                  `RawData` varchar(255) NOT NULL default '',
+                  `ActiveSensors` tinyint(4) NOT NULL default '0',
+                  `Driver` varchar(32) NOT NULL default 'eDEFAULT',
+                  `RawSetup` varchar(128) NOT NULL,
+                  `RawCalibration` varchar(255) NOT NULL,
+                  `Status` enum('GOOD','BAD','UNRELIABLE','DUPLICATE') NOT NULL default 'GOOD',
+                  `ReplyTime` float NOT NULL default '0',
+                  `sendCommand` char(2) NOT NULL default '',
+                  PRIMARY KEY  (`HistoryRawKey`),
+                  UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`,`sendCommand`)
+                );";
+        $ret = $this->query($query, false);
+        $this->_getColumns();
+        return $ret;
+    }
+
 }
 
 ?>

@@ -65,6 +65,11 @@ class HistoryTest extends databaseTest
     /** The table to use */
     protected $table = "history";
 
+    /** This is data to use for tests */
+    protected static $preload = array(
+        array(),
+    );
+
     /**
      * Runs the test methods of this class.
      *
