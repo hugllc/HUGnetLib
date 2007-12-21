@@ -47,6 +47,7 @@ require_once 'firmwareTest.php';
 require_once 'gatewayTest.php'; 
 require_once 'plogTest.php'; 
 require_once 'processTest.php'; 
+require_once 'procstatsTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -81,11 +82,12 @@ class HUGnetLibDatabaseTests
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibDatabase');
         $suite->addTestSuite('AnalysisTest');
-        $suite->addTestSuite('deviceTest');
-        $suite->addTestSuite('firmwareTest');
-        $suite->addTestSuite('gatewayTest');
-        $suite->addTestSuite('plogTest');
-        $suite->addTestSuite('processTest');
+        $suite->addTestSuite('DeviceTest');
+        $suite->addTestSuite('FirmwareTest');
+        $suite->addTestSuite('GatewayTest');
+        $suite->addTestSuite('PlogTest');
+        $suite->addTestSuite('ProcessTest');
+        $suite->addTestSuite('ProcStatsTest');
   
         return $suite;
     }

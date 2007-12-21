@@ -44,7 +44,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Stats extends DbBase
+class ProcStats extends DbBase
 {
     /** Stats table to use */
     protected $table = 'procStats';
