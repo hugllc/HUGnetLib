@@ -96,30 +96,53 @@ class DbBase
         // Set it here since it needs a call to sys_get_temp_dir
         if (is_string($db)) {
             $this->file = $db;
+            $this->_db = DbBase::createPDO("sqlite:".$this->file);    
         } else {
             $this->file = HUGNET_LOCAL_DATABASE;
+            $this->_db = &$db;
         }
                 
-        if (get_class($db) == "PDO") {
-            $this->_db = &$db;
-        } else {
-            // We got the wrong database.  Punt.  ;)
-            $this->_db = new PDO("sqlite:".$this->file);    
-        }
-
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
 
-        $this->driver = $this->_db->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
         
         $this->_getColumns();
     }
+    
+    /**
+     * Creates a database object
+     *
+     *
+     * @return object PDO object
+     */
+    static function &createPDO($dsn, $user=null, $pass=null) 
+    {
+        try {
+            $db = new PDO($dsn, $user, $pass);
+        } catch (PDOException $e) {
+            return false;
+        }
+        return $db;
+    }
+    /**
+     * Checks to see if the database object is valid
+     *
+     * @return bool
+     */
+    private function _checkDb() 
+    {
+        return is_object($this->_db);
+    }     
+
 
     /**
      * Constructor
      *
      * @param string $file The database file to use (SQLite)
-      */
+     *
+     * @return none
+     */
     function createCache($file = null) 
     {
         // Can't cache a sqlite database server
@@ -127,9 +150,8 @@ class DbBase
 
         if (is_string($file)) $this->file = $file;
         if (!is_string($this->file)) $this->file = ":memory";
-        $this->_cacheDb = new PDO("sqlite:".$this->file);
         $class = get_class($this);
-        $this->_cache = new $class($this->_cacheDb);
+        $this->_cache = new $class($this->file);
         $this->_doCache = true;
         $this->_cache->verbose($this->verbose);
         $this->_cache->createTable();
@@ -197,14 +219,27 @@ class DbBase
       */
     function addArray($infoArray, $replace = false) 
     {
+        if (!$this->_checkDb()) return;
         if (!is_array($infoArray)) return;
         $query = $this->_addQuery($infoArray[0], $keys, $replace);
         $ret = $this->_db->prepare($query);
         foreach ($infoArray as $info) {
-            $this->queryExecute($ret, $this->_prepareData($info, $keys));
+            $this->queryExecute($query, $ret, $this->_prepareData($info, $keys));
         }
     }
     
+    /**
+     * Gets an attribute from the PDO object
+     *
+     * @param string $attrib The attribute to get.
+     *
+     * @return mixed
+     */     
+    private function _getAttribute($attrib) 
+    {
+        if (!$this->_checkDb()) return null; 
+        return $this->_db->getAttribute($attrib);
+    }
     
     /**
      * Returns an array made for the execute query
@@ -275,7 +310,7 @@ class DbBase
      * @param array $info The row in array form
      *
      * @return bool Always False 
-      */
+     */
     function replace($info) 
     {    
         return $this->add($info, true);
@@ -289,7 +324,7 @@ class DbBase
      * @param array $info The row in array form.
      *
      * @return mixed 
-      */
+     */
     function update($info) 
     {    
         if (!isset($info[$this->id])) return false;
@@ -315,18 +350,21 @@ class DbBase
     /**
      * Gets all rows from the database
      *
+     * @param int    $limit The maximum number of rows to return (0 to return all)
+     * @param int    $start The row offset to start returning records at
+     *
      * @return array
-      */
-    function getAll() 
+     */
+    function getAll($limit = 0, $start = 0) 
     {
-        return $this->getWhere("1");
+        return $this->getWhere("1", array(), $limit, $start);
     }
 
     /**
      * Gets all rows from the database
      *
      * @return array
-      */
+     */
     function get($id) 
     {
         return $this->getWhere($this->id."= ? ", array($id));
@@ -335,12 +373,20 @@ class DbBase
     /**
      * Gets all rows from the database
      *
+     * @param string $where Where clause
+     * @param array  $data  Data for query
+     * @param int    $limit The maximum number of rows to return (0 to return all)
+     * @param int    $start The row offset to start returning records at
+     *
      * @return array
-      */
-    function getWhere($where, $data = array()) 
+     */
+    function getWhere($where, $data = array(), $limit = 0, $start = 0) 
     {
         $query = " SELECT * FROM `".$this->table."` WHERE ".$where;
-        return $this->query($query, $data);
+        $limit = (int) $limit;
+        $start = (int) $start;
+        if (!empty($limit)) $query .= " LIMIT $start, $limit";
+        return $this->query($query, $data, true);
     }
 
 
@@ -377,8 +423,10 @@ class DbBase
      */
     function query($query, $data=array(), $getRet=true) 
     {
-        if (!is_array($data)) return false;
-        if (!is_object($this->_db)) return false;
+        $badRet = false;
+        if ($getRet) $badRet = array();
+        if (!is_array($data)) return $badRet;
+        if (!$this->_checkDb()) return $badRet;
         $this->test = false;
 
         $this->cacheQuery($query, $data, $getRet);
@@ -388,7 +436,7 @@ class DbBase
         $this->vprint("With Data: ".print_r($data, true)."\n");
         $ret = $this->_db->prepare($query);
         if (is_object($ret)) {
-            return $this->queryExecute($ret, $data, $getRet);
+            return $this->queryExecute($query, $ret, $data, $getRet);
         } else {
             $this->_errorInfo();        
         }
@@ -400,19 +448,21 @@ class DbBase
     /**
      * This function actually executes a query.
      *
+     * @param string $query  The query we sent
      * @param object &$ret   The database query object
      * @param array  &$data  The data array to insert
      * @param bool   $getRes Whether to expect a result back.
      *
      * @return mixed
      */
-     protected function queryExecute(&$ret, &$data, $getRes = false)
+     protected function queryExecute($query, &$ret, &$data, $getRes = false)
      {
         if (!is_object($ret)) return false;
         $res = $ret->execute($data);
         if ($getRes) {
             if ($res) {
                 $res = $ret->fetchAll(PDO::FETCH_ASSOC);
+                if (empty($res)) $res = $this->cacheQuery($query, $data, $getRes);
                 $this->vprint("Query Returned: ".count($res)." rows");
                 $this->cacheResult($res);
                 return $res;
@@ -433,10 +483,11 @@ class DbBase
      */
     function cacheQuery($query, $data=array(), $getRet=true) 
     {
-        if (!is_array($data)) return false;
-        if (!is_object($this->_cache)) return false;
-        if (!$this->_doCache) return false;
-
+        $badRet = false;
+        if ($getRet) $badRet = array();
+        if (!is_array($data)) return $badRet;
+        if (!is_object($this->_cache)) return $badRet;
+        if (!$this->_doCache) return $badRet;
         $ret = $this->_cache->query($query, $data, $getRet);
         return $ret;
     }
@@ -469,7 +520,7 @@ class DbBase
      * @param array $info The row in array form.
      *
      * @return mixed 
-      */
+     */
     function remove($id) 
     {
         $query = " DELETE FROM '".$this->table."' WHERE ".$this->id."= ? ;";
@@ -508,6 +559,7 @@ class DbBase
      * @return bool
      */
     public function isConnected() {
+        if (!$this->_checkDb()) return false;
         if ($this->driver == "sqlite") return true;
         return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
