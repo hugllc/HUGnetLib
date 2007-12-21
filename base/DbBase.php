@@ -106,12 +106,12 @@ class DbBase
 
         $this->verbose($verbose);
         // Set it here since it needs a call to sys_get_temp_dir
-        if (is_string($db)) {
+        if (is_string($db) && !empty($db)) {
             $this->file = $db;
         } else {
             $this->file = HUGNET_LOCAL_DATABASE;
         }
-        if (is_object($db)) {
+        if ($this->_checkDb($db)) {
             $this->_db = &$db;
         } else {
             $this->_db = DbBase::createPDO("sqlite:".$this->file);
@@ -144,10 +144,11 @@ class DbBase
      *
      * @return bool
      */
-    private function _checkDb() 
+    private function _checkDb($db=null) 
     {
-        if (!is_object($this->_db)) return false;
-        $class = get_class($this->_db);
+        if (is_null($db)) $db = &$this->_db; 
+        if (!is_object($db)) return false;
+        $class = get_class($db);
         if (trim(strtoupper($class)) !== "PDO") return false;
         return true;
     }     
@@ -170,7 +171,7 @@ class DbBase
         } else {
             if (is_string($file) && !empty($file)) $this->cacheFile = $file;
         }
-        if (!is_string($this->cacheFile)|| empty($this->cacheFile)) $this->cacheFile = ":memory:";
+        if (!is_string($this->cacheFile) || empty($this->cacheFile)) $this->cacheFile = ":memory:";
         if (empty($this->cacheFile)) $this->cacheFile = ":memory:";
 
         $this->vprint("Creating a cache at ".$this->cacheFile);
