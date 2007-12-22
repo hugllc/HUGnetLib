@@ -84,13 +84,14 @@ class History extends DbBase
                   `DeviceKey` int(11) NOT NULL default '0',
                   `Date` datetime NOT NULL default '0000-00-00 00:00:00',
                   `deltaT` int(11) NOT NULL,
-                  ";
+                 ";
         for ($i = 0; $i < $elements; $i++) {
-            $query .= "`Data0` float default NULL,\n";
+            $query .= "`Data".$i."` float default NULL,\n";
         }
-        $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
-                   );";
-        $ret = $this->query($query, false);
+//        $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
+        $query .= "PRIMARY KEY  (`DeviceKey`)\n);";
+        $ret = $this->query($query, false);        
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
         $this->_getColumns();
         return $ret;
     }
@@ -118,10 +119,9 @@ class History extends DbBase
                   `Status` enum('GOOD','BAD','UNRELIABLE','DUPLICATE') NOT NULL default 'GOOD',
                   `ReplyTime` float NOT NULL default '0',
                   `sendCommand` char(2) NOT NULL default '',
-                  PRIMARY KEY  (`HistoryRawKey`),
-                  UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`,`sendCommand`)
-                );";
+                  PRIMARY KEY  (`HistoryRawKey`)                );";
         $ret = $this->query($query, false);
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`,`sendCommand`)', false);
         $this->_getColumns();
         return $ret;
     }

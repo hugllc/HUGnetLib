@@ -512,6 +512,18 @@ class DbBaseTest extends databaseTest
                 false,
                 false,
             ),
+            array(
+                array(),
+                "CREATE TABLE IF NOT EXISTS `oneTestTable` ("
+                  ." `id` int(11) NOT null, "
+                  ." `name` varchar(16) NOT null default '', "
+                  ." `value` text NOT null, "
+                  ." PRIMARY KEY  (`id`) "
+                  ." );",
+                array(),
+                false,
+                true,
+            ),
         );
     }
     /**

@@ -517,7 +517,7 @@ class DbBase
      protected function queryExecute($query, &$ret, &$data, $getRes = false)
      {
         if (!is_object($ret)) return false;
-        $ret->execute($data);
+        $res = $ret->execute($data);
         if ($getRes) {
             $res = $ret->fetchAll(PDO::FETCH_ASSOC);
             if (empty($res)) $res = $this->cacheQuery($query, $data, $getRes);
