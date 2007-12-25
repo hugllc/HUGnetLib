@@ -247,7 +247,7 @@ class Process extends DbBase
             $this->dbRegistered = $this->query($query);
             return $this->dbRegistered;
 */            
-            return $this->insert($info);
+            return $this->add($info);
         } else {
             return(true);    
         }

@@ -176,21 +176,15 @@ class ProcStats extends DbBase
      */
     function getStat($name, $Program, $date="now", $type="stat", $PID=false) 
     {
-        $query = "SELECT * FROM '".$this->statsTable."' "
-                 ." WHERE "
-                ." Program='".$Program."' "
-                ." AND stype='".$type."' "
-                ." AND sdate='".$date."' "
-                ." AND sname='".$name."' ";
+        $data = array($Program, $type, $date, $name);
+        $query = " Program= ? "
+                ." AND stype= ? "
+                ." AND sdate= ? "
+                ." AND sname= ? ";
         if ($PID)$query .= " AND PID=".$this->me['PID'];
-        $ret = $this->query($query, PDO::FETCH_ASSOC);
-        if (is_object($ret)) {
-            $row = $ret->fetch(PDO::FETCH_ASSOC);
-        } else {
-            var_dump($this->errorInfo());
-            $row['svalue'] = 0;
-        }
-        return $row['svalue'];    
+        $ret = $this->getWhere($query);
+        if (isset($ret[0]['svalue'])) return $ret[0]['svalue'];    
+        return 0;
     }
 
     /**
@@ -206,7 +200,7 @@ class ProcStats extends DbBase
     function setStat($name, $value, $date="now", $type="stat") 
     {
         $this->_setStat($name, $value, $date, $type);
-        $this->_setStat('StatDate', date("Y-m-d H:i:s"));
+        return $this->_setStat('StatDate', date("Y-m-d H:i:s"));
     }
 
     /**
@@ -229,17 +223,7 @@ class ProcStats extends DbBase
             "sname" => $name,
             "svalue" => $value,
         );
-        $query = "REPLACE INTO '".$this->statsTable."' "
-                ." (PID, Program, stype, sdate, sname, svalue) "
-                ." VALUES ("
-                .$this->me['PID']
-                .", ".($this->me['Program'])." "
-                .", ".($type)." "
-                .", ".($date)." "
-                .", ".($name)." "
-                .", ".($value)." "
-                .")";
-        $this->query($query);
+        return $this->replace($data);
     }
 
     /**
@@ -249,8 +233,9 @@ class ProcStats extends DbBase
      */
     function clearStats() 
     {
+        $data = array($this->me['Program']);
         $query = "DELETE FROM '".$this->statsTable."' "
-                ." WHERE Program='".$this->me['Program']."' ";
+                ." WHERE Program= ? ";
         $this->query($query);
     }
 
@@ -263,27 +248,18 @@ class ProcStats extends DbBase
      */
     function getPeriodicStats($Program) 
     {
-        $query = "SELECT * FROM '".$this->statsTable."' "
-                ." WHERE "
-                ." Program='".$Program."' "
+        $data = array($Program);
+        $query = " Program='".$Program."' "
                 ." AND (";
         $sep   = "";
         foreach ($this->statPeriodic as $key => $value) {
-            $query .= $sep."stype='".$key."' ";
+            $data[] = $key;
+            $query .= $sep."stype= ? ";
             $sep    = " OR ";
         }
         $query .= ") ORDER BY sdate desc";
 
-        $ret    = $this->query($query, PDO::FETCH_ASSOC);
-        $return = array();
-
-        if (is_object($ret)) {
-            $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row) {
-                $return[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
-            }
-        }
-        return $return;
+        return $this->getWhere($query, $data);
 
     }
 
@@ -296,13 +272,13 @@ class ProcStats extends DbBase
      */
     function getTotalStats($Program) 
     {
-        $query  = "SELECT * FROM '".$this->statsTable."' "
-                 ." WHERE "
-                 ." Program='".$Program."' "
+        $data = array($Program);
+        $query  = " Program= ? "
                  ." AND "
                  ." stype='totals' ";
 
-        $ret    = $this->query($query, PDO::FETCH_ASSOC);
+        return $this->query($query, PDO::FETCH_ASSOC);
+/*
         $return = array();
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -312,7 +288,7 @@ class ProcStats extends DbBase
 
         }
         return $return;
-
+*/
     }
 
 }
