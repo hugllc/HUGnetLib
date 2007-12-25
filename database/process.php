@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   UnixProcess
+ * @category   Library
  * @package    HUGnetLib
  * @subpackage UnixProcess
  * @author     Scott Price <prices@hugllc.com>
