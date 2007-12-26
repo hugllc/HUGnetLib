@@ -44,6 +44,10 @@ require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    require_once dirname(__FILE__).'/../../hugnet.inc.php';
+}
+require_once dirname(__FILE__).'/databaseTest.php';
 require_once dirname(__FILE__).'/../../database/procstats.php';
 
 /**
@@ -64,6 +68,27 @@ class ProcStatsTest extends databaseTest
     var $table = "procStats";
     /** Database id to use */
     var $id = "PID";
+    /** This is what to force the 'me' variable to by default */
+    protected $me = array(
+        "Host" => "thing2",
+        "Domain" => ".int.hugllc.com",
+        "OS" => "Linux",
+        "PID" => 1234,
+        "Program" => "phpunit",
+        "File" => "/tmp/phpunit.pid",
+        "Block" => "NORMAL",
+        "Started" => "2007-12-26 13:34:43",
+    );
+    /** Data to preload into the database */
+    static $preload = array(
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => 0),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => 1),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => 2),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => 3),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => 6),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => 6),
+        array("PID"=>1234, "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => 6),
+    );
     /**
      * Runs the test methods of this class.
      *
@@ -91,10 +116,10 @@ class ProcStatsTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new ProcStats($this->pdo, $this->table, $this->id);
+        $this->o = new ProcStatsTestClass($this->file, $this->table, $this->id);
         // Clear out the database
-        $this->pdo->query("DELETE FROM ".$this->table);
-
+        $this->pdo->query("DELETE FROM `".$this->table."`");
+        $this->o->forceMe($this->me);
     }
 
     /**
@@ -107,76 +132,283 @@ class ProcStatsTest extends databaseTest
      */
     protected function tearDown() 
     {
-        $this->pdo->query("DROP TABLE ".$this->table);
+        $this->pdo->query("DROP TABLE `".$this->table."`");
         parent::tearDown();
         unset($this->o);
-
-    }
-
-
-    /**
-     * test
-     *
-     * @return none
-     *
-     * @todo Implement testIncStat().
-     */
-    public function testIncStat() 
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
     /**
-     * test
+     * Data provider for testIncStat
      *
-     * @return none
-     *
-     * @todo Implement testIncField().
+     * @return array
      */
-    public function testIncField() 
+    public static function dataIncStat() 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-     * test
-     *
-     * @return none
-     *
-     * @todo Implement testGetMyStat().
-     */
-    public function testGetMyStat() 
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        return array(
+            array(
+                self::$preload,
+                "testStat",
+                strtotime("2007-12-25 13:13:13"),
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "7"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "3"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "7"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "7"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
+                ),
+            ),
+            array(
+                array(),
+                "testStat",
+                strtotime("2007-12-25 13:13:13"),
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
+                ),
+            ),
+        );
     }
 
     /**
      * test
      *
+     * @param array  $preload array of data to preload into the system
+     * @param string $stat    The statistic to increment
+     * @param int    $date    The unix date to force the system to use
+     * @param array  $expect  The array to expect to be in the database
+     *
      * @return none
      *
-     * @todo Implement testGetStat().
+     * @dataProvider dataIncStat().
      */
-    public function testGetStat() 
+    public function testIncStat($preload, $stat, $date, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->o->forceDate = $date;
+        $this->load($preload);
+        $this->o->incStat($stat);
+        $ret = $this->getAll();
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider for testIncField
+     *
+     * @return array
+     */
+    public static function dataIncField() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "3"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                ),
+            ),
+            array(
+                array(),
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                ),
+            ),
+        );
     }
 
     /**
      * test
      *
+     * @param array  $preload array of data to preload into the system
+     * @param string $type    The stat type to increment
+     * @param string $name    The name of the stat to increment
+     * @param int    $date    The unix date to force the system to use
+     * @param array  $expect  The array to expect to be in the database
+     *
      * @return none
      *
-     * @todo Implement testSetStat().
+     * @dataProvider dataIncField().
      */
-    public function testSetStat() 
+    public function testIncField($preload, $type, $name, $date, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->o->forceDate = strtotime($date);
+        $this->load($preload);
+        $this->o->incField($type, $name, $date);
+        $ret = $this->getAll();
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+     * Data provider for testGetMyStat
+     *
+     * @return array
+     */
+    public static function dataGetMyStat() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                2,
+            ),
+            array(
+                array(),
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                0,
+            ),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @param array  $preload array of data to preload into the system
+     * @param string $type    The stat type to increment
+     * @param string $name    The name of the stat to increment
+     * @param int    $date    The unix date to force the system to use
+     * @param array  $expect  The array to expect to be in the database
+     *
+     * @return none
+     *
+     * @dataProvider dataGetMyStat().
+     */
+    public function testIncGetMyStat($preload, $type, $name, $date, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->getMyStat($name, $date, $type);
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+     * Data provider for testGetMyStat
+     *
+     * @return array
+     */
+    public static function dataGetStat() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "phpunit",
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                "1234",
+                2,
+            ),
+            array(
+                array(),
+                "phpunit",
+                "Daily",
+                "testStat",
+                "2007-12-25",
+                "1234",
+                0,
+            ),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @param array  $preload array of data to preload into the system
+     * @param string $type    The stat type to increment
+     * @param string $name    The name of the stat to increment
+     * @param int    $date    The unix date to force the system to use
+     * @param array  $expect  The array to expect to be in the database
+     *
+     * @return none
+     *
+     * @dataProvider dataGetStat().
+     */
+    public function testIncGetStat($preload, $Program, $type, $name, $date, $PID, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->getStat($name, $Program, $date, $type, $PID);
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+     * Data provider for testSetStat
+     *
+     * @return array
+     */
+    public static function dataSetStat() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "testStat",
+                8,
+                "2007-12-25",
+                "Daily",
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "8"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                ),
+            ),
+            array(
+                array(),
+                "testStat",
+                16,
+                "2007-12-25",
+                "Daily",
+                array(
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "16"),
+                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @param array  $preload array of data to preload into the system
+     * @param string $name    The name of the stat to increment
+     * @param $sting $value   The value to set the stat to
+     * @param string $date    The SQL date to force the system to use
+     * @param string $type    The stat type to increment
+     * @param array  $expect  The array to expect to be in the database
+     *
+     * @return none
+     *
+     * @dataProvider dataSetStat().
+     */
+    public function testSetStat($preload, $name, $value, $date, $type, $expect) 
+    {
+        $this->o->forceDate = strtotime($date);
+        $this->load($preload);
+        $this->o->setStat($name, $value, $date, $type);
+        $ret = $this->getAll();
+        $this->assertEquals($expect, $ret);
     }
 
 
@@ -189,39 +421,151 @@ class ProcStatsTest extends databaseTest
      */
     public function testClearStats() 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load(self::$preload);
+        $this->o->clearStats();
+        $ret = $this->getAll();
+        $this->assertSame(array(), $ret);
+    }
+
+    /**
+     * Data provider for testGetPeridicStats
+     *
+     * @return array
+     */
+    public static function dataGetPeridicStats() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "phpunit",
+                array(
+                    "Daily" => array(
+                        "2007-12-26" => array("testStat" => "3"),
+                        "2007-12-25" => array("testStat" => "2"),
+                        "2007-12-24" => array("testStat" => "1"),
+                        "2007-12-23" => array("testStat" => "0"),
+                    ),
+                
+                    "Monthly" => array(
+                        "2007-12" => array("testStat" => "6")
+                    ),
+                    "Yearly" => array(
+                        "2007" => array("testStat" => "6"),
+                    ),
+               ),
+            ),
+            array(
+                self::$preload,
+                "badProgram",
+                array(),
+            ),
+            array(
+                array(),
+                "badProgram",
+                array(),
+            ),
+        );
     }
 
     /**
      * test
      *
+     * @param array  $preload array of data to preload into the system
+     * @param string $Program The program to get the stats for
+     * @param array  $expect  The array to expect to be in the database
+     *
      * @return none
      *
-     * @todo Implement testGetPeriodicStats().
+     * @dataProvider dataGetPeridicStats().
      */
-    public function testGetPeriodicStats() 
+    public function testGetPeridicStats($preload, $Program, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load($preload);
+        $ret = $this->o->getPeriodicStats($Program);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider for testGetTotalStats
+     *
+     * @return array
+     */
+    public static function dataGetTotalStats() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "phpunit",
+                array(
+                    "testStat" => "6",
+                ),
+            ),
+            array(
+                self::$preload,
+                "badProgram",
+                array(),
+            ),
+            array(
+                array(),
+                "badProgram",
+                array(),
+            ),
+        );
     }
 
     /**
      * test
      *
+     * @param array  $preload array of data to preload into the system
+     * @param string $Program The program to get the stats for
+     * @param array  $expect  The array to expect to be in the database
+     *
      * @return none
      *
-     * @todo Implement testGetTotalStats().
+     * @dataProvider dataGetTotalStats().
      */
-    public function testGetTotalStats() 
+    public function testGetTotalStats($preload, $Program, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load($preload);
+        $ret = $this->o->getTotalStats($Program);
+        $this->assertSame($expect, $ret);
     }
+
 }
 
 // Call processTest::main() if this source file is executed directly.
 if (PHPUnit_MAIN_METHOD == "processTest::main") {
     processTest::main();
+}
+/**
+ * Test class for DbBase.
+ * Generated by PHPUnit on 2007-12-13 at 10:28:11.
+ *
+ * @category   Test
+ * @package    HUGnetLibTest
+ * @subpackage Database
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class ProcStatsTestClass extends ProcStats
+{
+    /**
+     * The name of the table we are using
+     */
+    protected $table = "DbBaseTest";
+    
+    /**
+     * Forces the 'me' variable in the class to be a certain thing.
+     *
+     * @param array $me What to set the me variable to
+     *
+     * @return none
+     */    
+    public function forceMe($me)
+    {
+        $this->me = $me;
+    }     
 }
 ?>

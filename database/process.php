@@ -52,6 +52,8 @@ class Process extends DbBase
     protected $table = "process";
     /** Database id to use */
     protected $id = "ProcessKey";
+    /** The number of columns */
+    private $_columns = 5;
     /** file only */
     var $FileOnly = false;
 
@@ -293,13 +295,16 @@ class Process extends DbBase
     
     /**
      * Creates the SQLite DB table
+     *
+     * @param string $table Table to use if not the default
      * 
      * @return none
      */
-    function createTable() 
+    function createTable($table=null) 
     {
-
-        $query = "CREATE TABLE '".$this->table."' (
+        if (is_string($table) && !empty($table)) $this->table = $table;
+        
+        $query = "CREATE TABLE IF NOT EXISTS '".$this->table."' (
                       'PID' int(11) NOT null default '0',
                       'Program' varchar(128) NOT null default '',
                       'Started' datetime NOT null default '0000-00-00 00:00:00',

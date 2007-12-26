@@ -49,9 +49,39 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  */
 class Analysis extends DbBase
 {
-    var $table = "Analysis";            //!< The database table to use
-    var $id = "AnalysisKey";     //!< This is the Field name for the key of the record
-   
+    /** The database table to use */
+    var $table = "Analysis";            
+    /** This is the Field name for the key of the record */
+    var $id = "AnalysisKey";     
+    /** The number of columns */
+    private $_columns = 9;
+    /**
+     * Creates the SQLite DB table
+     *
+     * @param string $table Table to use if not the default
+     * 
+     * @return none
+     */
+    public function createTable($table=null) 
+    {
+        if (is_string($table) && !empty($table)) $this->table = $table;
+        
+        $query = "CREATE TABLE IF NOT EXISTS `analysis` (
+                  `DeviceKey` int(11) NOT NULL default '0',
+                  `Date` date NOT NULL default '0000-00-00',
+                  `AveragePollTime` float NOT NULL default '0',
+                  `Polls` int(11) NOT NULL default '0',
+                  `AverageReplyTime` float NOT NULL default '0',
+                  `Replies` int(11) NOT NULL default '0',
+                  `Reconfigs` mediumint(9) NOT NULL default '0',
+                  `Boredom` mediumint(9) NOT NULL default '0',
+                  `Powerups` mediumint(9) NOT NULL default '0',
+                  PRIMARY KEY  (`DeviceKey`,`Date`)
+                );";
+        $this->query($query);
+        $this->getColumns();
+    }
+    
 }
 
 ?>

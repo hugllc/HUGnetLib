@@ -55,9 +55,11 @@ class ProcStats extends DbBase
     protected $table = 'procStats';
     /** The table id to use */
     protected $id = 'PID';
+    /** The number of columns */
+    private $_columns = 6;
     /** Info about me.  This is set in the constructor*/
     protected $me = array();
-    
+
     /** Stats period date formats */
     var $statPeriodic = array(
             'Daily' => 'Y-m-d',
@@ -79,7 +81,6 @@ class ProcStats extends DbBase
         parent::__construct($file, $table, $id, $verbose);
         $this->createTable();
         $this->me = process::getMyInfo();
-
     }
     
     /**
@@ -112,10 +113,11 @@ class ProcStats extends DbBase
      */
     function incStat($stat) 
     {
-
+        $d = time();
+        if (is_int($this->forceDate)) $d = $this->forceDate;
         $this->incField('totals', $stat);
         foreach ($this->statPeriodic as $type => $format) {
-            $this->incField($type, $stat, date($format));        
+            $this->incField($type, $stat, date($format, $d));        
         }
     }
 
@@ -168,8 +170,11 @@ class ProcStats extends DbBase
                 ." AND stype= ? "
                 ." AND sdate= ? "
                 ." AND sname= ? ";
-        if ($PID)$query .= " AND PID=".$this->me['PID'];
-        $ret = $this->getWhere($query);
+        if ($PID) {
+            $query .= " AND PID= ? ";
+            $data[] = $this->me['PID'];
+        }
+        $ret = $this->getWhere($query, $data);
         if (isset($ret[0]['svalue'])) return $ret[0]['svalue'];    
         return 0;
     }
@@ -186,8 +191,10 @@ class ProcStats extends DbBase
      */
     function setStat($name, $value, $date="now", $type="stat") 
     {
+        $d = time();
+        if (is_int($this->forceDate)) $d = $this->forceDate;
         $this->_setStat($name, $value, $date, $type);
-        return $this->_setStat('StatDate', date("Y-m-d H:i:s"));
+        return $this->_setStat('StatDate', date("Y-m-d H:i:s", $d));
     }
 
     /**
@@ -221,9 +228,9 @@ class ProcStats extends DbBase
     function clearStats() 
     {
         $data = array($this->me['Program']);
-        $query = "DELETE FROM '".$this->statsTable."' "
+        $query = "DELETE FROM '".$this->table."' "
                 ." WHERE Program= ? ";
-        $this->query($query);
+        $this->query($query, $data);
     }
 
     /**
@@ -236,7 +243,7 @@ class ProcStats extends DbBase
     function getPeriodicStats($Program) 
     {
         $data = array($Program);
-        $query = " Program='".$Program."' "
+        $query = " Program= ? "
                 ." AND (";
         $sep   = "";
         foreach ($this->statPeriodic as $key => $value) {
@@ -244,9 +251,13 @@ class ProcStats extends DbBase
             $query .= $sep."stype= ? ";
             $sep    = " OR ";
         }
-        $query .= ") ORDER BY sdate desc";
-
-        return $this->getWhere($query, $data);
+        $query .= ") ORDER BY sdate desc";            
+        $rows = $this->getWhere($query, $data);
+        $ret = array();
+        foreach($rows as $row) {
+            $ret[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
+        }
+        return $ret;
 
     }
 
@@ -260,22 +271,16 @@ class ProcStats extends DbBase
     function getTotalStats($Program) 
     {
         $data = array($Program);
-        $query  = " Program= ? "
+        $query  = " Program = ? "
                  ." AND "
                  ." stype='totals' ";
 
-        return $this->query($query, PDO::FETCH_ASSOC);
-        /*
-        $return = array();
-        if (is_object($ret)) {
-            $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row) {
-                $return[$row['sname']] = $row['svalue'];
-            }
-
+        $rows = $this->getWhere($query, $data);
+        $ret = array();
+        foreach ($rows as $row) {
+            $ret[$row['sname']] = $row['svalue'];
         }
-        return $return;
-        */
+        return $ret;
     }
 
 }
