@@ -51,6 +51,8 @@ class Device extends DbBase
     var $table = "devices";
     /** The key used for the table */
     var $id = "DeviceKey";
+    /** The number of columns */
+    private $_columns = 26;
 
     /** The table the analysis output is stored in */
     var $analysis_table = "analysis";

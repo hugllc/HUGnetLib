@@ -56,6 +56,8 @@ class Gateway extends DbBase
 {
     var $table = "gateways";                //!< The database table to use
     var $id = "GatewayKey";     //!< This is the Field name for the key of the record
+    /** The number of columns */
+    private $_columns = 6;
 
     /**
      * Try to automatically find out which gateway to use

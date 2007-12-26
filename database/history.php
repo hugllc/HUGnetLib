@@ -53,6 +53,8 @@ class History extends DbBase
     var $table = "history";
     /** This is the Field name for the key of the record */
     var $id = "HistoryKey";    
+    /** The number of columns */
+    private $_columns = 3;
    
     /**
      * Gets history between two dates and returns it as an array
@@ -78,6 +80,9 @@ class History extends DbBase
      */   
     public function createTable($table=null, $elements=16)
     {
+        $this->elements = $elements;
+        $this->_columns = 3 + $elements;
+        
         if (is_string($table) && !empty($table)) $this->table = $table;
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                   `DeviceKey` int(11) NOT NULL default '0',

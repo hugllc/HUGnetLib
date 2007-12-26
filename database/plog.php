@@ -50,6 +50,8 @@ class Plog extends DbBase
 {
     /** @var string Database table to use */
     protected $table = "PacketLog";
+    /** The number of columns */
+    private $_columns = 14;
     /** @var int Some kind of index */
     private $index = 1;
     /** @var mixed The file to find the SQLite database in */

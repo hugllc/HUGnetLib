@@ -52,6 +52,8 @@ class Firmware extends DbBase
     var $table = "firmware";
     /** This is the Field name for the key of the record */
     var $id = "FirmwareKey";
+    /** The number of columns */
+    private $_columns = 11;
     /** This is our data cache */
     var $cache = array();
     /** Cache times out every day. */

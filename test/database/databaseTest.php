@@ -65,7 +65,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp() 
     {
-        if (empty($this->table)) die(get_class($this)."->table not defined!");
+        if (empty($this->table)) throw new exception(get_class($this)."->table not defined!", -1);
         $this->file = tempnam(sys_get_temp_dir(), get_class($this));
         $this->pdo = new PDO("sqlite:".$this->file);
     }
@@ -156,9 +156,13 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      */
     protected function getAll()
     {
-        $query = "SELECT * FROM ".$this->table.";";
+        $query = "SELECT * FROM `".$this->table."`;";
         $res = $this->pdo->query($query);
-        if (!is_object($res)) return false;
+        if (!is_object($res)) {
+            var_dump($query);
+            var_dump($this->pdo->errorInfo());
+            return false;
+        }
         return $res->fetchAll(PDO::FETCH_ASSOC);    
     }
 
@@ -204,6 +208,19 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     {
         $id = $this->readAttribute($this->o, "id");
         $this->assertFalse(empty($id));
+    }
+
+
+    /**
+     * This function tests to see if there are any fields defined
+     *
+     * @return none
+     */
+    function testFieldCount()
+    {
+        $columns = $this->readAttribute($this->o, "_columns");
+        $fields = $this->readAttribute($this->o, "fields");
+        $this->assertSame(count($fields), $columns, "Table was either not built or modified.");
     }
 
 }

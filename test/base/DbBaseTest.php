@@ -768,6 +768,15 @@ class DbBaseTest extends databaseTest
         $this->assertSame("", $ret);
     }
 
+    /**
+     * tests printout when verbose is off
+     *
+     * @return none
+     */
+    public function testCreateTable() 
+    {
+        $this->assertFalse(DbBase::createTable());
+    }
     
 
 }
@@ -795,6 +804,8 @@ class DbBaseClassTest extends DbBase
      * The name of the table we are using
      */
     protected $table = "DbBaseTest";
+    /** The number of columns */
+    private $_columns = 3;
     
     /**
      * Creates the database table.

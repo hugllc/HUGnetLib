@@ -205,6 +205,7 @@ class DbBase
     {
         $this->getColumnsSQLite();
         $this->getColumnsMySQL();
+        $this->getColumnsOther();
     }
     /**
      * Gets columns from a SQLite server
@@ -235,6 +236,18 @@ class DbBase
             $this->fields[$col['Field']] = $col['Type'];
         }
         
+    }
+
+    /**
+     * Gets columns from a mysql server
+     *
+     * @return none
+     */
+    protected function getColumnsOther()
+    {
+        if ($this->driver == "mysql") return;        
+        if ($this->driver == "sqlite") return;
+        throw new Exception("Driver ".$this->driver." is not implemented.", -1);
     }
     
     /**
