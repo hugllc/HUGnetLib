@@ -149,7 +149,7 @@ class Firmware extends DbBase
                   );";
         $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'.$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)');
-        $this->_getColumns();
+        $this->getColumns();
     }
     
     /**

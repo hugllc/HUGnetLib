@@ -96,12 +96,14 @@ class DbBase
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
      *
-     * @param mixed  &$db   This should be an object of class driver
-     * @param string $table The database table to use
-     * @param string $id    The 'id' column to use
+     * @param mixed  &$db     This should be an object of class driver
+     * @param string $table   The database table to use
+     * @param string $id      The 'id' column to use
+     * @param bool   $verbose Whether to be verbose or not
      *
+     * @return none
      */
-    function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
+    public function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
     {
 
         $this->verbose($verbose);
@@ -111,7 +113,7 @@ class DbBase
         } else {
             $this->file = HUGNET_LOCAL_DATABASE;
         }
-        if ($this->_checkDb($db)) {
+        if ($this->checkDb($db)) {
             $this->_db = &$db;
         } else {
             $this->_db = DbBase::createPDO("sqlite:".$this->file);
@@ -119,18 +121,21 @@ class DbBase
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
 
-        $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->driver = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
         
-        $this->_getColumns();
+        $this->getColumns();
     }
     
     /**
      * Creates a database object
      *
+     * @param string $dsn  The DSN to use to create the PDO object
+     * @param string $user The username
+     * @param string $pass THe password
      *
      * @return object PDO object
      */
-    static function &createPDO($dsn, $user=null, $pass=null) 
+    static public function &createPDO($dsn, $user = null, $pass = null) 
     {
         try {
             $db = new PDO($dsn, $user, $pass);
@@ -142,9 +147,15 @@ class DbBase
     /**
      * Checks to see if the database object is valid
      *
+     * If the database object given to it is null it will check $this->_db.
+     *
+     * $db can not be a 'reference'.
+     *
+     * @param object $db The database object to check.
+     *
      * @return bool
      */
-    private function _checkDb($db=null) 
+    final protected function checkDb($db=null) 
     {
         if (is_null($db)) $db = &$this->_db; 
         if (!is_object($db)) return false;
@@ -161,7 +172,7 @@ class DbBase
      *
      * @return bool
      */
-    function createCache($file = null) 
+    public function createCache($file = null) 
     {
         // Can't cache a sqlite database server
         if ($this->driver == "sqlite") {
@@ -190,16 +201,17 @@ class DbBase
      *
      * @return none
      */
-    protected function _getColumns() {
-        $this->_getColumnsSQLite();
-        $this->_getColumnsMySQL();
+    protected function getColumns()
+    {
+        $this->getColumnsSQLite();
+        $this->getColumnsMySQL();
     }
     /**
      * Gets columns from a SQLite server
      *
      * @return none
      */
-    protected function _getColumnsSQLite()
+    protected function getColumnsSQLite()
     {
         if ($this->driver != "sqlite") return;
         $columns = $this->query("PRAGMA table_info(".$this->table.")");
@@ -214,7 +226,8 @@ class DbBase
      *
      * @return none
      */
-    protected function _getColumnsMySQL() {
+    protected function getColumnsMySQL()
+    {
         if ($this->driver != "mysql") return;
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table);
         if (!is_array($columns)) return;
@@ -239,19 +252,22 @@ class DbBase
     /**
      * Adds each element in the array as a row in the database
      *
-     * @param array $InfoArray An array of database rows to add
+     * @param array $infoArray An array of database rows to add
+     * @param bool  $replace   If true it replaces the "INSERT" 
+     *                         keyword with "REPLACE".  Not all
+     *                         databases support "REPLACE".
      *
      * @return int The number of successful inserts
-      */
-    function addArray($infoArray, $replace = false) 
+     */
+    public function addArray($infoArray, $replace = false) 
     {
-        if (!$this->_checkDb()) return 0;
+        if (!$this->checkDb()) return 0;
         if (!is_array($infoArray)) return 0;
-        $query = $this->_addQuery($infoArray[0], $keys, $replace);
+        $query = $this->addQuery($infoArray[0], $keys, $replace);
         $ret = $this->_db->prepare($query);
         $count = 0;
         foreach ($infoArray as $info) {
-            $data = $this->_prepareData($info, $keys);
+            $data = $this->prepareData($info, $keys);
             $val = $this->queryExecute($query, $ret, $data, false);
             if ($val) $count++;
         }
@@ -265,9 +281,9 @@ class DbBase
      *
      * @return mixed
      */     
-    private function _getAttribute($attrib) 
+    protected function getAttribute($attrib) 
     {
-        if (!$this->_checkDb()) return null; 
+        if (!$this->checkDb()) return null; 
         return $this->_db->getAttribute($attrib);
     }
     
@@ -279,7 +295,7 @@ class DbBase
      * 
      * @return array
      */    
-    protected function _prepareData($data, $keys) 
+    protected function prepareData($data, $keys) 
     {
         if (!is_array($keys)) return array();
         $ret = array();
@@ -298,10 +314,10 @@ class DbBase
      *
      * @return bool
      */
-    function add($info, $replace = false)
+    public function add($info, $replace = false)
     {
-        $query = $this->_addQuery($info, $keys, $replace);
-        $values = $this->_prepareData($info, $keys);
+        $query = $this->addQuery($info, $keys, $replace);
+        $values = $this->prepareData($info, $keys);
         return $this->query($query, $values, false);    
     }
 
@@ -316,7 +332,7 @@ class DbBase
      *
      * @return string
      */
-    function _addQuery($info, &$keys, $replace = false) 
+    protected function addQuery($info, &$keys, $replace = false) 
     {    
         $div    = "";
         $fields = "";
@@ -352,7 +368,7 @@ class DbBase
      *
      * @return bool Always False 
      */
-    function replace($info) 
+    public function replace($info) 
     {    
         return $this->add($info, true);
     }
@@ -366,7 +382,7 @@ class DbBase
      *
      * @return mixed 
      */
-    function update($info) 
+    public function update($info) 
     {    
         if (!isset($info[$this->id])) return false;
         
@@ -391,12 +407,12 @@ class DbBase
     /**
      * Gets all rows from the database
      *
-     * @param int    $limit The maximum number of rows to return (0 to return all)
-     * @param int    $start The row offset to start returning records at
+     * @param int $limit The maximum number of rows to return (0 to return all)
+     * @param int $start The row offset to start returning records at
      *
      * @return array
      */
-    function getAll($limit = 0, $start = 0) 
+    public function getAll($limit = 0, $start = 0) 
     {
         return $this->getWhere("1", array(), $limit, $start);
     }
@@ -404,9 +420,11 @@ class DbBase
     /**
      * Gets all rows from the database
      *
+     * @param int $id The id of the row to get.
+     *
      * @return array
      */
-    function get($id) 
+    public function get($id) 
     {
         return $this->getWhere($this->id."= ? ", array($id));
     }
@@ -421,7 +439,7 @@ class DbBase
      *
      * @return array
      */
-    function getWhere($where, $data = array(), $limit = 0, $start = 0) 
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0) 
     {
         $query = " SELECT * FROM `".$this->table."` WHERE ".$where;
         $limit = (int) $limit;
@@ -434,13 +452,16 @@ class DbBase
     /**
      * Sets the error code for the last query
      *
-     * @param bool $clear Clears the error
+     * @param bool   $clear Clears the error
+     * @param object $obj   The object to use to get the error code.
+     *                      This must be either a PDO or PDOStatement
+     *                      object.
      *
      * @return none
      */
-    protected function _errorInfo($clear=false, $obj = null)
+    protected function errorInfo($clear=false, $obj = null)
     {
-        if (!$this->_checkDB()) {
+        if (!$this->checkDB()) {
             $this->errorState = "NODBE";
             $this->error      = -1;
             $this->errorMsg   = "Database Not Connected";
@@ -476,28 +497,30 @@ class DbBase
     /**
      * Queries the database
      *
-     * @param string $query SQL query to send to the database
+     * @param string $query  SQL query to send to the database
+     * @param array  $data   The data to use to replace '?' in the query
+     * @param bool   $getRet Whether to expect data back from the query
      *
      * @return mixed
      */
-    function query($query, $data=array(), $getRet=true) 
+    public function query($query, $data=array(), $getRet=true) 
     {
         $badRet = false;
         if ($getRet) $badRet = array();
-        if (!$this->_checkDb()) return $badRet;
+        if (!$this->checkDb()) return $badRet;
 
         if (!is_array($data)) $data = array();
 
         $this->cacheQuery($query, $data, $getRet);
         // Clear out the error
-        $this->_errorInfo(true); 
+        $this->errorInfo(true); 
         $this->vprint("Sending Query: ".$query."\n");
         $this->vprint("With Data: ".print_r($data, true)."\n");
         $ret = $this->_db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
         } else {
-            $this->_errorInfo();        
+            $this->errorInfo();        
         }
         
         if ($getRet) return array();
@@ -514,8 +537,8 @@ class DbBase
      *
      * @return mixed
      */
-     protected function queryExecute($query, &$ret, &$data, $getRes = false)
-     {
+    protected function queryExecute($query, &$ret, &$data, $getRes = false)
+    {
         if (!is_object($ret)) return false;
         $res = $ret->execute($data);
         if ($getRes) {
@@ -523,20 +546,22 @@ class DbBase
             if (empty($res)) $res = $this->cacheQuery($query, $data, $getRes);
             $this->vprint("Query Returned: ".count($res)." rows");
             $this->cacheResult($res);
-            $this->_errorInfo(false, $ret);
+            $this->errorInfo(false, $ret);
             return $res;
         } 
-        $this->_errorInfo(false, $ret);
+        $this->errorInfo(false, $ret);
         return $res;
     }
     /**
      * Queries the database
      *
-     * @param string $query SQL query to send to the database
+     * @param string $query  SQL query to send to the database
+     * @param array  $data   The data to use to replace '?' in the query
+     * @param bool   $getRet Whether to expect data back from the query
      *
      * @return mixed
      */
-    function cacheQuery($query, $data=array(), $getRet=true) 
+    protected function cacheQuery($query, $data=array(), $getRet=true) 
     {
         $badRet = false;
         if ($getRet) $badRet = array();
@@ -550,11 +575,11 @@ class DbBase
     /**
      * Queries the database
      *
-     * @param string $query SQL query to send to the database
+     * @param array $res The result array from a query 
      *
      * @return mixed
      */
-    function cacheResult($res) 
+    protected function cacheResult($res) 
     {
         if (!is_array($res)) return false;
         if (!is_object($this->_cache)) return false;
@@ -571,11 +596,11 @@ class DbBase
      *
      * This function MUST be overwritten by child classes
      *
-     * @param array $info The row in array form.
+     * @param mixed $id The id value of the row to delete
      *
      * @return mixed 
      */
-    function remove($id) 
+    public function remove($id) 
     {
         $query = " DELETE FROM '".$this->table."' WHERE ".$this->id."= ? ;";
         return $this->query($query, array($id), false);
@@ -585,6 +610,8 @@ class DbBase
      * Sets the verbosity
      *
      * @param int $level The verbosity level
+     *
+     * @return none
      */    
     public function verbose($level=0)
     {
@@ -598,7 +625,8 @@ class DbBase
      *
      * @return none
      */
-    protected function vprint($str) {
+    protected function vprint($str) 
+    {
         if (!$this->verbose) return;
         if (empty($str)) return;
         $class = get_class($this);
@@ -612,8 +640,9 @@ class DbBase
      *
      * @return bool
      */
-    public function isConnected() {
-        if (!$this->_checkDb()) return false;
+    public function isConnected() 
+    {
+        if (!$this->checkDb()) return false;
         if ($this->driver == "sqlite") return true;
         return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }

@@ -442,7 +442,7 @@ class Device extends DbBase
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
-        $this->_getColumns();
+        $this->getColumns();
         return $ret;
     }
 

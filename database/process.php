@@ -304,7 +304,7 @@ class Process extends DbBase
                     );
                     ";
         $this->query($query);
-        $this->_getColumns();
+        $this->getColumns();
     }
 
     /**
@@ -389,7 +389,7 @@ class Process extends DbBase
      *
      * @return bool true if we can run, false if we are blocked.     
      */
-    function checkFile() 
+    function checkProcessFile() 
     {
         $return = true;
         if (file_exists($this->me["File"])) {
@@ -418,16 +418,9 @@ class Process extends DbBase
      *
      * @return bool true if we can run, false if we are blocked.        
      */
-    function checkDB()
+    function checkProcessDB()
     {
         $return = true;
-        /*
-        $query  = "SELECT * FROM '".$this->table."' "
-                 ." WHERE "
-                 ." Program='".$this->me['Program']."' ";
-
-        $ret = $this->query($query, PDO::FETCH_ASSOC);
-        */
         $rows = $this->getWhere(" Program = ? ", array($this->me['Program']));
         foreach ($rows as $row) {
             print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
