@@ -58,7 +58,7 @@ require_once dirname(__FILE__).'/databaseTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class deviceTest extends databaseTest
+class DeviceTest extends databaseTest
 {
     /** The table to use */
     protected $table = "devices";
@@ -123,6 +123,8 @@ class deviceTest extends databaseTest
 
     /**
      * data provider dataDiagnose
+     *
+     * @return array
      */
     public static function dataDiagnose() 
     {
@@ -132,6 +134,9 @@ class deviceTest extends databaseTest
     /**
      * test
      *
+     * @param array  $Info   Infomation about the device to get stylesheet information for
+     * @param string $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataDiagnose().
@@ -140,22 +145,7 @@ class deviceTest extends databaseTest
     public function testDiagnose($Info, $expect) 
     {
         $o = new driver();
-        $ret = $o->device->Get_diagnose($Info);
-        $this->assertSame($expect, $ret);
-    }
-
-    /**
-     * test
-     *
-     * @return none
-     *
-     * @dataProvider dataDiagnose().
-     * @covers driver::testDiagnose
-     */
-    public function testDiagnoseDriver($Info, $expect) 
-    {
-        $o = new driver();
-        $ret = $o->Get_diagnose($Info);
+        $ret = $o->device->diagnose($Info);
         $this->assertSame($expect, $ret);
     }
 
@@ -240,13 +230,31 @@ class deviceTest extends databaseTest
     /**
      * test
      *
+     * @param array  $params Parameters to encode
+     * @param string $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataEncodeParams
      */
-    public function testEncodeParams($params, $expect) {
+    public function testEncodeParams($params, $expect)
+    {
         $ret = device::encodeParams($params);
         $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
+    }
+    /**
+     * test
+     *
+     * @param array  $params Parameters to encode
+     * @param string $expect The expected return value
+     *
+     * @return none
+     *
+     * @dataProvider dataEncodeParams
+     */
+    public function testEncodeParamsReturn($params, $expect)
+    {
+        $ret = device::encodeParams($params);
         $this->assertSame($expect, $ret, "return array incorrect");
     }
 
@@ -266,6 +274,24 @@ class deviceTest extends databaseTest
     /**
      * test
      *
+     * @param string $params Parameters to decode
+     * @param array  $expect The expected return value
+     *
+     * @return none
+     *
+     * @dataProvider dataDecodeParams
+     */
+    public function testDecodeParamsReturn($params, $expect) 
+    {
+        $ret = device::decodeParams($params);
+        $this->assertSame($expect, $ret, "return array incorrect");
+    }
+    /**
+     * test
+     *
+     * @param string $params Parameters to decode
+     * @param array  $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataDecodeParams
@@ -274,7 +300,6 @@ class deviceTest extends databaseTest
     {
         $ret = device::decodeParams($params);
         $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
-        $this->assertSame($expect, $ret, "return array incorrect");
     }
 }
 

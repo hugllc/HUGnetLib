@@ -59,7 +59,7 @@ require_once dirname(__FILE__).'/databaseTest.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class firmwareTest extends databaseTest 
+class FirmwareTest extends databaseTest
 {
     /** The table to use */
     protected $table = "firmware";
@@ -115,7 +115,7 @@ class firmwareTest extends databaseTest
      */
     public static function main()
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("firmwareTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
@@ -209,6 +209,13 @@ S9030000FC",
 
     /**
      * test
+     *
+     * @param string $srec           The S record to change.
+     * @param int    $MemBufferSize  The total available space in the memory buffer
+     * @param int    $PageSize       The total number of bytes in 1 page of memory.  0 means no pages
+     * @param string $MemBufferEmpty This is what a byte looks like when it is erased.
+     *    The default is for flash memory (FF);
+     * @param mixed  $expect         The return value to expect.
      *
      * @return none
      *
@@ -493,6 +500,12 @@ S9030000FC",
 
     /**
      * test
+     * 
+     * @param array  $preload   Data to preload into the database
+     * @param string $FWPartNum This is the part number of the firmware wanted
+     * @param string $version   The particular version to get
+     * @param string $Status    This is the status of the firmware
+     * @param array  $expect    The data we expect returned
      *
      * @return none
      *

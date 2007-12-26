@@ -60,19 +60,6 @@ class Plog extends DbBase
     public $criticalError = false;
 
     /**
-     * Gets the next ID to use from the table
-     *
-     * @return int
-      */
-    function getID() 
-    {
-        $query = "SELECT MAX(id) as id from '".$this->table."'";    
-        $ret   = $this->query($query);
-        $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 1 ;
-        return $newID + 1;
-    }
-    
-    /**
      * Returns the query needed to create the packet log
      *
      * @param string $table The table to use in the query
@@ -107,40 +94,6 @@ class Plog extends DbBase
 
 
     /**
-     * Returns the rows the where statement finds
-     *
-     * @param string $where a valid SQL where statement
-     * @param int    $limit The max number of rows to return
-     * @param int    $start The number of the entry to start on
-     *
-     * @return mixed
-      */
-    function get($where, $limit=0, $start=0) 
-    {
-
-        $query = "SELECT * FROM ".$this->table." WHERE ".$where;
-        if ($limit > 0) $query .= " limit ".$start.", ".$limit;
-        return $this->query($query);
-    }
-
-    /**
-     * Returns the first row the where statement finds
-     *
-     * @param string $where a valid SQL where statement
-     *
-     * @return mixed
-      */
-    function getOne($where = null) 
-    {
-        $query = "SELECT * FROM '".$this->table."' ";
-        if (!empty($where)) $query .= " WHERE ".$where;
-
-        $res = $this->query($query);
-        return $res[0];
-    }
-
-
-    /**
      * Returns the first row the where statement finds
      *
      * @param array $info The row to insert into the database
@@ -150,19 +103,8 @@ class Plog extends DbBase
     
     function add($info) 
     {    
-        if (isset($info['PacketFrom']) 
-                && isset($info['PacketFrom']) 
-                && !empty($info['GatewayKey']) 
-                && !empty($info['Date']) 
-                && isset($info['Command']) 
-                && !empty($info['sendCommand'])
-                ) {
-            if (!isset($info[$this->id])) $info[$this->id] = $this->index++;
-            return parent::add($info, true);
-
-        } else {
-            return false;
-        }
+        if (!isset($info[$this->id])) $info[$this->id] = $this->index++;
+        return parent::add($info, true);
     }
     
 
