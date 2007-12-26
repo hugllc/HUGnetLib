@@ -306,16 +306,6 @@ if (!class_exists("e00391201")) {
         }
     
     
-        /**
-         * Constructor
-         *
-         * @param object $driver An object of class Driver.
-         *
-         */
-        function e00391201(&$driver) 
-        {
-            parent::__construct($driver);
-        }
     }
 }
 if (method_exists($this, "addGeneric")) {

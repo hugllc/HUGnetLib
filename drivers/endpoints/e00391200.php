@@ -37,17 +37,26 @@
 // Check to see if this class already exists
 if (!class_exists("e00391200")) {
 
-/** The location of the time constant in the setup string */
-define("E00391102B_TC", ENDPOINT_CONFIGEND);    
-/** The location of the types in the setup string */
-define("E00391102B_TYPES", ENDPOINT_CONFIGEND+4);
-/** The number of sensors for this device */
-define("E00391102B_SENSORS", 9);
+    /** The location of the time constant in the setup string */
+    define("E00391102B_TC", ENDPOINT_CONFIGEND);    
+    /** The location of the types in the setup string */
+    define("E00391102B_TYPES", ENDPOINT_CONFIGEND+4);
+    /** The number of sensors for this device */
+    define("E00391102B_SENSORS", 9);
 
     /**
      * Driver for the 0039-12 endpoint board and select firmwares
-      */
-    class e00391200 extends eDEFAULT{
+     *
+     * @category   Drivers
+     * @package    HUGnetLib
+     * @subpackage Endpoints
+     * @author     Scott Price <prices@hugllc.com>
+     * @copyright  2007 Hunt Utilities Group, LLC
+     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+     */
+    class e00391200 extends eDEFAULT
+    {
 
         /** @var string The name of this hardware */
         var $HWName = "0039-12 Endpoint";
@@ -125,8 +134,18 @@ define("E00391102B_SENSORS", 9);
                                 "NumSensors" => "# Sensors",
                                 );
 
-        function checkRecord($Info, &$Rec) {
 
+        /**
+         * Checks to make sure this is a valid record
+         *
+         * @param array $Info Infomation about the device to use
+         * @param array &$Rec The record to check
+         *
+         * @return none
+         *
+         */
+        function checkRecord($Info, &$Rec) 
+        {
             parent::checkRecordBase($Info, $Rec);    
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
@@ -137,7 +156,16 @@ define("E00391102B_SENSORS", 9);
         
         }
         
-        function interpConfig(&$Info) {
+        /**
+         * Interprets the configuration
+         *
+         * @param array &$Info Infomation about the device to use
+         *
+         * @return none
+         *
+         */
+        function interpConfig(&$Info) 
+        {
             $this->interpConfigDriverInfo($Info);
             $this->interpConfigHW($Info);
             $this->interpConfigFW($Info);
@@ -149,16 +177,31 @@ define("E00391102B_SENSORS", 9);
 
         }
         
-        private function _interpConfig00392012C(&$Info) {
+        /**
+         * Interprets the configuration for 00392012C
+         *
+         * @param array &$Info Infomation about the device to use
+         *
+         * @return none
+         *
+         */
+        private function _interpConfig00392012C(&$Info) 
+        {
             if ($Info["FWPartNum"] == "0039-20-12-C") {
                 $Info["Types"] = array(0 => 0x70, 1 => 0x70, 2 => 0x71, 3 => 0x72);
             }
         }
 
         /**
+         * Gets the raw data from the sensor read
          *
-          */
-        private function _interpSensorsGetRaw(&$Info, &$data) {
+         * @param array &$Info Infomation about the device to use
+         * @param array &$data The data we are getting from the packets
+         *
+         * @return none
+         */
+        private function _interpSensorsGetRaw(&$Info, &$data) 
+        {
             if (is_array($data["Data"])) {
                 // 3 puts us past the DataIndex and the timeConstant
                 $index = 3;
@@ -175,8 +218,18 @@ define("E00391102B_SENSORS", 9);
             }
 
         }
-//        function DecodeData($data) {
-        function interpSensors($Info, $Packets) {
+
+        /**
+         * Interprets sensor information
+         *
+         * @param array $Info    Infomation about the device to use
+         * @param array $Packets The sensor packets to interpret
+         *
+         * @return none
+         *
+         */
+        function interpSensors($Info, $Packets) 
+        {
             $this->interpConfig($Info);
             $ret = array();
             foreach ($Packets as $key => $data) {
@@ -193,20 +246,6 @@ define("E00391102B_SENSORS", 9);
             return($ret);
         }
     
-
-
-        /**
-         * Constructor
-         * @param $db String The database to use
-         * @param $servers Array The servers to use.
-         * @param $options the database options to use.
-        */    
-        function e00391200 (&$driver) {
-//            $this->eDEFAULT($servers, $db, $options);
-            parent::__construct($driver);
-        }
-
-
 
     }
 

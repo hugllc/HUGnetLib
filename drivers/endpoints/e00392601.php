@@ -78,7 +78,8 @@ if (!class_exists("e00392601")) {
          *
          * @return none
          */
-        function readConfig($Info) {
+        function readConfig($Info)
+        {
             return array(
                 array(
                     "To" => $Info["DeviceID"],
@@ -97,7 +98,8 @@ if (!class_exists("e00392601")) {
          *
          * @return none
          */
-        function checkRecord($Info, &$Rec) {
+        function checkRecord($Info, &$Rec)
+        {
             $Rec["StatusOld"] = $Rec["Status"];        
             $Rec["Status"] = "BAD";
         }
@@ -105,7 +107,7 @@ if (!class_exists("e00392601")) {
         /**
          * Create the config string
          *
-         * @param array $Info    The devInfo array
+         * @param array $Info The devInfo array
          *
          * @return string
          */
@@ -140,7 +142,7 @@ if (!class_exists("e00392601")) {
         /**
          * Interpret the configuration
          *
-         * @param array $Info    The devInfo array
+         * @param array &$Info The devInfo array
          *
          * @return array
          */
@@ -203,17 +205,6 @@ if (!class_exists("e00392601")) {
         {
             return array();
         }
-
-        /**
-         * Constructor
-         *
-         * @param object &$driver Object of class driver.
-        */    
-        function __construct(&$driver)
-        {
-            parent::__construct($driver);
-        }
-
 
 
     }
