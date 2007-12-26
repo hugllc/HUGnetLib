@@ -843,7 +843,7 @@ if (!class_exists('eDEFAULT')) {
          * This function sets up $this->history, $this->location, and $this->averages to
          * their default value.
          *
-         * @param object $driver An object of class Driver.
+         * @param object &$driver An object of class Driver.
          *
          * @return none
          */

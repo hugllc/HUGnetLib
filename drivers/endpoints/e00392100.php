@@ -703,7 +703,7 @@ if (!class_exists("e00392100")) {
          *
          * @return bool true on success, false on failure
          */
-        function loadProgram($Info, $gw=null, $FirmwareKey) 
+        function loadProgram($Info, $gw=null, $FirmwareKey=null) 
         {
 
             $fw = $this->firmware->get($FirmwareKey);

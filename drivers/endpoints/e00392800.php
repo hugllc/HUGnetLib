@@ -150,7 +150,7 @@ if (!class_exists("e00392800")) {
         /**
          * Interprets the configuration
          *
-         * @param array $Info Infomation about the device to use
+         * @param array &$Info Infomation about the device to use
          *
          * @return none
          *
@@ -170,7 +170,7 @@ if (!class_exists("e00392800")) {
         /**
          * Adds config stuff specific to the 0039-20-12-C firmware
          *
-         * @param array $Info Infomation about the device to use
+         * @param array &$Info Infomation about the device to use
          *
          * @return none
          *
@@ -214,7 +214,7 @@ if (!class_exists("e00392800")) {
         /**
          * Gets the raw data from the sensor read
          *
-         * @param array $Info  Infomation about the device to use
+         * @param array &$Info Infomation about the device to use
          * @param array &$data The data we are getting from the packets
          *
          * @return none
@@ -234,19 +234,6 @@ if (!class_exists("e00392800")) {
                 
             }
         }
-
-        /**
-         * Constructor
-         *
-         * @param object $driver Object of class driver.
-        */    
-        function __construct(&$driver) 
-        {
-            parent::__construct($driver);
-        }
-
-
-
     }
 
 }
