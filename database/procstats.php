@@ -278,7 +278,7 @@ class ProcStats extends DbBase
                  ." stype='totals' ";
 
         return $this->query($query, PDO::FETCH_ASSOC);
-/*
+        /*
         $return = array();
         if (is_object($ret)) {
             $rows = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -288,7 +288,7 @@ class ProcStats extends DbBase
 
         }
         return $return;
-*/
+        */
     }
 
 }
