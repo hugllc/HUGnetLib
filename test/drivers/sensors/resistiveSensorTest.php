@@ -60,7 +60,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/resistiveSensor.php';
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class resistiveSensorTest extends sensorTestBase
+class ResistiveSensorTest extends sensorTestBase
 {
     var $class = "resistiveSensor";
     /**
@@ -104,6 +104,8 @@ class resistiveSensorTest extends sensorTestBase
     }
     /**
      * data provider for testSensorArray*
+     *
+     * @return array
      */    
     public static function dataSensorArray() 
     {
@@ -112,6 +114,8 @@ class resistiveSensorTest extends sensorTestBase
 
     /**
      * Data provider for testGetResistance
+     *
+     * @return array
      */
     public static function dataGetResistance() 
     {
@@ -123,18 +127,26 @@ class resistiveSensorTest extends sensorTestBase
     /**
      * test
      *
+     * @param int   $A      The a to d reading
+     * @param int   $TC     The time constant
+     * @param float $Bias   The bias resistance
+     * @param mixed $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataGetResistance
      * @covers resistiveSensor::GetResistance
      */
-    public function testGetResistance($A, $TC, $Bias, $expect) {
+    public function testGetResistance($A, $TC, $Bias, $expect)
+    {
         $o = new resistiveSensor();
         $ret = $o->getResistance($A, $TC, $Bias);
         $this->assertSame($expect, $ret);
     }
     /**
      * Data provider for testBCTherm2381_640_66103
+     *
+     * @return array
      */
     public static function dataBCTherm2381_640_66103() 
     {
@@ -150,6 +162,13 @@ class resistiveSensorTest extends sensorTestBase
     /**
      * test
      *
+     * @param int   $A      The a to d reading
+     * @param array $sensor The sensor array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  The extra sensor data
+     * @param float $deltaT The time difference
+     * @param mixed $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataBCTherm2381_640_66103
@@ -163,6 +182,8 @@ class resistiveSensorTest extends sensorTestBase
 
     /**
      * Data provider for testResisDoor
+     *
+     * @return array
      */
     public static function dataResisDoor() 
     {
@@ -181,6 +202,13 @@ class resistiveSensorTest extends sensorTestBase
     /**
      * test
      *
+     * @param int   $A      The a to d reading
+     * @param array $sensor The sensor array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  The extra sensor data
+     * @param float $deltaT The time difference
+     * @param mixed $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider dataResisDoor
@@ -193,6 +221,8 @@ class resistiveSensorTest extends sensorTestBase
 
     /**
      * Data provider for testgetMoistureV2
+     *
+     * @return array
      */
     public static function datagetMoistureV2() 
     {        
@@ -207,6 +237,13 @@ class resistiveSensorTest extends sensorTestBase
     /**
      * test
      *
+     * @param int   $A      The a to d reading
+     * @param array $sensor The sensor array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  The extra sensor data
+     * @param float $deltaT The time difference
+     * @param mixed $expect The expected return value
+     *
      * @return none
      *
      * @dataProvider datagetMoistureV2
@@ -219,6 +256,8 @@ class resistiveSensorTest extends sensorTestBase
 
     /**
      * Data provider for testgetMoistureV1
+     *
+     * @return array
      */
     public static function datagetMoistureV1() 
     {
@@ -233,6 +272,13 @@ class resistiveSensorTest extends sensorTestBase
     }
     /**
      * test
+     *
+     * @param int   $A      The a to d reading
+     * @param array $sensor The sensor array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  The extra sensor data
+     * @param float $deltaT The time difference
+     * @param mixed $expect The expected return value
      *
      * @return none
      *

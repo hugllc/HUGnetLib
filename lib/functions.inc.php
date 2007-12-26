@@ -33,16 +33,18 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /**
- *  This function adds to the debug output
+ * This function adds to the debug output
  *
- *  This function adds information to the file log in the debug info.     
- *  It must be the first function here, even preceeding the includes, as    
- *  all of the includes use it.                                                          
+ * This function adds information to the file log in the debug info.     
+ * It must be the first function here, even preceeding the includes, as    
+ * all of the includes use it.                                                          
  *
- *  @param string $stuff This is what is actually added to the debug information
- *  @param int    $level Between 0 and 10 this is the debug level at which to show it.
+ * @param string $stuff This is what is actually added to the debug information
+ * @param int    $level Between 0 and 10 this is the debug level at which to show it.
+ *
+ * @return none
  */
-function add_debug_output($stuff, $level=10) 
+function addDebugOutput($stuff, $level=10) 
 {
     global $debug;
     global $debug_output;
@@ -53,82 +55,30 @@ function add_debug_output($stuff, $level=10)
 }
 
 /**
- *  Returns seconds as years days hours minutes seconds
- *
- * @param int $seconds The number of seconds
- * @param int $digits  The number of digits to display after the decimal point
- *
- * @return string The string of the format '0Y 0d 0h 0m 0s'
- */
-function get_ydhms ($seconds, $digits=0) 
-{     
-     $years     = (int)($seconds/60/60/24/365.25);
-     $seconds -= $years*60*60*24*365.25;
-     $days      = (int)($seconds/60/60/24);
-     $seconds -= $days*60*60*24;
-     $hours     = (int)($seconds/60/60);
-     $seconds -= $hours*60*60;
-     $minutes  = (int)($seconds/60);
-     $seconds -= $minutes*60;
-     $seconds  = number_format($seconds, $digits);
-     
-     $return = "";
-     
-     if ($years > 0) $return    .= $years."Y ";
-     if ($days > 0) $return     .= $days."d ";
-     if ($hours > 0) $return    .= $hours."h ";
-     if ($minutes > 0) $return .= $minutes."m ";
-
-     $return .= $seconds."s";
-     return $return;
-}
-
-/**
- * Prints out the number of bytes using K, M, G, T, Etc
- *
- * @param int $bytes The number of bytes we have
- * @param int $digits The number of places beyond the decimal point to show
- *
- * @return string A string in the format '1.2M bytes'
-*/
-function get_bytes($bytes, $digits=2) 
-{
-
-     $labels = array("", " k", " M", " G", " T", " P");
-
-     $index == 0;
-     while ($bytes > 1024) {
-          $bytes = $bytes/1024;
-          $index ++;
-     }
-     $bytes  = number_format($bytes, $digits);
-     $bytes .= $labels[$index]." bytes";
-     return $bytes;
-}
-/**
  * Prints a string formated in the debug style
  * Prints out the string in $stuff within tags that
  * look like "\<DIV CLASS="debug">...\</DIV>"
  *
  * @param string $stuff The string to print out
- * 
+ *
+ * @return none
  */
-function print_debug($stuff) 
+function printDebug($stuff) 
 {
-    print get_debug($stuff);
+    print getDebug($stuff);
 }
 
 /**
- *    Returns a string formated to print out as in the debug style
+ * Returns a string formated to print out as in the debug style
  *
- *    Returns a string with stuff in an HTML tag that 
- *    looks like "\<DIV CLASS="debug">...\</DIV>"
+ * Returns a string with stuff in an HTML tag that 
+ * looks like "\<DIV CLASS="debug">...\</DIV>"
  *
- *    @param stuff String The string to print out
+ * @param string $stuff The string to print out
  *
- *    @return String $stuff within HTML tags
+ * @return String $stuff within HTML tags
  */
-function get_debug($stuff) 
+function getDebug($stuff) 
 {
     global $debug;
     if ($debug && (trim($stuff) != "")) {
@@ -147,29 +97,31 @@ function get_debug($stuff)
  * all of the GLOBALS in PHP ($_ENV, $_GET, etc) plus
  * the PHP version, all the constants, and a listing
  * of the debug output from the code that ran.
+ *
+ * @return none
  */
-function print_debug_info() 
+function printDebugInfo() 
 {
 
     global $debug;
     global $debug_output;
     global $language;
-    @include($language);
+    @include $language;
 
     if ($debug) {
-    // Variables
+        // Variables
 
         $text .= "<h1>Variables</H1>\n";
-        $text .= get_stuff($_ENV, "_ENV");  
-        $text .= get_stuff($_COOKIE, "_COOKIE");
-        $text .= get_stuff($_GET, "_GET");
-        $text .= get_stuff($_POST, "_POST");
-        $text .= get_stuff($_FILES, "_FILES");
-        $text .= get_stuff($_SESSION, "_SESSION");
-        $text .= get_stuff($_SERVER, "_SERVER");
-//        $text .= session_encode();
+        $text .= getStuff($_ENV, "_ENV");  
+        $text .= getStuff($_COOKIE, "_COOKIE");
+        $text .= getStuff($_GET, "_GET");
+        $text .= getStuff($_POST, "_POST");
+        $text .= getStuff($_FILES, "_FILES");
+        $text .= getStuff($_SESSION, "_SESSION");
+        $text .= getStuff($_SERVER, "_SERVER");
+        //$text .= session_encode();
 
-        print_debug($text);
+        printDebug($text);
 
 
         // Files
@@ -181,12 +133,12 @@ function print_debug_info()
                 $text .= "&nbsp; &nbsp; &nbsp; <b>".$EKeys.":</b> ".$const[$EKeys]."<br />\n";
             }
         }
-        print_debug($text);
+        printDebug($text);
 
 
         // File Log
         $debug_output = "<h1>".$strFileLog."</h1>\n".$debug_output;
-        print_debug($debug_output);
+        printDebug($debug_output);
 
         // PHP Information
         $text  = "<h1>PHP ".$strInformation."</h1>\n";
@@ -216,8 +168,8 @@ function print_debug_info()
         $text .= "<b>Constants:</b><br />\n";
         $const = get_defined_constants();
         ksort($const);
-        $text .= get_stuff($const, "CONSTANTS");
-        print_debug($text);
+        $text .= getStuff($const, "CONSTANTS");
+        printDebug($text);
     }
 
 }
@@ -229,13 +181,14 @@ function print_debug_info()
  * and objects so they look like the code it would have taken to create them.  Ex if $a = array("Hello"),
  * $a would print out: @c a[0]="Hello" .
  *
- * @param mixed  $array Mixed The input.  Can be just about anything including objects and arrays.
- * @param string $name  String The name you want it printed out under.
- * @param int    $level DO NOT USE.  FOR INTERNAL USE ONLY.  This allows it to recurse.
+ * @param mixed  $array      Mixed The input.  Can be just about anything including objects and arrays.
+ * @param string $name       String The name you want it printed out under.
+ * @param int    $levelLimit The maximum number of recursions
+ * @param int    $level      DO NOT USE.  FOR INTERNAL USE ONLY.  This allows it to recurse.
  *
  * @return String A printable copy of what it was given.
  */
-function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1) 
+function getStuff($array, $name="Stuff", $levelLimit = 50, $level=1) 
 {
 
     if ($level > $levelLimit) return $levelLimit;
@@ -247,11 +200,11 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1)
                 } else {
                     $nextname = $name."->".$key;
                 }
-                $text .= get_stuff($array[$key], $nextname, $levelLimit, $level + 1);
+                $text .= getStuff($array[$key], $nextname, $levelLimit, $level + 1);
             } else {
                 $text .= "&nbsp; &nbsp; &nbsp; ";
                 $text .= "<b>".$name." [".$key."]:</b> ";
-                $text .= " ".get_value($key, $array[$key])."<br />\n ";
+                $text .= " ".getValue($key, $array[$key])."<br />\n ";
             }
         }
     } else if (is_object($array)) {
@@ -262,15 +215,15 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1)
                 } else {
                     $nextname = $name."->".$key;
                 }
-                $text .= get_stuff($array->$key, $nextname, $levelLimit, $level + 1);
+                $text .= getStuff($array->$key, $nextname, $levelLimit, $level + 1);
             } else {
                 $text .= "&nbsp; &nbsp; &nbsp; ";
                 $text .= "<b>".$name."->".$key.":</b> ";
-                $text .= " ".get_value($key, $array->$key)."<br />\n ";
+                $text .= " ".getValue($key, $array->$key)."<br />\n ";
             }
         }
     } else {
-        $text = $name ." = ".get_value($name, $array)."<br />\n ";
+        $text = $name ." = ".getValue($name, $array)."<br />\n ";
     }
     if (($level == 1) && (trim($text) != "")) $text .= "<br />\n"; 
     return ($text);
@@ -278,16 +231,16 @@ function get_stuff($array, $name="Stuff", $levelLimit = 50, $level=1)
 }
 
 /**
- *    This function is a formatter for get_stuff.
+ * This function is a formatter for getStuff.
  *    
- *    This routine is used by get_stuff and should not be called directly.
+ * This routine is used by getStuff and should not be called directly.
  *
- *    @param string $key The name of the variable to print out
- *    @param mixed  $val The value of the variable to print out
+ * @param string $key The name of the variable to print out
+ * @param mixed  $val The value of the variable to print out
  *
- *    @return String Formated text based on $key and $value
+ * @return String Formated text based on $key and $value
  */
-function get_value($key, $val) 
+function getValue($key, $val) 
 {
     if (is_bool($val)) {
         if ($val) { 
@@ -327,7 +280,7 @@ function get_value($key, $val)
  *
  * @return String HTML code to create a select box for the time of day
  */
-function SelectTime($Name="time", $Selected="", $MinuteIncrement=5) 
+function selectTime($Name="time", $Selected="", $MinuteIncrement=5) 
 {
     if (trim($Selected) == "") {
         $Selected = time();
@@ -397,7 +350,7 @@ function SelectTime($Name="time", $Selected="", $MinuteIncrement=5)
  * @see SelectDay
  * @see SelectTime
 */
-function SelectMonth($Name="month", $Selected="") 
+function selectMonth($Name="month", $Selected="") 
 {
 
     if (trim($Selected) == "") $Selected = date("m");
@@ -406,7 +359,7 @@ function SelectMonth($Name="month", $Selected="")
     for ($i = 1; $i < 13; $i++) {
         $return .= "<option value=".$i;
         if ($i == $Selected) $return .= " SELECTED";
-        $temp = getdate(mktime(0,0,0,$i,1,2000));
+        $temp = getdate(mktime(0, 0, 0, $i, 1, 2000));
         $return .= ">".$temp["month"]."</OPTION>\n";
     }
     $return .= "</SELECT>\n";
@@ -430,7 +383,7 @@ function SelectMonth($Name="month", $Selected="")
  * @see SelectMonth
  * @see SelectTime
  */
-function SelectYear($Name="Year", $Selected="", $EndYear = "", $StartYear="") 
+function selectYear($Name="Year", $Selected="", $EndYear = "", $StartYear="") 
 {
     if (trim($EndYear) == "") $EndYear = date("Y")+1;
     if (trim($StartYear) == "") $StartYear = $EndYear - 6;
@@ -464,7 +417,7 @@ function SelectYear($Name="Year", $Selected="", $EndYear = "", $StartYear="")
  * @see SelectMonth
  * @see SelectTime
  */
-function SelectDay($Name="Day", $Selected="") 
+function selectDay($Name="Day", $Selected="") 
 {
     
     if (trim($Selected) == "") $Selected = date("d");
@@ -497,11 +450,11 @@ function markup($text)
 
     $base = trim(BASE_WEB_DIR);
     if (substr($base, strlen($base)-1, 1) == "/") {
-     $base = substr($base, 0,  strlen($base)-1);
+        $base = substr($base, 0, strlen($base)-1);
     }
 
-     $text = preg_replace('/(\[img\])+([A-Za-z.-\/\\-?+@&;#%\=0-9_\-]*)(\[\/img\])+/','<a href="'.$base.'\2" class="markup"><img src="'.$base.'\2" alt="[ Image ]" class="markup"></a>',$text);
-     $text = preg_replace('/(<+[^<>]*)(<+[^<>]*>+)+([^<>]*>+)/','\1\3',$text);
+    $text = preg_replace('/(\[img\])+([A-Za-z.-\/\\-?+@&;#%\=0-9_\-]*)(\[\/img\])+/', '<a href="'.$base.'\2" class="markup"><img src="'.$base.'\2" alt="[ Image ]" class="markup"></a>', $text);
+    $text = preg_replace('/(<+[^<>]*)(<+[^<>]*>+)+([^<>]*>+)/', '\1\3', $text);
 
     return($text);
 }
@@ -517,7 +470,7 @@ function markup($text)
  *
  * @todo Make the format configurable.
  */
-function formatdate($date, $wrap=false, $time=true) 
+function formatDate($date, $wrap=false, $time=true) 
 {
 
     if ($date == "") {
@@ -548,7 +501,7 @@ function formatdate($date, $wrap=false, $time=true)
  *
  * @return The arguments of the web page formated to be added to the the URL of a link
  */
-function get_args($skip="") 
+function getArgs($skip="") 
 {
     $args = "?";
 
@@ -574,30 +527,31 @@ function get_args($skip="")
 /**
  * Returns hidden input tags for whatever variable is fed into it.
  *
- * @param var The variable to save.
- * @param name The name of the variable to save.
+ * @param array  $var  The variable to save.
+ * @param string $name The name of the variable to save.
  * 
  * @return string
  */
-    function get_hidden_var_post($var, $name="") { 
-        if (is_array($var)) {
-            foreach ($var as $key => $value) {
-                if ((trim(strtolower($key)) != "password") && (trim(strtolower($key)) != "username")) {
-                    if (trim($name) == "") {
-                        $usename = $key;
-                    } else {
-                        $usename = $name."[".$key."]";
-                    }
-                    $return .= get_hidden_var_post($value, $usename);
+function getHiddenVarPost($var, $name="")
+{ 
+    if (is_array($var)) {
+        foreach ($var as $key => $value) {
+            if ((trim(strtolower($key)) != "password") && (trim(strtolower($key)) != "username")) {
+                if (trim($name) == "") {
+                    $usename = $key;
+                } else {
+                    $usename = $name."[".$key."]";
                 }
+                $return .= getHiddenVarPost($value, $usename);
             }
-        } else {
-                if (trim($name) != "") {
-                     $return .= "<INPUT TYPE=HIDDEN NAME=\"".$name."\" VALUE=\"".$var."\">\n";
-                }
         }
-        return($return);
+    } else {
+        if (trim($name) != "") {
+             $return .= "<INPUT TYPE=HIDDEN NAME=\"".$name."\" VALUE=\"".$var."\">\n";
+        }
     }
+    return($return);
+}
 
-add_debug_output("******** End of file ".__FILE__." *********<br />\n<br />\n");
+addDebugOutput("******** End of file ".__FILE__." *********<br />\n<br />\n");
 ?>
