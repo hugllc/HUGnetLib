@@ -59,7 +59,7 @@ require_once dirname(__FILE__).'/databaseTest.php';
 class PlogTest extends databaseTest
 {
     /** The table to use */
-    protected $table = "plog";
+    protected $table = "PacketLog";
 
     /**
      * Runs the test methods of this class.
@@ -106,6 +106,64 @@ class PlogTest extends databaseTest
         unset($this->o);
     }
 
+    /**
+     * Data provider for testAdd
+     *
+     * @return array
+     */
+    public static function dataAdd() 
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "DeviceKey" => 1, 
+                    "ReplyTime" => 2.54, 
+                    "GatewayKey" => 5, 
+                    "RawData" => "1234", 
+                    "Date" => "2007-11-12 14:21:11", 
+                    "PacketFrom" => "000020", 
+                    "Command" => "01", 
+                    "sendCommand" => "5C", 
+                    "Type" => "POWERUP"
+                ),
+                array(
+                    "id" => "1", 
+                    "DeviceKey" => "1", 
+                    "GatewayKey" => "5", 
+                    "Date" => "2007-11-12 14:21:11", 
+                    "Command" => "01", 
+                    "sendCommand" => "5C", 
+                    "PacketFrom" => "000020", 
+                    "PacketTo" => "", 
+                    "RawData" => "1234", 
+                    "sentRawData" => "", 
+                    "Type" => "POWERUP",
+                    "Status" => "NEW",
+                    "ReplyTime" => "2.54",
+                    "Checked" => "0",
+                ),
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @return none
+     *
+     * @dataProvider dataAdd
+     *
+     * @param array $preload Data to preload into the database
+     * @param array $info    The info to add to the database
+     * @param array $expect  The info to expect returned
+     */
+    public function testAdd($preload, $info, $expect) 
+    {
+        $this->load($preload);
+        $this->o->add($info);
+        $ret = $this->getSingle($expect["id"]);
+        $this->assertSame($expect, $ret);
+    }
 
     /**
      * data provider for testFindDriver
@@ -130,6 +188,12 @@ class PlogTest extends databaseTest
             array(
                 array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
                 array("GatewayKey" => 5),
+                false,
+                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
+            ),
+            array(
+                array("RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
+                array("GatewayKey" => 5, "DeviceKey" => 1),
                 false,
                 array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 14:21:11", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED"),
             ),
