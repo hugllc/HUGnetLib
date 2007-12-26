@@ -254,7 +254,7 @@ class ProcStats extends DbBase
         $query .= ") ORDER BY sdate desc";            
         $rows = $this->getWhere($query, $data);
         $ret = array();
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $ret[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
         }
         return $ret;
