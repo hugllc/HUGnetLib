@@ -92,7 +92,7 @@ class History extends DbBase
         $query .= "PRIMARY KEY  (`DeviceKey`)\n);";
         $ret = $this->query($query, false);        
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
-        $this->_getColumns();
+        $this->getColumns();
         return $ret;
     }
 
@@ -122,7 +122,7 @@ class History extends DbBase
                   PRIMARY KEY  (`HistoryRawKey`)                );";
         $ret = $this->query($query, false);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`,`sendCommand`)', false);
-        $this->_getColumns();
+        $this->getColumns();
         return $ret;
     }
 

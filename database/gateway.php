@@ -104,7 +104,7 @@ class Gateway extends DbBase
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'.$this->table.'` (`GatewayName`)');
-        $this->_getColumns();
+        $this->getColumns();
         return $ret;
     }
 

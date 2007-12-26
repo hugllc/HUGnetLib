@@ -814,7 +814,7 @@ class DbBaseClassTest extends DbBase
             );";
 
         $ret = $this->query($query, false); 
-        $this->_getColumns();   
+        $this->getColumns();   
     }
     
 }

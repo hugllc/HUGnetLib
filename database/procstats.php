@@ -113,7 +113,7 @@ class ProcStats extends DbBase
                       );
                     ";
         $this->query($query);        
-        $this->_getColumns();
+        $this->getColumns();
     }
 
     /**
