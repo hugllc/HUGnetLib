@@ -32,9 +32,14 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** The base for all database classes */
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+/** We need a couple of functions out of this. */
+require_once HUGNET_INCLUDE_PATH."/database/process.php";
 
 /**
- * Saving statistics
+ * Saving statistics.  This class is written specifically for scripts that want
+ * to save statistics about what they are doing.
  *
  * @category   UnixProcess
  * @package    HUGnetLib
@@ -50,6 +55,9 @@ class ProcStats extends DbBase
     protected $table = 'procStats';
     /** The table id to use */
     protected $id = 'PID';
+    /** Info about me.  This is set in the constructor*/
+    protected $me = array();
+    
     /** Stats period date formats */
     var $statPeriodic = array(
             'Daily' => 'Y-m-d',
@@ -60,39 +68,18 @@ class ProcStats extends DbBase
     /**
      * constructor
      *
-     * @param string $file The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
+     * @param string $file    The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
+     * @param string $table   The database table to use
+     * @param string $id      The 'id' column to use
+     * @param bool   $verbose Whether to be verbose or not
      */
-    function __construct($file = null) 
+    function __construct($file = null, $table = false, $id = false, $verbose = false) 
     {
         if (!is_string($file)) $file = null;
-        parent::__construct($file);
+        parent::__construct($file, $table, $id, $verbose);
         $this->createTable();
-    }
-    
-    /**
-     * Sets up all the information about the current process.
-     *
-     * @param string $block Type of blocking.  Default "NORMAL"
-     * @param string $name  The program name.  Automatically found if left out.
-     *
-     * @return none 
-     */
-    function getMyInfo($block="NORMAL", $name = false) 
-    {
-        $stuff              = posix_uname();
-        $this->me["Host"]   = $stuff["nodename"];
-        $this->me["Domain"] = $stuff["domainname"];
-        $this->me["OS"]     = $stuff["sysname"];
-        $this->me["PID"]    = getmypid();
-        if ($name === false) {
-            $this->me["Program"] = basename($_SERVER["SCRIPT_NAME"]);
-        } else {
-            $this->me["Program"] = $name;
-        }
-        $this->me["File"]    = dirname($this->file)."/".trim($this->me["Program"]).".pid";
-        $this->me["Block"]   = $block;
-        $this->me["Started"] = date("Y-m-d H:i:s");
-        
+        $this->me = process::getMyInfo();
+
     }
     
     /**

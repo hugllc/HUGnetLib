@@ -92,7 +92,6 @@ class ProcStatsTest extends databaseTest
     {
         parent::setUp();
         $this->o = new ProcStats($this->pdo, $this->table, $this->id);
-        $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
 

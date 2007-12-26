@@ -32,6 +32,8 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** The base for all database classes */
+require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 
 /**
  * A class for controlling processes
@@ -57,12 +59,15 @@ class Process extends DbBase
     /**
      * constructor
      *
-     * @param string $file The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
+     * @param string $file    The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
+     * @param string $table   The database table to use
+     * @param string $id      The 'id' column to use
+     * @param bool   $verbose Whether to be verbose or not
      */
-    function __construct($file = null) 
+    function __construct($file = null, $table = false, $id = false, $verbose = false) 
     {
         if (!is_string($file)) $file = null;
-        parent::__construct($file);
+        parent::__construct($file, $table, $id, $verbose);
         $this->createTable();
         $this->me = self::getMyInfo();
     }
@@ -233,7 +238,7 @@ class Process extends DbBase
 
             $info                = $this->me;
             $info["LastCheckin"] = date("Y-m-d H:i:s");
-/*
+            /*
             $query = "INSERT INTO '".$this->table."' "
                     ." (PID, Program, Started, LastCheckin, Block) "
                     ." VALUES ("
@@ -246,7 +251,7 @@ class Process extends DbBase
 
             $this->dbRegistered = $this->query($query);
             return $this->dbRegistered;
-*/            
+            */            
             return $this->add($info);
         } else {
             return(true);    

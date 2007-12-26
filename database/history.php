@@ -54,19 +54,18 @@ class History extends DbBase
     /** This is the Field name for the key of the record */
     var $id = "HistoryKey";    
    
-   /**
-    * Gets history between two dates and returns it as an array
-    *
-    * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
-    * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
-    * @param int   $maxRec    The max number of records to return
-    *
-    * @return array
-    */
-   public function getDates($startDate, $endDate = "NOW", $max=0) 
-   {
-   
-   }
+    /**
+     * Gets history between two dates and returns it as an array
+     *
+     * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
+     * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+     * @param int   $maxRec    The max number of records to return
+     *
+     * @return array
+     */
+    public function getDates($startDate, $endDate = "NOW", $maxRec=0) 
+    {
+    }
    
    
     /**
@@ -88,7 +87,7 @@ class History extends DbBase
         for ($i = 0; $i < $elements; $i++) {
             $query .= "`Data".$i."` float default NULL,\n";
         }
-//        $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
+        // $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
         $query .= "PRIMARY KEY  (`DeviceKey`)\n);";
         $ret = $this->query($query, false);        
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);

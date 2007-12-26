@@ -62,6 +62,9 @@ class Device extends DbBase
      * database object is taken from the driver object.
      *
      * @param object &$driver This should be an object of class driver
+     * @param string $table   The database table to use
+     * @param string $id      The 'id' column to use
+     * @param bool   $verbose Whether to be verbose or not
      */
     function __construct(&$driver = null, $table=null, $id=null, $verbose=false) 
     {
