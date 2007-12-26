@@ -180,18 +180,6 @@ class ProcStatsTest extends databaseTest
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
 
-    /**
-     * test
-     *
-     * @return none
-     *
-     * @todo Implement test_setStat().
-     */
-    public function test_setStat() 
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
 
     /**
      * test
