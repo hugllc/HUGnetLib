@@ -56,7 +56,7 @@ require_once dirname(__FILE__).'/../unitConversion.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class unitConversionTest extends PHPUnit_Framework_TestCase
+class UnitConversionTest extends PHPUnit_Framework_TestCase
 {
     /** Test unit array */
     var $testUnits = array(
@@ -307,7 +307,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Returns true if it finds the units.
      *
-     * @param string $cat  The category to check in
+     * @param string $cat   The category to check in
      * @param string $units The unit to check
      *
      * @return bool
@@ -418,8 +418,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Test preferredUnit()
      *
-     * @param string $unit The unit to find
-     * @param array  $expect  What expect returned
+     * @param string $unit   The unit to find
+     * @param array  $expect What expect returned
      *
      * @return none
      *
@@ -445,8 +445,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Test Graphable()
      *
-     * @param string $unit The unit to find
-     * @param array  $expect  What expect returned
+     * @param string $unit   The unit to find
+     * @param array  $expect What expect returned
      *
      * @return none
      *
@@ -471,8 +471,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Test findUnit()
      *
-     * @param string $unit The unit to find
-     * @param array  $expect  What expect returned
+     * @param string $unit   The unit to find
+     * @param array  $expect What expect returned
      *
      * @return none
      *
@@ -530,7 +530,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @param mixed  $val      The value to convert
      * @param string $from     The starting unit
-     * @param string &$to      The unit to be converted into
+     * @param string $to       The unit to be converted into
      * @param int    $time     The time in seconds between this record and the last.
      * @param string $type     The data type to use
      * @param mixed  $extra    Any extra stuff we might need.
@@ -551,7 +551,7 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @param mixed  $val      The value to convert
      * @param string $from     The starting unit
-     * @param string &$to      The unit to be converted into
+     * @param string $to       The unit to be converted into
      * @param int    $time     The time in seconds between this record and the last.
      * @param string $type     The data type to use
      * @param mixed  $extra    Any extra stuff we might need.
@@ -634,8 +634,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * test FtoC()
      *
-     * @param float  $f    The temperature in F
      * @param float  $c    The temperature in C
+     * @param float  $f    The temperature in F
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
@@ -753,9 +753,9 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataCnttoRPM
      */
-    public function testCnttoRPM($cnt, $rpm, $time, $type, $cntperrev) 
+    public function testCnttoRPM($cnt, $rpm, $time, $type, $cntPerRev) 
     {
-        $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntperrev));
+        $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntPerRev));
     }
 
     /**
@@ -906,6 +906,8 @@ class unitConversionTest extends PHPUnit_Framework_TestCase
 
     /**
      * Setup modifyUnits
+     *
+     * @return object
      */
     public function &modifyUnitsSetup() 
     {        
@@ -1060,7 +1062,7 @@ if (PHPUnit_MAIN_METHOD == "unitConversionTest::main") {
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class UnitConversionMock extends unitConversion 
+class UnitConversionMock extends unitConversion
 {
     /** The units array */
     var $units = array(
@@ -1069,16 +1071,16 @@ class UnitConversionMock extends unitConversion
                 'longName' => 'A',
                 'varType' => 'float',
                 'convert' => array(
-                    'B' => 'AtoB',
-                    'C' => 'AtoC',
+                    'B' => 'aToB',
+                    'C' => 'aToC',
                 ),
             ),
             'B' => array(
                 'longName' => 'B',
                 'varType' => 'float',
                 'convert' => array(
-                    'A' => 'BtoA',
-                    'C' => 'BtoC',
+                    'A' => 'bToA',
+                    'C' => 'bToC',
                 ),
                 'preferred' => 'A',
             ),
@@ -1086,8 +1088,8 @@ class UnitConversionMock extends unitConversion
                 'longName' => 'C',
                 'varType' => 'float',
                 'convert' => array(
-                    'A' => 'CtoA',
-                    'B' => 'CtoB',
+                    'A' => 'cToA',
+                    'B' => 'cToB',
                 ),
                 'preferred' => 'A',
             ),
@@ -1097,16 +1099,16 @@ class UnitConversionMock extends unitConversion
                 'longName' => 'D',
                 'varType' => 'float',
                 'convert' => array(
-                    'E' => 'AtoB',
-                    'F' => 'AtoC',
+                    'E' => 'aToB',
+                    'F' => 'aToC',
                 ),
             ),
             'E' => array(
                 'longName' => 'E',
                 'varType' => 'float',
                 'convert' => array(
-                    'D' => 'BtoA',
-                    'F' => 'BtoC',
+                    'D' => 'bToA',
+                    'F' => 'bToC',
                 ),
                 'preferred' => 'D',
             ),
@@ -1114,8 +1116,8 @@ class UnitConversionMock extends unitConversion
                 'longName' => 'C',
                 'varType' => 'float',
                 'convert' => array(
-                    'D' => 'CtoA',
-                    'E' => 'CtoB',
+                    'D' => 'cToA',
+                    'E' => 'cToB',
                 ),
             ),
         ),
@@ -1130,7 +1132,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function AtoB($W, $time, $type) 
+    public function aToB($W, $time, $type) 
     {
         return 2*$W;
     }
@@ -1144,7 +1146,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function BtoA($W, $time, $type) 
+    public function bToA($W, $time, $type) 
     {
         return $W/2;
     }
@@ -1157,7 +1159,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function AtoC($W, $time, $type) 
+    public function aToC($W, $time, $type) 
     {
         return 4*$W;
     }
@@ -1171,7 +1173,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function CtoA($W, $time, $type) 
+    public function cToA($W, $time, $type) 
     {
         return $W/4;
     }
@@ -1184,7 +1186,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function BtoC($W, $time, $type) 
+    public function bToC($W, $time, $type) 
     {
         return 10*$W;
     }
@@ -1198,7 +1200,7 @@ class UnitConversionMock extends unitConversion
      *
      * @return float
      */    
-    public function CtoB($W, $time, $type) 
+    public function cToB($W, $time, $type) 
     {
         return $W/10;
     }

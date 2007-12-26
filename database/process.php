@@ -399,7 +399,7 @@ class Process extends DbBase
      *
      * @return bool true if we can run, false if we are blocked.     
      */
-    function checkProcessFile() 
+    function checkFile() 
     {
         $return = true;
         if (file_exists($this->me["File"])) {
