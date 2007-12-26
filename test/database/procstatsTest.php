@@ -45,7 +45,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 if (!defined("HUGNET_INCLUDE_PATH")) {
-    require_once dirname(__FILE__).'/../../hugnet.inc.php';
+    include_once dirname(__FILE__).'/../../hugnet.inc.php';
 }
 require_once dirname(__FILE__).'/databaseTest.php';
 require_once dirname(__FILE__).'/../../database/procstats.php';
@@ -333,16 +333,18 @@ class ProcStatsTest extends databaseTest
      * test
      *
      * @param array  $preload array of data to preload into the system
+     * @param string $Program The name of the program
      * @param string $type    The stat type to increment
      * @param string $name    The name of the stat to increment
      * @param int    $date    The unix date to force the system to use
+     * @param int    $PID     Unix process id
      * @param array  $expect  The array to expect to be in the database
      *
      * @return none
      *
      * @dataProvider dataGetStat().
      */
-    public function testIncGetStat($preload, $Program, $type, $name, $date, $PID, $expect) 
+    public function testGetStat($preload, $Program, $type, $name, $date, $PID, $expect) 
     {
         $this->load($preload);
         $ret = $this->o->getStat($name, $Program, $date, $type, $PID);

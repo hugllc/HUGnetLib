@@ -480,6 +480,110 @@ class DbBaseTest extends databaseTest
     }
 
     /**
+     * Data provider for testGetWhere
+     *
+     * @return array
+     */
+    public static function dataGetOneWhere() 
+    {
+        return array(
+            array(
+                array(),
+                "1",
+                null,
+                null,
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                ),
+                "name = 'hello'",
+                null,
+                array("id" => "1", "name" => "hello", "value" => "there"),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "id = ?",
+                array(3),
+                array("id" => "3", "name" => "taking", "value" => "the"),
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   The database key to get the record from
+     * @param array  $data    The data to send with the query
+     * @param array  $expect  The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataGetOneWhere
+     */
+    public function testGetOneWhere($preload, $where, $data, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->getOneWhere($where, $data);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+     * Data provider for testGetNextID
+     *
+     * @return array
+     */
+    public static function dataGetNextID() 
+    {
+        return array(
+            array(
+                array(),
+                1,
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                ),
+                2,
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                6,
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   The database key to get the record from
+     * @param array  $data    The data to send with the query
+     * @param array  $expect  The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataGetNextID
+     */
+    public function testGetNextID($preload, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->getNextID();
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
      * Data provider for DbBaseTest::testQuery()
      *
      * @return array

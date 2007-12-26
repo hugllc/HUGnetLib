@@ -462,6 +462,36 @@ class DbBase
     }
 
 
+
+    /**
+     * Returns the first row the where statement finds
+     *
+     * @param string $where a valid SQL where statement
+     *
+     * @return mixed
+      */
+    function getOneWhere($where, $data = array()) 
+    {
+        $res = $this->getWhere($where, $data, 0, 1);
+        return $res[0];
+    }
+
+
+    /**
+     * Gets the next ID to use from the table.
+     *
+     * This only works with integer ID columns!
+     *
+     * @return int
+      */
+    function getNextID() 
+    {
+        $query = "SELECT MAX(".$this->id.") as id from `".$this->table."`";    
+        $ret   = $this->query($query);
+        $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 0 ;
+        return $newID + 1;
+    }
+
     /**
      * Sets the error code for the last query
      *

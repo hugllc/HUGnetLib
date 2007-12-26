@@ -106,32 +106,6 @@ class PlogTest extends databaseTest
         unset($this->o);
     }
 
-    /**
-     * Tests plog::getID()
-     *
-     * @return none
-     *
-     * @todo Implement testGetID().
-     */
-    public function testGetID() 
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-
-    /**
-     * Tests plog::getOne()
-     *
-     * @return none
-     *
-     * @todo Implement testGetOne().
-     */
-    public function testGetOne() 
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
 
     /**
      * data provider for testFindDriver
@@ -172,7 +146,6 @@ class PlogTest extends databaseTest
      * @return none
      *
      * @dataProvider dataPacketLog().
-     * @covers driver::PacketLogSetup
      */
     public function testPacketLogSetup($Packet, $Gateway, $type, $expect) 
     {
