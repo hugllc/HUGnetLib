@@ -534,16 +534,15 @@ class DbBase
             return;
         }
         if (!$clear) {
-            if (!method_exists($obj, "errorInfo")) {
-                $err = $this->_db->errorInfo();
-            } else {
+            if (method_exists($obj, "errorInfo")) {
                 $err = $obj->errorInfo();
+            } else {
+                $err = $this->_db->errorInfo();
             }
         }
         $this->errorState = $err[0];
         $this->error      = $err[1];
         $this->errorMsg   = $err[2];
-
         $this->printError();
     }
     /**
@@ -554,9 +553,12 @@ class DbBase
     public function printError() 
     {
         if ($this->verbose) {
-            if ($this->errorState != "00000") $this->vprint("Error State: ".$this->errorState);
-            if (!empty($this->error)) $this->vprint("Error: ".$this->error);
-            if (!empty($this->errorMsg)) $this->vprint("Error Message: ".$this->errorMsg);
+            if (!empty($this->errorState) && ($this->errorState != "00000"))
+                $this->vprint("Error State: ".$this->errorState);
+            if (!empty($this->error))
+                $this->vprint("Error: ".$this->error);
+            if (!empty($this->errorMsg))
+                $this->vprint("Error Message: ".$this->errorMsg);
         }        
     }
     /**
@@ -580,8 +582,7 @@ class DbBase
         if (!is_array($data)) $data = array();
 
         $this->cacheQuery($query, $data, $getRet);
-        $this->vprint("Sending Query: ".$query."\n");
-        $this->vprint("With Data: ".print_r($data, true)."\n");
+        $this->vprint("Preparing query: ".$query."\n");
         $ret = $this->_db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
@@ -606,6 +607,7 @@ class DbBase
     protected function queryExecute($query, &$ret, &$data, $getRes = false)
     {
         if (!is_object($ret)) return false;
+        $this->vprint("Executing using data: \n".print_r($data, true));
         $res = $ret->execute($data);
         if ($getRes) {
             $res = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -614,7 +616,9 @@ class DbBase
             $this->cacheResult($res);
             $this->errorInfo(false, $ret);
             return $res;
-        } 
+        } else {
+            $this->vprint("Query Returned: ".print_r($res, true));
+        }
         $this->errorInfo(false, $ret);
         return $res;
     }

@@ -506,8 +506,20 @@ class driverTest extends PHPUnit_Framework_TestCase
                   ->with($this->arrayHasKey("DeviceID"));
         $this->o->getDevice($Info, "KEY");
     }
-
-
+    
+    /**
+     * test
+     *
+     * @return none
+     *
+     * @todo Implement testIsController().
+     */
+    public function testIsController() 
+    {
+        // Remove the following line when you implement this test.
+        $this->markTestIncomplete("This test has not been implemented yet.");
+    }
+    
     /**
      * test getInfo()
      *
