@@ -84,7 +84,7 @@ class Process extends DbBase
      */
     static public function getMyInfo($block="NORMAL", $name = false) 
     {
-        $stuff              = posix_uname();
+        $stuff        = posix_uname();
         $me["Host"]   = $stuff["nodename"];
         $me["Domain"] = $stuff["domainname"];
         $me["OS"]     = $stuff["sysname"];
@@ -431,7 +431,7 @@ class Process extends DbBase
     function checkProcessDB()
     {
         $return = true;
-        $rows = $this->getWhere(" Program = ? ", array($this->me['Program']));
+        $rows   = $this->getWhere(" Program = ? ", array($this->me['Program']));
         foreach ($rows as $row) {
             print "[".$this->me["PID"]."] Checking ".$row["PID"]." from Database";
             if ($this->CheckProcess($row["PID"])) {

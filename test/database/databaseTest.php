@@ -80,8 +80,10 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown() 
     {
-        $this->pdo->query("delete from ".$this->table);
-        $this->pdo = null;
+        if (is_object($this->pdo) && (get_class($this->pdo) == "PDO")) {
+            $this->pdo->query("delete from ".$this->table);
+            $this->pdo = null;
+        }
         if (file_exists($this->file)) unlink($this->file);
     }
 

@@ -49,6 +49,7 @@ require_once 'historyTest.php';
 require_once 'plogTest.php'; 
 require_once 'processTest.php'; 
 require_once 'procstatsTest.php'; 
+require_once 'rawHistoryTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -90,6 +91,7 @@ class HUGnetLibDatabaseTests
         $suite->addTestSuite('PlogTest');
         $suite->addTestSuite('ProcessTest');
         $suite->addTestSuite('ProcStatsTest');
+        $suite->addTestSuite('RawHistoryTest');
   
         return $suite;
     }

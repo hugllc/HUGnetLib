@@ -109,7 +109,9 @@ class DbBaseTest extends databaseTest
      */
     protected function tearDown()
     {
-        $this->pdo->query("DROP TABLE ".$this->table);
+        if (is_object($this->pdo) && (get_class($this->pdo) == "PDO")) {
+            $this->pdo->query("DROP TABLE ".$this->table);
+        }
         parent::tearDown();
         unset($this->o);
     }
@@ -651,6 +653,120 @@ class DbBaseTest extends databaseTest
     }
 
     /**
+     * Data provider for DbBaseTest::testQueryNoDb()
+     *
+     * @return array
+     */
+    public static function dataQueryNoDb() {
+        return array(
+            array(
+                "Hello",
+                "SELECT * FROM BadTableName WHERE id = 3",
+                null,
+                true,
+                array(),
+            ),
+            array(
+                null,
+                "SELECT * FROM BadTableName WHERE id = ?",
+                array(1,2,3,4,5),
+                false,
+                false,
+            ),
+            array(
+                new databaseTest(),
+                "CREATE TABLE IF NOT EXISTS `oneTestTable` ("
+                  ." `id` int(11) NOT null, "
+                  ." `name` varchar(16) NOT null default '', "
+                  ." `value` text NOT null, "
+                  ." PRIMARY KEY  (`id`) "
+                  ." );",
+                array(),
+                false,
+                false,
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $value  The data to kill the db with
+     * @param string $query  The query to perform
+     * @param array  $data   The data to send with the query
+     * @param bool   $getRet Whether to expect a return
+     * @param array  $expect The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataQueryNoDb().
+     */
+    public function testQueryNoDb($value, $query, $data, $getRet, $expect) 
+    {
+        $this->o->killDb($value);
+        $ret = $this->o->query($query, $data, $getRet);
+        $this->assertSame($expect, $ret);
+        $this->assertSame("NODBE", $this->readAttribute($this->o, "errorState"));
+    }
+
+    /**
+     * test
+     *
+     * @param array  $value  The data to kill the db with
+     * @param string $query  The query to perform
+     * @param array  $data   The data to send with the query
+     * @param bool   $getRet Whether to expect a return
+     * @param array  $expect The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataQueryNoDb().
+     */
+    public function testQueryNoDbErrorState($value, $query, $data, $getRet, $expect) 
+    {
+        $this->o->killDb($value);
+        $ret = $this->o->query($query, $data, $getRet);
+        $this->assertSame("NODBE", $this->readAttribute($this->o, "errorState"));
+    }
+    /**
+     * test
+     *
+     * @param array  $value  The data to kill the db with
+     * @param string $query  The query to perform
+     * @param array  $data   The data to send with the query
+     * @param bool   $getRet Whether to expect a return
+     * @param array  $expect The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataQueryNoDb().
+     */
+    public function testQueryNoDbErrorMsg($value, $query, $data, $getRet, $expect) 
+    {
+        $this->o->killDb($value);
+        $ret = $this->o->query($query, $data, $getRet);
+        $this->assertSame("Database Not Connected", $this->readAttribute($this->o, "errorMsg"));
+    }
+    /**
+     * test
+     *
+     * @param array  $value  The data to kill the db with
+     * @param string $query  The query to perform
+     * @param array  $data   The data to send with the query
+     * @param bool   $getRet Whether to expect a return
+     * @param array  $expect The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataQueryNoDb().
+     */
+    public function testQueryNoDbError($value, $query, $data, $getRet, $expect) 
+    {
+        $this->o->killDb($value);
+        $ret = $this->o->query($query, $data, $getRet);
+        $this->assertSame(-1, $this->readAttribute($this->o, "error"));
+    }
+
+    /**
      * Data provider for DbBaseTest::testQueryCache()
      *
      * @return array
@@ -882,6 +998,68 @@ class DbBaseTest extends databaseTest
         $this->assertFalse(DbBase::createTable());
     }
     
+    /**
+     * Data provider for testSqlDate
+     *
+     * @return array
+     */
+    public static function dataSqlDate() 
+    {
+        return array(
+            array("2007-12-25 12:13:14", "2007-12-25 12:13:14"),
+            array(1523479275, "2018-04-11 15:41:15"),
+            array("January 1, 2006 5:42pm", "2006-01-01 17:42:00"),
+            array(true, true),
+            array(array(), array()),
+        );
+    }
+    /**
+     * test
+     *
+     * @return none
+     *
+     * @dataProvider dataSqlDate
+     *
+     * @param mixed $date   The date 
+     * @param int   $expect The info to expect returned
+     */
+    public function testSqlDate($date, $expect) 
+    {
+        $ret = $this->o->sqlDate($date);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Data provider for testFixType
+     *
+     * @return array
+     */
+    public static function dataFixType() 
+    {
+        return array(
+            array("1", "Int(11)", 1),
+            array("1", "FLoat", 1.0),
+            array(1.0, "text(45)", "1"),
+            array(1.0, "char(2)", "1"),
+            array(1.0, "varchar(16)", "1"),
+            array(1.0, "asdf(4)", 1.0),
+        );
+    }
+    /**
+     * test
+     *
+     * @return none
+     *
+     * @dataProvider dataFixType
+     *
+     * @param mixed $value  The value to fix 
+     * @param mixed $type   The type of SQL column it is from 
+     * @param int   $expect The info to expect returned
+     */
+    public function testFixType($value, $type, $expect) 
+    {
+        $ret = $this->o->fixType($value, $type);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 
@@ -931,6 +1109,19 @@ class DbBaseClassTest extends DbBase
         $ret = $this->query($query, false); 
         $this->getColumns();   
     }
+    
+    /**
+     * kills the database so we can test the class when it doesn't ahve a database
+     *
+     * @param mixed $val The value to kill the database with
+     *
+     * @return none
+     */
+    public function killDb($val = null)
+    {
+        $this->_db = null;
+        $this->_db = $val;
+    }     
     
 }
 ?>
