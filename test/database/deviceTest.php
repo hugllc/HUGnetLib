@@ -62,35 +62,46 @@ class DeviceTest extends databaseTest
 {
     /** The table to use */
     protected $table = "devices";
+    /** The table to use */
+    protected $id = "DeviceKey";
+    
     /** This is the preload data we can use */
     protected static $preload = array(
         array(
             "DeviceKey" => 1,
             "DeviceID"  => "000030",
+            "DeviceName" => "dev1",
             "SerialNum" => 48,
             "GatewayKey" => 1,
             "params"     => "",
+            "PollInterval" => 15,
         ),
         array(
             "DeviceKey" => 2,
             "DeviceID"  => "000031",
+            "DeviceName" => "dev2",
             "SerialNum" => 49,
             "GatewayKey" => 1,
             "params"     => "",
+            "PollInterval" => 10,
         ),
         array(
             "DeviceKey" => 3,
             "DeviceID"  => "000032",
+            "DeviceName" => "dev3",
             "SerialNum" => 50,
             "GatewayKey" => 2,
             "params"     => "",
+            "PollInterval" => 5,
         ),
         array(
             "DeviceKey" => 4,
             "DeviceID"  => "000033",
+            "DeviceName" => "dev4",
             "SerialNum" => 51,
             "GatewayKey" => 0,
             "params"     => "",
+            "PollInterval" => 0,
         ),
     );
     /**
@@ -120,7 +131,7 @@ class DeviceTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new device($this->file);
+        $this->o = new device($this->pdo);
         $this->o->createTable();
     }
 
@@ -244,16 +255,138 @@ class DeviceTest extends databaseTest
     }
 
     /**
+     * data provider
+     *
+     * @return array
+     */
+    public static function dataGetDevice() 
+    {
+        return array(
+            array(
+                self::$preload,
+                0,
+                "ID",
+                array(),
+            ),
+            array(
+                self::$preload,
+                1,
+                "asdf",
+                array(
+                    "DeviceKey" => "1",
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => array(),
+                ),
+            ),
+            array(
+                self::$preload,
+                "dev3",
+                "NAME",
+                array(
+                    "DeviceKey" => "3",
+                    "DeviceID" => "000032",
+                    "DeviceName" => "dev3",
+                    "SerialNum" => "50",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "2",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "5",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => array(),
+                ),
+            ),
+            array(
+                self::$preload,
+                "000031",
+                "ID",
+                array(
+                    "DeviceKey" => "2",
+                    "DeviceID" => "000031",
+                    "DeviceName" => "dev2",
+                    "SerialNum" => "49",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "10",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => array(),
+                ),
+            ),
+        );
+    }
+
+    /**
      * test
+     *
+     * @param array  $preload  Data to preload into the database
+     * @param mixed  $id       The ID to look for
+     * @param string $type     The type of id "ID", "NAME", or "KEY"
+     * @param array  $expect   What we expect returned
      *
      * @return none
      *
-     * @todo Implement testGetDevice().
+     * @dataProvider dataGetDevice().
      */
-    public function testGetDevice() 
+    public function testGetDevice($preload, $id, $type, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load($preload);
+        $ret = $this->o->getDevice($id, $type);
+        $this->assertSame($expect, $ret);
     }
 
     /**
@@ -270,30 +403,201 @@ class DeviceTest extends databaseTest
     }
 
     /**
-     * test
+     * data provider
      *
-     * @return none
-     *
-     * @todo Implement testSetParams().
+     * @return array
      */
-    public function testSetParams() 
+    public static function dataSetParams() 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        return array(
+            array(
+                self::$preload,
+                1,
+                array("this" => "is", "an" => "array"),
+                array(
+                    "DeviceKey" => "1",
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MjoiYW4iO3M6NToiYXJyYXkiO30=",
+                ),
+                true,
+            ),
+            array(
+                self::$preload,
+                1,
+                array(1,2,3,4,5),
+                array(
+                    "DeviceKey" => "1",
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => "YTo1OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O2k6NDtpOjU7fQ==",
+                ),
+                true,
+            ),
+            array(
+                self::$preload,
+                1,
+                "This is a string",
+                array(
+                    "DeviceKey" => "1",
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => "This is a string",
+                ),
+                true,
+            ),
+            array(
+                self::$preload,
+                1,
+                array(),
+                array(
+                    "DeviceKey" => "1",
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "HWPartNum" => "",
+                    "FWPartNum" => "",
+                    "FWVersion" => "",
+                    "RawSetup" => "",
+                    "Active" => "YES",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => "YTowOnt9",
+                ),
+                true,
+            ),
+            array(
+                self::$preload,
+                510,
+                array(1,2,3,4,5),
+                null,
+                false,
+            ),
+        );
     }
 
     /**
      * test
      *
+     * @param array  $preload   Data to preload into the database
+     * @param ing    $DeviceKey The ID to look for
+     * @param mixed  $params    The type of id "ID", "NAME", or "KEY"
+     * @param array  $expect    What we expect returned
+     * @param bool   $retExpect What we expect returned
+     *
      * @return none
      *
-     * @todo Implement testIsController().
+     * @dataProvider dataSetParams().
      */
-    public function testIsController() 
+    public function testSetParams($preload, $DeviceKey, $params, $expect, $retExpect)
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load($preload);
+        $this->o->setParams($DeviceKey, $params);
+        $ret = $this->getSingle($DeviceKey);
+        $this->assertSame($expect, $ret);
     }
+
+    /**
+     * test
+     *
+     * @param array  $preload   Data to preload into the database
+     * @param ing    $DeviceKey The ID to look for
+     * @param mixed  $params    The type of id "ID", "NAME", or "KEY"
+     * @param array  $expect    What we expect returned
+     * @param bool   $retExpect What we expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataSetParams().
+     */
+    /*
+    public function testSetParamsReturn($preload, $DeviceKey, $params, $expect, $retExpect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->setParams($DeviceKey, $params);
+        $this->assertSame($retExpect, $ret);
+    }
+    */
 
     /**
      * data provider
@@ -306,6 +610,7 @@ class DeviceTest extends databaseTest
             array(array("this"=>"is","a"=>"test"), "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"),
             array("test String", "test String"),
             array(1234, ""),
+            array(array(), "YTowOnt9"),
         );
     }
     /**
@@ -350,6 +655,7 @@ class DeviceTest extends databaseTest
             array("YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9", array("this"=>"is","a"=>"test")),
             array(array("this"=>"is","an"=>"array"),array("this"=>"is","an"=>"array")),
             array(1234, array()),
+            array("", array()),
         );
     }
     /**
@@ -382,6 +688,38 @@ class DeviceTest extends databaseTest
         $ret = device::decodeParams($params);
         $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
     }
+
+    /**
+     * data provider
+     *
+     * @return array
+     */
+    public static function dataEncodeDecodeParams() 
+    {
+        return array(
+            array(array()),
+            array(array(1,2,3,4,5)),
+            array(array("Hello" => "This", "is" => "an", "associative" => "array")), 
+        );
+    }
+    /**
+     * test
+     *
+     * @param string $params Parameters to decode
+     * @param array  $expect The expected return value
+     *
+     * @return none
+     *
+     * @dataProvider dataEncodeDecodeParams
+     */
+    public function testEncodeDecodeParams($params) 
+    {
+        $expect = $params;
+        device::encodeParams($params);
+        device::decodeParams($params);
+        $this->assertSame($expect, $params);
+    }
+
 }
 
 // Call deviceTest::main() if this source file is executed directly.

@@ -297,6 +297,7 @@ class DbBaseTest extends databaseTest
                 array("id" => 3, "name" => "Hi", "value" => "There"),
                 3,
                 null,
+                false,
             ),
             array(
                 array(
@@ -305,6 +306,7 @@ class DbBaseTest extends databaseTest
                 array("id" => 1, "name" => "Bye", "value" => "Now"),
                 1,
                 array("id" => "1", "name" => "Bye", "value" => "Now"),
+                true,
             ),
         );
     }
@@ -319,14 +321,36 @@ class DbBaseTest extends databaseTest
      * @param array $info    The info to add to the database
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
+     * @param bool  $retExpect What the function should return
      */
-    public function testUpdate($preload, $info, $key, $expect) 
+    public function testUpdate($preload, $info, $key, $expect, $retExpect) 
     {
         $this->load($preload);
         $this->o->update($info);
         $ret = $this->getSingle($expect["id"]);
         $this->assertSame($expect, $ret);
     }
+    /**
+     * test
+     *
+     * @return none
+     *
+     * @dataProvider dataUpdate
+     *
+     * @param array $preload   Data to preload into the database
+     * @param array $info      The info to add to the database
+     * @param int   $key       The database key to get the record from
+     * @param array $expect    The info to expect returned
+     * @param bool  $retExpect What the function should return
+     */
+    /*
+    public function testUpdateReturn($preload, $info, $key, $expect, $retExpect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->update($info);
+        $this->assertSame($retExpect, $ret);
+    }
+    */
 
     /**
      * Data provider for testGetAll

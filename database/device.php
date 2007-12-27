@@ -60,26 +60,6 @@ class Device extends DbBase
     var $PollWarningIntervals = 2;        
 
     /**
-     * This function sets up the driver object, and the database object.  The
-     * database object is taken from the driver object.
-     *
-     * @param object &$driver This should be an object of class driver
-     * @param string $table   The database table to use
-     * @param string $id      The 'id' column to use
-     * @param bool   $verbose Whether to be verbose or not
-     */
-    function __construct(&$driver = null, $table=null, $id=null, $verbose=false) 
-    {
-        if (is_object($driver) && (get_class($driver) == "Driver")) {
-            $this->_driver = &$driver;
-            parent::__construct($driver->db, $table, $id, $verbose);
-        } else {
-            if (is_string($driver)) $this->file = $driver;
-            parent::__construct($this->file, $table, $id, $verbose);
-        }
-    }
-
-    /**
      * This returns an array setup for a HTML select list using the adodb
      * function 'GetMenu'
      *
@@ -138,24 +118,7 @@ class Device extends DbBase
         $devInfo = $this->getWhere($field." = ? ", array($id));
         if (is_array($devInfo)) {
             $devInfo = $devInfo[0];
-            $devInfo = $this->_driver->DriverInfo($devInfo);
-
-            $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
-
-            $cal                    = $this->query($query);
-            $devInfo["Calibration"] = array();
-            if (is_array($cal[0])) {
-                $devInfo["Calibration"] = $this->getCalibration($devInfo, $cal[0]['RawCalibration']);
-            }
-
-            $query = "select * from gateways where GatewayKey='".$devInfo['GatewayKey']."'";
-
-            $gw = $this->query($query);
-            if (is_array($gw)) {
-                $devInfo['Gateway'] = $gw[0];
-            }
             $devInfo["params"] = $this->decodeParams($devInfo["params"]);
-
         }
         return $devInfo;
     }
@@ -197,7 +160,7 @@ class Device extends DbBase
 
         // interpConfig takes an array of packets and returns
         // a single array of configuration data.
-        $ep     = $this->_driver->interpConfig($Packet);
+//        $ep     = $this->_driver->interpConfig($Packet);
         $return = true;
 
         if (is_array($ep)) {
@@ -258,24 +221,11 @@ class Device extends DbBase
      */
     function setParams($DeviceKey, $params) 
     {
-        if (is_array($params)) $params = device::encodeParams($params);
         $info = array(
             "DeviceKey" => $DeviceKey,
-            "params"    => $this->encodeParams($params),
+            "params"    => self::encodeParams($params),
         );
         return $this->update($info);
-    }
-
-    /**
-     * Checks to see if this is a controller.
-     *
-     * @param array &$info This is a device information array
-     *
-     * @return bool
-     */
-    function isController(&$info)
-    {
-        return method_exists($this->_driver->drivers[$info['Driver']], "checkProgram");
     }
 
     /**
@@ -290,9 +240,8 @@ class Device extends DbBase
         if (is_array($params)) {
             $params = serialize($params);
             $params = base64_encode($params);
-        } else if (!is_string($params)) {
-            $params = "";
         }
+        if (!is_string($params)) $params = "";
         return $params;
     }
 
@@ -308,75 +257,9 @@ class Device extends DbBase
         if (is_string($params)) {
             $params = base64_decode($params);
             $params = unserialize($params);
-        } else if (!is_array($params)) {
-            $params = array();
         }
+        if (!is_array($params)) $params = array();
         return $params;    
-    }
-
-    /**
-     * Queries health information from the database.
-     * 
-     * @param string $where Extra where clause for the SQL
-     * @param int    $days  The number of days back to go
-     * @param mixed  $start The start date of the health report
-     *
-     * @return array The array of health information
-     * 
-     * @todo This should be moved to the device class
-     */
-    function health($where, $days = 7, $start=null) 
-    {
-
-        if ($start === null) {
-            $start = time();
-        } else if (is_string($start)) {
-            $start = strtotime($start);
-        }
-        $end = $start - (86400 * $days);
-        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->table." ";
-        $cquery .= " WHERE PollInterval > 0 ";
-        if (!empty($where)) $cquery .= " AND ".$where;
-        $res   = $this->query($cquery);
-        $count = $res[0]['count'];
-        if (empty($count)) $count = 1;
-        
-        $query = " SELECT " .
-                 "  ROUND(AVG(AverageReplyTime), 2) as ReplyTime " .
-                 ", ROUND(STD(AverageReplyTime), 2) as ReplyTimeSTD " .
-                 ", ROUND(MIN(AverageReplyTime), 2) as ReplyTimeMIN " .
-                 ", ROUND(MAX(AverageReplyTime), 2) as ReplyTimeMAX " .
-                 ", ROUND(AVG(AveragePollTime), 2) as PollInterval " . 
-                 ", ROUND(STD(AveragePollTime), 2) as PollIntervalSTD " . 
-                 ", ROUND(MIN(AveragePollTime), 2) as PollIntervalMIN " . 
-                 ", ROUND(MAX(AveragePollTime), 2) as PollIntervalMAX " . 
-                 ", ROUND(AVG(PollInterval), 2) as PollIntervalSET " . 
-                 ", ROUND(AVG(PollInterval/AveragePollTime), 2) as PollDensity " . 
-                 ", ROUND(STD(PollInterval/AveragePollTime), 2) as PollDensitySTD " . 
-                 ", ROUND(MIN(PollInterval/AveragePollTime), 2) as PollDensityMIN " . 
-                 ", ROUND(MAX(PollInterval/AveragePollTime), 2) as PollDensityMAX " . 
-                 ", '1.0' as PollDensitySET " . 
-                 ", SUM(Powerups) as Powerups " .
-                 ", SUM(Reconfigs) as Reconfigs " .
-                 ", ROUND(SUM(Polls) / ".$days.") as DailyPolls ".
-                 ", ROUND((1440 / AVG(PollInterval)) * ".$count.") as DailyPollsSET ".
-                 " ";
-                 
-        $query .= " FROM " . $this->analysis_table;
-
-        $query .= " LEFT JOIN " . $this->table . " ON " . 
-                 $this->table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
-
-        $query .= " WHERE " .
-                  $this->analysis_table . ".Date <= ".$this->db->qstr(date("Y-m-d H:i:s", $start)).
-                  " AND " .
-                  $this->analysis_table . ".Date >= ".$this->db->qstr(date("Y-m-d H:i:s", $end));
-    
-        if (!empty($where)) $query .= " AND ".$where;
-
-        $res = $this->query($query);
-        if (isset($res[0])) $res = $res[0];
-        return $res;
     }
 
 

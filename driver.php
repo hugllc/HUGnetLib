@@ -54,6 +54,8 @@ require_once HUGNET_INCLUDE_PATH."/sensor.php";
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 require_once HUGNET_INCLUDE_PATH."/filter.php";
 require_once HUGNET_INCLUDE_PATH."/database/device.php";
+require_once HUGNET_INCLUDE_PATH."/database/gateway.php";
+require_once HUGNET_INCLUDE_PATH."/database/Analysis.php";
 require_once HUGNET_INCLUDE_PATH."/unitConversion.php";
 require_once HUGNET_INCLUDE_PATH."/lib/plugins.inc.php";
 require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
@@ -113,7 +115,7 @@ class Driver
       */
     function health($where, $days = 7, $start=null) 
     {
-        return $this->device->health($where, $days, $start);
+        return $this->analysis->health($where, $days, $start);
     }
     /**
      * Wrapper for device::Diagnose
@@ -316,8 +318,40 @@ class Driver
     function getDevice($id, $type="KEY") 
     {
 
-        return $this->device->getDevice($id, $type);
+        $devInfo = $this->device->getDevice($id, $type);
+        if (is_array($devInfo)) {
+            if (is_object($this->_driver)) $devInfo = $this->_driver->DriverInfo($devInfo);
+
+            $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
+
+            $cal                    = $this->query($query);
+            $devInfo["Calibration"] = array();
+            if (is_array($cal[0])) {
+                $devInfo["Calibration"] = $this->getCalibration($devInfo, $cal[0]['RawCalibration']);
+            }
+
+            $query = "select * from gateways where GatewayKey='".$devInfo['GatewayKey']."'";
+
+            $gw = $this->query($query);
+            if (is_array($gw)) {
+                $devInfo['Gateway'] = $gw[0];
+            }
+        }
+        return $devInfo;
+        
     }
+    /**
+     * Checks to see if this is a controller.
+     *
+     * @param array &$info This is a device information array
+     *
+     * @return bool
+     */
+    function isController(&$info)
+    {
+        return method_exists($this->drivers[$info['Driver']], "checkProgram");
+    }
+
 
     /**
      * Runs a function using the correct driver for the endpoint
@@ -531,8 +565,9 @@ class Driver
 
         $this->db = &$db;
         $this->packet = new EPacket(null, $this->verbose);
-        $this->gateway = new gateway($this);
-        $this->device = new device($this);
+        $this->analysis = new analysis($db);
+        $this->gateway = new gateway($db);
+        $this->device = new device($db);
         $this->unit = new unitConversion();
 
         $this->drivers["eDEFAULT"] = new eDEFAULT($this);
