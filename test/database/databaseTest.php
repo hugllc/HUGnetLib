@@ -111,9 +111,14 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $query  = "INSERT INTO `".$this->table."` (".implode($keys, ",").") VALUES(".$qMarks.");";
         $res    = $this->pdo->prepare($query);
         if (!is_object($res)) return;
+        $count = 0;
         foreach ($values as $val) {
             $data = $this->prepareData($val, $keys);
-            $res->execute($data);
+            if ($res->execute($data)) {
+                $count++;
+            } else {
+                var_dump($res->errorInfo());
+            }
         }
     }
 

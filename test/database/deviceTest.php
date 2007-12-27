@@ -62,6 +62,37 @@ class DeviceTest extends databaseTest
 {
     /** The table to use */
     protected $table = "devices";
+    /** This is the preload data we can use */
+    protected static $preload = array(
+        array(
+            "DeviceKey" => 1,
+            "DeviceID"  => "000030",
+            "SerialNum" => 48,
+            "GatewayKey" => 1,
+            "params"     => "",
+        ),
+        array(
+            "DeviceKey" => 2,
+            "DeviceID"  => "000031",
+            "SerialNum" => 49,
+            "GatewayKey" => 1,
+            "params"     => "",
+        ),
+        array(
+            "DeviceKey" => 3,
+            "DeviceID"  => "000032",
+            "SerialNum" => 50,
+            "GatewayKey" => 2,
+            "params"     => "",
+        ),
+        array(
+            "DeviceKey" => 4,
+            "DeviceID"  => "000033",
+            "SerialNum" => 51,
+            "GatewayKey" => 0,
+            "params"     => "",
+        ),
+    );
     /**
      * Runs the test methods of this class.
      *
@@ -89,7 +120,7 @@ class DeviceTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new device($this->pdo);
+        $this->o = new device($this->file);
         $this->o->createTable();
     }
 
@@ -149,17 +180,67 @@ class DeviceTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
 
+
+    /**
+     * data provider
+     *
+     * @return array
+     */
+    public static function dataSelectDevice() 
+    {
+        return array(
+            array(
+                self::$preload,
+                "test",
+                1,
+                2,
+                array(
+                    3 => "000032",
+                ),
+            ),
+            array(
+                self::$preload,
+                "test",
+                1,
+                null,
+                array(
+                    1 => "000030",
+                    2 => "000031",
+                    3 => "000032",
+                ),
+            ),
+            array(
+                self::$preload,
+                "test",
+                1,
+                0,
+                array(
+                    1 => "000030",
+                    2 => "000031",
+                    3 => "000032",
+                ),
+            ),
+        );
+    }
+
     /**
      * test
      *
+     * @param array  $preload    Data to preload into the database
+     * @param string $name       The name of the select list
+     * @param mixed  $selected   The entry that is currently selected
+     * @param int    $GatewayKey The key to use if only one gateway is to be selected
+     * @param array  $expect     What we expect returned
+     *
      * @return none
      *
-     * @todo Implement testSelectDevice().
+     * @dataProvider dataSelectDevice().
      */
-    public function testSelectDevice() 
+    public function testSelectDevice($preload, $name, $selected, $GatewayKey, $expect) 
     {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
+        $this->load($preload);
+        $ret = $this->o->selectDevice($name, $selected, $GatewayKey);
+        $this->assertSame($expect, $ret);
     }
 
     /**
