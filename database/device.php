@@ -70,7 +70,7 @@ class Device extends DbBase
      */
     function __construct(&$driver = null, $table=null, $id=null, $verbose=false) 
     {
-        if (is_object($driver)) {
+        if (is_object($driver) && (get_class($driver) == "Driver")) {
             $this->_driver = &$driver;
             parent::__construct($driver->db, $table, $id, $verbose);
         } else {
@@ -93,7 +93,7 @@ class Device extends DbBase
     {
         $data  = array();
         $query = "SELECT DeviceKey, DeviceID FROM devices WHERE";
-        if (is_null($GatewayKey)) {
+        if (empty($GatewayKey)) {
             $data[] = 0;
             $query .= " GatewayKey <> ?";            
         } else {
