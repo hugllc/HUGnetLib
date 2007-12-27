@@ -53,6 +53,8 @@ class DbBase
     protected $table = "none";
     /** @var string This is the Field name for the key of the record */
     protected $id = "id";
+    /** SQL date format */
+    protected $dateFormat = "Y-m-d H:i:s";
 
     /**
      *  These are the database fields
@@ -109,6 +111,7 @@ class DbBase
         $this->verbose($verbose);
         // Set it here since it needs a call to sys_get_temp_dir
         if (is_string($db) && !empty($db)) {
+            if (trim(strtolower($db)) == ":memory:") $db = trim(strtolower($db));
             $this->file = $db;
         } else {
             $this->file = HUGNET_LOCAL_DATABASE;
@@ -493,6 +496,25 @@ class DbBase
     }
 
     /**
+     * Fixes variable so they are the correct type
+     *
+     * @param mixed  $val  The value to fix
+     * @param string $type The type to use.  This is the SQL column type
+     *
+     * @return mixed
+     */
+    public function fixType($val, $type)
+    {
+        $type = trim(strtolower($type));
+        if (substr($type, 0, 4) == "char") return (string) $val;
+        if (substr($type, 0, 4) == "text") return (string) $val;
+        if (substr($type, 0, 7) == "varchar") return (string) $val;
+        if (substr($type, 0, 3) == "int") return (int) $val;
+        if (substr($type, 0, 5) == "float") return (float) $val;
+        return $val;
+    }
+
+    /**
      * Sets the error code for the last query
      *
      * @param bool   $clear Clears the error
@@ -548,6 +570,9 @@ class DbBase
      */
     public function query($query, $data=array(), $getRet=true) 
     {
+        // Clear out the error
+        $this->errorInfo(true); 
+
         $badRet = false;
         if ($getRet) $badRet = array();
         if (!$this->checkDb()) return $badRet;
@@ -555,8 +580,6 @@ class DbBase
         if (!is_array($data)) $data = array();
 
         $this->cacheQuery($query, $data, $getRet);
-        // Clear out the error
-        $this->errorInfo(true); 
         $this->vprint("Sending Query: ".$query."\n");
         $this->vprint("With Data: ".print_r($data, true)."\n");
         $ret = $this->_db->prepare($query);
@@ -688,6 +711,21 @@ class DbBase
         if (!$this->checkDb()) return false;
         if ($this->driver == "sqlite") return true;
         return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
+    }
+
+    /**
+     * Takes a date and turns it into a SQL date
+     * 
+     * @param mixed $date The date in just about any format
+     *
+     * @return string SQL Date
+     */
+    function sqlDate($date) 
+    {
+        if (trim(strtoupper($date)) == "NOW") return date($this->dateFormat);
+        if (is_numeric($date)) return date($this->dateFormat, $date);
+        if (is_string($date)) return date($this->dateFormat, strtotime($date));
+        return $date;
     }
     
 }

@@ -98,9 +98,14 @@ class Device extends DbBase
             $query .= " GatewayKey <> ?";            
         } else {
             $data[] = $GatewayKey;
-            $query .= " GatewayKey= ? ";            
+            $query .= " GatewayKey = ? ";            
         }
-        return $this->query($query, $data);
+        $rows = $this->query($query, $data, true);
+        $ret = array();
+        foreach($rows as $row) {
+            $ret[$row["DeviceKey"]] = $row["DeviceID"];
+        }
+        return $ret;
     }    
     
     /**

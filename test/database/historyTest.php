@@ -67,7 +67,11 @@ class HistoryTest extends databaseTest
 
     /** This is data to use for tests */
     protected static $preload = array(
-        array(),
+        array("DeviceKey" => 1, "Date" => "2007-12-20 02:20:02", "deltaT" => 0, "Data0" => 1, "Data1" => 2, "Data2" => 3),
+        array("DeviceKey" => 1, "Date" => "2007-12-20 02:25:02", "deltaT" => 0, "Data0" => 2, "Data1" => 3, "Data2" => 4),
+        array("DeviceKey" => 1, "Date" => "2007-12-20 02:30:02", "deltaT" => 0, "Data0" => 3, "Data1" => 4, "Data2" => 5),
+        array("DeviceKey" => 1, "Date" => "2007-12-20 02:35:02", "deltaT" => 0, "Data0" => 4, "Data1" => 5, "Data2" => 6),
+        array("DeviceKey" => 1, "Date" => "2007-12-20 02:40:02", "deltaT" => 0, "Data0" => 5, "Data1" => 6, "Data2" => 7),
     );
 
     /**
@@ -98,7 +102,7 @@ class HistoryTest extends databaseTest
     {
         parent::setUp();
         $this->o = new history($this->pdo);
-        $this->o->createTable();
+        $this->o->createTable($this->table, 3);
 
     }
 
@@ -115,6 +119,109 @@ class HistoryTest extends databaseTest
         parent::tearDown();
         unset($this->o);
     }
+    
+    /**
+     * Data provider for testGetDates
+     *
+     * @return array
+     */
+    public static function dataGetDates() 
+    {
+        return array(
+            array(
+                self::$preload,
+                1,
+                "2007-12-20 02:30:02",
+                "2007-12-20 02:40:02",
+                5,
+                array(
+                    array(
+                        "DeviceKey" => 1, 
+                        "Date" => "2007-12-20 02:40:02", 
+                        "deltaT" => 0, 
+                        "Data0" => 5.0, 
+                        "Data1" => 6.0, 
+                        "Data2" => 7.0,
+                        "data" => array(5.0, 6.0, 7.0),
+                    ),
+                    array(
+                        "DeviceKey" => 1, 
+                        "Date" => "2007-12-20 02:35:02", 
+                        "deltaT" => 0, 
+                        "Data0" => 4.0, 
+                        "Data1" => 5.0, 
+                        "Data2" => 6.0,
+                        "data" => array(4.0, 5.0, 6.0),
+                    ),
+                    array(
+                        "DeviceKey" => 1, 
+                        "Date" => "2007-12-20 02:30:02", 
+                        "deltaT" => 0, 
+                        "Data0" => 3.0, 
+                        "Data1" => 4.0, 
+                        "Data2" => 5.0,
+                        "data" => array(3.0, 4.0, 5.0),
+                    ),
+                ),
+            ),               
+            array(
+                self::$preload,
+                1,
+                "2007-12-20 02:30:02",
+                "NOW",
+                2,
+                array(
+                    array(
+                        "DeviceKey" => 1, 
+                        "Date" => "2007-12-20 02:40:02", 
+                        "deltaT" => 0, 
+                        "Data0" => 5.0, 
+                        "Data1" => 6.0, 
+                        "Data2" => 7.0,
+                        "data" => array(5.0, 6.0, 7.0),
+                    ),
+                    array(
+                        "DeviceKey" => 1, 
+                        "Date" => "2007-12-20 02:35:02", 
+                        "deltaT" => 0, 
+                        "Data0" => 4.0, 
+                        "Data1" => 5.0, 
+                        "Data2" => 6.0,
+                        "data" => array(4.0, 5.0, 6.0),
+                    ),
+                ),
+            ),               
+            array(
+                self::$preload,
+                2,
+                "2007-12-20 02:30:02",
+                "NOW",
+                2,
+                array(),
+            ),               
+        );
+    }
+    /**
+     * test
+     *
+     * @param array $preload   Data to preload into the database.
+     * @param int   $DeviceKey The key for the device to get the history for
+     * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
+     * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+     * @param int   $maxRec    The max number of records to return
+     * @param int   $expect    The info to expect returned
+     *
+     * @return none
+     *
+     * @dataProvider dataGetDates
+     */
+    public function testGetDates($preload, $DeviceKey, $startDate, $endDate, $maxRec, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->GetDates($DeviceKey, $startDate, $endDate, $maxRec);
+        $this->assertSame($expect, $ret);
+    }
+    
 
 }
 

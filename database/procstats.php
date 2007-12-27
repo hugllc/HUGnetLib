@@ -165,7 +165,7 @@ class ProcStats extends DbBase
      */
     function getStat($name, $Program, $date="now", $type="stat", $PID=false) 
     {
-        $data = array($Program, $type, $date, $name);
+        $data  = array($Program, $type, $date, $name);
         $query = " Program= ? "
                 ." AND stype= ? "
                 ." AND sdate= ? "
@@ -227,7 +227,7 @@ class ProcStats extends DbBase
      */
     function clearStats() 
     {
-        $data = array($this->me['Program']);
+        $data  = array($this->me['Program']);
         $query = "DELETE FROM '".$this->table."' "
                 ." WHERE Program= ? ";
         $this->query($query, $data);
@@ -242,7 +242,7 @@ class ProcStats extends DbBase
      */
     function getPeriodicStats($Program) 
     {
-        $data = array($Program);
+        $data  = array($Program);
         $query = " Program= ? "
                 ." AND (";
         $sep   = "";
@@ -252,8 +252,8 @@ class ProcStats extends DbBase
             $sep    = " OR ";
         }
         $query .= ") ORDER BY sdate desc";            
-        $rows = $this->getWhere($query, $data);
-        $ret = array();
+        $rows   = $this->getWhere($query, $data);
+        $ret    = array();
         foreach ($rows as $row) {
             $ret[$row['stype']][$row['sdate']][$row['sname']] = $row['svalue'];
         }
@@ -270,13 +270,12 @@ class ProcStats extends DbBase
      */
     function getTotalStats($Program) 
     {
-        $data = array($Program);
-        $query  = " Program = ? "
+        $data  = array($Program);
+        $query = " Program = ? "
                  ." AND "
                  ." stype='totals' ";
-
-        $rows = $this->getWhere($query, $data);
-        $ret = array();
+        $rows  = $this->getWhere($query, $data);
+        $ret   = array();
         foreach ($rows as $row) {
             $ret[$row['sname']] = $row['svalue'];
         }

@@ -50,26 +50,61 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
 class History extends DbBase
 {
     /** The database table to use */
-    var $table = "history";
+    protected $table = "history";
     /** This is the Field name for the key of the record */
-    var $id = "HistoryKey";    
+    protected $id = "HistoryKey";
+    /** The type of data */
+    protected $dataType = "float";
+
+    /** The number of data elements */
+    private $_elements = 16;
     /** The number of columns */
     private $_columns = 3;
    
     /**
      * Gets history between two dates and returns it as an array
      *
+     * @param int   $DeviceKey The key for the device to get the history for
      * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
      * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
      * @param int   $maxRec    The max number of records to return
      *
      * @return array
      */
-    public function getDates($startDate, $endDate = "NOW", $maxRec=0) 
+    public function getDates($DeviceKey, $startDate, $endDate = "NOW", $maxRec=0) 
     {
+        $startDate = $this->sqlDate($startDate);
+        $endDate   = $this->sqlDate($endDate);
+        $data      = array($startDate, $endDate, $DeviceKey);
+        $query     = "Date >= ? AND Date <= ? AND DeviceKey = ? ";
+        $query    .= " ORDER BY `Date` DESC";
+        return $this->getWhere($query, $data, $maxRec, 0);
     }
    
-   
+    /**
+     * Gets all rows from the database
+     *
+     * @param string $where Where clause
+     * @param array  $data  Data for query
+     * @param int    $limit The maximum number of rows to return (0 to return all)
+     * @param int    $start The row offset to start returning records at
+     *
+     * @return array
+     */
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0) 
+    {
+        $ret = parent::getWhere($where, $data, $limit, $start);
+        foreach ($ret as $key => $val) {
+            $ret[$key]["DeviceKey"] = (int) $val["DeviceKey"];
+            $ret[$key]["deltaT"]    = (int) $val["deltaT"];
+            for ($i = 0; $i < $this->_elements; $i++) {
+                $ret[$key]["data"][$i] = self::fixType($val["Data".$i], $this->fields["Data".$i]);
+                $ret[$key]["Data".$i]  = self::fixType($val["Data".$i], $this->fields["Data".$i]);
+            }
+        }
+        return $ret;
+    }
+
     /**
      * Creates the database table
      *
@@ -78,10 +113,11 @@ class History extends DbBase
      *
      * @return none
      */   
-    public function createTable($table=null, $elements=16)
+    public function createTable($table=null, $elements=null)
     {
-        $this->elements = $elements;
-        $this->_columns = 3 + $elements;
+        $elements = (int) $elements;
+        if (!empty($elements)) $this->_elements = $elements;
+        $this->_columns = 3 + $this->_elements;
         
         if (is_string($table) && !empty($table)) $this->table = $table;
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
@@ -89,47 +125,15 @@ class History extends DbBase
                   `Date` datetime NOT NULL default '0000-00-00 00:00:00',
                   `deltaT` int(11) NOT NULL,
                  ";
-        for ($i = 0; $i < $elements; $i++) {
+        for ($i = 0; $i < $this->_elements; $i++) {
             $query .= "`Data".$i."` float default NULL,\n";
         }
-        // $query .= "UNIQUE KEY `DeviceKey` (`DeviceKey`,`Date`)
-        $query .= "PRIMARY KEY  (`DeviceKey`)\n);";
-        $ret = $this->query($query, false);        
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
+        $query .= "PRIMARY KEY  (`DeviceKey`, `Date`)\n);";
+        $ret    = $this->query($query, false);        
+        //$ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
         $this->getColumns();
         return $ret;
     }
-
-    /**
-     * Creates the database table
-     *
-     * @param string $table    The table to use
-     * @param mixed  $elements The number of data fields
-     *
-     * @return none
-     */   
-    public function createTableRaw($table=null, $elements=16)
-    {
-        if (is_string($table) && !empty($table)) $this->table = $table;
-        $query = "CREATE TABLE IF NOT EXISTS `history_raw` (
-                  `HistoryRawKey` int(11) NOT NULL auto_increment,
-                  `DeviceKey` int(11) NOT NULL default '0',
-                  `Date` datetime NOT NULL default '0000-00-00 00:00:00',
-                  `RawData` varchar(255) NOT NULL default '',
-                  `ActiveSensors` tinyint(4) NOT NULL default '0',
-                  `Driver` varchar(32) NOT NULL default 'eDEFAULT',
-                  `RawSetup` varchar(128) NOT NULL,
-                  `RawCalibration` varchar(255) NOT NULL,
-                  `Status` enum('GOOD','BAD','UNRELIABLE','DUPLICATE') NOT NULL default 'GOOD',
-                  `ReplyTime` float NOT NULL default '0',
-                  `sendCommand` char(2) NOT NULL default '',
-                  PRIMARY KEY  (`HistoryRawKey`)                );";
-        $ret = $this->query($query, false);
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`,`sendCommand`)', false);
-        $this->getColumns();
-        return $ret;
-    }
-
 }
 
 ?>
