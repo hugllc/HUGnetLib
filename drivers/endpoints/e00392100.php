@@ -138,7 +138,7 @@ if (!class_exists("e00392100")) {
          * @param array $Info devInfo array of the endpoint to read the configuration of
          * @param array &$Rec The database record to check
          *
-         * @return none
+         * @return void
           */
         function checkRecord($Info, &$Rec)
         {

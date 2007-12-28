@@ -111,7 +111,7 @@ class History extends DbBase
      * @param string $table    The table to use
      * @param mixed  $elements The number of data fields
      *
-     * @return none
+     * @return void
      */   
     public function createTable($table=null, $elements=null)
     {

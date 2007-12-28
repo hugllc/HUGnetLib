@@ -68,7 +68,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @access public
      * @static
      *
-     * @return none
+     * @return void
      */
     public static function main()
     {
@@ -84,7 +84,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      *
-     * @return none
+     * @return void
      */
     protected function setUp()
     {
@@ -97,7 +97,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      *
-     * @return none
+     * @return void
      */
     protected function tearDown()
     {
@@ -124,7 +124,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @param int $Tf     The value to test
      * @param int $expect The expected value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataConstructorTf
      */
@@ -155,7 +155,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @param int $D      The value to test
      * @param int $expect The expected value
      *
-     * @return none
+     * @return void
      */
     public function testConstructorD($D, $expect) 
     {
@@ -184,7 +184,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @param int $s     The value to test
      * @param int $expect The expected value
      *
-     * @return none
+     * @return void
      */
     public function testConstructorS($s, $expect) 
     {
@@ -211,7 +211,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @param int $Am     The value to test
      * @param int $expect The expected value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataConstructorAm
      */
@@ -242,7 +242,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      * @param float $Vcc    The value to test
      * @param float $expect The expected value
      *
-     * @return none
+     * @return void
      */
     public function testConstructorVcc($Vcc, $expect) 
     {
@@ -252,7 +252,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the sensors array to make sure it is blank and an array
      *
-     * @return none
+     * @return void
      */
     public function testSensorsArray() 
     {

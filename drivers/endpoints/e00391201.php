@@ -183,7 +183,7 @@ if (!class_exists("e00391201")) {
          * @param array $Info The information array on the device
          * @param array &$Rec The data record to check
          *
-         * @return none
+         * @return void
          */
         function checkRecord($Info, &$Rec)
         {
@@ -202,7 +202,7 @@ if (!class_exists("e00391201")) {
          *
          * @param array &$Info devInfo array
          *
-         * @return none
+         * @return void
          */
         function interpConfig(&$Info)
         {
@@ -232,7 +232,7 @@ if (!class_exists("e00391201")) {
          *
          * @param array &$Info devInfo array
          *
-         * @return none
+         * @return void
          */
         private function _interpConfigFETSetup(&$Info) 
         {

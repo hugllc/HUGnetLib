@@ -66,7 +66,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -83,7 +83,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -103,7 +103,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -152,7 +152,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataWrite
      */
@@ -194,7 +194,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataWriteBadDB
      */
@@ -233,7 +233,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataReadChar
      */
@@ -259,7 +259,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testReadChar().
      */
@@ -272,7 +272,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testClose().
      */
@@ -286,7 +286,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testCheckConnect().
      */
@@ -299,7 +299,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testConnect().
      */
@@ -312,7 +312,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testConnect().
      */

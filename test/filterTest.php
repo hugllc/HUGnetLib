@@ -63,7 +63,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -80,7 +80,7 @@ class filterTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -93,7 +93,7 @@ class filterTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -116,7 +116,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataRegisterFilter
      */
@@ -142,7 +142,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataFilter
      */
@@ -156,7 +156,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testRunFunction().
      */
@@ -187,7 +187,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataRunFunction
      */
@@ -215,7 +215,7 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetClass().
      */
@@ -270,7 +270,7 @@ class testFilter extends filter_base
     /**
      * Some Function
      *
-     * @return none
+     * @return void
      */
     public function Test1(&$history, $index, $filter, $extra, $deltaT = null)
     {
@@ -280,7 +280,7 @@ class testFilter extends filter_base
     /**
      * Some Function
      *
-     * @return none
+     * @return void
      */
     public function Test2(&$history, $index, $filter, $extra, $deltaT = null) 
     {

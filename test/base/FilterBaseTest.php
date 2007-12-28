@@ -64,7 +64,7 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -81,7 +81,7 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -94,7 +94,7 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -106,7 +106,7 @@ class FilterBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the filters array to make sure it is blank and an array
      *
-     * @return none
+     * @return void
      */
     public function testFilterssArray() 
     {

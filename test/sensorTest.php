@@ -62,7 +62,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -79,7 +79,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -91,7 +91,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -102,7 +102,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testGetReading().
      */
@@ -129,7 +129,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param string $class  The class to use
      * @param mixed  $expect What to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataRegisterSensor
      */
@@ -151,7 +151,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testGetReading().
      */
@@ -190,7 +190,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed $expect       The output to expect
      * @param mixed $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetReading
      */
@@ -207,7 +207,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testRunFunction().
      */
@@ -244,7 +244,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $default  The default return value
      * @param mixed  $expect   Expected function return
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataRunFunction
      */
@@ -277,7 +277,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $typeExpect   The change in the type to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetClass().
      */
@@ -317,7 +317,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expect       The output to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetUnits().
      */
@@ -371,7 +371,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expect       The output to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetExtra
      */
@@ -405,7 +405,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expect       The output to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetUnitType
      */
@@ -439,7 +439,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param string $sensor The sensor name
      * @param mixed  $expect The output to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetSize
      */
@@ -472,7 +472,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param string $sensor The sensor name
      * @param mixed  $expect The output to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataDoTotal
      */
@@ -511,7 +511,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param int    $type         The type of the sensor
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetUnitMode
      */
@@ -550,7 +550,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expect       The output to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetUnitDefMode
      */
@@ -588,7 +588,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expect       The output to expect
      * @param mixed  $sensorExpect The change in the sensors to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetAllUnits
      */
@@ -637,7 +637,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param int   $type   The type of the sensor
      * @param mixed $expect The output to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetAllSensors
      */
@@ -676,7 +676,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expectUnits  The change in the units to expect
      * @param mixed  $expectMode   The change in the mode to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckUnits
      */
@@ -699,7 +699,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expectUnits  The change in the units to expect
      * @param mixed  $expectMode   The change in the mode to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckUnits
      */
@@ -721,7 +721,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expectUnits  The change in the units to expect
      * @param mixed  $expectMode   The change in the mode to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckUnits
      */
@@ -743,7 +743,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param mixed  $expectUnits  The change in the units to expect
      * @param mixed  $expectMode   The change in the mode to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckUnits
      */
@@ -1080,7 +1080,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param array $expectInfo expected change in the devInfo array
      * @param array $expectData expected change in the Data
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataDecodeData
      */
@@ -1148,7 +1148,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param array $data   Data to decode
      * @param array $expect expected change in the Data
      *
-     * @return none
+     * @return void
      *
      * @dataProvider datacheckRecord
      */
@@ -1182,7 +1182,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
      * @param string $mode   The mode
      * @param mixed  $expect The output to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckPoint
      */
@@ -1284,7 +1284,7 @@ class TestSensor extends sensor_base
      * @param int   $TC     The time constant
      * @param array $extra  Extra information from the sensor
      *
-     * @return none
+     * @return void
      */
     public function test1($val, $sensor, $TC, $extra) 
     {
@@ -1299,7 +1299,7 @@ class TestSensor extends sensor_base
      * @param int   $TC     The time constant
      * @param array $extra  Extra information from the sensor
      *
-     * @return none
+     * @return void
      */
     public function test2($val, $sensor, $TC, $extra) 
     {
@@ -1313,7 +1313,7 @@ class TestSensor extends sensor_base
      * @param string $units  The units the current value are in
      * @param mixed  $dType  The data mode
      *
-     * @return none
+     * @return void
      */
     public function s2Check($val, $sensor, $units, $dType) 
     {

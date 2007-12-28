@@ -65,7 +65,7 @@ class voltageSensorTest extends sensorTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -82,7 +82,7 @@ class voltageSensorTest extends sensorTestBase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -94,7 +94,7 @@ class voltageSensorTest extends sensorTestBase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -123,7 +123,7 @@ class voltageSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetDividerVoltage
      * @covers voltageSensor::GetDividerVoltage
@@ -150,7 +150,7 @@ class voltageSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataFETBoard
      * @covers voltageSensor::FETBoard
@@ -175,7 +175,7 @@ class voltageSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetVoltage
      * @covers voltageSensor::GetVoltage
@@ -203,7 +203,7 @@ class voltageSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCHSMSS
      * @covers voltageSensor::CHSMSS

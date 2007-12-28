@@ -118,7 +118,7 @@ class Process extends DbBase
      * Checks all defined processes.  If they are not running it makes sure they
      * are dead, then deletes them from the database, or deletes the PID file.    
      *
-     * @return none
+     * @return void
      */
     function checkAll() 
     {
@@ -186,7 +186,7 @@ class Process extends DbBase
      *
      * This function will continously try to check in by calling process::FastCheckin().
      * 
-     * @return none
+     * @return void
      *
      * @todo make it so this can't be an infinite loop.
      */
@@ -284,7 +284,7 @@ class Process extends DbBase
     /**
      * Unregisters this process.
      *
-     * @return none
+     * @return void
      */
     function unregister() 
     {
@@ -298,7 +298,7 @@ class Process extends DbBase
      *
      * @param string $table Table to use if not the default
      * 
-     * @return none
+     * @return void
      */
     function createTable($table=null) 
     {
@@ -323,7 +323,7 @@ class Process extends DbBase
      * @param bool $dieonfailure Whether to die if failed to register.  Defaults to false
      * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
      *
-     * @return none
+     * @return void
      *
      * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
@@ -344,7 +344,7 @@ class Process extends DbBase
      * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to false
      * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
      *
-     * @return none
+     * @return void
      *
      * @todo Make this do something other than just print stuff if $dieonfailure is false
      */
@@ -384,7 +384,7 @@ class Process extends DbBase
     /**
      * Deletes the PID file
      *
-     * @return none
+     * @return void
      */
     function fileUnregister() 
     {
