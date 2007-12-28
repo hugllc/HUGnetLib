@@ -81,7 +81,7 @@ class HUGnetLibDriverTests
     /**
      * main function
      *
-     * @return none
+     * @return void
      */
     public static function main()
     {
@@ -91,7 +91,7 @@ class HUGnetLibDriverTests
     /**
      * test suite
      *
-     * @return none
+     * @return void
      */
     public static function suite()
     {

@@ -103,7 +103,7 @@ class DbBase
      * @param string $id      The 'id' column to use
      * @param bool   $verbose Whether to be verbose or not
      *
-     * @return none
+     * @return void
      */
     public function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
     {
@@ -202,7 +202,7 @@ class DbBase
     /**
      * Creates the field array
      *
-     * @return none
+     * @return void
      */
     protected function getColumns()
     {
@@ -213,7 +213,7 @@ class DbBase
     /**
      * Gets columns from a SQLite server
      *
-     * @return none
+     * @return void
      */
     protected function getColumnsSQLite()
     {
@@ -228,7 +228,7 @@ class DbBase
     /**
      * Gets columns from a mysql server
      *
-     * @return none
+     * @return void
      */
     protected function getColumnsMySQL()
     {
@@ -244,7 +244,7 @@ class DbBase
     /**
      * Gets columns from a mysql server
      *
-     * @return none
+     * @return void
      */
     protected function getColumnsOther()
     {
@@ -522,7 +522,7 @@ class DbBase
      *                      This must be either a PDO or PDOStatement
      *                      object.
      *
-     * @return none
+     * @return void
      */
     protected function errorInfo($clear=false, $obj = null)
     {
@@ -548,7 +548,7 @@ class DbBase
     /**
      * Print Errors
      *
-     * @return none
+     * @return void
      */
     public function printError() 
     {
@@ -681,7 +681,7 @@ class DbBase
      *
      * @param int $level The verbosity level
      *
-     * @return none
+     * @return void
      */    
     public function verbose($level=0)
     {
@@ -693,7 +693,7 @@ class DbBase
      *
      * @param string $str The string to print out
      *
-     * @return none
+     * @return void
      */
     protected function vprint($str) 
     {

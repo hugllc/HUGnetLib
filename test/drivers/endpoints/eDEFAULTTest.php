@@ -65,7 +65,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -82,7 +82,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public function testConfigArray() 
     {
@@ -92,7 +92,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public function testreadConfig() 
     {
@@ -102,7 +102,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public function testDevicesArray() 
     {
@@ -112,7 +112,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public function testinterpConfig() 
     {
@@ -122,7 +122,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public function testinterpSensors() 
     {
@@ -132,7 +132,7 @@ class eDEFAULTTest extends endpointTestBase
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
-     * @return none
+     * @return void
      */
     public static function dataConfigArray() 
     {
@@ -141,7 +141,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * Some Function
      *
-     * @return none
+     * @return void
      */
     public function testBadDriver() 
     {
@@ -163,7 +163,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCheckDataArray()
      */
@@ -177,7 +177,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testGetCols()
      */
@@ -195,7 +195,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testGetEditCols()
      */
@@ -228,7 +228,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataCompareFWVersion
      */
@@ -241,7 +241,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider datacheckRecord()
      */

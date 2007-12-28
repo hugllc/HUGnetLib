@@ -647,7 +647,7 @@ class UnitConversion
      * @param array &$type    The types to change to
      * @param array &$units   The units to change to
      *
-     * @return none
+     * @return void
      */
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
     {

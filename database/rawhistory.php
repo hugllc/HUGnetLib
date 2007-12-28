@@ -63,7 +63,7 @@ class RawHistory extends History
      *
      * @param string $table The table to use
      *
-     * @return none
+     * @return void
      */   
     public function createTable($table=null)
     {

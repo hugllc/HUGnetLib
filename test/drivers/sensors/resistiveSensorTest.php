@@ -66,7 +66,7 @@ class ResistiveSensorTest extends sensorTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -83,7 +83,7 @@ class ResistiveSensorTest extends sensorTestBase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -95,7 +95,7 @@ class ResistiveSensorTest extends sensorTestBase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -132,7 +132,7 @@ class ResistiveSensorTest extends sensorTestBase
      * @param float $Bias   The bias resistance
      * @param mixed $expect The expected return value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetResistance
      * @covers resistiveSensor::GetResistance
@@ -169,7 +169,7 @@ class ResistiveSensorTest extends sensorTestBase
      * @param float $deltaT The time difference
      * @param mixed $expect The expected return value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataBCTherm2381_640_66103
      * @covers resistiveSensor::BCTherm2381_640_66103
@@ -209,7 +209,7 @@ class ResistiveSensorTest extends sensorTestBase
      * @param float $deltaT The time difference
      * @param mixed $expect The expected return value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataResisDoor
      * @covers resistiveSensor::ResisDoor
@@ -244,7 +244,7 @@ class ResistiveSensorTest extends sensorTestBase
      * @param float $deltaT The time difference
      * @param mixed $expect The expected return value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider datagetMoistureV2
      * @covers resistiveSensor::GetMoistureV2
@@ -280,7 +280,7 @@ class ResistiveSensorTest extends sensorTestBase
      * @param float $deltaT The time difference
      * @param mixed $expect The expected return value
      *
-     * @return none
+     * @return void
      *
      * @dataProvider datagetMoistureV1
      * @covers resistiveSensor::GetMoistureV1

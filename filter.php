@@ -105,7 +105,7 @@ class Filter
      * @param array &$history The history to filter
      * @param array $filters  The array of filters to use
      *
-     * @return none
+     * @return void
      */
     public function filter(&$history, $filters) 
     {
@@ -123,7 +123,7 @@ class Filter
      * @param int    $index  The index to use in the data array
      * @param string $filter Which filter to use
      *
-     * @return none
+     * @return void
      */
     private function _filterData(&$data, $index, $filter=null) 
     {
@@ -143,7 +143,7 @@ class Filter
      * @param string $function This is the method to call on the class
      * @param array  &$args    The array of arguments for the function
      *
-     * @return none
+     * @return void
       */
     function runFunction(&$class, $function, &$args) 
     {

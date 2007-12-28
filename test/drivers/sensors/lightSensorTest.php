@@ -67,7 +67,7 @@ class lightSensorTest extends sensorTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -84,7 +84,7 @@ class lightSensorTest extends sensorTestBase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -96,7 +96,7 @@ class lightSensorTest extends sensorTestBase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -125,7 +125,7 @@ class lightSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataGetLight
      * @covers lightSensor::GetLight
@@ -151,7 +151,7 @@ class lightSensorTest extends sensorTestBase
     /**
      * test
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataOSRAMBPW34
      * @covers lightSensor::OSRAMBPW34

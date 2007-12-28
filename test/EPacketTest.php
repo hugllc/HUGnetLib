@@ -155,7 +155,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return none
+     * @return void
      *
      * @access public
      * @static
@@ -172,7 +172,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -194,7 +194,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return none
+     * @return void
      *
      * @access protected
      */
@@ -243,7 +243,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param array $test array of fields and values to check
      * @param array $keys array of keys to test
      *
-     * @return none
+     * @return void
      */
     public function validPacketArray($a, $test=null, $keys = null) 
     {
@@ -273,7 +273,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param string $s The packet string to check
      * @param array  $a Array of values to check
      *
-     * @return none
+     * @return void
      */
     public function validPacketString($s, $a=null) 
     {
@@ -358,7 +358,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param array  $packet The packet string to use
      * @param string $expect What to expect in return
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataPacketBuild
      */
@@ -395,7 +395,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param string $packet The packet string to use
      * @param array  $expect What to expect in return
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataPacketGetChecksum
      */
@@ -426,7 +426,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param string $data    The data to send
      * @param array  $expect  What to expect in return
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataBuildPacket
      */
@@ -443,7 +443,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test packetCallBackMethod()
      *
-     * @return none
+     * @return void
      */
     public function testPacketCallBackMethod() 
     {
@@ -458,7 +458,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test packetCallBackFunction()
      *
-     * @return none
+     * @return void
      */
     public function testPacketCallBackFunction() 
     {
@@ -788,7 +788,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param mixed $expect   what to expect
      * @param bool  $getAll   Whether to get all of the packets returned, or only the reply
      *
-     * @return none
+     * @return void
      *
      * @dataProvider datasendPacket().
      */
@@ -813,7 +813,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @param array &$rep The array to remove the dates from
      *
-     * @return none
+     * @return void
      */
     private function _packetRemoveDates(&$rep) 
     {
@@ -831,7 +831,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test _sendPacketWriteSocket()
      *
-     * @return none
+     * @return void
      */
     public function testSendPacketWriteSocket() 
     {
@@ -845,7 +845,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test _sendPacketWriteRetry()
      *
-     * @return none
+     * @return void
      */
     public function testSendPacketWriteRetry() 
     {
@@ -860,7 +860,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test sendReply
      *
-     * @return none
+     * @return void
      */
     public function testSendReply() 
     {
@@ -893,7 +893,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param mixed  $data   The key to try
      * @param string $expect The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataArrayToData
      */
@@ -908,7 +908,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param mixed  $data   The key to try
      * @param string $expect The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataArrayToData
      */
@@ -938,7 +938,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param array  $SNArray The serial number array
      * @param mixed  $expect  The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataChangeSN($SN)
      */
@@ -961,7 +961,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test packetTime()
      *
-     * @return none
+     * @return void
      */
     public function testPacketTime() 
     {
@@ -990,7 +990,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param mixed $key    The key to try
      * @param bool  $expect The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataIsGateway()
      */
@@ -1002,7 +1002,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test getAll
      *
-     * @return none
+     * @return void
      */
     public function testGetAll1() 
     {
@@ -1012,7 +1012,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test getAll
      *
-     * @return none
+     * @return void
      */
     public function testGetAll2() 
     {
@@ -1022,7 +1022,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test getAll
      *
-     * @return none
+     * @return void
      */
     public function testGetAll3() 
     {
@@ -1032,7 +1032,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test getAll
      *
-     * @return none
+     * @return void
      */
     public function testGetAll4() 
     {
@@ -1044,7 +1044,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test UnbuildPacket
      *
-     * @return none
+     * @return void
      *
      * @todo Implement testUnbuildPacket().
      */
@@ -1093,7 +1093,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param int   $timeout The timeout value to use
      * @param array $expect  The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataMonitor
      */
@@ -1155,7 +1155,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      * @param bool  $find   Whether to use a 'find' ping or not
      * @param array $expect The return to expect
      *
-     * @return none
+     * @return void
      *
      * @dataProvider dataPing
      */
@@ -1173,7 +1173,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test Close
      *
-     * @return none
+     * @return void
      */
     public function testClose() 
     {
@@ -1187,7 +1187,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test SNCheck
      *
-     * @return none
+     * @return void
      */
     public function testSNCheck1() 
     {
@@ -1197,7 +1197,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test SNCheck
      *
-     * @return none
+     * @return void
      */
     public function testSNCheck2() 
     {
@@ -1207,7 +1207,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test SNCheck
      *
-     * @return none
+     * @return void
      */
     public function testSNCheck3() 
     {
@@ -1217,7 +1217,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     /**
      * Test SNCheck
      *
-     * @return none
+     * @return void
      */
     public function testSNCheck4() 
     {
@@ -1249,7 +1249,7 @@ class EPacketTest_CallBack_Class
      *
      * @param array $pkt The packet
      *
-     * @return none
+     * @return void
      */
     public function test($pkt)
     {
@@ -1286,7 +1286,7 @@ class EPacketTXRXMock extends EPacket
      * @param bool  $GetReply   Whether or not to wait for a reply.
      * @param int   $pktTimeout The timeout value to use
      *
-     * @return none
+     * @return void
      */
     public function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null)
     {
@@ -1303,7 +1303,7 @@ class EPacketTXRXMock extends EPacket
      * @param int $socket  The socket to send it out of.  0 is the default.
      * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
      *
-     * @return none
+     * @return void
      */
     public function recvPacket($socket, $timeout = 0)
     {
@@ -1338,7 +1338,7 @@ class EpSocketMock extends EpSocket
      * @param string $data  The data we will receive
      * @param string $reply The data to return
      *
-     * @return none
+     * @return void
      */
     public function setReply($data, $reply) {
         $this->reply[trim($data)] = trim($reply);
@@ -1388,7 +1388,7 @@ class EpSocketMock extends EpSocket
     /**
      * Closes the socket connection
      * 
-     * @return none
+     * @return void
      */
     function close() 
     {
@@ -1448,7 +1448,7 @@ class EpSocketMock extends EpSocket
      * @param int    $port The TCP port to connect to on the server. Set to 0 for
      *     the default port.
      *
-     * @return none
+     * @return void
      */
     function __construct($server="", $port="") 
     {
@@ -1463,7 +1463,7 @@ class EpSocketMock extends EpSocket
  *
  * @param array $pkt The packet array
  *
- * @return none
+ * @return void
  *
  */
 function EPacketTest_CallBack_function($pkt) 
