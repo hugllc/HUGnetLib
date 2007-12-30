@@ -58,7 +58,7 @@ require_once dirname(__FILE__).'/../filter.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class filterTest extends PHPUnit_Framework_TestCase 
+class FilterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Runs the test methods of this class.
@@ -104,6 +104,8 @@ class filterTest extends PHPUnit_Framework_TestCase
 
     /**
      * dataProvider for testRegisterFilter
+     *
+     * @return array
      */
     public static function dataRegisterFilter() 
     {
@@ -115,6 +117,9 @@ class filterTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param string $class  The class register
+     * @param bool   $expect What to expect from the return
      *
      * @return void
      *
@@ -133,6 +138,11 @@ class filterTest extends PHPUnit_Framework_TestCase
             }
         }
     }
+    /**
+     * dataProvider for testFilter
+     *
+     * @return array
+     */
     public static function dataFilter() 
     {
         return array(
@@ -142,11 +152,15 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param array $history The history to filter
+     * @param array $filters The array of filters to use
+     * @param array $expect  What to expect from the return
+     *
      * @return void
      *
      * @dataProvider dataFilter
      */
-    public function testFilter($data, $type, $filter, $expect) 
+    public function testFilter($history, $filters, $expect) 
     {
         $this->o->registerFilter("testFilter");
         $ret = $this->o->filter($data, $type, $filter);
@@ -157,18 +171,16 @@ class filterTest extends PHPUnit_Framework_TestCase
      * test
      *
      * @return void
-     *
-     * @todo Implement testRunFunction().
      */
     public function testRunFunctionCall() 
     {
         $cName = "testFilter";
         $this->o->registerFilter($this->getMock($cName), $cName);
         $this->o->filters[$cName]->expects($this->once())
-                           ->method('Test1')
+                           ->method('test1')
                            ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4));
         $args = array(1,2,3,4);
-        $ret = $this->o->runFunction($this->o->filters[$cName], 'Test1', $args, "2");
+        $ret = $this->o->runFunction($this->o->filters[$cName], 'test1', $args, "2");
     }
 
     /**
@@ -186,6 +198,11 @@ class filterTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
+     *
+     * @param string $class    The class to use
+     * @param string $function The function to call
+     * @param array  $args     The arguments for the function
+     * @param mixed  $expect What to expect from the return
      *
      * @return void
      *
@@ -215,21 +232,27 @@ class filterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
+     * @param string $type         The type of filter
+     * @param string $filter       The filter to implement.  This can be changed by this routine.
+     * @param string $expect       What to expect from the return
+     * @param string $typeExpect   The type of filter
+     * @param string $filterExpect The filter to implement.  This can be changed by this routine.
+     *
      * @return void
      *
      * @dataProvider dataGetClass().
      */
-    public function testGetClass($type, $sensor, $expect, $typeExpect, $sensorExpect) 
+    public function testGetClass($type, $filter, $expect, $typeExpect, $filterExpect) 
     {
         $cName = "testFilter";
         $this->o->registerFilter($cName);
-        $class = $this->o->getClass($type, $sensor);
+        $class = $this->o->getClass($type, $filter);
         if ($expect === "sameClass") {
             $expect = $this->o->filters[$cName];
         }
         $this->assertSame($class, $expect, "Wrong object returned");
         $this->assertEquals($type, $typeExpect, "Type changed incorrectly");
-        $this->assertEquals($sensor, $sensorExpect, "Sensor changed incorrectly");
+        $this->assertEquals($filter, $filterExpect, "Sensor changed incorrectly");
     }
 
 }
@@ -256,13 +279,13 @@ class testFilter extends filter_base
         "testType" => array(
             "testFilter1" => array(
                 "longName" => "Generic Test Sensor 1",
-                "function" => "Test1",
+                "function" => "test1",
                 "extraText" => "extraTest",
                 "extraDefault" => "extraDefaultTest",
            ),
             "testFilter2" => array(
                 "longName" => "Generic Test Sensor 2",
-                "function" => "Test2",
+                "function" => "test2",
            ),
        ),
     );
@@ -270,9 +293,15 @@ class testFilter extends filter_base
     /**
      * Some Function
      *
+     * @param array &$history The history to filter
+     * @param int   $index    The index in the history to use
+     * @param array $filter   Information on the filter we are implementing
+     * @param mixed $extra    Extra setup information on the filter
+     * @param int   $deltaT   The difference in time between this record and the last one
+     *
      * @return void
      */
-    public function Test1(&$history, $index, $filter, $extra, $deltaT = null)
+    public function test1(&$history, $index, $filter, $extra, $deltaT = null)
     {
         // This must stay the same. 
         return array_reverse($history);
@@ -280,9 +309,15 @@ class testFilter extends filter_base
     /**
      * Some Function
      *
+     * @param array &$history The history to filter
+     * @param int   $index    The index in the history to use
+     * @param array $filter   Information on the filter we are implementing
+     * @param mixed $extra    Extra setup information on the filter
+     * @param int   $deltaT   The difference in time between this record and the last one
+     *
      * @return void
      */
-    public function Test2(&$history, $index, $filter, $extra, $deltaT = null) 
+    public function test2(&$history, $index, $filter, $extra, $deltaT = null) 
     {
     }
 }
