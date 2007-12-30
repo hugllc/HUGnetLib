@@ -94,7 +94,7 @@ class Driver
             "Severity" => "Low", 
             "Description" => "Device is polled on backup server", 
             "Style" => "#00E000"
-        ),
+       ),
     );    
 
     var $device_table = "devices";

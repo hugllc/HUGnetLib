@@ -1001,7 +1001,7 @@ class EPacket
      * @param array  $Info    Infomation about the device to use
      * @param bool   $verbose If true a lot of stuff is printed out
      * @param object &$db     PDO database object
-     * @param bool   $snCheck( Should we check the serial number
+     * @param bool   $snCheck(Should we check the serial number
      *
      * @return void
      */

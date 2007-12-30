@@ -77,8 +77,8 @@ class e00392800Test extends endpointTestBase
                  "SerialNum" => 232,
                  "Driver" => "e00392800",
                  "DeviceGroup" => "FFFFFF",
-             ),
-             "Return" => array(  
+            ),
+             "Return" => array( 
                  "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
                  "DriverInfo" => "0102020202020202027070707070707070",
                  "HWPartNum" => "0039-28-01-A",
@@ -94,9 +94,9 @@ class e00392800Test extends endpointTestBase
                  "TimeConstant" => 1,
                  "DriverInfo" => "0102020202020202027070707070707070",
                  "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
-            ),
-         ),
-     );
+           ),
+        ),
+    );
 
      var $interpSensorsTestCases = array(
         array(
@@ -118,19 +118,19 @@ class e00392800Test extends endpointTestBase
                  "TimeConstant" => 1,
                  "DriverInfo" => "0102020202020202027070707070707070",
                  "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
-            ),
+           ),
             "Packets" => array(
                 array(
                     "RawData" => "070001369E00F09C00919D00C89C00EE9C000A9D00BEFF00BFFF00000000",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:38:01",
-                ),
+               ),
                 array(
                     "RawData" => "130001309E00F09C00909D00CA9C00F19C000A9D00BFFF00BFFF00000000",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:48:01",
-                ),
-            ),
+               ),
+           ),
             "Return" => array(
                 array(
                     "RawData" => "070001369E00F09C00919D00C89C00EE9C000A9D00BEFF00BFFF00000000",
@@ -158,7 +158,7 @@ class e00392800Test extends endpointTestBase
                     "deltaT" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
+               ),
                 array(
                     "RawData" => "130001309E00F09C00909D00CA9C00F19C000A9D00BFFF00BFFF00000000",
                     "sendCommand" => "55",
@@ -185,9 +185,9 @@ class e00392800Test extends endpointTestBase
                     "Data8" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
     );
 
     /**
@@ -254,8 +254,8 @@ class e00392800Test extends endpointTestBase
                     array("To" => "000025", "Command" => "5C"),
                     array("To" => "000025", "Command" => "4C", "Data" => "00"),
                     array("To" => "000025", "Command" => "4C", "Data" => "01"),
-                ),
-            ),
+               ),
+           ),
         );
     }
 

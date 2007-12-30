@@ -157,7 +157,7 @@ class eDEFAULTTest extends endpointTestBase
             array(
                 array("RawData" => "000102030405060708090A0B0C0D0E0F"),
                 array("RawData" => "000102030405060708090A0B0C0D0E0F", "Data" => array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)),
-            ),
+           ),
         );
     }
     /**

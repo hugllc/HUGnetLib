@@ -65,7 +65,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         array(
             "DeviceID" => "123456",
             "DeviceName" => "Test 1",
-        ),
+       ),
     );
     
     /**
@@ -418,8 +418,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                 array("DeviceID" => "000025"),
                 array(
                     array("To" => "000025", "Command" => "55"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -473,12 +473,12 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                 array(),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
-            ),
+           ),
             array(
                 array(),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1),
                 array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1, "Status" => "BAD", "StatusCode" => "Bad TC"),
-            ),
+           ),
         );
     }
 
@@ -535,8 +535,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                 array(
                     array("To" => "000025", "Command" => "5C"),
                     array("To" => "000025", "Command" => "4C"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**

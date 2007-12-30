@@ -551,32 +551,32 @@ class driverTest extends PHPUnit_Framework_TestCase
                         "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
                         "Date" => "2007-11-12 12:34:04",
                         "From" => "0000E8",
-                    ),
+                   ),
                     array(
                         "PacketFrom" => "wrongOne",
                         "RawData" => "12345678",
                         "sendCommand" => "55",
                         "Date" => "2007-11-13 12:34:04",
-                    ),
+                   ),
                     array(
                         "From" => "wrongOne",
                         "RawData" => "12345678",
                         "sendCommand" => "56",
                         "Date" => "2007-11-14 12:34:04",
-                    ),
+                   ),
                     array(
                         "DeviceID" => "wrongOne",
                         "RawData" => "12345678",
                         "sendCommand" => "57",
                         "Date" => "2007-11-15 12:34:04",
-                    ),
+                   ),
                     array(
                         "DeviceID" => "0000E8",
                         "Data" => "12345678",
                         "sendCommand" => PACKET_COMMAND_GETCALIBRATION,
                         "Date" => "2007-11-16 12:34:04",
-                    ),
-                ),
+                   ),
+               ),
                 array(
                     "DeviceID" => "0000E8",
                     "DeviceKey" => 1,
@@ -585,7 +585,7 @@ class driverTest extends PHPUnit_Framework_TestCase
                     "RawData" => Array(
                         "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
                         "4C" => "12345678",
-                    ),
+                   ),
                     "SerialNum" => 232,
                     "HWPartNum" => "ABCD-EF-01-A",
                     "FWPartNum" => "0123-45-67-C",
@@ -598,9 +598,9 @@ class driverTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "12345678",
                     "Driver" => "testDriver",
                     "HWName" => "Phantom Test Hardware",
-                ),
+               ),
                 3,
-            ),      
+           ),      
 
         );
     }
@@ -717,30 +717,30 @@ class driverTest extends PHPUnit_Framework_TestCase
                 array(
                     0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
                     1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
-                ), // History
+               ), // History
                 array(
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
                     "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "E", "E"),
-                ), // DevInfo
+               ), // DevInfo
                 2, // dPlaces
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
                     1 => array("Data0" => 3.0,"Data2" => 4.0, "Data3" => -1.0, "Data4" => 6.5, "data" => array(3.0,null,4.0,-1.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
-                ), // expectHistory
+               ), // expectHistory
                 array(
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
                     "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
-                ), // expectDevInfo
+               ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff"), // expectType
                 array("E", "B", "E", "D","E"), // expectUnits
-            ),
+           ),
         );
     }
     /**
@@ -867,18 +867,18 @@ class testDriver extends eDEFAULT
     protected $average_table = "testaverage";
     /** Raw history Table */
     protected $raw_history_table = "testhistory_raw";
-    var $devices = array(    
+    var $devices = array(   
         "testFW" => array(
             "testHW1" => "DEFAULT",
             "testHW2" => "0.1.2,0.2.3",
-        ),
+       ),
         "DEFAULT" => array(
             "testHW3" => "DEFAULT",
             "ABCD-EF-01-A" => "DEFAULT",
-        ),
+       ),
         "testFW2" => array(
             "testHW4" => "BAD",
-        ),
+       ),
     );
     /**
      * Some Function

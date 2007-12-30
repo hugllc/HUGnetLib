@@ -85,7 +85,7 @@ class Plog extends DbBase
                       'ReplyTime' float NOT null default '0',
                       'Checked' int(11) NOT null default '0',
                       PRIMARY KEY  ('id')
-                    );
+                   );
                     ";
         $this->query($query);
         $this->getColumns();

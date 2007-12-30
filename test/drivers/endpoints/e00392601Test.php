@@ -75,8 +75,8 @@ class e00392601Test extends endpointTestBase
                  "SerialNum" => 232,
                  "Driver" => "e00392601",
                  "DeviceGroup" => "FFFFFF",
-             ),
-             "Return" => array(  
+            ),
+             "Return" => array( 
                  "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
                  "HWPartNum" => "0039-28-01-A",
                  "FWPartNum" => "0039-20-13-C",
@@ -89,19 +89,19 @@ class e00392601Test extends endpointTestBase
                  "NumSensors" => 0,
                  "Function" => "Gateway",
                  "DriverInfo" => "0102020202020202027070707070707070",
-            ),
-         ),
-     );
+           ),
+        ),
+    );
 
      var $interpSensorsTestCases = array(
         array(
             "Info" => array(
-            ),
+           ),
             "Packets" => array(
-            ),
+           ),
             "Return" => array(
-            ),
-        ),
+           ),
+       ),
     );
 
     /**
@@ -175,8 +175,8 @@ class e00392601Test extends endpointTestBase
                 array("DeviceID" => "000025"),
                 array(
                     array("To" => "000025", "Command" => "5C"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     

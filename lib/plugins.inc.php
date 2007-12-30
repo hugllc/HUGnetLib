@@ -549,9 +549,9 @@ class Plugins
     function Plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) 
     {
         $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
-        if (trim($basedir) != "" ) $this->dir = $basedir;
-        if (trim($webdir) != "" ) $this->webdir = $webdir;
-        if (trim($extension) != "" ) $this->extension = $extension;
+        if (trim($basedir) != "") $this->dir = $basedir;
+        if (trim($webdir) != "") $this->webdir = $webdir;
+        if (trim($extension) != "") $this->extension = $extension;
         $this->_skipDir = $skipDir;
         if (!is_array($this->plugins)) $this->findPlugins();
     }

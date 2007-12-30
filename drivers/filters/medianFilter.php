@@ -55,8 +55,8 @@ if (!class_exists('medianFilter') && class_exists("filter_base")) {
                     "extraDefault" => array(3,1),
                     "extraText" => array("Rows", "Active Row"),
                     "function" => "median",
-                ),
-            ),
+               ),
+           ),
         );
         
         /**

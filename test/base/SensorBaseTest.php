@@ -145,7 +145,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
          return array(
              array(1,1),
              array(false, 65536),
-         );
+        );
      }
     /**
      * Test the constructor
@@ -174,7 +174,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
          return array(
              array(1,1),
              array(false, 64),
-         );
+        );
      }
     /**
      * Test the constructor
@@ -203,7 +203,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
          return array(
              array(1,1),
              array(false, 1023),
-         );
+        );
      }
     /**
      * test
@@ -232,7 +232,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
          return array(
              array(1,1),
              array(false, 5),
-         );
+        );
      }
     /**
      * Test the vcc value in the constructor 

@@ -77,34 +77,34 @@ if (!class_exists("e00391200")) {
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-11-03-B" => array(
                 "0039-12-00-A" => "DEFAULT",
                 "0039-12-01-A" => "DEFAULT",
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
 
             "0039-20-02-C" => array(
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-20-03-C" => array(
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-20-07-C" => array(
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
                         "DEFAULT" => array(
                 "0039-12-00-A" => "DEFAULT",
                 "0039-12-01-A" => "DEFAULT",
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
 
         );
 
@@ -132,7 +132,7 @@ if (!class_exists("e00391200")) {
         var $cols = array("TimeConstant" => "Time Constant", 
                                 "ActiveSensors" => "Active Sensors",
                                 "NumSensors" => "# Sensors",
-                                );
+                               );
 
 
         /**

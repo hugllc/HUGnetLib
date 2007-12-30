@@ -161,26 +161,26 @@ class DbBaseTest extends databaseTest
                 array(),
                 array(
                     array("id" => 1, "name" => "Hi", "value" => "There"),
-                ),
+               ),
                 array(
                     array("id" => "1", "name" => "Hi", "value" => "There"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(),
                 array(
-                    array("id" => 1, "name" => "Hi",        "value" => "There"   ),
-                    array("id" => 2, "name" => "This",      "value" => "is"      ),
-                    array("id" => 3, "name" => "Eddie",     "value" => "your"    ),
+                    array("id" => 1, "name" => "Hi",        "value" => "There"  ),
+                    array("id" => 2, "name" => "This",      "value" => "is"     ),
+                    array("id" => 3, "name" => "Eddie",     "value" => "your"   ),
                     array("id" => 4, "name" => "shipboard", "value" => "computer"),
-                ),
+               ),
                 array(
-                    array("id" => "1", "name" => "Hi",        "value" => "There"   ),
-                    array("id" => "2", "name" => "This",      "value" => "is"      ),
-                    array("id" => "3", "name" => "Eddie",     "value" => "your"    ),
+                    array("id" => "1", "name" => "Hi",        "value" => "There"  ),
+                    array("id" => "2", "name" => "This",      "value" => "is"     ),
+                    array("id" => "3", "name" => "Eddie",     "value" => "your"   ),
                     array("id" => "4", "name" => "shipboard", "value" => "computer"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -214,14 +214,14 @@ class DbBaseTest extends databaseTest
                 array(),
                 array("id" => 3, "name" => "Hi", "value" => "There"),
                 array("id" => "3", "name" => "Hi", "value" => "There"),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 array("id" => 1, "name" => "Hi", "value" => "There"),
                 array("id" => "1", "name" => "hello", "value" => "there"),
-            ),
+           ),
         );
     }
     /**
@@ -255,14 +255,14 @@ class DbBaseTest extends databaseTest
                 array(),
                 array("id" => 3, "name" => "Hi", "value" => "There"),
                 array("id" => "3", "name" => "Hi", "value" => "There"),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 array("id" => 1, "name" => "Bye", "value" => "Now"),
                 array("id" => "1", "name" => "Bye", "value" => "Now"),
-            ),
+           ),
         );
     }
     /**
@@ -298,16 +298,16 @@ class DbBaseTest extends databaseTest
                 3,
                 null,
                 false,
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 array("id" => 1, "name" => "Bye", "value" => "Now"),
                 1,
                 array("id" => "1", "name" => "Bye", "value" => "Now"),
                 true,
-            ),
+           ),
         );
     }
     /**
@@ -363,15 +363,15 @@ class DbBaseTest extends databaseTest
             array(
                 array(),
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 array(
                     array("id" => "1", "name" => "hello", "value" => "there"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -403,16 +403,16 @@ class DbBaseTest extends databaseTest
                 array(),
                 1,
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 1,
                 array(
                     array("id" => "1", "name" => "hello", "value" => "there"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -420,12 +420,12 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble","value" =>  "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 3,
                 array(
                     array("id" => "3", "name" => "taking", "value" => "the"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -459,17 +459,17 @@ class DbBaseTest extends databaseTest
                 "1",
                 null,
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 "name = 'hello'",
                 null,
                 array(
                     array("id" => "1", "name" => "hello", "value" => "there"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -477,13 +477,13 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "id = ?",
                 array(3),
                 array(
                     array("id" => "3", "name" => "taking", "value" => "the"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -518,15 +518,15 @@ class DbBaseTest extends databaseTest
                 "1",
                 null,
                 null,
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 "name = 'hello'",
                 null,
                 array("id" => "1", "name" => "hello", "value" => "there"),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -534,11 +534,11 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "id = ?",
                 array(3),
                 array("id" => "3", "name" => "taking", "value" => "the"),
-            ),
+           ),
         );
     }
     /**
@@ -571,13 +571,13 @@ class DbBaseTest extends databaseTest
             array(
                 array(),
                 1,
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 2,
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -585,9 +585,9 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 6,
-            ),
+           ),
         );
     }
     /**
@@ -623,12 +623,12 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "SELECT * FROM BadTableName WHERE id = 3",
                 null,
                 true,
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -636,12 +636,12 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "SELECT * FROM BadTableName WHERE id = ?",
                 array(1,2,3,4,5),
                 false,
                 false,
-            ),
+           ),
             array(
                 array(),
                 "CREATE TABLE IF NOT EXISTS `oneTestTable` ("
@@ -649,11 +649,11 @@ class DbBaseTest extends databaseTest
                   ." `name` varchar(16) NOT null default '', "
                   ." `value` text NOT null, "
                   ." PRIMARY KEY  (`id`) "
-                  ." );",
+                  .");",
                 array(),
                 false,
                 true,
-            ),
+           ),
         );
     }
     /**
@@ -689,14 +689,14 @@ class DbBaseTest extends databaseTest
                 null,
                 true,
                 array(),
-            ),
+           ),
             array(
                 null,
                 "SELECT * FROM BadTableName WHERE id = ?",
                 array(1,2,3,4,5),
                 false,
                 false,
-            ),
+           ),
             array(
                 new databaseTest(),
                 "CREATE TABLE IF NOT EXISTS `oneTestTable` ("
@@ -704,11 +704,11 @@ class DbBaseTest extends databaseTest
                   ." `name` varchar(16) NOT null default '', "
                   ." `value` text NOT null, "
                   ." PRIMARY KEY  (`id`) "
-                  ." );",
+                  .");",
                 array(),
                 false,
                 false,
-            ),
+           ),
         );
     }
     /**
@@ -804,14 +804,14 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "SELECT * FROM `DbBaseTest` WHERE id = 3",
                 null,
                 true,
                 array(
                     array("id" => "3", "name" => "taking", "value" => "the"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -819,14 +819,14 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 "SELECT * FROM `DbBaseTest` WHERE id = ?",
                 array(1),
                 true,
                 array(
                     array("id" => "1", "name" => "hello", "value" => "there"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -870,14 +870,14 @@ class DbBaseTest extends databaseTest
                 array(),
                 1,
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-                ),
+               ),
                 1,
                 array(),
-            ),
+           ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -885,15 +885,15 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-                ),
+               ),
                 3,
                 array(
                     array("id" => "1", "name" => "hello",   "value" => "there"),
-                    array("id" => "2", "name" => "I",       "value" => "am"   ),
-                    array("id" => "4", "name" => "trouble", "value" => "to"   ),
+                    array("id" => "2", "name" => "I",       "value" => "am"  ),
+                    array("id" => "4", "name" => "trouble", "value" => "to"  ),
                     array("id" => "5", "name" => "change",  "value" => "these"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -977,7 +977,7 @@ class DbBaseTest extends databaseTest
         $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
                          ."(".$class." - ".$driver." ".$file.") Error: -1\n"
                          ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
-                          , $ret);
+                         , $ret);
     }
 
     /**
@@ -1128,7 +1128,7 @@ class DbBaseClassTest extends DbBase
               `name` varchar(16) NOT null default '',
               `value` text NOT null,
               PRIMARY KEY  (`id`)
-            );";
+           );";
 
         $ret = $this->query($query, false); 
         $this->getColumns();   

@@ -259,12 +259,12 @@ class testFilter extends filter_base
                 "function" => "Test1",
                 "extraText" => "extraTest",
                 "extraDefault" => "extraDefaultTest",
-            ),
+           ),
             "testFilter2" => array(
                 "longName" => "Generic Test Sensor 2",
                 "function" => "Test2",
-            ),
-        ),
+           ),
+       ),
     );
 
     /**

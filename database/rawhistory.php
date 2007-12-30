@@ -81,7 +81,7 @@ class RawHistory extends History
                   `ReplyTime` float NOT NULL default '0',
                   `sendCommand` char(2) NOT NULL default '',
                   PRIMARY KEY  (`HistoryRawKey`)
-                  );";
+                 );";
         $ret   = $this->query($query, false);
         $ret   = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'
                               .$this->table.'` (`DeviceKey`,`Date`,`sendCommand`)', false);

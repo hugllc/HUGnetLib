@@ -94,26 +94,26 @@ if (!class_exists("e00391201")) {
                 "0039-12-02-A" => "BAD",
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-11-07-A" => array(
                 "0039-12-00-A" => "BAD",
                 "0039-12-01-A" => "BAD",
                 "0039-12-02-A" => "BAD",
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-11-08-A" => array(
                 "0039-12-01-B" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-20-04-C" => array(
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "0039-20-05-C" => array(
                 "0039-12-02-B" => "DEFAULT",
-            ),
+           ),
             "DEFAULT" => array(
-            ),
+           ),
         );
         /** Modes for the FET */        
         var $modes = array(
@@ -145,17 +145,17 @@ if (!class_exists("e00391201")) {
             "DEFAULT" => array(1.79, 16, 1.79, 16, 1.79, 16, 1.79, 16, 16),
             "0039-20-04-C" => array(3.58, 32, 3.58, 32, 3.58, 32, 3.58, 32, 32),
             "0039-20-05-C" => array(3.58, 32, 3.58, 32, 32),
-            );
+           );
         /** The default labels for the sensor outputs. */
         var $labels = array(
             "DEFAULT" => array("Out1 Current", "Out1 Voltage", "Out2 Current", "Out2 Voltage", "Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
             "0039-20-05-C" => array("Out3 Current","Out3 Voltage", "Out4 Current", "Out4 Voltage", "Main Voltage"),
-            );
+           );
         /** The default  for the sensor outputs. */
         var $units = array(
             "DEFAULT" => array("A", "V", "A", "V", "A", "V", "A", "V", "V"),
             "0039-20-05-C" => array("A", "V", "A", "V", "V"),
-            );
+           );
         /** The default types for the sensor outputs. */
         var $types = array(
             "DEFAULT" => array(0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x50, 0x40, 0x40),
@@ -171,7 +171,7 @@ if (!class_exists("e00391201")) {
                                 "FET2pMode" => "FET 2 Mode", 
                                 "FET3pMode" => "FET 3 Mode", 
                                 "NumSensors" => "# Sensors",
-                                );
+                               );
 
 
 

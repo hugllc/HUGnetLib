@@ -76,8 +76,8 @@ class e00391200Test extends endpointTestBase
                 "DeviceID" => "000025",
                 "SerialNum" => 37,
                 "DeviceGroup" => "FFFFFF",
-            ),
-            "Return" => array(  
+           ),
+            "Return" => array( 
                 "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
                 "DriverInfo" => "01000000000000000000",
                 "HWPartNum" => "0039-12-02-B",
@@ -96,13 +96,13 @@ class e00391200Test extends endpointTestBase
                 "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
                 "params" => array(
                 "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
-                ),
+               ),
                 "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
                 "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
                 "doTotal" => array(false, false, false, false, false, false, false, false, false),
 
-            ),
-        ),
+           ),
+       ),
     );
      
      var $interpSensorsTestCases = array(
@@ -129,23 +129,23 @@ class e00391200Test extends endpointTestBase
                 "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
                 "params" => array(
                     "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
-                ),
+               ),
                 "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
                 "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
                 "doTotal" => array(false, false, false, false, false, false, false, false, false),
-            ),
+           ),
             "Packets" => array(
                 array(
                     "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:38:01",
-                ),
+               ),
                 array(
                     "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:48:01",
-                ),
-            ),
+               ),
+           ),
             "Return" => array(
                 array(
                     "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
@@ -173,7 +173,7 @@ class e00391200Test extends endpointTestBase
                     "deltaT" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
+               ),
                 array(
                     "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
                     "sendCommand" => "55",
@@ -200,9 +200,9 @@ class e00391200Test extends endpointTestBase
                     "deltaT" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
     );
 
     /**

@@ -63,10 +63,10 @@ if (!class_exists('windDirectionSensor')) {
                     "unitModes" => array(
                         '&#176;' => 'raw',
                         'Direction' => 'raw'
-                    ),
+                   ),
                     "inputSize" => 5,
-                ),
-            ),
+               ),
+           ),
         );
     
         /**

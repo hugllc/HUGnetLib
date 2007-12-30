@@ -71,8 +71,8 @@ if (!class_exists('eDEFAULT')) {
          * var $devices = array(
          *   "Firmwware Part #" => array(
          *       "Hardware Part #" => "Firmware version",
-         *   ),
-         * );
+         *  ),
+         *);
          * @endcode
          * Any of those can be set to the keyword "DEFAULT".  This matches anything
          * in that category (hardware, firmware, or firmware version).  Wildcards are
@@ -84,16 +84,16 @@ if (!class_exists('eDEFAULT')) {
          *   "0039-20-03-C" => array(
          *       "0039-12-02-A" => "DEFAULT",
          *       "0039-12-02-B" => "DEFAULT",
-         *   ),
+         *  ),
          *   "DEFAULT" => array(
          *       "0039-12-00-A" => "DEFAULT",
          *       "0039-12-01-A" => "DEFAULT",
          *       "0039-12-02-A" => "DEFAULT",
          *       "0039-12-01-B" => "DEFAULT",
          *       "0039-12-02-B" => "DEFAULT",
-         *   ),
+         *  ),
          * 
-         * );
+         *);
          * @endcode
          */
         public $devices = array();
@@ -194,8 +194,8 @@ if (!class_exists('eDEFAULT')) {
                 array(
                     "To"      => $Info["DeviceID"],
                     "Command" => EDEFAULT_SENSOR_READ,
-                ),
-            );
+               ),
+           );
         }
     
         /**
@@ -384,12 +384,12 @@ if (!class_exists('eDEFAULT')) {
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
-                ),
+               ),
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETCALIBRATION,
-                ),
-            );
+               ),
+           );
         }
                 
         /**

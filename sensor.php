@@ -226,8 +226,8 @@ class Sensor
      *  0 => array(
      *    'text' => "Text description of this field",
      *    'default' => "default",
-     *  ),
-     * );
+     * ),
+     *);
      * </code>
      *
      * This array will have as many members as there are extra fields for that

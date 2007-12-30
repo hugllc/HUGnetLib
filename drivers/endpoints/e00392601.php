@@ -62,7 +62,7 @@ if (!class_exists("e00392601")) {
         var $devices = array(
             "DEFAULT" => array(
                 "0039-26-01-P" => "DEFAULT",
-            ),
+           ),
         );
 
         /** Config array */
@@ -84,8 +84,8 @@ if (!class_exists("e00392601")) {
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
-                ),
-            );
+               ),
+           );
         }
 
         /**

@@ -79,9 +79,9 @@ class e00392100Test extends endpointTestBase
                     "5C" => "00000000CC00392101410039200143000007FFFFFF50FF",
                     "56" => "0000FE0000FC000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                     "60" => "0801",
-                ),
-            ),
-            "Return" => array(  
+               ),
+           ),
+            "Return" => array( 
                 "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
                 "DriverInfo" => "FF",
                 "HWPartNum" => "0039-21-01-A",
@@ -94,7 +94,7 @@ class e00392100Test extends endpointTestBase
                     "5C" => "00000000CC00392101410039200143000007FFFFFF50FF", 
                     "56" => "0000FE0000FC000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                     "60" => "0801"
-                ),
+               ),
                 "HWName" => "Controller Board",
                 "Location" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
                 "PacketTimeout" => 2,
@@ -105,10 +105,10 @@ class e00392100Test extends endpointTestBase
                 "Types" => array(64, 80, 2, 64, 80, 2),
                 "subDevices" => array(
                     array("0000FE", "0000FC"),
-                ),
+               ),
                 "HUGnetPower" => array(1, 1),
-             ),
-         ),
+            ),
+        ),
         array(
             "Info" => array(
                 "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
@@ -119,8 +119,8 @@ class e00392100Test extends endpointTestBase
                 "DeviceID" => "0000B6",
                 "SerialNum" => 182,
                 "DeviceGroup" => "EEEEEE",
-            ),
-            "Return" => array(  
+           ),
+            "Return" => array( 
                 "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
                 "DriverInfo" => "040001E000380000808055",
                 "HWPartNum" => "0039-21-01-A",
@@ -141,13 +141,13 @@ class e00392100Test extends endpointTestBase
                     "FLASH" => 0x3800,
                     "FLASHPAGE" => 128,
                     "PAGES" => 112,
-                ),
+               ),
                 "CRC" => "8055",
                 "bootLoader" => true,
                 "Types" => array(64, 80, 2, 64, 80, 2),
-             ),
-         ),
-     );
+            ),
+        ),
+    );
     var $interpSensorsTestCases = array(
         array(
             "Info" => array(
@@ -167,7 +167,7 @@ class e00392100Test extends endpointTestBase
                 "ActiveSensors" => 6,
                 "params" => array(
                     "sensorType" => array("Controller", "Controller", "BCTherm2322640", "Controller", "Controller", "BCTherm2322640"),
-                ),
+               ),
                 "bootLoader" => false,
                 "Types" => array(64, 80, 2, 64, 80, 2),
                 "unitType" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
@@ -175,19 +175,19 @@ class e00392100Test extends endpointTestBase
                 "Units" => array("V", "mA", "&#176;C", "V", "mA", "&#176;C"),
                 "dType" => array("raw", "raw", "raw", "raw", "raw", "raw"),
                 "doTotal" => array(false, false, false, false, false, false),
-            ),
+           ),
             "Packets" => array(
                 array(
                     "RawData" => "0BBE003F1E0000004882470000BF1D0B01",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:38:01",
-                ),
+               ),
                 array(
                     "RawData" => "00000000000000000000000000000000000000000000000000000000000000000000010000000000000001000000010001000000000000000D0000000000000044000C000000000000000D0000000D000D000000D5090000B602000000000000",
                     "sendCommand" => "57",
                     "Date" => "2007-02-23 22:38:01",
-                ),
-            ),
+               ),
+           ),
             "Return" => array(
                 array(
                     "RawData" => "0BBE003F1E0000004882470000BF1D0B01",
@@ -212,7 +212,7 @@ class e00392100Test extends endpointTestBase
                     "Data5" => 77.9861,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
+               ),
                 array(
                     "RawData" => "00000000000000000000000000000000000000000000000000000000000000000000010000000000000001000000010001000000000000000D0000000000000044000C000000000000000D0000000D000D000000D5090000B602000000000000",
                     "sendCommand" => "57",
@@ -235,7 +235,7 @@ class e00392100Test extends endpointTestBase
                             "ByteRX" => 0,
                             "ByteTX" => 0,
                             "ByteTX2" => 0,
-                        ),
+                       ),
                         array(
                             "PacketRX" => 0,
                             "PacketTX" => 1,
@@ -250,7 +250,7 @@ class e00392100Test extends endpointTestBase
                             "ByteRX" => 0,
                             "ByteTX" => 13,
                             "ByteTX2" => 0,
-                        ),
+                       ),
                         array(
                             "PacketRX" => 68,
                             "PacketTX" => 12,
@@ -265,12 +265,12 @@ class e00392100Test extends endpointTestBase
                             "ByteRX" => 2517,
                             "ByteTX" => 694,
                             "ByteTX2" => 0,
-                        ),
-                    ),
+                       ),
+                   ),
                     "Status" => "GOOD",
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
     );
 
     /**
@@ -334,21 +334,21 @@ class e00392100Test extends endpointTestBase
                 array("DeviceID" => "000025"),
                 array(
                     array("To" => "000025", "Command" => "55"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array("DeviceID" => "000025", "FWPartNum" => "0039-20-06-C"),
                 array(
                     array("To" => "000025", "Command" => "55"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array("DeviceID" => "000025", "FWPartNum" => "0039-20-01-C"),
                 array(
                     array("To" => "000025", "Command" => "55"),
                     array("To" => "000025", "Command" => "57"),
-                ),
-            ),
+               ),
+           ),
         );
     }
     /**
@@ -362,15 +362,15 @@ class e00392100Test extends endpointTestBase
                 array(
                     array("To" => "000025", "Command" => "5C"),
                     array("To" => "000025", "Command" => "4C"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array("DeviceID" => "000025", "FWPartNum" => "0039-20-06-C"),
                 array(
                     array("To" => "000025", "Command" => "5C"),
                     array("To" => "000025", "Command" => "4C"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array("DeviceID" => "000025", "FWPartNum" => "0039-20-01-C"),
                 array(
@@ -378,8 +378,8 @@ class e00392100Test extends endpointTestBase
                     array("To" => "000025", "Command" => "4C"),
                     array("To" => "000025", "Command" => "60"),
                     array("To" => "000025", "Command" => "56"),
-                ),
-            ),
+               ),
+           ),
         );
     }
 

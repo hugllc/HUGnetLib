@@ -63,17 +63,17 @@ if (!class_exists("e00392800")) {
                 "0039-28-01-A" => "DEFAULT",
                 "0039-28-01-B" => "DEFAULT",
                 "0039-28-01-C" => "DEFAULT",
-            ),        
+           ),        
             "0039-20-13-C" => array(
                 "0039-28-01-A" => "DEFAULT",
                 "0039-28-01-B" => "DEFAULT",
                 "0039-28-01-C" => "DEFAULT",
-            ),        
+           ),        
             "DEFAULT" => array(
                 "0039-28-01-A" => "DEFAULT",
                 "0039-28-01-B" => "DEFAULT",
                 "0039-28-01-C" => "DEFAULT",
-            ),
+           ),
 
         );
         /** Default locations of no others are specified */
@@ -97,7 +97,7 @@ if (!class_exists("e00392800")) {
         var $cols = array("TimeConstant" => "Time Constant", 
                                 "ActiveSensors" => "Active Sensors",
                                 "NumSensors" => "# Sensors",
-                                );
+                               );
 
         /**
          * Returns the packet to send to read the configuration out of an endpoint
@@ -114,15 +114,15 @@ if (!class_exists("e00392800")) {
                 array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
-                ),
-            );
+               ),
+           );
 
             for ($i = 0; $i < $this->calParts; $i++) {
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETCALIBRATION,
                     "Data" => devInfo::hexify($i),
-                );
+               );
             }
             return $packet;
         }

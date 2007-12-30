@@ -360,7 +360,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
     public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) 
     {
         $o = new $class();
-        $ret = $o->$method($value, $sensor, $units, $dType) ;
+        $ret = $o->$method($value, $sensor, $units, $dType);
         $this->assertType("bool", $expect, "sensorCheck functions MUST return a boolean");
         $this->assertSame($expect, $ret);    
     }
