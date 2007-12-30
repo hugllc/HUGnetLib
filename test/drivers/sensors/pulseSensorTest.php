@@ -58,7 +58,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/pulseSensor.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class pulseSensorTest extends sensorTestBase
+class PulseSensorTest extends sensorTestBase
 {
     var $class = "pulseSensor";
     /**
@@ -71,7 +71,7 @@ class pulseSensorTest extends sensorTestBase
      */
     public static function main()
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("pulseSensorTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
@@ -111,6 +111,8 @@ class pulseSensorTest extends sensorTestBase
     
     /**
      * Data provider for testMaximumAnemometer
+     *
+     * @return array
      */
     public static function dataMaximumAnemometer() 
     {
@@ -121,6 +123,13 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * test
+     *
+     * @param int   $val    Output of the A to D converter
+     * @param array $sensor The sensor information array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  Extra sensor information
+     * @param float $deltaT The time delta in seconds between this record
+     * @param float $expect The expected return value
      *
      * @return void
      *
@@ -134,6 +143,8 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * Data provider for testPulseCheck
+     *
+     * @return array
      */
     public static function dataPulseCheck() 
     {
@@ -147,6 +158,12 @@ class pulseSensorTest extends sensorTestBase
     /**
      * test
      *
+     * @param int    $value  The current sensor value
+     * @param array  $sensor The sensor information array
+     * @param string $units  The units the current value are in
+     * @param mixed  $dType  The data mode
+     * @param bool   $expect The expected return value
+     *
      * @return void
      *
      * @dataProvider dataPulseCheck
@@ -159,6 +176,8 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * Data provider for testWattNode
+     *
+     * @return array
      */
     public static function dataWattNode() 
     {
@@ -169,6 +188,13 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * test
+     *
+     * @param int   $val    Output of the A to D converter
+     * @param array $sensor The sensor information array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  Extra sensor information
+     * @param float $deltaT The time delta in seconds between this record
+     * @param float $expect The expected return value
      *
      * @return void
      *
@@ -182,6 +208,8 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * Data provider for testGetPPM
+     *
+     * @return array
      */
     public static function dataGetPPM() 
     {
@@ -192,6 +220,13 @@ class pulseSensorTest extends sensorTestBase
 
     /**
      * test
+     *
+     * @param int   $val    Output of the A to D converter
+     * @param array $sensor The sensor information array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  Extra sensor information
+     * @param float $deltaT The time delta in seconds between this record
+     * @param float $expect The expected return value
      *
      * @return void
      *
