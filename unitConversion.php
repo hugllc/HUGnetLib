@@ -65,49 +65,49 @@ class UnitConversion
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;F' => 'CtoF',
-                ),
+               ),
                 'preferred' => '&#176;F',
-            ),
+           ),
             '&#176;F' => array(
                 'longName' => '&#176;F',
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;C' => 'FtoC',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
         'Current' => array(
             'A' => array(
                 'longName' => 'Amps',
                 'varType' => 'float',
                 'convert' => array(
                     'mA' => 'toMilli',
-                ),
-            ),
+               ),
+           ),
             'mA' => array(
                 'longName' => 'milliamps',
                 'varType' => 'float',
                 'convert' => array(
                     'A' => 'fromMilli',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
         'Voltage' => array(
             'V' => array(
                 'longName' => 'Volts',
                 'varType' => 'float',
                 'convert' => array(
                     'mV' => 'toMilli',
-                ),
-            ),
+               ),
+           ),
             'mV' => array(
                 'longName' => 'millivolts',
                 'varType' => 'float',
                 'convert' => array(
                     'V' => 'fromMilli',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
         'Direction' => array(
             '&#176;' => array(
                 'longName' => 'Compass Degrees',
@@ -115,17 +115,17 @@ class UnitConversion
                 'mode' => 'raw',        
                 'convert' => array(
                     'Direction' => 'numDirtoDir',
-                ),
-            ),
+               ),
+           ),
             'Direction' => array(
                 'longName' => 'Direction',
                 'varType' => 'text',
                 'mode' => 'raw',
                 'convert' => array(
                     '&#176;' => 'DirtonumDir',
-                ),
-            ),  
-        ),
+               ),
+           ),  
+       ),
         'Pulses' => array(
             'counts' => array(
                 'longName' => 'Counts',
@@ -133,26 +133,26 @@ class UnitConversion
                 'convert' => array(
                     'RPM' => 'CnttoRPM',    
                     'PPM' => 'CnttoRPM',
-                ),
-            ),
+               ),
+           ),
             'PPM' => array(
                 'longName' => 'Pulses Per Minute',
                 'mode' => 'diff',
                 'varType' => 'float',
-            ),
+           ),
             'RPM' => array(
                 'longName' => 'Revolutions Per Minute',
                 'mode' => 'diff',
                 'varType' => 'float',
-            ),  
-        ),
+           ),  
+       ),
         'Speed' => array(
             'MPH' => array(
                 'longName' => 'Miles Per Hour',
                 'mode' => 'diff',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Power' => array(
             'kWh' => array(
                 'longName' => 'Kilowatt Hours',
@@ -161,77 +161,77 @@ class UnitConversion
                     'Wh' => 'toMilli',
                     'kW' => 'kWhTokW',
                     'W' => 'kWhToW',
-                ),
-            ),
+               ),
+           ),
             'kW' => array(
                 'longName' => 'Kilowatts',
                 'mode' => 'diff',
                 'varType' => 'float',
                 'convert' => array(
                     'W' => 'toMilli',
-                ),
-            ),
+               ),
+           ),
             'W' => array(
                 'longName' => 'Watts',
                 'mode' => 'diff',
                 'varType' => 'float',
                 'convert' => array(
                     'kW' => 'fromMilli',
-                ),
-            ),
+               ),
+           ),
             'Wh' => array(
                 'longName' => 'Watt Hours',
                 'varType' => 'float',
                 'convert' => array(
                     'kWh' => 'fromMilli',
                     'W' => 'kWhTokW',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
         'Humidity' => array(
             '%' => array(
                 'longName' => 'Relative Humidity',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Rain' => array(
             '&#34;' => array(
                 'longName' => 'Rain Fall',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Light' => array(
             'W/m^2' => array(
                 'longName' => 'Watts per Meter Squared',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Bale Moisture' => array(
             '%' => array(
                 'longName' => 'Percent Water by Weight',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Capacitance' => array(
             'F' => array(
                 'longName' => 'Farad',
                 'varType' => 'float',
-            ),
+           ),
             'uF' => array(
                 'longName' => 'Microfarad',
                 'varType' => 'float',
-            ),
+           ),
             'nF' => array(
                 'longName' => 'Nanofarad',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
         'Door' => array(
             '%' => array(
                 'longName' => 'Percentage Open',
                 'varType' => 'float',
-            ),
-        ),
+           ),
+       ),
     );
 
     /**

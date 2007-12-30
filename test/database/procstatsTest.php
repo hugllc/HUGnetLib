@@ -158,8 +158,8 @@ class ProcStatsTest extends databaseTest
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "7"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "7"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(),
                 "testStat",
@@ -170,8 +170,8 @@ class ProcStatsTest extends databaseTest
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "1"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "1"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
-                ),
-            ),
+               ),
+           ),
         );
     }
 
@@ -218,8 +218,8 @@ class ProcStatsTest extends databaseTest
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "3"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(),
                 "Daily",
@@ -228,8 +228,8 @@ class ProcStatsTest extends databaseTest
                 array(
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "1"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
-                ),
-            ),
+               ),
+           ),
         );
     }
 
@@ -269,14 +269,14 @@ class ProcStatsTest extends databaseTest
                 "testStat",
                 "2007-12-25",
                 2,
-            ),
+           ),
             array(
                 array(),
                 "Daily",
                 "testStat",
                 "2007-12-25",
                 0,
-            ),
+           ),
         );
     }
 
@@ -316,7 +316,7 @@ class ProcStatsTest extends databaseTest
                 "2007-12-25",
                 "1234",
                 2,
-            ),
+           ),
             array(
                 array(),
                 "phpunit",
@@ -325,7 +325,7 @@ class ProcStatsTest extends databaseTest
                 "2007-12-25",
                 "1234",
                 0,
-            ),
+           ),
         );
     }
 
@@ -374,8 +374,8 @@ class ProcStatsTest extends databaseTest
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "8"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
-                ),
-            ),
+               ),
+           ),
             array(
                 array(),
                 "testStat",
@@ -385,8 +385,8 @@ class ProcStatsTest extends databaseTest
                 array(
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "16"),
                     array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
-                ),
-            ),
+               ),
+           ),
         );
     }
 
@@ -446,26 +446,26 @@ class ProcStatsTest extends databaseTest
                         "2007-12-25" => array("testStat" => "2"),
                         "2007-12-24" => array("testStat" => "1"),
                         "2007-12-23" => array("testStat" => "0"),
-                    ),
+                   ),
                 
                     "Monthly" => array(
                         "2007-12" => array("testStat" => "6")
-                    ),
+                   ),
                     "Yearly" => array(
                         "2007" => array("testStat" => "6"),
-                    ),
-               ),
-            ),
+                   ),
+              ),
+           ),
             array(
                 self::$preload,
                 "badProgram",
                 array(),
-            ),
+           ),
             array(
                 array(),
                 "badProgram",
                 array(),
-            ),
+           ),
         );
     }
 
@@ -500,18 +500,18 @@ class ProcStatsTest extends databaseTest
                 "phpunit",
                 array(
                     "testStat" => "6",
-                ),
-            ),
+               ),
+           ),
             array(
                 self::$preload,
                 "badProgram",
                 array(),
-            ),
+           ),
             array(
                 array(),
                 "badProgram",
                 array(),
-            ),
+           ),
         );
     }
 

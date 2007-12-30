@@ -77,7 +77,7 @@ class Analysis extends DbBase
                   `Boredom` mediumint(9) NOT NULL default '0',
                   `Powerups` mediumint(9) NOT NULL default '0',
                   PRIMARY KEY  (`DeviceKey`,`Date`)
-                );";
+               );";
         $this->query($query);
         $this->getColumns();
     }

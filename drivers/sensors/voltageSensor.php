@@ -64,9 +64,9 @@ if (!class_exists('voltageSensor')) {
                     "extraDefault" => 1.1,
                     "unitModes" => array(
                         '%' => 'raw,diff',
-                    ),
-                ),
-            ),
+                   ),
+               ),
+           ),
             0x40 => array(
                 "FETBoard" => array(
                     "longName" => "FET Board Voltage Sensor",
@@ -78,10 +78,10 @@ if (!class_exists('voltageSensor')) {
                     "unitModes" => array(
                         'mV' => 'raw,diff',
                         'V' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("R1 in kOhms", "R2 in kOhms"),
                     "extraDefault" => array(150, 10),
-                ),
+               ),
                 "Controller" => array(
                     "longName" => "Controller Board Voltage Sensor",
                     "unitType" => "Voltage",
@@ -92,11 +92,11 @@ if (!class_exists('voltageSensor')) {
                     "unitModes" => array(
                         'mV' => 'raw,diff',
                         'V' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("R1 in kOhms", "R2 in kOhms"),
                     "extraDefault" => array(180, 27),
-                ),
-            ),
+               ),
+           ),
         );
     
         /**

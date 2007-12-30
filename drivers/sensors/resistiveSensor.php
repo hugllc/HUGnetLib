@@ -78,11 +78,11 @@ if (!class_exists('resistiveSensor')) {
                     "unitModes" => array(
                         '&#176;C' => 'raw,diff',                        
                         '&#176;F' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("Bias Resistor in k Ohms", "Thermistor Value @25C"),
                     "extraDefault" => array(100, 10),
-                ),
-            ),
+               ),
+           ),
             0x01 => array(
                 'BaleMoistureV1' => array(
                     "longName" => "Bale Moisture V1",
@@ -92,11 +92,11 @@ if (!class_exists('resistiveSensor')) {
                     "storageUnit" => '%',
                     "unitModes" => array(
                         '%' => 'raw,diff',                        
-                    ),
+                   ),
                     "extraText" => array("Bias Resistor in k Ohms", "Red Zone resistance in Ohms", "Yellow Zone resistance in Ohms"),
                     "extraDefault" => array(100, 10000, 100000),
-                ),
-            ),
+               ),
+           ),
             0x02 => array(
                 'BCTherm2322640' => array(
                     "longName" => "BC Components Thermistor #2322640 ",
@@ -107,10 +107,10 @@ if (!class_exists('resistiveSensor')) {
                     "unitModes" => array(
                         '&#176;C' => 'raw,diff',                        
                         '&#176;F' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("Bias Resistor in k Ohms", "Thermistor Value @25C"),
                     "extraDefault" => array(10, 10),
-                ),
+               ),
                 'resisDoor' => array(
                     "longName" => "Resistive Door Sensor",
                     "unitType" => "Door",
@@ -119,11 +119,11 @@ if (!class_exists('resistiveSensor')) {
                     "storageUnit" => '%',
                     "unitModes" => array(
                         '%' => 'raw',                        
-                    ),
+                   ),
                     "extraText" => array("Bias Resistor in kOhms", "Fixed Resistor in kOhms", "Switched Resistor in kOhms"),
                     "extraDefault" => array(10,10,10),
-                ),
-            ),
+               ),
+           ),
             0x03 => array(
                 'BaleMoistureV2' => array(
                     "longName" => "Bale Moisture V2",
@@ -133,11 +133,11 @@ if (!class_exists('resistiveSensor')) {
                     "storageUnit" => '%',
                     "unitModes" => array(
                         '%' => 'raw,diff',                        
-                    ),
+                   ),
                     "extraText" => array("Bias Resistor in k Ohms", "Red Zone resistance in k Ohms", "Yellow Zone resistance in k Ohms"),
                     "extraDefault" => array(1000, 10, 1000),
-                ),
-            ),
+               ),
+           ),
         );
     
         /**
@@ -316,9 +316,9 @@ if (!class_exists('resistiveSensor')) {
          *  2. The yellow zone resistance
          *
          * It is not well documented.  It seems to contain the formula:
-         *  - B = ( My - Mr ) / ( log( Ry ) - log( Rr ) )
-         *  - A = Mr - ( B * log( Rr ) )
-         *  - M = A + (B * log( R ) );
+         *  - B = (My - Mr) / (log(Ry) - log(Rr))
+         *  - A = Mr - (B * log(Rr))
+         *  - M = A + (B * log(R));
          * where:
          * - M = Moisture (%)
          * - Mr = Minimum % for red zone (bad)

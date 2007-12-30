@@ -75,7 +75,7 @@ class DeviceTest extends databaseTest
             "GatewayKey" => 1,
             "params"     => "",
             "PollInterval" => 15,
-        ),
+       ),
         array(
             "DeviceKey" => 2,
             "DeviceID"  => "000031",
@@ -84,7 +84,7 @@ class DeviceTest extends databaseTest
             "GatewayKey" => 1,
             "params"     => "",
             "PollInterval" => 10,
-        ),
+       ),
         array(
             "DeviceKey" => 3,
             "DeviceID"  => "000032",
@@ -93,7 +93,7 @@ class DeviceTest extends databaseTest
             "GatewayKey" => 2,
             "params"     => "",
             "PollInterval" => 5,
-        ),
+       ),
         array(
             "DeviceKey" => 4,
             "DeviceID"  => "000033",
@@ -102,7 +102,7 @@ class DeviceTest extends databaseTest
             "GatewayKey" => 0,
             "params"     => "",
             "PollInterval" => 0,
-        ),
+       ),
     );
     /**
      * Runs the test methods of this class.
@@ -207,8 +207,8 @@ class DeviceTest extends databaseTest
                 2,
                 array(
                     3 => "000032",
-                ),
-            ),
+               ),
+           ),
             array(
                 self::$preload,
                 "test",
@@ -218,8 +218,8 @@ class DeviceTest extends databaseTest
                     1 => "000030",
                     2 => "000031",
                     3 => "000032",
-                ),
-            ),
+               ),
+           ),
             array(
                 self::$preload,
                 "test",
@@ -229,8 +229,8 @@ class DeviceTest extends databaseTest
                     1 => "000030",
                     2 => "000031",
                     3 => "000032",
-                ),
-            ),
+               ),
+           ),
         );
     }
 
@@ -267,7 +267,7 @@ class DeviceTest extends databaseTest
                 0,
                 "ID",
                 array(),
-            ),
+           ),
             array(
                 self::$preload,
                 1,
@@ -299,8 +299,8 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => array(),
-                ),
-            ),
+               ),
+           ),
             array(
                 self::$preload,
                 "dev3",
@@ -332,8 +332,8 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => array(),
-                ),
-            ),
+               ),
+           ),
             array(
                 self::$preload,
                 "000031",
@@ -365,8 +365,8 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => array(),
-                ),
-            ),
+               ),
+           ),
         );
     }
 
@@ -441,9 +441,9 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MjoiYW4iO3M6NToiYXJyYXkiO30=",
-                ),
+               ),
                 true,
-            ),
+           ),
             array(
                 self::$preload,
                 1,
@@ -475,9 +475,9 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => "YTo1OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O2k6NDtpOjU7fQ==",
-                ),
+               ),
                 true,
-            ),
+           ),
             array(
                 self::$preload,
                 1,
@@ -509,9 +509,9 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => "This is a string",
-                ),
+               ),
                 true,
-            ),
+           ),
             array(
                 self::$preload,
                 1,
@@ -543,16 +543,16 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => "YTowOnt9",
-                ),
+               ),
                 true,
-            ),
+           ),
             array(
                 self::$preload,
                 510,
                 array(1,2,3,4,5),
                 null,
                 false,
-            ),
+           ),
         );
     }
 

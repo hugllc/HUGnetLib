@@ -148,7 +148,7 @@ class Firmware extends DbBase
                   `FirmwareCVSTag` varchar(64) NOT NULL default '',
                   `Target` varchar(16) NOT NULL default 'attiny26',
                   PRIMARY KEY  (`FirmwareKey`)
-                  );";
+                 );";
         $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'.$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)');
         $this->getColumns();

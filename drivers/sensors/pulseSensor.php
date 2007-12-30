@@ -68,10 +68,10 @@ if (!class_exists('pulseSensor')) {
                     "unitModes" => array(
                         'PPM' => 'diff',
                         'counts' => 'raw,diff',
-                    ),
+                   ),
                     "checkFunction" => "pulseCheck",
 
-                ),
+               ),
                 'genericRevolver' => array(
                     "longName" => "Generic Revolving Thingy",
                     "unitType" => "Pulses",
@@ -82,10 +82,10 @@ if (!class_exists('pulseSensor')) {
                         'PPM' => 'diff',
                         'RPM' => 'diff',
                         'counts' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => "Counts per Revolution",
                     "extraDefault" => 1,
-                ),
+               ),
                 'maximumAnemometer' => array(
                     "longName" => "Maximum Inc type Hall Effect Anemometer",
                     "unitType" => "Speed",
@@ -93,9 +93,9 @@ if (!class_exists('pulseSensor')) {
                     "storageUnit" =>  'MPH',
                     "unitModes" => array(
                         'MPH' => 'diff',
-                    ),
+                   ),
                     "function" => "maximumAnemometer",
-                ),
+               ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
                     "unitType" => "Rain",
@@ -103,10 +103,10 @@ if (!class_exists('pulseSensor')) {
                     "storageUnit" =>  '&#34;',
                     "unitModes" => array(
                         '&#34;' => 'diff',
-                    ),
+                   ),
                     "mult" => 0.01,
                     "doTotal" => true,
-                ),
+               ),
                 'bravo3motion' => array(
                     "longName" => "DSC Bravo 3 Motion Sensor",
                     "unitType" => "Pulses",
@@ -115,10 +115,10 @@ if (!class_exists('pulseSensor')) {
                     "unitModes" => array(
                         'counts' => 'diff,raw',
                         'PPM' => 'diff',
-                    ),
+                   ),
                     "checkFunction" => "pulseCheck",
                     "doTotal" => true,
-                ),
+               ),
                 'wattnode' => array(
                     "longName" => "CCS WattNode Pulse Output Power Meter",
                     "unitType" => "Power",
@@ -130,12 +130,12 @@ if (!class_exists('pulseSensor')) {
                         'Wh' => 'raw,diff',
                         'kW' => 'diff',
                         'W' => 'diff',
-                    ),
+                   ),
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => true,
-                ),
-            ),
+               ),
+           ),
         );
     
 

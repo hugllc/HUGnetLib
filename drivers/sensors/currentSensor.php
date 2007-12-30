@@ -62,10 +62,10 @@ if (!class_exists('currentSensor')) {
                     "unitModes" => array(
                         'mA' => 'raw,diff',
                         'A' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("R in Ohms", "Gain"),
                     "extraDefault" => array(0.5, 1),
-                ),
+               ),
                 "Controller" => array(
                     "longName" => "Controller Board Current Sensor",
                     "unitType" => "Current",
@@ -76,11 +76,11 @@ if (!class_exists('currentSensor')) {
                     "unitModes" => array(
                         'mA' => 'raw,diff',
                         'A' => 'raw,diff',
-                    ),
+                   ),
                     "extraText" => array("R in Ohms", "Gain"),
                     "extraDefault" => array(0.5, 7),
-                ),
-            ),
+               ),
+           ),
         );
         /**
          * This takes in a raw AtoD reading and returns the current.

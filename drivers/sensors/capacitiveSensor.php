@@ -62,10 +62,10 @@ if (!class_exists('capacitiveSensor')) {
                         'F' => 'raw,diff',
                         'uF' => 'raw,diff',
                         'nF' => 'raw,diff',
-                    ),
+                   ),
 
-                ),
-            ),
+               ),
+           ),
         );
     
         /**

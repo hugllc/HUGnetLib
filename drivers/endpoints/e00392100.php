@@ -70,7 +70,7 @@ if (!class_exists("e00392100")) {
         var $devices = array(
             "DEFAULT" => array(
                 "0039-21-01-A" => "DEFAULT",
-            ),
+           ),
         );
 
         var $Types = array(
@@ -106,23 +106,23 @@ if (!class_exists("e00392100")) {
                 0 => array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETSETUP,
-                ),
+               ),
                 1 => array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_COMMAND_GETCALIBRATION,
-                ),
-            );
+               ),
+           );
             switch ($Info['FWPartNum']) 
             {
             case '0039-20-01-C':
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_HUGNETPOWER_COMMAND,
-                );
+               );
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_READDOWNSTREAMSN_COMMAND,
-                );
+               );
                 break;
             case '0039-20-06-C':
                 break;
@@ -173,15 +173,15 @@ if (!class_exists("e00392100")) {
                 array(
                     "To"      => $Info["DeviceID"],
                     "Command" => EDEFAULT_SENSOR_READ,
-                ),
-            );
+               ),
+           );
             switch ($Info['FWPartNum']) 
             {
             case '0039-20-01-C':
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_READPACKETSTATS_COMMAND,
-                );
+               );
                 break;
             case '0039-20-06-C':
                 break;
@@ -232,7 +232,7 @@ if (!class_exists("e00392100")) {
                     "E2"        => hexdec(substr($Info["DriverInfo"], 4, 4)),
                     "FLASH"     => hexdec(substr($Info["DriverInfo"], 8, 6)),
                     "FLASHPAGE" => hexdec(substr($Info["DriverInfo"], 14, 4)),
-                );
+               );
                 if ($Info['mcu']["FLASHPAGE"] == 0) $Info['mcu']["FLASHPAGE"] = 128;
                 $Info['mcu']["PAGES"] = $Info['mcu']["FLASH"]/$Info['mcu']["FLASHPAGE"];
                 $Info["CRC"]          = strtoupper(substr($Info["DriverInfo"], 18, 4));
@@ -329,7 +329,7 @@ if (!class_exists("e00392100")) {
                 $update = array(
                     'ControllerKey' => 0,
                     'ControllerIndex' => 0,
-                );                
+               );                
                 $return = $this->driver->db->AutoExecute($this->driver->device_table, $update, 'UPDATE', 'DeviceKey='.$Info['DeviceKey']);
                 
             }

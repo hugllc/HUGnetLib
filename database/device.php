@@ -182,7 +182,7 @@ class Device extends DbBase
             if (empty($ep['DeviceKey']) 
                 || !isset($ep['LastConfig']) 
                 || (strtotime($res["LastConfig"]) < strtotime($ep["LastConfig"]))
-            ) {
+           ) {
 
                 // This makes sure that the gateway key gets set, as it might have changed.
                 if (!is_null($GatewayKey)) $ep['GatewayKey'] = $GatewayKey;
@@ -329,7 +329,7 @@ class Device extends DbBase
                       `CurrentGatewayKey` int(11) NOT null default '0',
                       `params` text NOT null,
                       PRIMARY KEY  (`DeviceKey`)
-                    );
+                   );
                     ";
                     
         $ret = $this->query($query);

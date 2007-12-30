@@ -98,7 +98,7 @@ class ProcStats extends DbBase
                       `sname` varchar(128) NOT null,
                       `svalue` text NOT null,
                       PRIMARY KEY  (`PID`,`Program`,`stype`,`sdate`,`sname`)
-                      );
+                     );
                     ";
         $this->query($query);        
         $this->getColumns();

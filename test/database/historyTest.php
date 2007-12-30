@@ -143,7 +143,7 @@ class HistoryTest extends databaseTest
                         "Data1" => 6.0, 
                         "Data2" => 7.0,
                         "data" => array(5.0, 6.0, 7.0),
-                    ),
+                   ),
                     array(
                         "DeviceKey" => 1, 
                         "Date" => "2007-12-20 02:35:02", 
@@ -152,7 +152,7 @@ class HistoryTest extends databaseTest
                         "Data1" => 5.0, 
                         "Data2" => 6.0,
                         "data" => array(4.0, 5.0, 6.0),
-                    ),
+                   ),
                     array(
                         "DeviceKey" => 1, 
                         "Date" => "2007-12-20 02:30:02", 
@@ -161,9 +161,9 @@ class HistoryTest extends databaseTest
                         "Data1" => 4.0, 
                         "Data2" => 5.0,
                         "data" => array(3.0, 4.0, 5.0),
-                    ),
-                ),
-            ),               
+                   ),
+               ),
+           ),               
             array(
                 self::$preload,
                 1,
@@ -179,7 +179,7 @@ class HistoryTest extends databaseTest
                         "Data1" => 6.0, 
                         "Data2" => 7.0,
                         "data" => array(5.0, 6.0, 7.0),
-                    ),
+                   ),
                     array(
                         "DeviceKey" => 1, 
                         "Date" => "2007-12-20 02:35:02", 
@@ -188,9 +188,9 @@ class HistoryTest extends databaseTest
                         "Data1" => 5.0, 
                         "Data2" => 6.0,
                         "data" => array(4.0, 5.0, 6.0),
-                    ),
-                ),
-            ),               
+                   ),
+               ),
+           ),               
             array(
                 self::$preload,
                 2,
@@ -198,7 +198,7 @@ class HistoryTest extends databaseTest
                 "NOW",
                 2,
                 array(),
-            ),               
+           ),               
         );
     }
     /**

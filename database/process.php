@@ -133,7 +133,7 @@ class Process extends DbBase
                     if (($setTime > strtotime($val["LastCheckin"])) 
                         &&($setTime > strtotime($val["LastChecked"]))
                         &&($setTime > strtotime($val["Started"]))                
-                        ) {
+                       ) {
                         if ($this->remove($val["ProcessKey"])) {
                             print " Deleted ";
                         } else {
@@ -311,7 +311,7 @@ class Process extends DbBase
                       'LastCheckin' datetime NOT null default '0000-00-00 00:00:00',
                       'Block' varchar(32) NOT null default 'NORMAL',
                       PRIMARY KEY  ('PID')
-                    );
+                   );
                     ";
         $this->query($query);
         $this->getColumns();

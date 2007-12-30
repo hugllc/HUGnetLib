@@ -74,8 +74,8 @@ class e00391201Test extends endpointTestBase
                 "DeviceID" => "00004E",
                 "SerialNum" => 78,
                 "DeviceGroup" => "FFFFFF",
-            ),
-            "Return" => array(  
+           ),
+            "Return" => array( 
                 "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
                 "HWPartNum" => "0039-12-02-B",
                 "FWPartNum" => "0039-20-04-C",
@@ -106,9 +106,9 @@ class e00391201Test extends endpointTestBase
                 "FET2Mult" => 80,
                 "FET3Mult" => 96,
                 "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
-             ),
-         ),
-     );
+            ),
+        ),
+    );
      var $interpSensorsTestCases = array(
         array(
             "Info" => array(
@@ -143,19 +143,19 @@ class e00391201Test extends endpointTestBase
                 "FET2Mult" => 80,
                 "FET3Mult" => 96,
                 "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
-            ),
+           ),
             "Packets" => array(
                 array(
                     "RawData" => "078511bb00cb11b3006711c6004210ac00fc4d",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:38:01",
-                ),
+               ),
                 array(
                     "RawData" => "4b9d11bc008311bb006111bf003810a200004e",
                     "sendCommand" => "55",
                     "Date" => "2007-02-23 22:48:01",
-                ),
-            ),
+               ),
+           ),
             "Return" => array(
                 array(
                     "RawData" => "078511bb00cb11b3006711c6004210ac00fc4d",
@@ -183,7 +183,7 @@ class e00391201Test extends endpointTestBase
                     "deltaT" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
+               ),
                 array(
                     "RawData" => "4b9d11bc008311bb006111bf003810a200004e",
                     "sendCommand" => "55",
@@ -210,9 +210,9 @@ class e00391201Test extends endpointTestBase
                     "deltaT" => 0,
                     "Status" => "GOOD",
                     "StatusOld" => "GOOD",
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
     );
     /**
      * Runs the test methods of this class.

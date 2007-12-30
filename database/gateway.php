@@ -101,7 +101,7 @@ class Gateway extends DbBase
                   `database` varchar(64) NOT null default '',
                   `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
                   PRIMARY KEY  (`GatewayKey`)
-                );";
+               );";
                     
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');

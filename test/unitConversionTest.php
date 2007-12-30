@@ -66,17 +66,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;F' => 'CtoF',
-                ),
+               ),
                 'preferred' => '&#176;F',
-            ),
+           ),
             '&#176;F' => array(
                 'longName' => '&#176;F',
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;C' => 'FtoC',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
         'Direction' => array(
             '&#176;' => array(
                 'longName' => 'Compass Degrees',
@@ -84,17 +84,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'mode' => 'raw',        
                 'convert' => array(
                     'Direction' => 'numDirtoDir',
-                ),
-            ),
+               ),
+           ),
             'Direction' => array(
                 'longName' => 'Direction',
                 'varType' => 'text',
                 'mode' => 'raw',
                 'convert' => array(
                     '&#176;' => 'DirtonumDir',
-                ),
-            ),  
-        ),
+               ),
+           ),  
+       ),
     );
 
     /**
@@ -926,30 +926,30 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 array(
                     0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
                     1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
-                ), // History
+               ), // History
                 array(
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
                     "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
-                ), // DevInfo
+               ), // DevInfo
                 2, // dPlaces
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
                     1 => array("Data0" => 3.0,"Data2" => 4.0, "Data3" => -2.0, "Data4" => 6.5, "data" => array(3.0,null,4.0,-2.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
-                ), // expectHistory
+               ), // expectHistory
                 array(
                     "ActiveSensors" => 5, 
                     "dType" => array("raw","diff","diff","raw","diff"), 
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100), 
                     "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
-                ), // expectDevInfo
+               ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff"), // expectType
                 array("E", "B", "E", "D","E"), // expectUnits
-            ),
+           ),
         );
     }
     /**
@@ -1073,27 +1073,27 @@ class UnitConversionMock extends unitConversion
                 'convert' => array(
                     'B' => 'aToB',
                     'C' => 'aToC',
-                ),
-            ),
+               ),
+           ),
             'B' => array(
                 'longName' => 'B',
                 'varType' => 'float',
                 'convert' => array(
                     'A' => 'bToA',
                     'C' => 'bToC',
-                ),
+               ),
                 'preferred' => 'A',
-            ),
+           ),
             'C' => array(
                 'longName' => 'C',
                 'varType' => 'float',
                 'convert' => array(
                     'A' => 'cToA',
                     'B' => 'cToB',
-                ),
+               ),
                 'preferred' => 'A',
-            ),
-        ),
+           ),
+       ),
         'Test2' => array(
             'D' => array(
                 'longName' => 'D',
@@ -1101,26 +1101,26 @@ class UnitConversionMock extends unitConversion
                 'convert' => array(
                     'E' => 'aToB',
                     'F' => 'aToC',
-                ),
-            ),
+               ),
+           ),
             'E' => array(
                 'longName' => 'E',
                 'varType' => 'float',
                 'convert' => array(
                     'D' => 'bToA',
                     'F' => 'bToC',
-                ),
+               ),
                 'preferred' => 'D',
-            ),
+           ),
             'F' => array(
                 'longName' => 'C',
                 'varType' => 'float',
                 'convert' => array(
                     'D' => 'cToA',
                     'E' => 'cToB',
-                ),
-            ),
-        ),
+               ),
+           ),
+       ),
     );
 
     /**

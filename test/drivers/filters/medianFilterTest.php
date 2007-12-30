@@ -135,7 +135,7 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 10, "data" => array(13,10)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 2, "data" => array(14,2)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-                ),                                      // $history
+               ),                                      // $history
                 1,                                      // $index
                 array("extraDefault" => array(3, 1)),   // $filter
                 array(),                                // $extra
@@ -152,8 +152,8 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 9, "data" => array(13,9)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 9, "data" => array(14,9)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-                ),                                      // $expect                
-            ),
+               ),                                      // $expect                
+           ),
             array(
                 array(
                     array("Date" => "2007-12-12 4:00:05", "Data0" => 5, "Data1" => 2, "data" => array(5,2)),
@@ -167,7 +167,7 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 2, "data" => array(13,2)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 11, "data" => array(14,11)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-                ),                                      // $history
+               ),                                      // $history
                 1,                                      // $index
                 array("extraDefault" => array(7, 5)),   // $filter
                 array(3, 1),                            // $extra
@@ -184,8 +184,8 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 8, "data" => array(13,8)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 11, "data" => array(14,11)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-                ),                                      // $expect                
-            ),
+               ),                                      // $expect                
+           ),
         );
     }
 

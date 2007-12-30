@@ -132,7 +132,7 @@ class GatewayTest extends databaseTest
                         "GatewayLocation" => "asdf",
                         "database" => "HUGnet",
                         "FirmwareStatus" => "BAD",
-                    ),
+                   ),
                     array(
                         "GatewayKey" => 2,
                         "GatewayIP" => $ip,
@@ -140,8 +140,8 @@ class GatewayTest extends databaseTest
                         "GatewayLocation" => "asdf",
                         "database" => "HUGnet",
                         "FirmwareStatus" => "BETA",
-                    ),
-                ),
+                   ),
+               ),
                 array(
                     "GatewayKey" => "2",
                     "GatewayIP" => $ip,
@@ -149,8 +149,8 @@ class GatewayTest extends databaseTest
                     "GatewayLocation" => "asdf",
                     "database" => "HUGnet",
                     "FirmwareStatus" => "BETA",
-                ),
-            ),
+               ),
+           ),
  
         );
     }
@@ -202,7 +202,7 @@ class GatewayMock extends gateway
                 "GatewayName" => "Test Gateway",
                 "GatewayIP" => "127.0.0.1",
                 "GatewayPort" => "2000",
-            ),
+           ),
         );
     }
 }

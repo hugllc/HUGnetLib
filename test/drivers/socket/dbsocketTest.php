@@ -128,7 +128,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                     "Type" => "OUTGOING",
                     "RawData" => "01020304",
                     "sentRawData" => "01020304",
-                ),
+               ),
                 "expect" => array(
                     "DeviceKey" => 5,
                     "GatewayKey" => 1,
@@ -143,8 +143,8 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                     "Status" => "NEW",
                     "ReplyTime" => 0,
                     "Checked" => 0,
-                ),
-            ),
+               ),
+           ),
                 
         );
     }
@@ -186,9 +186,9 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                     "Type" => "OUTGOING",
                     "RawData" => "01020304",
                     "sentRawData" => "01020304",
-                ),
+               ),
                 "expect" => false,
-            ),                
+           ),                
         );
     }
     /**
@@ -224,9 +224,9 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                         ."(123456, 5, 1, '2007-11-23 05:02:03', '01', '5C'"
                         .", 'ABCDEF', '000020', '01020304', '01020304'"
                         .", 'REPLY', 0.134, 2)",
-                ),
+               ),
                 "expect" => "5A5A5A01000020ABCDEF0401020304A8",
-            ),
+           ),
         );
     }
 
