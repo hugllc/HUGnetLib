@@ -559,6 +559,52 @@ class DbBaseTest extends databaseTest
         $ret = $this->o->getOneWhere($where, $data);
         $this->assertSame($expect, $ret);
     }
+    /**
+     * Data provider for testGetOne
+     *
+     * @return array
+     */
+    public static function dataGetOne() 
+    {
+        return array(
+            array(
+                array(),
+                null,
+           ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+               ),
+                array("id" => "1", "name" => "hello", "value" => "there"),
+           ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+               ),
+                array("id" => "1", "name" => "hello", "value" => "there"),
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param array  $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataGetOne
+     */
+    public function testGetOne($preload, $expect) 
+    {
+        $this->load($preload);
+        $ret = $this->o->getOne();
+        $this->assertSame($expect, $ret);
+    }
 
     /**
      * Data provider for testGetNextID
