@@ -80,7 +80,7 @@ class DbBase
     protected $cacheFile = "";
     
     /** @var string This is the name of the current driver */
-    protected $driver = "";
+    public $driver = "";
 
     /** @var object The database object */
     protected $_db = null;
@@ -125,7 +125,7 @@ class DbBase
         if (is_string($id)) $this->id = $id;
 
         $this->driver = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
-        
+
         $this->getColumns();
     }
     
@@ -297,7 +297,7 @@ class DbBase
      *
      * @return mixed
      */     
-    protected function getAttribute($attrib) 
+    private function getAttribute($attrib) 
     {
         if (!$this->checkDb()) return null; 
         return $this->_db->getAttribute($attrib);
@@ -470,6 +470,7 @@ class DbBase
      * Returns the first row the where statement finds
      *
      * @param string $where a valid SQL where statement
+     * @param array  $data  Data for query
      *
      * @return mixed
       */
@@ -477,6 +478,16 @@ class DbBase
     {
         $res = $this->getWhere($where, $data, 0, 1);
         return $res[0];
+    }
+
+    /**
+     * Returns the first row in the database
+     *
+     * @return mixed
+     */
+    function getOne() 
+    {
+        return $this->getOneWhere("1");
     }
 
 
