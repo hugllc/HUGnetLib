@@ -94,6 +94,9 @@ class DbBase
     /** @var object The cache */
     protected $_doCache = false;
 
+    /** @var string The dsn we are connected to */
+    private $_dsn = "";
+    
     /**
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
@@ -109,7 +112,6 @@ class DbBase
     {
 
         $this->verbose($verbose);
-        // Set it here since it needs a call to sys_get_temp_dir
         if (is_string($db) && !empty($db)) {
             if (trim(strtolower($db)) == ":memory:") $db = trim(strtolower($db));
             $this->file = $db;
