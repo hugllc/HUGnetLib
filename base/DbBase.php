@@ -33,7 +33,14 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
+/** The database went away */
+define("DBBASE_META_ERROR_SERVER_GONE", 1);
+/** The database went away */
+define("DBBASE_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
+/** The database went away */
+define("DBBASE_META_ERROR_DUPLICATE", 2);
+/** The database went away */
+define("DBBASE_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /**
  * Base class for all database work
  *
@@ -543,6 +550,8 @@ class DbBase
             $this->errorState = "NODBE";
             $this->error      = -1;
             $this->errorMsg   = "Database Not Connected";
+            $this->metaError = DBBASE_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = DBBASE_META_ERROR_SERVER_GONE_MSG;
             $this->printError();
             return;
         }
@@ -556,7 +565,55 @@ class DbBase
         $this->errorState = $err[0];
         $this->error      = $err[1];
         $this->errorMsg   = $err[2];
+        $this->metaErrorInfo($err);
         $this->printError();
+    }
+    
+    /**
+     * This turns the errors into meta errors
+     *
+     * @param array $err The error array 
+     *
+     * @return void
+     */
+    protected function metaErrorInfo($err)
+    {
+        if (empty($err)) {
+            $this->metaError = null;
+            $this->metaErrorMsg = null;
+            return;
+        }
+        if ($this->driver == "mysql") return $this->mysqlMetaErrorInfo($err);
+        if ($this->driver == "sqlite") return $this->sqliteMetaErrorInfo($err);
+    }
+    /**
+     * This turns the errors into meta errors
+     *
+     * @param array $err The error array 
+     *
+     * @return void
+     */
+    protected function mysqlMetaErrorInfo($err)
+    {
+        if ($err[1] == 2006) {
+            $this->metaError = DBBASE_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = DBBASE_META_ERROR_SERVER_GONE_MSG;
+            return;
+        } else if ($err[1] == 1062) {
+            $this->metaError = DBBASE_META_ERROR_DUPLICATE;
+            $this->metaErrorMsg = DBBASE_META_ERROR_DUPLICATE_MSG;
+            return;           
+        }
+    }
+    /**
+     * This turns the errors into meta errors
+     *
+     * @param array $err The error array 
+     *
+     * @return void
+     */
+    protected function sqliteMetaErrorInfo($err)
+    {
     }
     /**
      * Print Errors
@@ -572,6 +629,10 @@ class DbBase
                 $this->vprint("Error: ".$this->error);
             if (!empty($this->errorMsg))
                 $this->vprint("Error Message: ".$this->errorMsg);
+            if (!empty($this->metaErrorMsg))
+                $this->vprint("Meta Error Message: ".$this->metaErrorMsg);
+            if (!empty($this->metaError))
+                $this->vprint("Meta Error: ".$this->metaError);
         }        
     }
     /**
