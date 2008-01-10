@@ -128,7 +128,7 @@ class DbBase
         if ($this->checkDb($db)) {
             $this->_db = &$db;
         } else {
-            $this->_db = DbBase::createPDO("sqlite:".$this->file);
+            $this->_db = self::_createPDO("sqlite:".$this->file);
         }
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
@@ -136,6 +136,33 @@ class DbBase
         $this->driver = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
 
         $this->getColumns();
+    }
+
+
+    /**
+     * Creates a database object
+     *
+     * @param string $dsn  The DSN to use to create the PDO object
+     * @param string $user The username
+     * @param string $pass THe password
+     *
+     * @return object PDO object
+     */
+    static public function &createPDO(&$dsn, $user = null, $pass = null) 
+    {
+        // The order of these is important!
+        if (is_string($dsn)) $dsn = array("dsn" => $dsn, "user" => $user, "password" => $pass);
+        if (is_object($dsn) && (get_class($dsn) == "PDO")) return $dsn;
+        if (is_object($dsn)) return false;
+        if (!is_array($dsn)) return false;
+        if (isset($dsn["dsn"])) $dsn = array($dsn);
+
+        // Okday, now try to connect
+        foreach ($dsn as $serv) {
+            $db = self::_createPDO($serv["dsn"], $serv["user"], $serv["password"]);
+            if (is_object($dsn) && (get_class($dsn) == "PDO")) break;
+        }
+        return $db;
     }
     
     /**
@@ -147,7 +174,7 @@ class DbBase
      *
      * @return object PDO object
      */
-    static public function &createPDO($dsn, $user = null, $pass = null) 
+    static private function &_createPDO($dsn, $user = null, $pass = null) 
     {
         try {
             $db = new PDO($dsn, $user, $pass);
