@@ -52,7 +52,7 @@ if (!defined("HUGNET_LOCAL_DATABASE")) {
     define("HUGNET_LOCAL_DATABASE", $temp_dir."/HUGnetLocal.sq3");
 }
 
-if (include 'PHPUnit/Framework.php') {
+if (@include 'PHPUnit/Framework.php') {
     $phpunit = true;
 } else {
     $phpunit = false;
