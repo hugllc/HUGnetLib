@@ -1007,6 +1007,18 @@ class DbBaseTest extends databaseTest
      *
      * @return void
      */
+    public function testIsConnectedServerLeft() 
+    {
+        $this->o->metaError = DBBASE_META_ERROR_SERVER_GONE;
+        $ret = $this->o->isConnected();
+        $this->assertFalse($ret);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testPrintError() 
     {
         $this->o->verbose(true);

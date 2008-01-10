@@ -789,8 +789,8 @@ class DbBase
     public function isConnected() 
     {
         if (!$this->checkDb()) return false;
+        if ($this->metaError == DBBASE_META_ERROR_SERVER_GONE) return false;
         if ($this->driver == "sqlite") return true;
-        if ($this->errors[DBBASE_META_ERROR_SERVER_GONE] > 0) return false;
         return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
 
