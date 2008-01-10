@@ -583,8 +583,8 @@ class DbBase
             $this->metaErrorMsg = null;
             return;
         }
-        if ($this->driver == "mysql") return $this->mysqlMetaErrorInfo($err);
-        if ($this->driver == "sqlite") return $this->sqliteMetaErrorInfo($err);
+        $this->mysqlMetaErrorInfo($err);
+        $this->sqliteMetaErrorInfo($err);
     }
     /**
      * This turns the errors into meta errors
@@ -595,6 +595,7 @@ class DbBase
      */
     protected function mysqlMetaErrorInfo($err)
     {
+        if ($this->driver != "mysql") return;     
         if ($err[1] == 2006) {
             $this->metaError = DBBASE_META_ERROR_SERVER_GONE;
             $this->metaErrorMsg = DBBASE_META_ERROR_SERVER_GONE_MSG;
@@ -614,6 +615,7 @@ class DbBase
      */
     protected function sqliteMetaErrorInfo($err)
     {
+        if ($this->driver != "sqlite") return;
     }
     /**
      * Print Errors
@@ -629,10 +631,10 @@ class DbBase
                 $this->vprint("Error: ".$this->error);
             if (!empty($this->errorMsg))
                 $this->vprint("Error Message: ".$this->errorMsg);
-            if (!empty($this->metaErrorMsg))
-                $this->vprint("Meta Error Message: ".$this->metaErrorMsg);
             if (!empty($this->metaError))
                 $this->vprint("Meta Error: ".$this->metaError);
+            if (!empty($this->metaErrorMsg))
+                $this->vprint("Meta Error Message: ".$this->metaErrorMsg);
         }        
     }
     /**
@@ -788,6 +790,7 @@ class DbBase
     {
         if (!$this->checkDb()) return false;
         if ($this->driver == "sqlite") return true;
+        if ($this->errors[DBBASE_META_ERROR_SERVER_GONE] > 0) return false;
         return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
 

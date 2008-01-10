@@ -1013,6 +1013,8 @@ class DbBaseTest extends databaseTest
         $this->o->errorState = "ABCDE";
         $this->o->error      = -1;
         $this->o->errorMsg   = "This is an error";
+        $this->o->metaError      = -1;
+        $this->o->metaErrorMsg   = "This is an error";
         ob_start();
         $this->o->printError();
         $ret = ob_get_contents();
@@ -1023,6 +1025,8 @@ class DbBaseTest extends databaseTest
         $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
                          ."(".$class." - ".$driver." ".$file.") Error: -1\n"
                          ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
+                         ."(".$class." - ".$driver." ".$file.") Meta Error: -1\n"
+                         ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an error\n"
                          , $ret);
     }
 
