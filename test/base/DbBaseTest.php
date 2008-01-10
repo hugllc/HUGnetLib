@@ -117,6 +117,64 @@ class DbBaseTest extends databaseTest
     }
 
     /**
+     * Data provider for testAddArray
+     *
+     * @return array
+     */
+    public static function dataCreatePDO() 
+    {
+        return array(
+            array("sqlite::memory:", null, null, "PDO", "sqlite"),
+            array(
+                array("dsn" => "sqlite::memory:"),
+                null,
+                null,
+                "PDO",
+                "sqlite",
+            ),
+            array(
+                array(
+                    array("dsn" => "badPDODriver::memory:"),
+                    array("dsn" => "sqlite::memory:"),
+                ),
+                null,
+                null,
+                "PDO",
+                "sqlite",
+            ),
+            array("badPDODriver::memory:", null, null, false, null),
+        );
+    }
+    /**
+     * Tests to make sure this function fails if
+     * someone tries to make a cache from a memory
+     * sqlite instance.
+     *
+     * @param string $dsn          The DSN to use to create the PDO object
+     * @param string $user         The username
+     * @param string $pass         The password
+     * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+     * @param mixed  $expectDriver The expected driver
+     *
+     * @return void
+     *
+     * @dataProvider dataCreatePDO()
+     */
+    public function testCreatePDO($dsn, $user, $pass, $expect, $expectDriver) 
+    {
+        $o = DbBase::createPDO($dsn, $user, $pass);
+        if ($expect === false) {
+            $this->assertFalse($o);
+        } else {
+            $this->assertType("object", $o);
+            $this->assertSame($expect, get_class($o));
+            $this->assertSame($expectDriver, $o->getAttribute(PDO::ATTR_DRIVER_NAME));
+        }
+        unset($o);
+    }
+
+
+    /**
      * Tests to make sure this function fails if
      * someone tries to make a cache from a memory
      * sqlite instance.
