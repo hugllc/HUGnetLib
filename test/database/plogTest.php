@@ -220,6 +220,36 @@ class PlogTest extends databaseTest
         }
         $this->assertSame($expect, $pkt);
     }
+
+    /**
+     * data provider for testPacketType
+     *
+     * @return array
+     */
+    public static function dataPacketType() 
+    {
+        return array(
+            array(array("Unsolicited" => true, "Command" => "55"), "UNSOLICITED"),
+            array(array("Reply" => true, "Command" => "55"), "REPLY"),
+            array(array("Command" => "55"), "SENSORREAD"),
+            array(array(), "UNKNOWN"),
+        );
+    }
+    /**
+     * Test plog::packetLogSetup
+     * 
+     * @param array  $Packet The packet array
+     * @param string $expect The return value to expect
+     *
+     * @return void
+     *
+     * @dataProvider dataPacketType().
+     */
+    public function testPacketType($Packet, $expect) 
+    {
+        $ret = plog::packetType($Packet);
+        $this->assertSame($expect, $ret);
+    }
 }
 
 // Call plogTest::main() if this source file is executed directly.

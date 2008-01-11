@@ -1041,7 +1041,6 @@ class EPacket
     {
         $this->_DeviceIDCheck = (bool) $val;
     }
-
 }
 
 ?>
