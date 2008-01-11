@@ -127,14 +127,15 @@ class Plog extends DbBase
         } else if (isset($Gateway["DeviceKey"])) {
             $Info["DeviceKey"] = $Gateway["DeviceKey"];
         }
-        $Info['ReplyTime']   = (float) $Packet['ReplyTime'];
-        $Info["GatewayKey"]  = $Gateway["GatewayKey"];
-        $Info["RawData"]     = $Packet["RawData"];
+        $Info['ReplyTime']  = (float) $Packet['ReplyTime'];
+        $Info["GatewayKey"] = $Gateway["GatewayKey"];
+        $Info["RawData"]    = $Packet["RawData"];
         if (!empty($Packet["Time"])) {
-            $Info["Date"]        = date("Y-m-d H:i:s", $Packet["Time"]);
+            $Info["Date"] = date("Y-m-d H:i:s", $Packet["Time"]);
         } else {
-            $Info["Date"]        = date("Y-m-d H:i:s");        
+            $Info["Date"] = date("Y-m-d H:i:s");        
         }
+        $Info["PacketTo"]    = $Packet["To"];
         $Info["PacketFrom"]  = $Packet["From"];
         $Info["Command"]     = $Packet["Command"];
         $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
