@@ -364,7 +364,6 @@ class EPacket
     function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null) 
     {
         $pktTimeout = $this->_getReplyTimeout($pktTimeout);
-
         // Setup the packet array
         if (!is_array($PacketList)) return false;
         $PacketList = array_change_key_case($PacketList, CASE_LOWER);
@@ -374,7 +373,7 @@ class EPacket
 
         // Setup the socket we are working on
         $socket = $this->_packetSendSetSocket($Info);
-        if ($this->verbose) print("Sending a packet on ".$Info["GatewayIP"].":".$Info["GatewayPort"]."\n");
+        if ($this->verbose) print("Sending a packet on ".$this->Info[$socket]["GatewayIP"].":".$this->Info[$socket]["GatewayPort"]."\n");
 
         // Make sure we are connected.
         $this->connect($Info);
@@ -389,7 +388,9 @@ class EPacket
             if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
         }
-        if ($ret == array()) return false;
+
+        if (($retval === true) && empty($ret)) return true;
+        if (empty($ret)) return false;
         return $ret;
 
     }
@@ -431,6 +432,7 @@ class EPacket
     private function _sendPacketGetReply($socket, $index) 
     {
         $ret = array();
+        if ($this->Packets[$index]["GetReply"] === false) return true;
         do {
             $pktRet = $this->RecvPacket($socket, $this->Packets[$index]["pktTimeout"]);
             if (is_array($pktRet)) {
@@ -945,7 +947,8 @@ class EPacket
     function checkConnect($socket) 
     {
         if (!is_object($this->socket[$socket])) return false;
-        return $this->socket[$socket]->checkConnect();
+//        return $this->socket[$socket]->checkConnect();
+        return true;
     }
     /**
      * Opens a socket depending on the value of $Info["socketType"]
@@ -964,6 +967,7 @@ class EPacket
         } else {
             $this->socket[$Info['GatewayKey']] = new epsocket($Info["GatewayIP"], $Info["GatewayPort"], $this->verbose);
         }
+        $this->Info[$Info['GatewayKey']] = $Info;
         return is_object($this->socket[$Info['GatewayKey']]);
     }
 
@@ -976,6 +980,7 @@ class EPacket
      */
     private function _connectSetSN(&$Info) 
     {
+        if (!$this->checkConnect($Info["GatewayKey"])) return;
         if ($this->_DeviceIDCheck) {
             if (($this->SN == false) || ((hexdec($this->SN) >= $this->maxSN) || (hexdec($this->SN) < 1))) {
                 $this->changeSN($Info);

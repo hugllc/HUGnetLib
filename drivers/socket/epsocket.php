@@ -97,6 +97,8 @@ if (!class_exists("epsocket")) {
         /** @var array Array of strings that we are reading */
         var $readstr = array();        
     
+        protected $server = "127.0.0.1";
+        protected $tcpport = "2000";
         /**
          * Write data out a socket
          *
@@ -109,8 +111,8 @@ if (!class_exists("epsocket")) {
             if ($this->CheckConnect()) $this->Connect();
             usleep(mt_rand(500, 10000));
             $return = @fwrite($this->socket, $data);
-            if ($this->verbose) print "Writing: ".strlen($data)." chars on ".$this->socket."\r\n";
-            return($return);
+            if ($this->verbose) print "Wrote: ".$return." chars on ".$this->socket."\r\n";
+                        return($return);
         }
     
     
@@ -148,6 +150,9 @@ if (!class_exists("epsocket")) {
         {
             if ($this->socket === false) return;
             if ($this->verbose) print("Closing Connection\r\n");
+            // Clear out the buffer
+            stream_get_contents($this->socket);
+            // Close the socket
             fclose($this->socket);
             $this->socket = false;
         }
@@ -163,12 +168,9 @@ if (!class_exists("epsocket")) {
          */
         function checkConnect() 
         {
-            if ($this->socket === false) return false;
-            if (feof($this->socket)) {
-                return false;
-            } else {
-                return true;
-            }            
+            if ($this->socket == false) return false;
+            if (feof($this->socket)) return false;            
+            return true;
         }
         
         /**
@@ -195,7 +197,6 @@ if (!class_exists("epsocket")) {
     
             if (empty($this->Server) || empty($this->Port)) return false;
             
-            if ($this->verbose) print "Connecting to ".$this->Server.":".$this->Port."\r\n";
             return $this->_connectOpenSocket();
         }            
     
@@ -206,7 +207,10 @@ if (!class_exists("epsocket")) {
          */
         private function _connectOpenSocket() 
         {
-            $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+//            $this->socket = @pfsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+            $dsn = "tcp://".$this->Server.":".$this->Port;
+            if ($this->verbose) print "Opening socket to ".$dsn."\r\n";
+            $this->socket = stream_socket_client($dsn, $this->Errno, $this->Error, $this->SockTimeout);
             if ($this->socket !== false) {
                 stream_set_blocking($this->socket, false);
                 if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$this->Port."\n");
@@ -214,7 +218,6 @@ if (!class_exists("epsocket")) {
             }
             if ($this->verbose) print("Connection to ".$this->Server." Failed. Error ".$this->Errno.": ".$this->Error."\n");
             return false;
-        
         }
     
         /**
@@ -231,9 +234,9 @@ if (!class_exists("epsocket")) {
         {
             $this->verbose = $verbose;
             if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-            if (empty($server)) $server = "127.0.0.1";
-            if (empty($tcpport)) $tcpport = "2000";
-            $this->Connect($server, $tcpport);
+            if (!empty($server)) $this->Server = $server;
+            if (!empty($port)) $this->Port = $port;
+            $this->Connect();
             if ($this->verbose) print "Done\r\n";
         }
         

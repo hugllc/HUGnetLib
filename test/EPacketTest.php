@@ -486,13 +486,15 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Command" => "55",
                         "To" => "FGH",
                         "Data" => "01020304",
-                   ),
+                    ),
                     array(
                         "Command" => "55",
                         "To" => "ABC",
                         "Data" => "01020304",
-                   ),
-               ),
+                    ),
+                ),
+                // GetReply
+                true,
                 // pktStr
                 "5A5A5A55000ABC0000200401020304C3",
                 // replyStr
@@ -510,7 +512,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "command" => "55",
                             "to" => "000ABC",
                             "data" => "01020304",
-                       ),
+                        ),
                         "PacketTo" => "000ABC",
                         "GatewayKey" => 1,
                         "DeviceKey" => null,
@@ -530,9 +532,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => true,
                         "toMe" => true,
                         "isGateway" => false
-                   ),
-               ),
-           ),
+                    ),
+                ),
+            ),
             array(
                 // Info
                 array("GatewayKey" => 1, "DeviceKey" => 1, "socketType" => "test"),
@@ -540,7 +542,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                 array(
                     "Command" => "5C",
                     "To" => "000ABC",
-               ),
+                ),
+                // GetReply
+                true,
                 // pktStr
                 "5A5A5A5C000ABC00002000CA",
                 // replyStr
@@ -558,7 +562,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "command" => "5C",
                             "to" => "000ABC",
                             "data" => "",
-                       ),
+                        ),
                         "PacketTo" => "000ABC",
                         "GatewayKey" => 1,
                         "DeviceKey" => 1,
@@ -578,9 +582,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => true,
                         "toMe" => true,
                         "isGateway" => false,
-                   ),
-               ),
-           ),
+                    ),
+                ),
+            ),
             array(
                 // This one gets a good packet from the wrong endpoint
                 // back first.
@@ -590,7 +594,9 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                 array(
                     "Command" => "5C",
                     "To" => "12345ABCDEF",
-               ),
+                ),
+                // GetReply
+                true,
                 // pktStr
                 "5A5A5A5CABCDEF00002000F5",
                 // replyStr
@@ -613,7 +619,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => false,
                         "toMe" => false,
                         "isGateway" => false,
-                   ),
+                    ),
                     array(
                         "pktTimeout" => 1,
                         "GetReply" => true,
@@ -625,7 +631,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "command" => "5C",
                             "to" => "ABCDEF",
                             "data" => "",
-                       ),
+                        ),
                         "PacketTo" => "ABCDEF",
                         "GatewayKey" => 1,
                         "DeviceKey" => 1,
@@ -645,11 +651,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => true,
                         "toMe" => true,
                         "isGateway" => false,
-                   ),
-               ),
+                    ),
+                ),
                 // GetAll
                 true,
-           ),
+            ),
             array(
                 // Info
                 array("GatewayKey" => 1, "DeviceKey" => 1, "socketType" => "test"),
@@ -658,19 +664,21 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                     array(
                         "Command" => "5C",
                         "To" => "000ABC",
-                   ),
+                    ),
                     array(
                         "Command" => "5C",
                         "To" => "000DEF",
-                   ),
-               ),
+                    ),
+                ),
+                // GetReply
+                true,
                 // pktStr
                 "5A5A5A5C000ABC00002000CA",
                 // replyStr
                 "5A5A5A01000020ABCDEF0401020304A8",
                 // expect
                 false,
-           ),
+            ),
             array(
                 // Info
                 array("GatewayKey" => 1, "DeviceKey" => 1, "socketType" => "test"),
@@ -679,15 +687,17 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                     array(
                         "Command" => "5C",
                         "To" => "000ABC",
-                   ),
-               ),
+                    ),
+                ),
+                // GetReply
+                true,
                 // pktStr
                 "5A5A5A5C000ABC00002000CA",
                 // replyStr
                 "019823561284756129487561",
                 // expect
                 false,
-           ),
+            ),
             array(
                 // Info
                 array("DeviceKey" => 1, "socketType" => "test"),
@@ -696,14 +706,16 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                     array(
                         "Command" => "5C",
                         "To" => "ABCDEF",
-                   ),
+                    ),
                     array(
                         "Command" => "55",
                         "To" => "ABC",
                         "Data" => "01020304",
-                   ),
-               ),
-                // pktStr
+                    ),
+                ),
+                // GetReply
+                true,
+               // pktStr
                 array("5A5A5A55000ABC0000200401020304C3", "5A5A5A5CABCDEF00002000F5"),
                 // replyStr
                 array("5A5A5A01000020000ABC040102030497", "5A5A5A01000020ABCDEF0401020304A8"),
@@ -720,7 +732,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "command" => "5C",
                             "to" => "ABCDEF",
                             "data" => "",
-                       ),
+                        ),
                         "PacketTo" => "ABCDEF",
                         "GatewayKey" => 1,
                         "DeviceKey" => 1,
@@ -740,7 +752,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => true,
                         "toMe" => true,
                         "isGateway" => false,
-                   ),
+                    ),
                     array(
                         "pktTimeout" => 1,
                         "GetReply" => true,
@@ -752,7 +764,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "command" => "55",
                             "to" => "000ABC",
                             "data" => "01020304",
-                       ),
+                        ),
                         "PacketTo" => "000ABC",
                         "GatewayKey" => 1,
                         "DeviceKey" => 1,
@@ -772,8 +784,28 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                         "Reply" => true,
                         "toMe" => true,
                         "isGateway" => false
-                   ),
-               ),
+                    ),
+                ),
+            ),
+            array(
+                // Info
+                array("socketType" => "test"),
+                // pkt
+                array(
+                    array(
+                        "Command" => "01",
+                        "To" => "000123",
+                        "Data" => "01020304",
+                    ),
+                ),
+                // GetReply
+                false,
+                // pktStr
+                "",
+                // replyStr
+                "",
+                // expect
+                true,
            ),
         );
     }
@@ -792,7 +824,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider datasendPacket().
      */
-    public function testsendPacket($Info, $pkt, $pktStr, $replyStr, $expect, $getAll = false) 
+    public function testsendPacket($Info, $pkt, $GetReply, $pktStr, $replyStr, $expect, $getAll = false) 
     {
         // This preloads our fake socket to send back the data we want
         if (is_array($pktStr)) {
@@ -803,7 +835,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
             $this->o->socket[1]->setReply($pktStr, $replyStr);
         }
         if ($getAll) $this->o->getAll($getAll);
-        $rep = $this->o->sendPacket($Info, $pkt, true, null);
+        $rep = $this->o->sendPacket($Info, $pkt, $GetReply, null);
         self::_packetRemoveDates($rep);
         $this->assertSame($expect, $rep, "Return is not the same as expected");
     }
