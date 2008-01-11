@@ -130,7 +130,11 @@ class Plog extends DbBase
         $Info['ReplyTime']   = (float) $Packet['ReplyTime'];
         $Info["GatewayKey"]  = $Gateway["GatewayKey"];
         $Info["RawData"]     = $Packet["RawData"];
-        $Info["Date"]        = date("Y-m-d H:i:s", $Packet["Time"]);
+        if (!empty($Packet["Time"])) {
+            $Info["Date"]        = date("Y-m-d H:i:s", $Packet["Time"]);
+        } else {
+            $Info["Date"]        = date("Y-m-d H:i:s");        
+        }
         $Info["PacketFrom"]  = $Packet["From"];
         $Info["Command"]     = $Packet["Command"];
         $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
