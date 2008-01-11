@@ -282,6 +282,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("0039-20-06-C", "0039200643"),
+            array("0039-26-01-P", "0039260150"),
         );
     }
 

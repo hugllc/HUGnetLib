@@ -407,6 +407,7 @@ class EPacket
     private function _sendPacketWrite($socket, &$Packet, $index) 
     {
         $ret = false;
+        if (!is_object($this->socket[$socket])) return $ret;
         for ($count = 0; ($count < $this->Retries) && ($ret == false); $count++) {
             if ($this->verbose) print "Sending: ".devInfo::hexifyStr($Packet["PktStr"])."\n";
             $write = $this->socket[$socket]->Write($Packet["PktStr"], $this->Packets[$index]);
