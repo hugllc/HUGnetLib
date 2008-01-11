@@ -294,6 +294,7 @@ class Device extends DbBase
         }
         return($problem);        
     }
+
     /**
      * Creates the database table
      *
