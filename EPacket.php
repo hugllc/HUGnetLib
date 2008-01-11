@@ -326,6 +326,7 @@ class EPacket
      */
     private function _setupsendPacket(&$Info, &$Packet, $timeout, $getReply) 
     {
+        if ($this->verbose) print "Setting up the packet send\n";
         $Packet = array_change_key_case($Packet, CASE_LOWER);
         if (empty($Packet['data'])) $Packet['data'] = "";
         devInfo::setStringSize($Packet["to"], 6);
@@ -632,9 +633,9 @@ class EPacket
     {
         $pkt = $this->_recvPacketGetPacket($socket);
         if (is_string($pkt)) {
+            
+            if ($this->verbose) print "Got Pkt: ".$pkt." on ".$socket."\r\n";
             $GotReply = $this->interpPacket($pkt, $socket);
-            if ($this->verbose) print "Got Pkt: ".$this->socket[$socket]->buffer." on ".$socket."\r\n";
-            $this->socket[$socket]->buffer = "";
             return $GotReply;
         } else {
             return false;
@@ -658,6 +659,8 @@ class EPacket
         $len = hexdec(substr($pkt, 14, 2));
         if (strlen($pkt) >= ((9 + $len)*2)) {
             $ret = substr($pkt, 0, (9+$len)*2);
+            // Erase the buffer right away
+            $this->socket[$socket]->buffer = ""; //= substr($pkt, (9+$len)*2);
             return $ret;
         } else {
             return false;
