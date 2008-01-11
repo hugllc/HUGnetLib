@@ -1020,6 +1020,71 @@ class DbBaseTest extends databaseTest
     }
 
     /**
+     * Data provider for testRemoveWhere
+     *
+     * @return array
+     */
+    public static function dataRemoveWhere() 
+    {
+        return array(
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+               ),
+                "1",
+                array(),
+                array(),
+           ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+               ),
+                "id = ?",
+                array(1),
+                array(),
+           ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+               ),
+                "id < ?",
+                array(4),
+                array(
+                    array("id" => "4", "name" => "trouble", "value" => "to"  ),
+                    array("id" => "5", "name" => "change",  "value" => "these"),
+               ),
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @return void
+     *
+     * @dataProvider dataRemoveWhere
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   Where clause
+     * @param array  $data    Data for where clause
+     * @param array  $expect  The info to expect returned
+     */
+    public function testRemoveWhere($preload, $where, $data, $expect) 
+    {
+        $this->load($preload);
+        $this->o->removeWhere($where, $data);
+        $ret = $this->getAll();
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
      * Data provider for testRemove
      *
      * @return array
