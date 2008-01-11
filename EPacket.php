@@ -37,6 +37,8 @@
 define("PACKET_COMMAND_ACK", "01");
 /** The placeholder for the Echo Request command */
 define("PACKET_COMMAND_ECHOREQUEST", "02");
+/** The placeholder for the Echo Request command */
+define("PACKET_COMMAND_FINDECHOREQUEST", "03");
 /** The placeholder for the Capabilities command */
 define("PACKET_COMMAND_GETCALIBRATION", "4C");
 /** The placeholder for the Capabilities command */
