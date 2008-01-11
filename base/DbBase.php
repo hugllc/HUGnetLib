@@ -768,8 +768,6 @@ class DbBase
     /**
      * Removes a row from the database.
      *
-     * This function MUST be overwritten by child classes
-     *
      * @param mixed $id The id value of the row to delete
      *
      * @return mixed 
@@ -778,6 +776,20 @@ class DbBase
     {
         $query = " DELETE FROM '".$this->table."' WHERE ".$this->id."= ? ;";
         return $this->query($query, array($id), false);
+    }
+
+    /**
+     * Removes a row from the database.
+     *
+     * @param string $where Where clause
+     * @param array  $data  Data for query
+     *
+     * @return mixed 
+     */
+    public function removeWhere($where, $data=array())
+    {
+        $query = " DELETE FROM '".$this->table."' WHERE ".$where;
+        return $this->query($query, $data, false);
     }
     
     /**
