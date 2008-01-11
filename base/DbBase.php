@@ -435,7 +435,8 @@ class DbBase
      * @return mixed 
      */
     public function update($info) 
-    {    
+    {   
+        if (!is_array($info)) return false;
         if (!isset($info[$this->id])) return false;
         
         $div    = "";
