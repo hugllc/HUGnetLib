@@ -181,7 +181,7 @@ if (!class_exists("e00392601")) {
 
             $index       += 4;
             $Info["Name"] = devInfo::deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
-
+            $Info["Name"] = trim($Info["Name"]);
             $index += 60;
             $IP     = str_split(substr($Info["DriverInfo"], $index, 8), 2);
 
