@@ -108,7 +108,7 @@ if (!class_exists("epsocket")) {
          */
         function write($data) 
         {
-            if ($this->CheckConnect()) $this->Connect();
+            $this->Connect();
             usleep(mt_rand(500, 10000));
             $return = @fwrite($this->socket, $data);
             if ($this->verbose) print "Wrote: ".$return." chars on ".$this->socket."\r\n";
@@ -150,8 +150,6 @@ if (!class_exists("epsocket")) {
         {
             if ($this->socket === false) return;
             if ($this->verbose) print("Closing Connection\r\n");
-            // Clear out the buffer
-            stream_get_contents($this->socket);
             // Close the socket
             fclose($this->socket);
             $this->socket = false;
@@ -207,10 +205,11 @@ if (!class_exists("epsocket")) {
          */
         private function _connectOpenSocket() 
         {
-//            $this->socket = @pfsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
-            $dsn = "tcp://".$this->Server.":".$this->Port;
-            if ($this->verbose) print "Opening socket to ".$dsn."\r\n";
-            $this->socket = stream_socket_client($dsn, $this->Errno, $this->Error, $this->SockTimeout);
+            if ($this->verbose) print "Opening socket to ".$this->Server.":".$this->Port."\r\n";
+            $this->socket = @fsockopen($this->Server, $this->Port, $this->Errno, $this->Error, $this->SockTimeout);
+//            $dsn = "tcp://".$this->Server.":".$this->Port;
+//            if ($this->verbose) print "Opening socket to ".$dsn."\r\n";
+//            $this->socket = stream_socket_client($dsn, $this->Errno, $this->Error, $this->SockTimeout);
             if ($this->socket !== false) {
                 stream_set_blocking($this->socket, false);
                 if ($this->verbose) print("Opened the Socket ".$this->socket." to ".$this->Server.":".$this->Port."\n");
