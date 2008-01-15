@@ -322,15 +322,19 @@ if (!class_exists("e00392100")) {
                 foreach ($Info['subDevices'] as $index => $devList) {
                     $where  = implode("' OR DeviceID='", $devList);
                     $where  = " DeviceID='".$where."'";
-                    $query  = "UPDATE devices SET ControllerKey=".$Info['DeviceKey'].", ControllerIndex=".$index." WHERE ".$where;
-                    $return = $this->driver->db->query($query);
+                    $update = array(
+                        'ControllerKey' => $Info["DeviceKey"],
+                        'ControllerIndex' => $index,
+                    );                
+                    $return = $this->driver->device->updateWhere($update, $where);
                     
                 }
                 $update = array(
+                    'DeviceKey' => $Info["DeviceKey"],
                     'ControllerKey' => 0,
                     'ControllerIndex' => 0,
-               );                
-                $return = $this->driver->db->AutoExecute($this->driver->device_table, $update, 'UPDATE', 'DeviceKey='.$Info['DeviceKey']);
+                );
+                $return = $this->driver->device->update($update);
                 
             }
         

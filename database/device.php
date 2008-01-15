@@ -126,16 +126,16 @@ class Device extends DbBase
     /**
      * Runs a function using the correct driver for the endpoint
      *
-     * @param array $Packet Array of information about the device 
+     * @param array $DevInfo Array of information about the device 
      *                    with the data from the incoming packet
-     * @param bool  $force  Force the update even if the serial number 
+     * @param bool  $force   Force the update even if the serial number 
      *                    and hardware part number don't match
      *
      * @return mixed
      */
-    function updateDevice($Packet, $force=false)
+    function updateDevice($DevInfo, $force=false)
     {
-
+/*
         $DeviceID   = null;
         $GatewayKey = null;
         foreach ($Packet as $key => $val) {
@@ -151,23 +151,27 @@ class Device extends DbBase
             if (is_null($DeviceID)) $DeviceID = $Packet[$key]['DeviceID'];
             if (is_null($GatewayKey) && !empty($val['GatewayKey'])) $GatewayKey = $val['GatewayKey'];
         }
-
-        $res = $this->getDevice($DeviceID, 'ID');
+*/
+        if (!isset($DevInfo["DeviceID"])) return false;
+        
+        $res = $this->getDevice($DevInfo["DeviceID"], 'ID');
+        $DevInfo = array_merge($res, $DevInfo);
+/*
         if (!is_array($res)) $res = array();
         foreach ($Packet as $key => $val) {
             if (is_array($val)) $Packet[$key] = array_merge($res, $val);
         }
-
+*/
         // interpConfig takes an array of packets and returns
         // a single array of configuration data.
 //        $ep     = $this->_driver->interpConfig($Packet);
         $return = true;
 
-        if (is_array($ep)) {
-            if (!empty($ep['SerialNum'])) {
-                if (($force === false) && !empty($ep['DeviceKey'])) {
-                    if (($res["SerialNum"] != $ep["SerialNum"]) && isset($ep['SerialNum'])) {
-                        if (($res["HWPartNum"] != $ep["HWPartNum"]) && isset($ep['HWPartNum'])) {
+        if (is_array($DevInfo)) {
+            if (!empty($DevInfo['SerialNum'])) {
+                if (($force === false) && !empty($DevInfo['DeviceKey'])) {
+                    if (($res["SerialNum"] != $DevInfo["SerialNum"]) && isset($DevInfo['SerialNum'])) {
+                        if (($res["HWPartNum"] != $DevInfo["HWPartNum"]) && isset($DevInfo['HWPartNum'])) {
                             // This is not for the correct endpoint
                             return(false);
                         }
@@ -175,29 +179,29 @@ class Device extends DbBase
                 }
 
             } else {
-                unset($ep['SerialNum']);
+                unset($DevInfo['SerialNum']);
             }
             
             
-            if (empty($ep['DeviceKey']) 
-                || !isset($ep['LastConfig']) 
-                || (strtotime($res["LastConfig"]) < strtotime($ep["LastConfig"]))
+            if (empty($DevInfo['DeviceKey']) 
+                || !isset($DevInfo['LastConfig']) 
+                || (strtotime($res["LastConfig"]) < strtotime($DevInfo["LastConfig"]))
            ) {
 
                 // This makes sure that the gateway key gets set, as it might have changed.
-                if (!is_null($GatewayKey)) $ep['GatewayKey'] = $GatewayKey;
-                if (!empty($ep['DeviceKey'])) {
-                    unset($ep['params']);
-                    $return = $this->update($ep);
-                    //$return = $this->db->AutoExecute('devices', $ep, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
+                if (!is_null($GatewayKey)) $DevInfo['GatewayKey'] = $GatewayKey;
+                if (!empty($DevInfo['DeviceKey'])) {
+                    unset($DevInfo['params']);
+                    $return = $this->update($DevInfo);
+                    //$return = $this->db->AutoExecute('devices', $DevInfo, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
                 } else {
-                    if (!empty($ep["HWPartNum"])) {
-                        if (!empty($ep["FWPartNum"])) {
-                            if (!empty($ep["SerialNum"])) {
-                                unset($ep['DeviceKey']);
-                                unset($ep['params']);
-                                //$return = $this->db->AutoExecute('devices', $ep, 'INSERT');
-                                $return = $this->insert($ep);
+                    if (!empty($DevInfo["HWPartNum"])) {
+                        if (!empty($DevInfo["FWPartNum"])) {
+                            if (!empty($DevInfo["SerialNum"])) {
+                                unset($DevInfo['DeviceKey']);
+                                unset($DevInfo['params']);
+                                //$return = $this->db->AutoExecute('devices', $DevInfo, 'INSERT');
+                                $return = $this->insert($DevInfo);
                             }
                         }
                     }

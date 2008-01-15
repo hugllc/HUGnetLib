@@ -439,6 +439,24 @@ class DbBase
         if (!is_array($info)) return false;
         if (!isset($info[$this->id])) return false;
         
+        $values[] = $info[$this->id];
+        return $this->updateWhere($info, $this->id."= ? ", array($info[$this->id]));
+    }
+
+
+    /**
+     * Updates a row in the database.
+     *
+     * This function MUST be overwritten by child classes
+     *
+     * @param array $info The row in array form.
+     *
+     * @return mixed 
+     */
+    public function updateWhere($info, $where, $data = array()) 
+    {   
+        if (!is_array($info)) return false;
+        
         $div    = "";
         $fields = "";
         $values = array();
@@ -451,11 +469,10 @@ class DbBase
             $div      = ", ";
         }
 
-        $values[] = $info[$this->id];
-        $query    = " UPDATE `".$this->table."` SET ".$fields." WHERE ".$this->id."= ? ";
+        $values = array_merge($values, $data);
+        $query    = " UPDATE `".$this->table."` SET ".$fields." WHERE ".$where;
         return $this->query($query, $values, false);
     }
-
 
     /**
      * Gets all rows from the database
