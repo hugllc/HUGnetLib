@@ -293,15 +293,17 @@ class Driver
     /**
      * Runs a function using the correct driver for the endpoint
      *
-     * @param array $Packet Array of information about the device with the data from the incoming packet
-     * @param bool  $force  Force the update even if the serial number and hardware part number don't match
+     * @param array $DevInfo Array of information about the device with the data from the incoming packet
+     * @param bool  $force   Force the update even if the serial number and hardware part number don't match
      *
      * @return bool
      */
-    function UpdateDevice($Packet, $force=false) 
+    function UpdateDevice($Packets, $force=false) 
     {
-
-        return $this->device->UpdateDevice($Packet, $force);                    
+        $devInfo = $this->interpConfig($Packets);
+        $ret1 = $this->device->updateDevice($devInfo, $force);                    
+        $ret2 = $this->updateConfig($devInfo);
+        return ($ret1 || $ret2);
     }
     
     /**
