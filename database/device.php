@@ -135,79 +135,48 @@ class Device extends DbBase
      */
     function updateDevice($DevInfo, $force=false)
     {
-/*
-        $DeviceID   = null;
-        $GatewayKey = null;
-        foreach ($Packet as $key => $val) {
-            if (isset($val["PacketFrom"])) {
-                $Packet[$key]['DeviceID'] = $val["PacketFrom"];
-            } else if (isset($val["from"])) {        
-                $Packet[$key]['DeviceID'] = $val["from"];
-            } else if (isset($val["From"])) {        
-                $Packet[$key]['DeviceID'] = $val["From"];
-            } else if (isset($val["DeviceID"])) {
-                $Packet[$key]['DeviceID'] = $val["DeviceID"];
-            }
-            if (is_null($DeviceID)) $DeviceID = $Packet[$key]['DeviceID'];
-            if (is_null($GatewayKey) && !empty($val['GatewayKey'])) $GatewayKey = $val['GatewayKey'];
-        }
-*/
+        if (!is_array($DevInfo)) return false;
         if (!isset($DevInfo["DeviceID"])) return false;
         
         $res = $this->getDevice($DevInfo["DeviceID"], 'ID');
-        $DevInfo = array_merge($res, $DevInfo);
-/*
-        if (!is_array($res)) $res = array();
-        foreach ($Packet as $key => $val) {
-            if (is_array($val)) $Packet[$key] = array_merge($res, $val);
-        }
-*/
-        // interpConfig takes an array of packets and returns
-        // a single array of configuration data.
-//        $ep     = $this->_driver->interpConfig($Packet);
         $return = true;
 
-        if (is_array($DevInfo)) {
-            if (!empty($DevInfo['SerialNum'])) {
-                if (($force === false) && !empty($DevInfo['DeviceKey'])) {
-                    if (($res["SerialNum"] != $DevInfo["SerialNum"]) && isset($DevInfo['SerialNum'])) {
-                        if (($res["HWPartNum"] != $DevInfo["HWPartNum"]) && isset($DevInfo['HWPartNum'])) {
-                            // This is not for the correct endpoint
-                            return(false);
-                        }
+        if (!empty($DevInfo['SerialNum'])) {
+            if (($force === false) && !empty($DevInfo['DeviceKey'])) {
+                if (($res["SerialNum"] != $DevInfo["SerialNum"]) && isset($DevInfo['SerialNum'])) {
+                    if (($res["HWPartNum"] != $DevInfo["HWPartNum"]) && isset($DevInfo['HWPartNum'])) {
+                        // This is not for the correct endpoint
+                        return false;
                     }
                 }
-
-            } else {
-                unset($DevInfo['SerialNum']);
             }
-            
-            
-            if (empty($DevInfo['DeviceKey']) 
-                || !isset($DevInfo['LastConfig']) 
-                || (strtotime($res["LastConfig"]) < strtotime($DevInfo["LastConfig"]))
-           ) {
 
-                // This makes sure that the gateway key gets set, as it might have changed.
-                if (!is_null($GatewayKey)) $DevInfo['GatewayKey'] = $GatewayKey;
-                if (!empty($DevInfo['DeviceKey'])) {
-                    unset($DevInfo['params']);
-                    $return = $this->update($DevInfo);
-                    //$return = $this->db->AutoExecute('devices', $DevInfo, 'UPDATE', 'DeviceKey='.$res['DeviceKey']);
-                } else {
-                    if (!empty($DevInfo["HWPartNum"])) {
-                        if (!empty($DevInfo["FWPartNum"])) {
-                            if (!empty($DevInfo["SerialNum"])) {
-                                unset($DevInfo['DeviceKey']);
-                                unset($DevInfo['params']);
-                                //$return = $this->db->AutoExecute('devices', $DevInfo, 'INSERT');
-                                $return = $this->insert($DevInfo);
-                            }
+        } else {
+            unset($DevInfo['SerialNum']);
+        }
+        
+        $DevInfo = array_merge($res, $DevInfo);
+        
+        if (empty($DevInfo['DeviceKey']) 
+            || !isset($DevInfo['LastConfig']) 
+            || (strtotime($res["LastConfig"]) < strtotime($DevInfo["LastConfig"]))
+       ) {
+
+            if (!empty($DevInfo['DeviceKey'])) {
+                unset($DevInfo['params']);
+                $return = $this->update($DevInfo);
+            } else {
+                if (!empty($DevInfo["HWPartNum"])) {
+                    if (!empty($DevInfo["FWPartNum"])) {
+                        if (!empty($DevInfo["SerialNum"])) {
+                            unset($DevInfo['DeviceKey']);
+                            unset($DevInfo['params']);
+                            $return = $this->add($DevInfo);
                         }
                     }
                 }
-            }                    
-        }
+            }
+        }                    
         return $return;                    
     }
 
@@ -307,7 +276,7 @@ class Device extends DbBase
     function createTable() 
     {
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
-                      `DeviceKey` int(11) NOT null,
+                      `DeviceKey` int(11) NOT null auto_increment,
                       `DeviceID` varchar(6) NOT null default '',
                       `DeviceName` varchar(128) NOT null default '',
                       `SerialNum` bigint(20) NOT null default '0',
@@ -332,12 +301,13 @@ class Device extends DbBase
                       `LastAnalysis` datetime NOT null default '0000-00-00 00:00:00',
                       `MinAverage` varcar(16) NOT null default '15MIN',
                       `CurrentGatewayKey` int(11) NOT null default '0',
-                      `params` text NOT null,
+                      `params` text NOT null default '',
                       PRIMARY KEY  (`DeviceKey`)
                    );
                     ";
-                    
-        $ret = $this->query($query);
+
+        $query = $this->cleanSql($query);                    
+        $ret = $this->query($query); 
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
         $this->getColumns();

@@ -100,7 +100,10 @@ class DbBase
 
     /** @var object The cache */
     protected $_doCache = false;
-
+    
+    /** Whether to fake autoincrmement */
+    protected $autoIncrement = false;
+    
     /** @var string The dsn we are connected to */
     private $_dsn = "";
     
@@ -374,9 +377,49 @@ class DbBase
     }
 
     /**
+     * Cleans the sql for the various drivers
+     *
+     * @param string $sql The sql string to clean
+     *
+     * @return string
+     */
+    protected function cleanSql($sql)
+    {
+        $sql = $this->cleanSqlSqlite($sql);
+        $sql = $this->cleanSqlMySql($sql);
+        return $sql;
+    }
+    /**
+     * Cleans the sql for the various drivers
+     *
+     * @param string $sql The sql string to clean
+     *
+     * @return string
+     */
+    protected function cleanSqlSqlite($sql)
+    {
+        if ($this->driver != "sqlite") return $sql;
+        if (strpos($sql, "auto_increment") !== false) $this->autoIncrement = true;
+        $sql = str_ireplace("auto_increment", "", $sql);
+        return $sql;
+    }
+    /**
+     * Cleans the sql for the various drivers
+     *
+     * @param string $sql The sql string to clean
+     *
+     * @return string
+     */
+    protected function cleanSqlMySql($sql)
+    {
+        if ($this->driver != "mysql") return $sql;
+        return $sql;
+    }
+
+    /**
      * Creates an add query
      *
-     * @param array $info    The row in array form
+     * @param array &$info   The row in array form
      * @param array &$keys   The column names to use
      * @param bool  $replace If true it replaces the "INSERT" 
      *                       keyword with "REPLACE".  Not all
@@ -384,13 +427,14 @@ class DbBase
      *
      * @return string
      */
-    protected function addQuery($info, &$keys, $replace = false) 
+    protected function addQuery(&$info, &$keys, $replace = false) 
     {    
         $div    = "";
         $fields = "";
         $values = array();
         $v      = "";
         $keys   = array();
+        if (!isset($info[$this->id]) && $this->autoIncrement) $info[$this->id] = $this->getNextID();
         foreach ($this->fields as $key => $val) {
             if (!isset($info[$key])) continue;
             $fields .= $div.$key;
