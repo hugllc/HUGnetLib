@@ -302,6 +302,45 @@ class DbBaseTest extends databaseTest
     }
 
     /**
+     * Data provider for testCleanSql
+     *
+     * @return array
+     */
+    public static function dataCleanSql() 
+    {
+        return array(
+            array(
+                "hello",
+                false,
+                "hello",
+            ),
+            array(
+                "the auto_increment end",
+                true,
+                "the  end",
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @return void
+     *
+     * @dataProvider dataCleanSql
+     *
+     * @param array $preload Data to preload into the database
+     * @param array $info    The info to add to the database
+     * @param array $expect  The info to expect returned
+     */
+    public function testCleanSql($string, $autoincrement, $expect) 
+    {
+        $ret = $this->o->tCleanSql($string);
+        $this->assertSame($expect, $ret);
+        $this->assertSame($autoincrement, $this->readAttribute($this->o, "autoIncrement"));
+    }
+
+
+    /**
      * Data provider for testAdd
      *
      * @return array
@@ -1330,6 +1369,18 @@ class DbBaseClassTest extends DbBase
     {
         $this->_db = null;
         $this->_db = $val;
+    }     
+
+    /**
+     * kills the database so we can test the class when it doesn't ahve a database
+     *
+     * @param mixed $val The value to kill the database with
+     *
+     * @return void
+     */
+    public function tCleanSql($string)
+    {
+        return $this->cleanSql($string);
     }     
     
 }
