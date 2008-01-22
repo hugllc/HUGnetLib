@@ -91,6 +91,8 @@ class DbBaseTest extends databaseTest
      * This method is called before a test is executed.
      *
      * @access protected
+     *
+     * @return void
      */
     protected function setUp()
     {
@@ -106,6 +108,8 @@ class DbBaseTest extends databaseTest
      * This method is called after a test is executed.
      *
      * @access protected
+     *
+     * @return void
      */
     protected function tearDown()
     {
@@ -244,13 +248,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataAddArray
-     *
      * @param array $preload Data to preload into the database
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataAddArray
      */
     public function testAddArray($preload, $info, $expect) 
     {
@@ -285,13 +289,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataAdd
-     *
      * @param array $preload Data to preload into the database
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataAdd
      */
     public function testAdd($preload, $info, $expect) 
     {
@@ -324,13 +328,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
+     * @param string $string        Data to preload into the database
+     * @param array  $autoincrement The info to add to the database
+     * @param array  $expect        The info to expect returned
+     *
      * @return void
      *
      * @dataProvider dataCleanSql
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $info    The info to add to the database
-     * @param array $expect  The info to expect returned
      */
     public function testCleanSql($string, $autoincrement, $expect) 
     {
@@ -365,13 +369,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataReplace
-     *
      * @param array $preload Data to preload into the database
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataReplace
      */
     public function testReplace($preload, $info, $expect) 
     {
@@ -410,15 +414,15 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataUpdate
-     *
      * @param array $preload Data to preload into the database
      * @param array $info    The info to add to the database
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
      * @param bool  $retExpect What the function should return
+     *
+     * @return void
+     *
+     * @dataProvider dataUpdate
      */
     public function testUpdate($preload, $info, $key, $expect, $retExpect) 
     {
@@ -430,15 +434,15 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataUpdate
-     *
      * @param array $preload   Data to preload into the database
      * @param array $info      The info to add to the database
      * @param int   $key       The database key to get the record from
      * @param array $expect    The info to expect returned
      * @param bool  $retExpect What the function should return
+     *
+     * @return void
+     *
+     * @dataProvider dataUpdate
      */
     /*
     public function testUpdateReturn($preload, $info, $key, $expect, $retExpect) 
@@ -474,12 +478,12 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
+     * @param array $preload Data to preload into the database
+     * @param array $expect  The info to expect returned
+     *
      * @return void
      *
      * @dataProvider dataGetAll
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $expect  The info to expect returned
      */
     public function testGetAll($preload, $expect) 
     {
@@ -689,8 +693,8 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @param array  $preload Data to preload into the database
-     * @param array  $expect  The info to expect returned
+     * @param array $preload Data to preload into the database
+     * @param array $expect  The info to expect returned
      *
      * @return void
      *
@@ -718,7 +722,7 @@ class DbBaseTest extends databaseTest
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-               ),
+                ),
                 2,
            ),
             array(
@@ -728,17 +732,16 @@ class DbBaseTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-               ),
+                ),
                 6,
            ),
         );
     }
+    
     /**
      * test
      *
      * @param array  $preload Data to preload into the database
-     * @param string $where   The database key to get the record from
-     * @param array  $data    The data to send with the query
      * @param array  $expect  The info to expect returned
      *
      * @return void
@@ -757,7 +760,8 @@ class DbBaseTest extends databaseTest
      *
      * @return array
      */
-    public static function dataQuery() {
+    public static function dataQuery()
+    {
         return array(
             array(
                 array(
@@ -824,7 +828,8 @@ class DbBaseTest extends databaseTest
      *
      * @return array
      */
-    public static function dataQueryNoDb() {
+    public static function dataQueryNoDb()
+    {
         return array(
             array(
                 "Hello",
@@ -938,7 +943,8 @@ class DbBaseTest extends databaseTest
      *
      * @return array
      */
-    public static function dataQueryCache() {
+    public static function dataQueryCache()
+    {
         return array(
             array(
                 array(
@@ -1042,13 +1048,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataRemove
-     *
      * @param array $preload Data to preload into the database
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataRemove
      */
     public function testRemove($preload, $key, $expect) 
     {
@@ -1106,14 +1112,14 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataRemoveWhere
-     *
      * @param array  $preload Data to preload into the database
      * @param string $where   Where clause
      * @param array  $data    Data for where clause
      * @param array  $expect  The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataRemoveWhere
      */
     public function testRemoveWhere($preload, $where, $data, $expect) 
     {
@@ -1140,12 +1146,12 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
+     * @param int $val    The database key to get the record from
+     * @param int $expect The info to expect returned
+     *
      * @return void
      *
      * @dataProvider dataVerbose
-     *
-     * @param int $val     The database key to get the record from
-     * @param int $expect  The info to expect returned
      */
     public function testVerbose($val, $expect) 
     {
@@ -1200,8 +1206,8 @@ class DbBaseTest extends databaseTest
                          ."(".$class." - ".$driver." ".$file.") Error: -1\n"
                          ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
                          ."(".$class." - ".$driver." ".$file.") Meta Error: -1\n"
-                         ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an error\n"
-                         , $ret);
+                         ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an error\n",
+                         $ret);
     }
 
     /**
@@ -1264,12 +1270,12 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
+     * @param mixed $date   The date 
+     * @param int   $expect The info to expect returned
+     *
      * @return void
      *
      * @dataProvider dataSqlDate
-     *
-     * @param mixed $date   The date 
-     * @param int   $expect The info to expect returned
      */
     public function testSqlDate($date, $expect) 
     {
@@ -1295,13 +1301,13 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
-     *
-     * @dataProvider dataFixType
-     *
      * @param mixed $value  The value to fix 
      * @param mixed $type   The type of SQL column it is from 
      * @param int   $expect The info to expect returned
+     *
+     * @return void
+     *
+     * @dataProvider dataFixType
      */
     public function testFixType($value, $type, $expect) 
     {
@@ -1342,6 +1348,8 @@ class DbBaseClassTest extends DbBase
      *
      * Must be defined in child classes
      *
+     * @param string $table The name of the table to use
+     *
      * @return bool
      */
     public function createTable($table="") 
@@ -1372,9 +1380,9 @@ class DbBaseClassTest extends DbBase
     }     
 
     /**
-     * kills the database so we can test the class when it doesn't ahve a database
+     * Calls the protected function cleanSql()
      *
-     * @param mixed $val The value to kill the database with
+     * @param mixed $string The value to clean
      *
      * @return void
      */

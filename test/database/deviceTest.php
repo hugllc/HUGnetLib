@@ -385,10 +385,10 @@ class DeviceTest extends databaseTest
     /**
      * test
      *
-     * @param array  $preload  Data to preload into the database
-     * @param mixed  $id       The ID to look for
-     * @param string $type     The type of id "ID", "NAME", or "KEY"
-     * @param array  $expect   What we expect returned
+     * @param array  $preload Data to preload into the database
+     * @param mixed  $id      The ID to look for
+     * @param string $type    The type of id "ID", "NAME", or "KEY"
+     * @param array  $expect  What we expect returned
      *
      * @return void
      *
@@ -776,11 +776,11 @@ class DeviceTest extends databaseTest
     /**
      * test
      *
-     * @param array  $preload   Data to preload into the database
-     * @param ing    $DeviceKey The ID to look for
-     * @param mixed  $params    The type of id "ID", "NAME", or "KEY"
-     * @param array  $expect    What we expect returned
-     * @param bool   $retExpect What we expect returned
+     * @param array $preload   Data to preload into the database
+     * @param ing   $DeviceKey The ID to look for
+     * @param mixed $params    The type of id "ID", "NAME", or "KEY"
+     * @param array $expect    What we expect returned
+     * @param bool  $retExpect What we expect returned
      *
      * @return void
      *
@@ -923,7 +923,6 @@ class DeviceTest extends databaseTest
      * test
      *
      * @param string $params Parameters to decode
-     * @param array  $expect The expected return value
      *
      * @return void
      *
