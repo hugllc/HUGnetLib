@@ -161,19 +161,6 @@ class DeviceTest extends databaseTest
         unset($this->o);
     }
 
-    /**
-     * test
-     *
-     * @return void
-     *
-     * @dataProvider dataHealth().
-     * @covers driver::testHealth
-     */
-    public function testHealth() 
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
 
     /**
      * data provider dataDiagnose
@@ -183,12 +170,57 @@ class DeviceTest extends databaseTest
     public static function dataDiagnose() 
     {
         return array(
+            array(array(), time(), array()),
+            array(
+                array(
+                    "LastHistory" => "2007-11-20 22:23:25",
+                    "LastPoll" => "2007-11-20 22:23:25",
+                ),
+                strtotime("2007-12-15 23:22:12"),
+                array(),
+            ),
+            array(
+                array(
+                    "LastHistory" => "2007-11-20 22:23:25",
+                    "LastPoll" => "2007-11-20 22:23:25",
+                    "PollInterval" => -5,
+                ),
+                strtotime("2007-12-15 23:22:12"),
+                array(),
+            ),
+            array(
+                array(
+                    "LastHistory" => "2007-11-20 22:23:25",
+                    "LastPoll" => "2007-11-20 22:23:25",
+                    "PollInterval" => 5,
+                ),
+                strtotime("2007-12-15 23:22:12"),
+                array(
+                    "Last Poll 25d 58m 47s ago\n",
+                    "No Active Sensors\n",
+                ),
+            ),
+            array(
+                array(
+                    "LastHistory" => "2007-11-20 22:23:25",
+                    "LastPoll" => "2007-10-20 22:23:25",
+                    "PollInterval" => 5,
+                    "ActiveSensors" => 2,
+                ),
+                strtotime("2007-12-15 23:22:12"),
+                array(
+                    "Last Poll 56d 1h 58m 47s ago\n",
+                    "History 31d 1h 0s old\n",
+                ),
+            ),
+                
         );
     }
     /**
      * test
      *
      * @param array  $Info   Infomation about the device to get stylesheet information for
+     * @param int    $time   The time we are diagnosing
      * @param string $expect The expected return value
      *
      * @return void
@@ -196,10 +228,9 @@ class DeviceTest extends databaseTest
      * @dataProvider dataDiagnose().
      * @covers device::testDiagnose
      */
-    public function testDiagnose($Info, $expect) 
+    public function testDiagnose($Info, $time, $expect) 
     {
-        $o = new driver();
-        $ret = $o->device->diagnose($Info);
+        $ret = $this->o->diagnose($Info, $time);
         $this->assertSame($expect, $ret);
     }
 
@@ -409,93 +440,41 @@ class DeviceTest extends databaseTest
     public static function dataUpdateDevice() 
     {
         return array(
+            // Last Config old update
             array(
                 self::$preload,
                 array(
                     "DeviceKey" => 1,
                     "DeviceID"  => "000030",
-                    "DeviceName" => "dev1",
-                    "SerialNum" => "",
-                    "GatewayKey" => 4,
-                    "params"     => "",
-                    "PollInterval" => 10,
-                    "LastPoll" => "2007-12-24 00:21:24",
-                ),
-                1,
-                true,
-                array(
-                    "DeviceKey" => "1",
-                    "DeviceID"  => "000030",
-                    "DeviceName" => "dev1",
-                    "SerialNum" => "48",
                     "HWPartNum" => "0039-28-01-A",
-                    "FWPartNum" => "0039-20-13-C",
-                    "FWVersion" => "",
-                    "RawSetup" => "",
-                    "Active" => "YES",
-                    "GatewayKey" => "1",
-                    "ControllerKey" => "0",
-                    "ControllerIndex" => "0",
-                    "DeviceLocation" => "",
-                    "DeviceJob" => "",
-                    "Driver" => "",
-                    "PollInterval" => "15",
-                    "ActiveSensors" => "0",
-                    "DeviceGroup" => "",
-                    "BoredomThreshold" => "0",
-                    "LastConfig" => "2006-11-02 00:00:00",
-                    "LastPoll" => "0000-00-00 00:00:00",
-                    "LastHistory" => "0000-00-00 00:00:00",
-                    "LastAnalysis" => "0000-00-00 00:00:00",
-                    "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => "0",
-                    "params"     => "",
-               ),
-            ),
-            array(
-                self::$preload,
-                array(
-                    "DeviceKey" => 1,
-                    "DeviceID"  => "000030",
                     "DeviceName" => "dev1",
-                    "HWPartNum" => "0039-21-01-A",
-                    "FWPartNum" => "0039-20-01-C",
-                    "SerialNum" => 44,
+                    "SerialNum" => 48,
                     "GatewayKey" => 4,
                     "params"     => "",
                     "PollInterval" => 10,
-                    "LastPoll" => "2007-12-24 00:21:24",
+                    "LastConfig" => "2005-12-24 00:21:24",
                 ),
-                1,
+                0,
                 false,
+                array(),
+            ),
+            // no Last Config update
+            array(
+                self::$preload,
                 array(
-                    "DeviceKey" => "1",
+                    "DeviceKey" => 1,
                     "DeviceID"  => "000030",
-                    "DeviceName" => "dev1",
-                    "SerialNum" => "48",
                     "HWPartNum" => "0039-28-01-A",
-                    "FWPartNum" => "0039-20-13-C",
-                    "FWVersion" => "",
-                    "RawSetup" => "",
-                    "Active" => "YES",
-                    "GatewayKey" => "1",
-                    "ControllerKey" => "0",
-                    "ControllerIndex" => "0",
-                    "DeviceLocation" => "",
-                    "DeviceJob" => "",
-                    "Driver" => "",
-                    "PollInterval" => "15",
-                    "ActiveSensors" => "0",
-                    "DeviceGroup" => "",
-                    "BoredomThreshold" => "0",
-                    "LastConfig" => "2006-11-02 00:00:00",
-                    "LastPoll" => "0000-00-00 00:00:00",
-                    "LastHistory" => "0000-00-00 00:00:00",
-                    "LastAnalysis" => "0000-00-00 00:00:00",
-                    "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => "0",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => 48,
+                    "GatewayKey" => 4,
                     "params"     => "",
-               ),
+                    "PollInterval" => 10,
+                    "LastConfig" => "",
+                ),
+                0,
+                false,
+                array(),
             ),
             array(
                 self::$preload,
@@ -504,6 +483,47 @@ class DeviceTest extends databaseTest
                 false,
                 array(),
             ),
+            // Insert
+            array(
+                self::$preload,
+                array(),
+                0,
+                false,
+                array(),
+            ),
+            // Insert
+            array(
+                self::$preload,
+                array("DeviceID" => "002345"),
+                0,
+                false,
+                array(),
+            ),
+            // Insert
+            array(
+                self::$preload,
+                array("DeviceID" => "002345", "HWPartNum" => "0039-28-01-A"),
+                0,
+                false,
+                array(),
+            ),
+            // Insert
+            array(
+                self::$preload,
+                array("DeviceID" => "002345", "SerialNum" => 9029, "HWPartNum" => "0039-28-01-A", "FWPartNum" => "0039-20-13-C"),
+                0,
+                false,
+                array(),
+            ),
+            // Update
+            array(
+                self::$preload,
+                array("DeviceID" => "000030", "SerialNum" => 48, "HWPartNum" => "0039-21-02-B", "LastConfig" => "2008-01-05"),
+                0,
+                false,
+                array(),
+            ),
+            // Update
             array(
                 self::$preload,
                 array(
@@ -511,10 +531,12 @@ class DeviceTest extends databaseTest
                     "DeviceID"  => "000030",
                     "DeviceName" => "dev1",
                     "SerialNum" => 48,
+                    "HWPartNum" => "0039-28-01-A",
                     "GatewayKey" => 4,
                     "params"     => "",
                     "PollInterval" => 10,
                     "LastConfig" => "2007-12-24 00:21:24",
+                    "params" => "Hello there",
                 ),
                 1,
                 true,
@@ -546,11 +568,12 @@ class DeviceTest extends databaseTest
                     "CurrentGatewayKey" => "0",
                     "params"     => "",
                ),
-           ),
-
+            ),
+            // Insert
             array(
                 self::$preload,
                 array(
+                    "DeviceKey" => 15,
                     "DeviceName" => "dev1",
                     "SerialNum" => 64,
                     "DeviceID" => "000040",
@@ -560,6 +583,7 @@ class DeviceTest extends databaseTest
                     "params"     => "",
                     "PollInterval" => 10,
                     "LastConfig" => "2007-12-24 00:21:24",
+                    "params" => "Hello there",
                 ),
                 5,
                 true,
@@ -591,6 +615,26 @@ class DeviceTest extends databaseTest
                     "CurrentGatewayKey" => "0",
                     "params"     => "",
                ),
+           ),
+            // Insert
+            array(
+                self::$preload,
+                array(
+                    "DeviceKey" => 15,
+                    "DeviceName" => "dev1",
+                    "SerialNum" => 64,
+                    "DeviceID" => "000040",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "",
+                    "GatewayKey" => 4,
+                    "params"     => "",
+                    "PollInterval" => 10,
+                    "LastConfig" => "2007-12-24 00:21:24",
+                    "params" => "Hello there",
+                ),
+                0,
+                false,
+                array(),
            ),
 
         );
@@ -935,6 +979,7 @@ class DeviceTest extends databaseTest
         device::decodeParams($params);
         $this->assertSame($expect, $params);
     }
+
 
 }
 
