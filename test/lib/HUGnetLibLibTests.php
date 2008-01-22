@@ -31,37 +31,20 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
  */
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HUGnetLibTests::main');
+    define('PHPUnit_MAIN_METHOD', 'HUGnetLibLibTests::main');
 }
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-require_once 'otherTest.php';
-
-// Main Files
-require_once 'devInfoTest.php'; 
-require_once 'driverTest.php'; 
-require_once 'EPacketTest.php'; 
-require_once 'filterTest.php'; 
-require_once 'sensorTest.php'; 
-require_once 'unitConversionTest.php';
-
-// Drivers
-require_once 'drivers/HUGnetLibDriverTests.php';
-
-// Base
-require_once 'base/HUGnetLibBaseTests.php';
-
-// database
-require_once 'database/HUGnetLibDatabaseTests.php';
-
-// Library
-require_once 'lib/HUGnetLibLibTests.php';
+require_once 'PluginsTest.php'; 
+//require_once 'TablesTest.php'; 
+require_once 'FunctionsTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -75,7 +58,7 @@ require_once 'lib/HUGnetLibLibTests.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetLibTests
+class HUGnetLibLibTests
 {
     /**
      * main function
@@ -94,32 +77,14 @@ class HUGnetLibTests
      */
     public static function suite()
     {
-        PHPUnit_Util_Filter::addDirectoryToFilter(dirname(__FILE__), '.php');
-        $suite = new PHPUnit_Framework_TestSuite('HUGnetLib');
-
-        $suite->addTestSuite('otherTest');
-        // Main file Tests 
-        $suite->addTestSuite('devInfoTest');
-        $suite->addTestSuite('driverTest');
-        $suite->addTestSuite('EPacketTest');
-        $suite->addTestSuite('filterTest');
-        $suite->addTestSuite('sensorTest');
-        $suite->addTestSuite('unitConversionTest');
- 
-        // Base class tests
-        $suite->addTest(HUGnetLibBaseTests::suite());
-        // Database Class Tests 
-        $suite->addTest(HUGnetLibDatabaseTests::suite());
-        // Driver Tests
-        $suite->addTest(HUGnetLibDriverTests::suite());
-        // Library Tests
-        $suite->addTest(HUGnetLibLibTests::suite());
- 
+        $suite = new PHPUnit_Framework_TestSuite('HUGnetLibBase');
+        $suite->addTestSuite('PluginsTest');
+  
         return $suite;
     }
 }
  
-if (PHPUnit_MAIN_METHOD == 'HUGnetLibTests::main') {
-    HUGnetLibTests::main();
+if (PHPUnit_MAIN_METHOD == 'HUGnetLibLibTests::main') {
+    HUGnetLibLibTests::main();
 }
 ?>
