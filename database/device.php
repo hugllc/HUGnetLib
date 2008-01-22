@@ -136,49 +136,29 @@ class Device extends DbBase
     function updateDevice($DevInfo, $force=false)
     {
         if (!is_array($DevInfo)) return false;
-        if (!isset($DevInfo["DeviceID"])) return false;
-        
+        if (empty($DevInfo["DeviceID"])) return false;
+        if (empty($DevInfo["HWPartNum"])) return false;
+        if (empty($DevInfo["SerialNum"])) return false;
+        $DeviceID = devInfo::hexify($DevInfo["SerialNum"]);
+        if ($DevInfo["DeviceID"] != $DeviceID) return false;
+
+        unset($DevInfo['params']);        
         $res = $this->getDevice($DevInfo["DeviceID"], 'ID');
-        $return = true;
 
-        if (!empty($DevInfo['SerialNum'])) {
-            if (($force === false) && !empty($DevInfo['DeviceKey'])) {
-                if (($res["SerialNum"] != $DevInfo["SerialNum"]) && isset($DevInfo['SerialNum'])) {
-                    if (($res["HWPartNum"] != $DevInfo["HWPartNum"]) && isset($DevInfo['HWPartNum'])) {
-                        // This is not for the correct endpoint
-                        return false;
-                    }
-                }
-            }
-
-        } else {
-            unset($DevInfo['SerialNum']);
+        if (empty($res["DeviceKey"])) {
+            if (empty($DevInfo["FWPartNum"])) return false;
+            unset($DevInfo['DeviceKey']);
+            return $this->add($DevInfo);
         }
-        
-        $DevInfo = array_merge($res, $DevInfo);
-        
-        if (empty($DevInfo['DeviceKey']) 
-            || !isset($DevInfo['LastConfig']) 
-            || (strtotime($res["LastConfig"]) < strtotime($DevInfo["LastConfig"]))
-       ) {
 
-            if (!empty($DevInfo['DeviceKey'])) {
-                unset($DevInfo['params']);
-                $return = $this->update($DevInfo);
-            } else {
-                if (!empty($DevInfo["HWPartNum"])) {
-                    if (!empty($DevInfo["FWPartNum"])) {
-                        if (!empty($DevInfo["SerialNum"])) {
-                            unset($DevInfo['DeviceKey']);
-                            unset($DevInfo['params']);
-                            $return = $this->add($DevInfo);
-                        }
-                    }
-                }
-            }
-        }                    
-        return $return;                    
+        if (empty($DevInfo['LastConfig'])) return false;
+        if ($res["HWPartNum"] != $DevInfo["HWPartNum"]) return false;
+        if (strtotime($res["LastConfig"]) > strtotime($DevInfo["LastConfig"])) return false;
+        if (empty($DevInfo['SerialNum'])) unset($DevInfo['SerialNum']);
+        $DevInfo["DeviceKey"] = $res["DeviceKey"];
+        return $this->update($DevInfo);
     }
+
 
     /**
      * This sets the device paramters in the database.  The device parameters
@@ -244,28 +224,30 @@ class Device extends DbBase
      * a list of endpoints and quickly seeing which ones have problems.
      *
      * @param array $Info Infomation about the device to get stylesheet information for
+     * @param int   $time The time to use
      *
      * @return string The return should be put inside of style="" css tags in your HTML
      */
-    function diagnose($Info) 
+    function diagnose($Info, $time = null) 
     {
         $problem = array();
-        if ($Info["PollInterval"] > 0) {
-            $timelag = time() - strtotime($Info["LastPoll"]);
-            $pollhistory = (strtotime($Info["LastPoll"]) - strtotime($Info["LastHistory"]));
-            if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
-            
-            if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))) {
-                $problem[] = "Last Poll ".$this->get_ydhms($timelag)." ago\n";
-            }
-            if ($pollhistory > 1800) {
-                $problem[] = "History ".$this->get_ydhms($pollhistory)." old\n";
-            }
-            if ($Info['ActiveSensors'] == 0) {
-                $problem[] = "No Active Sensors\n";
-            }
+        if (empty($time)) $time = time();
+        if ($Info["PollInterval"] <= 0) return array();
+
+        $timelag = $time - strtotime($Info["LastPoll"]);
+        $pollhistory = (strtotime($Info["LastPoll"]) - strtotime($Info["LastHistory"]));
+        if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
+        
+        if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))) {
+            $problem[] = "Last Poll ".devInfo::getYdhms($timelag)." ago\n";
         }
-        return($problem);        
+        if ($pollhistory > 1800) {
+            $problem[] = "History ".devInfo::getYdhms($pollhistory)." old\n";
+        }
+        if (empty($Info['ActiveSensors'])) {
+            $problem[] = "No Active Sensors\n";
+        }
+        return $problem;
     }
 
     /**
