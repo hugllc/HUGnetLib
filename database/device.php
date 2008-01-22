@@ -82,7 +82,7 @@ class Device extends DbBase
         }
         $rows = $this->query($query, $data, true);
         $ret = array();
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $ret[$row["DeviceKey"]] = $row["DeviceID"];
         }
         return $ret;

@@ -136,7 +136,7 @@ class DbBase
         if (is_string($table)) $this->table = $table;
         if (is_string($id)) $this->id = $id;
 
-        $this->driver = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
 
         $this->getColumns();
     }
@@ -145,7 +145,7 @@ class DbBase
     /**
      * Creates a database object
      *
-     * @param string $dsn  The DSN to use to create the PDO object
+     * @param string &$dsn The DSN to use to create the PDO object
      * @param string $user The username
      * @param string $pass THe password
      *
@@ -336,7 +336,7 @@ class DbBase
      *
      * @return mixed
      */     
-    private function getAttribute($attrib) 
+    private function _getAttribute($attrib) 
     {
         if (!$this->checkDb()) return null; 
         return $this->_db->getAttribute($attrib);
@@ -493,7 +493,9 @@ class DbBase
      *
      * This function MUST be overwritten by child classes
      *
-     * @param array $info The row in array form.
+     * @param array  $info  The row in array form.
+     * @param string $where Where clause
+     * @param array  $data  Data for query
      *
      * @return mixed 
      */
@@ -892,7 +894,7 @@ class DbBase
         if (!$this->checkDb()) return false;
         if ($this->metaError == DBBASE_META_ERROR_SERVER_GONE) return false;
         if ($this->driver == "sqlite") return true;
-        return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
+        return $this->_db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
 
     /**
