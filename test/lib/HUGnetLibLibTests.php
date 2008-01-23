@@ -79,6 +79,7 @@ class HUGnetLibLibTests
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibBase');
         $suite->addTestSuite('PluginsTest');
+        $suite->addTestSuite('FunctionsTest');
   
         return $suite;
     }
