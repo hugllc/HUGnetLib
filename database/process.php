@@ -410,7 +410,7 @@ class Process extends DbBase
                         print " Okay ";
                         $return = false;
                     } else {
-                        posix_kill($val, SIGKILL);
+                        posix_kill((int)$val, SIGKILL);
                         print " Killed ";
                         $this->fileUnregister();
                     }
