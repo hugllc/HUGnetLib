@@ -130,7 +130,7 @@ class Firmware extends DbBase
      *
      * @param string $table The table name to use
      *
-     * @return void
+     * @return null
      */
     function createTable($table="") 
     {

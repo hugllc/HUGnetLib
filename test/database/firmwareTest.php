@@ -108,7 +108,7 @@ class FirmwareTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -125,7 +125,7 @@ class FirmwareTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -141,7 +141,7 @@ class FirmwareTest extends databaseTest
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -217,7 +217,7 @@ S9030000FC",
      *    The default is for flash memory (FF);
      * @param mixed  $expect         The return value to expect.
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataInterpSREC().
      */
@@ -507,7 +507,7 @@ S9030000FC",
      * @param string $Status    This is the status of the firmware
      * @param array  $expect    The data we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetFirmware().
      */

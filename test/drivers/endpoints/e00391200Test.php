@@ -208,7 +208,7 @@ class e00391200Test extends endpointTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static

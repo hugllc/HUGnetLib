@@ -63,7 +63,7 @@ class HUGnetLibBaseTests
     /**
      * main function
      *
-     * @return void
+     * @return null
      */
     public static function main()
     {
@@ -73,7 +73,7 @@ class HUGnetLibBaseTests
     /**
      * test suite
      *
-     * @return void
+     * @return null
      */
     public static function suite()
     {

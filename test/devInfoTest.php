@@ -63,7 +63,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -80,7 +80,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -92,7 +92,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -117,7 +117,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDeviceID
      *
@@ -149,7 +149,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRawData
      *
@@ -179,7 +179,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetDate
      *
@@ -224,7 +224,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetStringSize
      *
@@ -260,7 +260,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataHexifyVersion
      *
@@ -289,7 +289,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataHexifyPartNum
      *
@@ -319,7 +319,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDehexifyVersion
      *
@@ -347,7 +347,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDehexifyPartNum
      *
@@ -378,7 +378,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDehexify
      *
@@ -408,7 +408,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataHexify
      *
@@ -443,7 +443,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataHexifyStr
      *
@@ -475,7 +475,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetYdhms
      *
@@ -506,7 +506,7 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetBytes
      *

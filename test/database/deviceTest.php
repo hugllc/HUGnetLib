@@ -119,7 +119,7 @@ class DeviceTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -136,7 +136,7 @@ class DeviceTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -151,7 +151,7 @@ class DeviceTest extends databaseTest
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -223,7 +223,7 @@ class DeviceTest extends databaseTest
      * @param int    $time   The time we are diagnosing
      * @param string $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDiagnose().
      * @covers device::testDiagnose
@@ -286,7 +286,7 @@ class DeviceTest extends databaseTest
      * @param int    $GatewayKey The key to use if only one gateway is to be selected
      * @param array  $expect     What we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSelectDevice().
      */
@@ -421,7 +421,7 @@ class DeviceTest extends databaseTest
      * @param string $type    The type of id "ID", "NAME", or "KEY"
      * @param array  $expect  What we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetDevice().
      */
@@ -649,7 +649,7 @@ class DeviceTest extends databaseTest
      * @param bool  $retExpect The entry that is currently selected
      * @param array $expect    What we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUpdateDevice().
      */
@@ -826,7 +826,7 @@ class DeviceTest extends databaseTest
      * @param array $expect    What we expect returned
      * @param bool  $retExpect What we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetParams().
      */
@@ -847,7 +847,7 @@ class DeviceTest extends databaseTest
      * @param array  $expect    What we expect returned
      * @param bool   $retExpect What we expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetParams().
      */
@@ -880,7 +880,7 @@ class DeviceTest extends databaseTest
      * @param array  $params Parameters to encode
      * @param string $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataEncodeParams
      */
@@ -895,7 +895,7 @@ class DeviceTest extends databaseTest
      * @param array  $params Parameters to encode
      * @param string $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataEncodeParams
      */
@@ -925,7 +925,7 @@ class DeviceTest extends databaseTest
      * @param string $params Parameters to decode
      * @param array  $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDecodeParams
      */
@@ -940,7 +940,7 @@ class DeviceTest extends databaseTest
      * @param string $params Parameters to decode
      * @param array  $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDecodeParams
      */
@@ -968,7 +968,7 @@ class DeviceTest extends databaseTest
      *
      * @param string $params Parameters to decode
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataEncodeDecodeParams
      */

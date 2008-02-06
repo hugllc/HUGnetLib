@@ -72,7 +72,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -89,7 +89,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -103,7 +103,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -132,7 +132,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Test the write function
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testWrite().
      */
@@ -145,7 +145,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Test the epsocket::readChar function
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testReadChar().
      */
@@ -159,7 +159,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Test the write function
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testClose().
      */
@@ -172,7 +172,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Test the write function
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckConnect().
      */
@@ -185,7 +185,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     /**
      * Test the write function
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testConnect().
      */

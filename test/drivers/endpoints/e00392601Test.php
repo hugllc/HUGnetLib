@@ -107,7 +107,7 @@ class e00392601Test extends endpointTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -184,7 +184,7 @@ class e00392601Test extends endpointTestBase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetConfigStr
      */
@@ -196,7 +196,7 @@ class e00392601Test extends endpointTestBase
     /**
      * test
      *
-     * @return void
+     * @return null
      */
     public function testcheckRecord() 
     {

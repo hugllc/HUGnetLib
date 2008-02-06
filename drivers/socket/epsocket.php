@@ -144,7 +144,7 @@ if (!class_exists("epsocket")) {
         /**
          * Closes the socket connection
          * 
-         * @return void
+         * @return null
          */
         function close() 
         {
@@ -227,7 +227,7 @@ if (!class_exists("epsocket")) {
          *     the default port.
          * @param bool   $verbose Make the class put out a lot of output
          *
-         * @return void
+         * @return null
          */
         function __construct($server="", $tcpport="", $verbose=false) 
         {

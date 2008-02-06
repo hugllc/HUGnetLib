@@ -66,7 +66,7 @@ class MedianFilterTest extends filterTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -83,7 +83,7 @@ class MedianFilterTest extends filterTestBase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -96,7 +96,7 @@ class MedianFilterTest extends filterTestBase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -117,7 +117,7 @@ class MedianFilterTest extends filterTestBase
     /**
      * data provider
      *
-     * @return void
+     * @return null
      */
     public static function dataMedian() 
     {
@@ -199,7 +199,7 @@ class MedianFilterTest extends filterTestBase
      * @param int   $deltaT  The difference in time between this record and the last one
      * @param array $expect  What we expect the history to look like
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataMedian
      */
@@ -219,7 +219,7 @@ class MedianFilterTest extends filterTestBase
      * @param int   $deltaT  The difference in time between this record and the last one
      * @param array $expect  What we expect the history to look like
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataMedian
      */

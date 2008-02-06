@@ -68,7 +68,7 @@ class TablesTest extends PHPUnit_Framework_TestCase
      * @access public
      * @static
      *
-     * @return void
+     * @return null
      */
     public static function main()
     {
@@ -84,7 +84,7 @@ class TablesTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      *
-     * @return void
+     * @return null
      */
     protected function setUp()
     {
@@ -97,7 +97,7 @@ class TablesTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      *
-     * @return void
+     * @return null
      */
     protected function tearDown()
     {
@@ -131,7 +131,7 @@ class TablesTest extends PHPUnit_Framework_TestCase
      * @param string $Desc  The description of the plugin.  This is freeform text.  Optional
      * @param int $expect The expected value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRegisterFunction
      */

@@ -259,7 +259,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info The information array on the device
          * @param array &$Rec The data record to check
          *
-         * @return void
+         * @return null
          */
         public function checkRecord($Info, &$Rec) 
         {
@@ -273,7 +273,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array $Info The information array on the device
          * @param array &$Rec The data record to check
          *
-         * @return void
+         * @return null
          */
         protected function checkRecordBase($Info, &$Rec) 
         {
@@ -414,7 +414,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         public function interpConfig(&$Info) 
         {
@@ -427,7 +427,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpBaseConfig(&$Info)
         {
@@ -451,7 +451,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigDriverInfo(&$Info) 
         {
@@ -465,7 +465,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigParams(&$Info) 
         {
@@ -476,7 +476,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigHW(&$Info) 
         {
@@ -487,7 +487,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigFW(&$Info) 
         {
@@ -504,7 +504,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpCalibration(&$Info) 
         {
@@ -518,7 +518,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info devInfo array
          *
-         * @return void
+         * @return null
          */
         protected function interpTypes(&$Info) 
         {
@@ -536,7 +536,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info The devInfo array of the device we are working with.
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigSensorSetup(&$Info) 
         {
@@ -559,7 +559,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array &$Info The devInfo array of the device we are working with.
          *
-         * @return void
+         * @return null
          */
         protected function interpConfigTC(&$Info) 
         {
@@ -626,7 +626,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array &$Info The devInfo array for the device we are looking at
          * @param array &$data The data array we are building.
          *
-         * @return void
+         * @return null
          */
         protected function interpSensorsSetData(&$Info, &$data) 
         {
@@ -710,7 +710,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param array $Info Infomation about the device to use
          *
-         * @return void
+         * @return null
          *
          * @todo Figure out what this function was supposed to do and
          *  either fix it or remove it.
@@ -724,7 +724,7 @@ if (!class_exists('eDEFAULT')) {
          * @param array  $Info   Infomation about the device to use
          * @param string $rawcal The raw calibration data to use
          *
-         * @return void
+         * @return null
          *
          * @todo make this function work?
          */
@@ -845,7 +845,7 @@ if (!class_exists('eDEFAULT')) {
          *
          * @param object &$driver An object of class Driver.
          *
-         * @return void
+         * @return null
          */
         public function __construct(&$driver) 
         {

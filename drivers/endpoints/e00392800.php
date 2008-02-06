@@ -132,7 +132,7 @@ if (!class_exists("e00392800")) {
          * @param array $Info Infomation about the device to use
          * @param array &$Rec The record to check
          *
-         * @return void
+         * @return null
          *
          */
         function checkRecord($Info, &$Rec) 
@@ -152,7 +152,7 @@ if (!class_exists("e00392800")) {
          *
          * @param array &$Info Infomation about the device to use
          *
-         * @return void
+         * @return null
          *
          */
         function interpConfig(&$Info) 
@@ -172,7 +172,7 @@ if (!class_exists("e00392800")) {
          *
          * @param array &$Info Infomation about the device to use
          *
-         * @return void
+         * @return null
          *
          */
         private function _interpConfig00392012C(&$Info) 
@@ -188,7 +188,7 @@ if (!class_exists("e00392800")) {
          * @param array $Info    Infomation about the device to use
          * @param array $Packets The sensor packets to interpret
          *
-         * @return void
+         * @return null
          *
          */
         function interpSensors($Info, $Packets) 
@@ -217,7 +217,7 @@ if (!class_exists("e00392800")) {
          * @param array &$Info Infomation about the device to use
          * @param array &$data The data we are getting from the packets
          *
-         * @return void
+         * @return null
          */
         private function _interpSensorsGetRaw(&$Info, &$data) 
         {

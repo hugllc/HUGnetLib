@@ -77,7 +77,7 @@ class HistoryTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -94,7 +94,7 @@ class HistoryTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -110,7 +110,7 @@ class HistoryTest extends databaseTest
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -211,7 +211,7 @@ class HistoryTest extends databaseTest
      * @param int   $maxRec    The max number of records to return
      * @param int   $expect    The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetDates
      */

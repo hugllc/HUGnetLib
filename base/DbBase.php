@@ -116,7 +116,7 @@ class DbBase
      * @param string $id      The 'id' column to use
      * @param bool   $verbose Whether to be verbose or not
      *
-     * @return void
+     * @return null
      */
     public function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
     {
@@ -241,7 +241,7 @@ class DbBase
     /**
      * Creates the field array
      *
-     * @return void
+     * @return null
      */
     protected function getColumns()
     {
@@ -252,7 +252,7 @@ class DbBase
     /**
      * Gets columns from a SQLite server
      *
-     * @return void
+     * @return null
      */
     protected function getColumnsSQLite()
     {
@@ -267,7 +267,7 @@ class DbBase
     /**
      * Gets columns from a mysql server
      *
-     * @return void
+     * @return null
      */
     protected function getColumnsMySQL()
     {
@@ -283,7 +283,7 @@ class DbBase
     /**
      * Gets columns from a mysql server
      *
-     * @return void
+     * @return null
      */
     protected function getColumnsOther()
     {
@@ -633,7 +633,7 @@ class DbBase
      *                      This must be either a PDO or PDOStatement
      *                      object.
      *
-     * @return void
+     * @return null
      */
     protected function errorInfo($clear=false, $obj = null)
     {
@@ -665,7 +665,7 @@ class DbBase
      *
      * @param array $err The error array 
      *
-     * @return void
+     * @return null
      */
     protected function metaErrorInfo($err)
     {
@@ -682,7 +682,7 @@ class DbBase
      *
      * @param array $err The error array 
      *
-     * @return void
+     * @return null
      */
     protected function mysqlMetaErrorInfo($err)
     {
@@ -702,7 +702,7 @@ class DbBase
      *
      * @param array $err The error array 
      *
-     * @return void
+     * @return null
      */
     protected function sqliteMetaErrorInfo($err)
     {
@@ -711,7 +711,7 @@ class DbBase
     /**
      * Print Errors
      *
-     * @return void
+     * @return null
      */
     public function printError() 
     {
@@ -860,7 +860,7 @@ class DbBase
      *
      * @param int $level The verbosity level
      *
-     * @return void
+     * @return null
      */    
     public function verbose($level=0)
     {
@@ -872,7 +872,7 @@ class DbBase
      *
      * @param string $str The string to print out
      *
-     * @return void
+     * @return null
      */
     protected function vprint($str) 
     {

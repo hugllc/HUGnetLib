@@ -439,7 +439,7 @@ class Sensor
      * @param array &$units  The unit to check
      * @param array &$mode   The mode to check
      *
-     * @return void
+     * @return null
       */
     function checkUnits(&$type, &$sensor, &$units, &$mode) 
     {
@@ -483,7 +483,7 @@ class Sensor
      * @param array &$Info The device information array for this device
      * @param array &$data The data to decode
      *
-     * @return void
+     * @return null
       */
     function decodeData(&$Info, &$data) 
     {
@@ -540,7 +540,7 @@ class Sensor
      *
      * @param array &$data The data to decode
      *
-     * @return void
+     * @return null
       */
     function checkRecord(&$data) 
     {

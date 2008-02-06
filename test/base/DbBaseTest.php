@@ -73,7 +73,7 @@ class DbBaseTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -92,7 +92,7 @@ class DbBaseTest extends databaseTest
      *
      * @access protected
      *
-     * @return void
+     * @return null
      */
     protected function setUp()
     {
@@ -109,7 +109,7 @@ class DbBaseTest extends databaseTest
      *
      * @access protected
      *
-     * @return void
+     * @return null
      */
     protected function tearDown()
     {
@@ -160,7 +160,7 @@ class DbBaseTest extends databaseTest
      * @param mixed  $expect       The expected value.  Set to FALSE or the class name
      * @param mixed  $expectDriver The expected driver
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataCreatePDO()
      */
@@ -183,7 +183,7 @@ class DbBaseTest extends databaseTest
      * someone tries to make a cache from a memory
      * sqlite instance.
      *
-     * @return void
+     * @return null
      */
     public function testCreateCacheMemory() 
     {
@@ -198,7 +198,7 @@ class DbBaseTest extends databaseTest
     /**
      * Tests if getColumns works correctly
      *
-     * @return void
+     * @return null
      */
     public function testGetColumns() 
     {
@@ -252,7 +252,7 @@ class DbBaseTest extends databaseTest
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataAddArray
      */
@@ -293,7 +293,7 @@ class DbBaseTest extends databaseTest
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataAdd
      */
@@ -332,7 +332,7 @@ class DbBaseTest extends databaseTest
      * @param array  $autoincrement The info to add to the database
      * @param array  $expect        The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataCleanSql
      */
@@ -373,7 +373,7 @@ class DbBaseTest extends databaseTest
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataReplace
      */
@@ -420,7 +420,7 @@ class DbBaseTest extends databaseTest
      * @param array $expect  The info to expect returned
      * @param bool  $retExpect What the function should return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUpdate
      */
@@ -440,7 +440,7 @@ class DbBaseTest extends databaseTest
      * @param array $expect    The info to expect returned
      * @param bool  $retExpect What the function should return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUpdate
      */
@@ -481,7 +481,7 @@ class DbBaseTest extends databaseTest
      * @param array $preload Data to preload into the database
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetAll
      */
@@ -536,7 +536,7 @@ class DbBaseTest extends databaseTest
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGet
      */
@@ -595,7 +595,7 @@ class DbBaseTest extends databaseTest
      * @param array  $data    The data to send with the query
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetWhere
      */
@@ -650,7 +650,7 @@ class DbBaseTest extends databaseTest
      * @param array  $data    The data to send with the query
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetOneWhere
      */
@@ -696,7 +696,7 @@ class DbBaseTest extends databaseTest
      * @param array $preload Data to preload into the database
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetOne
      */
@@ -744,7 +744,7 @@ class DbBaseTest extends databaseTest
      * @param array  $preload Data to preload into the database
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetNextID
      */
@@ -812,7 +812,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet  Whether to expect a return
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQuery().
      */
@@ -868,7 +868,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet Whether to expect a return
      * @param array  $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQueryNoDb().
      */
@@ -889,7 +889,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet Whether to expect a return
      * @param array  $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQueryNoDb().
      */
@@ -908,7 +908,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet Whether to expect a return
      * @param array  $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQueryNoDb().
      */
@@ -927,7 +927,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet Whether to expect a return
      * @param array  $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQueryNoDb().
      */
@@ -987,7 +987,7 @@ class DbBaseTest extends databaseTest
      * @param bool   $getRet  Whether to expect a return
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataQueryCache().
      */
@@ -1052,7 +1052,7 @@ class DbBaseTest extends databaseTest
      * @param int   $key     The database key to get the record from
      * @param array $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRemove
      */
@@ -1117,7 +1117,7 @@ class DbBaseTest extends databaseTest
      * @param array  $data    Data for where clause
      * @param array  $expect  The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRemoveWhere
      */
@@ -1149,7 +1149,7 @@ class DbBaseTest extends databaseTest
      * @param int $val    The database key to get the record from
      * @param int $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataVerbose
      */
@@ -1162,7 +1162,7 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      */
     public function testIsConnected() 
     {
@@ -1173,7 +1173,7 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      */
     public function testIsConnectedServerLeft() 
     {
@@ -1185,7 +1185,7 @@ class DbBaseTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      */
     public function testPrintError() 
     {
@@ -1213,7 +1213,7 @@ class DbBaseTest extends databaseTest
     /**
      * Tests print out when there is no error
      *
-     * @return void
+     * @return null
      */
     public function testPrintErrorNone() 
     {
@@ -1231,7 +1231,7 @@ class DbBaseTest extends databaseTest
     /**
      * tests printout when verbose is off
      *
-     * @return void
+     * @return null
      */
     public function testPrintErrorNotVerbose() 
     {
@@ -1245,7 +1245,7 @@ class DbBaseTest extends databaseTest
     /**
      * tests printout when verbose is off
      *
-     * @return void
+     * @return null
      */
     public function testCreateTable() 
     {
@@ -1273,7 +1273,7 @@ class DbBaseTest extends databaseTest
      * @param mixed $date   The date 
      * @param int   $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSqlDate
      */
@@ -1305,7 +1305,7 @@ class DbBaseTest extends databaseTest
      * @param mixed $type   The type of SQL column it is from 
      * @param int   $expect The info to expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataFixType
      */
@@ -1371,7 +1371,7 @@ class DbBaseClassTest extends DbBase
      *
      * @param mixed $val The value to kill the database with
      *
-     * @return void
+     * @return null
      */
     public function killDb($val = null)
     {
@@ -1384,7 +1384,7 @@ class DbBaseClassTest extends DbBase
      *
      * @param mixed $string The value to clean
      *
-     * @return void
+     * @return null
      */
     public function tCleanSql($string)
     {

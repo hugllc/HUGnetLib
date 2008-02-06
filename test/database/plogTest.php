@@ -64,7 +64,7 @@ class PlogTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -81,7 +81,7 @@ class PlogTest extends databaseTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -96,7 +96,7 @@ class PlogTest extends databaseTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -149,7 +149,7 @@ class PlogTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataAdd
      *
@@ -207,7 +207,7 @@ class PlogTest extends databaseTest
      * @param string $type    The type of packet it is
      * @param array  $expect  The return value to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataPacketLog().
      */
@@ -241,7 +241,7 @@ class PlogTest extends databaseTest
      * @param array  $Packet The packet array
      * @param string $expect The return value to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataPacketType().
      */

@@ -71,7 +71,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -88,7 +88,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -109,7 +109,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -123,7 +123,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @param array $preload Packet data to preload
      *
-     * @return void
+     * @return null
      */
     protected function setUpPacket($preload) 
     {
@@ -190,7 +190,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $hw      The hardware string
      * @param string $version The version string
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDevicesVersion
      */
@@ -213,7 +213,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw   The firmware string
      * @param array  $Firm The firmware array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDevicesFirmware
      */
@@ -238,7 +238,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $hw  The hardware string
      * @param string $Ver The version string
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDevicesHardware
      */
@@ -250,7 +250,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testConfigDefault() 
     {
@@ -260,7 +260,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testAverageTable() 
     {
@@ -271,7 +271,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testHistoryTable() 
     {
@@ -282,7 +282,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testAtoDMax() 
     {
@@ -319,7 +319,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw     The firmware string
      * @param string $params Firmware parameters
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConfigArray
      */
@@ -337,7 +337,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw     The firmware string
      * @param string $params Firmware parameters
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConfigArray
      */
@@ -354,7 +354,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw     The firmware string
      * @param string $params Firmware parameters
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConfigArray
      */
@@ -370,7 +370,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw     The firmware string
      * @param string $params Firmware parameters
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConfigArray
      */
@@ -397,7 +397,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param string $fw     The firmware string
      * @param string $params Firmware parameters
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConfigArray
      *
@@ -428,7 +428,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array $Info   The devInfo array for the device
      * @param array $expect The expected return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datareadSensors
      */
@@ -441,7 +441,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testsaveSensorData() 
     {
@@ -452,7 +452,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testupdateConfig() 
     {
@@ -489,7 +489,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array $Rec    The record to check
      * @param array $expect The expected return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataCheckRecord()
      */
@@ -503,7 +503,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testReadMem() 
     {
@@ -514,7 +514,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testGetConfigVars() 
     {
@@ -545,7 +545,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array $Info   The devInfo array for the device
      * @param array $expect The expected return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datareadConfig()
      */
@@ -558,7 +558,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testUnsolicited() 
     {
@@ -568,7 +568,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testinterpConfig() 
     {
@@ -588,7 +588,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array $ret      The returned value
      * @param array $expected The expected return
      *
-     * @return void
+     * @return null
      */
     private function _checkinterpConfigReturn($ret, $expected) 
     {
@@ -618,7 +618,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @param array $ret The returned value
      *
-     * @return void
+     * @return null
      */
     function printArray($ret) 
     {
@@ -636,7 +636,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @param array $val The array to print
      *
-     * @return void
+     * @return null
      */
     function printArrayVal($val) 
     {
@@ -679,7 +679,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
-     * @return void
+     * @return null
      */
     function testinterpSensors() 
     {
@@ -707,7 +707,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array  $expected The return that was expected
      * @param string $p        The array key
      *
-     * @return void        
+     * @return null        
      */
     private function _checkinterpSensorsReturn($ret, $expected, $p) 
     {
@@ -733,7 +733,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Checks the history table
      *
-     * @return void
+     * @return null
      */
     public function testGetHistoryTable() 
     {
@@ -745,7 +745,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Checks the average table
      *
-     * @return void
+     * @return null
      */
     public function testGetAverageTable() 
     {
@@ -757,7 +757,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Checks the location table
      *
-     * @return void
+     * @return null
      */
     public function testGetLocationTable() 
     {
