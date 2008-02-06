@@ -59,7 +59,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
     /**
      *  This function makes sure the parent of the class is correct
      *
-     * @return void
+     * @return null
      */
     public function testSensorParent() 
     {
@@ -102,7 +102,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -119,7 +119,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -137,7 +137,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -155,7 +155,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -172,7 +172,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -190,7 +190,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -209,7 +209,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -233,7 +233,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -251,7 +251,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -270,7 +270,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -295,7 +295,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param string $shortName The sensor short name
      * @param array  $sensor    The sensor array
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSensorArray
      */
@@ -333,7 +333,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param float  $deltaT The time differenct
      * @param mixed  $expect The return data to expect
      *
-     * @return void
+     * @return null
      */
     public function sensorTest($class, $method, $A, $sensor, $TC, $extra, $deltaT, $expect) 
     {
@@ -355,7 +355,7 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
      * @param mixed  $dType  data type (mode) that $value is in
      * @param mixed  $expect The return data to expect
      *
-     * @return void
+     * @return null
      */
     public function sensorCheckTest($class, $method, $value, $sensor, $units, $dType, $expect) 
     {

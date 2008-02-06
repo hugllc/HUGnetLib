@@ -86,7 +86,7 @@ class ProcStats extends DbBase
     /**
      * Creates the SQLite DB table
      * 
-     * @return void
+     * @return null
      */
     function createTable() 
     {
@@ -109,7 +109,7 @@ class ProcStats extends DbBase
      *
      * @param string $stat The stat to use
      *
-     * @return void
+     * @return null
      */
     function incStat($stat) 
     {
@@ -129,7 +129,7 @@ class ProcStats extends DbBase
      * @param string $name The name of the stat
      * @param string $date The date
      *
-     * @return void
+     * @return null
      */
     function incField($type, $name, $date="now") 
     {
@@ -223,7 +223,7 @@ class ProcStats extends DbBase
     /**
      * Clears all statistics
      *
-     * @return void
+     * @return null
      */
     function clearStats() 
     {

@@ -42,7 +42,7 @@
  * @param string $stuff This is what is actually added to the debug information
  * @param int    $level Between 0 and 10 this is the debug level at which to show it.
  *
- * @return void
+ * @return null
  */
 function addDebugOutput($stuff, $level=10) 
 {
@@ -61,7 +61,7 @@ function addDebugOutput($stuff, $level=10)
  *
  * @param string $stuff The string to print out
  *
- * @return void
+ * @return null
  */
 function printDebug($stuff) 
 {
@@ -98,7 +98,7 @@ function getDebug($stuff)
  * the PHP version, all the constants, and a listing
  * of the debug output from the code that ran.
  *
- * @return void
+ * @return null
  */
 function printDebugInfo() 
 {

@@ -64,7 +64,7 @@ class PulseSensorTest extends sensorTestBase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -81,7 +81,7 @@ class PulseSensorTest extends sensorTestBase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -93,7 +93,7 @@ class PulseSensorTest extends sensorTestBase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -131,7 +131,7 @@ class PulseSensorTest extends sensorTestBase
      * @param float $deltaT The time delta in seconds between this record
      * @param float $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataMaximumAnemometer
      * @covers pulseSensor::maximumAnemometer
@@ -164,7 +164,7 @@ class PulseSensorTest extends sensorTestBase
      * @param mixed  $dType  The data mode
      * @param bool   $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataPulseCheck
      * @covers pulseSensor::PulseCheck
@@ -196,7 +196,7 @@ class PulseSensorTest extends sensorTestBase
      * @param float $deltaT The time delta in seconds between this record
      * @param float $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataWattNode
      * @covers pulseSensor::WattNode
@@ -228,7 +228,7 @@ class PulseSensorTest extends sensorTestBase
      * @param float $deltaT The time delta in seconds between this record
      * @param float $expect The expected return value
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetPPM
      * @covers pulseSensor::GetPPM

@@ -59,7 +59,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -74,7 +74,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -96,7 +96,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @param array $values array of values to load into the database
      *
-     * @return void
+     * @return null
      */
     protected function load($values)
     {
@@ -176,7 +176,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the table variable
      *
-     * @return void
+     * @return null
      */
     public function testTableString() 
     {
@@ -187,7 +187,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the table variable
      *
-     * @return void
+     * @return null
      */
     public function testTableEmpty() 
     {
@@ -198,7 +198,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the table variable
      *
-     * @return void
+     * @return null
      */
     public function testIdString() 
     {
@@ -209,7 +209,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test the table variable
      *
-     * @return void
+     * @return null
      */
     public function testIdEmpty() 
     {
@@ -221,7 +221,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      * This function tests to see if there are any fields defined
      *
-     * @return void
+     * @return null
      */
     function testFieldCount()
     {

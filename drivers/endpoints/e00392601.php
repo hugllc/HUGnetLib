@@ -76,7 +76,7 @@ if (!class_exists("e00392601")) {
          *
          * @param array $Info Infomation about the device to use
          *
-         * @return void
+         * @return null
          */
         function readConfig($Info)
         {
@@ -96,7 +96,7 @@ if (!class_exists("e00392601")) {
          * @param array $Info The information array on the device
          * @param array &$Rec The data record to check
          *
-         * @return void
+         * @return null
          */
         function checkRecord($Info, &$Rec)
         {

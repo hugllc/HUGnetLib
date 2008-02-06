@@ -60,7 +60,7 @@ class Analysis extends DbBase
      *
      * @param string $table Table to use if not the default
      * 
-     * @return void
+     * @return null
      */
     public function createTable($table=null) 
     {

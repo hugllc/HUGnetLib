@@ -165,7 +165,7 @@ class Plugins
      * @param bool   $Show Whether or not to show the menu item.  Not used if Name is an array.
      * @param string $Help The help text to show in a popup.  Not used if Name is an array.
      * 
-     * @return void
+     * @return null
      *
      * @deprecated
      */
@@ -206,7 +206,7 @@ class Plugins
      * @param string $Title The title of the plugin.  Anything goes, but it should be relatively short.  Optional
      * @param string $Desc  The description of the plugin.  This is freeform text.  Optional
      * 
-     * @return void
+     * @return null
      */
     function registerFunction($Name, $Type="", $Title="", $Desc="") 
     {
@@ -233,7 +233,7 @@ class Plugins
      * @param string $Type The type of plugin to register this as.  If ommited plugin will be registered as "ALL_TYPES" which is probably not
      *     what you want.
      * 
-     * @return void
+     * @return null
      */
     function addGeneric($Name, $HTML="", $Type="") 
     {
@@ -261,7 +261,7 @@ class Plugins
      *     is optional.  See description for suggested array.
      * @param string $Filename The name of the file to attach to the about record.
      * 
-     * @return void
+     * @return null
      */
     function addAbout($Info, $Filename) 
     {
@@ -329,7 +329,7 @@ class Plugins
      *
      * @param string $Name The name of the function to run
      * 
-     * @return void
+     * @return null
      */
     function runFunction($Name) 
     {
@@ -367,7 +367,7 @@ class Plugins
      *
      * @param string $Name The name of the function to find
      * 
-     * @return void
+     * @return null
      */
     function getFunction($Name) 
     {
@@ -513,7 +513,7 @@ class Plugins
      * calls getPluginDir to actually find the plugins.  This function should be called if you
      * need to find new Plugins after the constructor is run.  This function is called by the constructor.
      *
-     * @return void
+     * @return null
      */
     function findPlugins() 
     {
@@ -544,7 +544,7 @@ class Plugins
      * @param string $webdir    the directory that it will be in on the web site.
      * @param array  $skipDir   Array of Strings Directories to not look into for plugins.
      *
-     * @return void
+     * @return null
      */
     function Plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) 
     {
@@ -569,7 +569,7 @@ class Plugins
      * @param int    $Level     Depreciated
      * @param bool   $recursive Whether to be recursive or not
      *
-     * @return void
+     * @return null
      */
     function getPluginDir($basedir= ".", $webdir="plugins/", $Level = 0, $recursive=true) 
     {
@@ -624,7 +624,7 @@ class Plugins
      * @param string $filedir The filesystem directory where the files are located.
      * @param string $webdir  The web directory where they are located (the path relative to DOCUMENT_ROOT)
      *
-     * @return void
+     * @return null
      */
     function includeFile($file, $filedir = "", $webdir="") 
     {
@@ -681,7 +681,7 @@ class Plugins
      * @param array $info This must at least contain info["Name"] which must be the name of a valid function, or the plugin 
      *     won't be registered.  Anything else is stored with the name of the function in case it should ever be needed.
      *
-     * @return void
+     * @return null
      */
     function registerFunctionRaw($info) 
     {
@@ -727,7 +727,7 @@ class Plugins
      * @param array $info this is all of the information about the plugin.  Only info["Name"] is required.  Everything
      *     else is application dependent.  These Plugins allow for doing almost anything.
      *
-     * @return void
+     * @return null
      */
     function addGenericRaw($info) 
     {
@@ -757,7 +757,7 @@ class Plugins
      * @param array $a The first argument for the compare
      * @param array $b The second argument for the compare
      *
-     * @return void
+     * @return null
      */
     public function comparePlugins($a, $b) 
     {
@@ -772,7 +772,7 @@ class Plugins
      * @param string $text  Text to add to the stack
      * @param int    $level 0-5 How much to log to the stack.
      *
-     * @return void
+     * @return null
      */
     private function _debug($text, $level = 1) 
     {

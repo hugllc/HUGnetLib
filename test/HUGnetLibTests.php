@@ -80,7 +80,7 @@ class HUGnetLibTests
     /**
      * main function
      *
-     * @return void
+     * @return null
      */
     public static function main()
     {
@@ -90,7 +90,7 @@ class HUGnetLibTests
     /**
      * test suite
      *
-     * @return void
+     * @return null
      */
     public static function suite()
     {

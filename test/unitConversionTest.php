@@ -100,7 +100,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -117,7 +117,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -131,7 +131,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -164,7 +164,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -182,7 +182,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -200,7 +200,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -218,7 +218,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -236,7 +236,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -254,7 +254,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $shortName The short name of the unit
      * @param string $unit      The unit to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArray
      */
@@ -295,7 +295,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $to        The unit to convert to
      * @param string $function  The function to use to convert
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnitArrayConvertFunct
      */
@@ -421,7 +421,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $unit   The unit to find
      * @param array  $expect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataPreferredUnit
      */
@@ -448,7 +448,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $unit   The unit to find
      * @param array  $expect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGraphable
      */
@@ -474,7 +474,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $unit   The unit to find
      * @param array  $expect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataFindUnit
      */
@@ -503,7 +503,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $default The data type to use if none is specified
      * @param array  $expect  What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDataType
      */
@@ -537,7 +537,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array  $expect   What expect returned
      * @param array  $toExpect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConvert
      */
@@ -558,7 +558,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array  $expect   What expect returned
      * @param array  $toExpect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataConvert
      */
@@ -590,7 +590,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $from   The starting unit
      * @param array  $expect What expect returned
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetPossConv
      */
@@ -622,7 +622,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataTemperature
      */
@@ -639,7 +639,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataTemperature
      */
@@ -670,7 +670,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
-     * @return void
+     * @return null
      * 
      * @dataProvider dataMilli
      */
@@ -686,7 +686,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
-     * @return void
+     * @return null
      * 
      * @dataProvider dataMilli
      */
@@ -716,7 +716,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
-     * @return void
+     * @return null
      * 
      * @dataProvider dataCenti
      */
@@ -749,7 +749,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param string $type      The type of data (diff, raw, etc)
      * @param int    $cntPerRev the number of counts per revolution
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataCnttoRPM
      */
@@ -803,7 +803,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param float  $numdir The text direction
      * @param string $dir    The value to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDirtoNumDir
      */
@@ -831,7 +831,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param float $numdir The text direction
      * @param int   $dir    The value to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataNumDirtoDir
      */
@@ -863,7 +863,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param mixed  $extra  The extra information from the sensor.
      * @param float  $expect The extra information from the sensor.
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datakWhTokW
      */
@@ -895,7 +895,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param mixed  $extra  The extra information from the sensor.
      * @param float  $expect The extra information from the sensor.
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datakWhToW
      */
@@ -965,7 +965,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -987,7 +987,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -1009,7 +1009,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -1031,7 +1031,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */

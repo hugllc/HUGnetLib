@@ -63,7 +63,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -80,7 +80,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -93,7 +93,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -121,7 +121,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param string $class  The class register
      * @param bool   $expect What to expect from the return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRegisterFilter
      */
@@ -156,7 +156,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param array $filters The array of filters to use
      * @param array $expect  What to expect from the return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataFilter
      */
@@ -170,7 +170,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      */
     public function testRunFunctionCall() 
     {
@@ -204,7 +204,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param array  $args     The arguments for the function
      * @param mixed  $expect What to expect from the return
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction
      */
@@ -238,7 +238,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param string $typeExpect   The type of filter
      * @param string $filterExpect The filter to implement.  This can be changed by this routine.
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetClass().
      */
@@ -299,7 +299,7 @@ class testFilter extends filter_base
      * @param mixed $extra    Extra setup information on the filter
      * @param int   $deltaT   The difference in time between this record and the last one
      *
-     * @return void
+     * @return null
      */
     public function test1(&$history, $index, $filter, $extra, $deltaT = null)
     {
@@ -315,7 +315,7 @@ class testFilter extends filter_base
      * @param mixed $extra    Extra setup information on the filter
      * @param int   $deltaT   The difference in time between this record and the last one
      *
-     * @return void
+     * @return null
      */
     public function test2(&$history, $index, $filter, $extra, $deltaT = null) 
     {

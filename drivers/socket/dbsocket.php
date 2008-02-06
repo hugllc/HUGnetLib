@@ -194,7 +194,7 @@ if (!class_exists("dbsocket")) {
          *
          * @param int $id The random id of the packet to delete.
          *
-         * @return void
+         * @return null
          */
         private function _deletePacket($id) 
         {
@@ -236,7 +236,7 @@ if (!class_exists("dbsocket")) {
         /**
          * Closes the socket connection
          * 
-         * @return void
+         * @return null
          */
         public function close() 
         {
@@ -289,7 +289,7 @@ if (!class_exists("dbsocket")) {
          * @param object &$db     PDO connection object
          * @param bool   $verbose Whether to give a lot of output.
          *
-         * @return void
+         * @return null
          */
         public function __construct(&$db, $verbose=false) 
         {

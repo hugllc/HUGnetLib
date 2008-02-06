@@ -67,7 +67,7 @@ class ProcessTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -84,7 +84,7 @@ class ProcessTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -102,7 +102,7 @@ class ProcessTest extends databaseTest
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -117,7 +117,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testGetMyInfo().
      */
@@ -130,7 +130,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckProcess().
      */
@@ -143,7 +143,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckAll().
      */
@@ -156,7 +156,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testRegister().
      */
@@ -169,7 +169,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckin().
      */
@@ -182,7 +182,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testFastCheckin().
      */
@@ -195,7 +195,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testDbRegister().
      */
@@ -208,7 +208,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testDbUnregister().
      */
@@ -221,7 +221,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testUnregister().
      */
@@ -234,7 +234,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCreateTable().
      */
@@ -247,7 +247,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckRegistered().
      */
@@ -260,7 +260,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckUnregistered().
      */
@@ -273,7 +273,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testFileRegister().
      */
@@ -286,7 +286,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testFileUnregister().
      */
@@ -299,7 +299,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckFile().
      */
@@ -312,7 +312,7 @@ class ProcessTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testCheckDB().
      */

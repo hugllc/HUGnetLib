@@ -263,7 +263,7 @@ class EPacket
      *      this is null or unset the function will be called as a standard
      *      function.
      *
-     * @return void
+     * @return null
      */
     function packetSetCallBack($function, &$object = null) 
     {
@@ -279,7 +279,7 @@ class EPacket
      *
      * @param array $pkt The decoded packet we got
      *
-     * @return void
+     * @return null
      */
     function packetCallBack($pkt) 
     {
@@ -512,7 +512,7 @@ class EPacket
     /**
      *  Creates an array of possible serial numbers
      *
-     * @return void
+     * @return null
      */
     private function _createSNArray() 
     {
@@ -549,7 +549,7 @@ class EPacket
      *
      * @param array $Info The device information array
      *
-     * @return void
+     * @return null
      */
     function changeSN($Info = null) 
     {
@@ -785,7 +785,7 @@ class EPacket
     /**
      * Resets packets if they have timed out.
      *
-     * @return void
+     * @return null
      */
     private function _checkPacketTimeout() 
     {
@@ -822,7 +822,7 @@ class EPacket
      *
      * @param string &$data The preamble will be removed from this packet string
      *
-     * @return void
+     * @return null
      */ 
     private function _removePreamble(&$data) 
     {
@@ -997,7 +997,7 @@ class EPacket
      *
      * @param array $Info Infomation about the device to use            
      *
-     * @return void
+     * @return null
      */
     function close($Info)
     {
@@ -1014,7 +1014,7 @@ class EPacket
      * @param object &$db     PDO database object
      * @param bool   $snCheck(Should we check the serial number
      *
-     * @return void
+     * @return null
      */
     function __construct($Info=false, $verbose=false, &$db = null, $snCheck=true) 
     {
@@ -1035,7 +1035,7 @@ class EPacket
      *
      * @param bool $val true checks the serial number false does not.
      *
-     * @return void
+     * @return null
      */
     function snCheck($val=true) 
     {

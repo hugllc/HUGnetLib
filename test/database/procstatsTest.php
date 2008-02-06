@@ -92,7 +92,7 @@ class ProcStatsTest extends databaseTest
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -109,7 +109,7 @@ class ProcStatsTest extends databaseTest
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -126,7 +126,7 @@ class ProcStatsTest extends databaseTest
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -183,7 +183,7 @@ class ProcStatsTest extends databaseTest
      * @param int    $date    The unix date to force the system to use
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataIncStat().
      */
@@ -242,7 +242,7 @@ class ProcStatsTest extends databaseTest
      * @param int    $date    The unix date to force the system to use
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataIncField().
      */
@@ -289,7 +289,7 @@ class ProcStatsTest extends databaseTest
      * @param int    $date    The unix date to force the system to use
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetMyStat().
      */
@@ -340,7 +340,7 @@ class ProcStatsTest extends databaseTest
      * @param int    $PID     Unix process id
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetStat().
      */
@@ -400,7 +400,7 @@ class ProcStatsTest extends databaseTest
      * @param string $type    The stat type to increment
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetStat().
      */
@@ -417,7 +417,7 @@ class ProcStatsTest extends databaseTest
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testClearStats().
      */
@@ -476,7 +476,7 @@ class ProcStatsTest extends databaseTest
      * @param string $Program The program to get the stats for
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetPeridicStats().
      */
@@ -522,7 +522,7 @@ class ProcStatsTest extends databaseTest
      * @param string $Program The program to get the stats for
      * @param array  $expect  The array to expect to be in the database
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetTotalStats().
      */
@@ -563,7 +563,7 @@ class ProcStatsTestClass extends ProcStats
      *
      * @param array $me What to set the me variable to
      *
-     * @return void
+     * @return null
      */    
     public function forceMe($me)
     {

@@ -67,7 +67,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Runs the test methods of this class.
      *
-     * @return void
+     * @return null
      *
      * @access public
      * @static
@@ -84,7 +84,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -97,7 +97,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @return void
+     * @return null
      *
      * @access protected
      */
@@ -132,7 +132,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      *
      * @param array $preload The packets to set up
      *
-     * @return void
+     * @return null
      */
     private function setUpPacket($preload) 
     {
@@ -164,7 +164,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param mixed $class  object or class name to register
      * @param bool  $expect The result to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRegisterDriver
      */
@@ -193,7 +193,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      *
      * @param mixed $class  object or class name to register
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRegisterDriverGood
      */
@@ -212,7 +212,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      *
      * @param mixed $class  object or class name to register
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRegisterDriverGood
      */
@@ -252,7 +252,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      *
      * @param string $class class name to check
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDriversRegistered
      */
@@ -265,7 +265,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -281,7 +281,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -297,7 +297,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -313,7 +313,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -329,7 +329,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -345,7 +345,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -359,7 +359,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test runFunction
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataRunFunction().
      */
@@ -374,7 +374,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test __call
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datareadConfig().
      */
@@ -392,7 +392,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test __call
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datareadConfig().
      */
@@ -410,7 +410,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test __call
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datareadConfig().
      */
@@ -428,7 +428,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * Test setConfig()
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataSetConfig().
      */
@@ -441,7 +441,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test done()
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDone().
      */
@@ -459,7 +459,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test UpdateDevice()
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUpdateDevice().
      */
@@ -480,7 +480,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test unsolicitedConfigCheck
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataUnsolicitedConfigCheck().
      */
@@ -493,7 +493,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test getDevice
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetDevice().
      */
@@ -512,7 +512,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @return void
+     * @return null
      *
      * @todo Implement testIsController().
      */
@@ -525,7 +525,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     /**
      * test getInfo()
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataGetInfo().
      */
@@ -613,7 +613,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array $packets The test packets to interpret
      * @param array $expect  The return to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider datainterpConfig().
      */
@@ -647,7 +647,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param string $field  The field to check
      * @param array  $expect The return to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataDriverInfo().
      */
@@ -684,7 +684,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array  $Info   The devInfo array
      * @param string $expect The return to expect
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataFindDriver().
      */
@@ -758,7 +758,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -780,7 +780,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -802,7 +802,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -824,7 +824,7 @@ class driverTest extends PHPUnit_Framework_TestCase
      * @param array $expectType    The types we expect after mofication
      * @param array $expectUnits   The units we expect after mofication
      *
-     * @return void
+     * @return null
      *
      * @dataProvider dataModifyUnits().
      */
@@ -885,7 +885,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function Test($arg1, $arg2, $arg3)
     {
@@ -898,7 +898,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function TestCall($arg1)
     {
@@ -907,7 +907,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function interpConfig(&$Info)
     {
@@ -917,7 +917,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function getError()
     {
@@ -926,7 +926,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function __construct(&$driver = false)
     {
@@ -937,7 +937,7 @@ class testDriver extends eDEFAULT
     /**
      * Some Function
      *
-     * @return void
+     * @return null
      */
     public function __toString() 
     {
