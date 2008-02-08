@@ -89,7 +89,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp() 
     {
-        $this->db = new PDO('sqlite::memory');
+        $this->db = new PDO('sqlite::memory:');
         $this->plog = new plog($this->db);
         $this->plog->createTable($this->table);
         $this->db->query($query);
