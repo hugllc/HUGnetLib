@@ -117,7 +117,7 @@ class driverTest extends PHPUnit_Framework_TestCase
     public function &createDriver($socket=null) 
     {
         if (!is_numeric($socket)) $socket = self::$socket;
-        $db = new PDO("sqlite::memory");
+        $db = new PDO("sqlite::memory:");
         $driver = new driver($db);
         $driver->unit = new unitConversionMock();
         $driver->gateway = new gatewayMock($driver);
