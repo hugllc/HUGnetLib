@@ -51,22 +51,22 @@ if (!class_exists("e00392601")) {
     class e00392601 extends eDEFAULT
     {
         /** Hardware name */
-        var $HWName = "0039-26 Gateway";
+        protected $HWName = "0039-26 Gateway";
 
         /** Average Table */
-        var $average_table = "e00392601_average";
+        protected $average_table = "e00392601_average";
         /** History Table */
-        var $history_table = "e00392601_history";
+        protected $history_table = "e00392601_history";
 
         /** Devices */
-        var $devices = array(
+        public $devices = array(
             "DEFAULT" => array(
                 "0039-26-01-P" => "DEFAULT",
            ),
         );
 
         /** Config array */
-        var $config = array(
+        public $config = array(
             "DEFAULT" => array("Function" => "Gateway", "Sensors" => 0),        
         );
 

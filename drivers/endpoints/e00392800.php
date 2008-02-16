@@ -51,14 +51,14 @@ if (!class_exists("e00392800")) {
     class e00392800 extends eDEFAULT
     {
         /** The hardware name */
-        var $HWName = "0039-28 Endpoint";
+        protected $HWName = "0039-28 Endpoint";
         /** Average table to use */
-        var $average_table = "e00392800_average";
+        protected $average_table = "e00392800_average";
         /** History table to use */
-        var $history_table = "e00392800_history";
+        protected $history_table = "e00392800_history";
 
         /** Which devices are served by this class */
-        var $devices = array(
+        public $devices = array(
             "0039-20-12-C" => array(
                 "0039-28-01-A" => "DEFAULT",
                 "0039-28-01-B" => "DEFAULT",
