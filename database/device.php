@@ -139,8 +139,8 @@ class Device extends DbBase
         if (empty($DevInfo["DeviceID"])) return false;
         if (empty($DevInfo["HWPartNum"])) return false;
         if (empty($DevInfo["SerialNum"])) return false;
-        $DeviceID = devInfo::hexify($DevInfo["SerialNum"]);
-        if ($DevInfo["DeviceID"] != $DeviceID) return false;
+        $DeviceID = devInfo::hexify($DevInfo["SerialNum"], 6);
+        if (strtoupper($DevInfo["DeviceID"]) != $DeviceID) return false;
 
         unset($DevInfo['params']);        
         $res = $this->getDevice($DevInfo["DeviceID"], 'ID');
