@@ -243,13 +243,24 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      *
-     * @dataProvider datacheckRecord()
      */
     function testcheckRecord() 
     {
         $Rec = array();
         $this->o->checkRecord(array(), $Rec);
         $this->assertSame(array("Status" => "UNRELIABLE"), $Rec);
+    }
+
+    /**
+     * test
+     *
+     * @return null
+     *
+     */
+    function testUpdateConfig() 
+    {
+        $ret = $this->o->updateConfig(array());
+        $this->assertFalse($ret);
     }
 
 
