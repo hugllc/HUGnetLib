@@ -510,7 +510,7 @@ class DeviceTest extends databaseTest
             // Insert
             array(
                 self::$preload,
-                array("DeviceID" => "002345", "SerialNum" => 9029, "HWPartNum" => "0039-28-01-A", "FWPartNum" => "0039-20-13-C"),
+                array("DeviceID" => "002345", "SerialNum" => 9030, "HWPartNum" => "0039-28-01-A", "FWPartNum" => "0039-20-13-C"),
                 0,
                 false,
                 array(),
