@@ -222,15 +222,19 @@ if (!class_exists('eDEFAULT')) {
         }
     
         /**
-         * Not sure what this function was supposed to do
+         * This function does any extra configuration updates
+         * that are required by a device that aren't in the genereic
+         * device::updateDevice() function.
+         *
+         * This function should be implemented in child classes.
          *
          * @param array $Info Infomation about the device to use
          *
-         * @return bool Always true
+         * @return bool Always false
          */
         public function updateConfig($Info) 
         {
-            return true;
+            return false;
         }
     
         /**
