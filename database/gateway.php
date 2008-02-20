@@ -34,7 +34,7 @@
  */
 
 /** This where our base class lives */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /**
  * Database interface class for gateways
@@ -52,7 +52,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class Gateway extends DbBase
+class Gateway extends HUGnetDB
 {
     var $table = "gateways";                //!< The database table to use
     var $id = "GatewayKey";     //!< This is the Field name for the key of the record

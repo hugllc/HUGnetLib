@@ -33,7 +33,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /**
  * This class logs packets into the database
@@ -46,7 +46,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Plog extends DbBase
+class Plog extends HUGnetDB
 {
     /** @var string Database table to use */
     protected $table = "PacketLog";

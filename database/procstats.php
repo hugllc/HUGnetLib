@@ -33,7 +33,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /** We need a couple of functions out of this. */
 require_once HUGNET_INCLUDE_PATH."/database/process.php";
 
@@ -49,7 +49,7 @@ require_once HUGNET_INCLUDE_PATH."/database/process.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ProcStats extends DbBase
+class ProcStats extends HUGnetDB
 {
     /** Stats table to use */
     protected $table = 'procStats';

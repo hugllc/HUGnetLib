@@ -857,7 +857,7 @@ if (!class_exists('eDEFAULT')) {
             $this->packet  =& $driver->packet;
             $this->device  =& $driver->device;
             $this->sensors =& $driver->sensors;
-            $this->history = new DbBase($driver->db, $this->history_table, $this->history_id);
+            $this->history = new HUGnetDB($driver->db, $this->history_table, $this->history_id);
         }
     }    
 }
