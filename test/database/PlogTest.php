@@ -41,8 +41,8 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 
-require_once dirname(__FILE__).'/../../database/plog.php';
-require_once dirname(__FILE__).'/databaseTest.php';
+require_once dirname(__FILE__).'/../../database/Plog.php';
+require_once dirname(__FILE__).'/DatabaseTest.php';
 
 /**
  * Test class for plog.

@@ -47,8 +47,8 @@ require_once "PHPUnit/Framework/TestSuite.php";
 if (!defined("HUGNET_INCLUDE_PATH")) {
     include_once dirname(__FILE__).'/../../hugnet.inc.php';
 }
-require_once dirname(__FILE__).'/databaseTest.php';
-require_once dirname(__FILE__).'/../../database/procstats.php';
+require_once dirname(__FILE__).'/DatabaseTest.php';
+require_once dirname(__FILE__).'/../../database/ProcStats.php';
 
 /**
  * Test class for process.

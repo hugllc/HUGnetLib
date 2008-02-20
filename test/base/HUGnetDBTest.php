@@ -40,7 +40,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework.php';
 
 require_once dirname(__FILE__).'/../../base/HUGnetDB.php';
-require_once dirname(__FILE__).'/../database/databaseTest.php';
+require_once dirname(__FILE__).'/../database/DatabaseTest.php';
 
 /**
  * Test class for HUGnetDB.
@@ -1315,6 +1315,111 @@ class HUGnetDBTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
 
+    /**
+     * Data provider for testAddArray
+     *
+     * @return array
+     */
+    public static function dataGetInstance()
+    {
+        return array(
+            array(
+                array(
+                    "type" => "sqlite",
+                    "file" => "memory:",
+                ),
+                "HUGnetDB",
+                "HUGnetDB",
+            ),
+            array(
+                array(
+                    "type" => "sqlite",
+                    "file" => "memory:",
+                ),
+                "Device",
+                "Device",
+            ),
+            array(
+                array(
+                    "type" => "sqlite",
+                    "file" => "memory:",
+                ),
+                "driver",
+                false,
+            ),
+            array(
+                array(
+                    "type" => "sqlite",
+                    "file" => "memory:",
+                ),
+                "asdf",
+                false,
+            ),
+        );
+    }
+    /**
+     * Tests to make sure this function fails if
+     * someone tries to make a cache from a memory
+     * sqlite instance.
+     *
+     * @param string $config The DSN to use to create the PDO object
+     * @param string $class  The password
+     * @param mixed  $expect The expected value.  Set to FALSE or the class name
+     *
+     * @return null
+     *
+     * @dataProvider dataGetInstance()
+     */
+    public function testGetInstance($config, $class, $expect) 
+    {
+        $o = HUGnetDB::getInstance($config, $class);
+        if ($expect === false) {
+            $this->assertFalse($o);
+        } else {
+            $this->assertType("object", $o);
+            $this->assertSame($expect, get_class($o));
+        }
+        unset($o);
+    }
+
+    /**
+     * Data provider for testAddArray
+     *
+     * @return array
+     */
+    public static function dataGetInstanceCache()
+    {
+        return array(
+            array(
+                array(
+                    "type" => "sqlite",
+                    "file" => "memory:",
+                ),
+                "HUGnetDB",
+            ),
+        );
+    }
+    /**
+     * Tests to make sure this function fails if
+     * someone tries to make a cache from a memory
+     * sqlite instance.
+     *
+     * @param string $config The DSN to use to create the PDO object
+     * @param string $class  The password
+     *
+     * @return null
+     *
+     * @dataProvider dataGetInstanceCache()
+     */
+    public function testGetInstanceCache($config, $class) 
+    {
+        $o = HUGnetDB::getInstance($config, $class);
+        $p = HUGnetDB::getInstance($config, $class);
+        $this->assertSame($o, $p);
+        unset($o);
+        unset($p);
+    }
+
 }
 
 // Call HUGnetDBTest::main() if this source file is executed directly.
@@ -1390,6 +1495,7 @@ class HUGnetDBClassTest extends HUGnetDB
     {
         return $this->cleanSql($string);
     }     
+
     
 }
 ?>

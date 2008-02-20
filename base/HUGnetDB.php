@@ -145,29 +145,31 @@ class HUGnetDB
     /**
      * Creates a database object
      *
-     * @param string &$dsn The DSN to use to create the PDO object
+     * @param mixed $dsn The DSN to use to create the PDO object
      * @param string $user The username
      * @param string $pass THe password
      *
      * @return object PDO object
      */
-    static public function &createPDO(&$dsn, $user = null, $pass = null) 
+    static public function &createPDO($dsn, $user = null, $pass = null) 
     {
         static $PDO;
         
         // The order of these is important!
         if (is_string($dsn)) $dsn = array("dsn" => $dsn, "user" => $user, "password" => $pass);
-        if (is_object($dsn) && (get_class($dsn) == "PDO")) return $dsn;
-        if (is_object($dsn)) return false;
         if (!is_array($dsn)) return false;
         if (isset($dsn["dsn"])) $dsn = array($dsn);
 
-        // Okday, now try to connect
-        foreach ($dsn as $serv) {
-            $db = self::_createPDO($serv["dsn"], $serv["user"], $serv["password"]);
-            if (is_object($dsn) && (get_class($dsn) == "PDO")) break;
+        $key = serialize($dsn);
+        if (empty($PDO[$key])) {
+    
+            // Okday, now try to connect
+            foreach ($dsn as $serv) {
+                $PDO[$key] = self::_createPDO($serv["dsn"], $serv["user"], $serv["password"]);
+                if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) break;
+            }
         }
-        return $db;
+        return $PDO[$key];
     }
     
     /**
@@ -913,7 +915,51 @@ class HUGnetDB
         if (is_string($date)) return date($this->dateFormat, strtotime($date));
         return $date;
     }
-    
+    /**
+     * Gets an instance of the HUGnet Driver
+     *
+     * @param array  $config The configuration to use
+     * @param string $class  The class to create
+     *
+     * @return object A reference to a driver object
+     */
+    function &getInstance($config = array(), $class="HUGnetDB")
+    {
+        static $instances;
+        if (!isset($instances)) $instances = array();
+        
+        if (file_exists(HUGNET_INCLUDE_PATH.DS."database".DS.$class.".php")) {
+            include_once(HUGNET_INCLUDE_PATH.DS."database".DS.$class.".php");
+        }
+        if (!class_exists($class)) return false;
+        if (!is_subclass_of($class, "HUGnetDB") && ($class != "HUGnetDB")) return false;
+        
+        $key = serialize($config);
+        
+        if (empty($instances[$class][$key])) {
+            // Set everything up
+            $type     = array_key_exists('type', $config)     ? $config['type']     : 'mysql';
+            $host     = array_key_exists('host', $config)     ? $config['host']     : 'localhost';
+            $file     = array_key_exists('file', $config)     ? $config['file']     : HUGNET_LOCAL_DATABASE;
+            $user     = array_key_exists('user', $config)     ? $config['user']     : null;
+            $password = array_key_exists('password', $config) ? $config['password'] : null;
+            $db_name  = array_key_exists('db_name', $config)  ? $config['db_name']  : HUGNET_DATABASE;
+            $table    = array_key_exists('table', $config)    ? $config['table']    : false;
+            $id       = array_key_exists('id', $config)       ? $config['id']       : false;
+            $verbose  = array_key_exists('verbose', $config)  ? $config['verbose']  : false;
+            $type     = strtolower($type);
+            
+            if ($type == "mysql") {
+                $dsn = "mysql:host=".$host.";dbname=".$name;
+            } else {
+                $dsn = "sqlite:".$file;
+            }
+            $db = HUGnetDB::createPDO($dsn, $user, $password);
+            $instances[$class][$key] = new $class($db, $table, $id, $verbose);
+        }
+        return $instances[$class][$key];
+    }
+ 
 }
 
 

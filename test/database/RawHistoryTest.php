@@ -44,9 +44,9 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 /** The gateway code to test */
-require_once dirname(__FILE__).'/../../database/rawhistory.php';
+require_once dirname(__FILE__).'/../../database/RawHistory.php';
 /** This is our base class */
-require_once dirname(__FILE__).'/databaseTest.php';
+require_once dirname(__FILE__).'/DatabaseTest.php';
 
 /**
  * Test class for gateway.

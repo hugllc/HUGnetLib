@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The version define for all of HUGnetLib */
-define("HUGNET_LIB_VERSION", "0.7.3");    
+define("HUGNET_LIB_VERSION", "0.8.1");    
 /** This is for backward compatibility with some older stuff */
 define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);    
 
@@ -44,12 +44,16 @@ if (!defined("HUGNET_DATABASE")) {
     /** The name of the default HUGnet Database */
     define("HUGNET_DATABASE", "HUGNet");
 }
+if (!defined("DS")) {
+    /** The name of the default HUGnet Database */
+    define("DS", "/");
+}
 
 $temp_dir = sys_get_temp_dir();
 
 if (!defined("HUGNET_LOCAL_DATABASE")) {
     /** The name of the default local (sqlite) HUGnet Database */
-    define("HUGNET_LOCAL_DATABASE", $temp_dir."/HUGnetLocal.sq3");
+    define("HUGNET_LOCAL_DATABASE", $temp_dir.DS."HUGnetLocal.sq3");
 }
 
 if (@include 'PHPUnit/Framework.php') {
@@ -58,16 +62,9 @@ if (@include 'PHPUnit/Framework.php') {
     $phpunit = false;
 }
 
-$inc = ini_get('include_path');
-$inc .= ":".dirname(__FILE__)."/lib/pear";
-ini_set('include_path', $inc);
- 
-
-//require_once HUGNET_INCLUDE_PATH."/database/device.php";
-/** Include the gateway code */
-require_once HUGNET_INCLUDE_PATH."/database/gateway.php";
+/** Include the database code */
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /** Include the endpoint driver code */
 require_once HUGNET_INCLUDE_PATH."/driver.php";
-
 
 ?>

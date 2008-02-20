@@ -44,7 +44,9 @@ require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once dirname(__FILE__).'/../../database/process.php';
+/** This is our base class */
+require_once dirname(__FILE__).'/DatabaseTest.php';
+require_once dirname(__FILE__).'/../../database/Process.php';
 
 /**
  * Test class for process.

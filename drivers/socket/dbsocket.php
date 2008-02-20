@@ -56,8 +56,6 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
-/** Used to access the packet log */
-require_once HUGNET_INCLUDE_PATH."/database/plog.php";
 
 if (!class_exists("dbsocket")) {
     /**

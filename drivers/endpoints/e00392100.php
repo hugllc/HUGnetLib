@@ -33,7 +33,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for loading our firmware */
-require_once HUGNET_INCLUDE_PATH.'/database/firmware.php';
+require_once HUGNET_INCLUDE_PATH.'/database/Firmware.php';
 
 if (!class_exists("e00392100")) {
 
