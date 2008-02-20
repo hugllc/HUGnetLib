@@ -35,7 +35,7 @@
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /** We need a couple of functions out of this. */
-require_once HUGNET_INCLUDE_PATH."/database/process.php";
+require_once HUGNET_INCLUDE_PATH."/database/Process.php";
 
 /**
  * Saving statistics.  This class is written specifically for scripts that want

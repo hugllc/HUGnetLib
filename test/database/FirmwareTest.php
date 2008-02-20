@@ -44,8 +44,8 @@ require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
 require_once "PHPUnit/Framework/TestSuite.php";
 
-require_once dirname(__FILE__).'/../../database/firmware.php';
-require_once dirname(__FILE__).'/databaseTest.php';
+require_once dirname(__FILE__).'/../../database/Firmware.php';
+require_once dirname(__FILE__).'/DatabaseTest.php';
 
 /**
  * Test class for firmware.

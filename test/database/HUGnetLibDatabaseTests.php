@@ -42,14 +42,14 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'AnalysisTest.php'; 
-require_once 'deviceTest.php'; 
-require_once 'firmwareTest.php'; 
-require_once 'gatewayTest.php'; 
-require_once 'historyTest.php'; 
-require_once 'plogTest.php'; 
-require_once 'processTest.php'; 
-require_once 'procstatsTest.php'; 
-require_once 'rawHistoryTest.php'; 
+require_once 'DeviceTest.php'; 
+require_once 'FirmwareTest.php'; 
+require_once 'GatewayTest.php'; 
+require_once 'HistoryTest.php'; 
+require_once 'PlogTest.php'; 
+require_once 'ProcessTest.php'; 
+require_once 'ProcStatsTest.php'; 
+require_once 'RawHistoryTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
