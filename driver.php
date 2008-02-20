@@ -307,7 +307,7 @@ class Driver
     }
     
     /**
-     * Wrapper for device::getDevice
+     * Wrapper for device::    getDevice
      *
      * @see device::getDevice
      *

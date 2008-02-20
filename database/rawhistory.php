@@ -34,7 +34,7 @@
  */
 
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/database/history.php";
 

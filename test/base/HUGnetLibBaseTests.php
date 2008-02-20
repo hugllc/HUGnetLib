@@ -44,7 +44,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'FilterBaseTest.php'; 
 require_once 'SensorBaseTest.php'; 
-require_once 'DbBaseTest.php'; 
+require_once 'HUGnetDBTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -80,7 +80,7 @@ class HUGnetLibBaseTests
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibBase');
         $suite->addTestSuite('SensorBaseTest');
         $suite->addTestSuite('FilterBaseTest');
-        $suite->addTestSuite('DbBaseTest');
+        $suite->addTestSuite('HUGnetDBTest');
   
         return $suite;
     }

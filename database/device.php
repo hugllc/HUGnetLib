@@ -33,7 +33,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /**
  * Class for talking with HUGNet endpoints
  *
@@ -45,7 +45,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Device extends DbBase
+class Device extends HUGnetDB
 {
     /** The table devices are stored in */
     var $table = "devices";

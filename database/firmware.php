@@ -33,7 +33,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This where our base class lives */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /**
  * Class for storing and retrieving firmware.
@@ -46,7 +46,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class Firmware extends DbBase
+class Firmware extends HUGnetDB
 {
     /** The table to use */
     var $table = "firmware";

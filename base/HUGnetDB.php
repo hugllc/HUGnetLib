@@ -34,13 +34,13 @@
  *
  */
 /** The database went away */
-define("DBBASE_META_ERROR_SERVER_GONE", 1);
+define("HUGnetDB_META_ERROR_SERVER_GONE", 1);
 /** The database went away */
-define("DBBASE_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
+define("HUGnetDB_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
 /** The database went away */
-define("DBBASE_META_ERROR_DUPLICATE", 2);
+define("HUGnetDB_META_ERROR_DUPLICATE", 2);
 /** The database went away */
-define("DBBASE_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
+define("HUGnetDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /**
  * Base class for all database work
  *
@@ -54,7 +54,7 @@ define("DBBASE_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DbBase
+class HUGnetDB
 {
     /** @var string The database table to use */
     protected $table = "none";
@@ -153,6 +153,8 @@ class DbBase
      */
     static public function &createPDO(&$dsn, $user = null, $pass = null) 
     {
+        static $PDO;
+        
         // The order of these is important!
         if (is_string($dsn)) $dsn = array("dsn" => $dsn, "user" => $user, "password" => $pass);
         if (is_object($dsn) && (get_class($dsn) == "PDO")) return $dsn;
@@ -641,8 +643,8 @@ class DbBase
             $this->errorState = "NODBE";
             $this->error      = -1;
             $this->errorMsg   = "Database Not Connected";
-            $this->metaError = DBBASE_META_ERROR_SERVER_GONE;
-            $this->metaErrorMsg = DBBASE_META_ERROR_SERVER_GONE_MSG;
+            $this->metaError = HUGnetDB_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = HUGnetDB_META_ERROR_SERVER_GONE_MSG;
             $this->printError();
             return;
         }
@@ -688,12 +690,12 @@ class DbBase
     {
         if ($this->driver != "mysql") return;     
         if ($err[1] == 2006) {
-            $this->metaError = DBBASE_META_ERROR_SERVER_GONE;
-            $this->metaErrorMsg = DBBASE_META_ERROR_SERVER_GONE_MSG;
+            $this->metaError = HUGnetDB_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = HUGnetDB_META_ERROR_SERVER_GONE_MSG;
             return;
         } else if ($err[1] == 1062) {
-            $this->metaError = DBBASE_META_ERROR_DUPLICATE;
-            $this->metaErrorMsg = DBBASE_META_ERROR_DUPLICATE_MSG;
+            $this->metaError = HUGnetDB_META_ERROR_DUPLICATE;
+            $this->metaErrorMsg = HUGnetDB_META_ERROR_DUPLICATE_MSG;
             return;           
         }
     }
@@ -892,7 +894,7 @@ class DbBase
     public function isConnected() 
     {
         if (!$this->checkDb()) return false;
-        if ($this->metaError == DBBASE_META_ERROR_SERVER_GONE) return false;
+        if ($this->metaError == HUGnetDB_META_ERROR_SERVER_GONE) return false;
         if ($this->driver == "sqlite") return true;
         return $this->_db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }

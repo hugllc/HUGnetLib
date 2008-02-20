@@ -34,7 +34,7 @@
  */
 
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /**
  * A class for controlling processes
@@ -47,7 +47,7 @@ require_once HUGNET_INCLUDE_PATH."/base/DbBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class History extends DbBase
+class History extends HUGnetDB
 {
     /** The database table to use */
     protected $table = "history";
