@@ -61,15 +61,12 @@ class Process extends HUGnetDB
     /**
      * constructor
      *
-     * @param string $file    The name of the file to use.  /tmp/HUGnetLocal will be used as the default.
-     * @param string $table   The database table to use
-     * @param string $id      The 'id' column to use
-     * @param bool   $verbose Whether to be verbose or not
+     * @param array $config The configuration
      */
-    function __construct($file = null, $table = false, $id = false, $verbose = false) 
+    function __construct($config = array()) 
     {
-        if (!is_string($file)) $file = null;
-        parent::__construct($file, $table, $id, $verbose);
+        $config["driver"] = "sqlite";
+        parent::__construct($config);
         $this->createTable();
         $this->me = self::getMyInfo();
     }
@@ -446,6 +443,17 @@ class Process extends HUGnetDB
               print "\r\n";
         }
         return $return;
+    }
+    /**
+     * Checks to see if this driver is valid.
+     *
+     * @param string $driver The driver to check
+     *
+     * @return string A valid driver.
+     */
+    function checkDriver($driver)
+    {
+        return "sqlite";
     }
 
 }

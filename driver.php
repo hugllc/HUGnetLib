@@ -559,17 +559,25 @@ class Driver
     /**
      * Constructor    
      *
-     * @param mixed  $db      Either a PDO object, or a file name for the sqlite driver
+     * @param array  $config  The configuration to use
      * @param object $plugins A plugin object
      */
-    function __construct(&$db=null, $plugins = "") 
+    function __construct($config = array(), $plugins = "") 
     {
+        $this->config = $config;
+        
+        if (is_bool($config["verbose"])) $this->verbose = $config["verbose"];
+        $this->analyis = &HUGnetDB::getInstance("Analysis", $config);
+        $this->gateway = &HUGnetDB::getInstance("Gateway", $config);
+        $this->device = &HUGnetDB::getInstance("Device", $config);
 
+/*
         $this->db = &$db;
-        $this->packet = new EPacket(null, $this->verbose);
         $this->analysis = new analysis($db);
         $this->gateway = new gateway($db);
         $this->device = new device($db);
+*/
+        $this->packet = new EPacket(null, $this->verbose);
         $this->unit = new unitConversion();
 
         $this->drivers["eDEFAULT"] = new eDEFAULT($this);

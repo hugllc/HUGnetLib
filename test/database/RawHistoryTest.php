@@ -97,7 +97,7 @@ class RawHistoryTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new rawhistory($this->pdo);
+        $this->o =& HUGnetDB::getInstance("RawHistory", $this->config); // new rawhistory($this->pdo);
         $this->o->createTable();
 
     }

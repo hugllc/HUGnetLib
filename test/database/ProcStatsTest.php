@@ -116,7 +116,7 @@ class ProcStatsTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new ProcStatsTestClass($this->file, $this->table, $this->id);
+        $this->o =& HUGnetDB::getInstance("ProcStatsTestClass", $this->config); // new ProcStatsTestClass($this->file, $this->table, $this->id);
         // Clear out the database
         $this->pdo->query("DELETE FROM `".$this->table."`");
         $this->o->forceMe($this->me);

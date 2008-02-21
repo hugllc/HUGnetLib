@@ -853,10 +853,11 @@ if (!class_exists("e00392100")) {
          *
          * @param object &$driver Driver
          */
-        function __construct (&$driver)
+        function __construct (&$driver, $config=null)
         {
-            parent::__construct($driver);            
-            $this->firmware = new firmware($driver->db);
+            parent::__construct($driver);
+            $this->firmware =& HUGnetDB::getInstance("Firmware", $config);
+//            $this->firmware = new firmware($driver->db);
         }
     
     

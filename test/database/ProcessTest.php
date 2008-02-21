@@ -93,7 +93,7 @@ class ProcessTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new process($this->pdo, $this->table, $this->id);
+        $this->o =& HUGnetDB::getInstance("Process", $this->config); // new process($this->pdo, $this->table, $this->id);
         $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);

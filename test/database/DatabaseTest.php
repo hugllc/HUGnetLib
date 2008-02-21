@@ -66,8 +66,18 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     protected function setUp() 
     {
         if (empty($this->table)) throw new exception(get_class($this)."->table not defined!", -1);
-        $this->file = tempnam(sys_get_temp_dir(), get_class($this));
-        $this->pdo = new PDO("sqlite:".$this->file);
+        $this->config["file"] = tempnam(sys_get_temp_dir(), get_class($this));
+        $this->file = $this->config["file"];
+        if (!empty($this->id)) $this->config["id"] = $this->id;
+        if (!empty($this->table)) $this->config["table"] = $this->table;
+        $this->config["servers"][0] = array(
+            'host' => 'localhost',
+            'user' => '',
+            'pass' => '',
+            'dsn' => "sqlite:".$this->file,
+        );
+        HUGnetDB::setConfig($this->config);
+        $this->pdo =& HUGnetDB::createPDO($this->config);
     }
 
     /**
@@ -84,7 +94,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
             $this->pdo->query("delete from ".$this->table);
             $this->pdo = null;
         }
-        if (file_exists($this->file)) unlink($this->file);
+        if (file_exists($this->config["file"])) unlink($this->config["file"]);
+        unset($this->config);
     }
 
     /**

@@ -92,7 +92,7 @@ class AnalysisTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new Analysis($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Analysis", $this->config); //new Analysis($this->pdo);
         $this->o->createTable();
 
     }
