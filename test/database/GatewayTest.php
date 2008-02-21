@@ -92,7 +92,7 @@ class GatewayTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new gateway($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Gateway", $this->config); // new gateway($this->pdo);
         $this->o->createTable();
 
     }

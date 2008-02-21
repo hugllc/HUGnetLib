@@ -118,54 +118,52 @@ class HUGnetDB
      *
      * @return null
      */
-    public function __construct(&$db = null, $table = false, $id = false, $verbose = false) 
+    public function __construct($config = array()) 
     {
 
-        $this->verbose($verbose);
-        if (is_string($db) && !empty($db)) {
-            if (trim(strtolower($db)) == ":memory:") $db = trim(strtolower($db));
-            $this->file = $db;
-        } else {
-            $this->file = HUGNET_LOCAL_DATABASE;
-        }
-        if ($this->checkDb($db)) {
-            $this->_db = &$db;
-        } else {
-            $this->_db = self::_createPDO("sqlite:".$this->file);
-        }
-        if (is_string($table)) $this->table = $table;
-        if (is_string($id)) $this->id = $id;
+        $this->config = $config;
+        $this->file = is_string($config['file']) ? $config['file'] : HUGNET_LOCAL_DATABASE;
 
+        if (is_string($config["table"])) $this->table = $config["table"];
+        if (is_string($config["id"])) $this->id = $config["id"];
+        $this->verbose($config[$verbose]);
+        unset($config["table"]);
+        unset($config["id"]);        
+
+        $this->_db = &HUGnetDB::createPDO($config);
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
 
         $this->getColumns();
     }
 
-
     /**
      * Creates a database object
      *
-     * @param mixed $dsn The DSN to use to create the PDO object
-     * @param string $user The username
-     * @param string $pass THe password
+     * @param mixed $config The configuration to use
      *
      * @return object PDO object
      */
-    static public function &createPDO($dsn, $user = null, $pass = null) 
+    static public function &createPDO($config = array()) 
     {
         static $PDO;
         
-        // The order of these is important!
-        if (is_string($dsn)) $dsn = array("dsn" => $dsn, "user" => $user, "password" => $pass);
-        if (!is_array($dsn)) return false;
-        if (isset($dsn["dsn"])) $dsn = array($dsn);
+        $key = serialize($config);
 
-        $key = serialize($dsn);
         if (empty($PDO[$key])) {
-    
+
+            $driver   = is_string($config['driver'])  ? $config['driver']  : 'sqlite';
+            $file     = is_string($config['file'])    ? $config['file']    : HUGNET_LOCAL_DATABASE;
+            $db_name  = is_string($config['db_name']) ? $config['db_name'] : HUGNET_DATABASE;
+            $servers  = is_array($config['servers'])  ? $config['servers'] : array();
+
+            $servers[0]['host']     = is_string($config["servers"][0]['host'])     ? $config["servers"][0]['host']     : 'localhost';
+            $servers[0]['user']     = is_string($config["servers"][0]['user'])     ? $config["servers"][0]['user']     : null;
+            $servers[0]['password'] = is_string($config["servers"][0]['password']) ? $config["servers"][0]['password'] : null;
+
             // Okday, now try to connect
-            foreach ($dsn as $serv) {
-                $PDO[$key] = self::_createPDO($serv["dsn"], $serv["user"], $serv["password"]);
+            foreach ($servers as $serv) {
+                $dsn = self::_createDSN($driver, $db_name, $file, $serv["host"]);
+                $PDO[$key] = self::_createPDO($dsn, $serv["user"], $serv["password"]);
                 if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) break;
             }
         }
@@ -220,20 +218,21 @@ class HUGnetDB
      */
     public function createCache($file = null) 
     {
+        $this->cacheConfig["file"] = $this->file;
         // Can't cache a sqlite database server
         if ($this->driver == "sqlite") {
             $file = substr(trim(strtolower($this->file)), 0, 7);
             if ($file == ":memory") return false;
-            $this->cacheFile = ":memory:";
+            $this->cacheConfig["file"] = ":memory:";
         } else {
-            if (is_string($file) && !empty($file)) $this->cacheFile = $file;
+            if (is_string($file) && !empty($file)) $this->cacheConfig["file"] = $file;
         }
-        if (!is_string($this->cacheFile) || empty($this->cacheFile)) $this->cacheFile = ":memory:";
-        if (empty($this->cacheFile)) $this->cacheFile = ":memory:";
+        if (!is_string($this->cacheConfig["file"]) || empty($this->cacheConfig["file"])) $this->cacheConfig["file"] = ":memory:";
 
-        $this->vprint("Creating a cache at ".$this->cacheFile);
+        $this->vprint("Creating a cache at ".$this->cacheConfig["file"]);
         $class = get_class($this);
-        $this->_cache = new $class($this->cacheFile, $this->table, $this->id, $this->verbose);
+//        $this->_cache = new $class($this->cacheFile, $this->table, $this->id, $this->verbose);
+        $this->_cache =& self::getInstance($class, $this->cacheConfig);
         $this->_cache->createTable($this->table);
         $this->_doCache = true;
         $this->_cache->createTable();
@@ -918,12 +917,12 @@ class HUGnetDB
     /**
      * Gets an instance of the HUGnet Driver
      *
-     * @param array  $config The configuration to use
      * @param string $class  The class to create
+     * @param array  $config The configuration to use
      *
      * @return object A reference to a driver object
      */
-    function &getInstance($config = array(), $class="HUGnetDB")
+    function &getInstance($class="HUGnetDB", $config=null)
     {
         static $instances;
         if (!isset($instances)) $instances = array();
@@ -933,33 +932,83 @@ class HUGnetDB
         }
         if (!class_exists($class)) return false;
         if (!is_subclass_of($class, "HUGnetDB") && ($class != "HUGnetDB")) return false;
+
+        if (is_null($config)) $config = self::getConfig();
         
         $key = serialize($config);
         
         if (empty($instances[$class][$key])) {
-            // Set everything up
-            $type     = array_key_exists('type', $config)     ? $config['type']     : 'mysql';
-            $host     = array_key_exists('host', $config)     ? $config['host']     : 'localhost';
-            $file     = array_key_exists('file', $config)     ? $config['file']     : HUGNET_LOCAL_DATABASE;
-            $user     = array_key_exists('user', $config)     ? $config['user']     : null;
-            $password = array_key_exists('password', $config) ? $config['password'] : null;
-            $db_name  = array_key_exists('db_name', $config)  ? $config['db_name']  : HUGNET_DATABASE;
-            $table    = array_key_exists('table', $config)    ? $config['table']    : false;
-            $id       = array_key_exists('id', $config)       ? $config['id']       : false;
-            $verbose  = array_key_exists('verbose', $config)  ? $config['verbose']  : false;
-            $type     = strtolower($type);
-            
-            if ($type == "mysql") {
-                $dsn = "mysql:host=".$host.";dbname=".$name;
-            } else {
-                $dsn = "sqlite:".$file;
-            }
-            $db = HUGnetDB::createPDO($dsn, $user, $password);
-            $instances[$class][$key] = new $class($db, $table, $id, $verbose);
+            self::setConfig($config, false);
+                        
+            $instances[$class][$key] = new $class($config);
         }
         return $instances[$class][$key];
     }
- 
+
+    /**
+     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
+     *
+     * @param string $driver The PDO driver to use
+     * @param string $db     The database to use
+     * @param string $file   The file to use if the driver is 'sqlite'
+     * @param array  $host   The host to use.
+     *
+     * @return null
+     */
+    function _createDSN($driver, $db, $file, $host)
+    {
+        $driver = strtolower($driver);
+        
+        if ($driver == "mysql") {
+            if (empty($host)) $host = "localhost";
+            $dsn = "mysql:host=".$host.";dbname=".$db;
+        } else {
+            if (empty($file)) $file = ":memory:";
+            $dsn = "sqlite:".$file;
+        }
+        return $dsn;
+    }
+
+    /**
+     * Gets and sets the configuration
+     *
+     * @return array The configuration
+     */
+    function getConfig()
+    {
+        return self::_config();
+    }
+    /**
+     * Gets and sets the configuration
+     *
+     * @param array $config    The configuration to set.  If left out the configuration is retrieved.
+     * @param bool  $overwrite Overwrite a config if there is one already
+     *
+     * @return array The configuration
+     */
+    function setConfig($config=array(), $overwrite = true)
+    {
+        return self::_config($config, $overwrite);
+    }
+
+    /**
+     * Gets and sets the configuration
+     *
+     * @param array $config The configuration to set.  If left out the configuration is retrieved.
+     * @param bool  $overwrite Overwrite a config if there is one already
+     *
+     * @return array The configuration
+     */
+    private function _config($config = null, $overwrite = true)
+    {
+        static $saveConfig;
+        if (is_null($saveConfig)) $saveConfig = array();
+        
+        if (is_array($config) && (empty($saveConfig) || $overwrite)) $saveConfig = $config;
+        
+        return $saveConfig;
+    }
+    
 }
 
 

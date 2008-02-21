@@ -88,7 +88,7 @@ class PlogTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new plog($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Plog", $this->config); // new plog($this->pdo);
         $this->o->createTable();
     }
 

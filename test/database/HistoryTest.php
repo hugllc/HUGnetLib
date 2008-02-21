@@ -101,7 +101,7 @@ class HistoryTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new history($this->pdo);
+        $this->o =& HUGnetDB::getInstance("History", $this->config); // new history($this->pdo);
         $this->o->createTable($this->table, 3);
 
     }

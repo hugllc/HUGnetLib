@@ -143,7 +143,7 @@ class DeviceTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new device($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Device", $this->config); // new device($this->pdo);
         $this->o->createTable();
     }
 

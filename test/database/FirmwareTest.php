@@ -132,9 +132,9 @@ class FirmwareTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-        $this->o = new firmware($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Firmware", $this->config); // new firmware($this->pdo);
         $this->o->createTable();
-        
+       
     }
 
     /**

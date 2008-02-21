@@ -89,11 +89,23 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp() 
     {
-        $this->db = new PDO('sqlite::memory:');
-        $this->plog = new plog($this->db);
+        parent::setUp();
+        if (!empty($this->id)) $this->config["id"] = $this->id;
+        if (!empty($this->table)) $this->config["table"] = $this->table;
+        $this->config["file"] = ":memory:";
+        $this->config["servers"][0] = array(
+            'host' => 'localhost',
+            'user' => '',
+            'pass' => '',
+        );
+        HUGnetDB::setConfig($this->config);
+
+        $this->plog = &HUGnetDB::getInstance("Plog", $config);
         $this->plog->createTable($this->table);
-        $this->db->query($query);
-        $this->s = new dbsocket($this->db);
+
+        $this->pdo =& $this->readAttribute($this->plog, "_db");
+        $this->pdo->query($query);
+        $this->s = &HUGnetDB::getInstance("dbsocket", $config); //new dbsocket($this->pdo);
 
 //        $this->BadDB = new PDO('mysql');
 //        $this->sBadDB = new dbsocket($this->BadDB);
@@ -160,7 +172,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     {
         $id = $this->s->Write($str, $pkt);
         $query = "SELECT * FROM ".$this->table." WHERE id=".$id;
-        $ret = $this->db->query($query);
+        $ret = $this->pdo->query($query);
         $res = $ret->fetchAll(PDO::FETCH_ASSOC);
         $res = $res[0];
         if (is_array($res)) {
@@ -240,7 +252,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     public function testReadChar($id, $queries, $expect) 
     {
         foreach ($queries as $query) {
-            $this->db->query("INSERT INTO ".$this->table." ".$query);
+            $this->pdo->query("INSERT INTO ".$this->table." ".$query);
         }
         $this->s->packet[$id] = array(1,2,3,4);
         $str = "";

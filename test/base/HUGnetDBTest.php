@@ -97,7 +97,8 @@ class HUGnetDBTest extends databaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->o = new HUGnetDBClassTest($this->pdo, $this->table, $this->id);
+//        $this->o = new HUGnetDBClassTest($this->pdo, $this->table, $this->id);
+        $this->o =& HUGnetDB::getInstance("HUGnetDBClassTest", $this->config);
         $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
@@ -128,25 +129,13 @@ class HUGnetDBTest extends databaseTest
     public static function dataCreatePDO() 
     {
         return array(
-            array("sqlite::memory:", null, null, "PDO", "sqlite"),
+            array(array(), "PDO", "sqlite"),
             array(
-                array("dsn" => "sqlite::memory:"),
-                null,
-                null,
+                array("driver" => "sqlite", "file" => ":memory:"),
                 "PDO",
                 "sqlite",
             ),
-            array(
-                array(
-                    array("dsn" => "badPDODriver::memory:"),
-                    array("dsn" => "sqlite::memory:"),
-                ),
-                null,
-                null,
-                "PDO",
-                "sqlite",
-            ),
-            array("badPDODriver::memory:", null, null, false, null),
+            array(array("driver" => "badPDODriver", "file" => ":memory:"), "PDO", "sqlite"),
         );
     }
     /**
@@ -154,9 +143,7 @@ class HUGnetDBTest extends databaseTest
      * someone tries to make a cache from a memory
      * sqlite instance.
      *
-     * @param string $dsn          The DSN to use to create the PDO object
-     * @param string $user         The username
-     * @param string $pass         The password
+     * @param string $config       The configuration to use
      * @param mixed  $expect       The expected value.  Set to FALSE or the class name
      * @param mixed  $expectDriver The expected driver
      *
@@ -164,9 +151,9 @@ class HUGnetDBTest extends databaseTest
      *
      * @dataProvider dataCreatePDO()
      */
-    public function testCreatePDO($dsn, $user, $pass, $expect, $expectDriver) 
+    public function testCreatePDO($config, $expect, $expectDriver) 
     {
-        $o = HUGnetDB::createPDO($dsn, $user, $pass);
+        $o = HUGnetDB::createPDO($config);
         if ($expect === false) {
             $this->assertFalse($o);
         } else {
@@ -187,8 +174,8 @@ class HUGnetDBTest extends databaseTest
      */
     public function testCreateCacheMemory() 
     {
-        $file = ":MeMoRy:";
-        $o = new HUGnetDBClassTest($file);
+        $config = array("file" => ":MeMoRy:");
+        $o =& HUGnetDB::getInstance("HUGnetDBClassTest", $config); //new HUGnetDBClassTest($file);
         $ret = $o->createCache();
         $this->assertFalse($ret);
         unset($o);
@@ -1326,7 +1313,7 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "type" => "sqlite",
-                    "file" => "memory:",
+                    "file" => ":memory:",
                 ),
                 "HUGnetDB",
                 "HUGnetDB",
@@ -1334,7 +1321,7 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "type" => "sqlite",
-                    "file" => "memory:",
+                    "file" => ":memory:",
                 ),
                 "Device",
                 "Device",
@@ -1342,7 +1329,7 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "type" => "sqlite",
-                    "file" => "memory:",
+                    "file" => ":memory:",
                 ),
                 "driver",
                 false,
@@ -1350,7 +1337,7 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "type" => "sqlite",
-                    "file" => "memory:",
+                    "file" => ":memory:",
                 ),
                 "asdf",
                 false,
@@ -1372,7 +1359,7 @@ class HUGnetDBTest extends databaseTest
      */
     public function testGetInstance($config, $class, $expect) 
     {
-        $o = HUGnetDB::getInstance($config, $class);
+        $o = HUGnetDB::getInstance($class, $config);
         if ($expect === false) {
             $this->assertFalse($o);
         } else {
@@ -1393,7 +1380,7 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "type" => "sqlite",
-                    "file" => "memory:",
+                    "file" => ":memory:",
                 ),
                 "HUGnetDB",
             ),
@@ -1413,9 +1400,30 @@ class HUGnetDBTest extends databaseTest
      */
     public function testGetInstanceCache($config, $class) 
     {
-        $o = HUGnetDB::getInstance($config, $class);
-        $p = HUGnetDB::getInstance($config, $class);
+        $o = HUGnetDB::getInstance($class, $config);
+        $p = HUGnetDB::getInstance($class, $config);
         $this->assertSame($o, $p);
+        unset($o);
+        unset($p);
+    }
+
+    /**
+     * Tests to make sure this function fails if
+     * someone tries to make a cache from a memory
+     * sqlite instance.
+     *
+     * @param string $config The DSN to use to create the PDO object
+     * @param string $class  The password
+     *
+     * @return null
+     *
+     * @dataProvider dataGetInstanceCache()
+     */
+    public function testGetInstancePBO($config, $class) 
+    {
+        $o = HUGnetDB::getInstance($class, $config);
+        $d = $this->readAttribute($o, '_db');
+        $this->assertSame("PDO", get_class($d));
         unset($o);
         unset($p);
     }
