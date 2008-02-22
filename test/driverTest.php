@@ -125,7 +125,7 @@ class driverTest extends PHPUnit_Framework_TestCase
             'dsn' => "sqlite::memory:",
         );
 
-        $driver = new driver($config);
+        $driver = new HUGnetDriver($config);
         $driver->unit = new unitConversionMock();
 //        $driver->gateway = new gatewayMock($driver);
         $driver->gateway =& HUGnetDB::getInstance("GatewayMock", $config);
