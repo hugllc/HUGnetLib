@@ -73,7 +73,7 @@ require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Driver
+class HUGnetDriver
 {
     /** This is the default number of decimal places to use if 
      *  it is not specified anywhere else 
@@ -597,6 +597,25 @@ class Driver
         } else {
             // Do something here as we didn't find any plugins.
         }
+    }
+    /**
+     * Gets an instance of the HUGnet Driver
+     *
+     * @param array $config The configuration to use
+     *
+     * @return object A reference to a driver object
+     */
+    function &getInstance($config = array())
+    {
+        static $instances;
+        if (!isset($instances)) $instances = array();
+        
+        $key = serialize($config);
+        
+        if (empty($instances[$key])) {
+            $instances[$key] = new HUGnetDriver($config);
+        }
+        return $instances[$key];
     }
 
 }
