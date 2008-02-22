@@ -131,6 +131,7 @@ class HUGnetDB
         unset($config["id"]);        
 
         $this->_db = &HUGnetDB::createPDO($config);
+        if (!$this->checkDB($this->_db)) self::throwException("No Database Connection in class ".get_class($this), -2);
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
 
         $this->getColumns();
@@ -150,8 +151,8 @@ class HUGnetDB
         $key = serialize($config);
 
         if (empty($PDO[$key])) {
-
             $driver   = is_string($config['driver'])  ? $config['driver']  : 'sqlite';
+            $verbose  = is_int($config['verbose'])    ? $config['verbose'] : 0;
             $file     = is_string($config['file'])    ? $config['file']    : HUGNET_LOCAL_DATABASE;
             $db_name  = is_string($config['db_name']) ? $config['db_name'] : HUGNET_DATABASE;
             $servers  = is_array($config['servers'])  ? $config['servers'] : array();
@@ -163,7 +164,7 @@ class HUGnetDB
             // Okday, now try to connect
             foreach ($servers as $serv) {
                 $dsn = self::_createDSN($driver, $db_name, $file, $serv["host"]);
-                $PDO[$key] = self::_createPDO($dsn, $serv["user"], $serv["password"]);
+                $PDO[$key] = self::_createPDO($dsn, $serv["user"], $serv["password"], $verbose);
                 if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) break;
             }
         }
@@ -179,12 +180,13 @@ class HUGnetDB
      *
      * @return object PDO object
      */
-    static private function &_createPDO($dsn, $user = null, $pass = null) 
+    static private function &_createPDO($dsn, $user = null, $pass = null, $verbose=false) 
     {
         try {
             $db = new PDO($dsn, $user, $pass);
         } catch (PDOException $e) {
-            return false;
+            if ($verbose) print "Error (".$e->getCode()."): ".$e->getMessage()."\n";
+            return null;
         }
         return $db;
     }
@@ -208,7 +210,20 @@ class HUGnetDB
         return true;
     }     
 
-
+    /**
+     * Throws an exception
+     *
+     * @param string $msg  The message
+     * @param int    $code The error code
+     *
+     * @return null
+     */
+    protected function throwException($msg, $code)
+    {
+        if (is_object($this) && ($this->config["silent"])) return;
+        
+        throw new Exception($msg, $code);
+    }
     /**
      * Constructor
      *
@@ -292,7 +307,7 @@ class HUGnetDB
     {
         if ($this->driver == "mysql") return;        
         if ($this->driver == "sqlite") return;
-        throw new Exception("Driver ".$this->driver." is not implemented.", -1);
+        self::throwException("Driver ".$this->driver." is not implemented.", -1);
     }
     
     /**
