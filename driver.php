@@ -618,6 +618,21 @@ class HUGnetDriver
         return $instances[$key];
     }
 
+    /**
+     * Gets an instance of the HUGnet Driver
+     *
+     * @param array $Info Infomation about the device to use
+     * @param array $config The configuration to use
+     *
+     * @return object A reference to a driver object
+     */
+    function &getHistoryInstance($config = array(), $Info = array())
+    {
+        $table = $this->getHistoryTable($Info);
+        if (!isset($this->config["table"])) $this->config["table"] = $table;
+        return HUGnetDB::getInstance("History", $this->config);
+    }
+
 }
 
 
