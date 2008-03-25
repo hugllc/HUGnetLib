@@ -307,7 +307,7 @@ class HUGnetDriver
     }
     
     /**
-     * Wrapper for device::    getDevice
+     * Wrapper for device::getDevice
      *
      * @see device::getDevice
      *
@@ -322,7 +322,7 @@ class HUGnetDriver
 
         $devInfo = $this->device->getDevice($id, $type);
         if (is_array($devInfo)) {
-            if (is_object($this->_driver)) $devInfo = $this->_driver->DriverInfo($devInfo);
+            $devInfo = $this->DriverInfo($devInfo);
 
             $query = "select * from calibration where DeviceKey='".$id."' ORDER BY StartDate DESC LIMIT 0,1";
 
@@ -331,13 +331,9 @@ class HUGnetDriver
             if (is_array($cal[0])) {
                 $devInfo["Calibration"] = $this->getCalibration($devInfo, $cal[0]['RawCalibration']);
             }
-
-            $query = "select * from gateways where GatewayKey='".$devInfo['GatewayKey']."'";
-
-            $gw = $this->query($query);
-            if (is_array($gw)) {
-                $devInfo['Gateway'] = $gw[0];
-            }
+            $gw = $this->gateway->get($devInfo["GatewayKey"]);
+            if (is_array($gw)) $devInfo['Gateway'] = $gw[0];            
+            $devInfo['Controller'] = $this->device->getDevice($devInfo["ControllerKey"], $type);
         }
         return $devInfo;
         
@@ -497,7 +493,7 @@ class HUGnetDriver
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
     {
         // This uses defaults if nothing exists for a particular sensor
-        $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
+//        $this->sensors->checkUnits($devInfo['Types'], $devInfo['params']['sensorType'], $units, $type);
         $this->unit->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
     }    
 

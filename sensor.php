@@ -450,13 +450,8 @@ class Sensor
         
             $skip = 0;
             foreach ($type as $key => $value) {                
-                $units[$key] = $this->getUnits($type[$key], 
-                                               $sensor[$key], 
-                                               $units[$key]);
-                $mode[$key]  = $this->getUnitMode($type[$key], 
-                                                  $sensor[$key], 
-                                                  $units[$key], 
-                                                  $mode[$key]);
+                $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
+                $mode[$key]  = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }
         } else {
             if (is_array($sensor)) unset($sensor);
@@ -578,10 +573,7 @@ class Sensor
             $args[1] = $class->sensors[$type][$sensor]; // This overwrites the type
             unset($args[2]); // Remove the $sensor
             $stuff = $class->sensors[$type][$sensor];
-            $ret   = $this->runFunction($class, 
-                                        $stuff['checkFunction'], 
-                                        $args, 
-                                        true);
+            $ret   = $this->runFunction($class, $stuff['checkFunction'], $args, true);
         }
         return $ret;
     }
