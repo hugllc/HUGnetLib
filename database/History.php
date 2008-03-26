@@ -77,23 +77,24 @@ class History extends HUGnetDB
         $endDate   = $this->sqlDate($endDate);
         $data      = array($startDate, $endDate, $DeviceKey);
         $query     = "Date >= ? AND Date <= ? AND DeviceKey = ? ";
-        $query    .= " ORDER BY `Date` DESC";
-        return $this->getWhere($query, $data, $maxRec, 0);
+        $orderby   = " ORDER BY `Date` DESC";
+        return $this->getWhere($query, $data, $maxRec, 0, $orderby);
     }
    
     /**
      * Gets all rows from the database
      *
-     * @param string $where Where clause
-     * @param array  $data  Data for query
-     * @param int    $limit The maximum number of rows to return (0 to return all)
-     * @param int    $start The row offset to start returning records at
+     * @param string $where   Where clause
+     * @param array  $data    Data for query
+     * @param int    $limit   The maximum number of rows to return (0 to return all)
+     * @param int    $start   The row offset to start returning records at
+     * @param string $orderby How to order the string.  Must include "ORDER BY"
      *
      * @return array
      */
-    public function getWhere($where, $data = array(), $limit = 0, $start = 0) 
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
     {
-        $ret = parent::getWhere($where, $data, $limit, $start);
+        $ret = parent::getWhere($where, $data, $limit, $start, $orderby);
         foreach ($ret as $key => $val) {
             $ret[$key]["DeviceKey"] = (int) $val["DeviceKey"];
             $ret[$key]["deltaT"]    = (int) $val["deltaT"];

@@ -111,10 +111,7 @@ class HUGnetDB
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
      *
-     * @param mixed  &$db     This should be an object of class driver
-     * @param string $table   The database table to use
-     * @param string $id      The 'id' column to use
-     * @param bool   $verbose Whether to be verbose or not
+     * @param mixed $config The configuration array
      *
      * @return null
      */
@@ -573,9 +570,9 @@ class HUGnetDB
      *
      * @return array
      */
-    public function getWhere($where, $data = array(), $limit = 0, $start = 0) 
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
     {
-        $query = " SELECT * FROM `".$this->table."` WHERE ".$where;
+        $query = " SELECT * FROM `".$this->table."` WHERE ".$where.$orderby;
         $limit = (int) $limit;
         $start = (int) $start;
         if (!empty($limit)) $query .= " LIMIT $start, $limit";
