@@ -123,7 +123,7 @@ class HUGnetDB
 
         if (is_string($config["table"])) $this->table = $config["table"];
         if (is_string($config["id"])) $this->id = $config["id"];
-        $this->verbose($config[$verbose]);
+        $this->verbose($config["verbose"]);
         unset($config["table"]);
         unset($config["id"]);        
 
@@ -146,7 +146,6 @@ class HUGnetDB
         static $PDO;
         
         $key = serialize($config);
-
         if (empty($PDO[$key])) {
             $driver   = is_string($config['driver'])  ? $config['driver']  : 'sqlite';
             $verbose  = is_int($config['verbose'])    ? $config['verbose'] : 0;
@@ -631,6 +630,7 @@ class HUGnetDB
      */
     public function fixType($val, $type)
     {
+        if (is_null($val)) return null;
         $type = trim(strtolower($type));
         if (substr($type, 0, 4) == "char") return (string) $val;
         if (substr($type, 0, 4) == "text") return (string) $val;
