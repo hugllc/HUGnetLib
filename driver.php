@@ -624,9 +624,16 @@ class HUGnetDriver
      */
     function &getHistoryInstance($config = array(), $Info = array())
     {
-        $table = $this->getHistoryTable($Info);
-        if (!isset($this->config["table"])) $this->config["table"] = $table;
-        return HUGnetDB::getInstance("History", $this->config);
+        $config = array_merge($this->config, $config);
+        if ($config["type"] == "history") {
+            $config["table"] = $this->getHistoryTable($Info);
+            $class = "History";
+        } else {
+            $config["table"] = $this->getAverageTable($Info);        
+            $class = "Average";
+        }
+        
+        return HUGnetDB::getInstance($class, $config);
     }
 
 }

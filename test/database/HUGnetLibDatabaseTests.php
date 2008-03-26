@@ -42,6 +42,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'AnalysisTest.php'; 
+require_once 'AverageTest.php'; 
 require_once 'DeviceTest.php'; 
 require_once 'FirmwareTest.php'; 
 require_once 'GatewayTest.php'; 
@@ -88,6 +89,7 @@ class HUGnetLibDatabaseTests
         $suite->addTestSuite('FirmwareTest');
         $suite->addTestSuite('GatewayTest');
         $suite->addTestSuite('HistoryTest');
+        $suite->addTestSuite('AverageTest');
         $suite->addTestSuite('PlogTest');
         $suite->addTestSuite('ProcessTest');
         $suite->addTestSuite('ProcStatsTest');
