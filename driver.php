@@ -625,7 +625,7 @@ class HUGnetDriver
     function &getHistoryInstance($config = array(), $Info = array())
     {
         $config = array_merge($this->config, $config);
-        if ($config["type"] == "history") {
+        if ($config["Type"] == "history") {
             $config["table"] = $this->getHistoryTable($Info);
             $class = "History";
         } else {
