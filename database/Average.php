@@ -53,8 +53,20 @@ class Average extends History
     protected $table = "average";
     /** This is the Field name for the key of the record */
     protected $id = "AverageKey";
-   
 
+    /**
+     * This function sets up the driver object, and the database object.  The
+     * database object is taken from the driver object.
+     *
+     * @param mixed $config The configuration array
+     *
+     * @return null
+     */
+    public function __construct($config = array()) 
+    {
+        parent::__construct($config);
+        if (empty($this->config["Type"])) $this->config["Type"] = "15MIN";
+    }
     /**
      * Creates the database table
      *
@@ -75,15 +87,32 @@ class Average extends History
                   `Date` datetime NOT NULL default '0000-00-00 00:00:00',
                   `Type` varchar(16) NOT NULL default '15MIN',
                  ";
+//                  `Type` enum('15MIN', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', '15MINTOTAL', 'HOURLYTOTAL', 'DAILYTOTAL', 'WEEKLYTOTAL', 'MONTHLYTOTAL', 'YEARLYTOTAL') NOT NULL default '15MIN',
         for ($i = 0; $i < $this->_elements; $i++) {
             $query .= "`Data".$i."` float default NULL,\n";
         }
-//                  `Type` enum('15MIN', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', '15MINTOTAL', 'HOURLYTOTAL', 'DAILYTOTAL', 'WEEKLYTOTAL', 'MONTHLYTOTAL', 'YEARLYTOTAL') NOT NULL default '15MIN',
         $query .= "PRIMARY KEY  (`DeviceKey`, `Date`)\n);";
         $ret    = $this->query($query, false);        
         //$ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
         $this->getColumns();
         return $ret;
+    }
+    /**
+     * Gets all rows from the database
+     *
+     * @param string $where Where clause
+     * @param array  $data  Data for query
+     * @param int    $limit The maximum number of rows to return (0 to return all)
+     * @param int    $start The row offset to start returning records at
+     *
+     * @return array
+     */
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby) 
+    {
+        if (!empty($where)) $where .= " AND";
+        $where .= " Type = ?";
+        $data[] = $this->config["Type"];
+        return parent::getWhere($where, $data, $limit, $start, $orderby);
     }
 }
 
