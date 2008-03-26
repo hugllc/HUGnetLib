@@ -101,6 +101,8 @@ class HUGnetDriver
     var $analysis_table = "analysis";
     var $raw_history_table = "history_raw";
     var $packet_log_table = "PacketLog";
+    /** The configuration */
+    protected $config = array();
 
     /**
      * This function is simply a wrapper for device::health
@@ -560,19 +562,13 @@ class HUGnetDriver
      */
     function __construct($config = array(), $plugins = "") 
     {
-        $this->config = $config;
-        
+        if (is_array($config)) $this->config = $config;
+       
         if (is_bool($config["verbose"])) $this->verbose = $config["verbose"];
         $this->analyis = &HUGnetDB::getInstance("Analysis", $config);
         $this->gateway = &HUGnetDB::getInstance("Gateway", $config);
         $this->device = &HUGnetDB::getInstance("Device", $config);
 
-/*
-        $this->db = &$db;
-        $this->analysis = new analysis($db);
-        $this->gateway = new gateway($db);
-        $this->device = new device($db);
-*/
         $this->packet = new EPacket(null, $this->verbose);
         $this->unit = new unitConversion();
 
@@ -625,9 +621,11 @@ class HUGnetDriver
     function &getHistoryInstance($config = array(), $Info = array())
     {
         $config = array_merge($this->config, $config);
-        if ($config["Type"] == "history") {
+        if (trim(strtolower($config["Type"])) == "history") {
             $config["table"] = $this->getHistoryTable($Info);
             $class = "History";
+        } else if (trim(strtolower($config["Type"])) == "raw") {
+            $class = "RawHistory";
         } else {
             $config["table"] = $this->getAverageTable($Info);        
             $class = "Average";

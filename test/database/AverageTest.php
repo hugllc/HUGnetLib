@@ -96,7 +96,6 @@ class AverageTest extends databaseTest
     protected function setUp() 
     {
         parent::setUp();
-	$this->config["verbose"] = 1;
         $this->o =& HUGnetDB::getInstance("Average", $this->config); // new history($this->pdo);
         $this->o->createTable($this->table, 3);
 

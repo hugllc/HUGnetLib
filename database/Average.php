@@ -109,9 +109,11 @@ class Average extends History
      */
     public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby) 
     {
-        if (!empty($where)) $where .= " AND";
-        $where .= " Type = ?";
-        $data[] = $this->config["Type"];
+        if (strtolower($this->config["Type"]) != "all") {
+            if (!empty($where)) $where .= " AND";
+            $where .= " Type = ?";
+            $data[] = $this->config["Type"];
+        }
         return parent::getWhere($where, $data, $limit, $start, $orderby);
     }
 }
