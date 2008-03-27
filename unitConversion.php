@@ -686,9 +686,10 @@ class UnitConversion
                 if (isset($history[$key])) {
                     for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
                         if (empty($units[$i])) $units[$i] = $devInfo["params"]['Units'][$i];
-                        if (empty($units[$i])) continue;
-                        $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
-                        $history[$key]['Data'.$i] = $this->convert($history[$key]['Data'.$i], $from, $units[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
+                        if (!empty($units[$i])) {
+                            $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
+                            $history[$key]['Data'.$i] = $this->convert($history[$key]['Data'.$i], $from, $units[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
+                        }
                         if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
                             $history[$key]["Data".$i] = round($history[$key]["Data".$i], $dPlaces);
                         }
