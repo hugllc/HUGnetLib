@@ -425,6 +425,20 @@ class Sensor
 
         return $sensors;
     }
+    /**
+     * Gets all possible sensors for a sensor type
+     *
+     * @param int $type Int The type of sensor
+     *
+     * @return array
+      */
+    function getSensor($type, $sensor) 
+    {
+        $type    = (int)$type;
+        $class  = $this->getClass($type, $sensor);
+        if (is_object($class)) return $class->sensors[$type][$sensor];
+        return null;
+    }
 
     /**
      * Check to see if an array of units is valid
