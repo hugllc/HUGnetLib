@@ -565,7 +565,7 @@ class HUGnetDriver
         if (is_array($config)) $this->config = $config;
        
         if (is_bool($config["verbose"])) $this->verbose = $config["verbose"];
-        $this->analyis = &HUGnetDB::getInstance("Analysis", $config);
+        $this->analysis = &HUGnetDB::getInstance("Analysis", $config);
         $this->gateway = &HUGnetDB::getInstance("Gateway", $config);
         $this->device = &HUGnetDB::getInstance("Device", $config);
 
