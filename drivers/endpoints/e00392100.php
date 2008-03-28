@@ -203,7 +203,6 @@ if (!class_exists("e00392100")) {
         function interpConfig(&$Info) 
         {
             $this->interpConfigDriverInfo($Info);
-            $Info["Location"] = $this->deflocation;
             $this->interpConfigHW($Info);
             $Info["PacketTimeout"] = 2;
             $this->interpConfigFW($Info);
@@ -255,9 +254,9 @@ if (!class_exists("e00392100")) {
             $this->interpConfigSensorsetup($Info);
 
             if (isset($this->labels[$Info["FWPartNum"]])) {
-                $Info["Location"] = $this->labels[$Info["FWPartNum"]];
+                $Info["Labels"] = $this->labels[$Info["FWPartNum"]];
             } else {
-                $Info["Location"] = $this->labels["DEFAULT"];            
+                $Info["Labels"] = $this->labels["DEFAULT"];            
             }
 
         }
