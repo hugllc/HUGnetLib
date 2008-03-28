@@ -50,7 +50,7 @@ require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 class Analysis extends HUGnetDB
 {
     /** The database table to use */
-    var $table = "Analysis";            
+    var $table = "analysis";            
     /** This is the Field name for the key of the record */
     var $id = "AnalysisKey";     
     /** The number of columns */
@@ -93,22 +93,22 @@ class Analysis extends HUGnetDB
      * 
      * @todo This should be moved to the device class
      */
-    function health($where, $days = 7, $start=null) 
+    function health($where, $data = array(), $days = 7, $start=null) 
     {
-
+        if (!is_array($data)) $data = array();        
         if ($start === null) {
             $start = time();
         } else if (is_string($start)) {
             $start = strtotime($start);
         }
         $end = $start - (86400 * $days);
-        $cquery = "SELECT COUNT(DeviceKey) as count FROM ".$this->table." ";
+        $cquery = "SELECT COUNT(DeviceKey) as count FROM `devices` AS d ";
         $cquery .= " WHERE PollInterval > 0 ";
         if (!empty($where)) $cquery .= " AND ".$where;
-        $res   = $this->query($cquery);
-        $count = $res[0]['count'];
+        $res   = $this->query($cquery, $data);
+        $count = (int) $res[0]['count'];
+
         if (empty($count)) $count = 1;
-        
         $query = " SELECT " .
                  "  ROUND(AVG(AverageReplyTime), 2) as ReplyTime " .
                  ", ROUND(STD(AverageReplyTime), 2) as ReplyTimeSTD " .
@@ -130,19 +130,17 @@ class Analysis extends HUGnetDB
                  ", ROUND((1440 / AVG(PollInterval)) * ".$count.") as DailyPollsSET ".
                  " ";
                  
-        $query .= " FROM " . $this->table;
+        $query .= " FROM " . $this->table." AS a ";
 
-        $query .= " LEFT JOIN " . $this->table . " ON " . 
-                 $this->table . ".DeviceKey=" . $this->analysis_table . ".DeviceKey ";
+        $query .= " LEFT JOIN `devices` AS d ON a.DeviceKey=d.DeviceKey ";
 
-        $query .= " WHERE " .
-                  $this->analysis_table . ".Date <= ".$this->_db->quote(date("Y-m-d H:i:s", $start)).
-                  " AND " .
-                  $this->analysis_table . ".Date >= ".$this->_db->quote(date("Y-m-d H:i:s", $end));
-    
-        if (!empty($where)) $query .= " AND ".$where;
+        $query .= " WHERE ";
+        if (!empty($where)) $query .= $where." AND ";        
+        $query .= "a.Date <= ? AND a.Date >= ? ";
+        $data[] = date("Y-m-d H:i:s", $start);
+        $data[] = date("Y-m-d H:i:s", $end);
+        $res = $this->query($query, $data);
 
-        $res = $this->query($query);
         if (isset($res[0])) $res = $res[0];
         return $res;
     }
