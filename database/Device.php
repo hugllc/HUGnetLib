@@ -159,7 +159,35 @@ class Device extends HUGnetDB
         return $this->update($DevInfo);
     }
 
-
+    /**
+     * Updates a row in the database.
+     *
+     * This function MUST be overwritten by child classes
+     *
+     * @param array $info The row in array form.
+     *
+     * @return mixed 
+     */
+    public function update($info) 
+    {   
+        if (array_key_exists("params", $info)) self::encodeParams($info["params"]);
+        return parent::update($info);
+    }
+    /**
+     * Adds an row to the database
+     *
+     * @param array $info    The row in array form
+     * @param bool  $replace If true it replaces the "INSERT" 
+     *                       keyword with "REPLACE".  Not all
+     *                       databases support "REPLACE".
+     *
+     * @return bool
+     */
+    public function add($info, $replace = false)
+    {
+        if (array_key_exists("params", $info)) self::encodeParams($info["params"]);
+        return parent::add($info, $replace);
+    }
     /**
      * This sets the device paramters in the database.  The device parameters
      * are stored as string (text) in the database.  This routine takes in the
