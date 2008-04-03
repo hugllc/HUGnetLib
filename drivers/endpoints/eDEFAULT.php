@@ -424,6 +424,7 @@ if (!class_exists('eDEFAULT')) {
         {
             eDEFAULT::interpBaseConfig($Info);
             eDEFAULT::interpCalibration($Info);
+            eDEFAULT::interpConfigSensorSetup($Info);
         }
 
         /**
