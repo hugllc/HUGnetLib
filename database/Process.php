@@ -35,6 +35,9 @@
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
+/** Define defaults for signals if they are not already present. */
+if (!defined("SIGKILL")) define("SIGKILL", 9);
+
 /**
  * A class for controlling processes
  *
