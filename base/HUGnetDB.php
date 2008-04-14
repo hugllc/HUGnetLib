@@ -147,7 +147,6 @@ class HUGnetDB
         
         $key = serialize($config);
         if (empty($PDO[$key])) {
-            $driver   = is_string($config['driver'])  ? $config['driver']  : 'sqlite';
             $verbose  = is_int($config['verbose'])    ? $config['verbose'] : 0;
             $file     = is_string($config['file'])    ? $config['file']    : HUGNET_LOCAL_DATABASE;
             $db_name  = is_string($config['db_name']) ? $config['db_name'] : HUGNET_DATABASE;
@@ -159,7 +158,7 @@ class HUGnetDB
 
             // Okday, now try to connect
             foreach ($servers as $serv) {
-                $useDriver   = is_string($serv['driver'])  ? $serv['driver']  : $config["driver"];
+                $useDriver   = is_string($serv['driver'])  ? $serv['driver']  : "sqlite";
                 $dsn = self::_createDSN($useDriver, $db_name, $file, $serv["host"]);
                 $PDO[$key] = self::_createPDO($dsn, $serv["user"], $serv["password"], $verbose);
                 if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) break;
