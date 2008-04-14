@@ -159,7 +159,7 @@ class HUGnetDB
 
             // Okday, now try to connect
             foreach ($servers as $serv) {
-                $useDriver   = is_string($config['driver'])  ? $config['driver']  : $serv["driver"];
+                $useDriver   = is_string($serv['driver'])  ? $serv['driver']  : $config["driver"];
                 $dsn = self::_createDSN($useDriver, $db_name, $file, $serv["host"]);
                 $PDO[$key] = self::_createPDO($dsn, $serv["user"], $serv["password"], $verbose);
                 if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) break;
