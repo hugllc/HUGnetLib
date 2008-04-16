@@ -402,7 +402,8 @@ class HUGnetDriver
     {
 //        if (isset($packets['RawData'])) $packets = array($packets);
         if (!is_array($packets)) return false;
-
+        if (empty($packets)) return array();
+        
         $dev = array();
         $Info = array();
         foreach ($packets as $packet) {
@@ -427,6 +428,11 @@ class HUGnetDriver
             $RawData[$packet['DeviceID']][$packet['sendCommand']] = $packet['RawData'];
 
         }
+        // If it is not a general config packet, it is a specific one.   It will not
+        // have enough information to correctly be used.  We need to get the device
+        // information from the database in that case.
+        if (empty($Info)) $Info = self::getDevice($packet["DeviceID"], "ID");
+
         if (is_array($RawData[$Info['DeviceID']])) {
             $Info['RawData'] = $RawData[$Info['DeviceID']];
             eDEFAULT::interpConfig($Info);

@@ -319,13 +319,14 @@ if (!class_exists("e00392100")) {
             $return = true;
             if (is_array($Info['subDevices'])) {
                 foreach ($Info['subDevices'] as $index => $devList) {
-                    $where  = implode("' OR DeviceID='", $devList);
-                    $where  = " DeviceID='".$where."'";
+                    $where = array();
+                    for($i = 0; $i < count($devList); $i++) $where[] .= "DeviceID = ?";                    
+                    $where  = implode(" OR ", $where);
                     $update = array(
                         'ControllerKey' => $Info["DeviceKey"],
                         'ControllerIndex' => $index,
-                    );                
-                    $return = $this->driver->device->updateWhere($update, $where);
+                    );
+                   $return = $this->driver->device->updateWhere($update, $where, $devList);
                     
                 }
                 $update = array(
@@ -336,7 +337,6 @@ if (!class_exists("e00392100")) {
                 $return = $this->driver->device->update($update);
                 
             }
-        
             return($return);
         }
         
