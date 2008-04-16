@@ -103,6 +103,8 @@ if (!class_exists('eDEFAULT')) {
         
         /** history table */
         protected $history_table = "history";
+        /** history table */
+        protected $device_table = "devices";
         /** history id */
         protected $history_id = "HistoryKey";
         /** location table
@@ -849,6 +851,7 @@ if (!class_exists('eDEFAULT')) {
          * their default value.
          *
          * @param object &$driver An object of class Driver.
+         * @param array  $config  The configuration to use
          *
          * @return null
          */
@@ -857,8 +860,10 @@ if (!class_exists('eDEFAULT')) {
             $this->driver  =& $driver;
             $this->packet  =& $driver->packet;
             $this->sensors =& $driver->sensors;
-            $this->history =& HUGnetDB::getInstance("History", $config);            
+            $config["table"] = $this->device_table;
             $this->device =& HUGnetDB::getInstance("Device", $config);            
+            $config["table"] = $this->history_table;
+            $this->history =& HUGnetDB::getInstance("History", $config);            
         }
     }    
 }

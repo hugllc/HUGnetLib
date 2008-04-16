@@ -526,7 +526,7 @@ class HUGnetDriver
     public function registerDriver($class, $name=false) 
     {
         if (is_string($class) && class_exists($class)) {
-            $this->drivers[$class] = new $class($this);
+            $this->drivers[$class] = new $class($this, $this->config);
         } else if (is_object($class)) {
             if (empty($name)) $name = get_class($class);
             $this->drivers[$name] = $class;
@@ -563,7 +563,6 @@ class HUGnetDriver
     function __construct($config = array(), $plugins = "") 
     {
         if (is_array($config)) $this->config = $config;
-       
         if (is_numeric($config["verbose"])) $this->verbose = $config["verbose"];
         $this->analysis = &HUGnetDB::getInstance("Analysis", $config);
         $this->gateway = &HUGnetDB::getInstance("Gateway", $config);
@@ -572,7 +571,7 @@ class HUGnetDriver
         $this->packet = new EPacket(null, $this->verbose);
         $this->unit = new unitConversion();
 
-        $this->drivers["eDEFAULT"] = new eDEFAULT($this);
+        $this->drivers["eDEFAULT"] = new eDEFAULT($this, $this->config);
 
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
