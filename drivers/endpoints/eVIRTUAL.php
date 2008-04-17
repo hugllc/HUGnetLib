@@ -93,41 +93,6 @@ if (!class_exists("eVIRTUAL")) {
             $Rec["StatusOld"] = $Rec["Status"];        
             $Rec["Status"] = "BAD";
         }
-
-        /**
-         * Create the config string
-         *
-         * @param array $Info The devInfo array
-         *
-         * @return string
-         */
-        function getConfigStr($Info) 
-        {
-            $string  = devInfo::hexify($Info["SerialNum"], 10);
-            $string .= devInfo::hexifyPartNum($Info["HWPartNum"]);
-            $string .= devInfo::hexifyPartNum($Info["FWPartNum"]);
-            $string .= devInfo::hexifyVersion($Info["FWVersion"]);
-            $string .= "FFFFFF";
-            $string .= devInfo::hexify($Info["Priority"], 2);
-
-            $Jobs = 0;
-            if ($Info["doPoll"]) $Jobs |= 0x01;
-            if ($Info["doConfig"]) $Jobs |= 0x02;
-            if ($Info["doCCheck"]) $Jobs |= 0x04;
-            if ($Info["doUnsolicited"]) $Jobs |= 0x08;
- 
-            $string .= devInfo::hexify($Jobs, 2);
-            $string .= devInfo::hexify($Info['GatewayKey'], 4);    
-            $string .= devInfo::hexifyStr($Info["Name"], 60);
-     
-            $myIP = explode(".", $Info["IP"]);
-    
-            for ($i = 0; $i < 4; $i++) {
-                $string .= devInfo::hexify($myIP[$i], 2);
-            }
-            return $string;
-
-        }    
         
         /**
          * Interpret the configuration
@@ -138,50 +103,7 @@ if (!class_exists("eVIRTUAL")) {
          */
         function interpConfig(&$Info) 
         {
-
-            $Info['HWName']       = $this->HWName;
-            $Info["NumSensors"]   = $this->config["DEFAULT"]["Sensors"];    
-            $Info["Function"]     = $this->config["DEFAULT"]["Function"];
-            $Info["Timeconstant"] = 0;
-            $Info['DriverInfo']   = substr($Info["RawSetup"], E00391102B_TC);
-            $Info["PollInterval"] = 0;  // This forces this device to never be polled.
-
-            $start = 46;
-            $Info["Types"]    = array();
-            $Info["Labels"]   = array();
-            $Info["Units"]    = array();
-            $Info["unitType"] = array();
-            $Info["dType"]    = array();
-            $Info["doTotal"]  = array();
-            $Info["params"]   = array();
-            
-            $Info["isGateway"] = true;
-    
-            $index = 0;
-
-            $Info["Priority"] = $Info['BoredomThreshold'];
-
-            $Jobs                  = hexdec(substr($Info["DriverInfo"], $index, 2));
-            $Info['doPoll']        = (bool) ($Jobs & 0x01);
-            $Info['doConfig']      = (bool) ($Jobs & 0x02);
-            $Info['doCCheck']      = (bool) ($Jobs & 0x04);
-            $Info['doUnsolicited'] = (bool) ($Jobs & 0x08);
-
-            $index             += 2;
-            $Info["GatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
-
-            $index       += 4;
-            $Info["Name"] = devInfo::deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));
-            $Info["Name"] = trim($Info["Name"]);
-            $index += 60;
-            $IP     = str_split(substr($Info["DriverInfo"], $index, 8), 2);
-
-            foreach ($IP as $k => $v) {
-                $IP[$k] = hexdec($v); 
-            }
-            $Info['IP'] = implode(".", $IP);
-            
-            return($Info);
+            return $Info;
         }
 
         /**
