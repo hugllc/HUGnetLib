@@ -135,6 +135,15 @@ class History extends HUGnetDB
         $this->getColumns();
         return $ret;
     }
+    
+    
+    /**
+     * Creates a function to crunch numbers
+     *
+     * @param int    $DeviceKey The deviceKey to use
+     * @param int    $input     The input to use
+     * @param string $math      The math to use
+     */
 }
 
 ?>
