@@ -552,12 +552,21 @@ if (!class_exists('eDEFAULT')) {
             $Info["Units"]    = array();
             $Info["dType"]    = array();
             $Info["doTotal"]  = array();
+            $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? $Info["NumSensors"] + $Info["params"]["VSensors"] : $Info["NumSensors"];
+            // Real Sensors
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $Info["unitType"][$i] = $this->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
                 $Info["Labels"][$i]   = $Info['unitType'][$i]; //$this->driver->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
                 $Info["Units"][$i]    = $this->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);    
                 $Info["dType"][$i]    = $this->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
                 $Info["doTotal"][$i]  = $this->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+            }
+            // Virtual Sensors
+            for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
+                $Info["unitType"][$i] = $Info['params']['sensorType'][$i];
+                $Info["Labels"][$i]   = $Info['unitType'][$i]; 
+                $Info["Units"][$i]    = $Info['params']['Units'][$i];    
+                $Info["dType"][$i]    = $Info['params']['dType'][$i];    
             }
         
         }

@@ -612,6 +612,7 @@ class driverTest extends PHPUnit_Framework_TestCase
                     "Units" => array(),
                     "dType" => array(),
                     "doTotal" => array(),
+                    "TotalSensors" => null,
                     "Driver" => "testDriver",
                     "HWName" => "Phantom Test Hardware",
                ),
