@@ -532,6 +532,7 @@ class Sensor
                                                     $data['deltaT']);
                     } else {
                         unset($data["Data".$rawkey]);
+                        unset($data["data"][$rawkey]);
                     }
                 } else {
                     $data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data["deltaT"]);
