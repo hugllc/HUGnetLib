@@ -58,7 +58,24 @@ class Device extends HUGnetDB
     var $analysis_table = "analysis";
     /** How many times the poll interval has to pass before we show an error on it      */
     var $PollWarningIntervals = 2;        
-
+    /**
+     * Gets all rows from the database
+     *
+     * @param string $where Where clause
+     * @param array  $data  Data for query
+     * @param int    $limit The maximum number of rows to return (0 to return all)
+     * @param int    $start The row offset to start returning records at
+     *
+     * @return array
+     */
+    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
+    {
+        $data = parent::getWhere($where, $data, $limit, $start, $orderby);
+        foreach ($data as $key => $val) {
+            $data[$key]["params"] = self::decodeParams($val["params"]);
+        }
+        return $data;
+    }
     /**
      * This returns an array setup for a HTML select list using the adodb
      * function 'GetMenu'
