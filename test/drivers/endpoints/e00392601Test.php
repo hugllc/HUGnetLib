@@ -62,48 +62,59 @@ class e00392601Test extends endpointTestBase
 {
     public $class = "e00392601";
     /**
-     *  Test cases for the interpConfig routine
+     * Data provider
+     *
+     * @return array
      */
-     var $interpConfigTestCases = array(
-         array(
-             "Info" => array(
-                 "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                 "HWPartNum" => "0039-28-01-A",
-                 "FWPartNum" => "0039-20-13-C",
-                 "FWVersion" => "00.00.05",
-                 "DeviceID" => "0000E8",
-                 "SerialNum" => 232,
-                 "Driver" => "e00392601",
-                 "DeviceGroup" => "FFFFFF",
+    static public function dataInterpConfig()
+    {
+        return array(
+             array(
+                 "Info" => array(
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
+                     "HWPartNum" => "0039-28-01-A",
+                     "FWPartNum" => "0039-20-13-C",
+                     "FWVersion" => "00.00.05",
+                     "DeviceID" => "0000E8",
+                     "SerialNum" => 232,
+                     "Driver" => "e00392601",
+                     "DeviceGroup" => "FFFFFF",
+                ),
+                 "Return" => array( 
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
+                     "HWPartNum" => "0039-28-01-A",
+                     "FWPartNum" => "0039-20-13-C",
+                     "FWVersion" => "00.00.05",
+                     "DeviceID" => "0000E8",
+                     "SerialNum" => 232,
+                     "Driver" => "e00392601",
+                     "DeviceGroup" => "FFFFFF",
+                     "HWName" => "0039-26 Gateway",
+                     "NumSensors" => 0,
+                     "Function" => "Gateway",
+                     "DriverInfo" => "0102020202020202027070707070707070",
+               ),
             ),
-             "Return" => array( 
-                 "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                 "HWPartNum" => "0039-28-01-A",
-                 "FWPartNum" => "0039-20-13-C",
-                 "FWVersion" => "00.00.05",
-                 "DeviceID" => "0000E8",
-                 "SerialNum" => 232,
-                 "Driver" => "e00392601",
-                 "DeviceGroup" => "FFFFFF",
-                 "HWName" => "0039-26 Gateway",
-                 "NumSensors" => 0,
-                 "Function" => "Gateway",
-                 "DriverInfo" => "0102020202020202027070707070707070",
+        );
+    }
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    static public function dataInterpSensors()
+    {
+        return array(
+            array(
+                "Info" => array(
+               ),
+                "Packets" => array(
+               ),
+                "Return" => array(
+               ),
            ),
-        ),
-    );
-
-     var $interpSensorsTestCases = array(
-        array(
-            "Info" => array(
-           ),
-            "Packets" => array(
-           ),
-            "Return" => array(
-           ),
-       ),
-    );
-
+        );
+    }
     /**
      * Runs the test methods of this class.
      *

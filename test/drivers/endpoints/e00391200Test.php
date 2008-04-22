@@ -65,146 +65,160 @@ class e00391200Test extends endpointTestBase
     /**
      *  Test cases for the interpConfig routine
      */
-    var $interpConfigTestCases = array(
-        array(
-            "Info" => array(
-                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                "DriverInfo" => "01000000000000000000",
-                "HWPartNum" => "0039-12-02-B",
-                "FWPartNum" => "0039-20-03-C",
-                "FWVersion" => "00.00.02",
-                "DeviceID" => "000025",
-                "SerialNum" => 37,
-                "DeviceGroup" => "FFFFFF",
-           ),
-            "Return" => array( 
-                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                "DriverInfo" => "01000000000000000000",
-                "HWPartNum" => "0039-12-02-B",
-                "FWPartNum" => "0039-20-03-C",
-                "FWVersion" => "00.00.02",
-                "DeviceID" => "000025",
-                "SerialNum" => 37,
-                "DeviceGroup" => "FFFFFF",
-                "HWName" => "0039-12 Endpoint",
-                "NumSensors" => 9,
-                "Function" => "Temperature Sensor",
-                "TimeConstant" => 1,
-                "DriverInfo" => "01000000000000000000",
-                "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                "Labels" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
-                "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
-                "params" => array(
-                "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    static public function dataInterpConfig()
+    {
+        return array(
+            array(
+                "Info" => array(
+                    "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                    "DriverInfo" => "01000000000000000000",
+                    "HWPartNum" => "0039-12-02-B",
+                    "FWPartNum" => "0039-20-03-C",
+                    "FWVersion" => "00.00.02",
+                    "DeviceID" => "000025",
+                    "SerialNum" => 37,
+                    "DeviceGroup" => "FFFFFF",
                ),
-                "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
-                "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
-                "doTotal" => array(false, false, false, false, false, false, false, false, false),
-
-           ),
-       ),
-    );
-     
-     var $interpSensorsTestCases = array(
-        array(
-            "Info" => array(
-                "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
-                "DriverInfo" => "01000000000000000000",
-                "HWPartNum" => "0039-12-02-B",
-                "FWPartNum" => "0039-20-03-C",
-                "FWVersion" => "00.00.02",
-                "DeviceID" => "000025",
-                "SerialNum" => 37,
-                "ActiveSensors" => 9,
-                "Driver" => "e00391200",
-                "DeviceKey" => 5,
-                "DeviceGroup" => "FFFFFF",
-                "HWName" => "0039-12 Endpoint",
-                "NumSensors" => 9,
-                "Function" => "Temperature Sensor",
-                "TimeConstant" => 1,
-                "DriverInfo" => "01000000000000000000",
-                "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                "Labels" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
-                "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
-                "params" => array(
-                    "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
-               ),
-                "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
-                "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
-                "doTotal" => array(false, false, false, false, false, false, false, false, false),
-           ),
-            "Packets" => array(
-                array(
-                    "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
-                    "sendCommand" => "55",
-                    "Date" => "2007-02-23 22:38:01",
-               ),
-                array(
-                    "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
-                    "sendCommand" => "55",
-                    "Date" => "2007-02-23 22:48:01",
-               ),
-           ),
-            "Return" => array(
-                array(
-                    "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
-                    "sendCommand" => "55",
-                    "Date" => "2007-02-23 22:38:01",
-                    "Data" => array(250, 0, 1, 0, 24, 0, 206, 31, 0, 197, 31, 0, 198, 31, 0, 6, 24, 0, 0, 246, 0, 182, 255, 0, 191, 255, 0, 191, 255, 0, 127, 255),
+                "Return" => array( 
+                    "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                    "DriverInfo" => "01000000000000000000",
+                    "HWPartNum" => "0039-12-02-B",
+                    "FWPartNum" => "0039-20-03-C",
+                    "FWVersion" => "00.00.02",
+                    "DeviceID" => "000025",
+                    "SerialNum" => 37,
+                    "DeviceGroup" => "FFFFFF",
+                    "HWName" => "0039-12 Endpoint",
                     "NumSensors" => 9,
+                    "Function" => "Temperature Sensor",
+                    "TimeConstant" => 1,
+                    "DriverInfo" => "01000000000000000000",
+                    "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
+                    "Labels" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
+                    "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
+                    "params" => array(
+                    "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
+                   ),
+                    "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
+                    "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
+                    "doTotal" => array(false, false, false, false, false, false, false, false, false),
+    
+               ),
+           ),
+        );
+    }     
+    /**
+     * Data provider
+     *
+     * @return array
+     */
+    static public function dataInterpSensors()
+    {
+        return array(
+            array(
+                "Info" => array(
+                    "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
+                    "DriverInfo" => "01000000000000000000",
+                    "HWPartNum" => "0039-12-02-B",
+                    "FWPartNum" => "0039-20-03-C",
+                    "FWVersion" => "00.00.02",
+                    "DeviceID" => "000025",
+                    "SerialNum" => 37,
                     "ActiveSensors" => 9,
                     "Driver" => "e00391200",
                     "DeviceKey" => 5,
-                    "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                    "DataIndex" => 250,
-                    "TimeConstant" => 1,
-                    "raw" => array(6144, 8142, 8133, 8134, 6150, 62976, 65462, 65471, 65471),
-                    "Data0" => 24.2029,
-                    "data" => array(24.2029, 17.17, 17.1976, 17.1945, 24.1786, null, null, null, null),
-                    "Data1" => 17.17,
-                    "Data2" => 17.1976,
-                    "Data3" => 17.1945,
-                    "Data4" => 24.1786,
-                    "Data5" => null,
-                    "Data6" => null,
-                    "Data7" => null,
-                    "Data8" => null,
-                    "deltaT" => 0,
-                    "Status" => "GOOD",
-                    "StatusOld" => "GOOD",
-               ),
-                array(
-                    "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
-                    "sendCommand" => "55",
-                    "Date" => "2007-02-23 22:48:01",
-                    "Data" => array(2, 0, 1, 0, 24, 0, 196, 31, 0, 192, 31, 0, 194, 31, 0, 3, 24, 0, 0, 246, 0, 183, 255, 0, 192, 255, 0, 192, 255, 0, 128, 255),
+                    "DeviceGroup" => "FFFFFF",
+                    "HWName" => "0039-12 Endpoint",
                     "NumSensors" => 9,
-                     "ActiveSensors" => 9,
-                     "Driver" => "e00391200",
-                    "DeviceKey" => 5,
-                    "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                    "DataIndex" => 2,
+                    "Function" => "Temperature Sensor",
                     "TimeConstant" => 1,
-                    "raw" => array(6144, 8132, 8128, 8130, 6147, 62976, 65463, 65472, 65472),
-                    "Data0" => 24.2029,
-                    "data" => array(24.2029, 17.2006, 17.2129, 17.2068, 24.1906, null, null, null, null),
-                    "Data1" => 17.2006,
-                    "Data2" => 17.2129,
-                    "Data3" => 17.2068,
-                    "Data4" => 24.1906,
-                    "Data5" => null,
-                    "Data6" => null,
-                    "Data7" => null,
-                    "Data8" => null,
-                    "deltaT" => 0,
-                    "Status" => "GOOD",
-                    "StatusOld" => "GOOD",
+                    "DriverInfo" => "01000000000000000000",
+                    "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
+                    "Labels" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
+                    "Units" => array("&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C", "&#176;C"),
+                    "params" => array(
+                        "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640"),
+                   ),
+                    "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
+                    "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
+                    "doTotal" => array(false, false, false, false, false, false, false, false, false),
+               ),
+                "Packets" => array(
+                    array(
+                        "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
+                        "sendCommand" => "55",
+                        "Date" => "2007-02-23 22:38:01",
+                   ),
+                    array(
+                        "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
+                        "sendCommand" => "55",
+                        "Date" => "2007-02-23 22:48:01",
+                   ),
+               ),
+                "Return" => array(
+                    array(
+                        "RawData" => "fa0001001800ce1f00c51f00c61f0006180000f600b6ff00bfff00bfff007fff",
+                        "sendCommand" => "55",
+                        "Date" => "2007-02-23 22:38:01",
+                        "Data" => array(250, 0, 1, 0, 24, 0, 206, 31, 0, 197, 31, 0, 198, 31, 0, 6, 24, 0, 0, 246, 0, 182, 255, 0, 191, 255, 0, 191, 255, 0, 127, 255),
+                        "NumSensors" => 9,
+                        "ActiveSensors" => 9,
+                        "Driver" => "e00391200",
+                        "DeviceKey" => 5,
+                        "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
+                        "DataIndex" => 250,
+                        "TimeConstant" => 1,
+                        "raw" => array(6144, 8142, 8133, 8134, 6150, 62976, 65462, 65471, 65471),
+                        "Data0" => 24.2029,
+                        "data" => array(24.2029, 17.17, 17.1976, 17.1945, 24.1786, null, null, null, null),
+                        "Data1" => 17.17,
+                        "Data2" => 17.1976,
+                        "Data3" => 17.1945,
+                        "Data4" => 24.1786,
+                        "Data5" => null,
+                        "Data6" => null,
+                        "Data7" => null,
+                        "Data8" => null,
+                        "deltaT" => 0,
+                        "Status" => "GOOD",
+                        "StatusOld" => "GOOD",
+                   ),
+                    array(
+                        "RawData" => "020001001800c41f00c01f00c21f0003180000f600b7ff00c0ff00c0ff0080ff",
+                        "sendCommand" => "55",
+                        "Date" => "2007-02-23 22:48:01",
+                        "Data" => array(2, 0, 1, 0, 24, 0, 196, 31, 0, 192, 31, 0, 194, 31, 0, 3, 24, 0, 0, 246, 0, 183, 255, 0, 192, 255, 0, 192, 255, 0, 128, 255),
+                        "NumSensors" => 9,
+                         "ActiveSensors" => 9,
+                         "Driver" => "e00391200",
+                        "DeviceKey" => 5,
+                        "Types" => array(0, 0, 0, 0, 0, 0, 0, 0, 0),
+                        "DataIndex" => 2,
+                        "TimeConstant" => 1,
+                        "raw" => array(6144, 8132, 8128, 8130, 6147, 62976, 65463, 65472, 65472),
+                        "Data0" => 24.2029,
+                        "data" => array(24.2029, 17.2006, 17.2129, 17.2068, 24.1906, null, null, null, null),
+                        "Data1" => 17.2006,
+                        "Data2" => 17.2129,
+                        "Data3" => 17.2068,
+                        "Data4" => 24.1906,
+                        "Data5" => null,
+                        "Data6" => null,
+                        "Data7" => null,
+                        "Data8" => null,
+                        "deltaT" => 0,
+                        "Status" => "GOOD",
+                        "StatusOld" => "GOOD",
+                   ),
                ),
            ),
-       ),
-    );
-
+        );
+    }
     /**
      * Runs the test methods of this class.
      *
