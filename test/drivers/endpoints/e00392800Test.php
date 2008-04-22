@@ -103,6 +103,40 @@ class e00392800Test extends endpointTestBase
                      "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
                ),
             ),
+             array(
+                 "Info" => array(
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
+                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
+                     "HWPartNum" => "0039-28-01-A",
+                     "FWPartNum" => "0039-20-13-C",
+                     "FWVersion" => "00.00.08",
+                     "DeviceID" => "0000E8",
+                     "SerialNum" => 232,
+                     "Driver" => "e00392800",
+                     "DeviceGroup" => "FFFFFF",
+                ),
+                 "Return" => array( 
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
+                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
+                     "HWPartNum" => "0039-28-01-A",
+                     "FWPartNum" => "0039-20-13-C",
+                     "FWVersion" => "00.00.08",
+                     "DeviceID" => "0000E8",
+                     "SerialNum" => 232,
+                     "Driver" => "e00392800",
+                     "DeviceGroup" => "FFFFFF",
+                     "HWName" => "0039-28 Endpoint",
+                     "NumSensors" => 16,
+                     "Function" => "Sensor Board",
+                     "TimeConstant" => 1,
+                     "Types" => array(2,2,2,2,2,2,2,2,111,111,111,111,111,112,112,112),
+                     "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "ignore", "ignore", "ignore", "ignore", "diff", "diff", "diff"),
+                     "params" => array(
+                         "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"), 
+                         "dType" => array(9 => "ignore", 10 => "ignore", 11 => "ignore", 12 => "ignore"),
+                     ),
+               ),
+            ),
         );
     }
     /**

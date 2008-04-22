@@ -560,6 +560,21 @@ if (!class_exists('eDEFAULT')) {
                 $Info["Units"][$i]    = $this->sensors->getUnits($Info["Types"][$i], $Info['params']['sensorType'][$i]);    
                 $Info["dType"][$i]    = $this->sensors->getUnitDefMode($Info["Types"][$i], $Info['params']['sensorType'][$i], $Info["Units"][$i]);    
                 $Info["doTotal"][$i]  = $this->sensors->doTotal($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                $size = $this->sensors->getSize($Info["Types"][$i], $Info['params']['sensorType'][$i]);
+                if ($size > 1) {
+                    for ($j = $i+1; $j < ($i + $size); $j++) {
+                        // This sets up the 
+                        $Info["dType"][$j] = "ignore";
+                        $Info["params"]["dType"][$j] = "ignore";
+                        $Info["params"]["sensorType"][$j] = $Info["params"]["sensorType"][$i];
+                        $Info["Types"][$j]           = $Info["Types"][$i];
+                        $Info["unitType"][$j]        = "";
+                        $Info["Labels"][$j]          = "";
+                        $Info["Units"][$j]           = "";
+                        $Info["doTotal"][$j]         = false;
+                    }
+                    $i += $size - 1;  // 1 is added to $i in the iteration.  That is why I put the -1 here SLP 04/22/08.
+                }
             }
             // Virtual Sensors
             for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
