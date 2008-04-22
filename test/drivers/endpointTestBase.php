@@ -568,18 +568,13 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @dataProvider dataInterpConfig()
      * @return null
      */
-    function testinterpConfig() 
+    function testInterpConfig($Info, $Return) 
     {
-        if (is_array($this->interpConfigTestCases) && (count($this->interpConfigTestCases) > 0)) {
-            foreach ($this->interpConfigTestCases as $key => $params) {
-                $ret = $this->o->interpConfig($params["Info"]);
-                $this->_checkinterpConfigReturn($params["Info"], $params['Return']);
-            }
-        } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
-        }
+        $ret = $this->o->interpConfig($Info);
+        $this->_checkinterpConfigReturn($Info, $Return);
     }
 
     /**
@@ -679,24 +674,19 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     /**
      * Test
      *
+     * @dataProvider dataInterpSensors()
      * @return null
      */
-    function testinterpSensors() 
+    function testInterpSensors($Info, $Packets, $Return) 
     {
-        if (is_array($this->interpSensorsTestCases)) {
-            foreach ($this->interpSensorsTestCases as $key => $params) {
-                $ret = $this->o->interpSensors($params["Info"], $params["Packets"]);
-                if (is_array($params["Return"])) {
-                    $this->assertType("array", $ret, "Return was not an array");
-                    foreach ($ret as $p => $pkt) {
-                        $this->_checkinterpSensorsReturn($pkt, $params["Return"][$p], $p);
-                    }
-                } else {
-                    $this->assertSame($params["Return"], $ret);
-                }
+        $ret = $this->o->interpSensors($Info, $Packets);
+        if (is_array($Return)) {
+            $this->assertType("array", $ret, "Return was not an array");
+            foreach ($ret as $p => $pkt) {
+                $this->_checkinterpSensorsReturn($pkt, $Return[$p], $p);
             }
         } else {
-            $this->markTestSkipped("Skipped do to lack of driver"); 
+            $this->assertSame($Return, $ret);
         }
     }
 
@@ -718,9 +708,12 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         }
         if (is_array($expected["Types"])) {
             $nSensors = (isset($expected['ActiveSensors'])) ? $expected['ActiveSensors'] : $expected['NumSensors'];
-            for ($key = 0; $key < $nSensors; $key++) {
-                foreach (array("Units", "unitType") as $type) {
-                    $this->assertType("string", $ret[$type][$key], $this->class."run $p : $type element $key is not a string");
+//            for ($key = 0; $key < $nSensors; $key++) {
+            if (is_array($expected["data"])) {
+                foreach ($expected["data"] as $key => $val) {
+                    foreach (array("Units", "unitType") as $type) {
+                        $this->assertType("string", $ret[$type][$key], $this->class."run $p : $type element $key is not a string");
+                    }
                 }
             }
         } else {
