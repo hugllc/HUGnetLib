@@ -143,7 +143,43 @@ class History extends HUGnetDB
      * @param int    $DeviceKey The deviceKey to use
      * @param int    $input     The input to use
      * @param string $math      The math to use
+     *
+     * @return bool|string The name of the function created.
      */
+    public function createFunction($DeviceKey, $input, $math)
+    {
+        $mathCode = $math;
+        for ($i = 1; $i < 20; $i++) {
+            $index = $i - 1;
+            $mathCode = str_replace('{'.$i.'}', '$row["Data'.$index.'"]', $mathCode);
+        }
+        $code = 'return ('.$mathCode.');';
+        return create_function('$row', $code);   
+    }
+
+
+    /**
+     * This function crunches the numbers for the virtual sensors.
+     *
+     * @params array &$history The history to crunch
+     * @params array $devInfo  The device array to use.
+     * 
+     * @return null
+     */
+    public function virtualSensorHistory(&$history, $devInfo)
+    {
+        if ($devInfo["params"]["VSensors"] <= 0) return;
+        $functions =& $this->_functions[$devInfo["DeviceKey"]];
+        foreach ($history as $key => $hist) {
+            for ($i = $devInfo["NumSensors"]; $i < $devInfo["TotalSensors"]; $i++) {
+                $function =& $functions[$i];
+                if (!function_exists($function)) $function = $this->createFunction($devInfo["DeviceKey"], $i, $devInfo["params"]["Math"][$i]);
+                if (!function_exists($function)) continue;
+                $history[$key]["Data".$i] = $function($hist);
+                $history[$key]["data"][$i] = $history[$key]["Data".$i];
+            }
+        }
+    }
 }
 
 ?>
