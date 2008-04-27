@@ -153,7 +153,7 @@ class History extends HUGnetDB
             $index = $i - 1;
             $mathCode = str_replace('{'.$i.'}', '$row["Data'.$index.'"]', $mathCode);
         }
-        $code = 'return round('.$mathCode.', '.$decimalPlaces.');';
+        $code = 'return round('.$mathCode.', '.(int)$decimalPlaces.');';
         return create_function('$row', $code);   
     }
 
@@ -161,19 +161,20 @@ class History extends HUGnetDB
     /**
      * This function crunches the numbers for the virtual sensors.
      *
-     * @params array &$history The history to crunch
-     * @params array $devInfo  The device array to use.
+     * @params array &$history      The history to crunch
+     * @params array $devInfo       The device array to use.
+     * @params int   $decimalPlaces The number of decimalPlaces to use
      * 
      * @return null
      */
-    public function virtualSensorHistory(&$history, $devInfo)
+    public function virtualSensorHistory(&$history, $devInfo, $decimalPlaces=2)
     {
         if ($devInfo["params"]["VSensors"] <= 0) return;
         $functions =& $this->_functions[$devInfo["DeviceKey"]];
         foreach ($history as $key => $hist) {
             for ($i = $devInfo["NumSensors"]; $i < $devInfo["TotalSensors"]; $i++) {
                 $function =& $functions[$i];
-                if (!function_exists($function)) $function = $this->createFunction($devInfo["DeviceKey"], $i, $devInfo["params"]["Math"][$i]);
+                if (!function_exists($function)) $function = $this->createFunction($devInfo["DeviceKey"], $i, $devInfo["params"]["Math"][$i], $decimalPlaces);
                 if (!function_exists($function)) continue;
                 $history[$key]["Data".$i] = $function($hist);
                 $history[$key]["data"][$i] = $history[$key]["Data".$i];
