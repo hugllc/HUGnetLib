@@ -146,14 +146,14 @@ class History extends HUGnetDB
      *
      * @return bool|string The name of the function created.
      */
-    public function createFunction($DeviceKey, $input, $math)
+    public function createFunction($DeviceKey, $input, $math, $decimalPlaces=2)
     {
         $mathCode = $math;
         for ($i = 1; $i < 20; $i++) {
             $index = $i - 1;
             $mathCode = str_replace('{'.$i.'}', '$row["Data'.$index.'"]', $mathCode);
         }
-        $code = 'return ('.$mathCode.');';
+        $code = 'return round('.$mathCode.', '.$decimalPlaces.');';
         return create_function('$row', $code);   
     }
 
