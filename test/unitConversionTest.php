@@ -576,11 +576,11 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     public static function dataGetPossConv() 
     {
         return array(
-            array("raw", null, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C", "&#176;" => "Direction", "Direction" => "&#176;")),
-            array("diff", null, array("&#176;C" => "&#176;F", "&#176;F" => "&#176;C")),
-            array("raw", "&#176;C", array("&#176;C" => "&#176;F", "&#176;C" => "&#176;C")),
-            array("diff", "&#176;F", array("&#176;F" => "&#176;C", "&#176;F" => "&#176;F")),
-            array("raw", "Direction", array("Direction" => "&#176;", "Direction" => "Direction")),
+            array("raw", null, array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"), "&#176;" => array("Direction"), "Direction" => array("&#176;"))),
+            array("diff", null, array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"))),
+            array("raw", "&#176;C", array("&#176;F", "&#176;C")),
+            array("diff", "&#176;F", array("&#176;C", "&#176;F")),
+            array("raw", "Direction", array("&#176;", "Direction")),
         );
     }
     /**
@@ -938,7 +938,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
-                    1 => array("Data0" => 3.0,"Data2" => 4.0, "Data3" => -2.0, "Data4" => 6.5, "data" => array(3.0,null,4.0,-2.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300, "Data1" => null),
+                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4.0, "Data3" => -2.0, "Data4" => 6.5, "data" => array(3.0,2,4.0,-2.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
                ), // expectHistory
                 array(
                     "ActiveSensors" => 5, 
