@@ -366,21 +366,21 @@ class UnitConversion
 
         $ret = array();
         foreach ($this->units as $c => $cat) {
-            if (($f == $from) || is_null($from)) {
-                foreach ($cat as $f => $to) {
-                    if (is_array($to['convert'])) {
-                        if (!isset($to['mode']) || ($to['mode'] == $type)) {
-                            foreach ($to['convert'] as $t => $func) {
-                                $ret[$f] = $t;
-                            }
+            if (isset($cat[$from])) {
+                if (is_array($cat[$from]['convert'])) {
+                    if (!isset($cat[$from]['mode']) || ($cat[$from]['mode'] == $type)) {
+                        foreach ($cat[$from]['convert'] as $t => $func) {
+                            $ret[$from][] = $t;
                         }
                     }
                 }
             }
         }
 
-        if (!is_null($from)) $ret[$from] = $from;
-
+        if (!is_null($from)) {
+            $ret[$from][] = $from;
+            return $ret[$from];
+        }        
         return $ret;
     }
 
