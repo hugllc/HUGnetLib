@@ -580,8 +580,8 @@ if (!class_exists('eDEFAULT')) {
             for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
                 $Info["unitType"][$i] = $Info['params']['sensorType'][$i];
                 $Info["Labels"][$i]   = $Info['unitType'][$i]; 
-                $Info["Units"][$i]    = $Info['params']['Units'][$i];    
-                $Info["dType"][$i]    = $Info['params']['dType'][$i];    
+                $Info["Units"][$i]    = $Info['params']['mUnits'][$i];
+                $Info["dType"][$i]    = $Info['params']['mdType'][$i];    
             }
         
         }
