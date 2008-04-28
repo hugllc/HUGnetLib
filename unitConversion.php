@@ -684,6 +684,7 @@ class UnitConversion
                 }
                 if (isset($history[$key])) {
                     for ($i = 0; $i < $totalSensors; $i ++) {
+                        if (is_null($history[$key]['Data'.$i])) continue;
                         if ($type[$i] == "ignore") continue;
                         if (empty($units[$i])) $units[$i] = $devInfo["params"]['Units'][$i];
                         if (empty($units[$i])) $units[$i] = $this->preferredUnit($from);
