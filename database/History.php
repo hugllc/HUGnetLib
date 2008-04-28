@@ -161,25 +161,42 @@ class History extends HUGnetDB
     /**
      * This function crunches the numbers for the virtual sensors.
      *
-     * @params array &$history      The history to crunch
-     * @params array $devInfo       The device array to use.
+     * @params array &$history The history to crunch
+     * @params array &$devInfo The device array to use.
      * 
      * @return null
      */
-    public function virtualSensorHistory(&$history, $devInfo)
+    public function virtualSensorHistory(&$history, &$devInfo)
     {
         if ($devInfo["params"]["VSensors"] <= 0) return;
-        $functions =& $this->_functions[$devInfo["DeviceKey"]];
         foreach ($history as $key => $hist) {
             for ($i = $devInfo["NumSensors"]; $i < $devInfo["TotalSensors"]; $i++) {
-                $function =& $functions[$i];
-                if (!function_exists($function)) $function = $this->createFunction($devInfo["DeviceKey"], $i, $devInfo["params"]["Math"][$i]);
-                if (!function_exists($function)) continue;
-                $history[$key]["Data".$i] = $function($history[$key]);
+                $history[$key]["Data".$i] = $this->virtualSensorValue($i, $history[$key], $devInfo);
                 $history[$key]["data"][$i] = $history[$key]["Data".$i];
             }
         }
     }
+
+    /**
+     * This function crunches the numbers for the virtual sensors.
+     *
+     * @params string $sensor   The sensor to use
+     * @params array  &$history The history row to use
+     * @params array  &$devInfo The device array to use.
+     * 
+     * @return null
+     */
+    public function virtualSensorValue($sensor, &$history, &$devInfo)
+    {
+        $function =& $this->_functions[$devInfo["DeviceKey"]][$sensor];
+        if (!function_exists($function)) $function = $this->createFunction($devInfo["DeviceKey"], $sensor, $devInfo["params"]["Math"][$sensor]);
+        if (!function_exists($function)) return null;
+        $d = $function($history);
+        if (is_numeric($devInfo["params"]["sensorMax"][$sensor]) && ($d > $devInfo["params"]["sensorMax"][$sensor])) return $devInfo["params"]["sensorMax"][$sensor];
+        if (is_numeric($devInfo["params"]["sensorMin"][$sensor]) && ($d < $devInfo["params"]["sensorMin"][$sensor])) return $devInfo["params"]["sensorMin"][$sensor];
+        return $d;
+    }
+
 }
 
 ?>
