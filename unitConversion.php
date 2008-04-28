@@ -652,20 +652,19 @@ class UnitConversion
     function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
     {
         $lastRecord = null;
+        $totalSensors = (empty($devInfo["TotalSensors"])) ? $devInfo["ActiveSensors"] : $devInfo["TotalSensors"];
         if (!is_array($history)) $history = array();
         foreach ($history as $key => $val) {
             if (is_array($val)) {
                 if (($lastRecord !== null) || (count($history) < 2)) {
-                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                    for ($i = 0; $i < $totalSensors; $i ++) {
                         if (empty($type[$i])) $type[$i] = $devInfo["params"]["dType"][$i];
+                        if ($type[$i] == "ignore") continue;
                         if ($type[$i] != $devInfo["dType"][$i]) {
                             switch($type[$i]) {
                             case 'diff':
                                 if (!isset($val['deltaT'])) $history[$key]['deltaT'] = strtotime($val['Date']) - strtotime($lastRecord['Date']);
                                 $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
-                                break;
-                            case 'ignore':
-                                unset($history[$key]["Data".$i]);
                                 break;
                             default:
                                 // Do nothing by default.
@@ -684,7 +683,8 @@ class UnitConversion
                     unset($history[$key]);
                 }
                 if (isset($history[$key])) {
-                    for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+                    for ($i = 0; $i < $totalSensors; $i ++) {
+                        if ($type[$i] == "ignore") continue;
                         if (empty($units[$i])) $units[$i] = $devInfo["params"]['Units'][$i];
                         if (empty($units[$i])) $units[$i] = $this->preferredUnit($from);
                         if (!empty($units[$i])) {
@@ -699,7 +699,7 @@ class UnitConversion
                 }
             }
         }
-        for ($i = 0; $i < $devInfo['ActiveSensors']; $i ++) {
+        for ($i = 0; $i < $totalSensors; $i ++) {
             if (!empty($units[$i])) $devInfo["Units"][$i] = $units[$i];
             $devInfo["dType"][$i] = $type[$i];
         }
