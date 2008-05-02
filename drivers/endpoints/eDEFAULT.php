@@ -500,10 +500,10 @@ if (!class_exists('eDEFAULT')) {
         {
             if (isset($this->config[$Info["FWPartNum"]])) {
                 $Info["NumSensors"] = (int)$this->config[$Info["FWPartNum"]]["Sensors"];    
-                $Info["Function"]   = (int)$this->config[$Info["FWPartNum"]]["Function"];
+                $Info["Function"]   = $this->config[$Info["FWPartNum"]]["Function"];
             } else {
                 $Info["NumSensors"] = (int)$this->config["DEFAULT"]["Sensors"];    
-                $Info["Function"]   = (int)$this->config["DEFAULT"]["Function"];
+                $Info["Function"]   = $this->config["DEFAULT"]["Function"];
             }        
         }
         /**
