@@ -499,11 +499,11 @@ if (!class_exists('eDEFAULT')) {
         protected function interpConfigFW(&$Info) 
         {
             if (isset($this->config[$Info["FWPartNum"]])) {
-                $Info["NumSensors"] = $this->config[$Info["FWPartNum"]]["Sensors"];    
-                $Info["Function"]   = $this->config[$Info["FWPartNum"]]["Function"];
+                $Info["NumSensors"] = (int)$this->config[$Info["FWPartNum"]]["Sensors"];    
+                $Info["Function"]   = (int)$this->config[$Info["FWPartNum"]]["Function"];
             } else {
-                $Info["NumSensors"] = $this->config["DEFAULT"]["Sensors"];    
-                $Info["Function"]   = $this->config["DEFAULT"]["Function"];
+                $Info["NumSensors"] = (int)$this->config["DEFAULT"]["Sensors"];    
+                $Info["Function"]   = (int)$this->config["DEFAULT"]["Function"];
             }        
         }
         /**
@@ -552,7 +552,7 @@ if (!class_exists('eDEFAULT')) {
             $Info["Units"]    = array();
             $Info["dType"]    = array();
             $Info["doTotal"]  = array();
-            $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? $Info["NumSensors"] + $Info["params"]["VSensors"] : $Info["NumSensors"];
+            $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? (int)($Info["NumSensors"] + $Info["params"]["VSensors"]) : (int)$Info["NumSensors"];
             // Real Sensors
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $Info["unitType"][$i] = $this->sensors->getUnitType($Info["Types"][$i], $Info['params']['sensorType'][$i]);
@@ -881,6 +881,7 @@ if (!class_exists('eDEFAULT')) {
          */
         public function __construct(&$driver, $config = null) 
         {
+            $this->dbConfig = $config;
             $this->driver  =& $driver;
             $this->packet  =& $driver->packet;
             $this->sensors =& $driver->sensors;
