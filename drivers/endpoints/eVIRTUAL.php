@@ -114,6 +114,7 @@ if (!class_exists("eVIRTUAL")) {
             $Info["doTotal"] = array();
             $Info["params"]["sensorType"] = array();
             $Info["params"]["Driver"] = array();
+            $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? (int)($Info["NumSensors"] + $Info["params"]["VSensors"]) : (int)$Info["NumSensors"];
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $devKey   =& $Info["params"]["device"][$i];
                 $input =  $Info["params"]["input"][$i] - 1;

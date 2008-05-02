@@ -564,24 +564,26 @@ if (!class_exists('eDEFAULT')) {
                 if ($size > 1) {
                     for ($j = $i+1; $j < ($i + $size); $j++) {
                         // This sets up the 
-                        $Info["dType"][$j] = "ignore";
-                        $Info["params"]["dType"][$j] = "ignore";
+                        $Info["dType"][$j]                = "ignore";
+                        $Info["params"]["dType"][$j]      = "ignore";
                         $Info["params"]["sensorType"][$j] = $Info["params"]["sensorType"][$i];
-                        $Info["Types"][$j]           = $Info["Types"][$i];
-                        $Info["unitType"][$j]        = "";
-                        $Info["Labels"][$j]          = "";
-                        $Info["Units"][$j]           = "";
-                        $Info["doTotal"][$j]         = false;
+                        $Info["Types"][$j]                = $Info["Types"][$i];
+                        $Info["unitType"][$j]             = "";
+                        $Info["Labels"][$j]               = "";
+                        $Info["Units"][$j]                = "";
+                        $Info["doTotal"][$j]              = false;
                     }
                     $i += $size - 1;  // 1 is added to $i in the iteration.  That is why I put the -1 here SLP 04/22/08.
                 }
             }
             // Virtual Sensors
             for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
+                if (is_null($Info['params']["sensorType"][$i])) $Info['params']["sensorType"][$i] = "Unknown";
                 $Info["unitType"][$i] = $Info['params']['sensorType'][$i];
-                $Info["Labels"][$i]   = $Info['unitType'][$i]; 
-                $Info["Units"][$i]    = $Info['params']['mUnits'][$i];
-                $Info["dType"][$i]    = $Info['params']['mdType'][$i];    
+                $Info["Labels"][$i]   = is_null($Info['unitType'][$i])             ? "Sensor $i" : $Info['unitType'][$i]; 
+                $Info["Units"][$i]    = is_null($Info['mUnits'][$i])               ? "Unknown"   : $Info['params']['mUnits'][$i];
+                $Info["dType"][$i]    = is_null($Info['mdType'][$i])               ? "ignore"    : $Info['params']['mdType'][$i];    
+                $Info["doTotal"][$i]  = (bool)$Info["doTotal"][$i];
             }
         
         }
