@@ -60,7 +60,7 @@ if (!class_exists("eVIRTUAL")) {
            ),
         );
         /** Average table to use */
-        protected $average_table = "average";
+        protected $average_table = "VirtualHistory";
 
         /** Configurations supported */
         var $config = array(
