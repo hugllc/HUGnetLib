@@ -91,6 +91,7 @@ class eVIRTUALTest extends endpointTestBase
                      "NumSensors" => 16,
                      "ActiveSensors" => 2,
                      "Function" => "Virtual",
+                     "TotalSensors" => 16,
                ),
             ),
              array(
@@ -116,6 +117,7 @@ class eVIRTUALTest extends endpointTestBase
                      "NumSensors" => 16,
                      "Function" => "Virtual",
                      "ActiveSensors" => 2,
+                     "TotalSensors" => 16,
                 ),
             ),
         );

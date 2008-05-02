@@ -594,9 +594,9 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         // Check the stuff we can't predict (it might change witout a change in this code)
         foreach (array("Labels", "Units", "unitType", "dType", "doTotal") as $type) {
             $this->assertType("array", $ret[$type], $this->class."Missing array '$type'");
-            $this->assertEquals(count($ret[$type]), $ret['NumSensors'], $this->class.": $type doesn't have ".$ret['NumSensors']." elements");
+            $this->assertEquals(count($ret[$type]), $ret['TotalSensors'], $this->class.": $type doesn't have ".$ret['TotalSensors']." elements");
         }
-        for ($key = 0; $key < $ret['NumSensors']; $key++) {
+        for ($key = 0; $key < $ret['TotalSensors']; $key++) {
             foreach (array("Labels", "Units", "unitType", "dType") as $type) {
                 $this->assertType("string", $ret[$type][$key], $this->class.": $type element $key is not a string");
             }

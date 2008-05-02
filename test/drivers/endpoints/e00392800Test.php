@@ -84,6 +84,9 @@ class e00392800Test extends endpointTestBase
                      "SerialNum" => 232,
                      "Driver" => "e00392800",
                      "DeviceGroup" => "FFFFFF",
+                     "params" => array(
+                         "VSensors" => 2,
+                     ),
                 ),
                  "Return" => array( 
                      "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
@@ -101,6 +104,7 @@ class e00392800Test extends endpointTestBase
                      "TimeConstant" => 1,
                      "DriverInfo" => "0102020202020202027070707070707070",
                      "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
+                     "TotalSensors" => 18,
                ),
             ),
              array(
@@ -135,6 +139,7 @@ class e00392800Test extends endpointTestBase
                          "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"), 
                          "dType" => array(9 => "ignore", 10 => "ignore", 11 => "ignore", 12 => "ignore"),
                      ),
+                     "TotalSensors" => 16,
                ),
             ),
         );

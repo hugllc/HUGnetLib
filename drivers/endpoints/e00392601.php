@@ -150,10 +150,12 @@ if (!class_exists("e00392601")) {
         {
 
             $Info['HWName']       = $this->HWName;
-            $Info["NumSensors"]   = $this->config["DEFAULT"]["Sensors"];    
+            $Info["NumSensors"]   = (int)$this->config["DEFAULT"]["Sensors"];    
             $Info["Function"]     = $this->config["DEFAULT"]["Function"];
             $Info["Timeconstant"] = 0;
             $Info['DriverInfo']   = substr($Info["RawSetup"], E00391102B_TC);
+
+            $Info["TotalSensors"] = (int)$Info["NumSensors"];
 
             $start = 46;
             $Info["Types"]    = array();
