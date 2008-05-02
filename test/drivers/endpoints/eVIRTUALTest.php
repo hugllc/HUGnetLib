@@ -202,6 +202,28 @@ class eVIRTUALTest extends endpointTestBase
         );
     }
 
+    /**
+     * data provider
+     *
+     * @return array
+     */
+    function testInterpSensors() 
+    {
+        $ret = $this->o->interpSensors(array(), array());
+        $this->assertSame(array(), $ret);
+    }
+
+    /**
+     * data provider
+     *
+     * @return array
+     */
+    function testReadConfig() 
+    {
+        $ret = $this->o->readConfig(array(), array());
+        $this->assertSame(array(), $ret);
+    }
+
 }
 
 ?>

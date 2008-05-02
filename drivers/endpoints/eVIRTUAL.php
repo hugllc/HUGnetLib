@@ -77,12 +77,7 @@ if (!class_exists("eVIRTUAL")) {
          */
         function readConfig($Info)
         {
-            return array(
-                array(
-                    "To" => $Info["DeviceID"],
-                    "Command" => PACKET_COMMAND_GETSETUP,
-               ),
-           );
+            return array();
         }
 
         /**
