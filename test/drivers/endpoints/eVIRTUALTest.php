@@ -56,7 +56,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/eVIRTUAL.php';
  */
 class eVIRTUALTest extends endpointTestBase
 {
-    public $class = "e00392800";
+    public $class = "eVIRTUAL";
     /**
      *  Test cases for the interpConfig routine
      */
@@ -70,67 +70,53 @@ class eVIRTUALTest extends endpointTestBase
         return array(
              array(
                  "Info" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.05",
+                     "HWPartNum" => "VIRTUAL",
+                     "FWPartNum" => "VIRTUAL",
+                     "FWVersion" => "VIRTUAL",
                      "DeviceID" => "0000E8",
                      "SerialNum" => 232,
-                     "Driver" => "e00392800",
+                     "Driver" => "eVIRTUAL",
                      "DeviceGroup" => "FFFFFF",
+                     "ActiveSensors" => 2,
                 ),
                  "Return" => array( 
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.05",
+                     "HWPartNum" => "VIRTUAL",
+                     "FWPartNum" => "VIRTUAL",
+                     "FWVersion" => "VIRTUAL",
                      "DeviceID" => "0000E8",
                      "SerialNum" => 232,
-                     "Driver" => "e00392800",
+                     "Driver" => "eVIRTUAL",
                      "DeviceGroup" => "FFFFFF",
-                     "HWName" => "0039-28 Endpoint",
+                     "HWName" => "Virtual Endpoint",
                      "NumSensors" => 16,
-                     "Function" => "Sensor Board",
-                     "TimeConstant" => 1,
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
+                     "ActiveSensors" => 2,
+                     "Function" => "Virtual",
                ),
             ),
              array(
                  "Info" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
-                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.08",
+                     "HWPartNum" => "VIRTUAL",
+                     "FWPartNum" => "VIRTUAL",
+                     "FWVersion" => "VIRTUAL",
                      "DeviceID" => "0000E8",
                      "SerialNum" => 232,
-                     "Driver" => "e00392800",
+                     "Driver" => "eVIRTUAL",
                      "DeviceGroup" => "FFFFFF",
+                     "ActiveSensors" => 2,
                 ),
                  "Return" => array( 
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
-                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.08",
+                     "HWPartNum" => "VIRTUAL",
+                     "FWPartNum" => "VIRTUAL",
+                     "FWVersion" => "VIRTUAL",
                      "DeviceID" => "0000E8",
                      "SerialNum" => 232,
-                     "Driver" => "e00392800",
+                     "Driver" => "eVIRTUAL",
                      "DeviceGroup" => "FFFFFF",
-                     "HWName" => "0039-28 Endpoint",
+                     "HWName" => "Virtual Endpoint",
                      "NumSensors" => 16,
-                     "Function" => "Sensor Board",
-                     "TimeConstant" => 1,
-                     "Types" => array(2,2,2,2,2,2,2,2,111,111,111,111,111,112,112,112),
-                     "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "ignore", "ignore", "ignore", "ignore", "diff", "diff", "diff"),
-                     "params" => array(
-                         "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"), 
-                         "dType" => array(9 => "ignore", 10 => "ignore", 11 => "ignore", 12 => "ignore"),
-                     ),
-               ),
+                     "Function" => "Virtual",
+                     "ActiveSensors" => 2,
+                ),
             ),
         );
     }
@@ -156,7 +142,7 @@ class eVIRTUALTest extends endpointTestBase
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
-        $suite  = new PHPUnit_Framework_TestSuite("e00392800Test");
+        $suite  = new PHPUnit_Framework_TestSuite("eVIRTUALTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
     /**
@@ -193,7 +179,7 @@ class eVIRTUALTest extends endpointTestBase
      */
     public static function dataConfigArray() 
     {
-        return parent::dataConfigArray("e00392800");
+        return parent::dataConfigArray("eVIRTUAL");
     }
 
     /**
@@ -202,6 +188,17 @@ class eVIRTUALTest extends endpointTestBase
     public static function datareadConfig() 
     {
         return array(
+        );
+    }
+    /**
+     * data provider
+     *
+     * @return array
+     */
+    public static function datacheckRecord() 
+    {
+        return array(
+            array(array(), array("Status" => "GOOD"), array("Status" => 'GOOD')),
         );
     }
 

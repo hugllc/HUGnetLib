@@ -60,7 +60,12 @@ if (!class_exists("eVIRTUAL")) {
            ),
         );
         /** Average table to use */
-        protected $average_table = "VirtualHistory";
+        protected $average_table = "average";
+
+        /** Configurations supported */
+        var $config = array(
+            "DEFAULT" => array("Function" => "Virtual", "Sensors" => 16),        
+        );
 
 
         /**
@@ -105,22 +110,30 @@ if (!class_exists("eVIRTUAL")) {
          */
         function interpConfig(&$Info) 
         {
-            $Info["NumSensors"] = $Info["ActiveSensors"];
-            parent::interpConfig($Info);
-            for ($i = 0; $i < $Info["ActiveSensors"]; $i++) {
+            parent::interpConfigHW($Info);
+            parent::interpConfigFW($Info);
+            parent::interpConfigDriverInfo($Info);
+            $Info["Labels"] = array();
+            $Info["Units"] = array();
+            $Info["dType"] = array();
+            $Info["doTotal"] = array();
+            $Info["params"]["sensorType"] = array();
+            $Info["params"]["Driver"] = array();
+            for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $devKey   =& $Info["params"]["device"][$i];
                 $input =  $Info["params"]["input"][$i] - 1;
-                if (empty($devKey)) continue;
-                if (empty($input)) continue;
+//                if (empty($devKey)) continue;
+//                if (empty($input)) continue;
                 if (!is_array($this->dev[$devKey])) $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
 
                 $dev =& $this->dev[$devKey];
-                $Info["Units"][$i] = $dev["Units"][$input];
-                $Info["dType"][$i] = $dev["dType"][$input];
-                $Info["params"]["sensorType"][$i] = $dev["params"]["sensorType"][$input];
-                $Info["unitType"][$i] = $dev["unitType"][$input];
-                $Info["Labels"][$i] = $dev["Labels"][$input];
-                $Info["params"]["Driver"][$i] = $dev["Driver"];
+                $Info["Units"][$i]                = is_null($dev["Units"][$input])                ? "Unknown"   : $dev["Units"][$input];
+                $Info["dType"][$i]                = is_null($dev["dType"][$input])                ? "Ignore"    : $dev["dType"][$input];
+                $Info["params"]["sensorType"][$i] = is_null($dev["params"]["sensorType"][$input]) ? "Unknown"   : $dev["params"]["sensorType"][$input];
+                $Info["unitType"][$i]             = (is_null($dev["unitType"][$input]))           ? "Unknown"   : $dev["unitType"][$input];
+                $Info["Labels"][$i]               = (is_null($dev["Labels"][$input]))             ? "Sensor $i" : $dev["Labels"][$input];
+                $Info["params"]["Driver"][$i]     = is_null($dev["Driver"])                       ? "eDEFAULT"  : $dev["Driver"];
+                $Info["doTotal"][$i]              = (bool)$dev["doTotal"][$i];
             }
             return $Info;
         }
