@@ -580,9 +580,9 @@ if (!class_exists('eDEFAULT')) {
             for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
                 if (is_null($Info['params']["sensorType"][$i])) $Info['params']["sensorType"][$i] = "Unknown";
                 $Info["unitType"][$i] = $Info['params']['sensorType'][$i];
-                $Info["Labels"][$i]   = is_null($Info['unitType'][$i])             ? "Sensor $i" : $Info['unitType'][$i]; 
-                $Info["Units"][$i]    = is_null($Info['mUnits'][$i])               ? "Unknown"   : $Info['params']['mUnits'][$i];
-                $Info["dType"][$i]    = is_null($Info['mdType'][$i])               ? "ignore"    : $Info['params']['mdType'][$i];    
+                $Info["Labels"][$i]   = is_null($Info['unitType'][$i]) ? "Sensor $i" : $Info['unitType'][$i]; 
+                $Info["Units"][$i]    = is_null($Info["params"]['mUnits'][$i])   ? "Unknown"   : $Info['params']['mUnits'][$i];
+                $Info["dType"][$i]    = is_null($Info["params"]['mdType'][$i])   ? "ignore"    : $Info['params']['mdType'][$i];    
                 $Info["doTotal"][$i]  = (bool)$Info["doTotal"][$i];
             }
         

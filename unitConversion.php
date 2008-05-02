@@ -368,6 +368,7 @@ class UnitConversion
         foreach ($this->units as $c => $cat) {
             foreach ($cat as $f => $info) {
                 if (($info["mode"] == $type) || !isset($info["mode"])) {
+                    if (!is_array($info["convert"])) continue;
                     foreach ($info['convert'] as $t => $func) {
                         $ret[$f][] = $t;
                     }
