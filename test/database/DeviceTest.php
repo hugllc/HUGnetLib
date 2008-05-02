@@ -249,7 +249,7 @@ class DeviceTest extends databaseTest
                 1,
                 2,
                 array(
-                    3 => "000032",
+                    3 => "000032 dev3",
                ),
            ),
             array(
@@ -258,9 +258,9 @@ class DeviceTest extends databaseTest
                 1,
                 null,
                 array(
-                    1 => "000030",
-                    2 => "000031",
-                    3 => "000032",
+                    1 => "000030 dev1",
+                    2 => "000031 dev2",
+                    3 => "000032 dev3",
                ),
            ),
             array(
@@ -269,9 +269,9 @@ class DeviceTest extends databaseTest
                 1,
                 0,
                 array(
-                    1 => "000030",
-                    2 => "000031",
-                    3 => "000032",
+                    1 => "000030 dev1",
+                    2 => "000031 dev2",
+                    3 => "000032 dev3",
                ),
            ),
         );
