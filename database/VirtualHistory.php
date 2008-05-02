@@ -34,7 +34,7 @@
  */
 
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/database/History.php";
+require_once HUGNET_INCLUDE_PATH."/database/Average.php";
 
 /**
  * A class for controlling processes
@@ -47,36 +47,62 @@ require_once HUGNET_INCLUDE_PATH."/database/History.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class VirtualHistory extends History
+class VirtualHistory extends Average
 {
-   
+    /** History buffer */
+    protected $hist = array();   
+    /** History buffer */
+    protected $histBuf = array();   
+    /** The database table to use */
+    protected $table = "average";
+    /** This is the Field name for the key of the record */
+    protected $id = "AverageKey";
+    
+    
     /**
-     * Gets all rows from the database
+     * Gets history between two dates and returns it as an array
      *
-     * @param string $where   Where clause
-     * @param array  $data    Data for query
-     * @param int    $limit   The maximum number of rows to return (0 to return all)
-     * @param int    $start   The row offset to start returning records at
-     * @param string $orderby How to order the string.  Must include "ORDER BY"
+     * @param array &$devInfo  The key for the device to get the history for
+     * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
+     * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+     * @param int   $maxRec    The max number of records to return
      *
      * @return array
      */
-    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
+    public function getDates(&$devInfo, $startDate, $endDate = "NOW", $maxRec=0) 
     {
-
+        $endpoint = HUGnetDriver::getInstance($this->config);
+        $history = array();
+        for ($i = 0; $i < $devInfo["ActiveSensors"]; $i++) {
+            $devKey   =& $devInfo["params"]["device"][$i];
+            $input =  (int) $devInfo["params"]["input"][$i] - 1;
+            if (empty($devKey)) continue;
+            $dev = array("DeviceKey" => $devKey, "Driver" => $devInfo["params"]["Driver"][$i]);
+            if (!is_object($this->hist[$devKey])) $this->hist[$devKey] = $endpoint->getHistoryInstance($dev);
+            if (!is_array($this->histBuf[$devKey])) $this->histBuf[$devKey] = $this->hist[$devKey]->getDates($dev, $startDate, $endDate, $maxRec);
+        }
+        foreach ($this->histBuf as $devKey => $hist) {
+            foreach ($hist as $row) {
+                for ($i = 0; $i < $devInfo["ActiveSensors"]; $i++) {
+                    if ($devKey !== $devInfo["params"]["device"][$i]) continue;
+                    $input =  (int) $devInfo["params"]["input"][$i] - 1;
+                    $history[$row["Date"]]["Data".$i] = $row["Data".$input];
+                    $history[$row["Date"]]["data"][$i] = $row["Data".$input];
+                }
+            }
+        }
+        krsort($history);
+        $ret = array();
+        $index = 0;
+        foreach ($history as $date => $hist) {
+            $ret[$index] = $hist;
+            $ret[$index]["DeviceKey"] = $devInfo["DeviceKey"];
+            $ret[$index]["Date"] = $date;
+            $index++;
+        }
+        return $ret;
     }
 
-    /**
-     * Creates the database table
-     *
-     * @param string $table    The table to use
-     * @param mixed  $elements The number of data fields
-     *
-     * @return null
-     */   
-    public function createTable($table=null, $elements=null)
-    {
-    }
 
 }
 

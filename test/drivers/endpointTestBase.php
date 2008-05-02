@@ -244,7 +244,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      */
     function testDevicesArrayHardware($fw, $hw, $Ver) 
     {
-        $this->assertRegExp("/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]/", $hw);
+        $this->assertRegExp("/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|VIRTUAL/", $hw);
         $this->assertType("string", $Ver);
     }
     /**

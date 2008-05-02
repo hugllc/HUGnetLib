@@ -64,18 +64,18 @@ class History extends HUGnetDB
     /**
      * Gets history between two dates and returns it as an array
      *
-     * @param int   $DeviceKey The key for the device to get the history for
+     * @param array &$devInfo  The key for the device to get the history for
      * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
      * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
      * @param int   $maxRec    The max number of records to return
      *
      * @return array
      */
-    public function getDates($DeviceKey, $startDate, $endDate = "NOW", $maxRec=0) 
+    public function getDates(&$devInfo, $startDate, $endDate = "NOW", $maxRec=0) 
     {
         $startDate = $this->sqlDate($startDate);
         $endDate   = $this->sqlDate($endDate);
-        $data      = array($startDate, $endDate, $DeviceKey);
+        $data      = array($startDate, $endDate, $devInfo["DeviceKey"]);
         $query     = "Date >= ? AND Date <= ? AND DeviceKey = ? ";
         $orderby   = " ORDER BY `Date` DESC";
         return $this->getWhere($query, $data, $maxRec, 0, $orderby);
