@@ -632,7 +632,10 @@ class HUGnetDriver
         } else if (trim(strtolower($config["Type"])) == "raw") {
             $class = "RawHistory";
         } else {
-            $config["table"] = $this->getAverageTable($Info);        
+            $table = $this->getAverageTable($Info);        
+            $hist =& HUGnetDB::getInstance($table, $config);
+            if (is_object($hist)) return $hist;
+            $config["table"] = $table;
             $class = "Average";
         }
         

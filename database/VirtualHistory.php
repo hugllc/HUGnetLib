@@ -63,7 +63,7 @@ class VirtualHistory extends History
      */
     public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
     {
-        
+
     }
 
     /**

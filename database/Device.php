@@ -89,7 +89,7 @@ class Device extends HUGnetDB
     function selectDevice($name=null, $selected=null, $GatewayKey=null) 
     {
         $data  = array();
-        $query = "SELECT DeviceKey, DeviceID FROM devices WHERE";
+        $query = "SELECT DeviceKey, DeviceID, DeviceName FROM devices WHERE";
         if (empty($GatewayKey)) {
             $data[] = 0;
             $query .= " GatewayKey <> ?";            
@@ -97,10 +97,11 @@ class Device extends HUGnetDB
             $data[] = $GatewayKey;
             $query .= " GatewayKey = ? ";            
         }
+        $query .= " ORDER BY DeviceName";
         $rows = $this->query($query, $data, true);
         $ret = array();
         foreach ($rows as $row) {
-            $ret[$row["DeviceKey"]] = $row["DeviceID"];
+            $ret[$row["DeviceKey"]] = $row["DeviceID"]." ".$row["DeviceName"];
         }
         return $ret;
     }    

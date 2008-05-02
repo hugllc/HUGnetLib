@@ -59,6 +59,8 @@ if (!class_exists("eVIRTUAL")) {
                 "VIRTUAL" => "DEFAULT",
            ),
         );
+        /** Average table to use */
+        protected $average_table = "VirtualHistory";
 
 
         /**
@@ -103,6 +105,21 @@ if (!class_exists("eVIRTUAL")) {
          */
         function interpConfig(&$Info) 
         {
+            parent::interpConfig($Info);
+            for ($i = 0; $i < $Info["ActiveSensors"]; $i++) {
+                $devKey   =& $Info["params"]["device"][$i];
+                $input =  $Info["params"]["input"][$i] - 1;
+                if (empty($devKey)) continue;
+                if (empty($input)) continue;
+                if (!is_array($this->dev[$devKey])) $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
+
+                $dev =& $this->dev[$devKey];
+                $Info["Units"][$i] = $dev["Units"][$input];
+                $Info["dType"][$i] = $dev["dType"][$input];
+                $Info["params"]["sensorType"][$i] = $dev["params"]["sensorType"][$input];
+                $Info["unitType"][$i] = $dev["unitType"][$input];
+                $Info["Labels"][$i] = $dev["Labels"][$input];
+            }
             return $Info;
         }
 
@@ -126,7 +143,7 @@ if (!class_exists("eVIRTUAL")) {
 
 // Protect us in case this is included differently
 if (method_exists($this, 'addGeneric')) {
-    $this->addGeneric(array("Name" => "e00392601", "Type" => "driver", "Class" => "e00392601"));
+    $this->addGeneric(array("Name" => "eVIRTUAL", "Type" => "driver", "Class" => "eVIRTUAL"));
 }
 
 ?>
