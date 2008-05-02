@@ -122,8 +122,6 @@ if (!class_exists("eVIRTUAL")) {
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $devKey   =& $Info["params"]["device"][$i];
                 $input =  $Info["params"]["input"][$i] - 1;
-//                if (empty($devKey)) continue;
-//                if (empty($input)) continue;
                 if (!is_array($this->dev[$devKey])) $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
 
                 $dev =& $this->dev[$devKey];
