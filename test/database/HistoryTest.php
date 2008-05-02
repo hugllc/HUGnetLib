@@ -130,7 +130,7 @@ class HistoryTest extends databaseTest
         return array(
             array(
                 self::$preload,
-                1,
+                array("DeviceKey" => 1),
                 "2007-12-20 02:30:02",
                 "2007-12-20 02:40:02",
                 5,
@@ -166,7 +166,7 @@ class HistoryTest extends databaseTest
            ),               
             array(
                 self::$preload,
-                1,
+                array("DeviceKey" => 1),
                 "2007-12-20 02:30:02",
                 "NOW",
                 2,
@@ -193,7 +193,7 @@ class HistoryTest extends databaseTest
            ),               
             array(
                 self::$preload,
-                2,
+                array("DeviceKey" => 2),
                 "2007-12-20 02:30:02",
                 "NOW",
                 2,
@@ -205,7 +205,7 @@ class HistoryTest extends databaseTest
      * test
      *
      * @param array $preload   Data to preload into the database.
-     * @param int   $DeviceKey The key for the device to get the history for
+     * @param array $devInfo   The key for the device to get the history for
      * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
      * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
      * @param int   $maxRec    The max number of records to return
@@ -215,10 +215,10 @@ class HistoryTest extends databaseTest
      *
      * @dataProvider dataGetDates
      */
-    public function testGetDates($preload, $DeviceKey, $startDate, $endDate, $maxRec, $expect) 
+    public function testGetDates($preload, $devInfo, $startDate, $endDate, $maxRec, $expect) 
     {
         $this->load($preload);
-        $ret = $this->o->GetDates($DeviceKey, $startDate, $endDate, $maxRec);
+        $ret = $this->o->GetDates($devInfo, $startDate, $endDate, $maxRec);
         $this->assertSame($expect, $ret);
     }
     

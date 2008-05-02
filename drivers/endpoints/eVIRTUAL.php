@@ -92,8 +92,8 @@ if (!class_exists("eVIRTUAL")) {
          */
         function checkRecord($Info, &$Rec)
         {
-            $Rec["StatusOld"] = $Rec["Status"];        
-            $Rec["Status"] = "BAD";
+//            $Rec["StatusOld"] = $Rec["Status"];        
+//            $Rec["Status"] = "BAD";
         }
         
         /**
@@ -119,6 +119,7 @@ if (!class_exists("eVIRTUAL")) {
                 $Info["params"]["sensorType"][$i] = $dev["params"]["sensorType"][$input];
                 $Info["unitType"][$i] = $dev["unitType"][$input];
                 $Info["Labels"][$i] = $dev["Labels"][$input];
+                $Info["params"]["Driver"][$i] = $dev["Driver"];
             }
             return $Info;
         }

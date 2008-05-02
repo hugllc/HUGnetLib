@@ -41,6 +41,8 @@ require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
+require_once dirname(__FILE__).'/../../hugnet.inc.php';
+
 require_once 'AnalysisTest.php'; 
 require_once 'AverageTest.php'; 
 require_once 'DeviceTest.php'; 
