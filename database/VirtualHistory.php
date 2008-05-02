@@ -74,17 +74,18 @@ class VirtualHistory extends Average
         $endpoint = HUGnetDriver::getInstance($this->config);
         $history = array();
         for ($i = 0; $i < $devInfo["ActiveSensors"]; $i++) {
-            $devKey   =& $devInfo["params"]["device"][$i];
-            $input =  (int) $devInfo["params"]["input"][$i] - 1;
+            $devKey   = (int) $devInfo["params"]["device"][$i];
+            $input = (int) $devInfo["params"]["input"][$i] - 1;
+
             if (empty($devKey)) continue;
             $dev = array("DeviceKey" => $devKey, "Driver" => $devInfo["params"]["Driver"][$i]);
-            if (!is_object($this->hist[$devKey])) $this->hist[$devKey] = $endpoint->getHistoryInstance($dev);
+            if (!is_object($this->hist[$devKey])) $this->hist[$devKey] = $endpoint->getHistoryInstance(array(), $dev);
             if (!is_array($this->histBuf[$devKey])) $this->histBuf[$devKey] = $this->hist[$devKey]->getDates($dev, $startDate, $endDate, $maxRec);
         }
         foreach ($this->histBuf as $devKey => $hist) {
             foreach ($hist as $row) {
                 for ($i = 0; $i < $devInfo["ActiveSensors"]; $i++) {
-                    if ($devKey !== $devInfo["params"]["device"][$i]) continue;
+                    if ($devKey != $devInfo["params"]["device"][$i]) continue;
                     $input =  (int) $devInfo["params"]["input"][$i] - 1;
                     $history[$row["Date"]]["Data".$i] = $row["Data".$input];
                     $history[$row["Date"]]["data"][$i] = $row["Data".$input];

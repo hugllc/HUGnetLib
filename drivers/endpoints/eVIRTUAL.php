@@ -105,6 +105,7 @@ if (!class_exists("eVIRTUAL")) {
          */
         function interpConfig(&$Info) 
         {
+            $Info["NumSensors"] = $Info["ActiveSensors"];
             parent::interpConfig($Info);
             for ($i = 0; $i < $Info["ActiveSensors"]; $i++) {
                 $devKey   =& $Info["params"]["device"][$i];
