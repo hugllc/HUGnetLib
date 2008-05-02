@@ -135,7 +135,6 @@ class VirtualHistoryTest extends databaseTest
                     "params" => array(
                         "device" => array(1,2,3),
                         "input" => array(3,2,1),
-                        "Driver" => array("eVIRTUAL", "eVIRTUAL", "eVIRTUAL"),
                     ),
                 ),
                 "2007-12-20 01:30:02",
@@ -144,17 +143,17 @@ class VirtualHistoryTest extends databaseTest
                 array(
                     array(
                         "Data0" => 8.0, 
-                        "data" => array(0 => 8.0, 2 => 8.0, 1 => 8.0),
-                        "Data2" => 8.0,
+                        "data" => array(8.0, 8.0, 8.0),
                         "Data1" => 8.0, 
+                        "Data2" => 8.0,
                         "DeviceKey" => 6, 
                         "Date" => "2007-12-20 02:15:00", 
                    ),
                     array(
                         "Data0" => 3.0, 
-                        "data" => array(0 => 3.0, 2 => 3.0, 1 => 3.0),
-                        "Data2" => 3.0,
+                        "data" => array(3.0, 3.0, 3.0),
                         "Data1" => 3.0, 
+                        "Data2" => 3.0,
                         "DeviceKey" => 6, 
                         "Date" => "2007-12-20 02:00:00", 
                    ),
