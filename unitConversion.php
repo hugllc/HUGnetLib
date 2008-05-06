@@ -382,6 +382,29 @@ class UnitConversion
         }        
         return $ret;
     }
+    /**
+     * Gets all units, or all units from $type if $type != null
+     *
+     * @param string $type The data type to use if none is specified
+     *
+     * @return array The possible conversions
+     */
+    public function getAllUnits($type=null, $flat=false) 
+    {
+
+        $ret = array();
+        $flatret = array();
+        foreach ($this->units as $c => $cat) {
+            foreach ($cat as $f => $info) {
+                $ret[$c][$f] = $f;
+                $flatret[$f] = $c.":".$f;
+            }
+        }
+
+        if (!is_null($type)) return $ret[$type];
+        if ($flat) return $flatret;
+        return $ret;
+    }
 
     /**
      * Converts from &#176; C to &#176; F.
