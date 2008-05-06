@@ -58,6 +58,26 @@ class Gateway extends HUGnetDB
     var $id = "GatewayKey";     //!< This is the Field name for the key of the record
     /** The number of columns */
     private $_columns = 6;
+    /**
+     * This returns an array setup for a HTML select list using the adodb
+     * function 'GetMenu'
+     *
+     * @param string $name       The name of the select list
+     * @param mixed  $selected   The entry that is currently selected
+     * @param int    $GatewayKey The key to use if only one gateway is to be selected
+     *
+     * @return mixed
+     */    
+    function select($where = " isVisible <> 0 ", $data = array()) 
+    {
+        $rows = $this->getWhere($where, $data);
+        $ret = array();
+        foreach ($rows as $row) {
+            $ret[$row["GatewayKey"]] = $row["GatewayName"];
+        }
+        return $ret;
+    }    
+    
 
     /**
      * Try to automatically find out which gateway to use
