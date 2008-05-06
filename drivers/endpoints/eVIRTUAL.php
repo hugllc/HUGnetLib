@@ -129,7 +129,7 @@ if (!class_exists("eVIRTUAL")) {
                 $Info["params"]["Driver"][$i]     = is_null($dev["Driver"])                       ? "eDEFAULT"  : $dev["Driver"];
                 $Info["doTotal"][$i]              = (bool)$dev["doTotal"][$i];
             }
-            return $Info;
+            $this->interpConfigVSensorSetup($Info);
         }
 
         /**
