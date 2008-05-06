@@ -576,6 +576,17 @@ if (!class_exists('eDEFAULT')) {
                     $i += $size - 1;  // 1 is added to $i in the iteration.  That is why I put the -1 here SLP 04/22/08.
                 }
             }
+            self::interpConfigVSensorSetup($Info);
+        }
+        /**
+         * This sets up all of the data on the sensors.
+         *
+         * @param array &$Info The devInfo array of the device we are working with.
+         *
+         * @return null
+         */
+        protected function interpConfigVSensorSetup(&$Info) 
+        {
             // Virtual Sensors
             for ($i = $Info["NumSensors"]; $i < $Info["TotalSensors"]; $i++) {
                 if (is_null($Info['params']["sensorType"][$i])) $Info['params']["sensorType"][$i] = "Unknown";
