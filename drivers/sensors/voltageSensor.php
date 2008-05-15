@@ -96,6 +96,38 @@ if (!class_exists('voltageSensor')) {
                     "extraText" => array("R1 in kOhms", "R2 in kOhms"),
                     "extraDefault" => array(180, 27),
                ),
+                "BAROA4" => array(
+                    "longName" => "All Sensors BARO-A-4V Barometric Pressure Sensor",
+                    "unitType" => "Pressure",
+                    "validUnits" => array('mBar', 'in Hg', 'hPa'),
+                    "defaultUnits" =>  'mBar',
+                    "function" => "linearBounded",
+                    "storageUnit" => 'mBar',
+                    "unitModes" => array(
+                        'mBar' => 'raw,diff',
+                        'in Hg' => 'raw,diff',
+                        'hPa' => 'raw,diff',
+                   ),
+                    "extraText" => array("Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    "extraDefault" => array(.25, 4.25, 600, 1100, 5),
+               ),
+                "GA100" => array(
+                    "longName" => "All Sensors GA100 Differential Pressure Sensor",
+                    "unitType" => "Pressure",
+                    "validUnits" => array('mBar', 'in Hg', 'hPa', 'psi'),
+                    "defaultUnits" =>  'psi',
+                    "function" => "linearBounded",
+                    "storageUnit" => 'psi',
+                    "unitModes" => array(
+                        'mBar' => 'raw,diff',
+                        'in Hg' => 'raw,diff',
+                        'hPa' => 'raw,diff',
+                        'psi' => 'raw,diff',
+                   ),
+                    "extraText" => array("Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    "extraDefault" => array(.5, 4.5, 0, 1, 5),
+               ),
+               
            ),
         );
     
@@ -180,6 +212,46 @@ if (!class_exists('voltageSensor')) {
             if ($humidity < 0) return null;
             $humidity = round($humidity, 4);
             return $humidity;
+        }
+
+        /**
+         * This will work with sensors that are linear and bounded
+         *
+         * Basically if we have a sensor that is linear and the ends
+         * of the line are specified (max1,max2) and (min1,min2) then this
+         * is the routine for you.
+         *
+         * Takd the case of a pressure sensor.  We are give that at Vmax the
+         * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us 
+         * the boundries of the line.  The pressure has to be between Pmax and Pmin
+         * and the voltage has to be between Vmax and Vmin.  If it is not null
+         * is returned.
+         *
+         * @param float $A      The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $T      The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Relative Humidity rounded to 4 places
+         */
+        function linearBounded($A, $sensor, $T, $extra) 
+        {
+            if (is_null($A)) return null;
+            $Vmin     = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];            
+            $Vmax     = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];            
+            $Pmin     = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];            
+            $Pmax     = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];            
+            $Vref     = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];            
+
+            $V    = $this->getVoltage($A, $T, (float) $Vref);
+            if ($V > $Vmax) return null;
+            if ($V < $Vmin) return null;
+            $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
+            $b = $Pmax - ($m * $Vmax);
+            $P = ($m * $V) + $b;
+            if ($P > $Pmax) return null;
+            if ($P < $Pmin) return null;
+            return $P;
         }
         
     }
