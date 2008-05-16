@@ -64,6 +64,8 @@ require_once 'sensors/windDirectionSensorTest.php';
 // Sockets
 require_once 'socket/dbsocketTest.php'; 
 require_once 'socket/epsocketTest.php'; 
+// Units
+require_once 'units/temperatureUnitsTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -123,7 +125,9 @@ class HUGnetLibDriverTests
         // Sockets
         $suite->addTestSuite('dbsocketTest');
         $suite->addTestSuite('epsocketTest');
- 
+        
+        // Units
+        $suite->addTestSuite('TemperatureUnitsTest');
  
         return $suite;
     }

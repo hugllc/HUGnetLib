@@ -58,199 +58,58 @@ class UnitConversion
      *  @var array
      *
      */
-    var $units = array(
-        'Temperature' => array(
-            '&#176;C' => array(
-                'longName' => '&#176;C',
-                'varType' => 'float',
-                'convert' => array(
-                    '&#176;F' => 'CtoF',
-               ),
-                'preferred' => '&#176;F',
-           ),
-            '&#176;F' => array(
-                'longName' => '&#176;F',
-                'varType' => 'float',
-                'convert' => array(
-                    '&#176;C' => 'FtoC',
-               ),
-           ),
-       ),
-        'Current' => array(
-            'A' => array(
-                'longName' => 'Amps',
-                'varType' => 'float',
-                'convert' => array(
-                    'mA' => 'toMilli',
-               ),
-           ),
-            'mA' => array(
-                'longName' => 'milliamps',
-                'varType' => 'float',
-                'convert' => array(
-                    'A' => 'fromMilli',
-               ),
-           ),
-       ),
-        'Voltage' => array(
-            'V' => array(
-                'longName' => 'Volts',
-                'varType' => 'float',
-                'convert' => array(
-                    'mV' => 'toMilli',
-               ),
-           ),
-            'mV' => array(
-                'longName' => 'millivolts',
-                'varType' => 'float',
-                'convert' => array(
-                    'V' => 'fromMilli',
-               ),
-           ),
-       ),
-        'Direction' => array(
-            '&#176;' => array(
-                'longName' => 'Compass Degrees',
-                'varType' => 'float',
-                'mode' => 'raw',        
-                'convert' => array(
-                    'Direction' => 'numDirtoDir',
-               ),
-           ),
-            'Direction' => array(
-                'longName' => 'Direction',
-                'varType' => 'text',
-                'mode' => 'raw',
-                'convert' => array(
-                    '&#176;' => 'DirtonumDir',
-               ),
-           ),  
-       ),
-        'Pulses' => array(
-            'counts' => array(
-                'longName' => 'Counts',
-                'varType' => 'int',
-                'convert' => array(
-                    'RPM' => 'CnttoRPM',    
-                    'PPM' => 'CnttoRPM',
-               ),
-           ),
-            'PPM' => array(
-                'longName' => 'Pulses Per Minute',
-                'mode' => 'diff',
-                'varType' => 'float',
-           ),
-            'RPM' => array(
-                'longName' => 'Revolutions Per Minute',
-                'mode' => 'diff',
-                'varType' => 'float',
-           ),  
-       ),
-        'Speed' => array(
-            'MPH' => array(
-                'longName' => 'Miles Per Hour',
-                'mode' => 'diff',
-                'varType' => 'float',
-           ),
-       ),
-        'Power' => array(
-            'kWh' => array(
-                'longName' => 'Kilowatt Hours',
-                'varType' => 'float',
-                'convert' => array(
-                    'Wh' => 'toMilli',
-                    'kW' => 'kWhTokW',
-                    'W' => 'kWhToW',
-               ),
-           ),
-            'kW' => array(
-                'longName' => 'Kilowatts',
-                'mode' => 'diff',
-                'varType' => 'float',
-                'convert' => array(
-                    'W' => 'toMilli',
-               ),
-           ),
-            'W' => array(
-                'longName' => 'Watts',
-                'mode' => 'diff',
-                'varType' => 'float',
-                'convert' => array(
-                    'kW' => 'fromMilli',
-               ),
-           ),
-            'Wh' => array(
-                'longName' => 'Watt Hours',
-                'varType' => 'float',
-                'convert' => array(
-                    'kWh' => 'fromMilli',
-                    'W' => 'kWhTokW',
-               ),
-           ),
-       ),
-        'Humidity' => array(
-            '%' => array(
-                'longName' => 'Relative Humidity',
-                'varType' => 'float',
-           ),
-       ),
-        'Rain' => array(
-            '&#34;' => array(
-                'longName' => 'Rain Fall',
-                'varType' => 'float',
-           ),
-       ),
-        'Light' => array(
-            'W/m^2' => array(
-                'longName' => 'Watts per Meter Squared',
-                'varType' => 'float',
-           ),
-       ),
-        'Bale Moisture' => array(
-            '%' => array(
-                'longName' => 'Percent Water by Weight',
-                'varType' => 'float',
-           ),
-       ),
-        'Capacitance' => array(
-            'F' => array(
-                'longName' => 'Farad',
-                'varType' => 'float',
-           ),
-            'uF' => array(
-                'longName' => 'Microfarad',
-                'varType' => 'float',
-           ),
-            'nF' => array(
-                'longName' => 'Nanofarad',
-                'varType' => 'float',
-           ),
-       ),
-        'Door' => array(
-            '%' => array(
-                'longName' => 'Percentage Open',
-                'varType' => 'float',
-            ),
-        ),
-        'Pressure' => array(
-            'mBar' => array(
-                'longName' => 'millibar',
-                'varType' => 'float',
-            ),
-            'psi' => array(
-                'longName' => 'pounds-force per square inch',
-                'varType' => 'float',
-            ),
-            'in Hg' => array(
-                'longName' => 'inches of mercury',
-                'varType' => 'float',
-            ),
-            'hPa' => array(
-                'longName' => 'hectapascals',
-                'varType' => 'float',
-            ),
-        ),
-    );
+    var $units = array();
+    /**
+     * This registers the sensor Plugins so we know what code we have available.
+     *
+     * @param object &$plugins This is a object of type plugin
+     * 
+     * @see plugin
+      */
+    function __construct(&$plugins = "") 
+    {
+        if (!is_object($plugins)) {
+            if (!isset($_SESSION["incdir"])) {
+                $_SESSION["incdir"] = dirname(__FILE__)."/";
+            }
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
+        }
+
+        if (is_array($plugins->plugins["Generic"]["units"])) {
+            foreach ($plugins->plugins["Generic"]["units"] as $units) {
+                $this->registerUnits($units);
+            }
+        }
+    }
+    /**
+     * Register a sensor class.
+     *
+     * @param mixed  $class The name of the sensor class to register, 
+     *                  or the actual object
+     * @param string $name  The name of the class if the above is an object.
+     *
+     * @return bool true on success, false on failure
+      */
+    public function registerUnits($units) 
+    {
+        $class = (string) $units["Class"];
+        $name  = (string) $units["Name"];
+        if (!class_exists($class)) return;
+
+        $this->unitsClass[$class] = new $class();
+
+        if (is_array($this->unitsClass[$class]->units)) {
+            $this->units[$name] = $this->unitsClass[$class]->units;
+            if (!is_array($this->units[$name])) return true;
+            foreach ($this->units[$name] as $key => $val) {
+                $this->units[$name][$key]["class"] = $class;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    
+    }
 
     /**
      * Checks to see if there is a unit that is preferred over the one given.
@@ -295,7 +154,7 @@ class UnitConversion
      * @param string $unit The unit to find
      *
      * @return array the array of unit information if it is found
-      */
+     */
     public function findUnit($unit) 
     {
 
@@ -314,7 +173,7 @@ class UnitConversion
      * @param string $default The data type to use if none is specified
      *
      * @return string The data type to use
-      */
+     */
     public function getDataType($from, $to, $default = 'all') 
     {
         if (trim(strtolower($default)) == 'ignore') return $default;
@@ -335,14 +194,14 @@ class UnitConversion
      * @param string $type The data type to use
      *
      * @return string null if no function exists, the function name otherwise. 
-      */
+     */
     protected function getConvFunct($from, $to, $type) 
     {
         if ($to == $from) return null;
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
         if (empty($t['mode']) || ($t['mode'] == $type)) {
-            return $f['convert'][$to];
+            return array($f['class'], $f['convert'][$to]);
         }
         return null;
     }
@@ -358,14 +217,19 @@ class UnitConversion
      * @param mixed  $extra Any extra stuff we might need.
      *
      * @return mixed
-      */
+     */
     public function convert($val, $from, &$to, $time, $type, $extra) 
     {
-        $func = $this->getConvFunct($from, $to, $type);
-        if (method_exists($this, $func) && ($val !== null)) {
-            $val = $this->{$func}($val, $time, $type, $extra);
+        list($class, $func) = $this->getConvFunct($from, $to, $type);
+        if (substr(trim(strtolower($func)), 0, 6) == "shift:") {
+            $shift = (int)substr($func, 6);
+            $val = $this->unitsClass[$class]->shift($val, $shift);
         } else {
-            $to = $from;
+            if (method_exists($this->unitsClass[$class], $func) && ($val !== null)) {
+                $val = $this->unitsClass[$class]->{$func}($val, $time, $type, $extra);
+            } else {
+                $to = $from;
+            }
         }
         return $val;
     }
@@ -422,258 +286,6 @@ class UnitConversion
         if (!is_null($type)) return $ret[$type];
         if ($flat) return $flatret;
         return $ret;
-    }
-
-    /**
-     * Converts from &#176; C to &#176; F.
-     *
-     * If the temperature is differential we can't add 32 like we would
-     * for an absolute temperature.  This is because it is already factored
-     * out by the subtraction in the difference.
-     *
-     * @param float  $c    The temperature in C
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float The temperature in F
-      */
-    public function cToF($c, $time, $type) 
-    {
-        $F = ((9*$c)/5);
-        if ($type != 'diff') $F += 32;
-        return($F);
-    }
-
-    /**
-     *  Converts from &#176; F to &#176; C.
-     *
-     * If the temperature is differential we can't subtract 32 like we would
-     * for an absolute temperature.  This is because it is already factored
-     * out by the subtraction in the difference.
-     *
-     * @param float  $f    The temperature in F
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float The temperature in C
-      */
-    public function fToC($f, $time, $type) 
-    {
-        if ($type != 'diff') $f -= 32;
-        return((5/9)*($f));
-    }
-    /**
-     * Change counts into revolutions per minute
-     *
-     * @param int    $cnt       The number of counts
-     * @param int    $time      The time in seconds between this record and the last.
-     * @param string $type      The type of data (diff, raw, etc)
-     * @param int    $cntPerRev the number of counts per revolution
-     *
-     * @return float null if not differential data, the RPM otherwise
-     *
-     */
-    public function cntToRPM ($cnt, $time, $type, $cntPerRev) 
-    {
-        if ($cntPerRev <= 0) $cntPerRev = 1;
-        if ($type == 'diff') {
-            $rpm = ($cnt/$time/$cntPerRev)*60;
-            return($rpm);
-        } else {
-            return(null);        
-        }    
-    }
-
-    /**
-     * The following formula is given in the datasheet
-     * AC Freq = (MPH + 0.1) / 1.6965
-     * 
-     * MPH = ACFreq * 1.6965 - 0.1    
-     *
-     *  This function has moved to the driver for pulse counters.
-     * 
-     * @param int    $cnt       The number of counts since the last record.
-     * @param int    $time      The time in seconds between this record and the last.
-     * @param string $type      The type of data (diff, raw, etc)
-     * @param int    $cntPerRev the number of counts per revolution
-     *
-     * @return float null if data is not differential, MPH otherwise
-     *
-     * @deprecated
-     */
-    /*
-    public function CnttoMPH ($cnt, $time, $type, $cntPerRev) 
-    {
-        if ($cntPerRev <= 0) $cntPerRev = 1;
-        if ($type == 'diff') {
-            $ACFreq = $cnt/$time/$cntPerRev;
-            $MPH = ($ACFreq * 1.6965) - 0.1;
-            if ($MPH < 0) $MPH = 0;
-            return($MPH);
-        } else {
-            return(null);        
-        }    
-    }
-     */
-
-    /**
-     * Converts a unit to milli.  meters to millimeters for example.
-     *
-     * @param float  $W    The number to work on
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float W*1000
-     *
-     */
-    public function toMilli($W, $time, $type) 
-    {
-        return $W*1000;
-    }
-    /**
-     * Converts a unit from milli.  millimeters to meters for example.
-     *
-     * @param float  $W    The number to work on
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float W/1000
-     *
-     */
-    public function fromMilli($W, $time, $type) 
-    {
-        return $W/1000;
-    }
-
-    /**
-     * Converts a unit to centi.  meters to centimeters for example.
-     *
-     * @param float  $W    The number to work on
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float W/100
-     * 
-     */
-    public function fromCenti($W, $time, $type) 
-    {
-        return $W/100 ;
-    }
-
-    /**
-     * Converts from a numeric compass direction to a textual direction abbreviation.
-     *
-     * So this converts 0 &#176; into 'N', 22.5 &#176; into 'NNE', etc.
-     * This function is set up so that any number greater than the previous number
-     * but less than or equal to the current number is taken for that direction.  So
-     * if we got an input of 10 &#176; then it would return 'NNE'.
-     *
-     * If the number give is out of range (less than 0 or greater than 360) 'N' is
-     * returned.
-     *
-     * @param float  $ndir The numeric direction from 0 to 360 &#176;
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return string The text direction
-     *
-     */
-    public function numDirtoDir($ndir, $time, $type) 
-    {
-        if ($ndir <= 0) return "N";
-        if ($ndir <= 22.5) return "NNE";
-        if ($ndir <= 45) return "NE";
-        if ($ndir <= 67.5) return "ENE";
-        if ($ndir <= 90) return "E";
-        if ($ndir <= 112.5) return "ESE";
-        if ($ndir <= 135) return "SE";
-        if ($ndir <= 157.5) return "SSE";
-        if ($ndir <= 180) return "S";
-        if ($ndir <= 202.5) return "SSW";
-        if ($ndir <= 225) return "SW";
-        if ($ndir <= 247.5) return "WSW";
-        if ($ndir <= 270) return "W";
-        if ($ndir <= 292.5) return "WNW";
-        if ($ndir <= 315) return "NW";
-        if ($ndir <= 337.5) return "NNW";
-        return "N";
-    }
-
-    /**
-     * Converts from a textual direction abbreviation to a numberic 
-     * compass direction.
-     *
-     * So this converts 'N' into 0 &#176; into 'N', 'NNE' into 22.5 &#176;, etc.
-     *   
-     * This function returns 0 if it gets an abbreviation that it does not 
-     * understand.
-     *
-     * @param string $ndir The text direction
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return float The text direction from 0 to 360 &#176;
-     *
-     */
-    public function dirToNumDir($ndir, $time, $type) 
-    {
-        $ndir = trim(strtoupper($ndir));
-        if ($ndir == "N") return 0;
-        if ($ndir == "NNE") return 22.5;
-        if ($ndir == "NE") return 45;
-        if ($ndir == "ENE") return 67.5;
-        if ($ndir == "E") return 90;
-        if ($ndir == "ESE") return 112.5;
-        if ($ndir == "SE") return 135;
-        if ($ndir == "SSE") return 157.5;
-        if ($ndir == "S") return 180;
-        if ($ndir == "SSW") return 202.5;
-        if ($ndir == "SW") return 225;
-        if ($ndir == "WSW") return 247.5;
-        if ($ndir == "W") return 270;
-        if ($ndir == "WNW") return 292.5;
-        if ($ndir == "NW") return 315;
-        if ($ndir == "NNW") return 337.5;
-        return 0;
-    }
-
-    /**
-     *  This function changes kWh into kW
-     *
-     *  It does this by dividing the delta time out of it.  I am
-     *  not sure if this is a valid way to do it.
-     *
-     * @param float  $val   The input value
-     * @param int    $time  The time in seconds between this record and the last.
-     * @param string $type  The type of data (diff, raw, etc)
-     * @param mixed  $extra The extra information from the sensor.
-     *
-     * @return float The kW value
-      */
-    public function kWhTokW ($val, $time, $type, $extra) 
-    {
-        if (empty($time)) return null;
-        if ($type != "diff") return null;
-        return ($val / (abs($time) / 3600));
-    }
-
-    /**
-     *  This function changes kWh into W
-     *
-     * @param float  $val   The input value
-     * @param int    $time  The time in seconds between this record and the last.
-     * @param string $type  The type of data (diff, raw, etc)
-     * @param mixed  $extra The extra information from the sensor.
-     *
-     * @return float The W value
-     *
-     * @uses unitConversion::kWhTokW()
-      */
-    public function kWhToW ($val, $time, $type, $extra) 
-    {
-        $val = unitConversion::kWhTokW($val, $time, $type, $extra);
-        if (is_null($val)) return $val;
-        return $val * 1000;
     }
 
     /**
