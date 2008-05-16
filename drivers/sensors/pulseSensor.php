@@ -98,7 +98,7 @@ if (!class_exists('pulseSensor')) {
                ),
                 'maximumRainGauge' => array(
                     "longName" => "Maximum Inc rain gauge",
-                    "unitType" => "Rain",
+                    "unitType" => "Length",
                     "validUnits" => array('&#34;'),
                     "storageUnit" =>  '&#34;',
                     "unitModes" => array(

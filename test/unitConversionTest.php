@@ -44,6 +44,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitConversion.php';
+require_once dirname(__FILE__).'/../base/UnitBase.php';
 
 /**
  * Test class for unitConversion.
@@ -66,17 +67,19 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;F' => 'CtoF',
-               ),
+                ),
                 'preferred' => '&#176;F',
-           ),
+                'class' => 'temperatureUnits',
+            ),
             '&#176;F' => array(
                 'longName' => '&#176;F',
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;C' => 'FtoC',
-               ),
-           ),
-       ),
+                ),
+                'class' => 'temperatureUnits',
+            ),
+        ),
         'Direction' => array(
             '&#176;' => array(
                 'longName' => 'Compass Degrees',
@@ -84,17 +87,19 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'mode' => 'raw',        
                 'convert' => array(
                     'Direction' => 'numDirtoDir',
-               ),
-           ),
+                ),
+                'class' => 'directionUnits',
+            ),
             'Direction' => array(
                 'longName' => 'Direction',
                 'varType' => 'text',
                 'mode' => 'raw',
                 'convert' => array(
                     '&#176;' => 'DirtonumDir',
-               ),
-           ),  
-       ),
+                ),
+                'class' => 'directionUnits',
+            ),  
+        ),
     );
 
     /**
@@ -123,7 +128,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp() 
     {
-        $this->o = new unitConversion;
+        $this->o = new unitConversion();
         $this->o->units = $this->testUnits;
     }
 
@@ -141,170 +146,6 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for testUnitArrayLongName, testUnitArrayVarType,
-     *
-     * @return array
-     */
-    public static function dataUnitArray() 
-    {
-        $o = new unitConversion;
-        $return = array();
-        foreach ($o->units as $catName => $cat) {
-            foreach ($cat as $shortName => $unit) {
-                $return[] = array($catName, $shortName, $unit);
-            }
-        }
-        return $return;
-    }
-    
-    /**
-     * Checks that LongName is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayLongName($catName, $shortName, $unit) 
-    {
-        // Long Name
-        $this->assertType("string", $unit['longName'], $catName.":".$shortName.": Long name is not a string");
-        $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");            
-    }
-    
-    /**
-     * Checks that varType is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayVarType($catName, $shortName, $unit) 
-    {
-        // Var Type
-        $this->assertType("string", $unit['varType'], $catName.":".$shortName.": Variable type is not a string");
-        $this->assertTrue($this->_checkvarType($unit['varType']), $catName.":".$shortName.": Variable type '".$unit['varType']."'is not valid");
-    }
-
-    /**
-     * Checks that the convert array is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayConvert($catName, $shortName, $unit) 
-    {
-        if (isset($unit["convert"])) {
-            $this->assertType("array", $unit["convert"], $catName.":".$shortName.": Mode is not a string");
-        }
-    }
-    
-    /**
-     * Checks that mode is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayMode($catName, $shortName, $unit) 
-    {
-        if (isset($unit["mode"])) {
-            $this->assertType("string", $unit["mode"], $catName.":".$shortName.": Mode is not a string");
-            $this->assertTrue($this->_checkMode($unit["mode"]), $catName.":".$shortName.": Mode '".$unit['varType']."'is not valid");
-        }
-    }
-    /**
-     * Checks that preferred unit is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayPreferred($catName, $shortName, $unit) 
-    {
-        if (isset($unit["preferred"])) {
-            $this->assertType("string", $unit["preferred"], $catName.":".$shortName.": Mode is not a string");
-            $this->assertTrue($this->findUnits($catName, $unit["preferred"]), $catName.":".$shortName.": Unit ".$to." doesn't exist");
-        }
-    }
-    /**
-     * Checks that only certain array keys are set
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayValid($catName, $shortName, $unit) 
-    {
-        $valid = array("mode", "convert", "longName", "varType", "preferred");
-        foreach ($valid as $key) {
-            unset($unit[$key]);
-        }
-        $this->assertSame(array(), $unit);
-    }
-    
-    /**
-     * data provider for testUnitArrayConvertFunct
-     *
-     * @return array
-     */
-    public static function dataUnitArrayConvertFunct() 
-    {
-        $o = new unitConversion;
-        $return = array();
-        foreach ($o->units as $catName => $cat) {
-            foreach ($cat as $shortName => $unit) {
-                if (is_array($unit['convert'])) {
-                    foreach ($unit['convert'] as $to => $function) {
-                        $return[] = array($catName, $shortName, $to, $function);
-                    }
-                }
-            }
-        }
-        return $return;
-    }
-    /**
-     * Tests that the convert function exists and is actually correctly set up
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit to convert from
-     * @param string $to        The unit to convert to
-     * @param string $function  The function to use to convert
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArrayConvertFunct
-     */
-    public function testUnitArrayConvertFunct($catName, $shortName, $to, $function) 
-    {
-        $this->assertTrue(method_exists($this->o, $function), $catName.":".$shortName.": conversion function ".$function." doesn't exist");
-        $this->assertTrue($this->findUnits($catName, $to), $catName.":".$shortName.": Unit ".$to." doesn't exist");
-    }
-    /**
      * Returns true if it finds the units.
      *
      * @param string $cat   The category to check in
@@ -317,7 +158,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         $o = new unitConversion;
         if (is_null($cat)) {
             if (is_array($o->units)) {
-                foreach ($array as $catName => $cat) {
+                foreach ($o->units as $catName => $cat) {
                     return isset($cat[$units]);
                 }
             }
@@ -373,36 +214,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     
     }
 
-    /**
-     * Checks to make sure a vartype is valid
-     *
-     * @param string $vartype The variable type to check
-     *
-     * @return bool
-     */
-    private function _checkvarType($vartype) 
-    {
-        if ($vartype == 'float') return true;
-        if ($vartype == 'int') return true;
-        if ($vartype == 'text') return true;
-        return false;
-    }
-    /**
-     * Checks to make sure a mode is valid
-     *
-     * @param string $mode The mode to check
-     *
-     * @return bool
-     */
-    private function _checkMode($mode) 
-    {
-        if ($mode == 'raw') return true;
-        if ($mode == 'diff') return true;
-        return false;
-    }
-    /************************************************************
-     * Here we start checking functions
-     ************************************************************/
+
     /**
      * Data provider for testPreferredUnit
      *
@@ -464,7 +276,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     public static function dataFindUnit() 
     {
         return array(
-            array('&#176;F',array('longName' => '&#176;F','varType' => 'float','convert' => array('&#176;C' => 'FtoC'))),
+            array('&#176;F',array('longName' => '&#176;F','varType' => 'float','convert' => array('&#176;C' => 'FtoC'), 'class' => 'temperatureUnits')),
             array("ASDF", false),
         );
     }
@@ -598,55 +410,8 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, $this->o->getPossConv($type, $from));
     }
-
-    /**
-     * Data provider for testFtoC() and testCtoF()
-     *
-     * @return array
-     */
-    public static function dataTemperature() 
-    {
-        return array(
-            array(100, 212, 0, "raw"),
-            array(0, 32, 0, "raw"),
-            array(-40, -40, 0, "raw"),
-            array(100, 180, 0, "diff"),
-            array(0, 0, 0, "diff"),
-        );
-    }
-    /**
-     * test CtoF()
-     *
-     * @param float  $c    The temperature in C
-     * @param float  $f    The temperature in F
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return null
-     *
-     * @dataProvider dataTemperature
-     */
-    public function testCtoF($c, $f, $time, $type) 
-    {
-        $this->assertEquals($f, $this->o->CtoF($c, $time, $type));        
-    }
-
-    /**
-     * test FtoC()
-     *
-     * @param float  $c    The temperature in C
-     * @param float  $f    The temperature in F
-     * @param int    $time The time in seconds between this record and the last.
-     * @param string $type The type of data (diff, raw, etc)
-     *
-     * @return null
-     *
-     * @dataProvider dataTemperature
-     */
-    public function testFtoC($c, $f, $time, $type) 
-    {
-        $this->assertEquals($c, $this->o->FtoC($f, $time, $type));        
-    }
+}
+class temp {
 
 
     /**
@@ -1065,64 +830,65 @@ if (PHPUnit_MAIN_METHOD == "unitConversionTest::main") {
 class UnitConversionMock extends unitConversion
 {
     /** The units array */
+    var $units = array();
+
+    /**
+     * This registers the sensor Plugins so we know what code we have available.
+     *
+     * @param object &$plugins This is a object of type plugin
+     * 
+     * @see plugin
+      */
+    function __construct(&$plugins = "") 
+    {
+        $this->registerUnits(array("Class" => "test1Units", "Name" => "Test"));
+        $this->registerUnits(array("Class" => "test2Units", "Name" => "Test2"));
+    }
+
+
+}
+/**
+ *  This is a mock class to test the rest of the system.
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class test1Units extends UnitBase
+{
     var $units = array(
-        'Test' => array(
-            'A' => array(
-                'longName' => 'A',
-                'varType' => 'float',
-                'convert' => array(
-                    'B' => 'aToB',
-                    'C' => 'aToC',
-               ),
-           ),
-            'B' => array(
-                'longName' => 'B',
-                'varType' => 'float',
-                'convert' => array(
-                    'A' => 'bToA',
-                    'C' => 'bToC',
-               ),
-                'preferred' => 'A',
-           ),
-            'C' => array(
-                'longName' => 'C',
-                'varType' => 'float',
-                'convert' => array(
-                    'A' => 'cToA',
-                    'B' => 'cToB',
-               ),
-                'preferred' => 'A',
+        'A' => array(
+            'longName' => 'A',
+            'varType' => 'float',
+            'convert' => array(
+                'B' => 'aToB',
+                'C' => 'aToC',
            ),
        ),
-        'Test2' => array(
-            'D' => array(
-                'longName' => 'D',
-                'varType' => 'float',
-                'convert' => array(
-                    'E' => 'aToB',
-                    'F' => 'aToC',
-               ),
+        'B' => array(
+            'longName' => 'B',
+            'varType' => 'float',
+            'convert' => array(
+                'A' => 'bToA',
+                'C' => 'bToC',
            ),
-            'E' => array(
-                'longName' => 'E',
-                'varType' => 'float',
-                'convert' => array(
-                    'D' => 'bToA',
-                    'F' => 'bToC',
-               ),
-                'preferred' => 'D',
+            'preferred' => 'A',
+       ),
+        'C' => array(
+            'longName' => 'C',
+            'varType' => 'float',
+            'convert' => array(
+                'A' => 'cToA',
+                'B' => 'cToB',
            ),
-            'F' => array(
-                'longName' => 'C',
-                'varType' => 'float',
-                'convert' => array(
-                    'D' => 'cToA',
-                    'E' => 'cToB',
-               ),
-           ),
+            'preferred' => 'A',
        ),
     );
-
     /**
      * Converts units A to B
      *
@@ -1204,7 +970,132 @@ class UnitConversionMock extends unitConversion
     {
         return $W/10;
     }
-
+    
 }
 
+/**
+ *  This is a mock class to test the rest of the system.
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    SVN: $Id$    
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class test2Units extends UnitBase
+{
+    var $units = array(
+        'D' => array(
+            'longName' => 'D',
+            'varType' => 'float',
+            'convert' => array(
+                'E' => 'aToB',
+                'F' => 'aToC',
+           ),
+       ),
+        'E' => array(
+            'longName' => 'E',
+            'varType' => 'float',
+            'convert' => array(
+                'D' => 'bToA',
+                'F' => 'bToC',
+           ),
+            'preferred' => 'D',
+       ),
+        'F' => array(
+            'longName' => 'C',
+            'varType' => 'float',
+            'convert' => array(
+                'D' => 'cToA',
+                'E' => 'cToB',
+           ),
+       ),
+    );
+    /**
+     * Converts units A to B
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function aToB($W, $time, $type) 
+    {
+        return 2*$W;
+    }
+
+    /**
+     * Converts units B to A
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function bToA($W, $time, $type) 
+    {
+        return $W/2;
+    }
+    /**
+     * Converts units A to C
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function aToC($W, $time, $type) 
+    {
+        return 4*$W;
+    }
+
+    /**
+     * Converts units C to A
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function cToA($W, $time, $type) 
+    {
+        return $W/4;
+    }
+    /**
+     * Converts units B to C
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function bToC($W, $time, $type) 
+    {
+        return 10*$W;
+    }
+
+    /**
+     * Converts units C to B
+     *
+     * @param float  $W    The input
+     * @param int    $time The delta time
+     * @param string $type The mode
+     *
+     * @return float
+     */    
+    public function cToB($W, $time, $type) 
+    {
+        return $W/10;
+    }
+    
+
+}
 ?>

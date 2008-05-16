@@ -854,10 +854,6 @@ class driverTest extends PHPUnit_Framework_TestCase
 
 }
 
-// Call driverTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "driverTest::main") {
-    driverTest::main();
-}
 /**
  * This is a dummy endpoint driver to test the driver class with
  *
