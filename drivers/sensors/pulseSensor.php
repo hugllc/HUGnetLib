@@ -126,8 +126,8 @@ if (!class_exists('pulseSensor')) {
                     "storageUnit" =>  'kWh',
                     "function" => "WattNode",
                     "unitModes" => array(
-                        'kWh' => 'raw,diff',
-                        'Wh' => 'raw,diff',
+                        'kWh' => 'diff, raw',
+                        'Wh' => 'diff, raw',
                         'kW' => 'diff',
                         'W' => 'diff',
                    ),
