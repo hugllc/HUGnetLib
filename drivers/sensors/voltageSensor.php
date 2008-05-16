@@ -129,7 +129,7 @@ if (!class_exists('voltageSensor')) {
                ),
                 "HitachiVFDFan" => array(
                     "longName" => "Hitachi VFD Fan Speed",
-                    "unitType" => "Pressure",
+                    "unitType" => "Pulses",
                     "validUnits" => array('RPM'),
                     "defaultUnits" =>  'RPM',
                     "function" => "linearBoundedIndirect",
