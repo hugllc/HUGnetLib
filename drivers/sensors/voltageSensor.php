@@ -127,6 +127,19 @@ if (!class_exists('voltageSensor')) {
                     "extraText" => array("Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
                     "extraDefault" => array(.5, 4.5, 0, 1, 5),
                ),
+                "HitachiVFDFan" => array(
+                    "longName" => "Hitachi VFD Fan Speed",
+                    "unitType" => "Pressure",
+                    "validUnits" => array('RPM'),
+                    "defaultUnits" =>  'RPM',
+                    "function" => "linearBoundedIndirect",
+                    "storageUnit" => 'RPM',
+                    "unitModes" => array(
+                        'RPM' => 'diff',
+                   ),
+                    "extraText" => array("R1 in kOhms", "R2 in kOhms","Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
+               ),
                
            ),
         );
@@ -141,11 +154,12 @@ if (!class_exists('voltageSensor')) {
          *
          * @return float Voltage rounded to 4 places
          */        
-        function getDividerVoltage($A, $R1, $R2, $T)
+        function getDividerVoltage($A, $R1, $R2, $T, $Vref = null)
         {
+                if (empty($Vref)) $Vref = $this->Vcc;
                 $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
                 if ($denom == 0) return 0.0;
-                $numer = $A * $this->D * $this->Vcc * ($R1 + $R2);
+                $numer = $A * $this->D * $Vref * ($R1 + $R2);
 
                 $Read = $numer/$denom;
                 return round($Read, 4);
@@ -246,6 +260,48 @@ if (!class_exists('voltageSensor')) {
             $V    = $this->getVoltage($A, $T, (float) $Vref);
             if ($V > $Vmax) return null;
             if ($V < $Vmin) return null;
+            $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
+            $b = $Pmax - ($m * $Vmax);
+            $P = ($m * $V) + $b;
+            if ($P > $Pmax) return null;
+            if ($P < $Pmin) return null;
+            return $P;
+        }
+
+        /**
+         * This will work with sensors that are linear and bounded
+         *
+         * Basically if we have a sensor that is linear and the ends
+         * of the line are specified (max1,max2) and (min1,min2) then this
+         * is the routine for you.
+         *
+         * Takd the case of a pressure sensor.  We are give that at Vmax the
+         * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us 
+         * the boundries of the line.  The pressure has to be between Pmax and Pmin
+         * and the voltage has to be between Vmax and Vmin.  If it is not null
+         * is returned.
+         *
+         * @param float $A      The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $T      The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Relative Humidity rounded to 4 places
+         */
+        function linearBoundedIndirect($A, $sensor, $T, $extra) 
+        {
+            if (is_null($A)) return null;
+            $R1       = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $R2       = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Vmin     = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];            
+            $Vmax     = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];            
+            $Pmin     = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];            
+            $Pmax     = (empty($extra[5])) ? $sensor['extraDefault'][5] : $extra[5];            
+            $Vref     = (empty($extra[6])) ? $sensor['extraDefault'][6] : $extra[6];            
+            $V  = $this->getDividerVoltage($A, $R1, $R2, $T);
+            if ($V > $Vmax) return null;
+            if ($V < $Vmin) return null;
+            if ($Vmax == $Vmin) return null;
             $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
             $b = $Pmax - ($m * $Vmax);
             $P = ($m * $V) + $b;
