@@ -230,8 +230,26 @@ class UnitConversion
             '%' => array(
                 'longName' => 'Percentage Open',
                 'varType' => 'float',
-           ),
-       ),
+            ),
+        ),
+        'Pressure' => array(
+            'mBar' => array(
+                'longName' => 'millibar',
+                'varType' => 'float',
+            ),
+            'psi' => array(
+                'longName' => 'pounds-force per square inch',
+                'varType' => 'float',
+            ),
+            'in Hg' => array(
+                'longName' => 'inches of mercury',
+                'varType' => 'float',
+            ),
+            'hPa' => array(
+                'longName' => 'hectapascals',
+                'varType' => 'float',
+            ),
+        ),
     );
 
     /**
