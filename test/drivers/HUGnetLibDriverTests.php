@@ -66,7 +66,19 @@ require_once 'socket/dbsocketTest.php';
 require_once 'socket/epsocketTest.php'; 
 // Units
 require_once 'units/temperatureUnitsTest.php';
-
+require_once 'units/baleMoistureUnitsTest.php';
+require_once 'units/currentUnitsTest.php';
+require_once 'units/doorUnitsTest.php';
+require_once 'units/lengthUnitsTest.php';
+require_once 'units/powerUnitsTest.php';
+require_once 'units/pulsesUnitsTest.php';
+require_once 'units/voltageUnitsTest.php';
+require_once 'units/capacitanceUnitsTest.php';
+require_once 'units/directionUnitsTest.php';
+require_once 'units/humidityUnitsTest.php';
+require_once 'units/lightUnitsTest.php';
+require_once 'units/pressureUnitsTest.php';
+require_once 'units/speedUnitsTest.php';
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
@@ -128,7 +140,19 @@ class HUGnetLibDriverTests
         
         // Units
         $suite->addTestSuite('TemperatureUnitsTest');
- 
+        $suite->addTestSuite('baleMoistureUnitsTest');
+        $suite->addTestSuite('currentUnitsTest');
+        $suite->addTestSuite('doorUnitsTest');
+        $suite->addTestSuite('lengthUnitsTest');
+        $suite->addTestSuite('powerUnitsTest');
+        $suite->addTestSuite('pulsesUnitsTest');
+        $suite->addTestSuite('voltageUnitsTest');
+        $suite->addTestSuite('capacitanceUnitsTest');
+        $suite->addTestSuite('directionUnitsTest');
+        $suite->addTestSuite('humidityUnitsTest');
+        $suite->addTestSuite('lightUnitsTest');
+        $suite->addTestSuite('pressureUnitsTest');
+        $suite->addTestSuite('speedUnitsTest');
         return $suite;
     }
 }
