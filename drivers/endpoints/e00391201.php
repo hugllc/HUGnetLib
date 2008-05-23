@@ -225,7 +225,10 @@ if (!class_exists("e00391201")) {
             } else {
                 $Info["Labels"] = $this->labels["DEFAULT"];            
             }
-
+            $sType = "DEFAULT";
+            for ($i = 0; $i < $Info["ActiveSensors"]; $i++) {
+                $Info["params"]["sensorType"][$i] = $this->sensorTypes[$sType][$i];
+            }
         }
         /**
          * Interprets a config packet
