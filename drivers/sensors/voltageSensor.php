@@ -68,6 +68,34 @@ if (!class_exists('voltageSensor')) {
                ),
            ),
             0x40 => array(
+                "Indirect" => array(
+                    "longName" => "Resistor Divider Voltage Sensor",
+                    "unitType" => "Voltage",
+                    "validUnits" => array('V', 'mV'),
+                    "defaultUnits" =>  'V',
+                    "function" => "indirect",
+                    "storageUnit" => 'V',
+                    "unitModes" => array(
+                        'mV' => 'raw,diff',
+                        'V' => 'raw,diff',
+                   ),
+                    "extraText" => array("R1 in kOhms", "R2 in kOhms", "AtoD Ref Voltage"),
+                    "extraDefault" => array(150, 10, 5),
+               ),
+                "Direct" => array(
+                    "longName" => "Direct Voltage Sensor",
+                    "unitType" => "Voltage",
+                    "validUnits" => array('V', 'mV'),
+                    "defaultUnits" =>  'V',
+                    "function" => "direct",
+                    "storageUnit" => 'V',
+                    "unitModes" => array(
+                        'mV' => 'raw,diff',
+                        'V' => 'raw,diff',
+                   ),
+                    "extraText" => array("AtoD Ref Voltage"),
+                    "extraDefault" => array(5),
+               ),
                 "FETBoard" => array(
                     "longName" => "FET Board Voltage Sensor",
                     "unitType" => "Voltage",
@@ -184,6 +212,47 @@ if (!class_exists('voltageSensor')) {
             $V = round($V, 4);
             return $V;
         }    
+        /**
+         * Volgate for the FET board voltage dividers
+         *
+         * @param float $val    The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $TC     The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Voltage rounded to 4 places
+         */
+        function indirect($val, $sensor, $TC, $extra=null) 
+        {
+            $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Vref = (float)(empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $V  = $this->getDividerVoltage($val, $R1, $R2, $TC, $Vref);
+            if ($V < 0) $V = null;
+            $V = round($V, 4);
+            return $V;
+        }    
+
+        /**
+         * This sensor returns us 10mV / % humidity
+         *
+         * @param float $A      The incoming value
+         * @param array $sensor The sensor setup array
+         * @param int   $T      The time constant
+         * @param mixed $extra  Extra parameters for the sensor
+         *
+         * @return float Relative Humidity rounded to 4 places
+         */
+        function direct($A, $sensor, $T, $extra) 
+        {
+            if (is_null($A)) return null;
+            $Vref = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];            
+            $V    = $this->getVoltage($A, $T, (float) $Vref);
+            if ($V < 0) return null;
+            if ($V > $Vref) return null;
+            $V = round($V, 4);
+            return $V;
+        }
     
         /**
          * Gets the units for a sensor

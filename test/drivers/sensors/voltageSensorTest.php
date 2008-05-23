@@ -161,6 +161,30 @@ class voltageSensorTest extends sensorTestBase
     }
 
     /**
+     * Data provider for testFETBoard
+     */
+    public static function dataIndirect() 
+    {
+        return array(
+            array(1000, array("extraDefault"=>array(1, 1, 5)), 1, array(1, 1, 5), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1, 5)), 1, array(1, 0, 5), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1, 5)), 1, array(0, 1, 5), 0, 0.1527),
+            array(1000, array("extraDefault"=>array(1, 1, 5)), 1, null, 0, 0.1527),
+        );
+    }
+    /**
+     * test
+     *
+     * @return null
+     *
+     * @dataProvider dataIndirect
+     */
+    public function testIndirect($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    {
+        parent::sensorTest("voltageSensor", "Indirect", $val, $sensor, $TC, $extra, $deltaT, $expect);
+    }
+
+    /**
      * Data provider for GetVoltage
      */
     public static function dataGetVoltage() 
@@ -211,6 +235,31 @@ class voltageSensorTest extends sensorTestBase
     public function testCHSMSS($val, $sensor, $TC, $extra, $deltaT, $expect) 
     {
         parent::sensorTest("voltageSensor", "CHSMSS", $val, $sensor, $TC, $extra, $deltaT, $expect);
+    }
+
+    /**
+     * Data provider for testCHSMSS
+     */
+    public static function dataDirect()
+    {
+        return array(
+            array(10000, array("extraDefault"=>array(5)), 1, array(1.1), 0, .168),
+            array(10000, array("extraDefault"=>array(5)), 1, null, 0, .7637),
+            array(10000, array("extraDefault"=>array(5)), 1, array(0), 0, .7637),
+            array(65535, array("extraDefault"=>array(5)), 1, array(1.1), 0, null),
+            array(-10000, array("extraDefault"=>array(5)), 1, array(1.1), 0, null),
+        );
+    }
+    /**
+     * test
+     *
+     * @return null
+     *
+     * @dataProvider dataDirect
+     */
+    public function testDirect($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    {
+        parent::sensorTest("voltageSensor", "direct", $val, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
 }

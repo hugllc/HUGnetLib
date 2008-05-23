@@ -158,7 +158,8 @@ class e00391201Test extends endpointTestBase
                     "FET2Mult" => 80,
                     "FET3Mult" => 96,
                     "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
-               ),
+                    "params" => array("sensorType" => array("FETBoard", "FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard")),
+               ), 
                 "Packets" => array(
                     array(
                         "RawData" => "078511bb00cb11b3006711c6004210ac00fc4d",
