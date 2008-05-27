@@ -283,18 +283,18 @@ class EPacket
      */
     function packetCallBack($pkt) 
     {
-        if ($this->verbose) print "Checking for Callback Function...  ";
+        if ($this->verbose > 1) print "Checking for Callback Function...  ";
         $function = $this->callBackFunction;
-        if ($this->verbose) print " ".$function." ";
+        if ($this->verbose > 1) print " ".$function." ";
         if (is_object($this->callBackObject)) {
-            if ($this->verbose) print " ".get_class($this->callBackObject)." ";
+            if ($this->verbose > 1) print " ".get_class($this->callBackObject)." ";
             if (method_exists($this->callBackObject, $function)) {
-                if ($this->verbose) print " Calling ".get_class($this->callBackObject)."->".$function;
+                if ($this->verbose > 1) print " Calling ".get_class($this->callBackObject)."->".$function;
                 $this->callBackObject->$function($pkt);
             }
         } else {
             if (function_exists($function)) {
-                if ($this->verbose) print "Calling ".$function;
+                if ($this->verbose > 1) print "Calling ".$function;
                 $function($pkt);
             }
         }
@@ -883,12 +883,12 @@ class EPacket
      *
      * @return string returns the packet it got.
      */
-    function monitor($Info, $timeout = 0) 
+    function monitor($config, $timeout = 0) 
     {
         $this->_getAll = true;
-        if ($this->verbose) print("Waiting on Packets from ".$Info["GatewayName"].":".$Info["GatewayPort"]."\n");
-        $return        = $this->connect($Info);
-        $return        = $this->RecvPacket($Info['GatewayKey'], $timeout);
+        if ($this->verbose) print("Waiting on Packets from ".$config["GatewayName"].":".$config["GatewayPort"]."\n");
+        $return        = $this->connect($config);
+        $return        = $this->RecvPacket($config['GatewayKey'], $timeout);
         $this->_getAll = false;
         return $return;
     }
@@ -923,19 +923,19 @@ class EPacket
         
 
     /**
-     * Check if we are connected.  If not it connects to the gateway specified in $Info.
+     * Check if we are connected.  If not it connects to the gateway specified in $config.
      *
-     * @param array &$Info Array Infomation about the device to use            
+     * @param array $config Infomation about the device to use            
      *
      * @return bool false on failure, true on success
      */
-    function connect(&$Info) 
+    function connect($config) 
     {
-        if (empty($Info["GatewayKey"])) $Info["GatewayKey"] = 1;
-        if ($this->checkConnect($Info["GatewayKey"])) return true;
-        $ret = $this->_connectOpenSocket($Info);
-        if ($ret) $ret = $this->socket[$Info["GatewayKey"]]->connect();
-        if ($ret) $this->_connectSetSN($Info);
+        if (empty($config)) $config = $this->config;
+        if ($this->checkConnect($config["GatewayKey"])) return true;
+        $ret = $this->_connectOpenSocket($config);
+        if ($ret) $ret = $this->socket[$config["GatewayKey"]]->connect();
+        if ($ret) $this->_connectSetSN($config);
         return true;
     }
     
@@ -959,33 +959,34 @@ class EPacket
      *
      * @return bool false on failure, true on success
      */
-    private function _connectOpenSocket($Info) 
+    private function _connectOpenSocket($config=array()) 
     {
-        if ($Info['socketType'] == "db") {
-            $this->socket[$Info['GatewayKey']] = new dbsocket($this->_db, $this->verbose);
-        } else if ($Info['socketType'] == "test") {
+        if (empty($config)) $config = $this->config;
+        if ($config['socketType'] == "db") {
+            $this->socket[$config['GatewayKey']] = new dbsocket($config);
+        } else if ($config['socketType'] == "test") {
             if (!class_exists("epsocketMock")) return false;
-            $this->socket[$Info['GatewayKey']] = new epsocketMock($Info["GatewayIP"], $Info["GatewayPort"]);
+            $this->socket[$config['GatewayKey']] = new epsocketMock($config["GatewayIP"], $config["GatewayPort"]);
         } else {
-            $this->socket[$Info['GatewayKey']] = new epsocket($Info["GatewayIP"], $Info["GatewayPort"], $this->verbose);
+            $this->socket[$config['GatewayKey']] = new epsocket($config["GatewayIP"], $config["GatewayPort"], $this->verbose);
         }
-        $this->Info[$Info['GatewayKey']] = $Info;
-        return is_object($this->socket[$Info['GatewayKey']]);
+        $this->Info[$config['GatewayKey']] = $config;
+        return is_object($this->socket[$config['GatewayKey']]);
     }
 
     /**
      * Figures out if we need to check the serial number.
      *
-     * @param array &$Info Array Infomation about the device to use            
+     * @param array &$config Array Infomation about the device to use            
      *
      * @return bool false on failure, true on success
      */
-    private function _connectSetSN(&$Info) 
+    private function _connectSetSN(&$config) 
     {
-        if (!$this->checkConnect($Info["GatewayKey"])) return;
+        if (!$this->checkConnect($config["GatewayKey"])) return;
         if ($this->_DeviceIDCheck) {
             if (($this->SN == false) || ((hexdec($this->SN) >= $this->maxSN) || (hexdec($this->SN) < 1))) {
-                $this->changeSN($Info);
+                $this->changeSN($config);
                 if ($this->verbose) print "Using Serial Number ".$this->SN."\r\n";
                 // Put something here
             }
@@ -995,38 +996,35 @@ class EPacket
     /**
      * Closes the connection to the specified gateway.    
      *
-     * @param array $Info Infomation about the device to use            
+     * @param array $config Infomation about the device to use            
      *
      * @return null
      */
-    function close($Info)
+    function close($config)
     {
-        if (is_object($this->socket[$Info['GatewayKey']])) {
-            $this->socket[$Info['GatewayKey']]->close();
+        if (is_object($this->socket[$config['GatewayKey']])) {
+            $this->socket[$config['GatewayKey']]->close();
         }
     }
 
     /**
-     * If $Info is given it will try to connect to the server that is specified in it.
+     * If $config is given it will try to connect to the server that is specified in it.
      *
-     * @param array  $Info    Infomation about the device to use
-     * @param bool   $verbose If true a lot of stuff is printed out
-     * @param object &$db     PDO database object
-     * @param bool   $snCheck(Should we check the serial number
+     * @param array $config  Infomation about the connection
+     * @param bool  $snCheck Should we check the serial number
      *
      * @return null
      */
-    function __construct($Info=false, $verbose=false, &$db = null, $snCheck=true) 
+    function __construct($config=array(), $snCheck=true) 
     {
-        if (is_object($db)) {
-            $this->_db = &$db;
-        }
         $this->snCheck($snCheck);
         $this->_createSNArray();
-        $this->verbose = $verbose;
-        if (is_array($Info)) {
-            $this->connect($Info);
+        $this->verbose = $config["verbose"];
+        if (!empty($config)) {
+            $this->connect($config);
         }
+        if (empty($config["GatewayKey"])) $config["GatewayKey"] = 1;
+        $this->config = $config;
     }
     
     /**

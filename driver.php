@@ -574,7 +574,7 @@ class HUGnetDriver
         $this->gateway = &HUGnetDB::getInstance("Gateway", $config);
         $this->device = &HUGnetDB::getInstance("Device", $config);
 
-        $this->packet = new EPacket(null, $this->verbose);
+        $this->packet = new EPacket($config);
         $this->unit = new unitConversion();
 
         $this->drivers["eDEFAULT"] = new eDEFAULT($this, $this->config);
