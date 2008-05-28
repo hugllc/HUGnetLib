@@ -143,7 +143,7 @@ class EPacket
     /** The timeout for waiting for a packet in seconds */
     var $ReplyTimeout = 5;
     /** The timeout for waiting for a packet in seconds */
-    var $IndirectReplyTimeout = 30;
+    var $IndirectReplyTimeout = 20;
     /** The timeout for waiting for a packet in seconds */
     var $AckTimeout = 2;
     /** The timeout for waiting for a packet in seconds */
@@ -383,7 +383,7 @@ class EPacket
         $ret = array();
         foreach ($PacketList as $Packet) {
             if (!is_array($Packet)) continue;
-            if (!is_object($this->socket[$socket])) $this->connect($Info);
+            if (!is_object($this->socket[$socket])) $this->connect($this->config);
             $index = $this->_setupsendPacket($Info, $Packet, $pktTimeout, $GetReply);
             $Packet["PktStr"] = devInfo::deHexify($this->packetBuild($Packet));
             $retval = $this->_sendPacketWrite($socket, $Packet, $index);
@@ -964,6 +964,7 @@ class EPacket
         if (empty($config)) $config = $this->config;
         if ($config['socketType'] == "db") {
             $this->socket[$config['GatewayKey']] = new dbsocket($config);
+            $this->ReplyTimeout = $this->IndirectReplyTimeout;
         } else if ($config['socketType'] == "test") {
             if (!class_exists("epsocketMock")) return false;
             $this->socket[$config['GatewayKey']] = new epsocketMock($config["GatewayIP"], $config["GatewayPort"]);
@@ -1017,7 +1018,8 @@ class EPacket
      */
     function __construct($config=array(), $snCheck=true) 
     {
-        $this->snCheck($snCheck);
+        if (!isset($config["packetSNCheck"])) $config["packetSNCheck"] = $snCheck;
+        $this->snCheck($config["packetSNCheck"]);
         $this->_createSNArray();
         $this->verbose = $config["verbose"];
         if (!empty($config)) {
