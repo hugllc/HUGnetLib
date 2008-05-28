@@ -129,9 +129,9 @@ if (!class_exists("dbsocket")) {
             $id                      = rand(1, 24777216);  // Big random number for the id
             $this->packet[$id]       = $pkt;
             $this->packet[$id]["id"] = $id;
-    
+
             $ret = $this->_insertPacket($this->packet[$id]);
-    
+
             if ($ret === false) {
                 return false;
             } else {
@@ -174,12 +174,14 @@ if (!class_exists("dbsocket")) {
             if (!is_string($this->replyPacket)) $this->replyPacket = "";
             if (!empty($this->replyPacket)) return true;
             $res = $this->getWhere(" Type = 'REPLY'");
+
             if (is_array($res)) {
                 foreach ($res as $pkt) {
                     if (is_array($this->packet[$pkt["id"]])) {
+                        $pkt["PacketTo"] = $this->packet[$pkt["id"]]["SentFrom"];
                         $this->replyPacket = $this->_packetify($pkt);
-                        $this->reply       = $pkt["id"];
                         $this->index       = 0;
+                        $this->_deletePacket($pkt["id"]);
                         return true;
                     }
                 }
@@ -197,10 +199,6 @@ if (!class_exists("dbsocket")) {
         private function _deletePacket($id) 
         {
             unset($this->packet[$id]);
-            if ($this->reply == $id) {
-                unset($this->reply);
-                $this->index = 0;
-            }
             $this->remove($id);
     
         }
@@ -221,7 +219,6 @@ if (!class_exists("dbsocket")) {
                     
                     $this->index += 2;
                     if ($this->index >= strlen($this->replyPacket)) {
-                        $this->_deletePacket($this->reply);
                         $this->index       = 0;
                         $this->replyPacket = "";
                     }
@@ -289,10 +286,11 @@ if (!class_exists("dbsocket")) {
          *
          * @return null
          */
-        public function __construct(&$db, $verbose=false) 
+        public function __construct($config, $verbose=false) 
         {
             $this->verbose($verbose);
-            parent::__construct($db);
+            $config["table"] = $config["socketTable"];
+            parent::__construct($config);
         }
         
     }

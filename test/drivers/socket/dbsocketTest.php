@@ -221,6 +221,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 "id" => 123456,
+                "from" => "000020",
                 "queries" => array(
                     0 => "('id', 'DeviceKey', 'GatewayKey', 'Date', 'Command','sendCommand' "
                         .", 'PacketFrom', 'PacketTo', 'RawData', 'sentRawData' "
@@ -249,12 +250,12 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataReadChar
      */
-    public function testReadChar($id, $queries, $expect) 
+    public function testReadChar($id, $from, $queries, $expect) 
     {
         foreach ($queries as $query) {
             $this->pdo->query("INSERT INTO ".$this->table." ".$query);
         }
-        $this->s->packet[$id] = array(1,2,3,4);
+        $this->s->packet[$id] = array("SentFrom" => $from);
         $str = "";
         // This calls readChar the way it was meant to be called.
         // i.e. over and over until false is returned.
