@@ -32,6 +32,8 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is the base socket code */
+require_once HUGNET_INCLUDE_PATH."/base/SocketBase.php";
 
 /** The placeholder for the Acknoledge command */
 define("PACKET_COMMAND_ACK", "01");
@@ -152,8 +154,6 @@ class EPacket
     /** Whether to be verbose */
     var $verbose = false;
 
-    /** The preamble byte */
-    private static $preambleByte = "5A";
     /** The default serial number to use */
     public $SN = "000020";
     /** The default serial number to use */
@@ -177,63 +177,6 @@ class EPacket
     /** @var bool Tells us whether to use direct access to the endpoints */
     private $_direct = true;
 
-    /**
-     * Builds a packet
-     * 
-     * This function actually builds the packet to write to the socket.  It takes in
-     * an array of the form:
-     * <code>
-     * array["To"] = "0000A5";
-     * array["Command"] = 02;
-     * array["Data"][0] = 00;
-     * array["Data"][1] = 01;
-     * ...
-     * </code> 
-     *
-     * @param array  $Packet This is an array with packet commands in it.
-     * @param string $from   If the packet is not from me this is the from address to use.
-     *
-     * @return string The packet in string form.
-     */
-    function packetBuild($Packet, $from=null) 
-    {
-        if (empty($from)) $from = $this->SN;
-        if (!is_array($Packet)) $Packet = array();
-        $string       = "";
-        $Packet       = array_change_key_case($Packet, CASE_LOWER);
-        $return       = false;
-        $Packet["to"] = trim($Packet["to"]);
-        $Packet["to"] = substr($Packet["to"], 0, 6);
-        if (strlen($Packet["to"]) > 0) {
-            $Packet["to"] = str_pad($Packet["to"], 6, "0", STR_PAD_LEFT);
-            $string       = $Packet["command"];
-            $string      .= $Packet["to"];
-            $string      .= substr(trim($from), 0, 6);
-            $string      .= sprintf("%02X", (strlen($Packet["data"])/2));
-            $string      .= $Packet["data"];
-            $return       = self::$preambleByte.self::$preambleByte.self::$preambleByte;
-            $return      .= $string.EPacket::PacketGetChecksum($string);
-        }
-        return($return);
-    }
-
-    /**
-     * Computes the checksum of a packet
-     *
-     * @param string $PktStr The raw packet string
-     *
-     * @return string The checksum
-     */
-    public function packetGetChecksum($PktStr) 
-    {
-        $chksum = 0;
-        for ($i = 0; $i < strlen($PktStr); $i+=2) {
-            $val     = hexdec(substr($PktStr, $i, 2));
-            $chksum ^= $val;
-        }
-        $return = sprintf("%02X", $chksum);
-        return $return;
-    }
     
     /**
      * Creates a packet array from the parameters given
@@ -248,6 +191,7 @@ class EPacket
     {
         $pkt = array(
             'To'      => $to,
+            'From'    => $this->SN,
             'Command' => $command,
             'Data'    => $data,
         );
@@ -298,7 +242,7 @@ class EPacket
                 $function($pkt);
             }
         }
-        if ($this->verbose) print " Done\r\n";
+        if ($this->verbose > 1) print " Done\r\n";
     }
     
     /**
@@ -331,7 +275,9 @@ class EPacket
         if ($this->verbose) print "Setting up the packet send\n";
         $Packet = array_change_key_case($Packet, CASE_LOWER);
         if (empty($Packet['data'])) $Packet['data'] = "";
+        if (empty($Packet['from'])) $Packet['from'] = $this->SN;
         devInfo::setStringSize($Packet["to"], 6);
+        devInfo::setStringSize($Packet["from"], 6);
         devInfo::setStringSize($Packet["command"], 2);
         $this->Packets[$this->_index] = array(
             "pktTimeout" => $timeout,
@@ -385,8 +331,10 @@ class EPacket
             if (!is_array($Packet)) continue;
             if (!is_object($this->socket[$socket])) $this->connect($this->config);
             $index = $this->_setupsendPacket($Info, $Packet, $pktTimeout, $GetReply);
-            $Packet["PktStr"] = devInfo::deHexify($this->packetBuild($Packet));
-            $retval = $this->_sendPacketWrite($socket, $Packet, $index);
+//            $Packet["PktStr"] = devInfo::deHexify(SocketBase::packetBuild($Packet));
+            if ($retval = $this->socket[$socket]->SendPacket($this->Packets[$index])) {
+                $retval = $this->_sendPacketGetReply($socket, $index);
+            }
             if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
         }
@@ -397,29 +345,7 @@ class EPacket
 
     }
 
-    /**
-     * Does the actual packet sending and calls the receive function
-     *
-     *  Returns an array of packet arrays on success, false on failure
-     *
-     * @param int   $socket  The socket to use
-     * @param array &$Packet The packet array of the packet to send out
-     * @param int   $index   The packet index to use
-     *
-     * @return mixed
-     */
-    private function _sendPacketWrite($socket, &$Packet, $index) 
-    {
-        $ret = false;
-        if (!is_object($this->socket[$socket])) return $ret;
-        for ($count = 0; ($count < $this->Retries) && ($ret == false); $count++) {
-            if ($this->verbose) print "Sending: ".devInfo::hexifyStr($Packet["PktStr"])."\n";
-            $write = $this->socket[$socket]->Write($Packet["PktStr"], $this->Packets[$index]);
-            if (empty($write)) continue;
-            $ret = $this->_sendPacketGetReply($socket, $index);
-        }
-        return $ret;
-    }
+
 
     /**
      *  Gets a reply from the endpoint.
@@ -588,88 +514,15 @@ class EPacket
      */
     function RecvPacket($socket, $timeout=0) 
     {
-        $timeout  = $this->_getReplyTimeout($timeout);
+        if (!is_object($this->socket[$socket])) return false;
         $Start    = time();
         $GotReply = false;
-        if (!is_object($this->socket[$socket])) return false;
 
         do {
-            if (!$this->_recvPacketGetChar($socket, $timeout)) continue;
-            $GotReply = $this->_recvPacketCheckPkt($socket);
-            if ($GotReply !== false) break;
-        } while ((time() - $Start) < $timeout);
+            $pkt = $this->socket[$socket]->RecvPacket($timeout);
+            if ($pkt !== false) $GotReply = $this->interpPacket($pkt, $socket);
+        } while (($GotReply == false) && ((time() - $Start) < $timeout));
         return $GotReply;
-
-    }
-    /**
-     *  Gets a character
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @param int $socket  The socket we are using
-     * @param int $timeout The timeout to use.
-     *
-     * @return bool
-     */
-    private function _recvPacketGetChar($socket, $timeout) 
-    {
-        $char = $this->socket[$socket]->ReadChar($timeout);
-        if ($char !== false) {
-            $char = devInfo::hexify(ord($char));
-            
-            $this->socket[$socket]->buffer .= $char;
-            
-            return true;
-        } else {
-            return false;
-        }    
-    }
-    /**
-     * Checks to see if what is in the buffer is a packet
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @param int $socket The socket we are using
-     *
-     * @return mixed
-     */
-    private function _recvPacketCheckPkt($socket) 
-    {
-        $pkt = $this->_recvPacketGetPacket($socket);
-        if (is_string($pkt)) {
-            
-            if ($this->verbose) print "Got Pkt: ".$pkt." on ".$socket."\r\n";
-            $GotReply = $this->interpPacket($pkt, $socket);
-            return $GotReply;
-        } else {
-            return false;
-        }
-    }
-
-    
-    /**
-     * Finds a potential packet in a string
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @param int $socket The socket we are using
-     *
-     * @return mixed
-     */
-    private function _recvPacketGetPacket($socket) 
-    {
-        $pkt = stristr($this->socket[$socket]->buffer, self::$preambleByte.self::$preambleByte);
-        self::_removePreamble($pkt);
-        $len = hexdec(substr($pkt, 14, 2));
-        if (strlen($pkt) >= ((9 + $len)*2)) {
-            $ret = substr($pkt, 0, (9+$len)*2);
-            // Erase the buffer right away
-            $this->socket[$socket]->buffer = ""; //= substr($pkt, (9+$len)*2);
-            return $ret;
-        } else {
-            return false;
-        }
-    
     }
 
     /**
@@ -804,11 +657,12 @@ class EPacket
      *
      * @return mixed false on failure, The interpreted packet on success.
      */
-    function interpPacket($data, $sock=0) 
+    function interpPacket($pkt, $sock=0) 
     {
-        $pkt = $this->unbuildPacket($data);
+        $pkt["Time"]         = EPacket::packetTime();
+
         if ($pkt["Checksum"] != $pkt["CalcChecksum"]) {
-            if ($this->verbose) print "Bad Packet Received: ".$data."\r\n";
+            if ($this->verbose) print "Bad Packet Received: ".$pkt["RawData"]."\r\n";
             return false;
         }
         $this->_checkPacketReply($pkt, $sock);
@@ -817,61 +671,6 @@ class EPacket
         return $pkt;
     }
 
-    /**
-     * Removes the preamble from a packet string
-     *
-     * @param string &$data The preamble will be removed from this packet string
-     *
-     * @return null
-     */ 
-    private function _removePreamble(&$data) 
-    {
-        while (substr($data, 0, 2) == self::$preambleByte) $data = substr($data, 2);    
-    }
-    /**
-     * Splits the data string into an array
-     *
-     * @param string $data The preamble will be removed from this packet string
-     *
-     * @return array
-     */ 
-    private function _splitDataString($data) 
-    {
-        for ($i = 0; $i < (strlen($data)/2); $i++) {
-            $ret[] = hexdec(substr($data, ($i*2), 2));
-        }
-        return $ret;
-    }
-    /**
-     * Turns a packet string into an array of values.
-     *
-     * @param string $data The raw packet to parse
-     *
-     * @return array The packet array created from the string
-     */
-    function unbuildPacket($data) 
-    {
-        // Strip off any preamble bytes.
-        $data = strtoupper($data);
-        EPacket::_removePreamble($data);
-        $pkt = array();
-        $pkt["Command"] = substr($data, 0, 2);
-        $pkt["To"]      = substr($data, 2, 6); 
-        devInfo::setStringSize($pkt["To"], 6);
-        $pkt["From"] = substr($data, 8, 6);
-        devInfo::setStringSize($pkt["From"], 6);
-
-        $length              = hexdec(substr($data, 14, 2));
-        $pkt["Length"]       = $length;
-        $pkt["RawData"]      = substr($data, 16, ($length*2));
-        $pkt["Data"]         = EPacket::_splitDataString($pkt["RawData"]);
-        $pkt["Checksum"]     = substr($data, (16 + ($length*2)), 2);
-        $pktdata             = substr($data, 0, strlen($data)-2);
-        $pkt["CalcChecksum"] = EPacket::PacketGetChecksum($pktdata);
-        $pkt['RawPacket']    = $data;
-        $pkt["Time"]         = EPacket::packetTime();
-        return $pkt;
-    }
     
     
     
@@ -963,14 +762,15 @@ class EPacket
     {
         if (empty($config)) $config = $this->config;
         if ($config['socketType'] == "db") {
-            $this->socket[$config['GatewayKey']] = new dbsocket($config);
+            $class = "dbsocket";
             $this->ReplyTimeout = $this->IndirectReplyTimeout;
         } else if ($config['socketType'] == "test") {
-            if (!class_exists("epsocketMock")) return false;
-            $this->socket[$config['GatewayKey']] = new epsocketMock($config["GatewayIP"], $config["GatewayPort"]);
+            $class = "epsocketMock";
         } else {
-            $this->socket[$config['GatewayKey']] = new epsocket($config["GatewayIP"], $config["GatewayPort"], $this->verbose);
+            $class = "epsocket";
         }
+        if (!class_exists($class)) return false;
+        $this->socket[$config['GatewayKey']] = new $class($config);
         $this->Info[$config['GatewayKey']] = $config;
         return is_object($this->socket[$config['GatewayKey']]);
     }

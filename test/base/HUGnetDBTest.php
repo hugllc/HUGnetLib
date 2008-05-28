@@ -1125,9 +1125,9 @@ class HUGnetDBTest extends databaseTest
     {
         return array(
             array(0, 0),
-            array(15, 15),
+            array(15, 14),
             array(false, 0),
-            array(true, 1),
+            array(true, 0),
         );
     }
     /**
@@ -1176,7 +1176,7 @@ class HUGnetDBTest extends databaseTest
      */
     public function testPrintError() 
     {
-        $this->o->verbose(true);
+        $this->o->verbose(2);
         $this->o->errorState = "ABCDE";
         $this->o->error      = -1;
         $this->o->errorMsg   = "This is an error";

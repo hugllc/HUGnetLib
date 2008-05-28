@@ -879,7 +879,10 @@ class HUGnetDB
      */    
     public function verbose($level=0)
     {
-        $this->verbose = (int) $level;
+        $level = (int) $level;
+        // This means that it requires verbose level 2 to show anything
+        if ($level > 0) $level--;
+        $this->verbose = $level;
     }
 
     /**

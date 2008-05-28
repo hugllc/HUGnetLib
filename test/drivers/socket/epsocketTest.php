@@ -96,7 +96,11 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
     protected function setUp() 
     {
         $this->proc = proc_open("php ".dirname(__FILE__)."/epsocketTestScript.php", $this->descriptorspec, $this->pipes);
-        $this->s    = new epsocket($this->host, $this->port);
+        $config = array(
+            "GatewayIP"   => $this->host,
+            "GatewayPort" => $this->port,
+        );
+        $this->s    = new epsocket($config);
     }
 
     /**

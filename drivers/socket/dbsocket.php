@@ -33,29 +33,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-/** The default port for connection to seriald */
-define("SOCKET_DEFAULT_PORT", 1200);
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_NOREPLY_NO", -1);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_NOREPLY", "Board failed to respond");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_BADC_NO", -2);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_BADC", "Board responded: Bad Command");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_TIMEOUT_NO", -3);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_TIMEOUT", "Timeout waiting for reply");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_BADC_NO", -4);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_BADC", "Board responded: Bad Command");
-
-/** Used for manipulating devInfo arrays */
-require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 /** The base for all database classes */
-require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
+require_once HUGNET_INCLUDE_PATH."/base/SocketBase.php";
 
 if (!class_exists("dbsocket")) {
     /**
@@ -74,7 +53,7 @@ if (!class_exists("dbsocket")) {
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class DbSocket extends HUGnetDB
+    class DbSocket extends SocketBase
     {
         /** @var string The database table to use */
         protected $table = "PacketSend";
@@ -124,13 +103,15 @@ if (!class_exists("dbsocket")) {
          *
          * @return mixed
          */
-        public function write($data, $pkt) 
+        public function write($pkt) 
         {
             $id                      = rand(1, 24777216);  // Big random number for the id
             $this->packet[$id]       = $pkt;
             $this->packet[$id]["id"] = $id;
+            $this->sent              = date("Y-m-d H:i:s");
+            $this->replyId           = $id;
 
-            $ret = $this->_insertPacket($this->packet[$id]);
+            $ret = $this->socket->add($this->packet[$id]);
 
             if ($ret === false) {
                 return false;
@@ -138,51 +119,30 @@ if (!class_exists("dbsocket")) {
                 return $id;
             }
         }
-    
-        /**
-         * Write data out a socket
-         *
-         * @param array $pkt The data to send out the socket in array form
-         *
-         * @return bool
-         */
-        private function _insertPacket($pkt) 
-        {
-            return $this->add($pkt);
-        }
-        /**
-         * Turns an array into a packet.
-         *
-         * @param array &$pkt The data to send out the socket in array form
-         *
-         * @return string
-         */
-        private function _packetify(&$pkt) 
-        {
-            $pkt["To"]   = $pkt["PacketTo"];
-            $pkt["Data"] = $pkt["RawData"];
-            return EPacket::PacketBuild($pkt, $pkt["PacketFrom"]);
-        }
-    
+        
         /**
          *  Gets the first of the packets that is destined for us.
          *
          * @return bool
          */
-        private function _getPacket() 
+        private function _getPacket($reply=null) 
         {
             if (!is_string($this->replyPacket)) $this->replyPacket = "";
             if (!empty($this->replyPacket)) return true;
-            $res = $this->getWhere(" Type = 'REPLY'");
-
+            $query = " Type = 'REPLY' AND `Date` > ?";
+            $data = array($this->sent);
+            if ($this->replyId) {
+                $query .= " AND id = ?";
+                $data[] = $this->replyId;
+            }
+            $res = $this->socket->getWhere($query, $data);
             if (is_array($res)) {
                 foreach ($res as $pkt) {
                     if (is_array($this->packet[$pkt["id"]])) {
                         $pkt["PacketTo"] = $this->packet[$pkt["id"]]["SentFrom"];
-                        $this->replyPacket = $this->_packetify($pkt);
-                        $this->index       = 0;
                         $this->_deletePacket($pkt["id"]);
-                        return true;
+                        $this->replyId = 0;
+                        return $this->unbuildPacket($pkt);
                     }
                 }
             }
@@ -199,34 +159,54 @@ if (!class_exists("dbsocket")) {
         private function _deletePacket($id) 
         {
             unset($this->packet[$id]);
-            $this->remove($id);
+            $this->socket->remove($id);
     
         }
         /**
-         * Read data from the server
+         * Receives a packet from the socket interface
          *
-         * @param int $timeout The amount of time to wait for the server to respond
+         * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
          *
-         * @return mixed Read bytes on success, false on failure
+         * @return bool false on failure, the Packet array on success
          */
-        public function readChar($timeout=-1) 
+        function RecvPacket($timeout=0) 
         {
-            if ($timeout < 0) $timeout = $this->PacketTimeout;
-            $char = false;
-            if ($this->_getPacket()) {
-                if ($this->index < strlen($this->replyPacket)) {
-                    $char = hexdec(substr($this->replyPacket, $this->index, 2));
-                    
-                    $this->index += 2;
-                    if ($this->index >= strlen($this->replyPacket)) {
-                        $this->index       = 0;
-                        $this->replyPacket = "";
-                    }
-                    $char = chr($char);
-                }
-            }
-            return $char;
-        }     
+            $timeout  = $this->getReplyTimeout($timeout);
+            $Start    = time();
+            $GotReply = false;
+    
+            do {
+                $GotReply = $this->_getPacket();
+                if (is_array($GotReply)) break;
+            } while ((time() - $Start) < $timeout);
+            $this->replyId = 0;
+            return $GotReply;
+    
+        }
+        /**
+         * Turns a packet string into an array of values.
+         *
+         * @param string $data The raw packet to parse
+         *
+         * @return array The packet array created from the string
+         */
+        function unbuildPacket($data)
+        {
+            // Strip off any preamble bytes.
+            $pkt = array();
+            $pkt["Command"] = $data["Command"];
+            $pkt["To"]      = $data["PacketTo"]; 
+            devInfo::setStringSize($pkt["To"], 6);
+            $pkt["From"] = $data["PacketFrom"];
+            devInfo::setStringSize($pkt["From"], 6);
+    
+            $pkt["Length"]       = strlen($data["RawData"] / 2);
+            $pkt["RawData"]      = $data["RawData"];
+            $pkt["Data"]         = self::splitDataString($pkt["RawData"]);
+            $pkt["Checksum"]     = self::PacketGetChecksum($pkt["RawData"]);
+            $pkt["CalcChecksum"]     = self::PacketGetChecksum($pkt["RawData"]);
+            return $pkt;
+        }
         
         /**
          * Closes the socket connection
@@ -235,7 +215,7 @@ if (!class_exists("dbsocket")) {
          */
         public function close() 
         {
-            $this->packet = array();
+            $this->socket = false;
         }
     
         /**
@@ -252,8 +232,7 @@ if (!class_exists("dbsocket")) {
          */
         public function checkConnect() 
         {
-            if ($this->driver == "sqlite") return true;
-            return $this->_db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
+            return is_object($this->socket) && (get_class($this->socket) == "HUGnetDB");
         }
         
         /**
@@ -263,34 +242,31 @@ if (!class_exists("dbsocket")) {
          * connection and want the server to automatically connect if not connectd, use this
          * routine.  If you just want to check the connection, use ep_socket::CheckConnect.
          *
-         * @param string $server  Name or IP address of the server to connect to
-         * @param int    $port    The TCP port on the server to connect to
-         * @param int    $timeout The time to wait before giving up on a bad connection
          *
          * @return bool true if the connection is good, false otherwise
          */
-        public function connect($server = "", $port = 0, $timeout=0) 
+        public function connect($config=array()) 
         {
-    
+            if (empty($config)) $config = $this->config;
             if ($this->CheckConnect()) return true;
-            $this->Close();
-            return false;
+            $this->close();
+            $this->socket = new HUGnetDB($config);
+            return $this->CheckConnect();
         }            
     
     
         /**
          * Constructor
          * 
-         * @param object &$db     PDO connection object
-         * @param bool   $verbose Whether to give a lot of output.
+         * @param array $config The configuration to use.
          *
          * @return null
          */
-        public function __construct($config, $verbose=false) 
+        public function __construct($config = array()) 
         {
-            $this->verbose($verbose);
-            $config["table"] = $config["socketTable"];
+            $config["table"] = empty($config["socketTable"]) ? "PacketLog" : $config["socketTable"];
             parent::__construct($config);
+            $this->connect();
         }
         
     }
