@@ -32,24 +32,8 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_NOREPLY_NO", -1);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_NOREPLY", "Board failed to respond");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_BADC_NO", -2);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_BADC", "Board responded: Bad Command");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_TIMEOUT_NO", -3);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_TIMEOUT", "Timeout waiting for reply");
-/** Error number for not getting a packet back */
-define("PACKET_ERROR_BADC_NO", -4);
-/** Error message for not getting a packet back */
-define("PACKET_ERROR_BADC", "Board responded: Bad Command");
-
+/** This is the base socket code */
+require_once HUGNET_INCLUDE_PATH."/base/SocketBase.php";
 
 
 if (!class_exists("epsocket")) {
@@ -69,7 +53,7 @@ if (!class_exists("epsocket")) {
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class EpSocket 
+    class EpSocket extends SocketBase
     {
         /** @var int How many times we retry the packet until we get a good one */
         var $Retries = 2;
@@ -106,13 +90,15 @@ if (!class_exists("epsocket")) {
          *
          * @return int The number of bytes written on success, false on failure
          */
-        function write($data) 
+        function write($packet) 
         {
+            $pktData = self::packetBuild($packet["packet"]);
+            $data = devInfo::deHexify($pktData);
             $this->Connect();
             usleep(mt_rand(500, 10000));
             $return = @fwrite($this->socket, $data);
-            if ($this->verbose) print "Wrote: ".$return." chars on ".$this->socket."\r\n";
-                        return($return);
+            if ($this->verbose) print "Wrote: ".$return." chars (".$pktData.") on ".$this->socket."\r\n";
+            return($return);
         }
     
     
@@ -178,20 +164,18 @@ if (!class_exists("epsocket")) {
          * connection and want the server to automatically connect if not connectd, use this
          * routine.  If you just want to check the connection, use ep_socket::CheckConnect.
          *
-         * @param string $server  Name or IP address of the server to connect to
-         * @param int    $port    The TCP port on the server to connect to
-         * @param int    $timeout The time to wait before giving up on a bad connection
+         * @param array $config The configuration to use.
          *
          * @return bool true if the connection is good, false otherwise
          */
-        function connect($server = "", $port = "", $timeout=0) 
+        function connect($config=array()) 
         {
-            
+            if (empty($config)) $config = $this->config;
             if ($this->CheckConnect()) return true;
     
             $this->Close();
-            if (!empty($server)) $this->Server = $server;
-            if (!empty($port)) $this->Port = $port;
+            if (!empty($config["GatewayIP"])) $this->Server = $config["GatewayIP"];
+            if (!empty($config["GatewayPort"])) $this->Port = $config["GatewayPort"];
     
             if (empty($this->Server) || empty($this->Port)) return false;
             
@@ -222,19 +206,14 @@ if (!class_exists("epsocket")) {
         /**
          * Constructor
          * 
-         * @param string $server  The name or IP of the server to connect to
-         * @param int    $tcpport The TCP port to connect to on the server. Set to 0 for
-         *     the default port.
-         * @param bool   $verbose Make the class put out a lot of output
+         * @param array $config The configuration to use.
          *
          * @return null
          */
-        function __construct($server="", $tcpport="", $verbose=false) 
+        function __construct($config=array()) 
         {
-            $this->verbose = $verbose;
+            parent::__construct($config);
             if ($this->verbose) print "Creating Class ".get_class($this)."\r\n";
-            if (!empty($server)) $this->Server = $server;
-            if (!empty($port)) $this->Port = $port;
             $this->Connect();
             if ($this->verbose) print "Done\r\n";
         }

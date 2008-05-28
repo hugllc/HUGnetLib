@@ -46,6 +46,7 @@ require_once 'FilterBaseTest.php';
 require_once 'SensorBaseTest.php'; 
 require_once 'HUGnetDBTest.php'; 
 require_once 'UnitBaseTest.php'; 
+require_once 'SocketBaseTest.php'; 
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -83,6 +84,7 @@ class HUGnetLibBaseTests
         $suite->addTestSuite('FilterBaseTest');
         $suite->addTestSuite('HUGnetDBTest');
         $suite->addTestSuite('UnitBaseTest');
+        $suite->addTestSuite('SocketBaseTest');
   
         return $suite;
     }
