@@ -395,6 +395,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "data" => "01020304",
                         ),
                         "PacketTo" => "000ABC",
+                        "PacketFrom" => "000020",
                         "GatewayKey" => 1,
                         "DeviceKey" => null,
                         "Type" => "OUTGOING",
@@ -668,7 +669,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testGetAll1() 
     {
         $this->o->getAll(false);
-        $this->assertFalse($this->readAttribute($this->o, "_getAll"));
+        $this->assertFalse($this->readAttribute($this->o, "getAll"));
     }
     /**
      * Test getAll
@@ -678,7 +679,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testGetAll2() 
     {
         $this->o->getAll(true);
-        $this->assertTrue($this->readAttribute($this->o, "_getAll"));
+        $this->assertTrue($this->readAttribute($this->o, "getAll"));
     }
     /**
      * Test getAll
@@ -688,7 +689,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testGetAll3() 
     {
         $this->o->getAll(0);
-        $this->assertFalse($this->readAttribute($this->o, "_getAll"));
+        $this->assertFalse($this->readAttribute($this->o, "getAll"));
     }
     /**
      * Test getAll
@@ -698,37 +699,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function testGetAll4() 
     {
         $this->o->getAll(1);
-        $this->assertTrue($this->readAttribute($this->o, "_getAll"));
+        $this->assertTrue($this->readAttribute($this->o, "getAll"));
     }
 
 
 
-    /**
-     * data provider for testMonitor
-     *
-     * @return array
-     */    
-    public static function dataMonitor() 
-    {
-        return array(
-            array(
-                array("GatewayKey" => 1, "socketType" => "test"), 
-                null, 
-                array(
-                    "socket" => 1,
-                    "timeout" => 0,
-               ),
-           ),
-            array(
-                array("GatewayKey" => 3, "socketType" => "test"), 
-                2, 
-                array(
-                    "socket" => 3,
-                    "timeout" => 2,
-               ),
-           ),
-        );    
-    }
     /**
      * data provider for test testBuildPacket()
      *
@@ -762,6 +737,16 @@ class EPacketTest extends PHPUnit_Framework_TestCase
             $pkt = $this->o->buildPacket($command, $to, $data);
         }
         $this->assertSame($expect, $pkt);
+    }
+    /**
+     * data provider for testMonitor
+     *
+     * @return array
+     */    
+    public static function dataMonitor() 
+    {
+        return array(
+        );    
     }
     /**
      * Test Ping

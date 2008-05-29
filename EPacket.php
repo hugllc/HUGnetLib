@@ -160,7 +160,7 @@ class EPacket
     private $maxSN = 0x20;
 
     /** Whether or not to return ALL packets received. */
-    protected $_getAll = false;
+    protected $getAll = false;
     /** Whether or not to return unsolicited packets.*/
     private $_getUnsolicited = false;
     /** The ID that unsolicited packets will be sent to. */
@@ -289,6 +289,7 @@ class EPacket
             'group' => (bool)(hexdec($Packet["command"]) & 0x80),
             'packet' => $Packet,
             "PacketTo" => $Packet["to"],
+            "PacketFrom" => $Packet["from"],
             "Date" => date("Y-m-d H:i:s"),
             "GatewayKey" => $Info['GatewayKey'],
             "DeviceKey" => $Info['DeviceKey'],
@@ -480,7 +481,7 @@ class EPacket
     function changeSN($Info = null) 
     {
         if (!is_array($Info)) $Info = array();
-        $getAll = $this->_getAll;
+        $getAll = $this->getAll;
         $this->getAll(false);
         $count = count($this->SNArray);
         for ($i = 0; $i < $count; $i++) {
@@ -512,14 +513,14 @@ class EPacket
      *
      * @return bool false on failure, the Packet array on success
      */
-    function RecvPacket($socket, $timeout=0) 
+    function RecvPacket($socket, $timeout=0, $reply=true) 
     {
         if (!is_object($this->socket[$socket])) return false;
         $Start    = time();
         $GotReply = false;
 
         do {
-            $pkt = $this->socket[$socket]->RecvPacket($timeout);
+            $pkt = $this->socket[$socket]->RecvPacket($timeout, $reply);
             if ($pkt !== false) $GotReply = $this->interpPacket($pkt, $socket);
         } while (($GotReply == false) && ((time() - $Start) < $timeout));
         return $GotReply;
@@ -543,13 +544,16 @@ class EPacket
     /**
      * Sets the flag to get and return all packets.
      * 
-     * @param bool $val The value to set _getAll to.
+     * @param bool $val The value to set getAll to.
      *
      * @return bool true if the DeviceID belongs to a gateway, false otherwise.
      */
     function getAll($val = true) 
     {
-        $this->_getAll = (bool) $val;
+        $this->getAll = (bool) $val;
+        foreach (array_keys($this->socket) as $k) {
+            $this->socket[$k]->getAll((bool)$val);
+        }
     }
 
     /**
@@ -629,7 +633,7 @@ class EPacket
 
             $this->packetCallBack($pkt);
                 
-            if (!($this->_getAll ||  ($pkt["Unsolicited"] && $this->_getUnsolicited))) {
+            if (!($this->getAll ||  ($pkt["Unsolicited"] && $this->_getUnsolicited))) {
                 $pkt = false;
             }
         }
@@ -682,13 +686,15 @@ class EPacket
      *
      * @return string returns the packet it got.
      */
-    function monitor($config, $timeout = 0) 
+    function monitor($config=array(), $timeout = 0) 
     {
-        $this->_getAll = true;
+        if (empty($config)) $config = $this->config;
+        $this->connect($config);
+        $this->getAll(true);
         if ($this->verbose) print("Waiting on Packets from ".$config["GatewayName"].":".$config["GatewayPort"]."\n");
-        $return        = $this->connect($config);
-        $return        = $this->RecvPacket($config['GatewayKey'], $timeout);
-        $this->_getAll = false;
+        $return = $this->RecvPacket($config["GatewayKey"], $timeout, false);
+        $this->getAll(false);
+        if (!is_array($return)) return array();
         return $return;
     }
     

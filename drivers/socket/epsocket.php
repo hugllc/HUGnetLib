@@ -79,8 +79,8 @@ if (!class_exists("epsocket")) {
         /** @var int The default period for checking in with the servers */
         var $CheckPeriod = 60;        
         /** @var array Array of strings that we are reading */
-        var $readstr = array();        
-    
+        var $readstr = array();    
+
         protected $server = "127.0.0.1";
         protected $tcpport = "2000";
         /**
