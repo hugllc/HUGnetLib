@@ -125,12 +125,37 @@ if (!class_exists("dbsocket")) {
          *
          * @return bool
          */
-        private function _getPacket($reply=null) 
+        private function _getPacket($reply=false) 
         {
-            if (!is_string($this->replyPacket)) $this->replyPacket = "";
-            if (!empty($this->replyPacket)) return true;
-            $query = " Type = 'REPLY' AND `Date` > ?";
-            $data = array($this->sent);
+            if ($reply) return $this->_getPacketReply();
+            static $lastCheck;
+            $now = date("Y-m-d H:i:s");
+            
+            if (empty($lastCheck)) $lastCheck = "0000-00-00 00:00:00";
+            $query = " `Date` > ?";
+            $data[] = $lastCheck;
+            $res = $this->socket->getWhere($query, $data);
+            $ret = false;
+            if (is_array($res)) {
+                foreach ($res as $pkt) {
+                    $ret[] = $this->unbuildPacket($pkt);
+                }
+            }
+            $lastCheck = $now;
+            return $ret;
+        }
+        /**
+         *  Gets the first of the packets that is destined for us.
+         *
+         * @return bool
+         */
+        private function _getPacketReply() 
+        {
+            $query = " Type = 'REPLY'";
+            if (!empty($this->sent)) {
+                $query .= " AND `Date` > ?";
+                $data[] = $this->sent;
+            }
             if ($this->replyId) {
                 $query .= " AND id = ?";
                 $data[] = $this->replyId;
@@ -169,14 +194,14 @@ if (!class_exists("dbsocket")) {
          *
          * @return bool false on failure, the Packet array on success
          */
-        function RecvPacket($timeout=0) 
+        function RecvPacket($timeout=0, $reply = true) 
         {
             $timeout  = $this->getReplyTimeout($timeout);
             $Start    = time();
             $GotReply = false;
     
             do {
-                $GotReply = $this->_getPacket();
+                $GotReply = $this->_getPacket($reply);
                 if (is_array($GotReply)) break;
             } while ((time() - $Start) < $timeout);
             $this->replyId = 0;
@@ -194,10 +219,10 @@ if (!class_exists("dbsocket")) {
         {
             // Strip off any preamble bytes.
             $pkt = array();
-            $pkt["Command"] = $data["Command"];
-            $pkt["To"]      = $data["PacketTo"]; 
+            $pkt["Command"] = (empty($data["Command"])) ? $data["sendCommand"] : $data["Command"];
+            $pkt["To"]      = (empty($data["PacketTo"])) ? $data["To"] : $data["PacketTo"]; 
             devInfo::setStringSize($pkt["To"], 6);
-            $pkt["From"] = $data["PacketFrom"];
+            $pkt["From"]    = (empty($data["PacketFrom"])) ? $data["From"] : $data["PacketFrom"];
             devInfo::setStringSize($pkt["From"], 6);
     
             $pkt["Length"]       = strlen($data["RawData"] / 2);

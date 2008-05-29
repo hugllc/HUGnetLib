@@ -70,6 +70,20 @@ class SocketBase
     /** The preamble byte */
     static $preambleByte = "5A";
 
+    /** Return all packets coming in */    
+    protected $getAll = false;    
+    /**
+     * Sets the flag to get and return all packets.
+     * 
+     * @param bool $val The value to set getAll to.
+     *
+     * @return bool true if the DeviceID belongs to a gateway, false otherwise.
+     */
+    function getAll($val = true) 
+    {
+        $this->getAll = (bool) $val;
+    }
+
     /**
      * Constructor.
      *
