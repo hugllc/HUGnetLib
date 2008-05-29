@@ -289,7 +289,6 @@ class EPacket
             'group' => (bool)(hexdec($Packet["command"]) & 0x80),
             'packet' => $Packet,
             "PacketTo" => $Packet["to"],
-            "PacketFrom" => $Packet["from"],
             "Date" => date("Y-m-d H:i:s"),
             "GatewayKey" => $Info['GatewayKey'],
             "DeviceKey" => $Info['DeviceKey'],
@@ -333,7 +332,7 @@ class EPacket
             if (!is_object($this->socket[$socket])) $this->connect($this->config);
             $index = $this->_setupsendPacket($Info, $Packet, $pktTimeout, $GetReply);
 //            $Packet["PktStr"] = devInfo::deHexify(SocketBase::packetBuild($Packet));
-            if ($retval = $this->socket[$socket]->SendPacket($this->Packets[$index])) {
+            if ($retval = $this->socket[$socket]->SendPacket($this->Packets[$index], $GetReply)) {
                 $retval = $this->_sendPacketGetReply($socket, $index);
             }
             if (is_array($retval)) $ret = array_merge($ret, $retval);
@@ -814,6 +813,7 @@ class EPacket
         }
     }
 
+
     /**
      * If $config is given it will try to connect to the server that is specified in it.
      *
@@ -825,8 +825,12 @@ class EPacket
     function __construct($config=array(), $snCheck=true) 
     {
         if (!isset($config["packetSNCheck"])) $config["packetSNCheck"] = $snCheck;
-        $this->snCheck($config["packetSNCheck"]);
-        $this->_createSNArray();
+        if ($this->isGateway($config["DeviceID"])) {
+            $this->SN = $config["DeviceID"];
+        } else {
+            $this->snCheck($config["packetSNCheck"]);
+            $this->_createSNArray();
+        }
         $this->verbose = $config["verbose"];
         if (!empty($config)) {
             $this->connect($config);

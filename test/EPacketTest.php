@@ -395,7 +395,6 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                             "data" => "01020304",
                         ),
                         "PacketTo" => "000ABC",
-                        "PacketFrom" => "000020",
                         "GatewayKey" => 1,
                         "DeviceKey" => null,
                         "Type" => "OUTGOING",

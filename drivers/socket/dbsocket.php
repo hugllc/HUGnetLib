@@ -103,13 +103,14 @@ if (!class_exists("dbsocket")) {
          *
          * @return mixed
          */
-        public function write($pkt) 
+        public function write($pkt, $GetReply=true) 
         {
-            $id                      = rand(1, 24777216);  // Big random number for the id
-            $this->packet[$id]       = $pkt;
-            $this->packet[$id]["id"] = $id;
-            $this->sent              = date("Y-m-d H:i:s");
-            $this->replyId           = $id;
+            $id                           = rand(1, 24777216);  // Big random number for the id
+            $pkt["PacketFrom"]            = $pkt["SentFrom"];
+            $this->packet[$id]            = $pkt;
+            $this->packet[$id]["id"]      = $id;
+            $this->sent                   = date("Y-m-d H:i:s");
+            if ($GetReply) $this->replyId = $id;
 
             $ret = $this->socket->add($this->packet[$id]);
 
@@ -141,6 +142,9 @@ if (!class_exists("dbsocket")) {
                     $ret[] = $this->unbuildPacket($pkt);
                 }
             }
+            // This causes a pause so we don't take all of the processing time
+            if ((count($res) == 0) || !is_array($res)) usleep(100000);
+            
             $lastCheck = $now;
             return $ret;
         }
@@ -171,6 +175,8 @@ if (!class_exists("dbsocket")) {
                     }
                 }
             }
+            // This causes a pause so we don't take all of the processing time
+            if ((count($res) == 0) || !is_array($res)) usleep(100000);
             return false;
         }
     
