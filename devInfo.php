@@ -68,7 +68,7 @@ if (!class_exists("devInfo")) {
                     $Info['DeviceID'] = $Info['From'];
                 }    
             }
-            if (!empty($Info['DeviceID'])) {
+            if (is_array($Info) && !empty($Info['DeviceID'])) {
                 devInfo::setStringSize($Info['DeviceID'], 6);
             }
             return $Info['DeviceID'];
@@ -216,8 +216,6 @@ if (!class_exists("devInfo")) {
          * 
          * If the number comes out smaller than $width the string is padded 
          * on the left side with zeros.
-         *
-         * Duplicate: {@link epsocket::hexify()}
          *
          * @param int $value The number to turn into a hex string
          * @param int $width The width of the final string

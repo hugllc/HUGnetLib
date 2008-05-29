@@ -130,6 +130,36 @@ class Gateway extends HUGnetDB
         return $ret;
     }
 
+    /**
+     * This function creates the table in the database
+     *
+     * @param string $table The table to use if not the default
+     *
+     * @return mixed The output of the last SQL statement
+     */
+    function createLocalTable($table = null) 
+    {
+        if (is_string($table)) $this->table = $table;
+        $this->id = "DeviceID";
+
+        $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
+                  `DeviceID` varchar(6) NOT null,
+                  `CurrentGatewayKey` int(11) NOT null,
+                  `IP` varchar(15) NOT null default '',
+                  `Name` varchar(30) NOT null default '',
+                  `HWPartNum` varchar(32) NOT null,
+                  `FWPartNum` varchar(32) NOT null,
+                  `FWVersion` varchar(10) NOT null,
+                  `LastContact` datetime NOT null,
+                  `RawSetup` varchar(255) NOT null,
+                  PRIMARY KEY  (`DeviceID`)
+               );";
+                    
+        $ret = $this->query($query);
+        $this->getColumns();
+        return $ret;
+    }
+
 
 }
 ?>

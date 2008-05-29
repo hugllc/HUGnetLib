@@ -62,6 +62,10 @@ if (!class_exists("e00392601")) {
         public $devices = array(
             "DEFAULT" => array(
                 "0039-26-01-P" => "DEFAULT",
+                "0039-26-02-P" => "DEFAULT",
+                "0039-26-03-P" => "DEFAULT",
+                "0039-26-04-P" => "DEFAULT",
+                "0039-26-05-P" => "DEFAULT",
            ),
         );
 
@@ -74,11 +78,14 @@ if (!class_exists("e00392601")) {
         /**
          * Returns the packet to send to read the configuration out of an endpoint
          *
+         * This should only be defined in a driver that inherits this class if the 
+         * packet differs
+         *
          * @param array $Info Infomation about the device to use
          *
-         * @return null
+         * @return array
          */
-        function readConfig($Info)
+        public function readConfig($Info) 
         {
             return array(
                 array(
@@ -88,6 +95,18 @@ if (!class_exists("e00392601")) {
            );
         }
 
+        /**
+         * Gets the job number for this device
+         *
+         * @param array $Info Infomation about the device to use
+         *
+         * @return null
+         */
+        function getJob($Info)
+        {
+            $stuff = explode("-", $Info["HWPartNum"]);
+            return (int) $stuff[2];
+        }
         /**
          * Checks a data record to determine what its status is.  It changes
          * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
@@ -169,17 +188,10 @@ if (!class_exists("e00392601")) {
             $Info["isGateway"] = true;
     
             $index = 0;
-
-            $Info["Priority"] = $Info['BoredomThreshold'];
-
-            $Jobs                  = hexdec(substr($Info["DriverInfo"], $index, 2));
-            $Info['doPoll']        = (bool) ($Jobs & 0x01);
-            $Info['doConfig']      = (bool) ($Jobs & 0x02);
-            $Info['doCCheck']      = (bool) ($Jobs & 0x04);
-            $Info['doUnsolicited'] = (bool) ($Jobs & 0x08);
+            // This byte is currently not used
 
             $index             += 2;
-            $Info["GatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
+            $Info["CurrentGatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
 
             $index       += 4;
             $Info["Name"] = devInfo::deHexify(trim(strtoupper(substr($Info["DriverInfo"], $index, 60))));

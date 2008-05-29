@@ -66,7 +66,10 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SocketBase
-{
+{    
+    /** The timeout for waiting for a packet in seconds */
+    var $ReplyTimeout = 5;
+
     /** The preamble byte */
     static $preambleByte = "5A";
 
@@ -303,7 +306,7 @@ class SocketBase
      */
     protected function getReplyTimeout($timeout) 
     {
-        if (!is_numeric($timeout)) {
+        if (!is_numeric($timeout) || ($timeout <= 0)) {
             $timeout = $this->ReplyTimeout;
         }
         return $timeout;        
@@ -311,14 +314,15 @@ class SocketBase
     /**
      * Sends out a packet
      *
-     * @param array $packet the packet to send out
+     * @param array $packet   the packet to send out
+     * @param bool  $GetReply Whether to expect a reply or not
      *
      * @return bool false on failure, true on success
      */
-    function sendPacket($packet) 
+    function sendPacket($packet, $GetReply=true) 
     {
         if ($this->verbose) print "Sending Pkt: T:".$packet['PacketTo']." C:".$packet['sendCommand']."\n";
-        $ret = $this->Write($packet);
+        $ret = $this->Write($packet, $GetReply);
         if (empty($ret)) return false;
         return $ret;
 
