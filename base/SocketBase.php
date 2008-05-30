@@ -67,8 +67,25 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  */
 class SocketBase
 {    
+
+
+    /** @var int How many times we retry the packet until we get a good one */
+    var $Retries = 2;
+    /** @var array Server information is stored here. */
+    var $socket = null;
+    /** @var int The error number.  0 if no error occurred */
+    var $Errno = 0;
+    /** @var string The error string */
+    var $Error = "";
+    /** @var string The server string */
+    var $Server = "";
+    /** @var bool Whether this socket supports multiple packets */
+    public $multiPacket = false;
     /** The timeout for waiting for a packet in seconds */
     var $ReplyTimeout = 5;
+
+    /** @var bool Whether we should print out a lot output */
+    var $verbose = false;        
 
     /** The preamble byte */
     static $preambleByte = "5A";

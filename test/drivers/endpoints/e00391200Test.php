@@ -270,6 +270,22 @@ class e00391200Test extends endpointTestBase
     {
         return parent::dataConfigArray("e00391200");
     }
+    /**
+     * data provider for test readConfig
+     *
+     * @return array
+     */
+    public static function datareadConfig() 
+    {
+        return array(
+            array(
+                array("DeviceID" => "000025"),
+                array(
+                    array("To" => "000025", "Command" => "5C"),
+               ),
+           ),
+        );
+    }
 }
 
 // Call e00391200Test::main() if this source file is executed directly.

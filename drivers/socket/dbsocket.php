@@ -60,29 +60,22 @@ if (!class_exists("dbsocket")) {
         /** @var string The database table to use */
         protected $id = "id";
         /** @var int How many times we retry the packet until we get a good one */
-        var $Retries = 2;
+        var $Retries = 1;
         /** @var array Server information is stored here. */
         var $socket = null;
         /** @var int The error number.  0 if no error occurred */
         var $Errno = 0;
         /** @var string The error string */
         var $Error = "";
-        /** @var int The port number.   This is the default */
-        var $Port = 2000;
         /** @var string The server string */
         var $Server = "";
+        /** @var bool Whether this socket supports multiple packets */
+        public $multiPacket = true;
     
-    
         /** @var int The timeout for waiting for a packet in seconds */
-        var $PacketTimeout = 5;
-        /** @var int The timeout for waiting for a packet in seconds */
-        var $AckTimeout = 2;
-        /** @var int The timeout for waiting for a packet in seconds */
-        var $SockTimeout = 2;
+        var $ReplyTimeout = 20;
         /** @var bool Whether we should print out a lot output */
         var $verbose = false;        
-        /** @var int The default period for checking in with the servers */
-        var $CheckPeriod = 60;        
         /** @var array Array of strings that we are reading */
         var $readstr = array();        
     
@@ -93,6 +86,7 @@ if (!class_exists("dbsocket")) {
         private $replyIndex = 0;
         
         private $index = 0;
+        protected $replyId = array();
         /**
          * Write data out a socket.  
          *
@@ -109,9 +103,7 @@ if (!class_exists("dbsocket")) {
             $pkt["PacketFrom"]            = $pkt["SentFrom"];
             $this->packet[$id]            = $pkt;
             $this->packet[$id]["id"]      = $id;
-            $this->sent                   = date("Y-m-d H:i:s");
-            if ($GetReply) $this->replyId = $id;
-
+            if ($GetReply) $this->replyId[$id] = time();
             $ret = $this->socket->add($this->packet[$id]);
 
             if ($ret === false) {
@@ -120,7 +112,17 @@ if (!class_exists("dbsocket")) {
                 return $id;
             }
         }
-        
+        /**
+         * Cleans up the replyID array
+         *
+         * @return null
+         */
+        protected function replyIdCleaner()
+        {
+            foreach ($this->replyId as $id => $time) {
+                if ($time < (time() - $this->ReplyTimeout)) unset($this->replyId[$id]);
+            }
+        }
         /**
          *  Gets the first of the packets that is destined for us.
          *
@@ -156,13 +158,13 @@ if (!class_exists("dbsocket")) {
         private function _getPacketReply() 
         {
             $query = " Type = 'REPLY'";
-            if (!empty($this->sent)) {
-                $query .= " AND `Date` > ?";
-                $data[] = $this->sent;
-            }
-            if ($this->replyId) {
-                $query .= " AND id = ?";
-                $data[] = $this->replyId;
+            $data = array();
+            if (!empty($this->replyId)) {
+                $ids = array_keys($this->replyId);              
+                $query .= " AND (id = ?";
+                $query .= str_repeat(" OR id = ?", count($ids) - 1); 
+                $query .= ")";
+                $data  = array_merge($data, $ids);
             }
             $res = $this->socket->getWhere($query, $data);
             if (is_array($res)) {
@@ -170,7 +172,7 @@ if (!class_exists("dbsocket")) {
                     if (is_array($this->packet[$pkt["id"]])) {
                         $pkt["PacketTo"] = $this->packet[$pkt["id"]]["SentFrom"];
                         $this->_deletePacket($pkt["id"]);
-                        $this->replyId = 0;
+                        unset($this->replyId[$pkt["id"]]);
                         return $this->unbuildPacket($pkt);
                     }
                 }
@@ -210,7 +212,7 @@ if (!class_exists("dbsocket")) {
                 $GotReply = $this->_getPacket($reply);
                 if (is_array($GotReply)) break;
             } while ((time() - $Start) < $timeout);
-            $this->replyId = 0;
+            $this->replyIdCleaner();
             return $GotReply;
     
         }
