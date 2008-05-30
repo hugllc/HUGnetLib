@@ -134,6 +134,25 @@ if (!class_exists("e00391200")) {
                                 "NumSensors" => "# Sensors",
                                );
 
+        /**
+         * Returns the packet to send to read the configuration out of an endpoint
+         *
+         * This should only be defined in a driver that inherits this class if the 
+         * packet differs
+         *
+         * @param array $Info Infomation about the device to use
+         *
+         * @return array
+         */
+        public function readConfig($Info) 
+        {
+            return array(
+                array(
+                    "To" => $Info["DeviceID"],
+                    "Command" => PACKET_COMMAND_GETSETUP,
+               ),
+           );
+        }
 
         /**
          * Checks to make sure this is a valid record

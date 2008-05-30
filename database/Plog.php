@@ -118,7 +118,7 @@ class Plog extends HUGnetDB
      *
      * @return array
      */
-    public static function packetLogSetup($Packet, $Gateway, $Type="") 
+    public static function packetLogSetup($Packet, $Gateway, $Type="", $Checked=0) 
     {
         if (empty($Type)) $Type = "UNSOLICITED";
         $Info = array();
@@ -140,6 +140,7 @@ class Plog extends HUGnetDB
         $Info["Command"]     = $Packet["Command"];
         $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
         $Info["Type"]        = (!empty($Type)) ? $Type : $Packet["Type"];
+        $Info["Checked"]     = $Checked;
         return $Info;
     }
     /**

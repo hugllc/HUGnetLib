@@ -145,8 +145,6 @@ class EPacket
     /** The timeout for waiting for a packet in seconds */
     var $ReplyTimeout = 5;
     /** The timeout for waiting for a packet in seconds */
-    var $IndirectReplyTimeout = 20;
-    /** The timeout for waiting for a packet in seconds */
     var $AckTimeout = 2;
     /** The timeout for waiting for a packet in seconds */
     var $SockTimeout = 2;
@@ -332,8 +330,12 @@ class EPacket
             if (!is_object($this->socket[$socket])) $this->connect($this->config);
             $index = $this->_setupsendPacket($Info, $Packet, $pktTimeout, $GetReply);
 //            $Packet["PktStr"] = devInfo::deHexify(SocketBase::packetBuild($Packet));
-            if ($retval = $this->socket[$socket]->SendPacket($this->Packets[$index], $GetReply)) {
-                $retval = $this->_sendPacketGetReply($socket, $index);
+            $tries = 0;
+            while ($tries < $this->Retries) {
+                $retval = $this->socket[$socket]->SendPacket($this->Packets[$index], $GetReply);
+                if ($retval) $retval = $this->_sendPacketGetReply($socket, $index);
+                if (!empty($retval)) break;
+                $tries++;
             }
             if (is_array($retval)) $ret = array_merge($ret, $retval);
             unset($this->Packets[$index]);
@@ -512,12 +514,12 @@ class EPacket
      *
      * @return bool false on failure, the Packet array on success
      */
-    function RecvPacket($socket, $timeout=0, $reply=true) 
+    function RecvPacket($socket, $timeout=false, $reply=true) 
     {
         if (!is_object($this->socket[$socket])) return false;
         $Start    = time();
         $GotReply = false;
-
+//        $this->_getReplyTimeout($timeout);
         do {
             $pkt = $this->socket[$socket]->RecvPacket($timeout, $reply);
             if ($pkt !== false) $GotReply = $this->interpPacket($pkt, $socket);
@@ -701,15 +703,16 @@ class EPacket
     /**
      * Sends a ping out to the desired device
      * 
-     * @param array $Info Device information array
-     * @param bool  $find If true this causes it to have the packet sent out by ALL
+     * @param array $Info  Device information array
+     * @param bool  $find  If true this causes it to have the packet sent out by ALL
      *      controller boards connected.  This is to find a device that may not be
      *      reporting because the controller board it is connected to doesn't know it
      *      exists.
+     * @param bool  $reply Wait for a reply or not
      *
      * @return bool Returns true if it got a reply, false otherwise
      */
-    function ping($Info, $find=false) 
+    function ping($Info, $find=false, $reply=true) 
     {
         if ($this->verbose) print("Pinging ".$Info["DeviceID"]."\n");
 
@@ -720,7 +723,7 @@ class EPacket
         }
         $pkt["To"] = $Info["DeviceID"];
 
-        $return = $this->sendPacket($Info, $pkt);        
+        $return = $this->sendPacket($Info, $pkt, $reply);        
         
         return $return;
     }
@@ -767,8 +770,8 @@ class EPacket
     {
         if (empty($config)) $config = $this->config;
         if ($config['socketType'] == "db") {
+            $this->ReplyTimeout = (2 * $this->Retries * $this->ReplyTimeout);
             $class = "dbsocket";
-            $this->ReplyTimeout = $this->IndirectReplyTimeout;
         } else if ($config['socketType'] == "test") {
             $class = "epsocketMock";
         } else {
@@ -836,6 +839,8 @@ class EPacket
             $this->connect($config);
         }
         if (empty($config["GatewayKey"])) $config["GatewayKey"] = 1;
+        if (!empty($config["ReplyTimeout"])) $this->ReplyTimeout = $config["ReplyTimeout"];
+        if (!empty($config["Retries"])) $this->Retries = $config["Retries"];
         $this->config = $config;
     }
     
