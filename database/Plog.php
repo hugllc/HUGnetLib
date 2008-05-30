@@ -141,6 +141,7 @@ class Plog extends HUGnetDB
         $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
         $Info["Type"]        = (!empty($Type)) ? $Type : $Packet["Type"];
         $Info["Checked"]     = $Checked;
+
         return $Info;
     }
     /**

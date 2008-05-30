@@ -157,19 +157,27 @@ if (!class_exists("dbsocket")) {
          */
         private function _getPacketReply() 
         {
-            $query = " Type = 'REPLY'";
+            $query = " (Type = 'REPLY' ";
+            if ($this->getAll) $query .= " OR Type = 'UNSOLICITED'";
+            $query .= ")";
             $data = array();
-            if (!empty($this->replyId)) {
-                $ids = array_keys($this->replyId);              
+            $lastrun = $now;
+            if (!empty($this->replyId) && !$this->getAll) {
+                $ids = array_keys($this->replyId);       
                 $query .= " AND (id = ?";
                 $query .= str_repeat(" OR id = ?", count($ids) - 1); 
                 $query .= ")";
+                $query .= " AND (`Date` >= ?";
+                $query .= str_repeat(" OR `Date` >= ?", count($ids) - 1); 
+                $query .= ")";
+
                 $data  = array_merge($data, $ids);
+                foreach ($this->replyId as $time) $data[] = date("Y-m-d H:i:s", $time);
             }
             $res = $this->socket->getWhere($query, $data);
             if (is_array($res)) {
                 foreach ($res as $pkt) {
-                    if (is_array($this->packet[$pkt["id"]])) {
+                    if (is_array($this->packet[$pkt["id"]]) || $this->getAll) {
                         $pkt["PacketTo"] = $this->packet[$pkt["id"]]["SentFrom"];
                         $this->_deletePacket($pkt["id"]);
                         unset($this->replyId[$pkt["id"]]);
@@ -178,7 +186,7 @@ if (!class_exists("dbsocket")) {
                 }
             }
             // This causes a pause so we don't take all of the processing time
-            if ((count($res) == 0) || !is_array($res)) usleep(100000);
+            if ((count($ret) == 0) || !is_array($ret)) usleep(300000);
             return false;
         }
     
