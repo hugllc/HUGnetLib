@@ -190,6 +190,7 @@ if (!class_exists("e00392601")) {
             $index = 0;
             // This byte is currently not used
             $Info["Job"] = hexdec(substr($Info["DriverInfo"], $index, 2));
+            if (empty($Info["Job"])) $Info["Job"] = self::getJob($Info);
             
             $index             += 2;
             $Info["CurrentGatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
@@ -204,10 +205,11 @@ if (!class_exists("e00392601")) {
             foreach ($IP as $k => $v) {
                 $IP[$k] = hexdec($v); 
             }
-
             $Info['IP'] = implode(".", $IP);
+            
+            $Info["Priorities"] = array();
             for ($i = 0; $i < 6; $i++) {
-                $Info["Priorities"] = devInfo::deHexify(substr($Info["DriverInfo"][$i], $index, 2));
+                $Info["Priorities"][$i] = (int) devInfo::deHexify(substr($Info["DriverInfo"][$i], $index, 2));
                 $index += 2;
             }
             
