@@ -139,15 +139,9 @@ if (!class_exists("e00392601")) {
             $string .= devInfo::hexifyPartNum($Info["FWPartNum"]);
             $string .= devInfo::hexifyVersion($Info["FWVersion"]);
             $string .= "FFFFFF";
-            $string .= devInfo::hexify($Info["Priority"], 2);
-
-            $Jobs = 0;
-            if ($Info["doPoll"]) $Jobs |= 0x01;
-            if ($Info["doConfig"]) $Jobs |= 0x02;
-            if ($Info["doCCheck"]) $Jobs |= 0x04;
-            if ($Info["doUnsolicited"]) $Jobs |= 0x08;
+            $string .= "00";
  
-            $string .= devInfo::hexify($Jobs, 2);
+            $string .= devInfo::hexify($Info['Job'], 2);
             $string .= devInfo::hexify($Info['GatewayKey'], 4);    
             $string .= devInfo::hexifyStr($Info["Name"], 60);
      
@@ -155,6 +149,10 @@ if (!class_exists("e00392601")) {
     
             for ($i = 0; $i < 4; $i++) {
                 $string .= devInfo::hexify($myIP[$i], 2);
+            }
+            
+            for ($i = 0; $i < 6; $i++) {
+                $string .= devInfo::hexify($Info["Priorities"][$i], 2);
             }
             return $string;
 
@@ -191,7 +189,8 @@ if (!class_exists("e00392601")) {
     
             $index = 0;
             // This byte is currently not used
-
+            $Info["Job"] = hexdec(substr($Info["DriverInfo"], $index, 2));
+            
             $index             += 2;
             $Info["CurrentGatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));
 
@@ -200,13 +199,19 @@ if (!class_exists("e00392601")) {
             $Info["Name"] = trim($Info["Name"]);
             $index += 60;
             $IP     = str_split(substr($Info["DriverInfo"], $index, 8), 2);
-
+            $index += 8;
+            
             foreach ($IP as $k => $v) {
                 $IP[$k] = hexdec($v); 
             }
+
             $Info['IP'] = implode(".", $IP);
+            for ($i = 0; $i < 6; $i++) {
+                $Info["Priorities"] = devInfo::deHexify(substr($Info["DriverInfo"][$i], $index, 2));
+                $index += 2;
+            }
             
-            return($Info);
+            return $Info;
         }
 
         /**
