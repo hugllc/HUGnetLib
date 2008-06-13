@@ -152,6 +152,7 @@ class Gateway extends HUGnetDB
                   `FWVersion` varchar(10) NOT null,
                   `LastContact` datetime NOT null,
                   `RawSetup` varchar(255) NOT null,
+                  `Job` int(11) NOT null,
                   PRIMARY KEY  (`DeviceID`)
                );";
                     
