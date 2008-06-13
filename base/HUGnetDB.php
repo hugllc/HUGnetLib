@@ -259,6 +259,7 @@ class HUGnetDB
      */
     protected function getColumns()
     {
+        $this->fields = array();
         $this->getColumnsSQLite();
         $this->getColumnsMySQL();
         $this->getColumnsOther();
