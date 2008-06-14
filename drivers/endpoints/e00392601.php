@@ -209,7 +209,7 @@ if (!class_exists("e00392601")) {
             
             $Info["Priorities"] = array();
             for ($i = 0; $i < 6; $i++) {
-                $Info["Priorities"][$i] = (int) devInfo::deHexify(substr($Info["DriverInfo"][$i], $index, 2));
+                $Info["Priorities"][$i] = (int) devInfo::deHexify(substr($Info["DriverInfo"], $index, 2));
                 $index += 2;
             }
             
