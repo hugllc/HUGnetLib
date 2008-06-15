@@ -151,7 +151,7 @@ if (!class_exists("e00392601")) {
                 $string .= devInfo::hexify($myIP[$i], 2);
             }
             
-            for ($i = 0; $i < 6; $i++) {
+            for ($i = 1; $i < 7; $i++) {
                 $string .= devInfo::hexify($Info["Priorities"][$i], 2);
             }
             return $string;
@@ -208,8 +208,8 @@ if (!class_exists("e00392601")) {
             $Info['IP'] = implode(".", $IP);
             
             $Info["Priorities"] = array();
-            for ($i = 0; $i < 6; $i++) {
-                $Info["Priorities"][$i] = (int) devInfo::deHexify(substr($Info["DriverInfo"], $index, 2));
+            for ($i = 1; $i < 7; $i++) {
+                $Info["Priorities"][$i] = hexdec(substr($Info["DriverInfo"], $index, 2));
                 $index += 2;
             }
             
