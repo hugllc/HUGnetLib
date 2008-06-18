@@ -157,6 +157,27 @@ if (!class_exists("e00392601")) {
             return $string;
 
         }    
+        /**
+         * This takes the numeric job and replaces it with a name
+         *
+         * @param int $job The job
+         *
+         * @return string
+         */
+        function getFunction($job)
+        {
+            $jobs = array(
+                1 => "Poll",
+                2 => "Updatedb",
+                3 => "Analysis",
+                4 => "Endpoint",
+                5 => "Control",
+                6 => "Config",
+            );
+        
+            if (!empty($jobs[$job])) return $jobs[$job];
+            return $job;
+        }
         
         /**
          * Interpret the configuration
@@ -168,9 +189,9 @@ if (!class_exists("e00392601")) {
         function interpConfig(&$Info) 
         {
 
-            $Info['HWName']       = $this->HWName;
-            $Info["NumSensors"]   = (int)$this->config["DEFAULT"]["Sensors"];    
-            $Info["Function"]     = $this->config["DEFAULT"]["Function"];
+            $Info['HWName']       = "0039-26 Gateway";
+            $Info["NumSensors"]   = 0;    
+            $Info["Function"]     = "Gateway ";
             $Info["Timeconstant"] = 0;
             $Info['DriverInfo']   = substr($Info["RawSetup"], E00391102B_TC);
 
@@ -191,6 +212,7 @@ if (!class_exists("e00392601")) {
             // This byte is currently not used
             $Info["Job"] = hexdec(substr($Info["DriverInfo"], $index, 2));
             if (empty($Info["Job"])) $Info["Job"] = self::getJob($Info);
+            $Info["Function"] .= self::getFunction($Info["Job"]);
             
             $index             += 2;
             $Info["CurrentGatewayKey"] = hexdec(substr($Info["DriverInfo"], $index, 4));

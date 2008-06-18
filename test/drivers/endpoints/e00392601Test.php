@@ -91,7 +91,7 @@ class e00392601Test extends endpointTestBase
                      "DeviceGroup" => "FFFFFF",
                      "HWName" => "0039-26 Gateway",
                      "NumSensors" => 0,
-                     "Function" => "Gateway",
+                     "Function" => "Gateway Poll",
                      "DriverInfo" => "0102020202020202027070707070707070",
                ),
             ),
