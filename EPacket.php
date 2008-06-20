@@ -46,6 +46,8 @@ define("PACKET_COMMAND_GETCALIBRATION", "4C");
 /** The placeholder for the Capabilities command */
 define("PACKET_COMMAND_GETCALIBRATION_NEXT", "4D");
 /** The placeholder for the Capabilities command */
+define("PACKET_COMMAND_SETCONFIG", "5B");
+/** The placeholder for the Capabilities command */
 define("PACKET_COMMAND_GETSETUP", "5C");
 define("PACKET_COMMAND_GETSETUP_GROUP", "DC");
 /** The placeholder for the Capabilities command */
