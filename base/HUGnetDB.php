@@ -107,6 +107,9 @@ class HUGnetDB
     /** @var string The dsn we are connected to */
     private $_dsn = "";
     
+    /** @var int The timeout for connecting to the database */
+    protected $dbTimeout = 5;
+    
     /**
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
@@ -123,6 +126,8 @@ class HUGnetDB
 
         if (is_string($config["table"])) $this->table = $config["table"];
         if (is_string($config["id"])) $this->id = $config["id"];
+        if (is_string($config["dbTimeout"])) $this->dbTimeout = $config["dbTimeout"];
+        
         $this->verbose($config["verbose"]);
         unset($config["table"]);
         unset($config["id"]);        
@@ -130,6 +135,7 @@ class HUGnetDB
         $this->_db = &HUGnetDB::createPDO($config);
         if (!$this->checkDB($this->_db)) self::throwException("No Database Connection in class ".get_class($this), -2);
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->_db->setAttribute(PDO::ATTR_TIMEOUT, $this->dbTimeout);
 
         $this->getColumns();
     }
