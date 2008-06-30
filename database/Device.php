@@ -157,7 +157,7 @@ class Device extends HUGnetDB
         if (empty($DevInfo["DeviceID"])) return false;
         if (empty($DevInfo["HWPartNum"])) return false;
         if (empty($DevInfo["SerialNum"])) return false;
-        $DeviceID = devInfo::hexify($DevInfo["SerialNum"], 6);
+        $DeviceID = devInfo::sn2DeviceID($DevInfo["SerialNum"]);
         if (strtoupper($DevInfo["DeviceID"]) != $DeviceID) return false;
 
         unset($DevInfo['params']);        
