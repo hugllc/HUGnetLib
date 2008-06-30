@@ -73,6 +73,42 @@ if (!class_exists("devInfo")) {
             }
             return $Info['DeviceID'];
         }
+        /**
+         * This function returns the serial number associated with the deviceID.
+         *
+         * Note: This function returns the LOWEST possible serial number.  One deviceID
+         * could be used for mulitple serial numbers as DeviceID is 3 bytes and serial number
+         * is 5 bytes.
+         *
+         * @param array $id The deviceID to convert
+         *
+         * @return int The serial number
+         */
+        public static function deviceID2SN($id) 
+        {
+            $id = trim(strtoupper($id));
+            if (substr($id, 0, 1) == "V") {
+                return (int) -1 * hexdec(substr($id, 1));
+            } else {
+                return (int) hexdec($id);
+            }
+        }
+
+        /**
+         * This function returns the device ID associated with a serial number
+         *
+         * @param array $sn The serial number to convert
+         *
+         * @return string The DeviceID
+         */
+        public static function sn2DeviceID($sn) 
+        {
+            if ($sn < 0) {
+                return "V".self::setStringSize(dechex(abs($sn)), 5);
+            } else {
+                return self::setStringSize(dechex($sn), 6);
+            }
+        }
     
         /**
          * Sets the RawData if it is not set.  Valid places to 
