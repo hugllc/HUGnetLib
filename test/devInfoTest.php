@@ -131,6 +131,53 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect["DeviceID"], $ret, "Return not correct");
     }
 
+
+    /**
+     * data provider for testDeviceID
+     *
+     * @return array
+     */
+    public static function dataDeviceID2SN() 
+    {
+        return array(
+            array("000010", 16),
+            array("V00010", -16),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @return null
+     *
+     * @dataProvider dataDeviceID2SN
+     *
+     * @param array  $Info   devInfo array of the device we are using
+     * @param string $expect The expected return
+     */
+    public function testDeviceID2SN($id, $expect) 
+    {
+        $ret = devInfo::DeviceID2SN($id);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * test
+     *
+     * @return null
+     *
+     * @dataProvider dataDeviceID2SN
+     *
+     * @param array  $Info   devInfo array of the device we are using
+     * @param string $expect The expected return
+     */
+    public function testSN2DeviceID($expect, $sn) 
+    {
+        $ret = devInfo::sn2DeviceID($sn);
+        $this->assertSame($expect, $ret);
+    }
+
+
+
     /**
      * data provider for testGetBytes
      *
