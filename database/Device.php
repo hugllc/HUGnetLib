@@ -207,6 +207,29 @@ class Device extends HUGnetDB
         return parent::add($info, $replace);
     }
     /**
+     * Adds an row to the database
+     *
+     * @param array $info    The row in array form
+     * @param bool  $replace If true it replaces the "INSERT" 
+     *                       keyword with "REPLACE".  Not all
+     *                       databases support "REPLACE".
+     *
+     * @return bool
+     */
+    public function addVirtual($info, $replace = false)
+    {
+        if ($replace === false) $info["SerialNum"] = $this->getPrevID("SerialNum");
+        if (empty($info["DeviceID"])) $info["DeviceID"] = devInfo::sn2DeviceID($info["SerialNum"]);
+        if (empty($info["HWPartNum"])) $info["HWPartNum"] = "VIRTUAL";
+        if (empty($info["FWPartNum"])) $info["FWPartNum"] = "VIRTUAL";
+        if (empty($info["FWVersion"])) $info["FWVersion"] = "VIRTUAL";
+        if (empty($info["Driver"])) $info["Driver"] = "eVIRTUAL";
+        
+        if (self::add($info, $replace)) return $info["SerialNum"];
+        return false;
+    }
+
+    /**
      * This sets the device paramters in the database.  The device parameters
      * are stored as string (text) in the database.  This routine takes in the
      * parameter array, encodes it, then stores it in the database.

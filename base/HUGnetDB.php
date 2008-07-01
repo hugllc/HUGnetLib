@@ -619,14 +619,30 @@ class HUGnetDB
      *
      * @return int
       */
-    function getNextID() 
+    function getNextID($id=null) 
     {
-        $query = "SELECT MAX(".$this->id.") as id from `".$this->table."`";    
+        if (empty($id)) $id = $this->id;
+        $query = "SELECT MAX(".$id.") as id from `".$this->table."`";    
         $ret   = $this->query($query);
         $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 0 ;
         return $newID + 1;
     }
 
+    /**
+     * Gets one less that the smallest ID to use from the table.
+     *
+     * This only works with integer ID columns!
+     *
+     * @return int
+      */
+    function getPrevID($id=null) 
+    {
+        if (empty($id)) $id = $this->id;
+        $query = "SELECT MIN(".$id.") as id from `".$this->table."`";    
+        $ret   = $this->query($query);
+        $newID = ($ret[0]['id'] < 0) ? (int) $ret[0]['id'] : 0 ;
+        return $newID - 1;
+    }
     /**
      * Fixes variable so they are the correct type
      *
