@@ -99,7 +99,9 @@
  * if ($debug) {
  *
  *    function Hello() {
- *       print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>\n";
+ *       
+
+print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>\n";
  *    }
  * 
  *    $this->registerFunction("Hello", "", "Test Plugin", "This is a test plugin");
@@ -546,7 +548,7 @@ class Plugins
      *
      * @return null
      */
-    function Plugins ($basedir="", $extension="", $webdir = "", $skipDir=array()) 
+    function Plugins ($basedir="", $extension="", $webdir = "", $skipDir=array(), $verbose=0) 
     {
         $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
         if (trim($basedir) != "") $this->dir = $basedir;
@@ -554,6 +556,7 @@ class Plugins
         if (trim($extension) != "") $this->extension = $extension;
         $this->_skipDir = $skipDir;
         if (!is_array($this->plugins)) $this->findPlugins();
+        $this->verbose = $verbose;
     }
 
     /**
@@ -776,7 +779,7 @@ class Plugins
      */
     private function _debug($text, $level = 1) 
     {
-        $this->_debug_stack .= $text;
+        if ($this->verbose >= $level) print $text;
     }
 
     /**
