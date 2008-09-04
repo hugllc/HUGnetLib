@@ -153,22 +153,26 @@ class Plog extends HUGnetDB
      */
     static public function packetType($pkt)
     {
+        $cmd = $pkt["Command"];
+        if (empty($cmd)) $cmd = $pkt["command"];
+        if (empty($cmd)) $cmd = $pkt["sendCommand"];
         if ($pkt["Unsolicited"] === true) return "UNSOLICITED";
         if ($pkt["Reply"] === true) return "REPLY";
-        if ($pkt["Command"] == PACKET_COMMAND_REPLY) return "REPLY";
-        if ($pkt["Command"] == PACKET_COMMAND_ECHOREQUEST) return "PING";
-        if ($pkt["Command"] == PACKET_COMMAND_FINDECHOREQUEST) return "FINDPING";
-        if ($pkt["Command"] == PACKET_COMMAND_GETCALIBRATION) return "CALIBRATION";
-        if ($pkt["Command"] == PACKET_COMMAND_GETCALIBRATION_NEXT) return "CAL_NEXT";
-        if ($pkt["Command"] == PACKET_COMMAND_GETSETUP) return "CONFIG";
-        if ($pkt["Command"] == PACKET_COMMAND_GETDATA) return "SENSORREAD";
-        if ($pkt["Command"] == PACKET_COMMAND_BADC) return "BAD COMMAND";
-        if ($pkt["Command"] == PACKET_COMMAND_READE2) return "READ_E2";
-        if ($pkt["Command"] == PACKET_COMMAND_READRAM) return "READ_RAM";
-        if ($pkt["Command"] == PACKET_SETRTC_COMMAND) return "SET CLOCK";
-        if ($pkt["Command"] == PACKET_READRTC_COMMAND) return "READ CLOCK";
-        if ($pkt["Command"] == PACKET_COMMAND_POWERUP) return "POWERUP";
-        if ($pkt["Command"] == PACKET_COMMAND_RECONFIG) return "RECONFIG";
+        if ($cmd == PACKET_COMMAND_REPLY) return "REPLY";
+        if ($cmd == PACKET_COMMAND_ECHOREQUEST) return "PING";
+        if ($cmd == PACKET_COMMAND_FINDECHOREQUEST) return "FINDPING";
+        if ($cmd == PACKET_COMMAND_GETCALIBRATION) return "CALIBRATION";
+        if ($cmd == PACKET_COMMAND_GETCALIBRATION_NEXT) return "CAL_NEXT";
+        if ($cmd == PACKET_COMMAND_GETSETUP) return "CONFIG";
+        if ($cmd == PACKET_COMMAND_GETDATA) return "SENSORREAD";
+        if ($cmd == PACKET_COMMAND_BADC) return "BAD COMMAND";
+        if ($cmd == PACKET_COMMAND_READE2) return "READ_E2";
+        if ($cmd == PACKET_COMMAND_READRAM) return "READ_RAM";
+        if ($cmd == PACKET_SETRTC_COMMAND) return "SET CLOCK";
+        if ($cmd == PACKET_READRTC_COMMAND) return "READ CLOCK";
+        if ($cmd == PACKET_COMMAND_POWERUP) return "POWERUP";
+        if ($cmd == PACKET_COMMAND_RECONFIG) return "RECONFIG";
+
         return "UNKNOWN";
     }    
 
