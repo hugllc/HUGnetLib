@@ -556,7 +556,7 @@ class Plugins
         if (trim($extension) != "") $this->extension = $extension;
         $this->_skipDir = $skipDir;
         if (!is_array($this->plugins)) $this->findPlugins();
-        $this->verbose = $verbose;
+        $this->verbose = (int) $verbose;
     }
 
     /**
@@ -779,7 +779,10 @@ class Plugins
      */
     private function _debug($text, $level = 1) 
     {
-        if ($this->verbose >= $level) print $text;
+        $level = (int) $level;
+        if ($this->verbose >= $level) {
+            print $text;
+        }
     }
 
     /**
