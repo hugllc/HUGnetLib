@@ -109,7 +109,20 @@ class HUGnetDB
     
     /** @var int The timeout for connecting to the database */
     protected $dbTimeout = 5;
+    /** @var string The state of the error */
+    public $errorState = "";
+    /** @var int The error number */
+    public $error      = 0;
+    /** @var string The error message. */
+    public $errorMsg   = "";
+    /** @var int The database agnostic error number */
+    public $metaError = 0;
+    /** @var string The database agnostic error message */
+    public $metaErrorMsg = "";
     
+    /** @var int The verbosity level */
+    protected $verbose = 0;
+                 
     /**
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.

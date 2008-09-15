@@ -64,7 +64,7 @@ class AnalysisTest extends databaseTest
 {
     /** The table to use */
     protected $table = "analysis";
-
+       
     /**
      * Runs the test methods of this class.
      *
