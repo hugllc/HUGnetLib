@@ -557,7 +557,9 @@ class ProcStatsTestClass extends ProcStats
      * The name of the table we are using
      */
     protected $table = "HUGnetDBTest";
-    
+    /** The number of columns */
+    private $_columns = 6;
+   
     /**
      * Forces the 'me' variable in the class to be a certain thing.
      *

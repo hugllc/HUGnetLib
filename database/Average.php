@@ -53,7 +53,10 @@ class Average extends History
     protected $table = "average";
     /** This is the Field name for the key of the record */
     protected $id = "AverageKey";
-
+    /** The number of data elements */
+    private $_elements = 16;
+    /** The number of columns */
+    private $_columns = 3;
     /**
      * This function sets up the driver object, and the database object.  The
      * database object is taken from the driver object.
