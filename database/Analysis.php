@@ -54,7 +54,7 @@ class Analysis extends HUGnetDB
     /** This is the Field name for the key of the record */
     var $id = "AnalysisKey";     
     /** The number of columns */
-    protected $_columns = 9;
+    private $_columns = 9;
     /**
      * Creates the SQLite DB table
      *
