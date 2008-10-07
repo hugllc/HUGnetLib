@@ -67,17 +67,17 @@ class Error extends HUGnetDB
         if (is_string($table) && !empty($table)) $this->table = $table;
         
         $query = "CREATE TABLE IF NOT EXISTS `error` (
-            `id` int(11) NOT NULL,
-            `num` int(11) NOT NULL,
-            `msg` varchar(255) NOT NULL,
+            `id` varchar(16) NOT NULL,
+            `err` varchar(255) NOT NULL,
+            `msg` text NOT NULL,
             `errorDate` datetime NOT NULL,
             `program` varchar(64) NOT NULL,
-            `severity` varchar(16) NOT NULL
+            `type` varchar(16) NOT NULL,
+            `status` varchar(8) default 'NEW'
         );";
         $query = $this->cleanSql($query);
         $ret = $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `id` ON `'.$this->table.'` (`id`)');
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `errorKey` ON `'.$this->table.'` (`num`,`errorDate`,`program`)');
+        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `errorKey` ON `'.$this->table.'` (`err`,`errorDate`,`id`)');
         $this->getColumns();
     }    
 }
