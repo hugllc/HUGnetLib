@@ -36,6 +36,11 @@
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
+define("HUGNET_ERROR_OLD_SENSOR_READ", 1);
+define("HUGNET_ERROR_OLD_POLL", 2);
+define("HUGNET_ERROR_OLD_CONFIG", 3);
+
+
 /**
  * A class for controlling processes
  *
@@ -68,18 +73,51 @@ class Error extends HUGnetDB
         
         $query = "CREATE TABLE IF NOT EXISTS `error` (
             `id` varchar(16) NOT NULL,
-            `err` varchar(255) NOT NULL,
+            `err` int(11) NOT NULL,
             `msg` text NOT NULL,
+            `errorLastSeen` datetime default '0000-00-00 00:00:00',
             `errorDate` datetime NOT NULL,
             `program` varchar(64) NOT NULL,
             `type` varchar(16) NOT NULL,
-            `status` varchar(8) default 'NEW'
+            `status` varchar(8) default 'NEW',
+            `errorCount` int(8) default 0         
         );";
         $query = $this->cleanSql($query);
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `errorKey` ON `'.$this->table.'` (`err`,`errorDate`,`id`)');
         $this->getColumns();
-    }    
+    }
+    
+    /**
+    * Adds an row to the database
+    *
+    * @param array $info    The row in array form
+    * @param bool  $replace If true it replaces the "INSERT"
+    *                       keyword with "REPLACE".  Not all
+    *                       databases support "REPLACE".
+    *
+    * @return bool
+    */
+    public function add($info, $replace = false)
+    {
+        if (isset($info["err"])) $info["err"] = (int) $info["err"];      
+        $ret = $this->getWhere("id = ? AND err = ? AND errorLastSeen > ?", array($info["id"], $info["err"], date("Y-m-d H:i:s", time()-86400)));
+        if (count($ret) == 0) {
+            $info["errorLastSeen"] = $info["errorDate"];
+            $info["errorCount"] = 1;         
+            return parent::add($info);
+        } else {
+            $where = "id = ? AND err = ? AND errorDate = ?";
+            $data = array($info["id"], $info["err"], $ret[0]["errorDate"]);
+            $info["errorLastSeen"] = $info["errorDate"];
+            unset($info["errorDate"]);
+            $info["errorCount"] = $ret[0]["errorCount"] + 1;
+            $info["status"] = 'NEW';         
+            return parent::updateWhere($info, $where, $data);
+        }                  
+    }
+       
+    
 }
 
 ?>
