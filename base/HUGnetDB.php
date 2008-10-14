@@ -559,12 +559,13 @@ class HUGnetDB
      *
      * @param int $limit The maximum number of rows to return (0 to return all)
      * @param int $start The row offset to start returning records at
+     * @param string $orderby The orderby Clause.  Must include "ORDER BY"
      *
      * @return array
      */
-    public function getAll($limit = 0, $start = 0) 
+    public function getAll($limit = 0, $start = 0, $orderby="") 
     {
-        return $this->getWhere("1", array(), $limit, $start);
+        return $this->getWhere("1", array(), $limit, $start, $orderby);
     }
 
     /**
@@ -582,16 +583,17 @@ class HUGnetDB
     /**
      * Gets all rows from the database
      *
-     * @param string $where Where clause
-     * @param array  $data  Data for query
-     * @param int    $limit The maximum number of rows to return (0 to return all)
-     * @param int    $start The row offset to start returning records at
+     * @param string $where   Where clause
+     * @param array  $data    Data for query
+     * @param int    $limit   The maximum number of rows to return (0 to return all)
+     * @param int    $start   The row offset to start returning records at
+     * @param string $orderby The orderby Clause.  Must include "ORDER BY"
      *
      * @return array
      */
     public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
     {
-        $query = " SELECT * FROM `".$this->table."` WHERE ".$where.$orderby;
+        $query = " SELECT * FROM `".$this->table."` WHERE ".$where." ".$orderby;
         $limit = (int) $limit;
         $start = (int) $start;
         if (!empty($limit)) $query .= " LIMIT $start, $limit";
