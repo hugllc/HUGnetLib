@@ -10,8 +10,8 @@
     <projectname>HUGnetLib</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
-    <defaultencoding></defaultencoding>
+    <description/>
+    <defaultencoding/>
     <versioncontrol>kdevsubversion</versioncontrol>
   </general>
   <kdevscriptproject>
@@ -46,11 +46,11 @@
     </webInvocation>
     <shell>
       <phpexe>/usr/bin/php</phpexe>
-      <phpini></phpini>
+      <phpini/>
     </shell>
     <options>
-      <phpincludepath></phpincludepath>
-      <defaultFile></defaultFile>
+      <phpincludepath/>
+      <defaultFile/>
       <startupFileMode>1</startupFileMode>
     </options>
   </kdevphpsupport>
@@ -107,17 +107,25 @@
   </kdevfilecreate>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem></docsystem>
-      <docurl></docurl>
-      <usermanualurl></usermanualurl>
+      <docsystem/>
+      <docurl/>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
   <ctagspart>
-    <customArguments></customArguments>
+    <customArguments/>
     <customTagfilePath>/home/prices/devel/HUGnet/HUGnetLib/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>
   <kdevfileview>
-    <groups/>
+    <groups>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>false</hidenonlocation>
+    </groups>
+    <tree>
+      <showvcsfields>false</showvcsfields>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+    </tree>
   </kdevfileview>
 </kdevelop>
