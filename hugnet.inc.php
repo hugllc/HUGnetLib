@@ -42,7 +42,7 @@ define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
 define("HUGNET_INCLUDE_PATH", dirname(__FILE__));    
 if (!defined("HUGNET_DATABASE")) {
     /** The name of the default HUGnet Database */
-    define("HUGNET_DATABASE", "HUGNet");
+    define("HUGNET_DATABASE", "HUGnet");
 }
 if (!defined("DS")) {
     /** The name of the default HUGnet Database */
