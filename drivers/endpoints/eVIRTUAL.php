@@ -36,7 +36,7 @@
 
 if (!class_exists("eVIRTUAL")) {
 
-
+    define("VIRTUAL_ENDPOINT_GATEWAY", -1);
     /**
      * Driver for the polling script (0039-26-01-P)
      *
@@ -130,6 +130,7 @@ if (!class_exists("eVIRTUAL")) {
                 $Info["doTotal"][$i]              = (bool)$dev["doTotal"][$i];
             }
             $this->interpConfigVSensorSetup($Info);
+            $Info["GatewayKey"] = VIRTUAL_ENDPOINT_GATEWAY;         
         }
 
         /**

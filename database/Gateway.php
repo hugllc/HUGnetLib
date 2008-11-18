@@ -71,7 +71,7 @@ class Gateway extends HUGnetDB
     function select($where = " isVisible <> 0 ", $data = array()) 
     {
         $rows = $this->getWhere($where, $data);
-        $ret = array();
+        $ret = array(VIRTUAL_ENDPOINT_GATEWAY => "Virtual");
         foreach ($rows as $row) {
             $ret[$row["GatewayKey"]] = $row["GatewayName"];
         }
