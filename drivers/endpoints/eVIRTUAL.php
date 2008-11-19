@@ -117,7 +117,9 @@ if (!class_exists("eVIRTUAL")) {
             $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? (int)($Info["NumSensors"] + $Info["params"]["VSensors"]) : (int)$Info["NumSensors"];
             for ($i = 0; $i < $Info["NumSensors"]; $i++) {
                 $devKey   =& $Info["params"]["device"][$i];
+                if ($devKey == $Info["DeviceKey"]) continue;
                 $input =  $Info["params"]["input"][$i] - 1;
+                
                 if (!is_array($this->dev[$devKey])) $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
 
                 $dev =& $this->dev[$devKey];
