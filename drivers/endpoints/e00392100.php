@@ -713,7 +713,7 @@ if (!class_exists("e00392100")) {
             if (!is_array($fw)) {
                 $fw = $this->firmware->GetLatestFirmware('0039-20-01-C');
             }
-            
+            if (is_array($fw[0])) $fw = $fw[0];
             print "\r\nProgramming the device\r\n";
 
             if (isset($Info['mcu'])) {
