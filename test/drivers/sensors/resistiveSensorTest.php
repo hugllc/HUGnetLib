@@ -180,6 +180,41 @@ class ResistiveSensorTest extends sensorTestBase
         parent::sensorTest("resistiveSensor", "BCTherm2381_640_66103", $A, $sensor, $TC, $extra, $deltaT, $expect);
     }
 
+     /**
+    * Data provider for testBCTherm2381_640_66103
+    *
+    * @return array
+     */
+    public static function dataIMCSolar()
+    {
+        return array(
+                array(63630, array('extraDefault'=>array(10)), 1, array(10), 0, null), // -40.1 degrees
+                array(450, array('extraDefault'=>array(10)), 1, array(10), 0, null),  // 192.2 degrees
+                array(5000, array('extraDefault'=>array(10)), 1, array(0), 0, 94.0506),
+                array(5000, array('extraDefault'=>array(10)), 1, array(10), 0, 94.0506),
+                array(5000, array('extraDefault'=>array(0)), 1, array(0), 0, null),
+                );
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param array $sensor The sensor array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  The extra sensor data
+    * @param float $deltaT The time difference
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataIMCSolar
+    */
+    public function testIMCSolar($A, $sensor, $TC, $extra, $deltaT, $expect)
+    {
+        parent::sensorTest("resistiveSensor", "IMCSolar", $A, $sensor, $TC, $extra, $deltaT, $expect);
+    }
+   
+    
     /**
      * Data provider for testResisDoor
      *
