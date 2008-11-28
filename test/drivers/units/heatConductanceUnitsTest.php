@@ -29,7 +29,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: insulationUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
+ * @version    SVN: $Id: heatConductanceUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -41,7 +41,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitTestBase.php';
-require_once dirname(__FILE__).'/../../../drivers/units/insulationUnits.php';
+require_once dirname(__FILE__).'/../../../drivers/units/heatConductanceUnits.php';
 
 /**
  * Test class for sensor.
@@ -53,12 +53,12 @@ require_once dirname(__FILE__).'/../../../drivers/units/insulationUnits.php';
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: insulationUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
+ * @version    SVN: $Id: heatConductanceUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class insulationUnitsTest extends UnitTestBase
+class heatConductanceUnitsTest extends UnitTestBase
 {
-    var $class = "insulationUnits";
+    var $class = "heatConductanceUnits";
 
     /**
      * Runs the test methods of this class.
@@ -72,7 +72,7 @@ class insulationUnitsTest extends UnitTestBase
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
-        $suite  = new PHPUnit_Framework_TestSuite("insulationUnitsTest");
+        $suite  = new PHPUnit_Framework_TestSuite("heatConductanceUnitsTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
     /**
@@ -82,7 +82,7 @@ class insulationUnitsTest extends UnitTestBase
      */
     public static function dataUnitArray() 
     {
-        return self::getDataUnitArray("insulationUnits");
+        return self::getDataUnitArray("heatConductanceUnits");
     }
     /**
      * data provider for testUnitArrayConvertFunct
@@ -91,7 +91,7 @@ class insulationUnitsTest extends UnitTestBase
      */
     public static function dataUnitArrayConvertFunct() 
     {
-        return self::getDataUnitArrayConvertFunct("insulationUnits");
+        return self::getDataUnitArrayConvertFunct("heatConductanceUnits");
     }
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -103,7 +103,7 @@ class insulationUnitsTest extends UnitTestBase
      */
     protected function setUp() 
     {
-        $this->o = new insulationUnits();
+        $this->o = new heatConductanceUnits();
     }
 
     /**
@@ -123,7 +123,7 @@ class insulationUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataInsulation()
+    public static function dataHeatConductance()
     {
         return array(
             array(1, 5.678, 1, "raw"),
@@ -133,14 +133,14 @@ class insulationUnitsTest extends UnitTestBase
     /**
      * test CtoF()
      *
-     * @param float  $m    The insulation in C
-     * @param float  $e    The insulation in F
+     * @param float  $m    The heatConductance in C
+     * @param float  $e    The heatConductance in F
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
      * @return null
      *
-     * @dataProvider dataInsulation
+     * @dataProvider dataHeatConductance
      */
     public function testEngToMetric($m, $e, $time, $type)
     {
@@ -150,18 +150,47 @@ class insulationUnitsTest extends UnitTestBase
     /**
      * test FtoC()
      *
-     * @param float  $m    The insulation in C
-     * @param float  $e    The insulation in F
+     * @param float  $m    The heatConductance in C
+     * @param float  $e    The heatConductance in F
      * @param int    $time The time in seconds between this record and the last.
      * @param string $type The type of data (diff, raw, etc)
      *
      * @return null
      *
-     * @dataProvider datainsulation
+     * @dataProvider dataheatConductance
      */
     public function testMetricToEng($m, $e, $time, $type)
     {
         $this->assertEquals($e, $this->o->metricToEng($m, $time, $type));
+    }
+    /**
+    * Data provider for testFtoC() and testCtoF()
+    *
+    * @return array
+    */
+    public static function dataRtoU()
+    {
+        return array(
+            array(1, 1, 1, "raw"),
+            array(5, 0.2, 1, "raw"),
+            array(0, null, 1, "raw"),            
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param float  $m    The heatConductance in C
+    * @param float  $e    The heatConductance in F
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return null
+    *
+    * @dataProvider dataRtoU
+    */
+    public function testRtoU($r, $u, $time, $type)
+    {
+        $this->assertEquals($u, $this->o->rToU($r, $time, $type));
     }
 
 }
