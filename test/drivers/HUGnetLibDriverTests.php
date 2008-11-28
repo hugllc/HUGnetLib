@@ -66,7 +66,8 @@ require_once 'socket/dbsocketTest.php';
 require_once 'socket/epsocketTest.php'; 
 // Units
 require_once 'units/temperatureUnitsTest.php';
-require_once 'units/insulationUnitsTest.php';
+require_once 'units/heatConductanceUnitsTest.php';
+require_once 'units/heatInsulationUnitsTest.php';
 require_once 'units/baleMoistureUnitsTest.php';
 require_once 'units/currentUnitsTest.php';
 require_once 'units/doorUnitsTest.php';
@@ -140,8 +141,9 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('epsocketTest');
         
         // Units
-        $suite->addTestSuite('insulationUnitsTest');
-        $suite->addTestSuite('insulationUnitsTest');
+        $suite->addTestSuite('heatInsulationUnitsTest');
+        $suite->addTestSuite('heatConductanceUnitsTest');
+        $suite->addTestSuite('TemperatureUnitsTest');
         $suite->addTestSuite('baleMoistureUnitsTest');
         $suite->addTestSuite('currentUnitsTest');
         $suite->addTestSuite('doorUnitsTest');

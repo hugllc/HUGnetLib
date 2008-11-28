@@ -36,7 +36,7 @@
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php"; 
  
-if (!class_exists('insulationUnits')) {
+if (!class_exists('heatInsulationUnits')) {
     /**
      * This class implements photo sensors.
      *
@@ -48,7 +48,7 @@ if (!class_exists('insulationUnits')) {
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
-    class insulationUnits extends unitBase
+    class heatInsulationUnits extends unitBase
     {
         /**
          *  This is the array that defines all of our units and how to
@@ -57,18 +57,18 @@ if (!class_exists('insulationUnits')) {
          *
          */
         var $units = array(
-            'm^2 C/ W' => array(
-                'longName' => 'm^2 C/ W',
+            'm^2 C / W' => array(
+                'longName' => 'm^2 C / W',
                 'varType' => 'float',
                 'convert' => array(
-                    'ft^2 F h/Btu' => 'metricToEng',
+                    'ft^2 F h / Btu' => 'metricToEng',
                 ),
             ),
-            'ft^2 F h/Btu' => array(
-                'longName' => 'ft^2 F h/Btu',
+            'ft^2 F h / Btu' => array(
+                'longName' => 'ft^2 F h / Btu',
                 'varType' => 'float',
                 'convert' => array(
-                    'm^2 C/ W' => 'engToMetric',
+                    'm^2 C / W' => 'engToMetric',
                 ),
             ),
 
@@ -102,11 +102,27 @@ if (!class_exists('insulationUnits')) {
             return round($m * 5.678, 4);
         }
             
+        /**
+        *  Converts from &#176; F to &#176; C.
+        *
+        * @param float  $m    The insulation in m^2 C/ W
+        * @param int    $time The time in seconds between this record and the last.
+        * @param string $type The type of data (diff, raw, etc)
+        *
+        * @return float The insulation in C
+          */
+        public function rToU($r, $time, $type)
+        {
+            if ($r == 0) return null;         
+            return round(1/$r, 4);
+        }
+      
     }
 }
 
+
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "Insulation", "Type" => "units", "Class" => "insulationUnits"));
+    $this->addGeneric(array("Name" => "Heat Insulation", "Type" => "units", "Class" => "heatInsulationUnits"));
 }
 
 
