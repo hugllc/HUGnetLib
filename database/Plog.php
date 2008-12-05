@@ -131,9 +131,9 @@ class Plog extends HUGnetDB
         $Info["GatewayKey"] = $Gateway["GatewayKey"];
         $Info["RawData"]    = $Packet["RawData"];
         if (!empty($Packet["Time"])) {
-            $Info["Date"] = date("Y-m-d H:i:s", $Packet["Time"]);
+            $Info["Date"] = gmdate("Y-m-d H:i:s", $Packet["Time"]);
         } else {
-            $Info["Date"] = date("Y-m-d H:i:s");        
+            $Info["Date"] = gmdate("Y-m-d H:i:s");
         }
         $Info["PacketTo"]    = $Packet["To"];
         $Info["PacketFrom"]  = $Packet["From"];
