@@ -6,7 +6,8 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +28,8 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
+ * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id: heatConductanceUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -51,7 +53,8 @@ require_once dirname(__FILE__).'/../../../drivers/units/heatConductanceUnits.php
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
+ * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id: heatConductanceUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
