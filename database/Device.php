@@ -6,7 +6,8 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2009 Scott Price
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +28,8 @@
  * @package    HUGnetLib
  * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
+ * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -41,7 +43,8 @@ require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
  * @package    HUGnetLib
  * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007 Hunt Utilities Group, LLC
+ * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -83,10 +86,11 @@ class Device extends HUGnetDB
      * @param string $name       The name of the select list
      * @param mixed  $selected   The entry that is currently selected
      * @param int    $GatewayKey The key to use if only one gateway is to be selected
+     * @param int    $active     If only active endpoints should be selected
      *
      * @return mixed
      */    
-    function selectDevice($name=null, $selected=null, $GatewayKey=null) 
+    function selectDevice($name=null, $selected=null, $GatewayKey=null, $active=1) 
     {
         $data  = array();
         $query = "SELECT DeviceKey, DeviceID, DeviceName FROM devices WHERE";
@@ -97,6 +101,11 @@ class Device extends HUGnetDB
             $data[] = $GatewayKey;
             $query .= " GatewayKey = ? ";            
         }
+        $active = (int) $active;      
+        if (!empty($active)) {
+            $data[] = 1;
+            $query .= "AND active = ? ";
+        }         
         $query .= " ORDER BY DeviceName";
         $rows = $this->query($query, $data, true);
         $ret = array();
