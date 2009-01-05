@@ -344,7 +344,7 @@ class Device extends HUGnetDB
                       `FWPartNum` varchar(12) NOT null default '',
                       `FWVersion` varchar(8) NOT null default '',
                       `RawSetup` varchar(128) NOT null default '',
-                      `Active` varchar(4) NOT null default 'YES',
+                      `Active` tinyint(4) NOT NULL default '1',
                       `GatewayKey` int(11) NOT null default '0',
                       `ControllerKey` int(11) NOT null default '0',
                       `ControllerIndex` tinyint(4) NOT null default '0',
