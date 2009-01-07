@@ -108,7 +108,7 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
         $this->plog = &HUGnetDB::getInstance("Plog");
         $this->plog->createTable($this->table);
 
-        $this->pdo =& $this->readAttribute($this->plog, "_db");
+        $this->pdo =& $this->readAttribute($this->plog, "db");
         $this->pdo->query($query);
         $this->o = new dbsocket(); //new dbsocket($this->pdo);
     }
