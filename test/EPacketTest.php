@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -59,16 +59,17 @@ require_once dirname(__FILE__).'/../EPacket.php';
 class EPacketTest extends PHPUnit_Framework_TestCase
 {
     /** default devInfo array */
-    private $Info = array(
+    protected $Info = array(
         "GatewayKey" => 1,
         "socketType" => "test",
     );
-    /** 
-     * Test packets in array form 
-     *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
-     */
+    /**
+    * Test packets in array form
+    *
+    * This array needs to have the same keys as $testPacketStr and
+    * $testPacketReplyStr
+    * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
+    */
     var $testPacketArray = array(
         array(
             "Command" => "55",
@@ -96,12 +97,13 @@ class EPacketTest extends PHPUnit_Framework_TestCase
             "Checksum" => "F5",
        ),
     );
-    /** 
-     * Test packets in array form 
-     *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
-     */
+    /**
+    * Test packets in array form
+    *
+    * This array needs to have the same keys as $testPacketStr and
+    * $testPacketReplyStr
+    * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
+    */
     var $testPacketReplyArray = array(
         array(
             "Command" => "01",
@@ -128,37 +130,38 @@ class EPacketTest extends PHPUnit_Framework_TestCase
             "Checksum" => "A8",
        ),
     );
-    /** 
-     * Test Packets in string form 
-     *
-     * This array needs to have the same keys as $testPacketArray and $testPacketReplyStr     
-     * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray    
-     */
+    /**
+    * Test Packets in string form
+    *
+    * This array needs to have the same keys as $testPacketArray and
+    * $testPacketReplyStr
+    * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray
+    */
     var $testPacketStr = array(
         "5A5A5A55000ABC0000200401020304C3",
         "5A5A5A5C000ABC00002000CA",
         "5A5A5A5CABCDEF00002000F5",
     );
-    /** 
-     * Test Packets in string form 
-     *
-     * This array needs to have the same keys as $testPacketStr and $testPacketArray
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray    
-     */
+    /**
+    * Test Packets in string form
+    *
+    * This array needs to have the same keys as $testPacketStr and $testPacketArray
+    * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray
+    */
     var $testPacketReplyStr = array(
         "5A5A5A01000020000ABC040102030497",
         "5A5A5A01000020000ABC0097",
         "5A5A5A01000020ABCDEF00A8",
     );
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -167,48 +170,53 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
         $db      = $this->getMock("ADONewConnection", array(), array("sqlite"));
-        $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"), false, $db, false);
+        $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"),
+                               false,
+                               $db,
+                               false);
 
 
         // This is a fast system.  It doesn't need a long timeout
-        $this->o->socket[2] = $this->getMock('epsocketMock', array("connect", "close", "readChar", "write"), array("socketType"=>"test"));
+        $this->o->socket[2] = $this->getMock('epsocketMock',
+                                      array("connect", "close", "readChar", "write"),
+                                      array("socketType"=>"test"));
 
-        $this->o->ReplyTimeout = 1; 
-        
+        $this->o->ReplyTimeout = 1;
+
         $this->txrxMock = new EPacketTXRXMock();
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
         unset($this->o);
     }
 
     /**
-     * deHexifies a string
-     *
-     * @param string $string The string to dehexify
-     *
-     * @return array
-     */
-    private function _deHexifyArray($string) 
+    * deHexifies a string
+    *
+    * @param string $string The string to dehexify
+    *
+    * @return array
+    */
+    private function _deHexifyArray($string)
     {
         $index = 0;
         $array = array();
@@ -219,43 +227,51 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Cleans the 'to' field to make it presentable.  Will also work on 'from'
-     * 
-     * @param string $to The 'to' string
-     *
-     * @return string
-     */
-    private function _cleanTo($to) 
+    * Cleans the 'to' field to make it presentable.  Will also work on 'from'
+    *
+    * @param string $to The 'to' string
+    *
+    * @return string
+    */
+    private function _cleanTo($to)
     {
         $to = trim($to);
         $to = substr($to, 0, 6);
         $to = str_pad($to, 6, "0", STR_PAD_LEFT);
         $to = strtoupper($to);
-    
+
         return $to;
     }
     /**
-     * Checks to see if the packet array is valid
-     *
-     * @param array $a    The array to test
-     * @param array $test array of fields and values to check
-     * @param array $keys array of keys to test
-     *
-     * @return null
-     */
-    public function validPacketArray($a, $test=null, $keys = null) 
+    * Checks to see if the packet array is valid
+    *
+    * @param array $a    The array to test
+    * @param array $test array of fields and values to check
+    * @param array $keys array of keys to test
+    *
+    * @return null
+    */
+    public function validPacketArray($a, $test=null, $keys = null)
     {
         $this->assertTrue(is_array($a), "This is not an array!");
-        $this->assertTrue(is_string($a['Command']), "'".$a['Command']."': Packet command must be a string");
-        $this->assertEquals(2, strlen($a['Command']), "'".$a['Command']."': Packet command must contain exactly 2 characters");
-        $this->assertTrue(is_string($a['To']), "'".$a['To']."': Packet to must be a string");
-        $this->assertEquals(6, strlen($a['To']), "'".$a['To']."': Packet to must contain exactly 6 characters");
+        $this->assertTrue(is_string($a['Command']),
+                          "'".$a['Command']."': Packet command must be a string");
+        $this->assertEquals(2,
+                            strlen($a['Command']),
+                            "'".$a['Command']."': Command is exactly 2 characters");
+        $this->assertTrue(is_string($a['To']),
+                          "'".$a['To']."': Packet to must be a string");
+        $this->assertEquals(6,
+                            strlen($a['To']),
+                                   "'".$a['To']."': To is exactly 6 characters");
         if (is_array($test)) {
             foreach ($test as $key => $var) {
                 // Check to see if the key was specified
                 if (is_array($keys)) {
                     // If it was not continue.
-                    if (array_search($key, $keys) === false) continue;
+                    if (array_search($key, $keys) === false) {
+                        continue;
+                    }
                     // Drop through if it was specified, or if nothing was specified.
                 }
                 if (trim(strtolower($key)) == "to") {
@@ -266,41 +282,51 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Checks to see if a packet string is valid
-     *
-     * @param string $s The packet string to check
-     * @param array  $a Array of values to check
-     *
-     * @return null
-     */
-    public function validPacketString($s, $a=null) 
+    * Checks to see if a packet string is valid
+    *
+    * @param string $s The packet string to check
+    * @param array  $a Array of values to check
+    *
+    * @return null
+    */
+    public function validPacketString($s, $a=null)
     {
         $this->assertTrue(is_string($s), "This is not a string!");
         $s              = strtoupper($s);
         $preambleLength = EPacketTest::getPreambleLength($s);
-        $this->assertTrue((($preambleLength >= 2) && ($preambleLength <= 3)), "Preamble must be 2 or 3 characters");
+        $this->assertTrue((($preambleLength >= 2) && ($preambleLength <= 3)),
+                            "Preamble must be 2 or 3 characters");
         $length      = hexdec(substr($s, ($preambleLength + 7) * 2, 2));
         $totalLength = $preambleLength + 8 + $length + 1;
-        $this->assertEquals(($totalLength * 2), strlen($s), count($a['command']), "Packet command must contain exactly 2 characters");
+        $this->assertEquals(($totalLength * 2),
+                             strlen($s),
+                             count($a['command']),
+                             "Packet command must contain exactly 2 characters");
         if (is_array($a)) {
             $a   = array_change_key_case($a, CASE_LOWER);
             $to  = $this->_cleanTo($a["to"]);
             $pTo = substr($s, ($preambleLength+1) * 2, 6);
-            $this->assertEquals($to, $pTo, "To field is Wrong.  '$to' != '$pTo'");
-            $this->assertEquals($length * 2, strlen(trim($a['data'])), "Wrong length parameter.");
+            $this->assertEquals($to,
+                                $pTo,
+                                "To field is Wrong.  '$to' != '$pTo'");
+            $this->assertEquals($length * 2,
+                                strlen(trim($a['data'])),
+                                "Wrong length parameter.");
         }
     }
     /**
-     * returns the preamble length
-     *
-     * @param string $pkt The packet string to check
-     *
-     * @return int
-     */
-    public function getPreambleLength($pkt) 
+    * returns the preamble length
+    *
+    * @param string $pkt The packet string to check
+    *
+    * @return int
+    */
+    public function getPreambleLength($pkt)
     {
         $length = 0;
-        while (substr($pkt, ($length*2), 2) == "5A") $length++;    
+        while (substr($pkt, ($length*2), 2) == "5A") {
+            $length++;
+        }
         return $length;
     }
 
@@ -309,11 +335,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * Test packetCallBackMethod()
-     *
-     * @return null
-     */
-    public function testPacketCallBackMethod() 
+    * Test packetCallBackMethod()
+    *
+    * @return null
+    */
+    public function testPacketCallBackMethod()
     {
         $t      = $this->getMock('EPacketTest_CallBack_Class');
         $string = "ABCDE";
@@ -324,11 +350,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         $this->o->PacketCallBack($string);
     }
     /**
-     * Test packetCallBackFunction()
-     *
-     * @return null
-     */
-    public function testPacketCallBackFunction() 
+    * Test packetCallBackFunction()
+    *
+    * @return null
+    */
+    public function testPacketCallBackFunction()
     {
         $string = "ABCDE";
 
@@ -338,11 +364,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for testSendPacket()
-     *
-     * @return array
-     */    
-    public static function datasendPacket() 
+    * data provider for testSendPacket()
+    *
+    * @return array
+    */
+    public static function datasendPacket()
     {
         return array(
             array(
@@ -366,7 +392,14 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                 // GetReply
                 true,
                 // pktStr
-                array(array("Command" => "55", "To" => "000ABC", "From" => "000020", "Data" => "01020304")),
+                array(
+                      array(
+                            "Command" => "55",
+                            "To" => "000ABC",
+                            "From" => "000020",
+                            "Data" => "01020304"
+                           )
+                     ),
 
                 // replyStr
                 array(
@@ -485,43 +518,53 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests sendPacket
-     *
-     * @param array $Info     devInfo array of the device
-     * @param array $pkt      The packet to send
-     * @param array $pktStr   array of packet strings
-     * @param array $replyStr array of packet replies
-     * @param mixed $expect   what to expect
-     * @param bool  $getAll   Whether to get all of the packets returned, or only the reply
-     *
-     * @return null
-     *
-     * @dataProvider datasendPacket().
-     */
-    public function testsendPacket($Info, $pkt, $GetReply, $pktStr, $replyStr, $expect, $getAll = false) 
+    * Tests sendPacket
+    *
+    * @param array $Info     devInfo array of the device
+    * @param array $pkt      The packet to send
+    * @param bool  $GetReply Whether to expect a reply or not
+    * @param array $pktStr   array of packet strings
+    * @param array $replyStr array of packet replies
+    * @param mixed $expect   what to expect
+    * @param bool  $getAll   Whether to get all of the packets returned, or only
+    *                        the reply
+    *
+    * @return null
+    *
+    * @dataProvider datasendPacket().
+    */
+    public function testsendPacket($Info,
+                                   $pkt,
+                                   $GetReply,
+                                   $pktStr,
+                                   $replyStr,
+                                   $expect,
+                                   $getAll = false)
     {
         // This preloads our fake socket to send back the data we want
-                if (is_array($pktStr)) {
+        if (is_array($pktStr)) {
             foreach ($pktStr as $k => $p) {
                 $this->o->socket[1]->setReply($p, $replyStr[$k]);
             }
         } else {
             $this->o->socket[1]->setReply($pktStr, $replyStr);
         }
-        if ($getAll) $this->o->getAll($getAll);
+        if ($getAll) {
+            $this->o->getAll($getAll);
+        }
         $rep = $this->o->sendPacket($Info, $pkt, $GetReply, null);
         self::_packetRemoveDates($rep);
         $this->assertSame($expect, $rep);
     }
 
     /**
-     * Removes the dates from the array so it can be checked
-     *
-     * @param array &$rep The array to remove the dates from
-     *
-     * @return null
-     */
-    private function _packetRemoveDates(&$rep) 
+    * Removes the dates from the array so it can be checked
+    *
+    * @param array &$rep The array to remove the dates from
+    *
+    * @return null
+    */
+    private function _packetRemoveDates(&$rep)
     {
         if (is_array($rep)) {
             foreach ($rep as $key => $val) {
@@ -531,17 +574,17 @@ class EPacketTest extends PHPUnit_Framework_TestCase
                 unset($rep[$key]["Date"]);
             }
         }
-    
+
     }
 
 
 
     /**
-     * data provider for testArrayToData()
-     *
-     * @return array
-     */    
-    public static function dataArrayToData() 
+    * data provider for testArrayToData()
+    *
+    * @return array
+    */
+    public static function dataArrayToData()
     {
         return array(
             array("0102030405", "0102030405"),
@@ -552,69 +595,69 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * Tests arrayToData()
-     *
-     * @param mixed  $data   The key to try
-     * @param string $expect The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataArrayToData
-     */
-    public function testArrayToDataValid($data, $expect) 
+    * Tests arrayToData()
+    *
+    * @param mixed  $data   The key to try
+    * @param string $expect The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataArrayToData
+    */
+    public function testArrayToDataValid($data, $expect)
     {
         $s = $this->o->arrayToData($data);
         $this->assertEquals($s, $expect);
     }
     /**
-     * Test calling it directly
-     *
-     * @param mixed  $data   The key to try
-     * @param string $expect The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataArrayToData
-     */
-    public function testArrayToDataDirect($data, $expect) 
+    * Test calling it directly
+    *
+    * @param mixed  $data   The key to try
+    * @param string $expect The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataArrayToData
+    */
+    public function testArrayToDataDirect($data, $expect)
     {
         $s = EPacket::arrayToData($data);
         $this->assertEquals($s, $expect);
     }
 
     /**
-     * data provider for testChangeSN()
-     *
-     * @return array
-     */    
-    public static function dataChangeSN() 
+    * data provider for testChangeSN()
+    *
+    * @return array
+    */
+    public static function dataChangeSN()
     {
         return array(
-//            array("000004", array("000001", "000002", "000003", "000004", "000005", "000006", "000007", "000008", "000009"), "000004"),
-//            array("", array("000001", "000002", "000003", "000004"), "000020"),
         );
     }
 
     /**
-     * Test ChangeSN
-     *
-     * @param string $SN      The SN to test for
-     * @param array  $SNArray The serial number array
-     * @param mixed  $expect  The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataChangeSN($SN)
-     */
-    public function testChangeSN($SN, $SNArray, $expect) 
+    * Test ChangeSN
+    *
+    * @param string $SN      The SN to test for
+    * @param array  $SNArray The serial number array
+    * @param mixed  $expect  The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataChangeSN($SN)
+    */
+    public function testChangeSN($SN, $SNArray, $expect)
     {
         $this->o->SNArray = $SNArray;
         $Info             = array("GatewayKey" => 1);
         // Load these packets up so that it always chooses $SN.
         foreach ($SNArray as $s) {
             if ($s != $SN) {
-                $pkt   = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s), "000020");
-                $reply = EPacket::PacketBuild(array("Command"=>"01", "To"=>"000020"), $s);
+                $pkt   = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s),
+                                              "000020");
+                $reply = EPacket::PacketBuild(array("Command"=>"01", "To"=>"000020"),
+                                              $s);
                 $this->o->socket[1]->setReply($pkt, $reply);
             }
         }
@@ -623,22 +666,22 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test packetTime()
-     *
-     * @return null
-     */
-    public function testPacketTime() 
+    * Test packetTime()
+    *
+    * @return null
+    */
+    public function testPacketTime()
     {
         $t = EPacket::PacketTime();
         $this->assertTrue(is_float($t), "Time not a floating point number");
     }
 
     /**
-     * data provider for testMonitor
-     *
-     * @return array
-     */    
-    public static function dataIsGateway() 
+    * data provider for testMonitor
+    *
+    * @return array
+    */
+    public static function dataIsGateway()
     {
         return array(
             array("000010", true),
@@ -649,56 +692,56 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * Test isGateway
-     *
-     * @param mixed $key    The key to try
-     * @param bool  $expect The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataIsGateway()
-     */
-    public function testIsGateway($key, $expect) 
+    * Test isGateway
+    *
+    * @param mixed $key    The key to try
+    * @param bool  $expect The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataIsGateway()
+    */
+    public function testIsGateway($key, $expect)
     {
         $this->assertSame($expect, $this->o->isGateway($key));
     }
 
     /**
-     * Test getAll
-     *
-     * @return null
-     */
-    public function testGetAll1() 
+    * Test getAll
+    *
+    * @return null
+    */
+    public function testGetAll1()
     {
         $this->o->getAll(false);
         $this->assertFalse($this->readAttribute($this->o, "getAll"));
     }
     /**
-     * Test getAll
-     *
-     * @return null
-     */
-    public function testGetAll2() 
+    * Test getAll
+    *
+    * @return null
+    */
+    public function testGetAll2()
     {
         $this->o->getAll(true);
         $this->assertTrue($this->readAttribute($this->o, "getAll"));
     }
     /**
-     * Test getAll
-     *
-     * @return null
-     */
-    public function testGetAll3() 
+    * Test getAll
+    *
+    * @return null
+    */
+    public function testGetAll3()
     {
         $this->o->getAll(0);
         $this->assertFalse($this->readAttribute($this->o, "getAll"));
     }
     /**
-     * Test getAll
-     *
-     * @return null
-     */
-    public function testGetAll4() 
+    * Test getAll
+    *
+    * @return null
+    */
+    public function testGetAll4()
     {
         $this->o->getAll(1);
         $this->assertTrue($this->readAttribute($this->o, "getAll"));
@@ -707,31 +750,51 @@ class EPacketTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for test testBuildPacket()
-     *
-     * @return array
-     */    
-    public static function dataBuildPacket() 
+    * data provider for test testBuildPacket()
+    *
+    * @return array
+    */
+    public static function dataBuildPacket()
     {
         return array(
-            array("123", "AB", "12345678", array("To"=>"123", "From" => '000020', "Command"=>"AB", "Data"=>"12345678")),
-            array("3456", "CD", null, array("To"=>"3456", "From" => '000020', "Command"=>"CD", "Data"=>"")),
-        );    
+            array(
+                  "123",
+                  "AB",
+                  "12345678",
+                  array(
+                        "To"=>"123",
+                        "From" => '000020',
+                        "Command"=>"AB",
+                        "Data"=>"12345678"
+                       )
+                 ),
+            array(
+                  "3456",
+                  "CD",
+                  null,
+                  array(
+                        "To"=>"3456",
+                        "From" => '000020',
+                        "Command"=>"CD",
+                        "Data"=>""
+                       )
+                 ),
+        );
     }
 
     /**
-     * Test buildPacket()
-     *
-     * @param string $command The command to use
-     * @param string $to      Who to send the packet to
-     * @param string $data    The data to send
-     * @param array  $expect  What to expect in return
-     *
-     * @return null
-     *
-     * @dataProvider dataBuildPacket
-     */
-    public function testBuildPacket($command, $to, $data, $expect) 
+    * Test buildPacket()
+    *
+    * @param string $command The command to use
+    * @param string $to      Who to send the packet to
+    * @param string $data    The data to send
+    * @param array  $expect  What to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataBuildPacket
+    */
+    public function testBuildPacket($command, $to, $data, $expect)
     {
         if (is_null($data)) {
             $pkt = $this->o->buildPacket($command, $to);
@@ -741,27 +804,27 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $pkt);
     }
     /**
-     * data provider for testMonitor
-     *
-     * @return array
-     */    
-    public static function dataMonitor() 
+    * data provider for testMonitor
+    *
+    * @return array
+    */
+    public static function dataMonitor()
     {
         return array(
-        );    
+        );
     }
     /**
-     * Test Ping
-     *
-     * @param array $Info    The devInfo array of the device
-     * @param int   $timeout The timeout value to use
-     * @param array $expect  The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataMonitor
-     */
-    public function testMonitor($Info, $timeout, $expect) 
+    * Test Ping
+    *
+    * @param array $Info    The devInfo array of the device
+    * @param int   $timeout The timeout value to use
+    * @param array $expect  The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataMonitor
+    */
+    public function testMonitor($Info, $timeout, $expect)
     {
         if (is_null($timeout)) {
             $ret = $this->txrxMock->monitor($Info);
@@ -772,38 +835,38 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for testPing()
-     *
-     * @return array
-     */    
-    public static function dataPing() 
+    * data provider for testPing()
+    *
+    * @return array
+    */
+    public static function dataPing()
     {
         return array(
             array(
-                array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                false, 
+                array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
+                false,
                 array(
-                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
                     "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
                     "GetReply" => true,
                     "pktTimeout" => null,
               ),
            ),
             array(
-                array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                null, 
+                array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
+                null,
                 array(
-                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
                     "PacketList" => array("Command" => "02", "To" => "ABCDEF"),
                     "GetReply" => true,
                     "pktTimeout" => null,
                ),
            ),
             array(
-                array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
-                true, 
+                array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
+                true,
                 array(
-                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1), 
+                    "Info" => array("DeviceID" => "ABCDEF", "DeviceKey" => 1),
                     "PacketList" => array("Command" => "03", "To" => "ABCDEF"),
                     "GetReply" => true,
                     "pktTimeout" => null,
@@ -813,17 +876,17 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Ping
-     *
-     * @param array $Info   The devInfo array of the device
-     * @param bool  $find   Whether to use a 'find' ping or not
-     * @param array $expect The return to expect
-     *
-     * @return null
-     *
-     * @dataProvider dataPing
-     */
-    public function testPing($Info, $find, $expect) 
+    * Test Ping
+    *
+    * @param array $Info   The devInfo array of the device
+    * @param bool  $find   Whether to use a 'find' ping or not
+    * @param array $expect The return to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataPing
+    */
+    public function testPing($Info, $find, $expect)
     {
         if (is_null($find)) {
             $ret = $this->txrxMock->ping($Info);
@@ -835,11 +898,11 @@ class EPacketTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * Test Close
-     *
-     * @return null
-     */
-    public function testClose() 
+    * Test Close
+    *
+    * @return null
+    */
+    public function testClose()
     {
         $this->o->socket[2] = $this->getMock('epsocketMock');
         $this->o->socket[2]->expects($this->once())
@@ -849,51 +912,47 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test SNCheck
-     *
-     * @return null
-     */
-    public function testSNCheck1() 
+    * Test SNCheck
+    *
+    * @return null
+    */
+    public function testSNCheck1()
     {
         $this->o->SNCheck(false);
         $this->assertFalse($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
-     * Test SNCheck
-     *
-     * @return null
-     */
-    public function testSNCheck2() 
+    * Test SNCheck
+    *
+    * @return null
+    */
+    public function testSNCheck2()
     {
         $this->o->SNCheck(true);
         $this->assertTrue($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
-     * Test SNCheck
-     *
-     * @return null
-     */
-    public function testSNCheck3() 
+    * Test SNCheck
+    *
+    * @return null
+    */
+    public function testSNCheck3()
     {
         $this->o->SNCheck(0);
         $this->assertFalse($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
     /**
-     * Test SNCheck
-     *
-     * @return null
-     */
-    public function testSNCheck4() 
+    * Test SNCheck
+    *
+    * @return null
+    */
+    public function testSNCheck4()
     {
         $this->o->SNCheck(1);
         $this->assertTrue($this->readAttribute($this->o, "_DeviceIDCheck"));
     }
 }
 
-// Call EPacketTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
-    EPacketTest::main();
-}
 
 /**
  * This class is for testing callback
@@ -910,12 +969,12 @@ if (PHPUnit_MAIN_METHOD == "EPacketTest::main") {
 class EPacketTest_CallBack_Class
 {
     /**
-     * This function is for testing callback
-     *
-     * @param array $pkt The packet
-     *
-     * @return null
-     */
+    * This function is for testing callback
+    *
+    * @param array $pkt The packet
+    *
+    * @return null
+    */
     public function test($pkt)
     {
         $this->TestVar = $pkt;
@@ -938,23 +997,23 @@ class EPacketTest_CallBack_Class
 class EPacketTXRXMock extends EPacket
 {
     /**
-     * constructor
-     */
-    function __construct() 
+    * constructor
+    */
+    function __construct()
     {
-    
+
     }
     /**
-     * Some Function
-     *
-     * @param array &$Info      The array with the device information in it
-     * @param array $PacketList Array with packet information in it.
-     * @param bool  $GetReply   Whether or not to wait for a reply.
-     * @param int   $pktTimeout The timeout value to use
-     *
-     * @return null
-     */
-    public function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null)
+    * Some Function
+    *
+    * @param array &$Info      The array with the device information in it
+    * @param array $PacketList Array with packet information in it.
+    * @param bool  $GetReply   Whether or not to wait for a reply.
+    * @param int   $pktTimeout The timeout value to use
+    *
+    * @return null
+    */
+    function sendPacket(&$Info, $PacketList, $GetReply=true, $pktTimeout = null)
     {
         return array(
             "Info" => $Info,
@@ -964,13 +1023,13 @@ class EPacketTXRXMock extends EPacket
         );
     }
     /**
-     * Some Function
-     *
-     * @param int $socket  The socket to send it out of.  0 is the default.
-     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
-     *
-     * @return null
-     */
+    * Some Function
+    *
+    * @param int $socket  The socket to send it out of.  0 is the default.
+    * @param int $timeout Timeout for waiting.  Default is used if timeout == 0
+    *
+    * @return null
+    */
     public function recvPacket($socket, $timeout = 0)
     {
         return array(
@@ -1000,35 +1059,38 @@ class EpSocketMock extends EpSocket
     var $index = 0;
 
     /**
-     * Sets replies for packets received
-     *
-     * @param string $data  The data we will receive
-     * @param string $reply The data to return
-     *
-     * @return null
-     */
-    public function setReply($data, $reply) {
-        if (is_array($data)) $data = array_change_key_case($data, CASE_LOWER);
-        $this->reply[serialize($data)] = $reply;
-    }    
-        
-    /**
-     * Connects to the server
-     * 
-     *
-     * @param string $server  Name or IP address of the server to connect to
-     * @param int    $port    The TCP port on the server to connect to
-     * @param int    $timeout The time to wait before giving up on a bad connection
-     *
-     * @return bool true if the connection is good, false otherwise
-     *
-     * @see epsocket::Connect()
-     */
-    public function connect($config=array()) 
+    * Sets replies for packets received
+    *
+    * @param string $data  The data we will receive
+    * @param string $reply The data to return
+    *
+    * @return null
+    */
+    public function setReply($data, $reply)
     {
-        if (!empty($config["GatewayIP"])) $this->Server = $config["GatewayIP"];
-        if (!empty($config["GatewayPort"])) $this->Port = $config["GatewayPort"];
+        if (is_array($data)) {
+            $data = array_change_key_case($data, CASE_LOWER);
+        }
+        $this->reply[serialize($data)] = $reply;
+    }
 
+    /**
+    * Connects to the server
+    *
+    * @param array $config Infomation about the connection
+    *
+    * @return bool true if the connection is good, false otherwise
+    *
+    * @see epsocket::Connect()
+    */
+    public function connect($config = array())
+    {
+        if (!empty($config["GatewayIP"])) {
+            $this->Server = $config["GatewayIP"];
+        }
+        if (!empty($config["GatewayPort"])) {
+            $this->Port = $config["GatewayPort"];
+        }
         if (!empty($this->Server) && !empty($this->Port)) {
             $this->socket = true;
             return true;
@@ -1040,65 +1102,65 @@ class EpSocketMock extends EpSocket
 
     }
     /**
-     * Checks to make sure that all we are connected to the server
-     * 
-     * This routine only checks the connection.  It does nothing else.  If you want to
-     * have the script automatically connect if it is not connected already then use
-     * epsocket::Connect().
-     *
-     * @return bool true if the connection is good, false otherwise
-     */
-    function checkConnect() 
+    * Checks to make sure that all we are connected to the server
+    *
+    * This routine only checks the connection.  It does nothing else.  If you want to
+    * have the script automatically connect if it is not connected already then use
+    * epsocket::Connect().
+    *
+    * @return bool true if the connection is good, false otherwise
+    */
+    function checkConnect()
     {
         return true;
     }
 
     /**
-     * Closes the socket connection
-     * 
-     * @return null
-     */
-    function close() 
+    * Closes the socket connection
+    *
+    * @return null
+    */
+    function close()
     {
         $this->socket = false;
     }
 
     /**
-     * Sends out a packet
-     *
-     * @param array $packet the packet to send out
-     *
-     * @return bool false on failure, true on success
-     */
-    function sendPacket($packet) 
+    * Sends out a packet
+    *
+    * @param array $packet the packet to send out
+    *
+    * @return bool false on failure, true on success
+    */
+    function sendPacket($packet)
     {
         $this->lastPacket = serialize($packet["packet"]);
         return true;
 
     }
     /**
-     * Receives a packet from the socket interface
-     *
-     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
-     *
-     * @return bool false on failure, the Packet array on success
-     */
-    function RecvPacket($timeout=0) 
+    * Receives a packet from the socket interface
+    *
+    * @param int $timeout Timeout for waiting.  Default is used if timeout == 0
+    *
+    * @return bool false on failure, the Packet array on success
+    */
+    function recvPacket($timeout=0)
     {
-        if (isset($this->reply[$this->lastPacket])) return $this->reply[$this->lastPacket];
+        if (isset($this->reply[$this->lastPacket])) {
+            return $this->reply[$this->lastPacket];
+        }
         return false;
     }
 
     /**
-     * Constructor
-     * 
-     * @param string $server  The name or IP of the server to connect to
-     * @param int    $port The TCP port to connect to on the server. Set to 0 for
-     *     the default port.
-     *
-     * @return null
-     */
-    function __construct($config=array()) 
+    * Constructor
+    *
+    * @param array $config Infomation about the connection
+    *
+    * @return null
+    */
+    function __construct($config = array())
     {
         $config["verbose"] = false;
         $this->Connect();
@@ -1113,7 +1175,7 @@ class EpSocketMock extends EpSocket
  * @return null
  *
  */
-function EPacketTest_CallBack_function($pkt) 
+function EPacketTest_CallBack_function($pkt)
 {
     $_SESSION['EPacketTest_CallBack_Function'] = $pkt;
 }

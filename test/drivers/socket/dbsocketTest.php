@@ -31,15 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-// Call dbsocketTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "dbsocketTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -59,45 +55,48 @@ require_once dirname(__FILE__).'/../../../drivers/socket/dbsocket.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class dbsocketTest extends PHPUnit_Framework_TestCase
+class DbSocketTest extends PHPUnit_Framework_TestCase
 {
 
-    private $table = "PacketSend";
+    protected $table = "PacketSend";
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
     public static function main()
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("dbsocketTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
         parent::setUp();
-        if (!empty($this->id)) $this->config["id"] = $this->id;
-        if (!empty($this->table)) $this->config["table"] = $this->table;
-        $this->config["file"] = ":memory:";
+        if (!empty($this->id)) {
+            $this->config["id"] = $this->id;
+        }
+        if (!empty($this->table)) {
+            $this->config["table"] = $this->table;
+        }
+        $this->config["file"]        = ":memory:";
         $this->config["socketTable"] = $this->table;
-        $this->config["servers"][0] = array(
+        $this->config["servers"][0]  = array(
             'driver' => 'sqlite',
             'host'   => 'localhost',
             'user'   => '',
@@ -114,21 +113,26 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
         $this->o->Close();
         unset($this->o);
-//        unset($this->oBadDB);
+        //        unset($this->oBadDB);
     }
 
-    public static function dataWrite() 
+    /**
+    * data provider for testWrite
+    *
+    * @return array
+    */
+    public static function dataWrite()
     {
         return array(
             array(
@@ -151,27 +155,30 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                     "PacketFrom" => "",
                     "PacketTo" => "ABCDE",
                     "RawData" => "01020304",
-                    "sentRawData" => "01020304",                
+                    "sentRawData" => "01020304",
                     "Type" => "OUTGOING",
                     "Status" => "NEW",
                     "ReplyTime" => 0,
                     "Checked" => 0,
                ),
            ),
-                
+
         );
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataWrite
-     */
-    public function testWrite($pkt, $expect) 
+    * test
+    *
+    * @param array $pkt    The packet to test with
+    * @param array $expect What we expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataWrite
+    */
+    public function testWrite($pkt, $expect)
     {
-/*
+        /*
         $id = $this->o->Write($pkt);
         $query = "SELECT * FROM ".$this->table." WHERE id=".$id;
         $ret = $this->pdo->query($query);
@@ -184,10 +191,15 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
         }
         unset($res["id"]);
         $this->assertEquals($expect, $res);
-*/        
+        */
     }
 
-    public static function dataWriteBadDB() 
+    /**
+    * data provider for testWriteBadDB()
+    *
+    * @return array
+    */
+    public static function dataWriteBadDB()
     {
         return array(
             array(
@@ -203,78 +215,78 @@ class dbsocketTest extends PHPUnit_Framework_TestCase
                     "sentRawData" => "01020304",
                ),
                 "expect" => false,
-           ),                
+           ),
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataWriteBadDB
-     */
-    public function testWriteBadDB($str, $pkt, $expect) 
+    * test
+    *
+    * @param string $str    The packet string to send
+    * @param array  $pkt    The packet to test with
+    * @param array  $expect What we expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteBadDB
+    */
+    public function testWriteBadDB($str, $pkt, $expect)
     {
-//        $id = $this->oBadDB->Write($str, $pkt);
-//        $this->assertEquals($expect, $id);
+        //        $id = $this->oBadDB->Write($str, $pkt);
+        //        $this->assertEquals($expect, $id);
     }
 
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @todo Implement testClose().
-     */
-    public function testClose() 
+    * test
+    *
+    * @return null
+    *
+    * @todo Implement testClose().
+    */
+    public function testClose()
     {
         $this->o->Close();
         $this->assertSame(false, $this->o->socket);
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @todo Implement testCheckConnect().
-     */
-    public function testCheckConnect() 
+    * test
+    *
+    * @return null
+    *
+    * @todo Implement testCheckConnect().
+    */
+    public function testCheckConnect()
     {
         $ret = $this->o->CheckConnect();
         $this->assertTrue($ret);
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @todo Implement testConnect().
-     */
-    public function testConnect() 
+    * test
+    *
+    * @return null
+    *
+    * @todo Implement testConnect().
+    */
+    public function testConnect()
     {
         $ret = $this->o->Connect();
         $this->assertTrue($ret);
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @todo Implement testConnect().
-     */
-    public function testConnectBadDB() 
+    * test
+    *
+    * @return null
+    *
+    * @todo Implement testConnect().
+    */
+    public function testConnectBadDB()
     {
-//        $ret = $this->oBadDB->Connect();
-//        $this->assertFalse($ret);
+        //        $ret = $this->oBadDB->Connect();
+        //        $this->assertFalse($ret);
     }
 }
 
-// Call dbsocketTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "dbsocketTest::main") {
-    dbsocketTest::main();
-}
 ?>
