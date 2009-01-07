@@ -31,15 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-// Call devInfoTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "devInfoTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -61,17 +57,17 @@ require_once dirname(__FILE__).'/../devInfo.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class devInfoTest extends PHPUnit_Framework_TestCase
+class DevInfoTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -80,54 +76,79 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
 
     /**
-     * data provider for testDeviceID
-     *
-     * @return array
-     */
-    public static function dataDeviceID() 
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDeviceID()
     {
         return array(
-            array(array("DeviceID" => "12345", "From" => "54321"), array("DeviceID" => "012345", "From" => "54321")),
-            array(array("From" => "12345"), array("From" => "12345", "DeviceID" => "012345")),
-            array(array("PacketFrom" => "12345"), array("PacketFrom" => "12345", "DeviceID" => "012345")),
+            array(
+                  array(
+                        "DeviceID" => "12345",
+                        "From" => "54321"
+                       ),
+                  array(
+                        "DeviceID" => "012345",
+                        "From" => "54321"
+                       )
+                 ),
+            array(
+                  array(
+                        "From" => "12345"
+                       ),
+                  array(
+                        "From" => "12345",
+                        "DeviceID" => "012345"
+                       )
+                 ),
+            array(
+                  array(
+                        "PacketFrom" => "12345"
+                       ),
+                  array(
+                        "PacketFrom" => "12345",
+                        "DeviceID" => "012345"
+                       )
+                 ),
         );
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDeviceID
-     *
-     * @param array  $Info   devInfo array of the device we are using
-     * @param string $expect The expected return
-     */
-    public function testDeviceID($Info, $expect) 
+    * test
+    *
+    * @param array  $Info   devInfo array of the device we are using
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDeviceID
+    */
+    public function testDeviceID($Info, $expect)
     {
         $ret = devInfo::DeviceID($Info);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
@@ -136,11 +157,11 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for testDeviceID
-     *
-     * @return array
-     */
-    public static function dataDeviceID2SN() 
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDeviceID2SN()
     {
         return array(
             array("000010", 16),
@@ -149,31 +170,31 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDeviceID2SN
-     *
-     * @param array  $Info   devInfo array of the device we are using
-     * @param string $expect The expected return
-     */
-    public function testDeviceID2SN($id, $expect) 
+    * test
+    *
+    * @param string $id     The device ID to test
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDeviceID2SN
+    */
+    public function testDeviceID2SN($id, $expect)
     {
         $ret = devInfo::DeviceID2SN($id);
         $this->assertSame($expect, $ret);
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDeviceID2SN
-     *
-     * @param array  $Info   devInfo array of the device we are using
-     * @param string $expect The expected return
-     */
-    public function testSN2DeviceID($expect, $sn) 
+    * test
+    *
+    * @param string $expect The expected return
+    * @param int    $sn     The serial number to convert
+    *
+    * @return null
+    *
+    * @dataProvider dataDeviceID2SN
+    */
+    public function testSN2DeviceID($expect, $sn)
     {
         $ret = devInfo::sn2DeviceID($sn);
         $this->assertSame($expect, $ret);
@@ -182,31 +203,64 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataRawData() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataRawData()
     {
         return array(
-            array(array("RawData" => "12345", "Data" => "54321"), array("RawData" => "12345", "Data" => "54321")),
-            array(array("Data" => "12345"), array("Data" => "12345", "RawData" => "12345")),
-            array(array("rawdata" => "12345"), array("rawdata" => "12345", "RawData" => "12345")),
-            array(array("RawSetup" => "12345"), array("RawSetup" => "12345", "RawData" => "12345")),
+            array(
+                  array(
+                        "RawData" => "12345",
+                        "Data" => "54321"
+                       ),
+                  array(
+                        "RawData" => "12345",
+                        "Data" => "54321"
+                       )
+                 ),
+            array(
+                  array(
+                        "Data" => "12345"
+                       ),
+                  array(
+                        "Data" => "12345",
+                        "RawData" => "12345"
+                       )
+                 ),
+            array(
+                  array(
+                        "rawdata" => "12345"
+                       ),
+                  array(
+                        "rawdata" => "12345",
+                        "RawData" => "12345"
+                       )
+                 ),
+            array(
+                  array(
+                        "RawSetup" => "12345"
+                       ),
+                  array(
+                        "RawSetup" => "12345",
+                        "RawData" => "12345"
+                       )
+                 ),
         );
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataRawData
-     *
-     * @param array  $Info   devInfo array of the device we are using
-     * @param string $expect The expected return
-     */
-    public function testRawData($Info, $expect) 
+    * test
+    *
+    * @param array  $Info   devInfo array of the device we are using
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRawData
+    */
+    public function testRawData($Info, $expect)
     {
         $ret = devInfo::RawData($Info);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
@@ -214,55 +268,78 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataSetDate() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataSetDate()
     {
         return array(
-            array(array("Date" => "2007-11-27 12:23:47"), "LastConfig", array("Date" => "2007-11-27 12:23:47", "LastConfig" => "2007-11-27 12:23:47")),
-            array(array("Date" => "2007-11-27 12:23:47", "LastConfig" => "2007-11-20 12:23:47"), "LastConfig", array("Date" => "2007-11-27 12:23:47", "LastConfig" => "2007-11-27 12:23:47")),
+            array(
+                  array(
+                        "Date" => "2007-11-27 12:23:47"
+                       ),
+                  "LastConfig",
+                  array(
+                        "Date" => "2007-11-27 12:23:47",
+                        "LastConfig" => "2007-11-27 12:23:47"
+                       )
+                 ),
+            array(
+                  array(
+                        "Date" => "2007-11-27 12:23:47",
+                        "LastConfig" => "2007-11-20 12:23:47"
+                       ),
+                  "LastConfig",
+                  array(
+                        "Date" => "2007-11-27 12:23:47",
+                        "LastConfig" => "2007-11-27 12:23:47"
+                       )
+                 ),
         );
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataSetDate
-     *
-     * @param array  $Info   devInfo array of the device we are using
-     * @param string $Field  The date field to check
-     * @param string $expect The expected return
-     */
-    public function testSetDate($Info, $Field, $expect) 
+    * test
+    *
+    * @param array  $Info   devInfo array of the device we are using
+    * @param string $Field  The date field to check
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetDate
+    */
+    public function testSetDate($Info, $Field, $expect)
     {
         $ret = devInfo::SetDate($Info, $Field);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
         $this->assertSame($expect[$Field], $ret, "Return not correct");
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
+        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+                            $Info[$Field]);
     }
 
     /**
-     * Tests the date as it is returned if no date is in Info
-     */
-    public function testSetDateNotGiven() 
+    * Tests the date as it is returned if no date is in Info
+    *
+    * @return null
+    */
+    public function testSetDateNotGiven()
     {
-        $Info = array();
+        $Info  = array();
         $Field = "LastConfig";
-        $ret = devInfo::SetDate($Info, $Field);
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/", $Info[$Field]);
+        $ret   = devInfo::SetDate($Info, $Field);
+        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+                            $Info[$Field]);
     }
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataSetStringSize() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataSetStringSize()
     {
         return array(
             array("", 6, "0", "000000"),
@@ -272,18 +349,18 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataSetStringSize
-     *
-     * @param string $value  The string to play with
-     * @param int    $size   The size to cut the string to
-     * @param string $pad    The value to pad the string with
-     * @param string $expect The expected return
-     */
-    public function testSetStringSize($value, $size, $pad, $expect) 
+    * test
+    *
+    * @param string $value  The string to play with
+    * @param int    $size   The size to cut the string to
+    * @param string $pad    The value to pad the string with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetStringSize
+    */
+    public function testSetStringSize($value, $size, $pad, $expect)
     {
         if (is_null($pad)) {
             $ret = devInfo::setStringSize($value, $size);
@@ -292,14 +369,14 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         }
         $this->assertSame($expect, $value, '$value not changed correctly');
         $this->assertSame($expect, $ret, "Return was not correct");
-    }   
+    }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataHexifyVersion() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexifyVersion()
     {
         return array(
             array("1.2.3", "010203"),
@@ -308,27 +385,27 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataHexifyVersion
-     *
-     * @param string $version The version to play with
-     * @param string $expect  The expected return
-     */
-    public function testHexifyVersion($version, $expect) 
+    * test
+    *
+    * @param string $version The version to play with
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexifyVersion
+    */
+    public function testHexifyVersion($version, $expect)
     {
         $value = devInfo::hexifyVersion($version);
         $this->assertSame($expect, $value);
-    }   
+    }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataHexifyPartNum() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexifyPartNum()
     {
         return array(
             array("0039-20-06-C", "0039200643"),
@@ -337,28 +414,28 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataHexifyPartNum
-     *
-     * @param string $partNum The partNum to play with
-     * @param string $expect  The expected return
-     */
-    public function testHexifyPartNum($partNum, $expect) 
+    * test
+    *
+    * @param string $partNum The partNum to play with
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexifyPartNum
+    */
+    public function testHexifyPartNum($partNum, $expect)
     {
         $value = devInfo::hexifyPartNum($partNum);
         $this->assertSame($expect, $value);
-    }   
+    }
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataDehexifyVersion() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataDehexifyVersion()
     {
         return array(
             array("010203", "1.2.3"),
@@ -367,27 +444,27 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDehexifyVersion
-     *
-     * @param string $version The string to play with
-     * @param string $expect  The expected return
-     */
-    public function testDehexifyVersion($version, $expect) 
+    * test
+    *
+    * @param string $version The string to play with
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDehexifyVersion
+    */
+    public function testDehexifyVersion($version, $expect)
     {
         $value = devInfo::dehexifyVersion($version);
         $this->assertSame($expect, $value);
-    }   
+    }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataDehexifyPartNum() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataDehexifyPartNum()
     {
         return array(
             array("0039200643", "0039-20-06-C"),
@@ -395,28 +472,28 @@ class devInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDehexifyPartNum
-     *
-     * @param string $partNum The string to play with
-     * @param string $expect  The expected return
-     */
-    public function testDehexifyPartNum($partNum, $expect) 
+    * test
+    *
+    * @param string $partNum The string to play with
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDehexifyPartNum
+    */
+    public function testDehexifyPartNum($partNum, $expect)
     {
         $value = devInfo::dehexifyPartNum($partNum);
         $this->assertSame($expect, $value);
-    }   
+    }
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataDehexify() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataDehexify()
     {
         return array(
             array("4142434445", "ABCDE"),
@@ -426,27 +503,27 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataDehexify
-     *
-     * @param string $str     The string to play with
-     * @param string $expect  The expected return
-     */
-    public function testDehexify($str, $expect) 
+    * test
+    *
+    * @param string $str    The string to play with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDehexify
+    */
+    public function testDehexify($str, $expect)
     {
         $bin = devInfo::dehexify($str);
         $this->assertSame($expect, $bin);
     }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataHexify() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexify()
     {
         return array(
             array(1, null, "01"),
@@ -456,17 +533,17 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataHexify
-     *
-     * @param int    $value  The number to play with
-     * @param int    $width  The width of the output string
-     * @param string $expect The expected return
-     */
-    public function testHexify($value, $width, $expect) 
+    * test
+    *
+    * @param int    $value  The number to play with
+    * @param int    $width  The width of the output string
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexify
+    */
+    public function testHexify($value, $width, $expect)
     {
         if (is_null($width)) {
             $ret = devInfo::hexify($value);
@@ -478,11 +555,11 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataHexifyStr() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexifyStr()
     {
         return array(
             array("\0\r\n", "000D0A"),
@@ -491,16 +568,16 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataHexifyStr
-     *
-     * @param string $str    The string to play with
-     * @param string $expect The expected return
-     */
-    public function testHexifyStr($str, $expect) 
+    * test
+    *
+    * @param string $str    The string to play with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexifyStr
+    */
+    public function testHexifyStr($str, $expect)
     {
         $ret = devInfo::hexifyStr($str);
         $this->assertEquals($expect, $ret);
@@ -508,11 +585,11 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataGetYdhms() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataGetYdhms()
     {
         return array(
             array(100000, 0, "1d 3h 46m 40s"),
@@ -523,28 +600,28 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGetYdhms
-     *
-     * @param mixed  $val    The value to feed the function
-     * @param int    $digits The number of digits 
-     * @param string $expect The expected return value
-     */
-    public function testGetYdhms($val, $digits, $expect) 
+    * test
+    *
+    * @param mixed  $val    The value to feed the function
+    * @param int    $digits The number of digits
+    * @param string $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetYdhms
+    */
+    public function testGetYdhms($val, $digits, $expect)
     {
         $ret = devInfo::getYdhms($val, $digits);
         $this->assertEquals($expect, $ret);
     }
 
     /**
-     * data provider for testGetBytes
-     *
-     * @return array
-     */
-    public static function dataGetBytes() 
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataGetBytes()
     {
         return array(
             array(10000, 2, "9.77 k bytes"),
@@ -554,17 +631,17 @@ class devInfoTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGetBytes
-     *
-     * @param mixed  $val    The value to feed the function
-     * @param int    $digits The number of digits 
-     * @param string $expect The expected return value
-     */
-    public function testGetBytes($val, $digits, $expect) 
+    * test
+    *
+    * @param mixed  $val    The value to feed the function
+    * @param int    $digits The number of digits
+    * @param string $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetBytes
+    */
+    public function testGetBytes($val, $digits, $expect)
     {
         $ret = devInfo::getBytes($val, $digits);
         $this->assertEquals($expect, $ret);
@@ -574,9 +651,5 @@ class devInfoTest extends PHPUnit_Framework_TestCase
 
 }
 
-// Call devInfoTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "devInfoTest::main") {
-    devInfoTest::main();
-}
 
 ?>

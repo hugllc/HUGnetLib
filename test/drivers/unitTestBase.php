@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -60,149 +60,170 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
 {
 
     /**
-     *  This function makes sure the parent of the class is correct
-     *
-     * @return null
-     */
-    public function testSensorParent() 
+    *  This function makes sure the parent of the class is correct
+    *
+    * @return null
+    */
+    public function testSensorParent()
     {
         // Long Name
-        $this->assertEquals("UnitBase", get_parent_class($this->o), $this->class." parent class must be 'Sensor_Base'");
+        $this->assertEquals("UnitBase",
+                            get_parent_class($this->o),
+                            $this->class." parent class must be 'Sensor_Base'");
     }
 
     /**
-     * data provider for testUnitArrayLongName, testUnitArrayVarType,
-     *
-     * @return array
-     */
-    public static function getDataUnitArray($class) 
+    * data provider for testUnitArrayLongName, testUnitArrayVarType,
+    *
+    * @param string $class The name of the class to use
+    *
+    * @return array
+    */
+    public static function getDataUnitArray($class)
     {
-        $o = new $class();
+        $o      = new $class();
         $return = array();
         foreach ($o->units as $shortName => $unit) {
             $return[] = array($shortName, $unit);
         }
         return $return;
     }
-    
+
     /**
-     * Checks that LongName is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayLongName($shortName, $unit) 
+    * Checks that LongName is set correctly
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayLongName($shortName, $unit)
     {
         // Long Name
-        $this->assertType("string", $unit['longName'], $shortName.": Long name is not a string");
-        $this->assertThat(strlen($unit['longName']), $this->greaterThan(0), $shortName.": Long name is not a set");            
-    }
-    
-    /**
-     * Checks that varType is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayVarType($shortName, $unit) 
-    {
-        // Var Type
-        $this->assertType("string", $unit['varType'], $shortName.": Variable type is not a string");
-        $this->assertTrue($this->_checkvarType($unit['varType']), $shortName.": Variable type '".$unit['varType']."'is not valid");
+        $this->assertType("string",
+                          $unit['longName'],
+                          $shortName.": Long name is not a string");
+        $this->assertThat(strlen($unit['longName']),
+                          $this->greaterThan(0),
+                          $shortName.": Long name is not a set");
     }
 
     /**
-     * Checks that the convert array is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayConvert($shortName, $unit) 
+    * Checks that varType is set correctly
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayVarType($shortName, $unit)
+    {
+        // Var Type
+        $this->assertType("string",
+                          $unit['varType'],
+                          $shortName.": Variable type is not a string");
+        $this->assertTrue($this->_checkvarType($unit['varType']),
+                    $shortName.": Variable type '".$unit['varType']."'is not valid");
+    }
+
+    /**
+    * Checks that the convert array is set correctly
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayConvert($shortName, $unit)
     {
         if (isset($unit["convert"])) {
-            $this->assertType("array", $unit["convert"], $shortName.": Mode is not a string");
+            $this->assertType("array",
+                              $unit["convert"],
+                              $shortName.": Mode is not a string");
         }
     }
-    
+
     /**
-     * Checks that mode is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayMode($shortName, $unit) 
+    * Checks that mode is set correctly
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayMode($shortName, $unit)
     {
         if (isset($unit["mode"])) {
-            $this->assertType("string", $unit["mode"], $shortName.": Mode is not a string");
-            $this->assertTrue($this->_checkMode($unit["mode"]), $shortName.": Mode '".$unit['varType']."'is not valid");
+            $this->assertType("string",
+                              $unit["mode"],
+                              $shortName.": Mode is not a string");
+            $this->assertTrue($this->_checkMode($unit["mode"]),
+                             $shortName.": Mode '".$unit['varType']."'is not valid");
         }
     }
     /**
-     * Checks that preferred unit is set correctly
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayPreferred($shortName, $unit) 
+    * Checks that preferred unit is set correctly
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayPreferred($shortName, $unit)
     {
         if (isset($unit["preferred"])) {
-            $this->assertType("string", $unit["preferred"], $shortName.": Mode is not a string");
-            $this->assertTrue($this->findUnits($unit["preferred"]), $shortName.": Unit ".$to." doesn't exist");
+            $this->assertType("string",
+                              $unit["preferred"],
+                              $shortName.": Mode is not a string");
+            $this->assertTrue($this->findUnits($unit["preferred"]),
+                              $shortName.": Unit ".$to." doesn't exist");
         }
     }
     /**
-     * Checks that only certain array keys are set
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit
-     * @param string $unit      The unit to check
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArray
-     */
-    public function testUnitArrayValid($shortName, $unit) 
+    * Checks that only certain array keys are set
+    *
+    * @param string $shortName The short name of the unit
+    * @param string $unit      The unit to check
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArray
+    */
+    public function testUnitArrayValid($shortName, $unit)
     {
-        $valid = array("mode", "convert", "longName", "varType", "preferred", "siPrefix", "class");
+        $valid = array("mode",
+                       "convert",
+                       "longName",
+                       "varType",
+                       "preferred",
+                       "siPrefix",
+                       "class");
         foreach ($valid as $key) {
             unset($unit[$key]);
         }
         $this->assertSame(array(), $unit);
     }
-    
+
     /**
-     * data provider for testUnitArrayConvertFunct
-     *
-     * @return array
-     */
-    public static function getDataUnitArrayConvertFunct($class) 
+    * data provider for testUnitArrayConvertFunct
+    *
+    * @param string $class The name of the class to use
+    *
+    * @return array
+    */
+    public static function getDataUnitArrayConvertFunct($class)
     {
-        $o = new $class;
+        $o      = new $class;
         $return = array();
         foreach ($o->units as $shortName => $unit) {
             if (is_array($unit['convert'])) {
@@ -214,60 +235,71 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
         return $return;
     }
     /**
-     * Tests that the convert function exists and is actually correctly set up
-     *
-     * @param string $catName   The category name to check
-     * @param string $shortName The short name of the unit to convert from
-     * @param string $to        The unit to convert to
-     * @param string $function  The function to use to convert
-     *
-     * @return null
-     *
-     * @dataProvider dataUnitArrayConvertFunct
-     */
-    public function testUnitArrayConvertFunct($shortName, $to, $function) 
+    * Tests that the convert function exists and is actually correctly set up
+    *
+    * @param string $shortName The short name of the unit to convert from
+    * @param string $to        The unit to convert to
+    * @param string $function  The function to use to convert
+    *
+    * @return null
+    *
+    * @dataProvider dataUnitArrayConvertFunct
+    */
+    public function testUnitArrayConvertFunct($shortName, $to, $function)
     {
         if (substr(trim(strtolower($function)), 0, 6) != "shift:") {
-            $this->assertTrue(method_exists($this->o, $function), $shortName.": conversion function ".$function." doesn't exist");
+            $this->assertTrue(method_exists($this->o, $function),
+                              $shortName.": conversion function "
+                                      .$function." doesn't exist");
         }
-        $this->assertTrue($this->findUnits($to), $shortName.": Unit ".$to." doesn't exist");
+        $this->assertTrue($this->findUnits($to),
+                          $shortName.": Unit ".$to." doesn't exist");
     }
     /**
-     * Checks to make sure a vartype is valid
-     *
-     * @param string $vartype The variable type to check
-     *
-     * @return bool
-     */
-    private function _checkvarType($vartype) 
+    * Checks to make sure a vartype is valid
+    *
+    * @param string $vartype The variable type to check
+    *
+    * @return bool
+    */
+    private function _checkvarType($vartype)
     {
-        if ($vartype == 'float') return true;
-        if ($vartype == 'int') return true;
-        if ($vartype == 'text') return true;
+        if ($vartype == 'float') {
+            return true;
+        }
+        if ($vartype == 'int') {
+            return true;
+        }
+        if ($vartype == 'text') {
+            return true;
+        }
         return false;
     }
     /**
-     * Checks to make sure a mode is valid
-     *
-     * @param string $mode The mode to check
-     *
-     * @return bool
-     */
-    private function _checkMode($mode) 
+    * Checks to make sure a mode is valid
+    *
+    * @param string $mode The mode to check
+    *
+    * @return bool
+    */
+    private function _checkMode($mode)
     {
-        if ($mode == 'raw') return true;
-        if ($mode == 'diff') return true;
+        if ($mode == 'raw') {
+            return true;
+        }
+        if ($mode == 'diff') {
+            return true;
+        }
         return false;
-    }    
+    }
     /**
-     * Returns true if it finds the units.
-     *
-     * @param string $cat   The category to check in
-     * @param string $units The unit to check
-     *
-     * @return bool
-     */
-    public function findUnits($units) 
+    * Returns true if it finds the units.
+    *
+    * @param string $units The unit to check
+    *
+    * @return bool
+    */
+    public function findUnits($units)
     {
         return is_array($this->o->units[$units]);
     }

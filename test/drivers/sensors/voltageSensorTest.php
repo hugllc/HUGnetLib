@@ -437,7 +437,7 @@ class VoltageSensorTest extends sensorTestBase
      */
     public static function dataLinearBoundedIndirect()
     {
-        $extra = array(100, 10, 5, 45, 0, 1000, 5);
+        $extra  = array(100, 10, 5, 45, 0, 1000, 5);
         $extra2 = array(100, 10, 25, 25, 0, 1000, 5);
         $extra3 = array();
         $sensor = array('extraDefault' => array(1000, 10, 5, 300, 0, 100, 5));
