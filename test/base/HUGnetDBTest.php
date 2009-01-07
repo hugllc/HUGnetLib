@@ -1167,7 +1167,7 @@ class HUGnetDBTest extends databaseTest
      */
     public function testIsConnectedServerLeft() 
     {
-        $this->o->metaError = HUGnetDB_META_ERROR_SERVER_GONE;
+        $this->o->metaError = HUGNETDB_META_ERROR_SERVER_GONE;
         $ret = $this->o->isConnected();
         $this->assertFalse($ret);
     }

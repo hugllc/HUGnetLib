@@ -36,13 +36,13 @@
  *
  */
 /** The database went away */
-define("HUGnetDB_META_ERROR_SERVER_GONE", 1);
+define("HUGNETDB_META_ERROR_SERVER_GONE", 1);
 /** The database went away */
-define("HUGnetDB_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
+define("HUGNETDB_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
 /** The database went away */
-define("HUGnetDB_META_ERROR_DUPLICATE", 2);
+define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 /** The database went away */
-define("HUGnetDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
+define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /**
  * Base class for all database work
  *
@@ -697,8 +697,8 @@ class HUGnetDB
             $this->errorState = "NODBE";
             $this->error      = -1;
             $this->errorMsg   = "Database Not Connected";
-            $this->metaError = HUGnetDB_META_ERROR_SERVER_GONE;
-            $this->metaErrorMsg = HUGnetDB_META_ERROR_SERVER_GONE_MSG;
+            $this->metaError = HUGNETDB_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = HUGNETDB_META_ERROR_SERVER_GONE_MSG;
             $this->printError();
             return;
         }
@@ -744,12 +744,12 @@ class HUGnetDB
     {
         if ($this->driver != "mysql") return;     
         if ($err[1] == 2006) {
-            $this->metaError = HUGnetDB_META_ERROR_SERVER_GONE;
-            $this->metaErrorMsg = HUGnetDB_META_ERROR_SERVER_GONE_MSG;
+            $this->metaError = HUGNETDB_META_ERROR_SERVER_GONE;
+            $this->metaErrorMsg = HUGNETDB_META_ERROR_SERVER_GONE_MSG;
             return;
         } else if ($err[1] == 1062) {
-            $this->metaError = HUGnetDB_META_ERROR_DUPLICATE;
-            $this->metaErrorMsg = HUGnetDB_META_ERROR_DUPLICATE_MSG;
+            $this->metaError = HUGNETDB_META_ERROR_DUPLICATE;
+            $this->metaErrorMsg = HUGNETDB_META_ERROR_DUPLICATE_MSG;
             return;           
         }
     }
@@ -951,7 +951,7 @@ class HUGnetDB
     public function isConnected() 
     {
         if (!$this->checkDb()) return false;
-        if ($this->metaError == HUGnetDB_META_ERROR_SERVER_GONE) return false;
+        if ($this->metaError == HUGNETDB_META_ERROR_SERVER_GONE) return false;
         if ($this->driver == "sqlite") return true;
         return $this->_db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }

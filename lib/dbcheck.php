@@ -60,7 +60,7 @@
    $query = "SHOW SLAVE STATUS";
    $res = $db->query($query);
 
-    while($row = $db->fetchRow($res, MDB_FETCHMODE_ASSOC)) {
+    while ($row = $db->fetchRow($res, MDB_FETCHMODE_ASSOC)) {
         foreach ($row as $key => $val) {
          if ((stristr($key, "slave") !== false) || (stristr($key, "master_host") !== false) || (stristr($key, "seconds_behind") !== false)) {
             print $key." -> ".$val."\n";
@@ -78,7 +78,7 @@
    $query = "SHOW DATABASES";
    $res = $db->query($query);
    $databases = array();
-    while($row = $db->fetchInto($res)) {
+    while ($row = $db->fetchInto($res)) {
         $databases[] = $row[0];
     }
 
@@ -91,7 +91,7 @@
         if ($ndb->isError($ret)) {
             print "ERROR\n";        
         }
-        while($row = $ndb->fetchInto($ret)) {
+        while ($row = $ndb->fetchInto($ret)) {
             $tables[] = $row[0];
         }
 
