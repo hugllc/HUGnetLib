@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,13 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /**
  * This class controls all of the sensors.  When given the right information
  * it will decode data from any of the sensors that it has information on.
- * 
+ *
  * @category   Sensors
  * @package    HUGnetLib
  * @subpackage Sensors
@@ -74,7 +74,7 @@ class SensorBase
     var $Vcc = 5;
     /** @var array This defines all of the sensors that this driver deals with... */
     public $sensors = array();
-    
+
     /**
      * Constructor.
      *
@@ -88,11 +88,21 @@ class SensorBase
      */
     function __construct($Tf=false, $D=false, $s=false, $Am=false, $Vcc=false)
     {
-        if (is_numeric($Tf)) $this->Tf = $Tf;
-        if (is_numeric($D))$this->D = $D;
-        if (is_numeric($Am)) $this->Am = $Am;
-        if (is_numeric($Vcc)) $this->Vcc = $Vcc;
-        if (is_numeric($s)) $this->s = $s;
+        if (is_numeric($Tf)) {
+            $this->Tf = $Tf;
+        }
+        if (is_numeric($D)) {
+            $this->D = $D;
+        }
+        if (is_numeric($Am)) {
+            $this->Am = $Am;
+        }
+        if (is_numeric($Vcc)) {
+            $this->Vcc = $Vcc;
+        }
+        if (is_numeric($s)) {
+            $this->s = $s;
+        }
     }
 
 
