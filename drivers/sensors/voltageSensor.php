@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -53,7 +53,7 @@ if (!class_exists('voltageSensor')) {
     {
         /**
             This defines all of the sensors that this driver deals with...
-         */
+        */
         public $sensors = array(
             0x10 => array(
                 'CHSMSS' => array(
@@ -171,20 +171,21 @@ if (!class_exists('voltageSensor')) {
                     "extraText" => array("R1 in kOhms", "R2 in kOhms","Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
                     "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
                ),
-               
+
            ),
         );
-    
+
         /**
-         * This sensor returns us 10mV / % humidity
-         *
-         * @param int   $A  The incoming value
-         * @param float $R1 The resistor to the voltage
-         * @param float $R2 The resistor to ground
-         * @param int   $T  The time constant
-         *
-         * @return float Voltage rounded to 4 places
-         */        
+        * This sensor returns us 10mV / % humidity
+        *
+        * @param int   $A    The incoming value
+        * @param float $R1   The resistor to the voltage
+        * @param float $R2   The resistor to ground
+        * @param int   $T    The time constant
+        * @param float $Vref The voltage reveference
+        *
+        * @return float Voltage rounded to 4 places
+        */
         function getDividerVoltage($A, $R1, $R2, $T, $Vref = null)
         {
                 if (empty($Vref)) $Vref = $this->Vcc;
@@ -197,16 +198,16 @@ if (!class_exists('voltageSensor')) {
         }
 
         /**
-         * Volgate for the FET board voltage dividers
-         *
-         * @param float $val    The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $TC     The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Voltage rounded to 4 places
-         */
-        function FETBoard($val, $sensor, $TC, $extra=null) 
+        * Volgate for the FET board voltage dividers
+        *
+        * @param float $val    The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $TC     The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Voltage rounded to 4 places
+        */
+        function FETBoard($val, $sensor, $TC, $extra=null)
         {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
@@ -214,18 +215,18 @@ if (!class_exists('voltageSensor')) {
             if ($V < 0) $V = null;
             $V = round($V, 4);
             return $V;
-        }    
+        }
         /**
-         * Volgate for the FET board voltage dividers
-         *
-         * @param float $val    The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $TC     The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Voltage rounded to 4 places
-         */
-        function indirect($val, $sensor, $TC, $extra=null) 
+        * Volgate for the FET board voltage dividers
+        *
+        * @param float $val    The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $TC     The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Voltage rounded to 4 places
+        */
+        function indirect($val, $sensor, $TC, $extra=null)
         {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
@@ -234,65 +235,65 @@ if (!class_exists('voltageSensor')) {
             if ($V < 0) $V = null;
             $V = round($V, 4);
             return $V;
-        }    
+        }
 
         /**
-         * This sensor returns us 10mV / % humidity
-         *
-         * @param float $A      The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $T      The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Relative Humidity rounded to 4 places
-         */
-        function direct($A, $sensor, $T, $extra) 
+        * This sensor returns us 10mV / % humidity
+        *
+        * @param float $A      The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $T      The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Relative Humidity rounded to 4 places
+        */
+        function direct($A, $sensor, $T, $extra)
         {
             if (is_null($A)) return null;
-            $Vref = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];            
+            $Vref = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $V    = $this->getVoltage($A, $T, (float) $Vref);
             if ($V < 0) return null;
             if ($V > $Vref) return null;
             $V = round($V, 4);
             return $V;
         }
-    
+
         /**
-         * Gets the units for a sensor
-         *
-         * @param int   $A    The AtoD reading
-         * @param int   $T    The time constant
-         * @param float $Vref The voltage reference
-         *
-         * @return The units for a particular sensor type
-         */
-        function getVoltage($A, $T, $Vref) 
+        * Gets the units for a sensor
+        *
+        * @param int   $A    The AtoD reading
+        * @param int   $T    The time constant
+        * @param float $Vref The voltage reference
+        *
+        * @return The units for a particular sensor type
+        */
+        function getVoltage($A, $T, $Vref)
         {
             if (is_null($A)) return null;
             if (is_null($Vref)) return null;
             $denom = $T * $this->Tf * $this->Am * $this->s;
             if ($denom == 0) return 0.0;
             $num = $A * $this->D * $Vref;
-            
+
             $volts = $num / $denom;
             return round($volts, 4);
         }
-    
-    
+
+
         /**
-         * This sensor returns us 10mV / % humidity
-         *
-         * @param float $A      The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $T      The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Relative Humidity rounded to 4 places
-         */
-        function CHSMSS($A, $sensor, $T, $extra) 
+        * This sensor returns us 10mV / % humidity
+        *
+        * @param float $A      The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $T      The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Relative Humidity rounded to 4 places
+        */
+        function CHSMSS($A, $sensor, $T, $extra)
         {
             if (is_null($A)) return null;
-            $Vref     = (empty($extra)) ? $sensor['extraDefault'] : $extra;            
+            $Vref     = (empty($extra)) ? $sensor['extraDefault'] : $extra;
             $volts    = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
             if ($humidity < 0) return null;
@@ -301,87 +302,105 @@ if (!class_exists('voltageSensor')) {
         }
 
         /**
-         * This will work with sensors that are linear and bounded
-         *
-         * Basically if we have a sensor that is linear and the ends
-         * of the line are specified (max1,max2) and (min1,min2) then this
-         * is the routine for you.
-         *
-         * Takd the case of a pressure sensor.  We are give that at Vmax the
-         * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us 
-         * the boundries of the line.  The pressure has to be between Pmax and Pmin
-         * and the voltage has to be between Vmax and Vmin.  If it is not null
-         * is returned.
-         *
-         * @param float $A      The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $T      The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Relative Humidity rounded to 4 places
-         */
-        function linearBounded($A, $sensor, $T, $extra) 
+        * This will work with sensors that are linear and bounded
+        *
+        * Basically if we have a sensor that is linear and the ends
+        * of the line are specified (max1,max2) and (min1,min2) then this
+        * is the routine for you.
+        *
+        * Takd the case of a pressure sensor.  We are give that at Vmax the
+        * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us
+        * the boundries of the line.  The pressure has to be between Pmax and Pmin
+        * and the voltage has to be between Vmax and Vmin.  If it is not null
+        * is returned.
+        *
+        * Given the formula I am using, P MUST be in bounds.
+        *
+        * @param float $A      The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $T      The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Relative Humidity rounded to 4 places
+        */
+        function linearBounded($A, $sensor, $T, $extra)
         {
-            if (is_null($A)) return null;
-            $Vmin     = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];            
-            $Vmax     = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];            
-            $Pmin     = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];            
-            $Pmax     = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];            
-            $Vref     = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];            
-
+            if (is_null($A)) {
+                return null;
+            }
+            $Vmin = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $Vmax = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Pmin = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $Pmax = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];
+            $Vref = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];
             $V    = $this->getVoltage($A, $T, (float) $Vref);
-            if ($V > $Vmax) return null;
-            if ($V < $Vmin) return null;
+            if ($V > $Vmax) {
+                return null;
+            }
+            if ($V < $Vmin) {
+                return null;
+            }
+            if ($Vmax == $Vmin) {
+                return null;
+            }
             $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
             $b = $Pmax - ($m * $Vmax);
             $P = ($m * $V) + $b;
-            if ($P > $Pmax) return null;
-            if ($P < $Pmin) return null;
+            $P = round($P, 4);
             return $P;
         }
 
         /**
-         * This will work with sensors that are linear and bounded
-         *
-         * Basically if we have a sensor that is linear and the ends
-         * of the line are specified (max1,max2) and (min1,min2) then this
-         * is the routine for you.
-         *
-         * Takd the case of a pressure sensor.  We are give that at Vmax the
-         * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us 
-         * the boundries of the line.  The pressure has to be between Pmax and Pmin
-         * and the voltage has to be between Vmax and Vmin.  If it is not null
-         * is returned.
-         *
-         * @param float $A      The incoming value
-         * @param array $sensor The sensor setup array
-         * @param int   $T      The time constant
-         * @param mixed $extra  Extra parameters for the sensor
-         *
-         * @return float Relative Humidity rounded to 4 places
-         */
-        function linearBoundedIndirect($A, $sensor, $T, $extra) 
+        * This will work with sensors that are linear and bounded
+        *
+        * Basically if we have a sensor that is linear and the ends
+        * of the line are specified (max1,max2) and (min1,min2) then this
+        * is the routine for you.
+        *
+        * Takd the case of a pressure sensor.  We are give that at Vmax the
+        * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us
+        * the boundries of the line.  The pressure has to be between Pmax and Pmin
+        * and the voltage has to be between Vmax and Vmin.  If it is not null
+        * is returned.
+        *
+        * Given the formula I am using, P MUST be in bounds.
+        *
+        * @param float $A      The incoming value
+        * @param array $sensor The sensor setup array
+        * @param int   $T      The time constant
+        * @param mixed $extra  Extra parameters for the sensor
+        *
+        * @return float Relative Humidity rounded to 4 places
+        */
+        function linearBoundedIndirect($A, $sensor, $T, $extra)
         {
-            if (is_null($A)) return null;
-            $R1       = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
-            $R2       = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $Vmin     = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];            
-            $Vmax     = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];            
-            $Pmin     = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];            
-            $Pmax     = (empty($extra[5])) ? $sensor['extraDefault'][5] : $extra[5];            
-            $Vref     = (empty($extra[6])) ? $sensor['extraDefault'][6] : $extra[6];            
-            $V  = $this->getDividerVoltage($A, $R1, $R2, $T);
-            if ($V > $Vmax) return null;
-            if ($V < $Vmin) return null;
-            if ($Vmax == $Vmin) return null;
+            if (is_null($A)) {
+                return null;
+            }
+            $R1   = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $R2   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Vmin = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $Vmax = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];
+            $Pmin = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];
+            $Pmax = (empty($extra[5])) ? $sensor['extraDefault'][5] : $extra[5];
+            $Vref = (empty($extra[6])) ? $sensor['extraDefault'][6] : $extra[6];
+            $V    = $this->getDividerVoltage($A, $R1, $R2, $T);
+            if ($V > $Vmax) {
+                return null;
+            }
+            if ($V < $Vmin) {
+                return null;
+            }
+            if ($Vmax == $Vmin) {
+                return null;
+            }
             $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
             $b = $Pmax - ($m * $Vmax);
             $P = ($m * $V) + $b;
-            if ($P > $Pmax) return null;
-            if ($P < $Pmin) return null;
+            $P = round($P, 4);
             return $P;
         }
-        
+
     }
 }
 
