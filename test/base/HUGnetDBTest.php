@@ -1425,7 +1425,7 @@ class HUGnetDBTest extends databaseTest
     public function testGetInstancePBO($config, $class) 
     {
         $o = HUGnetDB::getInstance($class, $config);
-        $d = $this->readAttribute($o, '_db');
+        $d = $this->readAttribute($o, 'db');
         $this->assertSame("PDO", get_class($d));
         unset($o);
         unset($p);
@@ -1492,8 +1492,8 @@ class HUGnetDBClassTest extends HUGnetDB
      */
     public function killDb($val = null)
     {
-        $this->_db = null;
-        $this->_db = $val;
+        $this->db = null;
+        $this->db = $val;
     }     
 
     /**

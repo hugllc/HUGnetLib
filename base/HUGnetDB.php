@@ -93,16 +93,16 @@ class HUGnetDB
     public $driver = "";
 
     /** @var object The database object */
-    protected $_db = null;
+    protected $db = null;
 
     /** @var object The database object for the cache */
-    protected $_cacheDb = null;
+    protected $cacheDb = null;
 
     /** @var object The cache */
-    protected $_cache = null;
+    protected $cache = null;
 
     /** @var object The cache */
-    protected $_doCache = false;
+    protected $doCache = false;
 
     /** Whether to fake autoincrmement */
     protected $autoIncrement = false;
@@ -153,13 +153,13 @@ class HUGnetDB
         unset($config["table"]);
         unset($config["id"]);
 
-        $this->_db = &HUGnetDB::createPDO($config);
-        if (!$this->checkDB($this->_db)) {
+        $this->db = &HUGnetDB::createPDO($config);
+        if (!$this->checkDB($this->db)) {
             $except = "No Database Connection in class ".get_class($this);
             self::throwException($except, -2);
         }
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
-        $this->_db->setAttribute(PDO::ATTR_TIMEOUT, $this->dbTimeout);
+        $this->db->setAttribute(PDO::ATTR_TIMEOUT, $this->dbTimeout);
 
         $this->getColumns();
     }
@@ -233,7 +233,7 @@ class HUGnetDB
     /**
     * Checks to see if the database object is valid
     *
-    * If the database object given to it is null it will check $this->_db.
+    * If the database object given to it is null it will check $this.
     *
     * $db can not be a 'reference'.
     *
@@ -244,7 +244,7 @@ class HUGnetDB
     final protected function checkDb($db=null)
     {
         if (is_null($db)) {
-            $db = &$this->_db;
+            $db = &$this->db;
         }
         if (!is_object($db)) {
             return false;
@@ -299,11 +299,11 @@ class HUGnetDB
             $this->cacheConfig["file"] = ":memory:";
         }
         $this->vprint("Creating a cache at ".$this->cacheConfig["file"]);
-        $class        = get_class($this);
-        $this->_cache =& self::getInstance($class, $this->cacheConfig);
-        $this->_cache->createTable($this->table);
-        $this->_doCache = true;
-        $this->_cache->createTable();
+        $class       = get_class($this);
+        $this->cache =& self::getInstance($class, $this->cacheConfig);
+        $this->cache->createTable($this->table);
+        $this->doCache = true;
+        $this->cache->createTable();
         return true;
     }
 
@@ -407,7 +407,7 @@ class HUGnetDB
             return 0;
         }
         $query = $this->addQuery($infoArray[0], $keys, $replace);
-        $ret   = $this->_db->prepare($query);
+        $ret   = $this->db->prepare($query);
         $count = 0;
         foreach ($infoArray as $info) {
             $data = $this->prepareData($info, $keys);
@@ -431,7 +431,7 @@ class HUGnetDB
         if (!$this->checkDb()) {
             return null;
         }
-        return $this->_db->getAttribute($attrib);
+        return $this->db->getAttribute($attrib);
     }
 
     /**
@@ -808,7 +808,7 @@ class HUGnetDB
             if (method_exists($obj, "errorInfo")) {
                 $err = $obj->errorInfo();
             } else {
-                $err = $this->_db->errorInfo();
+                $err = $this->db->errorInfo();
             }
         }
         $this->errorState = $err[0];
@@ -923,7 +923,7 @@ class HUGnetDB
 
         $this->cacheQuery($query, $data, $getRet);
         $this->vprint("Preparing query: ".$query."\n");
-        $ret = $this->_db->prepare($query);
+        $ret = $this->db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
         } else {
@@ -986,13 +986,13 @@ class HUGnetDB
         if (!is_array($data)) {
             return $badRet;
         }
-        if (!is_object($this->_cache)) {
+        if (!is_object($this->cache)) {
             return $badRet;
         }
-        if (!$this->_doCache) {
+        if (!$this->doCache) {
             return $badRet;
         }
-        $ret = $this->_cache->query($query, $data, $getRet);
+        $ret = $this->cache->query($query, $data, $getRet);
         return $ret;
     }
 
@@ -1008,14 +1008,14 @@ class HUGnetDB
         if (!is_array($res)) {
             return false;
         }
-        if (!is_object($this->_cache)) {
+        if (!is_object($this->cache)) {
             return false;
         }
-        if (!$this->_doCache) {
+        if (!$this->doCache) {
             return false;
         }
         $tries = count($res);
-        $count = $this->_cache->addArray($res, true);
+        $count = $this->cache->addArray($res, true);
         $this->vprint("Cache entry: $count/$tries");
 
     }
@@ -1104,7 +1104,7 @@ class HUGnetDB
         if ($this->driver == "sqlite") {
             return true;
         }
-        return $this->_db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
+        return $this->db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
     }
 
     /**
