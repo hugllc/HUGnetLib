@@ -229,7 +229,7 @@ class ResistiveSensorTest extends sensorTestBase
             array(5000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // R < Fixed
             array(50000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // % > 100
             array(40000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, 57.04),
-            array(40001, array('extraDefault'=>array(10, 10, 10)), 1, array(0, 10, 10), 0, 57.04),
+            array(40001, array('extraDefault'=>array(10, 10, 10)), 1, array(0, 10, 10), 0, 57.05),
             array(40002, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 0, 10), 0, 57.06),
             array(40003, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 0), 0, 57.07),
             array(40004, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 10, 10), 0, null),
