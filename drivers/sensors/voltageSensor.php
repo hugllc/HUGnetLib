@@ -38,30 +38,30 @@
 if (!class_exists('voltageSensor')) {
 
     /**
-     * class for dealing with resistive sensors.
-     *
-     * @category   Drivers
-     * @package    HUGnetLib
-     * @subpackage Sensors
-     * @author     Scott Price <prices@hugllc.com>
-     * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
-     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-     */
+    * class for dealing with resistive sensors.
+    *
+    * @category   Drivers
+    * @package    HUGnetLib
+    * @subpackage Sensors
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2009 Scott Price
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
     class VoltageSensor extends sensor_base
     {
         /**
-            This defines all of the sensors that this driver deals with...
+        *    This defines all of the sensors that this driver deals with...
         */
         public $sensors = array(
             0x10 => array(
-                'CHSMSS' => array(
+                'chsMss' => array(
                     "longName" => "TDK CHS-MSS ",
                     "unitType" => "Humidity",
                     "validUnits" => array('%'),
                     "defaultUnits" =>  '%',
-                    "function" => "CHSMSS",
+                    "function" => "chsMss",
                     "storageUnit" => '%',
                     "extraText" => "AtoD Ref Voltage",
                     "extraDefault" => 1.1,
@@ -82,7 +82,11 @@ if (!class_exists('voltageSensor')) {
                         'mV' => 'raw,diff',
                         'V' => 'raw,diff',
                    ),
-                    "extraText" => array("R1 in kOhms", "R2 in kOhms", "AtoD Ref Voltage"),
+                    "extraText" => array(
+                        "R1 in kOhms",
+                        "R2 in kOhms",
+                        "AtoD Ref Voltage"
+                    ),
                     "extraDefault" => array(150, 10, 5),
                ),
                 "Direct" => array(
@@ -99,12 +103,12 @@ if (!class_exists('voltageSensor')) {
                     "extraText" => array("AtoD Ref Voltage"),
                     "extraDefault" => array(5),
                ),
-                "FETBoard" => array(
+                "fetBoard" => array(
                     "longName" => "FET Board Voltage Sensor",
                     "unitType" => "Voltage",
                     "validUnits" => array('V', 'mV'),
                     "defaultUnits" =>  'V',
-                    "function" => "FETBoard",
+                    "function" => "fetBoard",
                     "storageUnit" => 'V',
                     "unitModes" => array(
                         'mV' => 'raw,diff',
@@ -118,7 +122,7 @@ if (!class_exists('voltageSensor')) {
                     "unitType" => "Voltage",
                     "validUnits" => array('V', 'mV'),
                     "defaultUnits" =>  'V',
-                    "function" => "FETBoard",
+                    "function" => "fetBoard",
                     "storageUnit" => 'V',
                     "unitModes" => array(
                         'mV' => 'raw,diff',
@@ -139,7 +143,13 @@ if (!class_exists('voltageSensor')) {
                         'in Hg' => 'raw,diff',
                         'hPa' => 'raw,diff',
                    ),
-                    "extraText" => array("Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    "extraText" => array(
+                        "Min Voltage (V)",
+                        "Max Voltage (V)",
+                        "Pressure at Min Voltage (mBar)",
+                        "Pressure at Max Voltage (mBar)",
+                        "AtoD Reference Voltage (V)"
+                    ),
                     "extraDefault" => array(.25, 4.25, 600, 1100, 5),
                ),
                 "GA100" => array(
@@ -155,9 +165,15 @@ if (!class_exists('voltageSensor')) {
                         'hPa' => 'raw,diff',
                         'psi' => 'raw,diff',
                    ),
-                    "extraText" => array("Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    "extraText" => array(
+                        "Min Voltage (V)",
+                        "Max Voltage (V)",
+                        "Pressure at Min Voltage (mBar)",
+                        "Pressure at Max Voltage (mBar)",
+                        "AtoD Reference Voltage (V)"
+                    ),
                     "extraDefault" => array(.5, 4.5, 0, 1, 5),
-               ),
+                ),
                 "HitachiVFDFan" => array(
                     "longName" => "Hitachi VFD Fan Speed",
                     "unitType" => "Pulses",
@@ -167,8 +183,16 @@ if (!class_exists('voltageSensor')) {
                     "storageUnit" => 'RPM',
                     "unitModes" => array(
                         'RPM' => 'diff',
-                   ),
-                    "extraText" => array("R1 in kOhms", "R2 in kOhms","Min Voltage (V)", "Max Voltage (V)", "Pressure at Min Voltage (mBar)", "Pressure at Max Voltage (mBar)", "AtoD Reference Voltage (V)"),
+                    ),
+                    "extraText" => array(
+                        "R1 in kOhms",
+                        "R2 in kOhms",
+                        "Min Voltage (V)",
+                        "Max Voltage (V)",
+                        "Pressure at Min Voltage (mBar)",
+                        "Pressure at Max Voltage (mBar)",
+                        "AtoD Reference Voltage (V)"
+                    ),
                     "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
                ),
 
@@ -188,13 +212,17 @@ if (!class_exists('voltageSensor')) {
         */
         function getDividerVoltage($A, $R1, $R2, $T, $Vref = null)
         {
-                if (empty($Vref)) $Vref = $this->Vcc;
-                $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
-                if ($denom == 0) return 0.0;
-                $numer = $A * $this->D * $Vref * ($R1 + $R2);
+            if (empty($Vref)) {
+                $Vref = $this->Vcc;
+            }
+            $denom = $this->s * $T * $this->Tf * $this->Am * $R2;
+            if ($denom == 0) {
+                return 0.0;
+            }
+            $numer = $A * $this->D * $Vref * ($R1 + $R2);
 
-                $Read = $numer/$denom;
-                return round($Read, 4);
+            $Read = $numer/$denom;
+            return round($Read, 4);
         }
 
         /**
@@ -207,12 +235,14 @@ if (!class_exists('voltageSensor')) {
         *
         * @return float Voltage rounded to 4 places
         */
-        function FETBoard($val, $sensor, $TC, $extra=null)
+        function fetBoard($val, $sensor, $TC, $extra=null)
         {
             $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $V  = $this->getDividerVoltage($val, $R1, $R2, $TC);
-            if ($V < 0) $V = null;
+            if ($V < 0) {
+                $V = null;
+            }
             $V = round($V, 4);
             return $V;
         }
@@ -228,11 +258,13 @@ if (!class_exists('voltageSensor')) {
         */
         function indirect($val, $sensor, $TC, $extra=null)
         {
-            $R1 = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
-            $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $Vref = (float)(empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
-            $V  = $this->getDividerVoltage($val, $R1, $R2, $TC, $Vref);
-            if ($V < 0) $V = null;
+            $R1   = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $R2   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $Vref = (float)(empty($extra[2])) ? $sensor['extraDefault'][2]:$extra[2];
+            $V    = $this->getDividerVoltage($val, $R1, $R2, $TC, $Vref);
+            if ($V < 0) {
+                $V = null;
+            }
             $V = round($V, 4);
             return $V;
         }
@@ -249,11 +281,17 @@ if (!class_exists('voltageSensor')) {
         */
         function direct($A, $sensor, $T, $extra)
         {
-            if (is_null($A)) return null;
+            if (is_null($A)) {
+                return null;
+            }
             $Vref = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $V    = $this->getVoltage($A, $T, (float) $Vref);
-            if ($V < 0) return null;
-            if ($V > $Vref) return null;
+            if ($V < 0) {
+                return null;
+            }
+            if ($V > $Vref) {
+                return null;
+            }
             $V = round($V, 4);
             return $V;
         }
@@ -269,10 +307,16 @@ if (!class_exists('voltageSensor')) {
         */
         function getVoltage($A, $T, $Vref)
         {
-            if (is_null($A)) return null;
-            if (is_null($Vref)) return null;
+            if (is_null($A)) {
+                return null;
+            }
+            if (is_null($Vref)) {
+                return null;
+            }
             $denom = $T * $this->Tf * $this->Am * $this->s;
-            if ($denom == 0) return 0.0;
+            if ($denom == 0) {
+                return 0.0;
+            }
             $num = $A * $this->D * $Vref;
 
             $volts = $num / $denom;
@@ -290,13 +334,17 @@ if (!class_exists('voltageSensor')) {
         *
         * @return float Relative Humidity rounded to 4 places
         */
-        function CHSMSS($A, $sensor, $T, $extra)
+        function chsMss($A, $sensor, $T, $extra)
         {
-            if (is_null($A)) return null;
+            if (is_null($A)) {
+                return null;
+            }
             $Vref     = (empty($extra)) ? $sensor['extraDefault'] : $extra;
             $volts    = $this->getVoltage($A, $T, (float) $Vref);
             $humidity = $volts * 100;
-            if ($humidity < 0) return null;
+            if ($humidity < 0) {
+                return null;
+            }
             $humidity = round($humidity, 4);
             return $humidity;
         }
@@ -405,7 +453,9 @@ if (!class_exists('voltageSensor')) {
 }
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "voltageSensor", "Type" => "sensor", "Class" => "voltageSensor"));
+    $this->addGeneric(array("Name" => "voltageSensor",
+                            "Type" => "sensor",
+                            "Class" => "voltageSensor"));
 }
 
 

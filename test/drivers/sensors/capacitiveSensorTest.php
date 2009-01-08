@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call capacitiveSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "capacitiveSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -62,19 +58,20 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/capacitiveSensor.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class capacitiveSensorTest extends sensorTestBase
+class CapacitiveSensorTest extends sensorTestBase
 {
+    /** @var string The name of the class */
     var $class = "capacitiveSensor";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -83,37 +80,37 @@ class capacitiveSensorTest extends sensorTestBase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
-    
+
     /**
-     * data provider
-     *
-     * @return array
-     */
-    public static function dataSensorArray() 
+    * data provider
+    *
+    * @return array
+    */
+    public static function dataSensorArray()
     {
-        $o = new capacitiveSensor();
+        $o      = new capacitiveSensor();
         $return = array();
         foreach ($o->sensors as $catName => $cat) {
             foreach ($cat as $shortName => $sensor) {
@@ -124,9 +121,11 @@ class capacitiveSensorTest extends sensorTestBase
     }
 
     /**
-     * Data provider for testGetCapacitance
-     */
-    public static function dataGetCapacitance() 
+    * Data provider for testGetCapacitance
+    *
+    * @return array
+    */
+    public static function dataGetCapacitance()
     {
         return array(
             array(1, 2, 3, 4, 174591.3333),
@@ -136,23 +135,31 @@ class capacitiveSensorTest extends sensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGetCapacitance
-     */
-    public function testGetCapacitance($A, $T, $R, $t, $expect) 
+    * test
+    *
+    * @param int   $A      The AtoD reading
+    * @param int   $T      The time constant used to get the reading
+    * @param float $R      The bias resistance in kOhms
+    * @param int   $t      The time reading from the sensor
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetCapacitance
+    */
+    public function testGetCapacitance($A, $T, $R, $t, $expect)
     {
-        $o = new capacitiveSensor();
+        $o   = new capacitiveSensor();
         $ret = $o->getCapacitance($A, $T, $R, $t);
         $this->assertSame($expect, $ret);
     }
 
     /**
-     * Data provider for testGetCapacitance
-     */
-    public static function dataGenericCap() 
+    * Data provider for testGetCapacitance
+    *
+    * @return array
+    */
+    public static function dataGenericCap()
     {
         return array(
             array(1, 2, 3, 4, 1),
@@ -160,23 +167,25 @@ class capacitiveSensorTest extends sensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGenericCap
-     */
-    public function testGenericCap($val, $sensor, $TC, $extra, $expect) 
+    * test
+    *
+    * @param float $val    The reading
+    * @param array $sensor Sensor information array
+    * @param int   $TC     The time constant
+    * @param array $extra  Extra information from the sensor
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGenericCap
+    */
+    public function testGenericCap($val, $sensor, $TC, $extra, $expect)
     {
-        $o = new capacitiveSensor();
+        $o   = new capacitiveSensor();
         $ret = $o->genericCap($val, $sensor, $TC, $extra);
         $this->assertSame($expect, $ret);
     }
 
 
-}
-// Call capacitiveSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "capacitiveSensorTest::main") {
-    capacitiveSensorTest::main();
 }
 ?>

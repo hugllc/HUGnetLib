@@ -36,10 +36,6 @@
  *
  */
 
-// Call resistiveSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "resistiveSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -60,10 +56,9 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/resistiveSensor.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ResistiveSensorTest extends sensorTestBase
+class ResistiveSensorTest extends SensorTestBase
 {
     var $class = "resistiveSensor";
     /**
@@ -142,24 +137,66 @@ class ResistiveSensorTest extends sensorTestBase
      */
     public function testGetResistance($A, $TC, $Bias, $expect)
     {
-        $o = new resistiveSensor();
+        $o   = new resistiveSensor();
         $ret = $o->getResistance($A, $TC, $Bias);
         $this->assertSame($expect, $ret);
     }
     /**
-     * Data provider for testBCTherm2381_640_66103
+     * Data provider for testBCTherm238164066103
      *
      * @return array
      */
-    public static function dataBCTherm2381_640_66103()
+    public static function dataBCTherm238164066103()
     {
         return array(
-            array(63570, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, null), // -40.1 degrees
-            array(1150, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, null),  // 150.9 degrees
-            array(5000, array('extraDefault'=>array(10, 10)), 1, array(10, 10), 0, 93.3105),
-            array(5000, array('extraDefault'=>array(10, 10)), 1, array(0, 10), 0, 93.3105),
-            array(5000, array('extraDefault'=>array(10, 10)), 1, array(10, 0), 0, 93.3105),
-            array(5000, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0, null),
+            array(
+                  63570,
+                  array('extraDefault'=>array(10, 10)),
+                  1,
+                  array(10, 10),
+                  0,
+                  null
+                 ), // -40.1 degrees
+            array(
+                  1150,
+                  array('extraDefault'=>array(10, 10)),
+                  1,
+                  array(10, 10),
+                  0,
+                  null
+                 ),  // 150.9 degrees
+            array(
+                  5000,
+                  array('extraDefault'=>array(10, 10)),
+                  1,
+                  array(10, 10),
+                  0,
+                  93.3105
+                 ),
+            array(
+                  5000,
+                  array('extraDefault'=>array(10, 10)),
+                  1,
+                  array(0, 10),
+                  0,
+                  93.3105
+                 ),
+            array(
+                  5000,
+                  array('extraDefault'=>array(10, 10)),
+                  1,
+                  array(10, 0),
+                  0,
+                  93.3105
+                 ),
+            array(
+                  5000,
+                  array('extraDefault'=>array(0, 0)),
+                  1,
+                  array(0, 0),
+                  0,
+                  null
+                 ),
         );
     }
     /**
@@ -174,28 +211,70 @@ class ResistiveSensorTest extends sensorTestBase
      *
      * @return null
      *
-     * @dataProvider dataBCTherm2381_640_66103
-     * @covers resistiveSensor::BCTherm2381_640_66103
+     * @dataProvider dataBCTherm238164066103
+     * @covers resistiveSensor::BCTherm238164066103
      * @covers resistiveSensor::_BCTherm2322640Interpolate
      */
-    public function testBCTherm2381_640_66103($A, $sensor, $TC, $extra, $deltaT, $expect)
+    public function testBCTherm238164066103($A,
+                                              $sensor,
+                                              $TC,
+                                              $extra,
+                                              $deltaT,
+                                              $expect)
     {
-        parent::sensorTest("resistiveSensor", "BCTherm2381_640_66103", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("resistiveSensor",
+                           "BCTherm238164066103",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
      /**
-    * Data provider for testBCTherm2381_640_66103
+    * Data provider for testBCTherm238164066103
     *
     * @return array
      */
     public static function dataIMCSolar()
     {
         return array(
-                array(63630, array('extraDefault'=>array(10)), 1, array(10), 0, null), // -40.1 degrees
-                array(450, array('extraDefault'=>array(10)), 1, array(10), 0, null),  // 192.2 degrees
-                array(5000, array('extraDefault'=>array(10)), 1, array(0), 0, 94.0506),
-                array(5000, array('extraDefault'=>array(10)), 1, array(10), 0, 94.0506),
-                array(5000, array('extraDefault'=>array(0)), 1, array(0), 0, null),
+                array(
+                      63630,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      null), // -40.1 degrees
+                array(
+                      450,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      null),  // 192.2 degrees
+                array(
+                      5000,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(0),
+                      0,
+                      94.0506),
+                array(
+                      5000,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      94.0506),
+                array(
+                      5000,
+                      array('extraDefault'=>array(0)),
+                      1,
+                      array(0),
+                      0,
+                      null),
                 );
     }
     /**
@@ -214,7 +293,14 @@ class ResistiveSensorTest extends sensorTestBase
     */
     public function testIMCSolar($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor", "IMCSolar", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("resistiveSensor",
+                           "IMCSolar",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 
@@ -226,15 +312,69 @@ class ResistiveSensorTest extends sensorTestBase
     public static function dataResisDoor()
     {
         return array(
-            array(5000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // R < Fixed
-            array(50000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, null), // % > 100
-            array(40000, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 10), 0, 57.04),
-            array(40001, array('extraDefault'=>array(10, 10, 10)), 1, array(0, 10, 10), 0, 57.05),
-            array(40002, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 0, 10), 0, 57.06),
-            array(40003, array('extraDefault'=>array(10, 10, 10)), 1, array(10, 10, 0), 0, 57.07),
-            array(40004, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 10, 10), 0, null),
-            array(40005, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 0, 10), 0, null),
-            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(10, 10, 0), 0, null),
+            array(
+                  5000,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(10, 10, 10),
+                  0,
+                  null), // R < Fixed
+            array(
+                  50000,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(10, 10, 10),
+                  0,
+                  null), // % > 100
+            array(
+                  40000,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(10, 10, 10),
+                  0,
+                  57.04),
+            array(
+                  40001,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(0, 10, 10),
+                  0,
+                  57.05),
+            array(
+                  40002,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(10, 0, 10),
+                  0,
+                  57.06),
+            array(
+                  40003,
+                  array('extraDefault'=>array(10, 10, 10)),
+                  1,
+                  array(10, 10, 0),
+                  0,
+                  57.07),
+            array(
+                  40004,
+                  array('extraDefault'=>array(0, 0, 0)),
+                  1,
+                  array(0, 10, 10),
+                  0,
+                  null),
+            array(
+                  40005,
+                  array('extraDefault'=>array(0, 0, 0)),
+                  1,
+                  array(10, 0, 10),
+                  0,
+                  null),
+            array(
+                  40006,
+                  array('extraDefault'=>array(0, 0, 0)),
+                  1,
+                  array(10, 10, 0),
+                  0,
+                  null),
         );
     }
     /**
@@ -254,7 +394,14 @@ class ResistiveSensorTest extends sensorTestBase
      */
     public function testResisDoor($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor", "resisDoor", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("resistiveSensor",
+                           "resisDoor",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
     /**
@@ -265,11 +412,41 @@ class ResistiveSensorTest extends sensorTestBase
     public static function datagetMoistureV2()
     {
         return array(
-            array(40000, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 1570.3518),
-            array(40001, array('extraDefault'=>array(1000, 10, 1000)), 1, array(0, 10, 1000), 0, 1570.4527),
-            array(40002, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 0, 1000), 0, 1570.5536),
-            array(40003, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 0), 0, 1570.6545),
-            array(40006, array('extraDefault'=>array(0, 0, 0)), 1, array(1000, 10, 0), 0, null),
+            array(
+                  40000,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 10, 1000),
+                  0,
+                  1570.3518),
+            array(
+                  40001,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(0, 10, 1000),
+                  0,
+                  1570.4527),
+            array(
+                  40002,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 0, 1000),
+                  0,
+                  1570.5536),
+            array(
+                  40003,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 10, 0),
+                  0,
+                  1570.6545),
+            array(
+                  40006,
+                  array('extraDefault'=>array(0, 0, 0)),
+                  1,
+                  array(1000, 10, 0),
+                  0,
+                  null),
         );
     }
     /**
@@ -289,7 +466,14 @@ class ResistiveSensorTest extends sensorTestBase
      */
     public function testgetMoistureV2($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor", "getMoistureV2", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("resistiveSensor",
+                           "getMoistureV2",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
     /**
@@ -300,12 +484,48 @@ class ResistiveSensorTest extends sensorTestBase
     public static function datagetMoistureV1()
     {
         return array(
-            array(4000, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 6.56),
-            array(4001, array('extraDefault'=>array(1000, 10, 1000)), 1, array(0, 10, 1000), 0, 6.56),
-            array(4002, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 0, 1000), 0, 6.56),
-            array(4003, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 0), 0, 6.56),
-            array(4006, array('extraDefault'=>array(0, 0, 0)), 1, array(0, 0, 0), 0, null),
-            array(0, array('extraDefault'=>array(1000, 10, 1000)), 1, array(1000, 10, 1000), 0, 35.0),
+            array(
+                  4000,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 10, 1000),
+                  0,
+                  6.56),
+            array(
+                  4001,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(0, 10, 1000),
+                  0,
+                  6.56),
+            array(
+                  4002,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 0, 1000),
+                  0,
+                  6.56),
+            array(
+                  4003,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 10, 0),
+                  0,
+                  6.56),
+            array(
+                  4006,
+                  array('extraDefault'=>array(0, 0, 0)),
+                  1,
+                  array(0, 0, 0),
+                  0,
+                  null),
+            array(
+                  0,
+                  array('extraDefault'=>array(1000, 10, 1000)),
+                  1,
+                  array(1000, 10, 1000),
+                  0,
+                  35.0),
         );
     }
     /**
@@ -325,13 +545,16 @@ class ResistiveSensorTest extends sensorTestBase
      */
     public function testgetMoistureV1($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor", "getMoistureV1", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("resistiveSensor",
+                           "getMoistureV1",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 }
 
-// Call resistiveSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "resistiveSensorTest::main") {
-    resistiveSensorTest::main();
-}
 ?>
