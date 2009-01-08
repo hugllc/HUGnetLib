@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -106,7 +106,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     {
         unset($this->o);
     }
-    
+
     /**
      * data provider for testConstructor
      *
@@ -114,7 +114,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
      *
      * @static
      */
-    public static function dataRegisterFunction() 
+    public static function dataRegisterFunction()
     {
         return array(
             array("asdf", "fasd", "asdf", "asdf", "asdf"),
@@ -123,22 +123,22 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @param mixed  $Name  If an Array, it should contain at least Name["Name"] which is the name of the function.  The
+     * @param mixed  $Name   If an Array, it should contain at least Name["Name"] which is the name of the function.  The
      *     only other semi-required item is Name["Types"]
-     *     which is an array of plugin types to register this as.  If it is not included, it will be registered as "ALL_TYPES" which is 
-     *     probably not what you want.  None of the other paramters are used in this case.  If it is a string, it is 
+     *     which is an array of plugin types to register this as.  If it is not included, it will be registered as "ALL_TYPES" which is
+     *     probably not what you want.  None of the other paramters are used in this case.  If it is a string, it is
      *     just the name of the item.  The other paramters must be used to set the other items.
-     * @param string $Type  The type of plugin to register this as.  If ommited plugin will be registered as "ALL_TYPES" which is probably not
+     * @param string $Type   The type of plugin to register this as.  If ommited plugin will be registered as "ALL_TYPES" which is probably not
      *     what you want.
-     * @param string $Title The title of the plugin.  Anything goes, but it should be relatively short.  Optional
-     * @param string $Desc  The description of the plugin.  This is freeform text.  Optional
-     * @param int $expect The expected value
+     * @param string $Title  The title of the plugin.  Anything goes, but it should be relatively short.  Optional
+     * @param string $Desc   The description of the plugin.  This is freeform text.  Optional
+     * @param int    $expect The expected value
      *
      * @return null
      *
      * @dataProvider dataRegisterFunction
      */
-    public function testRegisterFunction($Name, $Type, $Title, $Desc, $expect) 
+    public function testRegisterFunction($Name, $Type, $Title, $Desc, $expect)
     {
     }
 }
