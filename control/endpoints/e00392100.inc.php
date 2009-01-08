@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,14 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @version SVN: $Id$    
+ * @version SVN: $Id$
  *
  */
 
 require dirname(__FILE__).'/../group.inc.php';
-require_once 'lib/tables.inc.php';
 
 $driver = &$endpoint->drivers[$devInfo['Driver']];
 $returnTo = $_SERVER['PHP_SELF']."?DeviceKey=".$devInfo['DeviceKey'];
@@ -55,8 +54,8 @@ if ($devInfo['FWPartNum'] == '0039-20-01-C') {
         $radio[] = $form->createElement('radio', 'HUGnetPower['.$i.']', null, 'On', 1);
         $form->addGroup($radio, null, "Output ".($i+1));
     }
-    $form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');    
-    $form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');    
+    $form->addRule('TimeConstant', 'Time Constant can not be empty', 'required', null, 'client');
+    $form->addRule('TimeConstant', 'Time Constant must be numeric', 'numeric', null, 'client');
     $form->setDefaults($devInfo);
     $form->addElement('submit', 'postPower', 'Update');
     if (isset($_REQUEST['postPower']) && $form->validate()) {
@@ -78,7 +77,7 @@ if ($devInfo['bootLoader']) {
         $pForm->addElement('static', null, null, '<span class="error">Bad Application ('.$crc.' != '.$devInfo['CRC'].').  Please reload</span>');
     }
 } else {
-    $pForm->addElement('submit', 'crashProg', 'Crash Application');    
+    $pForm->addElement('submit', 'crashProg', 'Crash Application');
 }
 
 $cols   = array(
@@ -127,7 +126,7 @@ $table->finishList($format);
 $pForm->addElement('static', null, null, $table->toHTML());
 if (isset($_REQUEST['runProg']) && $pForm->validate()) {
     $driver->RunApplication($devInfo);
-    header("Location: ".$returnTo);        
+    header("Location: ".$returnTo);
 } else if (isset($_REQUEST['crashProg']) && $pForm->validate()) {
     $driver->RunBootloader($devInfo);
     header("Location: ".$returnTo);
