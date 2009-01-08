@@ -143,11 +143,11 @@ class VoltageSensorTest extends sensorTestBase
     }
 
     /**
-    * Data provider for testFETBoard
+    * Data provider for testfetBoard
     *
     * @return array
     */
-    public static function dataFETBoard()
+    public static function datafetBoard()
     {
         return array(
             array(1000,
@@ -188,13 +188,13 @@ class VoltageSensorTest extends sensorTestBase
     *
     * @return null
     *
-    * @dataProvider dataFETBoard
-    * @covers voltageSensor::FETBoard
+    * @dataProvider datafetBoard
+    * @covers voltageSensor::fetBoard
     */
-    public function testFETBoard($val, $sensor, $TC, $extra, $deltaT, $expect)
+    public function testfetBoard($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
         parent::sensorTest("voltageSensor",
-                           "FETBoard",
+                           "fetBoard",
                            $val,
                            $sensor,
                            $TC,
@@ -204,7 +204,7 @@ class VoltageSensorTest extends sensorTestBase
     }
 
     /**
-    * Data provider for testFETBoard
+    * Data provider for testfetBoard
     *
     * @return array
     */
@@ -298,11 +298,11 @@ class VoltageSensorTest extends sensorTestBase
     }
 
     /**
-    * Data provider for testCHSMSS
+    * Data provider for testchsMss
     *
     * @return array
     */
-    public static function dataCHSMSS()
+    public static function datachsMss()
     {
         return array(
             array(10000, array("extraDefault"=>1.1), 1, 1.1, 0, 16.8),
@@ -324,13 +324,13 @@ class VoltageSensorTest extends sensorTestBase
     *
     * @return null
     *
-    * @dataProvider dataCHSMSS
-    * @covers voltageSensor::CHSMSS
+    * @dataProvider datachsMss
+    * @covers voltageSensor::chsMss
     */
-    public function testCHSMSS($val, $sensor, $TC, $extra, $deltaT, $expect)
+    public function testchsMss($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
         parent::sensorTest("voltageSensor",
-                           "CHSMSS",
+                           "chsMss",
                            $val,
                            $sensor,
                            $TC,
@@ -340,7 +340,7 @@ class VoltageSensorTest extends sensorTestBase
     }
 
     /**
-    * Data provider for testCHSMSS
+    * Data provider for testchsMss
     *
     * @return array
     */

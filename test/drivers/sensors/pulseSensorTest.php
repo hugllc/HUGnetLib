@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call pulseSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "pulseSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -65,13 +61,13 @@ class PulseSensorTest extends sensorTestBase
 {
     var $class = "pulseSensor";
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
     public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
@@ -81,43 +77,45 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
     protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
 
     /**
-     * data provider for testSensorArray*
-     */    
-    public static function dataSensorArray() 
+    * data provider for testSensorArray*
+    *
+    * @return array
+    */
+    public static function dataSensorArray()
     {
         return sensorTestBase::sensorArrayDataSource("pulseSensor");
     }
-    
+
     /**
-     * Data provider for testMaximumAnemometer
-     *
-     * @return array
-     */
-    public static function dataMaximumAnemometer() 
+    * Data provider for testMaximumAnemometer
+    *
+    * @return array
+    */
+    public static function dataMaximumAnemometer()
     {
         return array(
             array(500, array(), 1, array(), 300, 2.7275),
@@ -125,31 +123,43 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
-     * test
-     *
-     * @param int   $val    Output of the A to D converter
-     * @param array $sensor The sensor information array
-     * @param int   $TC     The time constant
-     * @param mixed $extra  Extra sensor information
-     * @param float $deltaT The time delta in seconds between this record
-     * @param float $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataMaximumAnemometer
-     * @covers pulseSensor::maximumAnemometer
-     */
-    public function testMaximumAnemometer($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param array $sensor The sensor information array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra sensor information
+    * @param float $deltaT The time delta in seconds between this record
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataMaximumAnemometer
+    * @covers pulseSensor::maximumAnemometer
+    */
+    public function testMaximumAnemometer($val,
+                                          $sensor,
+                                          $TC,
+                                          $extra,
+                                          $deltaT,
+                                          $expect)
     {
-        parent::sensorTest("pulseSensor", "maximumAnemometer", $val, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("pulseSensor",
+                           "maximumAnemometer",
+                           $val,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
     /**
-     * Data provider for testPulseCheck
-     *
-     * @return array
-     */
-    public static function dataPulseCheck() 
+    * Data provider for testPulseCheck
+    *
+    * @return array
+    */
+    public static function dataPulseCheck()
     {
         return array(
             array(1, array(), "PPM", "diff", true),
@@ -159,30 +169,36 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
-     * test
-     *
-     * @param int    $value  The current sensor value
-     * @param array  $sensor The sensor information array
-     * @param string $units  The units the current value are in
-     * @param mixed  $dType  The data mode
-     * @param bool   $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataPulseCheck
-     * @covers pulseSensor::PulseCheck
-     */
-    public function testPulseCheck($value, $sensor, $units, $dType, $expect) 
+    * test
+    *
+    * @param int    $value  The current sensor value
+    * @param array  $sensor The sensor information array
+    * @param string $units  The units the current value are in
+    * @param mixed  $dType  The data mode
+    * @param bool   $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataPulseCheck
+    * @covers pulseSensor::PulseCheck
+    */
+    public function testPulseCheck($value, $sensor, $units, $dType, $expect)
     {
-        parent::sensorCheckTest("pulseSensor", "pulseCheck", $value, $sensor, $units, $dType, $expect);
+        parent::sensorCheckTest("pulseSensor",
+                                "pulseCheck",
+                                $value,
+                                $sensor,
+                                $units,
+                                $dType,
+                                $expect);
     }
 
     /**
-     * Data provider for testWattNode
-     *
-     * @return array
-     */
-    public static function dataWattNode() 
+    * Data provider for testWattNode
+    *
+    * @return array
+    */
+    public static function dataWattNode()
     {
         return array(
             array(500, array(), 1, 5, 300, 2.5),
@@ -190,31 +206,38 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
-     * test
-     *
-     * @param int   $val    Output of the A to D converter
-     * @param array $sensor The sensor information array
-     * @param int   $TC     The time constant
-     * @param mixed $extra  Extra sensor information
-     * @param float $deltaT The time delta in seconds between this record
-     * @param float $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataWattNode
-     * @covers pulseSensor::WattNode
-     */
-    public function testWattNode($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param array $sensor The sensor information array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra sensor information
+    * @param float $deltaT The time delta in seconds between this record
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataWattNode
+    * @covers pulseSensor::WattNode
+    */
+    public function testWattNode($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("pulseSensor", "WattNode", $val, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("pulseSensor",
+                           "WattNode",
+                           $val,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
     /**
-     * Data provider for testGetPPM
-     *
-     * @return array
-     */
-    public static function dataGetPPM() 
+    * Data provider for testGetPPM
+    *
+    * @return array
+    */
+    public static function dataGetPPM()
     {
         return array(
             array(500, array(), 1, 5, 300, 100.0),
@@ -222,29 +245,32 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
-     * test
-     *
-     * @param int   $val    Output of the A to D converter
-     * @param array $sensor The sensor information array
-     * @param int   $TC     The time constant
-     * @param mixed $extra  Extra sensor information
-     * @param float $deltaT The time delta in seconds between this record
-     * @param float $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataGetPPM
-     * @covers pulseSensor::GetPPM
-     */
-    public function testGetPPM($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param array $sensor The sensor information array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra sensor information
+    * @param float $deltaT The time delta in seconds between this record
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPPM
+    * @covers pulseSensor::GetPPM
+    */
+    public function testGetPPM($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("pulseSensor", "GetPPM", $val, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("pulseSensor",
+                           "GetPPM",
+                           $val,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 }
 
-// Call pulseSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "pulseSensorTest::main") {
-    pulseSensorTest::main();
-}
 ?>

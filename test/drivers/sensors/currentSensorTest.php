@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call currentSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "currentSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -61,61 +57,65 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/currentSensor.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class currentSensorTest extends sensorTestBase
+class CurrentSensorTest extends sensorTestBase
 {
     var $class = "currentSensor";
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
     public static function main()
     {
-        require_once "PHPUnit/TextUI/TestRunner.php";
+        include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("currentSensorTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
 
     /**
-     * data provider for testSensorArray*
-     */    
-    public static function dataSensorArray() 
+    * data provider for testSensorArray*
+    *
+    * @return null
+    */
+    public static function dataSensorArray()
     {
         return sensorTestBase::sensorArrayDataSource("currentSensor");
     }
 
     /**
-     * Data provider for testGetCurrent
-     */
-    public static function dataGetCurrent() 
+    * Data provider for testGetCurrent
+    *
+    * @return null
+    */
+    public static function dataGetCurrent()
     {
         return array(
             array(500, 0.5, 1, 1, 0.0764),
@@ -126,49 +126,95 @@ class currentSensorTest extends sensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGetCurrent
-     * @covers currentSensor::GetCurrent
-     */
-    public function testGetCurrent($A, $R, $G, $T, $expect) 
+    * test
+    *
+    * @param int   $A      The raw AtoD reading
+    * @param float $R      The resistance of the current sensing resistor
+    * @param float $G      The gain of the circuit
+    * @param int   $T      The time constant
+    * @param float $expect The expected current
+    *
+    * @return null
+    *
+    * @dataProvider dataGetCurrent
+    * @covers currentSensor::GetCurrent
+    */
+    public function testGetCurrent($A, $R, $G, $T, $expect)
     {
-        $o = new currentSensor();
+        $o   = new currentSensor();
         $ret = $o->getCurrent($A, $R, $G, $T);
         $this->assertSame($expect, $ret);
     }
 
     /**
-     * Data provider for testFETBoard
-     */
-    public static function dataFETBoard() 
+    * Data provider for testfetBoard
+    *
+    * @return null
+    */
+    public static function dataFetBoard()
     {
         return array(
-            array(500, array('extraDefault'=>array(1, 1)), 1, array(0.5, 1), 0, 76.4),
-            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0, 1), 0, 76.4),
-            array(500, array('extraDefault'=>array(0.5, 1)), 1, array(0.5, 0), 0, 76.4),
-            array(500, array('extraDefault'=>array(0, 0)), 1, array(0, 0), 0, 0.0),
+            array(
+                  500,
+                  array('extraDefault'=>array(1, 1)),
+                  1,
+                  array(0.5, 1),
+                  0,
+                  76.4
+                 ),
+            array(
+                  500,
+                  array('extraDefault'=>array(0.5, 1)),
+                  1,
+                  array(0, 1),
+                  0,
+                  76.4
+                 ),
+            array(
+                  500,
+                  array('extraDefault'=>array(0.5, 1)),
+                  1,
+                  array(0.5, 0),
+                  0,
+                  76.4
+                 ),
+            array(
+                  500,
+                  array('extraDefault'=>array(0, 0)),
+                  1,
+                  array(0, 0),
+                  0,
+                  0.0
+                 ),
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataFETBoard
-     * @covers currentSensor::FETBoard
-     */
-    public function testFETBoard($val, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param float $val    The incoming value
+    * @param array $sensor The sensor setup array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $deltaT The time difference
+    * @param float $expect The expected current
+    *
+    * @return null
+    *
+    * @dataProvider datafetBoard
+    * @covers currentSensor::fetBoard
+    */
+    public function testFetBoard($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("currentSensor", "FETBoard", $val, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("currentSensor",
+                           "fetBoard",
+                           $val,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 }
 
-// Call currentSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "currentSensorTest::main") {
-    currentSensorTest::main();
-}
 ?>

@@ -31,15 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-// Call lightSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "lightSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -60,22 +56,21 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/lightSensor.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class lightSensorTest extends sensorTestBase
+class LightSensorTest extends SensorTestBase
 {
     var $class = "lightSensor";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -84,40 +79,44 @@ class lightSensorTest extends sensorTestBase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
     /**
-     * data provider for testSensorArray*
-     */    
-    public static function dataSensorArray() 
+    * data provider for testSensorArray*
+    *
+    * @return array
+    */
+    public static function dataSensorArray()
     {
         return sensorTestBase::sensorArrayDataSource("lightSensor");
     }
 
     /**
-     * Data provider for testGetLight
-     */
-    public static function dataGetLight() 
+    * Data provider for testGetLight
+    *
+    * @return array
+    */
+    public static function dataGetLight()
     {
         return array(
             array(65472, 1, 0.0), //This is the maximum reading (minimum light)
@@ -126,48 +125,66 @@ class lightSensorTest extends sensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataGetLight
-     * @covers lightSensor::GetLight
-     */
-    public function testGetLight($A, $TC, $expect) 
+    * test
+    *
+    * @param int   $A      The raw AtoD reading
+    * @param int   $TC     The time constant used to get the reading
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetLight
+    * @covers lightSensor::GetLight
+    */
+    public function testGetLight($A, $TC, $expect)
     {
-        $o = new lightSensor();
+        $o   = new lightSensor();
         $ret = $o->getLight($A, $TC);
         $this->assertSame($expect, $ret);
     }
 
     /**
-     * Data provider for testGetLight
-     */
-    public static function dataOSRAMBPW34() 
+    * Data provider for testGetLight
+    *
+    * @return array
+    */
+    public static function dataOSRAMBPW34()
     {
         return array(
-            array(65472, array(), 1, array(), 0, 0.0), //This is the maximum reading (minimum light)
-            array(0, array(), 1, array(), 0, 1500.0),  // This is the minimum reading (maximum light)
-            array(65472, array(), 0, array(), 0, 1500.0),  // Woops!  Time constant is 0
+            array(65472, array(), 1, array(), 0, 0.0), //This is the max reading
+                                                       //(minimum light)
+            array(0, array(), 1, array(), 0, 1500.0),  // This is the min reading
+                                                       // (maximum light)
+            array(65472, array(), 0, array(), 0, 1500.0), // Woops!Time constant is 0
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataOSRAMBPW34
-     * @covers lightSensor::OSRAMBPW34
-     */
-    public function testOSRAMBPW34($A, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param float $A      The incoming value
+    * @param array $sensor The sensor setup array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $deltaT The time difference
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataOSRAMBPW34
+    * @covers lightSensor::OSRAMBPW34
+    */
+    public function testOSRAMBPW34($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("lightSensor", "OSRAMBPW34", $A, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("lightSensor",
+                           "OSRAMBPW34",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 }
 
-// Call lightSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "lightSensorTest::main") {
-    lightSensorTest::main();
-}
 ?>

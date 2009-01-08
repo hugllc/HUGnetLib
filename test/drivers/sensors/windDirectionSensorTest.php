@@ -31,15 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-// Call windDirectionSensorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "windDirectionSensorTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -60,21 +56,20 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/windDirectionSensor.ph
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class windDirectionSensorTest extends sensorTestBase
+class WindDirectionSensorTest extends sensorTestBase
 {
     var $class = "windDirectionSensor";
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -83,40 +78,44 @@ class windDirectionSensorTest extends sensorTestBase
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
     /**
-     * data provider for testSensorArray*
-     */    
-    public static function dataSensorArray() 
+    * data provider for testSensorArray*
+    *
+    * @return array
+    */
+    public static function dataSensorArray()
     {
         return sensorTestBase::sensorArrayDataSource("windDirectionSensor");
     }
 
     /**
-     * Data provider for testGetCapacitance
-     */
-    public static function dataMaximumIncSensor() 
+    * Data provider for testGetCapacitance
+    *
+    * @return array
+    */
+    public static function dataMaximumIncSensor()
     {
         return array(
             array(0x01, array(), 0, 0, 0, 0.0),
@@ -140,22 +139,38 @@ class windDirectionSensorTest extends sensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @return null
-     *
-     * @dataProvider dataMaximumIncSensor
-     * @covers windDirectionSensor::maximumIncSensor
-     */
-    public function testMaximumIncSensor($ndir, $sensor, $TC, $extra, $deltaT, $expect) 
+    * test
+    *
+    * @param int   $ndir   This is an 8 bit bit field returned by the sensor
+    * @param array $sensor This is the array of sensor information for this
+    *  sensor.  This is not used by this sensor.
+    * @param int   $TC     The timeconstant.  This is not used by this sensor.
+    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $deltaT The time difference
+    * @param float $expect The expected current
+    *
+    * @return null
+    *
+    * @dataProvider dataMaximumIncSensor
+    * @covers windDirectionSensor::maximumIncSensor
+    */
+    public function testMaximumIncSensor($ndir,
+                                         $sensor,
+                                         $TC,
+                                         $extra,
+                                         $deltaT,
+                                         $expect)
     {
-        parent::sensorTest("windDirectionSensor", "maximumIncSensor", $ndir, $sensor, $TC, $extra, $deltaT, $expect);
+        parent::sensorTest("windDirectionSensor",
+                           "maximumIncSensor",
+                           $ndir,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
     }
 
 }
 
-// Call windDirectionSensorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "windDirectionSensorTest::main") {
-    windDirectionSensorTest::main();
-}
 ?>
