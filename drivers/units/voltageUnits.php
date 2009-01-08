@@ -1,6 +1,6 @@
 <?php
 /**
- * Sensor driver for light sensors.
+ * Sensor driver for voltage sensors.
  *
  * PHP Version 5
  *
@@ -47,7 +47,7 @@ if (!class_exists('voltageUnits')) {
      * @subpackage Units
      * @author     Scott Price <prices@hugllc.com>
      * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+     * @copyright  2009 Scott Price
      * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
      * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
      */
