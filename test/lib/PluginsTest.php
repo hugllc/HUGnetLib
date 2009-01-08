@@ -35,10 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-// Call PluginsTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'PluginsTest::main');
-}
+
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 
@@ -60,19 +57,19 @@ require_once dirname(__FILE__).'/../../lib/plugins.inc.php';
 class PluginsTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var    SensorBase
-     * @access protected
-     */
+    * @var object The test object
+    * @access protected
+    */
     protected $o;
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     *
-     * @return null
-     */
+    * Runs the test methods of this class.
+    *
+    * @access public
+    * @static
+    *
+    * @return null
+    */
     public static function main()
     {
         include_once 'PHPUnit/TextUI/TestRunner.php';
@@ -82,69 +79,357 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function setUp()
     {
         $this->o = new plugins();
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function tearDown()
     {
         unset($this->o);
     }
 
     /**
-     * data provider for testConstructor
-     *
-     * @return array
-     *
-     * @static
-     */
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
     public static function dataRegisterFunction()
     {
         return array(
-            array("asdf", "fasd", "asdf", "asdf", "asdf"),
+            array("name", "type", "title", "desc", null),
+            array("", "type", "title", "desc", null),
+            array(
+                "pluginTestFunction1",
+                null,
+                "title",
+                "desc",
+                array(
+                    "Functions" => array(
+                        "ALL_TYPES" => array(
+                            array(
+                                    "Name" => "pluginTestFunction1",
+                                    "Types" => null,
+                                    "Title" => "title",
+                                    "Description" => "desc",
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            array(
+                "pluginTestFunction1",
+                "type",
+                "title",
+                "desc",
+                array(
+                    "Functions" => array(
+                        "type" => array(
+                            array(
+                                "Name" => "pluginTestFunction1",
+                                "Types" => "type",
+                                "Title" => "title",
+                                "Description" => "desc",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Name" => "pluginTestFunction1",
+                    "Types" => "type",
+                    "Title" => "title",
+                    "Description" => "desc",
+                ),
+                "asdf",
+                "fdsa",
+                "hello there",
+                array(
+                    "Functions" => array(
+                        "type" => array(
+                            array(
+                                "Name" => "pluginTestFunction1",
+                                "Types" => "type",
+                                "Title" => "title",
+                                "Description" => "desc",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                "pluginTestFunction1",
+                array("type1", "type2"),
+                "title",
+                "desc",
+                array(
+                    "Functions" => array(
+                        "type1" => array(
+                              array(
+                                "Name" => "pluginTestFunction1",
+                                "Types" => array("type1", "type2"),
+                                "Title" => "title",
+                                "Description" => "desc",
+                            ),
+                        ),
+                        "type2" => array(
+                            array(
+                                "Name" => "pluginTestFunction1",
+                                "Types" => array("type1", "type2"),
+                                "Title" => "title",
+                                "Description" => "desc",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
     }
     /**
-     * test
-     *
-     * @param mixed  $Name   If an Array, it should contain at least Name["Name"] which is the name of the function.  The
-     *     only other semi-required item is Name["Types"]
-     *     which is an array of plugin types to register this as.  If it is not included, it will be registered as "ALL_TYPES" which is
-     *     probably not what you want.  None of the other paramters are used in this case.  If it is a string, it is
-     *     just the name of the item.  The other paramters must be used to set the other items.
-     * @param string $Type   The type of plugin to register this as.  If ommited plugin will be registered as "ALL_TYPES" which is probably not
-     *     what you want.
-     * @param string $Title  The title of the plugin.  Anything goes, but it should be relatively short.  Optional
-     * @param string $Desc   The description of the plugin.  This is freeform text.  Optional
-     * @param int    $expect The expected value
-     *
-     * @return null
-     *
-     * @dataProvider dataRegisterFunction
-     */
+    * test
+    *
+    * @param mixed  $Name   The name to test
+    * @param string $Type   The type to test
+    * @param string $Title  The title to test.
+    * @param string $Desc   The description of the plugin.
+    * @param int    $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterFunction
+    */
     public function testRegisterFunction($Name, $Type, $Title, $Desc, $expect)
     {
+        $this->o->registerFunction($Name, $Type, $Title, $Desc);
+        $this->assertSame($expect, $this->o->plugins);
     }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataAddGeneric()
+    {
+        return array(
+            array(
+                "",
+                "HTML",
+                "type",
+                null,
+            ),
+            array(
+                "name",
+                "HTML",
+                null,
+                array(
+                    "Generic" => array(
+                        "ALL_TYPES" => array(
+                            array(
+                                "Name" => "name",
+                                "HTML" => "HTML",
+                                "Type" => "ALL_TYPES",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                "name",
+                "HTML",
+                "type",
+                array(
+                    "Generic" => array(
+                        "type" => array(
+                            array(
+                                "Name" => "name",
+                                "HTML" => "HTML",
+                                "Type" => "type",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Name" => "pluginTestFunction1",
+                    "Type" => "type",
+                    "Title" => "title",
+                ),
+                "asdf",
+                "fdsa",
+                array(
+                    "Generic" => array(
+                        "type" => array(
+                            array(
+                                "Name" => "pluginTestFunction1",
+                                "Type" => "type",
+                                "Title" => "title",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $Name   The name to test
+    * @param string $HTML   The HTML to use.
+    * @param string $Type   The type to test
+    * @param int    $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataAddGeneric
+    */
+    public function testAddGeneric($Name, $HTML, $Type, $expect)
+    {
+        $this->o->AddGeneric($Name, $HTML, $Type);
+        $this->assertSame($expect, $this->o->plugins);
+    }
+
+     /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataGetGeneric()
+    {
+        $plugins = array(
+                    "Generic" => array(
+                        "type1" => array(
+                            array(
+                                "Name" => "name",
+                                "HTML" => "HTML",
+                                "Type" => "type1",
+                            ),
+                        ),
+                        "type" => array(
+                            array(
+                                "Name"  => "zpluginTestFunction1",
+                                "Type"  => "type",
+                                "Title" => "title",
+                            ),
+                            array(
+                                "Name" => "aname",
+                                "HTML" => "HTML",
+                                "Type" => "type",
+                            ),
+                        ),
+                    ),
+        );
+        $plugins2 = $plugins;
+        $plugins2["Generic"]["ALL_TYPES"] = array(
+            array(
+                "Name"    => "zName",
+                "Type"    => "ALL_TYPES",
+                "history" => "not relevent",
+            ),
+        );
+        return array(
+            array(
+                "type",
+                array("Generic" => array()),
+                array(),
+            ),
+            array(
+                "type1",
+                $plugins,
+                array(
+                    array(
+                        "Name" => "name",
+                        "HTML" => "HTML",
+                        "Type" => "type1",
+                    ),
+                ),
+            ),
+            array(
+                "type",
+                $plugins,
+                array(
+                    array(
+                        "Name" => "zpluginTestFunction1",
+                        "Type" => "type",
+                        "Title" => "title",
+                    ),
+                    array(
+                        "Name" => "aname",
+                        "HTML" => "HTML",
+                        "Type" => "type",
+                    ),
+                ),
+            ),
+            array(
+                "type1",
+                $plugins2,
+                array(
+                    array(
+                        "Name" => "name",
+                        "HTML" => "HTML",
+                        "Type" => "type1",
+                    ),
+                    array(
+                        "Name"    => "zName",
+                        "Type"    => "ALL_TYPES",
+                        "history" => "not relevent",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $Type    The type to test
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetGeneric
+    */
+    public function testGetGeneric($Type, $preload, $expect)
+    {
+        $preload = (array)$preload;
+        $this->o->plugins = $preload;
+        $stuff = $this->o->getGeneric($Type);
+        $this->assertSame($expect, $stuff);
+    }
+
+
 }
 
-// Call PluginsTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == 'PluginsTest::main') {
-    PluginsTest::main();
+/**
+* data provider for testConstructor
+*
+* @return array
+*/
+function pluginTestFunction1($stuff)
+{
+    return $stuff;
 }
 ?>
