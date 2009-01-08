@@ -175,80 +175,27 @@ class Plugins
     /** @var string Debug output is contained here. */
     var $_debug_stack = "";
 
-    /**
-     * Adds a menu item
-     *
-     * This function adds a menu item.  It is fairly flexible.  If it is sent an
-     * array it will support anything that you give it as long as the menu
-     * system does.  It all depends on how the menus are added into the code.
-     *
-     * @param mixed  $Name If an Array, it should contain at least Name["Name"].
-     *     Other valid items are Name["Link"], Name["Show"], and Name["Help"].
-     *     None of the other paramters are used in this case.  If it is a string,
-     *     it is just the name of the item.  The other paramters must be used to
-     *     set the other items.
-     * @param string $Link The link used for the menu item.  Not used if Name is an
-     *     array.
-     * @param string $Type The type of the menu item.
-     * @param bool   $Show Whether or not to show the menu item.  Not used if Name
-     *     is an array.
-     * @param string $Help The help text to show in a popup.  Not used if Name
-     *     is an array.
-     *
-     * @return null
-     *
-     * @deprecated
-     */
-    function addMenuItem($Name, $Link="", $Type="ALL_TYPES", $Show=1, $Help="")
-    {
-        if (!is_array($Name)) {
-            $this->_debug("\tRegistering Menu Item:".$Name."\t\tLink:".$Link." ", 4);
-            $Name = trim($Name);
-            $Link = trim($Link);
-            if ($Name != "") {
-                $this->plugins["Menu"][$Type][] = array("Name" => $Name,
-                                                        "Link" => $Link,
-                                                        "Show" => $Show,
-                                                        "Help" => $Help);
-            } else {
-                $this->_debug(" Failed.  Name must not be blank", 4);
-            }
-        } else {
-            $this->_debug("\tRegistering Menu Item:  ".$Name["title"], 4);
-            $this->_debug("\t\tType:  ".$Name["type"]." ", 4);
-            if (isset($Name["title"])) {
-                if (!isset($Name["type"])) {
-                    $Name["type"] = "ALL_TYPES";
-                }
-                $this->plugins["Menu"][$Name["type"]][] = $Name;
-                $this->_debug(" Done!", 4);
-            } else {
-                $this->_debug(" Failed: 'Name' is not set in the array", 4);
-            }
-        }
-        $this->_debug("\n", 4);
-    }
 
     /**
-     * Registers a function as a plugin
-     *
-     * @param mixed  $Name  If an Array, it should contain at least Name["Name"]
-     *     which is the name of the function.  The only other semi-required item
-     *     is Name["Types"] which is an array of plugin types to register this
-     *     as.  If it is not included, it will be registered as "ALL_TYPES" which is
-     *     probably not what you want.  None of the other paramters are used in
-     *     this case.  If it is a string, it is just the name of the item.  The
-     *     other paramters must be used to set the other items.
-     * @param string $Type  The type of plugin to register this as.  If ommited
-     *     plugin will be registered as "ALL_TYPES" which is probably not
-     *     what you want.
-     * @param string $Title The title of the plugin.  Anything goes, but it
-     *     should be relatively short.  Optional
-     * @param string $Desc  The description of the plugin.  This is freeform text.
-     *     Optional
-     *
-     * @return null
-     */
+    * Registers a function as a plugin
+    *
+    * @param mixed  $Name  If an Array, it should contain at least Name["Name"]
+    *     which is the name of the function.  The only other semi-required item
+    *     is Name["Types"] which is an array of plugin types to register this
+    *     as.  If it is not included, it will be registered as "ALL_TYPES" which is
+    *     probably not what you want.  None of the other paramters are used in
+    *     this case.  If it is a string, it is just the name of the item.  The
+    *     other paramters must be used to set the other items.
+    * @param string $Type  The type of plugin to register this as.  If ommited
+    *     plugin will be registered as "ALL_TYPES" which is probably not
+    *     what you want.
+    * @param string $Title The title of the plugin.  Anything goes, but it
+    *     should be relatively short.  Optional
+    * @param string $Desc  The description of the plugin.  This is freeform text.
+    *     Optional
+    *
+    * @return null
+    */
     function registerFunction($Name, $Type="", $Title="", $Desc="")
     {
         if (is_array($Name)) {
@@ -265,26 +212,26 @@ class Plugins
     }
 
     /**
-     *  Registers a generic plugin
-     *
-     * This routine was originally made to allow Plugins to insert HTML code in
-     * different place inside my application. It soon evolved into a generic
-     * plugin that could be used for a variety of things.
-     *
-     * @param mixed  $Name If an Array, it should contain at least Name["Name"]
-     *     which is the name of the function.  The only other semi-required item
-     *      is Name["Types"] which is an array of plugin types to register this as.
-     *        If it is not included, it will be registered as "ALL_TYPES" which is
-     *     probably not what you want.  None of the other paramters are used in
-     *     this case.  If it is a string, it is just the name of the item.  The
-     *     other paramters must be used to set the other items.
-     * @param string $HTML The HTML text associated with the plugin.  Optional
-     * @param string $Type The type of plugin to register this as.  If ommited
-     *     plugin will be registered as "ALL_TYPES" which is probably not
-     *     what you want.
-     *
-     * @return null
-     */
+    *  Registers a generic plugin
+    *
+    * This routine was originally made to allow Plugins to insert HTML code in
+    * different place inside my application. It soon evolved into a generic
+    * plugin that could be used for a variety of things.
+    *
+    * @param mixed  $Name If an Array, it should contain at least Name["Name"]
+    *     which is the name of the function.  The only other semi-required item
+    *      is Name["Types"] which is an array of plugin types to register this as.
+    *        If it is not included, it will be registered as "ALL_TYPES" which is
+    *     probably not what you want.  None of the other paramters are used in
+    *     this case.  If it is a string, it is just the name of the item.  The
+    *     other paramters must be used to set the other items.
+    * @param string $HTML The HTML text associated with the plugin.  Optional
+    * @param string $Type The type of plugin to register this as.  If ommited
+    *     plugin will be registered as "ALL_TYPES" which is probably not
+    *     what you want.
+    *
+    * @return null
+    */
     function addGeneric($Name, $HTML="", $Type="")
     {
         if (!is_array($Name)) {
@@ -296,53 +243,26 @@ class Plugins
     }
 
     /**
-     *  Registers information about a plugin
-     *
-     * This routine is to easily add information about the plugin in question.
-     * The following is the suggested array (Change values accordingly):
-     * <code>
-     * $Info["Name"] = "Spam Assassin Plugin";
-     * $Info["Author"] = "Scott Price";
-     * $Info["AuthorEmail"] = "prices@dflytech.com";
-     * $Info["Copyright"] = "2004, 2005 Dragonfly Technologies, Inc";
-     * </code>
-     *
-     * @param array  $Info     Freeform array with information about the plugin.
-     *     "Name" is required by this software, everything else
-     *     is optional.  See description for suggested array.
-     * @param string $Filename The name of the file to attach to the about record.
-     *
-     * @return null
-     */
-    function addAbout($Info, $Filename)
-    {
-        if (is_array($Info)) {
-            $Info["Filename"] = stristr($Filename, $this->webdir);
-            $Info["Type"]     = "about";
-            $this->addGenericRaw($Info);
-        }
-    }
-    /**
-     *  This function is used to run filter plugins.
-     *
-     * This function runs filter plugins.  These are just normal function plugins
-     *     except they take and argument and return a value.  They are registered
-     *     just like any other function.  They are called filters because they
-     *     were created to take in a value, modify it based on the plugin, then
-     *     return it.  It is mostly used for filtering strings based on plugins.  In
-     *     DragonFlyMail filter Plugins are used to add change how the subject in
-     *     the mail_index is printed out.  It is used by the msize plugin to add
-     *     the number of lines and the size of the message after
-     *     the subject.
-     *
-     * Any other parameters sent to this function will be sent to the filter
-     *     in the order they are received.
-     *
-     * @param mixed  $Argument This is the argument to be sent to the filter
-     * @param string $Type     This is the type of Plugins to run.
-     *
-     * @return mixed Modified version of Argument
-     */
+    *  This function is used to run filter plugins.
+    *
+    * This function runs filter plugins.  These are just normal function plugins
+    *     except they take and argument and return a value.  They are registered
+    *     just like any other function.  They are called filters because they
+    *     were created to take in a value, modify it based on the plugin, then
+    *     return it.  It is mostly used for filtering strings based on plugins.  In
+    *     DragonFlyMail filter Plugins are used to add change how the subject in
+    *     the mail_index is printed out.  It is used by the msize plugin to add
+    *     the number of lines and the size of the message after
+    *     the subject.
+    *
+    * Any other parameters sent to this function will be sent to the filter
+    *     in the order they are received.
+    *
+    * @param mixed  $Argument This is the argument to be sent to the filter
+    * @param string $Type     This is the type of Plugins to run.
+    *
+    * @return mixed Modified version of Argument
+    */
     function runFilter($Argument, $Type)
     {
         $return = $Argument;
@@ -378,16 +298,16 @@ class Plugins
     }
 
     /**
-     *  This runs one plugin function.
-     *
-     * This routine is useful if you have a page where you only want to run one
-     * plugin at at time.  It will run the function specified and exit.  This will
-     *  not run filters correctly.  Use runFilter if it is available.
-     *
-     * @param string $Name The name of the function to run
-     *
-     * @return null
-     */
+    *  This runs one plugin function.
+    *
+    * This routine is useful if you have a page where you only want to run one
+    * plugin at at time.  It will run the function specified and exit.  This will
+    *  not run filters correctly.  Use runFilter if it is available.
+    *
+    * @param string $Name The name of the function to run
+    *
+    * @return null
+    */
     function runFunction($Name)
     {
 
@@ -421,15 +341,15 @@ class Plugins
     }
 
     /**
-     * This finds the specified plugin and returns all of the info about it.
-     *
-     * Used for finding information on a specific plugin.  It returns the array fed
-     * to registerFunctionRaw, exactly as it was sent.
-     *
-     * @param string $Name The name of the function to find
-     *
-     * @return null
-     */
+    * This finds the specified plugin and returns all of the info about it.
+    *
+    * Used for finding information on a specific plugin.  It returns the array fed
+    * to registerFunctionRaw, exactly as it was sent.
+    *
+    * @param string $Name The name of the function to find
+    *
+    * @return null
+    */
     function getFunction($Name)
     {
 
@@ -454,15 +374,15 @@ class Plugins
     }
 
     /**
-     * Runs all functions of one type
-     *
-     * This function is the mainstay of running plugins.  It is used to run Plugins
-     * in batches based on their type.
-     *
-     * @param string $Type The type of function to run
-     *
-     * @return int The number of functions run
-     */
+    * Runs all functions of one type
+    *
+    * This function is the mainstay of running plugins.  It is used to run Plugins
+    * in batches based on their type.
+    *
+    * @param string $Type The type of function to run
+    *
+    * @return int The number of functions run
+    */
     function runFunctions($Type)
     {
 
@@ -501,16 +421,16 @@ class Plugins
     }
 
     /**
-     * Gets all of the generic of one type.
-     *
-     * This returns an array of information on all of the generic Plugins of a
-     * certain type, plus all generic Plugins of type "ALL_TYPES".
-     *
-     * @param string $Type The type of generic Plugins to return
-     *
-     * @return array An array of Plugins of whatever type was sent to it, plus
-     *         all Plugins of type "ALL_TYPES".
-     */
+    * Gets all of the generic of one type.
+    *
+    * This returns an array of information on all of the generic Plugins of a
+    * certain type, plus all generic Plugins of type "ALL_TYPES".
+    *
+    * @param string $Type The type of generic Plugins to return
+    *
+    * @return array An array of Plugins of whatever type was sent to it, plus
+    *         all Plugins of type "ALL_TYPES".
+    */
     function getGeneric($Type)
     {
         if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
@@ -526,53 +446,18 @@ class Plugins
         return($return);
     }
 
-    /**
-     * Gets all of the Menu's of one type.
-     *
-     * This returns an array of information on all of the menu Plugins of a certain
-     *     type, plus all menu Plugins of type "ALL_TYPES".  If no parameter
-     *     is given, it returns everything it has for the menu.
-     *
-     * @param string $Type The type of generic Plugins to return
-     *
-     * @return array An array of Plugins of whatever type was sent to it,
-     *     plus all Plugins of type "ALL_TYPES".
-     */
-    function getMenu($Type = false)
-    {
-        $return = array();
-        if ($Type !== false) {
-            if (is_array($this->plugins["Menu"][$Type])
-                && is_array($this->plugins["Menu"]["ALL_TYPES"])) {
-                $return = array_merge($this->plugins["Menu"][$Type],
-                                      $this->plugins["Menu"]["ALL_TYPES"]);
-            } else {
-                $return = $this->plugins["Menu"]["ALL_TYPES"];
-            }
-            $return = $this->sortPlugins($return);
-        } else {
-            $return = $this->plugins["Menu"];
-            foreach ($return as $key => $value) {
-                $return[$key] = $this->sortPlugins($value);
-            }
-        }
-        if (!is_array($return)) {
-            $return = array();
-        }
-        return $return;
-    }
 
     /**
-     * Gets all of the functions of one type.
-     *
-     * This returns all Plugins that would be run if runFunctions was called with
-     * the same type.  It is used to get a list of functions.
-     *
-     * @param string $Type The type of functions to return
-     *
-     * @return array An array of Plugins of whatever type was sent to it, plus all
-     *     Plugins of type "ALL_TYPES".
-     */
+    * Gets all of the functions of one type.
+    *
+    * This returns all Plugins that would be run if runFunctions was called with
+    * the same type.  It is used to get a list of functions.
+    *
+    * @param string $Type The type of functions to return
+    *
+    * @return array An array of Plugins of whatever type was sent to it, plus all
+    *     Plugins of type "ALL_TYPES".
+    */
     function getFunctions($Type)
     {
         if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
@@ -589,14 +474,14 @@ class Plugins
     }
 
     /**
-     * finds the Plugins in this->dir
-     *
-     * calls getPluginDir to actually find the plugins.  This function should be
-     * called if you need to find new Plugins after the constructor is run.  This
-     * function is called by the constructor.
-     *
-     * @return null
-     */
+    * finds the Plugins in this->dir
+    *
+    * calls getPluginDir to actually find the plugins.  This function should be
+    * called if you need to find new Plugins after the constructor is run.  This
+    * function is called by the constructor.
+    *
+    * @return null
+    */
     function findPlugins()
     {
         $count = $this->getPluginDir($this->dir, $this->webdir, 0);
@@ -605,32 +490,32 @@ class Plugins
         //$this->_debug(get_stuff($this->plugins, "plugins"), 5);
     }
     /**
-     *  Sorts the plugin arrays.
-     *
-     * @param array  $plugin_info Plugin information
-     * @param string $key         depreciated.
-     *
-     * @return array Plugin information sorted in a natural order
-     */
+    *  Sorts the plugin arrays.
+    *
+    * @param array  $plugin_info Plugin information
+    * @param string $key         depreciated.
+    *
+    * @return array Plugin information sorted in a natural order
+    */
     function sortPlugins($plugin_info, $key="Name")
     {
          return($plugin_info);
     }
 
     /**
-     * Constructor
-     *
-     * This routine sets this->dir and this->extension then checks for plugins
-     *
-     * @param string $basedir   the directory to look for Plugins in.  Sets this->dir
-     * @param string $extension the file extension to look for.  Sets this->extension
-     * @param string $webdir    the directory that it will be in on the web site.
-     * @param array  $skipDir   Array of Strings Directories to not look into for
-     *                          plugins.
-     * @param int    $verbose   The verbosity level
-     *
-     * @return null
-     */
+    * Constructor
+    *
+    * This routine sets this->dir and this->extension then checks for plugins
+    *
+    * @param string $basedir   the directory to look for Plugins in.  Sets this->dir
+    * @param string $extension the file extension to look for.  Sets this->extension
+    * @param string $webdir    the directory that it will be in on the web site.
+    * @param array  $skipDir   Array of Strings Directories to not look into for
+    *                          plugins.
+    * @param int    $verbose   The verbosity level
+    *
+    * @return null
+    */
     function __construct($basedir="",
                       $extension="",
                       $webdir = "",
@@ -655,20 +540,20 @@ class Plugins
     }
 
     /**
-     *  Reads the plugin directory and builds this->plugins and this->plugin_info
-     *
-     * Combs recursively through whatever directory it is given and looks for
-     * plugins.  It then registers them if it can.
-     *
-     * @param string $basedir   The name of the directory to search.  This is
-     *     here so that when this routine is called recursively it can go
-     *     through different directories in the directory specified by this->dir.
-     * @param string $webdir    The directory that it will be in on the web site.
-     * @param int    $Level     Depreciated
-     * @param bool   $recursive Whether to be recursive or not
-     *
-     * @return null
-     */
+    *  Reads the plugin directory and builds this->plugins and this->plugin_info
+    *
+    * Combs recursively through whatever directory it is given and looks for
+    * plugins.  It then registers them if it can.
+    *
+    * @param string $basedir   The name of the directory to search.  This is
+    *     here so that when this routine is called recursively it can go
+    *     through different directories in the directory specified by this->dir.
+    * @param string $webdir    The directory that it will be in on the web site.
+    * @param int    $Level     Depreciated
+    * @param bool   $recursive Whether to be recursive or not
+    *
+    * @return null
+    */
     function getPluginDir($basedir = ".",
                           $webdir = "plugins/",
                           $Level = 0,
@@ -723,17 +608,17 @@ class Plugins
     }
 
     /**
-     *  Deals with the plugin files.
-     *
-     * Includes files and registers any Plugins it finds in those files.
-     *
-     * @param string $file    The full or relative path to the file to be included.
-     * @param string $filedir The filesystem directory where the files are located.
-     * @param string $webdir  The web directory where they are located (the path
-     *     relative to DOCUMENT_ROOT)
-     *
-     * @return null
-     */
+    *  Deals with the plugin files.
+    *
+    * Includes files and registers any Plugins it finds in those files.
+    *
+    * @param string $file    The full or relative path to the file to be included.
+    * @param string $filedir The filesystem directory where the files are located.
+    * @param string $webdir  The web directory where they are located (the path
+    *     relative to DOCUMENT_ROOT)
+    *
+    * @return null
+    */
     function includeFile($file, $filedir = "", $webdir="")
     {
         global $debug;
@@ -782,18 +667,18 @@ class Plugins
 
 
     /**
-     * Function to register plugin functions.
-     *
-     * This function sets up the array containing function names and descriptions.
-     *   It should not be called directly.
-     *
-     * @param array $info This must at least contain info["Name"] which must be
-     *     the name of a valid function, or the plugin won't be registered.
-     *     Anything else is stored with the name of the function in case it
-     *     should ever be needed.
-     *
-     * @return null
-     */
+    * Function to register plugin functions.
+    *
+    * This function sets up the array containing function names and descriptions.
+    *   It should not be called directly.
+    *
+    * @param array $info This must at least contain info["Name"] which must be
+    *     the name of a valid function, or the plugin won't be registered.
+    *     Anything else is stored with the name of the function in case it
+    *     should ever be needed.
+    *
+    * @return null
+    */
     function registerFunctionRaw($info)
     {
          $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
@@ -832,16 +717,16 @@ class Plugins
 
 
     /**
-     * Adds a generic plugin to the list of valid plugins.
-     *
-     * Copys the info parameter into its array of generic plugins.
-     *
-     * @param array $info this is all of the information about the plugin.  Only
-     *     info["Name"] is required.  Everything else is application dependent.
-     *     These Plugins allow for doing almost anything.
-     *
-     * @return null
-     */
+    * Adds a generic plugin to the list of valid plugins.
+    *
+    * Copys the info parameter into its array of generic plugins.
+    *
+    * @param array $info this is all of the information about the plugin.  Only
+    *     info["Name"] is required.  Everything else is application dependent.
+    *     These Plugins allow for doing almost anything.
+    *
+    * @return null
+    */
     function addGenericRaw($info)
     {
 
@@ -865,31 +750,31 @@ class Plugins
 
 
     /**
-     *  Used to compare Plugins for sorting.
-     *
-     * This function compares the names of the Plugins and returns the output
-     * needed by usort.  It should only be used for this purpose.
-     *
-     * @param array $a The first argument for the compare
-     * @param array $b The second argument for the compare
-     *
-     * @return null
-     */
+    *  Used to compare Plugins for sorting.
+    *
+    * This function compares the names of the Plugins and returns the output
+    * needed by usort.  It should only be used for this purpose.
+    *
+    * @param array $a The first argument for the compare
+    * @param array $b The second argument for the compare
+    *
+    * @return null
+    */
     public function comparePlugins($a, $b)
     {
-        return(strnatcasecmp($a["Name"], $b["Name"]));
+        return strnatcasecmp($a["Name"], $b["Name"]);
     }
 
 
 
     /**
-     *  Saves debug information.
-     *
-     * @param string $text  Text to add to the stack
-     * @param int    $level 0-5 How much to log to the stack.
-     *
-     * @return null
-     */
+    *  Saves debug information.
+    *
+    * @param string $text  Text to add to the stack
+    * @param int    $level 0-5 How much to log to the stack.
+    *
+    * @return null
+    */
     private function _debug($text, $level = 1)
     {
         $level = (int) $level;
@@ -899,10 +784,10 @@ class Plugins
     }
 
     /**
-     * Returns the debug stack.
-     *
-     * @return string The debug stack.
-     */
+    * Returns the debug stack.
+    *
+    * @return string The debug stack.
+    */
     public function getDebug()
     {
         return $this->_debug_stack;
