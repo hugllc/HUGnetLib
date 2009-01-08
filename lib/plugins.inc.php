@@ -7,7 +7,7 @@
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
+ * Copyright (C) 2002-2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@
  * @subpackage Lib
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2002-2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -148,7 +148,7 @@ print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>
  * @subpackage Lib
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2002-2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -267,34 +267,26 @@ class Plugins
     {
         $return = $Argument;
         $this->_debug("Running Plugin Filters of Type: ".$Type."\n", 4);
-        if (is_array($this->plugins["Functions"][$Type])) {
-            foreach ($this->plugins["Functions"][$Type] as $fct) {
-                $function = $fct["Name"];
-                $this->_debug("Running Plugin ".$function."\n", 4);
-                if (function_exists($function)) {
-                    $command = "\$output = $function(";
-                    if ($fct["INFO"] === true) {
-                        $command .= "false";
-                    }
-                    $command .= "\$return";
-                    $args     = func_get_args();
-                    for ($i = 2; $i < func_num_args(); $i++) {
-                        $command .= ", \$args[".$i."]";
-                    }
-                    $command .= ");";
-                    $this->_debug("Running command:\n".$command."\n", 4);
-                    $this->_debug("[PLUGIN OUTPUT]\n", 4);
-                    eval($command);
-                    //$output = $function($return);
-                    if (trim($output) != "") {
-                        $return = $output;
-                    }
-                    $this->_debug($output, 4);
-                    $this->_debug("[END PLUGIN OUTPUT]\n", 4);
-                }
+        if (!is_array($this->plugins["Functions"][$Type])) {
+            return $Argument;
+        }
+        $fArgs = func_get_args();
+        array_shift($fArgs); // Shift off the argument
+        array_shift($fArgs); // Shift off the name of the function
+        foreach ($this->plugins["Functions"][$Type] as $fct) {
+            $this->_debug("Running Plugin ".$fct["Name"]."\n", 4);
+            if (function_exists($fct["Name"])) {
+                $args = $fArgs;
+                array_unshift($args, $return);
+                $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
+                $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
+                $this->_debug("[PLUGIN OUTPUT]\n", 4);
+                $return = call_user_func_array($fct["Name"], $args);
+                $this->_debug($output, 4);
+                $this->_debug("[END PLUGIN OUTPUT]\n", 4);
             }
         }
-        return($return);
+        return $return;
     }
 
     /**
@@ -312,32 +304,22 @@ class Plugins
     {
 
         $fct = $this->getFunction($Name);
-        if ($fct === false) {
+        if (($fct === false) || !function_exists($fct["Name"])) {
             $this->_debug("Function ".$Name." Not Found!\n", 4);
-            return;
+            return false;
         }
-        $this->_debug("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 4);
-        $function = $fct["Name"];
-        if (function_exists($function)) {
-                $command = "\$output = ".$function."(";
-            if ($fct["INFO"] === true) {
-                $command .= "false";
-            }
-            $args = func_get_args();
-            for ($i = 1; $i < func_num_args(); $i++) {
-                $command .= ", \$args[".$i."]";
-            }
-            $command .= ");";
-            $this->_debug("Running command:\n".$command."\n", 4);
-            $this->_debug("[PLUGIN OUTPUT]\n", 4);
-            eval($command);
-            //$output = $function($return);
-            if (trim($output) != "") {
-                $return = $output;
-            }
-            $this->_debug($output, 4);
-            $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+        $this->_debug("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 3);
+        $args = func_get_args();
+        array_shift($args); // Shift off the name of the function
+        $this->_debug("Running command:\n".$command."\n", 4);
+        $this->_debug("[PLUGIN OUTPUT]\n", 4);
+        $output = call_user_func_array($fct["Name"], $args);
+        if (trim($output) != "") {
+            $return = $output;
         }
+        $this->_debug($output, 4);
+        $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+        return true;
     }
 
     /**
@@ -353,24 +335,20 @@ class Plugins
     function getFunction($Name)
     {
 
-        $return = false;
-        if (is_array($this->plugins["Functions"])) {
-            foreach ($this->plugins["Functions"] as $Type) {
-                if (is_array($Type)) {
-                    foreach ($Type as $fct) {
-                        if ($fct["Name"] == $Name) {
-                            $return         = $fct;
-                            $return["Type"] = $Type;
-                            break;
-                        }
-                    }
-                }
-                if ($return !== false) {
-                    break;
+        if (!is_array($this->plugins["Functions"])) {
+            return false;
+        }
+        foreach ($this->plugins["Functions"] as $Type) {
+            if (!is_array($Type)) {
+                continue;
+            }
+            foreach ($Type as $fct) {
+                if ($fct["Name"] == $Name) {
+                    return $fct;
                 }
             }
         }
-        return $return;
+        return false;
     }
 
     /**
@@ -388,36 +366,24 @@ class Plugins
 
         $count = 0;
         $this->_debug("Running Plugins of Type: ".$Type."\n", 4);
-        if (is_array($this->plugins["Functions"][$Type])) {
-            foreach ($this->getFunctions($Type) as $fct) {
-                $function = $fct["Name"];
-                $this->_debug("Running Plugin ".$function."\n", 4);
-                if (function_exists($function)) {
-                    $command = "\$output = $function(";
-                    if ($fct["INFO"] === true) {
-                        $command .= "false";
-                    }
-                    $args = func_get_args();
-                    $sep  = "";
-                    for ($i = 1; $i < func_num_args(); $i++) {
-                        $command .= $sep." \$args[".$i."]";
-                        $sep      = ",";
-                    }
-                    $command .= ");";
-                    $this->_debug("Running command:\n".$command."\n", 4);
-                    $this->_debug("[PLUGIN OUTPUT]\n", 4);
-                    eval($command);
-                    //$output = $function($return);
-                    if (trim($output) != "") {
-                        $return = $output;
-                    }
-                    $this->_debug($output, 4);
-                    $this->_debug("[END PLUGIN OUTPUT]\n", 4);
-                    $count++;
-                }
+        if (!is_array($this->plugins["Functions"][$Type])) {
+            return 0;
+        }
+        $fArgs = func_get_args();
+        array_shift($fArgs); // Shift off the name of the function
+        foreach ($this->getFunctions($Type) as $fct) {
+            if (function_exists($fct["Name"])) {
+                $args = $fArgs;
+                $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
+                $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
+                $this->_debug("[PLUGIN OUTPUT]\n", 4);
+                $output = call_user_func_array($fct["Name"], $args);
+                $this->_debug($output, 4);
+                $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+                $count++;
             }
         }
-        return($count);
+        return $count;
     }
 
     /**
@@ -433,17 +399,7 @@ class Plugins
     */
     function getGeneric($Type)
     {
-        if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
-            $return = array_merge($this->plugins["Generic"][$Type],
-                                  $this->plugins["Generic"]["ALL_TYPES"]);
-        } else {
-            $return = $this->plugins["Generic"][$Type];
-        }
-        if (!is_array($return)) {
-            $return = array();
-        }
-        $return = $this->sortPlugins($return);
-        return($return);
+        return $this->_getRaw($Type, "Generic");
     }
 
 
@@ -460,11 +416,27 @@ class Plugins
     */
     function getFunctions($Type)
     {
-        if (is_array($this->plugins["Generic"]["ALL_TYPES"])) {
-            $return = array_merge($this->plugins["Functions"][$Type],
-                                  $this->plugins["Functions"]["ALL_TYPES"]);
+        return $this->_getRaw($Type, "Functions");
+    }
+
+    /**
+    * Gets all of the plugins of one type.
+    *
+    * This returns all Plugins of plugin type $pType of type $Type
+    *
+    * @param string $Type  The type of functions to return
+    * @param string $pType The type of plugin to get
+    *
+    * @return array An array of Plugins of whatever type was sent to it, plus all
+    *     Plugins of type "ALL_TYPES".
+    */
+    private function _getRaw($Type, $pType)
+    {
+        if (is_array($this->plugins[$pType]["ALL_TYPES"])) {
+            $return = array_merge($this->plugins[$pType][$Type],
+                                  $this->plugins[$pType]["ALL_TYPES"]);
         } else {
-            $return = $this->plugins["Functions"][$Type];
+            $return = $this->plugins[$pType][$Type];
         }
         if (!is_array($return)) {
             $return = array();
@@ -516,11 +488,11 @@ class Plugins
     *
     * @return null
     */
-    function __construct($basedir="",
-                      $extension="",
-                      $webdir = "",
-                      $skipDir=array(),
-                      $verbose=0)
+    function __construct($basedir   = "",
+                         $extension = "",
+                         $webdir    = "",
+                         $skipDir   = array(),
+                         $verbose   = 0)
     {
         $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
         if (trim($basedir) != "") {
@@ -554,9 +526,9 @@ class Plugins
     *
     * @return null
     */
-    function getPluginDir($basedir = ".",
-                          $webdir = "plugins/",
-                          $Level = 0,
+    function getPluginDir($basedir   = ".",
+                          $webdir    = "plugins/",
+                          $Level     = 0,
                           $recursive = true)
     {
         $this->_debug("Checking for Plugins in ".$basedir."\n", 4);
@@ -619,7 +591,7 @@ class Plugins
     *
     * @return null
     */
-    function includeFile($file, $filedir = "", $webdir="")
+    function includeFile($file, $filedir = "", $webdir = "")
     {
         global $debug;
         $plugin_info = false;
@@ -633,33 +605,6 @@ class Plugins
             return;
         }
         $this->file_count++;
-        $info = null;
-        if (is_array($plugin_info)) {
-            $info = $plugin_info;
-
-            $this->plugin_info[$file] = $info;
-
-            if (is_array($info["Functions"])) {
-                foreach ($info["Functions"] as $fct) {
-                    if (is_array($fct) && !empty($fct["Name"])) {
-                        if (function_exists($fct["Name"])) {
-                            $this->registerFunctionRaw($fct);
-                        }
-                    } else {
-                        if (function_exists($fct)) {
-                            $fctinfo         = $fct(true);
-                            $fctinfo["INFO"] = true;
-                            $this->registerFunctionRaw($fctinfo);
-                        }
-                    }
-                }
-            }
-            if (is_array($info["Generics"])) {
-                foreach ($info["Generics"] as $gen) {
-                    $this->registerFunctionRaw($gen);
-                }
-            }
-        }
 
     }
 
@@ -681,8 +626,8 @@ class Plugins
     */
     function registerFunctionRaw($info)
     {
-         $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
-         $this->_debug("\t\tType:  ".$info["Types"]."\t\t", 4);
+        $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
+        $this->_debug("\t\tType:  ".$info["Types"]."\t\t", 4);
         if (is_array($info)) {
             if (trim($info["Name"]) != "") {
                 if (function_exists($info["Name"])) {

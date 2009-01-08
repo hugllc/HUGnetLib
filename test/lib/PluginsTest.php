@@ -24,7 +24,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Base
+ * @category   Plugins
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
@@ -310,7 +310,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->plugins);
     }
 
-     /**
+    /**
     * data provider for testConstructor
     *
     * @return array
@@ -320,29 +320,31 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     public static function dataGetGeneric()
     {
         $plugins = array(
-                    "Generic" => array(
-                        "type1" => array(
-                            array(
-                                "Name" => "name",
-                                "HTML" => "HTML",
-                                "Type" => "type1",
-                            ),
-                        ),
-                        "type" => array(
-                            array(
-                                "Name"  => "zpluginTestFunction1",
-                                "Type"  => "type",
-                                "Title" => "title",
-                            ),
-                            array(
-                                "Name" => "aname",
-                                "HTML" => "HTML",
-                                "Type" => "type",
-                            ),
-                        ),
+            "Generic" => array(
+                "type1" => array(
+                    array(
+                        "Name" => "name",
+                        "HTML" => "HTML",
+                        "Type" => "type1",
                     ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zpluginTestFunction1",
+                        "Type"  => "type",
+                        "Title" => "title",
+                    ),
+                    array(
+                        "Name" => "aname",
+                        "HTML" => "HTML",
+                        "Type" => "type",
+                    ),
+                ),
+            ),
         );
+
         $plugins2 = $plugins;
+
         $plugins2["Generic"]["ALL_TYPES"] = array(
             array(
                 "Name"    => "zName",
@@ -350,6 +352,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 "history" => "not relevent",
             ),
         );
+
         return array(
             array(
                 "type",
@@ -414,22 +417,643 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testGetGeneric($Type, $preload, $expect)
     {
-        $preload = (array)$preload;
+        $preload          = (array)$preload;
         $this->o->plugins = $preload;
-        $stuff = $this->o->getGeneric($Type);
+        $stuff            = $this->o->getGeneric($Type);
+        $this->assertSame($expect, $stuff);
+    }
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataGetFunction()
+    {
+        $plugins = array(
+            "Functions" => array(
+                "type1" => array(
+                    array(
+                        "Name" => "aName",
+                        "Types" => "type1",
+                        "Title" => "title2",
+                        "Description" => "description",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name" => "qName",
+                        "Type" => "type",
+                        "Title" => "title4",
+                        "Description" => "description3",
+                    ),
+                ),
+            ),
+        );
+        return array(
+            array(
+                "asdf",
+                array("Functions" => array()),
+                false,
+            ),
+            array(
+                "asdf",
+                array(),
+                false,
+            ),
+            array(
+                "asdf",
+                array("Functions" => array("type" => 1.0)),
+                false,
+            ),
+            array(
+                "zName",
+                $plugins,
+                array(
+                    "Name"  => "zName",
+                    "Type"  => "type",
+                    "Title" => "title",
+                    "Title" => "title3",
+                    "Description" => "description2",
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $Name    The name to test
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetFunction
+    */
+    public function testGetFunction($Name, $preload, $expect)
+    {
+        $preload          = (array)$preload;
+        $this->o->plugins = $preload;
+        $stuff            = $this->o->getFunction($Name);
         $this->assertSame($expect, $stuff);
     }
 
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataGetFunctions()
+    {
+        $plugins = array(
+            "Functions" => array(
+                "type1" => array(
+                    array(
+                        "Name" => "aName",
+                        "Types" => "type1",
+                        "Title" => "title2",
+                        "Description" => "description",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name" => "qName",
+                        "Type" => "type",
+                        "Title" => "title4",
+                        "Description" => "description3",
+                    ),
+                ),
+            ),
+        );
+        return array(
+            array(
+                "asdf",
+                array("Functions" => array()),
+                array(),
+            ),
+            array(
+                "asdf",
+                array(),
+                array(),
+            ),
+            array(
+                "asdf",
+                array("Functions" => array("type" => 1.0)),
+                array(),
+            ),
+            array(
+                "type",
+                $plugins,
+                array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name" => "qName",
+                        "Type" => "type",
+                        "Title" => "title4",
+                        "Description" => "description3",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $Type    The type to test
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetFunctions
+    */
+    public function testGetFunctions($Type, $preload, $expect)
+    {
+        $preload          = (array)$preload;
+        $this->o->plugins = $preload;
+        $stuff            = $this->o->getFunctions($Type);
+        $this->assertSame($expect, $stuff);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataRunFunction()
+    {
+        $plugins = array(
+            "Functions" => array(
+                "type1" => array(
+                    array(
+                        "Name"        => "pluginTestFunction1",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name"        => "pluginTestFunction2",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                        "INFO"        => true,
+                    ),
+                ),
+            ),
+        );
+        return array(
+            array(
+                "asdf",
+                array(),
+                array("Functions" => array()),
+                null,
+            ),
+            array(
+                "zName",
+                $plugins,
+                array(),
+                null,
+            ),
+            array(
+                "asdf",
+                array(),
+                array("Functions" => array("type" => 1.0)),
+                null,
+            ),
+            array(
+                "pluginTestFunction1",
+                array(1,2,3,4),
+                $plugins,
+                array(1,2,3,4),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $name    The name of the function to call
+    * @param array  $args    The argument array.
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataRunFunction
+    */
+    public function testRunFunction($name, $args, $preload, $expect)
+    {
+        unset($_SESSION["pluginTestFunction"]);
+        $preload          = (array)$preload;
+        $args             = (array)$args;
+        $this->o->plugins = $preload;
+        $function         = array($this->o, "runFunction");
+        array_unshift($args, $name);  // Put the name as the first element
+        call_user_func_array($function, $args);
+        $this->assertSame($expect, $_SESSION["pluginTestFunction"][$name]);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataRunFunctions()
+    {
+        $plugins = array(
+            "Functions" => array(
+                "type1" => array(
+                    array(
+                        "Name"        => "pluginTestFunction1",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                    ),
+                    array(
+                        "Name"        => "pluginTestFunction2",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name"        => "pluginTestFunction2",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                        "INFO"        => true,
+                    ),
+                ),
+            ),
+        );
+        return array(
+            array(
+                "asdf",
+                array(),
+                array("Functions" => array()),
+                null,
+            ),
+            array(
+                "zName",
+                $plugins,
+                array(),
+                null,
+            ),
+            array(
+                "asdf",
+                array(),
+                array("Functions" => array("type" => 1.0)),
+                null,
+            ),
+            array(
+                "type1",
+                array(1,2,3,4),
+                $plugins,
+                array(
+                    "pluginTestFunction1" => array(1,2,3,4),
+                    "pluginTestFunction2" => array(4,3,2,1),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $type    The type of the functions to call
+    * @param array  $args    The argument array.
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataRunFunctions
+    */
+    public function testRunFunctions($type, $args, $preload, $expect)
+    {
+        unset($_SESSION["pluginTestFunction"]); // Clear previous runs
+        $preload          = (array)$preload;
+        $args             = (array)$args;
+        $this->o->plugins = $preload;
+        $function         = array($this->o, "runFunctions");
+        array_unshift($args, $type);  // Put the name as the first element
+        call_user_func_array($function, $args);
+        $this->assertEquals($expect, $_SESSION["pluginTestFunction"]);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataRunFilter()
+    {
+        $plugins = array(
+            "Functions" => array(
+                "type1" => array(
+                    array(
+                        "Name"        => "pluginTestFilter1",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                    ),
+                    array(
+                        "Name"        => "pluginTestFilter2",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zName",
+                        "Type"  => "type",
+                        "Title" => "title",
+                        "Title" => "title3",
+                        "Description" => "description2",
+                    ),
+                    array(
+                        "Name"        => "pluginTestFilter2",
+                        "Types"       => "type1",
+                        "Title"       => "title2",
+                        "Description" => "description",
+                        "INFO"        => true,
+                    ),
+                ),
+            ),
+        );
+        return array(
+            array(
+                array(),
+                "asdf",
+                array(),
+                array("Functions" => array()),
+                null,
+            ),
+            array(
+                array(),
+                "zName",
+                $plugins,
+                array(),
+                null,
+            ),
+            array(
+                array(),
+                "asdf",
+                array(),
+                array("Functions" => array("type" => 1.0)),
+                null,
+            ),
+            array(
+                "Hello",
+                "type1",
+                array(1,2,3,4),
+                $plugins,
+                array(
+                    "pluginTestFilter1" => array("Hello",1,2,3,4,"arg" => "Hello"),
+                    "pluginTestFilter2" => array(4,3,2,1, "Hello", "arg" => "Hello"),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $argument The argument to filter
+    * @param string $type     The type of the functions to call
+    * @param array  $args     The argument array.
+    * @param array  $preload  The array to preload into $o->plugins
+    * @param array  $expect   The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataRunFilter
+    */
+    public function testRunFilter($argument, $type, $args, $preload, $expect)
+    {
+        unset($_SESSION["pluginTestFilter"]); // Clear previous runs
+        $preload          = (array)$preload;
+        $args             = (array)$args;
+        $this->o->plugins = $preload;
+        $function         = array($this->o, "runFilter");
+        array_unshift($args, $type);  // Put the name as the first element
+        array_unshift($args, $argument);  // Put the name as the first element
+        call_user_func_array($function, $args);
+        $this->assertEquals($expect, $_SESSION["pluginTestFilter"]);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataComparePlugins()
+    {
+        return array(
+            array(
+                array("Name" => "a"),
+                array("Name" => "b"),
+                -1,
+            ),
+            array(
+                array("Name" => "b"),
+                array("Name" => "a"),
+                1,
+            ),
+            array(
+                array("Name" => "a"),
+                array("Name" => "a"),
+                0,
+            ),
+            array(
+                array(),
+                array(),
+                0,
+            ),
+            array(
+                null,
+                null,
+                0,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed $a      The first name
+    * @param array $b      The second name
+    * @param array $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataComparePlugins
+    */
+    public function testComparePlugins($a, $b, $expect)
+    {
+        $ret = $this->o->comparePlugins($a, $b);
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataGetPluginDir()
+    {
+        return array(
+            array(
+                dirname(__FILE__)."/plugins/",
+                "inc.php",
+                "plugins/",
+                array(
+                    "Functions" => array(
+                        "filter" => array(
+                            array(
+                                "Name"        => "pluginTestPlugin2",
+                                "Types"       => "filter",
+                                "Title"       => "clean",
+                                "Description" => "cleaner",
+                            ),
+                            array(
+                                "Name"        => "pluginTestPlugin1",
+                                "Types"       => "filter",
+                                "Title"       => "messy",
+                                "Description" => "messier",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $basedir   The base directory to scan plugins in
+    * @param array  $extension The file extension
+    * @param string $webdir    The base directory on the web
+    * @param array  $expect    The expected plugin array
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPluginDir()
+    */
+    public function testGetPluginDir($basedir,
+                                     $extension,
+                                     $webdir,
+                                     $expect)
+    {
+        $this->o->extension = $extension;
+        $this->o->getPluginDir($basedir, $webdir);
+        $this->assertEquals($expect, $this->o->plugins);
+    }
 
 }
 
 /**
 * data provider for testConstructor
 *
-* @return array
+* @return mixed Returns $stuff.
 */
-function pluginTestFunction1($stuff)
+function pluginTestFunction1()
 {
-    return $stuff;
+    $_SESSION["pluginTestFunction"]["pluginTestFunction1"] = func_get_args();
+    return func_get_args();
 }
+/**
+* data provider for testConstructor
+*
+* @return mixed Returns $stuff.
+*/
+function pluginTestFunction2()
+{
+    $args = func_get_args();
+    if (is_array($args)) {
+        $args = array_reverse($args);
+    }
+    $_SESSION["pluginTestFunction"]["pluginTestFunction2"] = $args;
+    return func_get_args();
+}
+
+/**
+* data provider for testConstructor
+*
+* @param mixed $argument The argument to filter
+*
+* @return mixed Returns $stuff.
+*/
+function pluginTestFilter1($argument)
+{
+    $_SESSION["pluginTestFilter"]["pluginTestFilter1"]        = func_get_args();
+    $_SESSION["pluginTestFilter"]["pluginTestFilter1"]["arg"] = $argument;
+    return $argument;
+}
+/**
+* data provider for testConstructor
+*
+* @param mixed $argument The argument to filter
+*
+* @return mixed Returns $stuff.
+*/
+function pluginTestFilter2($argument)
+{
+    $args = func_get_args();
+    if (is_array($args)) {
+        $args = array_reverse($args);
+    }
+    $_SESSION["pluginTestFilter"]["pluginTestFilter2"]        = $args;
+    $_SESSION["pluginTestFilter"]["pluginTestFilter2"]["arg"] = $argument;
+
+    return $argument;
+}
+
 ?>
