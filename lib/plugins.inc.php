@@ -597,7 +597,15 @@ class Plugins
         $plugin_info = false;
         $this->_debug("Checking File:  ".$file."\n", 4);
         // These files might need to be included more than once, so we use include
-        $freturn = include $filedir.$file;
+        try {
+            $freturn = include $filedir.$file;
+        } catch (ErrorException $e) {
+            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+            $freturn = false;
+        } catch (Exception $e) {
+            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+            $freturn = false;
+        }
         if (!$freturn) {
             $this->_debug($freturn, 4);
             $this->_debug("\tErrors encountered parsing file.");
