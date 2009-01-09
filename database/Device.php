@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
@@ -59,19 +59,24 @@ class Device extends HUGnetDB
 
     /** The table the analysis output is stored in */
     var $analysis_table = "analysis";
-    /** How many times the poll interval has to pass before we show an error on it      */
-    var $PollWarningIntervals = 2;        
+    /** How many times the poll interval has to pass before we show an error on it */
+    var $PollWarningIntervals = 2;
     /**
      * Gets all rows from the database
      *
-     * @param string $where Where clause
-     * @param array  $data  Data for query
-     * @param int    $limit The maximum number of rows to return (0 to return all)
-     * @param int    $start The row offset to start returning records at
+     * @param string $where   Where clause
+     * @param array  $data    Data for query
+     * @param int    $limit   The maximum number of rows to return (0 to return all)
+     * @param int    $start   The row offset to start returning records at
+     * @param string $orderby The order by clause.  Must include "ORDER BY"
      *
      * @return array
      */
-    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby="") 
+    public function getWhere($where,
+                             $data    = array(),
+                             $limit   = 0,
+                             $start   = 0,
+                             $orderby = "")
     {
         $data = parent::getWhere($where, $data, $limit, $start, $orderby);
         foreach ($data as $key => $val) {
@@ -89,36 +94,36 @@ class Device extends HUGnetDB
      * @param int    $active     If only active endpoints should be selected
      *
      * @return mixed
-     */    
-    function selectDevice($name=null, $selected=null, $GatewayKey=null, $active=1) 
+     */
+    function selectDevice($name=null, $selected=null, $GatewayKey=null, $active=1)
     {
         $data  = array();
         $query = "SELECT DeviceKey, DeviceID, DeviceName FROM devices WHERE";
         if (empty($GatewayKey)) {
             $data[] = 0;
-            $query .= " GatewayKey <> ?";            
+            $query .= " GatewayKey <> ?";
         } else {
             $data[] = $GatewayKey;
-            $query .= " GatewayKey = ? ";            
+            $query .= " GatewayKey = ? ";
         }
-        $active = (int) $active;      
+        $active = (int) $active;
         if (!empty($active)) {
             $data[] = 1;
             $query .= "AND active = ? ";
-        }         
+        }
         $query .= " ORDER BY DeviceName";
-        $rows = $this->query($query, $data, true);
-        $ret = array();
+        $rows   = $this->query($query, $data, true);
+        $ret    = array();
         foreach ($rows as $row) {
             $ret[$row["DeviceKey"]] = $row["DeviceID"]." ".$row["DeviceName"];
         }
         return $ret;
-    }    
-    
+    }
+
     /**
-     * Gets the database record of a devices.  It can be fed the DeviceID, DeviceName,
-     * or DeviceKey, depending on the type paramater.  This also gets gateway information
-     * as well as calibration information on the device.
+     * Gets the database record of a devices.  It can be fed the DeviceID,
+     * DeviceName, or DeviceKey, depending on the type paramater.  This also
+     * gets gateway information as well as calibration information on the device.
      *
      * @param mixed $id   This is either the DeviceID, DeviceName or DeviceKey
      * @param int   $type The type of the 'id' parameter.  It is "ID" for DeviceID,
@@ -126,16 +131,17 @@ class Device extends HUGnetDB
      *
      * @return array
      */
-    function getDevice($id, $type="KEY") 
+    function getDevice($id, $type="KEY")
     {
-        if (empty($id)) return array();
-
+        if (empty($id)) {
+            return array();
+        }
         switch (trim(strtoupper($type))) {
         case "ID":
-            $field = "DeviceID";            
+            $field = "DeviceID";
             break;
         case "NAME":
-            $field = "DeviceName";            
+            $field = "DeviceName";
             break;
         case "KEY":
         default:
@@ -144,7 +150,7 @@ class Device extends HUGnetDB
         }
         $devInfo = $this->getWhere($field." = ? ", array($id));
         if (is_array($devInfo)) {
-            $devInfo = $devInfo[0];
+            $devInfo           = $devInfo[0];
             $devInfo["params"] = $this->decodeParams($devInfo["params"]);
         }
         return $devInfo;
@@ -153,35 +159,54 @@ class Device extends HUGnetDB
     /**
      * Runs a function using the correct driver for the endpoint
      *
-     * @param array $DevInfo Array of information about the device 
+     * @param array $DevInfo Array of information about the device
      *                    with the data from the incoming packet
-     * @param bool  $force   Force the update even if the serial number 
+     * @param bool  $force   Force the update even if the serial number
      *                    and hardware part number don't match
      *
      * @return mixed
      */
     function updateDevice($DevInfo, $force=false)
     {
-        if (!is_array($DevInfo)) return false;
-        if (empty($DevInfo["DeviceID"])) return false;
-        if (empty($DevInfo["HWPartNum"])) return false;
-        if (empty($DevInfo["SerialNum"])) return false;
+        if (!is_array($DevInfo)) {
+            return false;
+        }
+        if (empty($DevInfo["DeviceID"])) {
+            return false;
+        }
+        if (empty($DevInfo["HWPartNum"])) {
+            return false;
+        }
+        if (empty($DevInfo["SerialNum"])) {
+            return false;
+        }
         $DeviceID = devInfo::sn2DeviceID($DevInfo["SerialNum"]);
-        if (strtoupper($DevInfo["DeviceID"]) != $DeviceID) return false;
-
-        unset($DevInfo['params']);        
+        if (strtoupper($DevInfo["DeviceID"]) != $DeviceID) {
+            return false;
+        }
+        unset($DevInfo['params']);
         $res = $this->getDevice($DevInfo["DeviceID"], 'ID');
 
         if (empty($res["DeviceKey"])) {
-            if (empty($DevInfo["FWPartNum"])) return false;
+            if (empty($DevInfo["FWPartNum"])) {
+                return false;
+            }
             unset($DevInfo['DeviceKey']);
             return $this->add($DevInfo);
         }
 
-        if (empty($DevInfo['LastConfig'])) return false;
-        if ($res["HWPartNum"] != $DevInfo["HWPartNum"]) return false;
-        if (strtotime($res["LastConfig"]) > strtotime($DevInfo["LastConfig"])) return false;
-        if (empty($DevInfo['SerialNum'])) unset($DevInfo['SerialNum']);
+        if (empty($DevInfo['LastConfig'])) {
+            return false;
+        }
+        if ($res["HWPartNum"] != $DevInfo["HWPartNum"]) {
+            return false;
+        }
+        if (strtotime($res["LastConfig"]) > strtotime($DevInfo["LastConfig"])) {
+            return false;
+        }
+        if (empty($DevInfo['SerialNum'])) {
+            unset($DevInfo['SerialNum']);
+        }
         $DevInfo["DeviceKey"] = $res["DeviceKey"];
         return $this->update($DevInfo);
     }
@@ -193,18 +218,20 @@ class Device extends HUGnetDB
      *
      * @param array $info The row in array form.
      *
-     * @return mixed 
+     * @return mixed
      */
-    public function update($info) 
-    {   
-        if (array_key_exists("params", $info)) self::encodeParams($info["params"]);
+    public function update($info)
+    {
+        if (array_key_exists("params", $info)) {
+            self::encodeParams($info["params"]);
+        }
         return parent::update($info);
     }
     /**
      * Adds an row to the database
      *
      * @param array $info    The row in array form
-     * @param bool  $replace If true it replaces the "INSERT" 
+     * @param bool  $replace If true it replaces the "INSERT"
      *                       keyword with "REPLACE".  Not all
      *                       databases support "REPLACE".
      *
@@ -212,14 +239,16 @@ class Device extends HUGnetDB
      */
     public function add($info, $replace = false)
     {
-        if (array_key_exists("params", $info)) self::encodeParams($info["params"]);
+        if (array_key_exists("params", $info)) {
+            self::encodeParams($info["params"]);
+        }
         return parent::add($info, $replace);
     }
     /**
      * Adds an row to the database
      *
      * @param array $info    The row in array form
-     * @param bool  $replace If true it replaces the "INSERT" 
+     * @param bool  $replace If true it replaces the "INSERT"
      *                       keyword with "REPLACE".  Not all
      *                       databases support "REPLACE".
      *
@@ -227,14 +256,27 @@ class Device extends HUGnetDB
      */
     public function addVirtual($info, $replace = false)
     {
-        if ($replace === false) $info["SerialNum"] = $this->getPrevID("SerialNum");
-        if (empty($info["DeviceID"])) $info["DeviceID"] = devInfo::sn2DeviceID($info["SerialNum"]);
-        if (empty($info["HWPartNum"])) $info["HWPartNum"] = "VIRTUAL";
-        if (empty($info["FWPartNum"])) $info["FWPartNum"] = "VIRTUAL";
-        if (empty($info["FWVersion"])) $info["FWVersion"] = "VIRTUAL";
-        if (empty($info["Driver"])) $info["Driver"] = "eVIRTUAL";
-        
-        if (self::add($info, $replace)) return $info["SerialNum"];
+        if ($replace === false) {
+            $info["SerialNum"] = $this->getPrevID("SerialNum");
+        }
+        if (empty($info["DeviceID"])) {
+            $info["DeviceID"] = devInfo::sn2DeviceID($info["SerialNum"]);
+        }
+        if (empty($info["HWPartNum"])) {
+            $info["HWPartNum"] = "VIRTUAL";
+        }
+        if (empty($info["FWPartNum"])) {
+            $info["FWPartNum"] = "VIRTUAL";
+        }
+        if (empty($info["FWVersion"])) {
+            $info["FWVersion"] = "VIRTUAL";
+        }
+        if (empty($info["Driver"])) {
+            $info["Driver"] = "eVIRTUAL";
+        }
+        if (self::add($info, $replace)) {
+            return $info["SerialNum"];
+        }
         return false;
     }
 
@@ -250,7 +292,7 @@ class Device extends HUGnetDB
      *
      * @uses device::encodeParams
      */
-    function setParams($DeviceKey, $params) 
+    function setParams($DeviceKey, $params)
     {
         $info = array(
             "DeviceKey" => $DeviceKey,
@@ -266,13 +308,15 @@ class Device extends HUGnetDB
      *
      * @return string
      */
-    function encodeParams(&$params) 
+    function encodeParams(&$params)
     {
         if (is_array($params)) {
             $params = serialize($params);
             $params = base64_encode($params);
         }
-        if (!is_string($params)) $params = "";
+        if (!is_string($params)) {
+            $params = "";
+        }
         return $params;
     }
 
@@ -283,14 +327,16 @@ class Device extends HUGnetDB
      *
      * @return array
      */
-    function decodeParams(&$params) 
+    function decodeParams(&$params)
     {
         if (is_string($params)) {
             $params = base64_decode($params);
             $params = unserialize($params);
         }
-        if (!is_array($params)) $params = array();
-        return $params;    
+        if (!is_array($params)) {
+            $params = array();
+        }
+        return $params;
     }
 
 
@@ -301,21 +347,29 @@ class Device extends HUGnetDB
      * Returns a style based on the condition of the endpoint.  Useful for displaying
      * a list of endpoints and quickly seeing which ones have problems.
      *
-     * @param array $Info Infomation about the device to get stylesheet information for
+     * @param array $Info Infomation about the device to get stylesheet
+     *                    information for
      * @param int   $time The time to use
      *
-     * @return string The return should be put inside of style="" css tags in your HTML
+     * @return string The return should be put inside of style="" css tags in
+     *                your HTML
      */
-    function diagnose($Info, $time = null) 
+    function diagnose($Info, $time = null)
     {
         $problem = array();
-        if (empty($time)) $time = time();
-        if ($Info["PollInterval"] <= 0) return array();
-
-        $timelag = $time - strtotime($Info["LastPoll"]);
-        $pollhistory = (strtotime($Info["LastPoll"]) - strtotime($Info["LastHistory"]));
-        if ($pollhistory < 0) $pollhistory = (-1)*$pollhistory;
-        
+        if (empty($time)) {
+            $time = time();
+        }
+        if ($Info["PollInterval"] <= 0) {
+            return array();
+        }
+        $timelag     = $time - strtotime($Info["LastPoll"]);
+        $pollTime    = strtotime($Info["LastPoll"]);
+        $histTime    = strtotime($Info["LastHistory"]);
+        $pollhistory = ($pollTime - $histTime);
+        if ($pollhistory < 0) {
+            $pollhistory = (-1)*$pollhistory;
+        }
         if (($timelag > ($this->PollWarningIntervals*60*$Info["PollInterval"]))) {
             $problem[] = "Last Poll ".devInfo::getYdhms($timelag)." ago\n";
         }
@@ -333,7 +387,7 @@ class Device extends HUGnetDB
      *
      * @return mixed
       */
-    function createTable() 
+    function createTable()
     {
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                       `DeviceKey` int(11) NOT null auto_increment,
@@ -366,10 +420,12 @@ class Device extends HUGnetDB
                    );
                     ";
 
-        $query = $this->cleanSql($query);                    
-        $ret = $this->query($query); 
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'.$this->table.'` (`SerialNum`)');
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'.$this->table.'` (`DeviceID`,`GatewayKey`)');
+        $query = $this->cleanSql($query);
+        $ret   = $this->query($query);
+        $ret   = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'
+                            .$this->table.'` (`SerialNum`)');
+        $ret   = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'
+                            .$this->table.'` (`DeviceID`,`GatewayKey`)');
         $this->getColumns();
         return $ret;
     }
