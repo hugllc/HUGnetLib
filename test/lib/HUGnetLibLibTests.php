@@ -45,8 +45,6 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'PluginsTest.php';
-//require_once 'TablesTest.php';
-require_once 'FunctionsTest.php';
 
 /**
  *  This class runs all of the tests.  This must be done with no errors
@@ -82,7 +80,6 @@ class HUGnetLibLibTests
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibLib');
         $suite->addTestSuite('PluginsTest');
-        $suite->addTestSuite('FunctionsTest');
 
         return $suite;
     }
