@@ -495,13 +495,13 @@ class Plugins
                          $verbose   = 0)
     {
         $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
-        if (trim($basedir) != "") {
+        if (!empty($basedir)) {
             $this->dir = $basedir;
         }
-        if (trim($webdir) != "") {
+        if (!empty($webdir)) {
             $this->webdir = $webdir;
         }
-        if (trim($extension) != "") {
+        if (!empty($extension)) {
             $this->extension = $extension;
         }
         $this->_skipDir = $skipDir;
@@ -628,35 +628,35 @@ class Plugins
     {
         $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
         $this->_debug("\t\tType:  ".$info["Types"]."\t\t", 4);
-        if (is_array($info)) {
-            if (trim($info["Name"]) != "") {
-                if (function_exists($info["Name"])) {
-                    if (is_array($info["Types"])) {
-                        foreach ($info["Types"] as $Type) {
-                            $this->plugins["Functions"][$Type][] = $info;
-                        }
-                    } else {
-                        if (trim($info["Types"]) != "") {
-                            foreach (explode(",", $info["Types"]) as $Type) {
-                                $this->plugins["Functions"][trim($Type)][] = $info;
-                            }
-                        } else {
-                            $this->plugins["Functions"]["ALL_TYPES"][] = $info;
-                        }
-                    }
-                    $this->_debug(" Done!", 4);
-                    $this->function_count++;
-                    $this->plugin_count++;
-                } else {
-                    $this->_debug(" Failed (Function doesn't Exist)", 4);
-                }
-            } else {
-                $this->_debug(" Failed (Name not set), 4");
+        if (!is_array($info)) {
+            $this->_debug(" Failed (Bad arguments to registerFunction)", 4);
+            return;
+        }
+        if (empty($info["Name"])) {
+            $this->_debug(" Failed (Name not set), 4");
+            return;
+        }
+        if (!function_exists($info["Name"])) {
+            $this->_debug(" Failed (Function doesn't Exist)", 4);
+            return;
+        }
+        if (is_array($info["Types"])) {
+            foreach ($info["Types"] as $Type) {
+                $this->plugins["Functions"][$Type][] = $info;
             }
         } else {
-            $this->_debug(" Failed (Bad arguments to registerFunction)", 4);
+            if (trim($info["Types"]) != "") {
+                foreach (explode(",", $info["Types"]) as $Type) {
+                    $this->plugins["Functions"][trim($Type)][] = $info;
+                }
+            } else {
+                $this->plugins["Functions"]["ALL_TYPES"][] = $info;
+            }
         }
-          $this->_debug("\n", 4);
+        $this->_debug(" Done!", 4);
+        $this->function_count++;
+        $this->plugin_count++;
+        $this->_debug("\n", 4);
     }
 
 
