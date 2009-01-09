@@ -44,7 +44,6 @@
 */
 function pluginTestPlugin2()
 {
-
 }
 
 $this->registerFunction("pluginTestPlugin2", "filter", "clean", "cleaner");
