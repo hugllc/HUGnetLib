@@ -275,16 +275,17 @@ class Plugins
         array_shift($fArgs); // Shift off the name of the function
         foreach ($this->plugins["Functions"][$Type] as $fct) {
             $this->_debug("Running Plugin ".$fct["Name"]."\n", 4);
-            if (function_exists($fct["Name"])) {
-                $args = $fArgs;
-                array_unshift($args, $return);
-                $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
-                $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
-                $this->_debug("[PLUGIN OUTPUT]\n", 4);
-                $return = call_user_func_array($fct["Name"], $args);
-                $this->_debug($output, 4);
-                $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+            $args = $fArgs;
+            array_unshift($args, $return);
+            $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
+            $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
+            $this->_debug("[PLUGIN OUTPUT]\n", 4);
+            $ret = $this->_runFunction($fct["Name"], $args);
+            if (!is_null($ret)) {
+                $return = $ret;
             }
+            $this->_debug($output, 4);
+            $this->_debug("[END PLUGIN OUTPUT]\n", 4);
         }
         return $return;
     }
@@ -313,7 +314,7 @@ class Plugins
         array_shift($args); // Shift off the name of the function
         $this->_debug("Running command:\n".$command."\n", 4);
         $this->_debug("[PLUGIN OUTPUT]\n", 4);
-        $output = call_user_func_array($fct["Name"], $args);
+        $output = $this->_runFunction($fct["Name"], $args);
         if (trim($output) != "") {
             $return = $output;
         }
@@ -372,20 +373,47 @@ class Plugins
         $fArgs = func_get_args();
         array_shift($fArgs); // Shift off the name of the function
         foreach ($this->getFunctions($Type) as $fct) {
-            if (function_exists($fct["Name"])) {
-                $args = $fArgs;
-                $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
-                $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
-                $this->_debug("[PLUGIN OUTPUT]\n", 4);
-                $output = call_user_func_array($fct["Name"], $args);
-                $this->_debug($output, 4);
-                $this->_debug("[END PLUGIN OUTPUT]\n", 4);
-                $count++;
-            }
+            $args = $fArgs;
+            $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
+            $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
+            $this->_debug("[PLUGIN OUTPUT]\n", 4);
+            $output = $this->_runFunction($fct["Name"], $args);
+            $this->_debug($output, 4);
+            $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+            $count++;
         }
         return $count;
     }
 
+    /**
+    * Runs all functions of one type
+    *
+    * This function is the mainstay of running plugins.  It is used to run Plugins
+    * in batches based on their type.
+    *
+    * @param string $name The name of the function to call
+    * @param array  $args The arguments to call the function with
+    *
+    * @return int The number of functions run
+    */
+    private function _runFunction($name, $args)
+    {
+        if (!function_exists($name)) {
+            $this->_debug("Function $name does not exist\n", 3);
+            return false;
+        }
+
+        try {
+            $output = call_user_func_array($name, $args);
+        } catch (ErrorException $e) {
+            $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
+            return null;
+        } catch (Exception $e) {
+            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+            return null;
+        }
+        return $output;
+    }
     /**
     * Gets all of the generic of one type.
     *
@@ -509,6 +537,7 @@ class Plugins
             $this->findPlugins();
         }
         $this->verbose = (int) $verbose;
+
     }
 
     /**
@@ -598,9 +627,11 @@ class Plugins
         $this->_debug("Checking File:  ".$file."\n", 4);
         // These files might need to be included more than once, so we use include
         try {
-            $freturn = include $filedir.$file;
+            if ($this->_checkFile($filedir.$file)) {
+                $freturn = include $filedir.$file;
+            }
         } catch (ErrorException $e) {
-            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+            $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
             $freturn = false;
         } catch (Exception $e) {
             $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
@@ -616,7 +647,22 @@ class Plugins
 
     }
 
-
+    /**
+    *  Deals with the plugin files.
+    *
+    * Checks the syntax of a file if the check is available
+    *
+    * @param string $file The file to be checked.
+    *
+    * @return bool
+    */
+    private function _checkFile($file)
+    {
+        if (function_exists("runkit_lint_file")) {
+            return runkit_lint_file($file);
+        }
+        return true;
+    }
 
 
     /**
@@ -734,16 +780,6 @@ class Plugins
         if ($this->verbose >= $level) {
             print $text;
         }
-    }
-
-    /**
-    * Returns the debug stack.
-    *
-    * @return string The debug stack.
-    */
-    public function getDebug()
-    {
-        return $this->_debug_stack;
     }
 
 }
