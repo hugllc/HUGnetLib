@@ -31,15 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Call processTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "processTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -84,13 +79,62 @@ class ProcStatsTest extends databaseTest
     );
     /** Data to preload into the database */
     static $preload = array(
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => 0),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => 1),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => 2),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => 3),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => 6),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => 6),
-        array("PID"=>1234, "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => 6),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Daily",
+            "sdate" => "2007-12-23",
+            "sname" => "testStat",
+            "svalue" => 0
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Daily",
+            "sdate" => "2007-12-24",
+            "sname" => "testStat",
+            "svalue" => 1
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Daily",
+            "sdate" => "2007-12-25",
+            "sname" => "testStat",
+            "svalue" => 2
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Daily",
+            "sdate" => "2007-12-26",
+            "sname" => "testStat",
+            "svalue" => 3
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Monthly",
+            "sdate" => "2007-12",
+            "sname" => "testStat",
+            "svalue" => 6
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"Yearly",
+            "sdate" => "2007",
+            "sname" => "testStat",
+            "svalue" => 6
+        ),
+        array(
+            "PID"=>1234,
+            "Program" => "phpunit",
+            "stype"=>"totals",
+            "sdate" => "now",
+            "sname" => "testStat",
+            "svalue" => 6
+        ),
     );
     /**
      * Runs the test methods of this class.
@@ -100,7 +144,7 @@ class ProcStatsTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -116,10 +160,10 @@ class ProcStatsTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("ProcStatsTestClass", $this->config); // new ProcStatsTestClass($this->file, $this->table, $this->id);
+        $this->o =& HUGnetDB::getInstance("ProcStatsTestClass", $this->config);
         // Clear out the database
         $this->pdo->query("DELETE FROM `".$this->table."`");
         $this->o->forceMe($this->me);
@@ -133,7 +177,7 @@ class ProcStatsTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         $this->pdo->query("DROP TABLE `".$this->table."`");
         parent::tearDown();
@@ -145,7 +189,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataIncStat() 
+    public static function dataIncStat()
     {
         return array(
             array(
@@ -153,14 +197,70 @@ class ProcStatsTest extends databaseTest
                 "testStat",
                 strtotime("2007-12-25 13:13:13"),
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "7"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "3"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "7"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "7"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-23",
+                        "sname" => "testStat",
+                        "svalue" => "0"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-24",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-26",
+                        "sname" => "testStat",
+                        "svalue" => "3"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"totals",
+                        "sdate" => "now",
+                        "sname" => "testStat",
+                        "svalue" => "7"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "3"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Monthly",
+                        "sdate" => "2007-12",
+                        "sname" => "testStat",
+                        "svalue" => "7"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Yearly",
+                        "sdate" => "2007",
+                        "sname" => "testStat",
+                        "svalue" => "7"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 13:13:13"
+                    ),
                ),
            ),
             array(
@@ -168,11 +268,46 @@ class ProcStatsTest extends databaseTest
                 "testStat",
                 strtotime("2007-12-25 13:13:13"),
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 13:13:13"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"totals",
+                        "sdate" => "now",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Monthly",
+                        "sdate" => "2007-12",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Yearly",
+                        "sdate" => "2007",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 13:13:13"
+                    ),
                ),
            ),
         );
@@ -190,7 +325,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataIncStat().
      */
-    public function testIncStat($preload, $stat, $date, $expect) 
+    public function testIncStat($preload, $stat, $date, $expect)
     {
         $this->o->forceDate = $date;
         $this->load($preload);
@@ -204,7 +339,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataIncField() 
+    public static function dataIncField()
     {
         return array(
             array(
@@ -213,14 +348,70 @@ class ProcStatsTest extends databaseTest
                 "testStat",
                 "2007-12-25",
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "3"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-23",
+                        "sname" => "testStat",
+                        "svalue" => "0"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-24",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-26",
+                        "sname" => "testStat",
+                        "svalue" => "3"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Monthly",
+                        "sdate" => "2007-12",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Yearly",
+                        "sdate" => "2007",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"totals",
+                        "sdate" => "now",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "3"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 00:00:00"
+                    ),
                ),
            ),
             array(
@@ -229,8 +420,22 @@ class ProcStatsTest extends databaseTest
                 "testStat",
                 "2007-12-25",
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 00:00:00"
+                    ),
                ),
            ),
         );
@@ -249,7 +454,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataIncField().
      */
-    public function testIncField($preload, $type, $name, $date, $expect) 
+    public function testIncField($preload, $type, $name, $date, $expect)
     {
         $this->o->forceDate = strtotime($date);
         $this->load($preload);
@@ -263,7 +468,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataGetMyStat() 
+    public static function dataGetMyStat()
     {
         return array(
             array(
@@ -296,7 +501,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataGetMyStat().
      */
-    public function testIncGetMyStat($preload, $type, $name, $date, $expect) 
+    public function testIncGetMyStat($preload, $type, $name, $date, $expect)
     {
         $this->load($preload);
         $ret = $this->o->getMyStat($name, $date, $type);
@@ -308,7 +513,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataGetStat() 
+    public static function dataGetStat()
     {
         return array(
             array(
@@ -347,7 +552,13 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataGetStat().
      */
-    public function testGetStat($preload, $Program, $type, $name, $date, $PID, $expect) 
+    public function testGetStat($preload,
+                                $Program,
+                                $type,
+                                $name,
+                                $date,
+                                $PID,
+                                $expect)
     {
         $this->load($preload);
         $ret = $this->o->getStat($name, $Program, $date, $type, $PID);
@@ -359,7 +570,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataSetStat() 
+    public static function dataSetStat()
     {
         return array(
             array(
@@ -369,14 +580,70 @@ class ProcStatsTest extends databaseTest
                 "2007-12-25",
                 "Daily",
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-23", "sname" => "testStat", "svalue" => "0"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-24", "sname" => "testStat", "svalue" => "1"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-26", "sname" => "testStat", "svalue" => "3"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Monthly", "sdate" => "2007-12", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Yearly", "sdate" => "2007", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"totals", "sdate" => "now", "sname" => "testStat", "svalue" => "6"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "8"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-23",
+                        "sname" => "testStat",
+                        "svalue" => "0"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-24",
+                        "sname" => "testStat",
+                        "svalue" => "1"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-26",
+                        "sname" => "testStat",
+                        "svalue" => "3"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Monthly",
+                        "sdate" => "2007-12",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Yearly",
+                        "sdate" => "2007",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"totals",
+                        "sdate" => "now",
+                        "sname" => "testStat",
+                        "svalue" => "6"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "8"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 00:00:00"
+                    ),
                ),
            ),
             array(
@@ -386,8 +653,22 @@ class ProcStatsTest extends databaseTest
                 "2007-12-25",
                 "Daily",
                 array(
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"Daily", "sdate" => "2007-12-25", "sname" => "testStat", "svalue" => "16"),
-                    array("PID"=>"1234", "Program" => "phpunit", "stype"=>"stat", "sdate" => "now", "sname" => "StatDate", "svalue" => "2007-12-25 00:00:00"),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"Daily",
+                        "sdate" => "2007-12-25",
+                        "sname" => "testStat",
+                        "svalue" => "16"
+                    ),
+                    array(
+                        "PID"=>"1234",
+                        "Program" => "phpunit",
+                        "stype"=>"stat",
+                        "sdate" => "now",
+                        "sname" => "StatDate",
+                        "svalue" => "2007-12-25 00:00:00"
+                    ),
                ),
            ),
         );
@@ -407,7 +688,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataSetStat().
      */
-    public function testSetStat($preload, $name, $value, $date, $type, $expect) 
+    public function testSetStat($preload, $name, $value, $date, $type, $expect)
     {
         $this->o->forceDate = strtotime($date);
         $this->load($preload);
@@ -424,7 +705,7 @@ class ProcStatsTest extends databaseTest
      *
      * @todo Implement testClearStats().
      */
-    public function testClearStats() 
+    public function testClearStats()
     {
         $this->load(self::$preload);
         $this->o->clearStats();
@@ -437,7 +718,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataGetPeridicStats() 
+    public static function dataGetPeridicStats()
     {
         return array(
             array(
@@ -450,7 +731,7 @@ class ProcStatsTest extends databaseTest
                         "2007-12-24" => array("testStat" => "1"),
                         "2007-12-23" => array("testStat" => "0"),
                    ),
-                
+
                     "Monthly" => array(
                         "2007-12" => array("testStat" => "6")
                    ),
@@ -483,7 +764,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataGetPeridicStats().
      */
-    public function testGetPeridicStats($preload, $Program, $expect) 
+    public function testGetPeridicStats($preload, $Program, $expect)
     {
         $this->load($preload);
         $ret = $this->o->getPeriodicStats($Program);
@@ -495,7 +776,7 @@ class ProcStatsTest extends databaseTest
      *
      * @return array
      */
-    public static function dataGetTotalStats() 
+    public static function dataGetTotalStats()
     {
         return array(
             array(
@@ -529,7 +810,7 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataGetTotalStats().
      */
-    public function testGetTotalStats($preload, $Program, $expect) 
+    public function testGetTotalStats($preload, $Program, $expect)
     {
         $this->load($preload);
         $ret = $this->o->getTotalStats($Program);
@@ -538,10 +819,6 @@ class ProcStatsTest extends databaseTest
 
 }
 
-// Call processTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "processTest::main") {
-    processTest::main();
-}
 /**
  * Test class for HUGnetDB.
  * Generated by PHPUnit on 2007-12-13 at 10:28:11.
@@ -563,17 +840,17 @@ class ProcStatsTestClass extends ProcStats
     protected $table = "HUGnetDBTest";
     /** The number of columns */
     private $_columns = 6;
-   
+
     /**
      * Forces the 'me' variable in the class to be a certain thing.
      *
      * @param array $me What to set the me variable to
      *
      * @return null
-     */    
+     */
     public function forceMe($me)
     {
         $this->me = $me;
-    }     
+    }
 }
 ?>

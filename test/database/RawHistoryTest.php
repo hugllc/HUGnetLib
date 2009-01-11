@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call AnalysisTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "HistoryTest::main");
-}
 
 /** Test Case */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -81,7 +76,7 @@ class RawHistoryTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -97,10 +92,10 @@ class RawHistoryTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("RawHistory", $this->config); // new rawhistory($this->pdo);
+        $this->o =& HUGnetDB::getInstance("RawHistory", $this->config);
         $this->o->createTable();
 
     }
@@ -113,17 +108,12 @@ class RawHistoryTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
     }
 
-}
-
-// Call AnalysisTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "HistoryTest::main") {
-    HistoryTest::main();
 }
 
 ?>

@@ -31,15 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Call plogTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'plogTest::main');
-}
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 
@@ -72,7 +67,7 @@ class PlogTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -88,10 +83,10 @@ class PlogTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Plog", $this->config); // new plog($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Plog", $this->config);
         $this->o->createTable();
     }
 
@@ -103,7 +98,7 @@ class PlogTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -114,33 +109,33 @@ class PlogTest extends databaseTest
      *
      * @return array
      */
-    public static function dataAdd() 
+    public static function dataAdd()
     {
         return array(
             array(
                 array(),
                 array(
-                    "DeviceKey" => 1, 
-                    "ReplyTime" => 2.54, 
-                    "GatewayKey" => 5, 
-                    "RawData" => "1234", 
-                    "Date" => "2007-11-12 14:21:11", 
-                    "PacketFrom" => "000020", 
-                    "Command" => "01", 
-                    "sendCommand" => "5C", 
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 2.54,
+                    "GatewayKey" => 5,
+                    "RawData" => "1234",
+                    "Date" => "2007-11-12 14:21:11",
+                    "PacketFrom" => "000020",
+                    "Command" => "01",
+                    "sendCommand" => "5C",
                     "Type" => "POWERUP"
                ),
                 array(
-                    "id" => "1", 
-                    "DeviceKey" => "1", 
-                    "GatewayKey" => "5", 
-                    "Date" => "2007-11-12 14:21:11", 
-                    "Command" => "01", 
-                    "sendCommand" => "5C", 
-                    "PacketFrom" => "000020", 
-                    "PacketTo" => "", 
-                    "RawData" => "1234", 
-                    "sentRawData" => "", 
+                    "id" => "1",
+                    "DeviceKey" => "1",
+                    "GatewayKey" => "5",
+                    "Date" => "2007-11-12 14:21:11",
+                    "Command" => "01",
+                    "sendCommand" => "5C",
+                    "PacketFrom" => "000020",
+                    "PacketTo" => "",
+                    "RawData" => "1234",
+                    "sentRawData" => "",
                     "Type" => "POWERUP",
                     "Status" => "NEW",
                     "ReplyTime" => "2.54",
@@ -152,15 +147,14 @@ class PlogTest extends databaseTest
     /**
      * test
      *
-     * @return null
-     *
-     * @dataProvider dataAdd
-     *
      * @param array $preload Data to preload into the database
      * @param array $info    The info to add to the database
      * @param array $expect  The info to expect returned
+     *
+     * @return null
+     * @dataProvider dataAdd
      */
-    public function testAdd($preload, $info, $expect) 
+    public function testAdd($preload, $info, $expect)
     {
         $this->load($preload);
         $this->o->add($info);
@@ -173,38 +167,113 @@ class PlogTest extends databaseTest
      *
      * @return array
      */
-    public static function dataPacketLog() 
+    public static function dataPacketLog()
     {
         return array(
             array(
-                array("DeviceKey" => 1, "ReplyTime" => 2.54, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "5C"),
+                array(
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 2.54,
+                    "RawData" => "1234",
+                    "Time" => 1194898871,
+                    "From" => "000020",
+                    "Command" => "01",
+                    "sendCommand" => "5C"
+                ),
                 array("GatewayKey" => 5),
                 "POWERUP",
-                array("DeviceKey" => 1, "ReplyTime" => 2.54, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 20:21:11", "PacketTo" => null, "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "5C", "Type" => "POWERUP", "Checked" => 0),
+                array(
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 2.54,
+                    "GatewayKey" => 5,
+                    "RawData" => "1234",
+                    "Date" => "2007-11-12 20:21:11",
+                    "PacketTo" => null,
+                    "PacketFrom" => "000020",
+                    "Command" => "01",
+                    "sendCommand" => "5C",
+                    "Type" => "POWERUP",
+                    "Checked" => 0
+                ),
            ),
             array(
-                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "sendCommand" => "55"),
+                array(
+                    "DeviceKey" => 1,
+                    "RawData" => "1234",
+                    "Time" => 1194898871,
+                    "From" => "000020",
+                    "Command" => "01",
+                    "sendCommand" => "55"
+                ),
                 array("GatewayKey" => 5),
                 null,
-                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 20:21:11", "PacketTo" => null, "PacketFrom" => "000020", "Command" => "01", "sendCommand" => "55", "Type" => "UNSOLICITED", "Checked" => 0),
+                array(
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 0.0,
+                    "GatewayKey" => 5,
+                    "RawData" => "1234",
+                    "Date" => "2007-11-12 20:21:11",
+                    "PacketTo" => null,
+                    "PacketFrom" => "000020",
+                    "Command" => "01",
+                    "sendCommand" => "55",
+                    "Type" => "UNSOLICITED",
+                    "Checked" => 0
+                ),
            ),
             array(
-                array("DeviceKey" => 1, "RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01"),
+                array(
+                    "DeviceKey" => 1,
+                    "RawData" => "1234",
+                    "Time" => 1194898871,
+                    "From" => "000020",
+                    "Command" => "01"
+                ),
                 array("GatewayKey" => 5),
                 false,
-                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 20:21:11", "PacketTo" => null, "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED", "Checked" => 0),
+                array(
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 0.0,
+                    "GatewayKey" => 5,
+                    "RawData" => "1234",
+                    "Date" => "2007-11-12 20:21:11",
+                    "PacketTo" => null,
+                    "PacketFrom" => "000020",
+                    "Command" => '01',
+                    "sendCommand" => "  ",
+                    "Type" => "UNSOLICITED",
+                    "Checked" => 0
+                ),
            ),
             array(
-                array("RawData" => "1234", "Time" => 1194898871, "From" => "000020", "Command" => "01", "To" => "000042"),
+                array(
+                    "RawData" => "1234",
+                    "Time" => 1194898871,
+                    "From" => "000020",
+                    "Command" => "01",
+                    "To" => "000042"
+                ),
                 array("GatewayKey" => 5, "DeviceKey" => 1),
                 false,
-                array("DeviceKey" => 1, "ReplyTime" => 0.0, "GatewayKey" => 5, "RawData" => "1234", "Date" => "2007-11-12 20:21:11", "PacketTo" => "000042", "PacketFrom" => "000020", "Command" => '01', "sendCommand" => "  ", "Type" => "UNSOLICITED", "Checked" => 0),
+                array(
+                    "DeviceKey" => 1,
+                    "ReplyTime" => 0.0,
+                    "GatewayKey" => 5,
+                    "RawData" => "1234",
+                    "Date" => "2007-11-12 20:21:11",
+                    "PacketTo" => "000042",
+                    "PacketFrom" => "000020",
+                    "Command" => '01',
+                    "sendCommand" => "  ",
+                    "Type" => "UNSOLICITED",
+                    "Checked" => 0
+                ),
            ),
         );
     }
     /**
      * Test plog::packetLogSetup
-     * 
+     *
      * @param array  $Packet  The packet array
      * @param array  $Gateway The gateway array
      * @param string $type    The type of packet it is
@@ -214,7 +283,7 @@ class PlogTest extends databaseTest
      *
      * @dataProvider dataPacketLog().
      */
-    public function testPacketLogSetup($Packet, $Gateway, $type, $expect) 
+    public function testPacketLogSetup($Packet, $Gateway, $type, $expect)
     {
         if (is_null($type)) {
             $pkt = plog::PacketLogSetup($Packet, $Gateway);
@@ -229,7 +298,7 @@ class PlogTest extends databaseTest
      *
      * @return array
      */
-    public static function dataPacketType() 
+    public static function dataPacketType()
     {
         return array(
             array(array("Unsolicited" => true, "Command" => "55"), "UNSOLICITED"),
@@ -240,7 +309,7 @@ class PlogTest extends databaseTest
     }
     /**
      * Test plog::packetLogSetup
-     * 
+     *
      * @param array  $Packet The packet array
      * @param string $expect The return value to expect
      *
@@ -248,15 +317,11 @@ class PlogTest extends databaseTest
      *
      * @dataProvider dataPacketType().
      */
-    public function testPacketType($Packet, $expect) 
+    public function testPacketType($Packet, $expect)
     {
         $ret = plog::packetType($Packet);
         $this->assertSame($expect, $ret);
     }
 }
 
-// Call plogTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == 'plogTest::main') {
-    plogTest::main();
-}
 ?>

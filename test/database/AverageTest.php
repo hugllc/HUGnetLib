@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -65,11 +65,46 @@ class AverageTest extends databaseTest
 
     /** This is data to use for tests */
     protected static $preload = array(
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:20:02", "Type" => "15MIN", "Data0" => 1, "Data1" => 2, "Data2" => 3),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:25:02", "Type" => "15MIN", "Data0" => 2, "Data1" => 3, "Data2" => 4),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:30:02", "Type" => "15MIN", "Data0" => 3, "Data1" => 4, "Data2" => 5),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:35:02", "Type" => "15MIN", "Data0" => 4, "Data1" => 5, "Data2" => 6),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:40:02", "Type" => "15MIN", "Data0" => 5, "Data1" => 6, "Data2" => 7),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:20:02",
+            "Type" => "15MIN",
+            "Data0" => 1,
+            "Data1" => 2,
+            "Data2" => 3
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:25:02",
+            "Type" => "15MIN",
+            "Data0" => 2,
+            "Data1" => 3,
+            "Data2" => 4
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:30:02",
+            "Type" => "15MIN",
+            "Data0" => 3,
+            "Data1" => 4,
+            "Data2" => 5
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:35:02",
+            "Type" => "15MIN",
+            "Data0" => 4,
+            "Data1" => 5,
+            "Data2" => 6
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:40:02",
+            "Type" => "15MIN",
+            "Data0" => 5,
+            "Data1" => 6,
+            "Data2" => 7
+        ),
     );
 
     /**
@@ -80,7 +115,7 @@ class AverageTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -96,10 +131,10 @@ class AverageTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Average", $this->config); // new history($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Average", $this->config);
         $this->o->createTable($this->table, 3);
 
     }
@@ -112,11 +147,11 @@ class AverageTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
     }
-    
+
 }
 ?>

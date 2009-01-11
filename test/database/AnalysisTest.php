@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call AnalysisTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "AnalysisTest::main");
-}
 
 /** Test Case */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -67,7 +62,7 @@ class AnalysisTest extends databaseTest
 {
     /** The table to use */
     protected $table = "analysis";
-       
+
     /**
      * Runs the test methods of this class.
      *
@@ -76,7 +71,7 @@ class AnalysisTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -92,10 +87,10 @@ class AnalysisTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Analysis", $this->config); //new Analysis($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Analysis", $this->config);
         $this->o->createTable();
 
     }
@@ -108,17 +103,12 @@ class AnalysisTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
     }
 
-}
-
-// Call AnalysisTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "AnalysisTest::main") {
-    AnalysisTest::main();
 }
 
 ?>

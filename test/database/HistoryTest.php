@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call AnalysisTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "HistoryTest::main");
-}
 
 /** Test Case */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -70,11 +65,46 @@ class HistoryTest extends databaseTest
 
     /** This is data to use for tests */
     protected static $preload = array(
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:20:02", "deltaT" => 0, "Data0" => 1, "Data1" => 2, "Data2" => 3),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:25:02", "deltaT" => 0, "Data0" => 2, "Data1" => 3, "Data2" => 4),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:30:02", "deltaT" => 0, "Data0" => 3, "Data1" => 4, "Data2" => 5),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:35:02", "deltaT" => 0, "Data0" => 4, "Data1" => 5, "Data2" => 6),
-        array("DeviceKey" => 1, "Date" => "2007-12-20 02:40:02", "deltaT" => 0, "Data0" => 5, "Data1" => 6, "Data2" => 7),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:20:02",
+            "deltaT" => 0,
+            "Data0" => 1,
+            "Data1" => 2,
+            "Data2" => 3
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:25:02",
+            "deltaT" => 0,
+            "Data0" => 2,
+            "Data1" => 3,
+            "Data2" => 4
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:30:02",
+            "deltaT" => 0,
+            "Data0" => 3,
+            "Data1" => 4,
+            "Data2" => 5
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:35:02",
+            "deltaT" => 0,
+            "Data0" => 4,
+            "Data1" => 5,
+            "Data2" => 6
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-20 02:40:02",
+            "deltaT" => 0,
+            "Data0" => 5,
+            "Data1" => 6,
+            "Data2" => 7
+        ),
     );
 
     /**
@@ -85,7 +115,7 @@ class HistoryTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -101,10 +131,10 @@ class HistoryTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("History", $this->config); // new history($this->pdo);
+        $this->o =& HUGnetDB::getInstance("History", $this->config);
         $this->o->createTable($this->table, 3);
 
     }
@@ -117,18 +147,18 @@ class HistoryTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
     }
-    
+
     /**
      * Data provider for testGetDates
      *
      * @return array
      */
-    public static function dataGetDates() 
+    public static function dataGetDates()
     {
         return array(
             array(
@@ -139,34 +169,34 @@ class HistoryTest extends databaseTest
                 5,
                 array(
                     array(
-                        "DeviceKey" => 1, 
-                        "Date" => "2007-12-20 02:40:02", 
-                        "deltaT" => 0, 
-                        "Data0" => 5.0, 
-                        "Data1" => 6.0, 
+                        "DeviceKey" => 1,
+                        "Date" => "2007-12-20 02:40:02",
+                        "deltaT" => 0,
+                        "Data0" => 5.0,
+                        "Data1" => 6.0,
                         "Data2" => 7.0,
                         "data" => array(5.0, 6.0, 7.0),
                    ),
                     array(
-                        "DeviceKey" => 1, 
-                        "Date" => "2007-12-20 02:35:02", 
-                        "deltaT" => 0, 
-                        "Data0" => 4.0, 
-                        "Data1" => 5.0, 
+                        "DeviceKey" => 1,
+                        "Date" => "2007-12-20 02:35:02",
+                        "deltaT" => 0,
+                        "Data0" => 4.0,
+                        "Data1" => 5.0,
                         "Data2" => 6.0,
                         "data" => array(4.0, 5.0, 6.0),
                    ),
                     array(
-                        "DeviceKey" => 1, 
-                        "Date" => "2007-12-20 02:30:02", 
-                        "deltaT" => 0, 
-                        "Data0" => 3.0, 
-                        "Data1" => 4.0, 
+                        "DeviceKey" => 1,
+                        "Date" => "2007-12-20 02:30:02",
+                        "deltaT" => 0,
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
                         "Data2" => 5.0,
                         "data" => array(3.0, 4.0, 5.0),
                    ),
                ),
-           ),               
+           ),
             array(
                 self::$preload,
                 array("DeviceKey" => 1),
@@ -175,25 +205,25 @@ class HistoryTest extends databaseTest
                 2,
                 array(
                     array(
-                        "DeviceKey" => 1, 
-                        "Date" => "2007-12-20 02:40:02", 
-                        "deltaT" => 0, 
-                        "Data0" => 5.0, 
-                        "Data1" => 6.0, 
+                        "DeviceKey" => 1,
+                        "Date" => "2007-12-20 02:40:02",
+                        "deltaT" => 0,
+                        "Data0" => 5.0,
+                        "Data1" => 6.0,
                         "Data2" => 7.0,
                         "data" => array(5.0, 6.0, 7.0),
                    ),
                     array(
-                        "DeviceKey" => 1, 
-                        "Date" => "2007-12-20 02:35:02", 
-                        "deltaT" => 0, 
-                        "Data0" => 4.0, 
-                        "Data1" => 5.0, 
+                        "DeviceKey" => 1,
+                        "Date" => "2007-12-20 02:35:02",
+                        "deltaT" => 0,
+                        "Data0" => 4.0,
+                        "Data1" => 5.0,
                         "Data2" => 6.0,
                         "data" => array(4.0, 5.0, 6.0),
                    ),
                ),
-           ),               
+           ),
             array(
                 self::$preload,
                 array("DeviceKey" => 2),
@@ -201,7 +231,7 @@ class HistoryTest extends databaseTest
                 "NOW",
                 2,
                 array(),
-           ),               
+           ),
         );
     }
     /**
@@ -209,8 +239,10 @@ class HistoryTest extends databaseTest
      *
      * @param array $preload   Data to preload into the database.
      * @param array $devInfo   The key for the device to get the history for
-     * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
-     * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+     * @param mixed $startDate The first date chronoligically.  Either a unix date
+     *                         or a string
+     * @param mixed $endDate   The second date chronologically.  Either a unix date
+     *                         or a string
      * @param int   $maxRec    The max number of records to return
      * @param int   $expect    The info to expect returned
      *
@@ -218,19 +250,19 @@ class HistoryTest extends databaseTest
      *
      * @dataProvider dataGetDates
      */
-    public function testGetDates($preload, $devInfo, $startDate, $endDate, $maxRec, $expect) 
+    public function testGetDates($preload,
+                                 $devInfo,
+                                 $startDate,
+                                 $endDate,
+                                 $maxRec,
+                                 $expect)
     {
         $this->load($preload);
         $ret = $this->o->GetDates($devInfo, $startDate, $endDate, $maxRec);
         $this->assertSame($expect, $ret);
     }
-    
 
-}
 
-// Call AnalysisTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "HistoryTest::main") {
-    HistoryTest::main();
 }
 
 ?>
