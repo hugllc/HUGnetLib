@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call deviceTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "deviceTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -67,7 +63,7 @@ class DeviceTest extends databaseTest
     protected $table = "devices";
     /** The table to use */
     protected $id = "DeviceKey";
-    
+
     /** This is the preload data we can use */
     protected static $preload = array(
         array(
@@ -131,7 +127,7 @@ class DeviceTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -147,10 +143,10 @@ class DeviceTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Device", $this->config); // new device($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Device", $this->config);
         $this->o->createTable();
     }
 
@@ -162,7 +158,7 @@ class DeviceTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -174,7 +170,7 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataDiagnose() 
+    public static function dataDiagnose()
     {
         return array(
             array(array(), time(), array()),
@@ -220,13 +216,14 @@ class DeviceTest extends databaseTest
                     "History 31d 1h 0s old\n",
                 ),
             ),
-                
+
         );
     }
     /**
      * test
      *
-     * @param array  $Info   Infomation about the device to get stylesheet information for
+     * @param array  $Info   Infomation about the device to get stylesheet
+     *                       information for
      * @param int    $time   The time we are diagnosing
      * @param string $expect The expected return value
      *
@@ -235,7 +232,7 @@ class DeviceTest extends databaseTest
      * @dataProvider dataDiagnose().
      * @covers device::testDiagnose
      */
-    public function testDiagnose($Info, $time, $expect) 
+    public function testDiagnose($Info, $time, $expect)
     {
         $ret = $this->o->diagnose($Info, $time);
         $this->assertSame($expect, $ret);
@@ -247,7 +244,7 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataSelectDevice() 
+    public static function dataSelectDevice()
     {
         return array(
             array(
@@ -297,7 +294,11 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataSelectDevice().
      */
-    public function testSelectDevice($preload, $name, $selected, $GatewayKey, $expect) 
+    public function testSelectDevice($preload,
+                                     $name,
+                                     $selected,
+                                     $GatewayKey,
+                                     $expect)
     {
         $this->load($preload);
         $ret = $this->o->selectDevice($name, $selected, $GatewayKey);
@@ -309,7 +310,7 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataGetDevice() 
+    public static function dataGetDevice()
     {
         return array(
             array(
@@ -432,7 +433,7 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataGetDevice().
      */
-    public function testGetDevice($preload, $id, $type, $expect) 
+    public function testGetDevice($preload, $id, $type, $expect)
     {
         $this->load($preload);
         $ret = $this->o->getDevice($id, $type);
@@ -444,7 +445,7 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataUpdateDevice() 
+    public static function dataUpdateDevice()
     {
         return array(
             // Last Config old update
@@ -517,7 +518,12 @@ class DeviceTest extends databaseTest
             // Insert
             array(
                 self::$preload,
-                array("DeviceID" => "002345", "SerialNum" => 9030, "HWPartNum" => "0039-28-01-A", "FWPartNum" => "0039-20-13-C"),
+                array(
+                    "DeviceID" => "002345",
+                    "SerialNum" => 9030,
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C"
+                ),
                 0,
                 false,
                 array(),
@@ -525,7 +531,12 @@ class DeviceTest extends databaseTest
             // Update
             array(
                 self::$preload,
-                array("DeviceID" => "000030", "SerialNum" => 48, "HWPartNum" => "0039-21-02-B", "LastConfig" => "2008-01-05"),
+                array(
+                    "DeviceID" => "000030",
+                    "SerialNum" => 48,
+                    "HWPartNum" => "0039-21-02-B",
+                    "LastConfig" => "2008-01-05"
+                ),
                 0,
                 false,
                 array(),
@@ -661,12 +672,18 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataUpdateDevice().
      */
-    public function testUpdateDevice($preload, $Info, $DeviceKey, $retExpect, $expect) 
+    public function testUpdateDevice($preload,
+                                     $Info,
+                                     $DeviceKey,
+                                     $retExpect,
+                                     $expect)
     {
         $this->load($preload);
         $ret = $this->o->updateDevice($Info);
         $this->assertSame($retExpect, $ret);
-        if (empty($DeviceKey)) return;
+        if (empty($DeviceKey)) {
+            return;
+        }
         $ret = $this->getSingle($DeviceKey);
         $this->assertSame($expect, $ret);
     }
@@ -676,7 +693,7 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataSetParams() 
+    public static function dataSetParams()
     {
         return array(
             array(
@@ -860,7 +877,11 @@ class DeviceTest extends databaseTest
      * @dataProvider dataSetParams().
      */
     /*
-    public function testSetParamsReturn($preload, $DeviceKey, $params, $expect, $retExpect) 
+    public function testSetParamsReturn($preload,
+                                        $DeviceKey,
+                                        $params,
+                                        $expect,
+                                        $retExpect)
     {
         $this->load($preload);
         $ret = $this->o->setParams($DeviceKey, $params);
@@ -873,10 +894,13 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataEncodeParams() 
+    public static function dataEncodeParams()
     {
         return array(
-            array(array("this"=>"is","a"=>"test"), "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"),
+            array(
+                array("this"=>"is","a"=>"test"),
+                "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"
+            ),
             array("test String", "test String"),
             array(1234, ""),
             array(array(), "YTowOnt9"),
@@ -895,7 +919,9 @@ class DeviceTest extends databaseTest
     public function testEncodeParams($params, $expect)
     {
         $ret = device::encodeParams($params);
-        $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
+        $this->assertSame($expect,
+                      $params,
+                      "Input array passed by reference was not modified correctly");
     }
     /**
      * test
@@ -918,11 +944,17 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataDecodeParams() 
+    public static function dataDecodeParams()
     {
         return array(
-            array("YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9", array("this"=>"is","a"=>"test")),
-            array(array("this"=>"is","an"=>"array"),array("this"=>"is","an"=>"array")),
+            array(
+                "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9",
+                array("this"=>"is","a"=>"test")
+            ),
+            array(
+                array("this"=>"is","an"=>"array"),
+                array("this"=>"is","an"=>"array")
+            ),
             array(1234, array()),
             array("", array()),
         );
@@ -937,7 +969,7 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataDecodeParams
      */
-    public function testDecodeParamsReturn($params, $expect) 
+    public function testDecodeParamsReturn($params, $expect)
     {
         $ret = device::decodeParams($params);
         $this->assertSame($expect, $ret, "return array incorrect");
@@ -952,10 +984,12 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataDecodeParams
      */
-    public function testDecodeParams($params, $expect) 
+    public function testDecodeParams($params, $expect)
     {
         $ret = device::decodeParams($params);
-        $this->assertSame($expect, $params, "Input array passed by reference was not modified correctly");
+        $this->assertSame($expect,
+                       $params,
+                       "Input array passed by reference was not modified correctly");
     }
 
     /**
@@ -963,12 +997,12 @@ class DeviceTest extends databaseTest
      *
      * @return array
      */
-    public static function dataEncodeDecodeParams() 
+    public static function dataEncodeDecodeParams()
     {
         return array(
             array(array()),
             array(array(1,2,3,4,5)),
-            array(array("Hello" => "This", "is" => "an", "associative" => "array")), 
+            array(array("Hello" => "This", "is" => "an", "associative" => "array")),
         );
     }
     /**
@@ -980,7 +1014,7 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataEncodeDecodeParams
      */
-    public function testEncodeDecodeParams($params) 
+    public function testEncodeDecodeParams($params)
     {
         $expect = $params;
         device::encodeParams($params);
@@ -991,8 +1025,4 @@ class DeviceTest extends databaseTest
 
 }
 
-// Call deviceTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "deviceTest::main") {
-    deviceTest::main();
-}
 ?>

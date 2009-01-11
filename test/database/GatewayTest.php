@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call gatewayTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "gatewayTest::main");
-}
 
 /** Test Case */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -76,7 +71,7 @@ class GatewayTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -92,10 +87,10 @@ class GatewayTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Gateway", $this->config); // new gateway($this->pdo);
+        $this->o =& HUGnetDB::getInstance("Gateway", $this->config);
         $this->o->createTable();
 
     }
@@ -108,7 +103,7 @@ class GatewayTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         parent::tearDown();
         unset($this->o);
@@ -119,7 +114,7 @@ class GatewayTest extends databaseTest
      *
      * @return array
      */
-    public static function dataFind() 
+    public static function dataFind()
     {
         $stuff = posix_uname();
         $ip    = gethostbyname($stuff["nodename"]);
@@ -154,7 +149,7 @@ class GatewayTest extends databaseTest
                     "FirmwareStatus" => "BETA",
                ),
            ),
- 
+
         );
     }
     /**
@@ -167,18 +162,13 @@ class GatewayTest extends databaseTest
      *
      * @dataProvider dataFind().
      */
-    public function testFind($preload, $expect) 
+    public function testFind($preload, $expect)
     {
         $this->load($preload);
         $ret = $this->o->find();
         $this->assertSame($expect, $ret);
     }
 
-}
-
-// Call gatewayTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "gatewayTest::main") {
-    gatewayTest::main();
 }
 
 /**
@@ -197,8 +187,10 @@ class GatewayMock extends gateway
 {
     /**
      * Mock getAll that always returns localhost.
+     *
+     * @return array
      */
-    function getAll() 
+    function getAll()
     {
         return array(
             array(

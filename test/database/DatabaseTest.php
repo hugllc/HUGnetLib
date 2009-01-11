@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -66,13 +66,19 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
-        if (empty($this->table)) throw new exception(get_class($this)."->table not defined!", -1);
+        if (empty($this->table)) {
+            throw new exception(get_class($this)."->table not defined!", -1);
+        }
         $this->config["file"] = tempnam(sys_get_temp_dir(), get_class($this));
-        $this->file = $this->config["file"];
-        if (!empty($this->id)) $this->config["id"] = $this->id;
-        if (!empty($this->table)) $this->config["table"] = $this->table;
+        $this->file           = $this->config["file"];
+        if (!empty($this->id)) {
+            $this->config["id"] = $this->id;
+        }
+        if (!empty($this->table)) {
+            $this->config["table"] = $this->table;
+        }
         $this->config["servers"][0] = array(
             'host' => 'localhost',
             'user' => '',
@@ -91,13 +97,15 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         if (is_object($this->pdo) && (get_class($this->pdo) == "PDO")) {
             $this->pdo->query("delete from ".$this->table);
             $this->pdo = null;
         }
-        if (file_exists($this->config["file"])) unlink($this->config["file"]);
+        if (file_exists($this->config["file"])) {
+            unlink($this->config["file"]);
+        }
         unset($this->config);
     }
 
@@ -114,7 +122,9 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      */
     protected function load($values)
     {
-        if (count($values) < 1) return;
+        if (count($values) < 1) {
+            return;
+        }
         $keys   = array_keys($values[0]);
         $sep    = "";
         $qMarks = "";
@@ -122,9 +132,12 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
             $qMarks .= $sep." ? ";
             $sep     = ",";
         }
-        $query  = "INSERT INTO `".$this->table."` (".implode($keys, ",").") VALUES(".$qMarks.");";
+        $query  = "INSERT INTO `".$this->table."`";
+        $query .= "(".implode($keys, ",").") VALUES(".$qMarks.");";
         $res    = $this->pdo->prepare($query);
-        if (!is_object($res)) return;
+        if (!is_object($res)) {
+            return;
+        }
         $count = 0;
         foreach ($values as $val) {
             $data = $this->prepareData($val, $keys);
@@ -141,12 +154,14 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @param array $data The data to prepare
      * @param array $keys The keys to use
-     * 
+     *
      * @return array
      */
-    protected function prepareData($data, $keys) 
+    protected function prepareData($data, $keys)
     {
-        if (!is_array($keys)) return array();
+        if (!is_array($keys)) {
+            return array();
+        }
         $ret = array();
         foreach ($keys as $k) {
             $ret[] = $data[$k];
@@ -158,14 +173,17 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     /**
      *  Gets a record from the database
      *
-     * @param mixed $id The id of the element to get from the database. 
+     * @param mixed $id The id of the element to get from the database.
      *
      * @return array
      */
     protected function getSingle($id)
     {
-        $ret = $this->pdo->query("SELECT * FROM ".$this->table." WHERE ".$this->id."=".(int)$id.";");
-        if (!is_object($ret)) return array();
+        $query = "SELECT * FROM ".$this->table." WHERE ".$this->id."=".(int)$id.";";
+        $ret   = $this->pdo->query($query);
+        if (!is_object($ret)) {
+            return array();
+        }
         $ret = $ret->fetchAll(PDO::FETCH_ASSOC);
         return $ret[0];
     }
@@ -178,13 +196,13 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     protected function getAll()
     {
         $query = "SELECT * FROM `".$this->table."`;";
-        $res = $this->pdo->query($query);
+        $res   = $this->pdo->query($query);
         if (!is_object($res)) {
             var_dump($query);
             var_dump($this->pdo->errorInfo());
             return false;
         }
-        return $res->fetchAll(PDO::FETCH_ASSOC);    
+        return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -192,7 +210,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testTableString() 
+    public function testTableString()
     {
         $table = $this->readAttribute($this->o, "table");
         $this->assertType("string", $table);
@@ -203,7 +221,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testTableEmpty() 
+    public function testTableEmpty()
     {
         $table = $this->readAttribute($this->o, "table");
         $this->assertFalse(empty($table));
@@ -214,7 +232,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testIdString() 
+    public function testIdString()
     {
         $id = $this->readAttribute($this->o, "id");
         $this->assertType("string", $id);
@@ -225,7 +243,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testIdEmpty() 
+    public function testIdEmpty()
     {
         $id = $this->readAttribute($this->o, "id");
         $this->assertFalse(empty($id));
@@ -240,8 +258,10 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     function testFieldCount()
     {
         $columns = $this->readAttribute($this->o, "_columns");
-        $fields = $this->readAttribute($this->o, "fields");
-        $this->assertSame($columns, count($fields), "Table was either not built or modified.");
+        $fields  = $this->readAttribute($this->o, "fields");
+        $this->assertSame($columns,
+                          count($fields),
+                          "Table was either not built or modified.");
     }
 
 }

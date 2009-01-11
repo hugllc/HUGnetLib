@@ -31,15 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Call processTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "processTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -77,7 +72,7 @@ class ProcessTest extends databaseTest
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -93,10 +88,10 @@ class ProcessTest extends databaseTest
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("Process", $this->config); // new process($this->pdo, $this->table, $this->id);
+        $this->o =& HUGnetDB::getInstance("Process", $this->config);
         $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
@@ -111,7 +106,7 @@ class ProcessTest extends databaseTest
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         $this->pdo->query("DROP TABLE ".$this->table);
         parent::tearDown();
@@ -126,7 +121,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testGetMyInfo().
      */
-    public function testGetMyInfo() 
+    public function testGetMyInfo()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -139,7 +134,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckProcess().
      */
-    public function testCheckProcess() 
+    public function testCheckProcess()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -152,7 +147,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckAll().
      */
-    public function testCheckAll() 
+    public function testCheckAll()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -165,7 +160,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testRegister().
      */
-    public function testRegister() 
+    public function testRegister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -178,7 +173,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckin().
      */
-    public function testCheckin() 
+    public function testCheckin()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -191,7 +186,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testFastCheckin().
      */
-    public function testFastCheckin() 
+    public function testFastCheckin()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -204,7 +199,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testDbRegister().
      */
-    public function testDbRegister() 
+    public function testDbRegister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -217,7 +212,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testDbUnregister().
      */
-    public function testDbUnregister() 
+    public function testDbUnregister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -230,7 +225,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testUnregister().
      */
-    public function testUnregister() 
+    public function testUnregister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -243,7 +238,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCreateTable().
      */
-    public function testCreateTable() 
+    public function testCreateTable()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -256,7 +251,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckRegistered().
      */
-    public function testCheckRegistered() 
+    public function testCheckRegistered()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -269,7 +264,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckUnregistered().
      */
-    public function testCheckUnregistered() 
+    public function testCheckUnregistered()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -282,7 +277,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testFileRegister().
      */
-    public function testFileRegister() 
+    public function testFileRegister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -295,7 +290,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testFileUnregister().
      */
-    public function testFileUnregister() 
+    public function testFileUnregister()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -308,7 +303,7 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckFile().
      */
-    public function testCheckFile() 
+    public function testCheckFile()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -321,15 +316,11 @@ class ProcessTest extends databaseTest
      *
      * @todo Implement testCheckDB().
      */
-    public function testCheckDB() 
+    public function testCheckDB()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
 }
 
-// Call processTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "processTest::main") {
-    processTest::main();
-}
 ?>
