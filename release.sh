@@ -11,5 +11,5 @@ fi
 git commit -a
 echo Tagging the version
 #svn -m "Release $VERSION" copy ./$COM_NAME ${SVN_SERVER}/HUGnet/tags/HUGnetLib/${VERSION}
-git tag -m "Release ${VERSION}" -s ${VERSION} .
+git tag -m "Release ${VERSION}" -s ${VERSION}
 git push
