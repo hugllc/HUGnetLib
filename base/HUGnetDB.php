@@ -1237,6 +1237,34 @@ class HUGnetDB
         return $saveConfig;
     }
 
+    /**
+    * This converts a CSV string to a database array
+    *
+    * @param string $CSV      The CSV string to use
+    * @param string $fieldSep The separator to use.  "," is the default
+    * @param string $rowSep   The separator for rows.  "\n" is the default
+    *
+    * @return array The database array
+    */
+    function fromCSV($CSV, $fieldSep = ",", $rowSep = "\n")
+    {
+        if (!is_array($CSV)) {
+            $CSV = explode($rowSep, $CSV);
+        }
+        $ret = array();
+        $count = 0;
+        foreach ($CSV as $row) {
+            if (empty($row)) continue;
+            $r = explode($fieldSep, $row);
+            $index = 0;
+            foreach (array_keys($this->fields) as $field) {
+                $ret[$count][$field] = $r[$index];
+                $index++;
+            }
+            $count++;
+        }
+        return $ret;
+    }
 }
 
 

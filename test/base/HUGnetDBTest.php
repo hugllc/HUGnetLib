@@ -34,10 +34,6 @@
  * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-// Call HUGnetDBTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HUGnetDBTest::main');
-}
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 
@@ -1431,11 +1427,52 @@ class HUGnetDBTest extends databaseTest
         unset($p);
     }
 
-}
+    /**
+     * Data provider for testFixType
+     *
+     * @return array
+     */
+    public static function dataFromCSV() 
+    {
+        return array(
+            array(
+                "1,2,3", 
+                ",", 
+                "\n", 
+                array(array("id" => "1", "name"=>"2", "value"=>"3")),
+            ),
+            array(
+                "1,2,3\n3,4,5\n", 
+                ",", 
+                "\n", 
+                array(
+                    array("id" => "1", "name"=>"2", "value"=>"3"),
+                    array("id" => "3", "name"=>"4", "value"=>"5"),
+              )
+               
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $CSV      The CSV string to use
+    * @param string $fieldSep The separator to use.  "," is the default
+    * @param string $rowSep   The separator for rows.  "\n" is the default
+    * @param array  $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataFromCSV
+    */
+    public function testFromCSV($CSV, $fieldSep, $rowSep, $expect) 
+    {
+        $o = new HUGnetDBClassTest();
+        $o->createTable();
+        $ret = $o->fromCSV($CSV, $fieldSep, $rowSep);
+        $this->assertSame($expect, $ret);
+    }
 
-// Call HUGnetDBTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == 'HUGnetDBTest::main') {
-    HUGnetDBTest::main();
 }
 
 /**
