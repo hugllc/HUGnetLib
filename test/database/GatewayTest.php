@@ -116,6 +116,8 @@ class GatewayTest extends databaseTest
      */
     public static function dataFind()
     {
+        $stuff = posix_uname();
+        $ip    = gethostbyname($stuff["nodename"]);
 
         return array(
             array(array(), false),
@@ -131,7 +133,7 @@ class GatewayTest extends databaseTest
                    ),
                     array(
                         "GatewayKey" => 2,
-                        "GatewayIP" => "127.0.0.1",
+                        "GatewayIP" => $ip,
                         "GatewayName" => "thing2",
                         "GatewayLocation" => "asdf",
                         "database" => "HUGnet",
@@ -140,7 +142,7 @@ class GatewayTest extends databaseTest
                ),
                 array(
                     "GatewayKey" => "2",
-                    "GatewayIP" => "127.0.0.1",
+                    "GatewayIP" => $ip,
                     "GatewayName" => "thing2",
                     "GatewayLocation" => "asdf",
                     "database" => "HUGnet",
