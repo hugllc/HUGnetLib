@@ -1251,6 +1251,7 @@ class HUGnetDB
         if (!is_array($CSV)) {
             $CSV = explode($rowSep, $CSV);
         }
+
         $ret = array();
         $count = 0;
         foreach ($CSV as $row) {
@@ -1258,7 +1259,7 @@ class HUGnetDB
             $r = explode($fieldSep, $row);
             $index = 0;
             foreach (array_keys($this->fields) as $field) {
-                $ret[$count][$field] = $r[$index];
+                $ret[$count][$field] = str_replace('"', "", $r[$index]);
                 $index++;
             }
             $count++;
