@@ -154,9 +154,10 @@ class HUGnetDB
         unset($config["id"]);
 
         $this->db = &HUGnetDB::createPDO($config);
-        if (!$this->checkDB($this->db)) {
+        if (!$this->checkDB()) {
             $except = "No Database Connection in class ".get_class($this);
             self::throwException($except, -2);
+            die("No database server available");
         }
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
         $this->db->setAttribute(PDO::ATTR_TIMEOUT, $this->dbTimeout);
