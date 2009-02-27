@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *  
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,13 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /**
  * Class for doing unit conversions and storing unit information
- * 
+ *
  * All units must be added to this class if they are to be used in HUGnet
  * code.  This is because this tells everything else how to deal with these
  * units and how to convert between them.  If units are not added here then
@@ -66,10 +66,10 @@ class UnitConversion
      * This registers the sensor Plugins so we know what code we have available.
      *
      * @param object &$plugins This is a object of type plugin
-     * 
+     *
      * @see plugin
       */
-    function __construct(&$plugins = "") 
+    function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) {
@@ -87,13 +87,13 @@ class UnitConversion
     /**
      * Register a sensor class.
      *
-     * @param mixed  $class The name of the sensor class to register, 
+     * @param mixed  $class The name of the sensor class to register,
      *                  or the actual object
      * @param string $name  The name of the class if the above is an object.
      *
      * @return bool true on success, false on failure
       */
-    public function registerUnits($units) 
+    public function registerUnits($units)
     {
         $class = (string) $units["Class"];
         $name  = (string) $units["Name"];
@@ -111,7 +111,7 @@ class UnitConversion
         } else {
             return false;
         }
-    
+
     }
 
     /**
@@ -129,8 +129,8 @@ class UnitConversion
         } else {
             return $unit;
         }
-    }    
-    
+    }
+
     /**
      * Checks to see if a particular unit is able to be graphed
      *
@@ -138,7 +138,7 @@ class UnitConversion
      *
      * @return bool Whether the unit can be graphed or not
       */
-    public function graphable($unit) 
+    public function graphable($unit)
     {
         $unit = trim($unit);
         $u    = $this->findUnit($unit);
@@ -148,7 +148,7 @@ class UnitConversion
         } else {
             return false;
         }
-    }    
+    }
     /**
      * Checks if a unit exists and returns the information on it if it does.
      *
@@ -158,7 +158,7 @@ class UnitConversion
      *
      * @return array the array of unit information if it is found
      */
-    public function findUnit($unit) 
+    public function findUnit($unit)
     {
 
         foreach ($this->units as $key => $value) {
@@ -177,7 +177,7 @@ class UnitConversion
      *
      * @return string The data type to use
      */
-    public function getDataType($from, $to, $default = 'all') 
+    public function getDataType($from, $to, $default = 'all')
     {
         if (trim(strtolower($default)) == 'ignore') return $default;
         $u = $this->findUnit($from);
@@ -196,9 +196,9 @@ class UnitConversion
      * @param string $to   The unit to be converted into
      * @param string $type The data type to use
      *
-     * @return string null if no function exists, the function name otherwise. 
+     * @return string null if no function exists, the function name otherwise.
      */
-    protected function getConvFunct($from, $to, $type) 
+    protected function getConvFunct($from, $to, $type)
     {
         if ($to == $from) return null;
         $f = $this->findUnit($from);
@@ -208,7 +208,7 @@ class UnitConversion
         }
         return null;
     }
-    
+
     /**
      * Converts a value based on input given.
      *
@@ -221,7 +221,7 @@ class UnitConversion
      *
      * @return mixed
      */
-    public function convert($val, $from, &$to, $time, $type, $extra) 
+    public function convert($val, $from, &$to, $time, $type, $extra)
     {
         list($class, $func) = $this->getConvFunct($from, $to, $type);
         if (substr(trim(strtolower($func)), 0, 6) == "shift:") {
@@ -246,7 +246,7 @@ class UnitConversion
      *
      * @return array The possible conversions
      */
-    public function getPossConv($type, $from=null) 
+    public function getPossConv($type, $from=null)
     {
 
         $ret = array();
@@ -264,7 +264,7 @@ class UnitConversion
         if (!is_null($from)) {
             $ret[$from][] = $from;
             return $ret[$from];
-        }        
+        }
         return $ret;
     }
     /**
@@ -274,7 +274,7 @@ class UnitConversion
      *
      * @return array The possible conversions
      */
-    public function getAllUnits($type=null, $flat=false) 
+    public function getAllUnits($type=null, $flat=false)
     {
 
         $ret = array();
@@ -304,8 +304,9 @@ class UnitConversion
      *
      * @return null
      */
-    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null) 
+    function modifyUnits(&$history, &$devInfo, $dPlaces, &$type=null, &$units=null)
     {
+        $devInfo["modifyUnits"]++;
         $lastRecord = null;
         $totalSensors = (empty($devInfo["TotalSensors"])) ? $devInfo["ActiveSensors"] : $devInfo["TotalSensors"];
         if (!is_array($history)) $history = array();
@@ -330,8 +331,8 @@ class UnitConversion
                                 }
                                 break;
                             }
-                        }  
-                    }            
+                        }
+                    }
                     $lastRecord = $val;
                 } else {
                     $lastRecord = $val;
