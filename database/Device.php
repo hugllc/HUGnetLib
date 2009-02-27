@@ -259,21 +259,14 @@ class Device extends HUGnetDB
         if ($replace === false) {
             $info["SerialNum"] = $this->getPrevID("SerialNum");
         }
-        if (empty($info["DeviceID"])) {
-            $info["DeviceID"] = devInfo::sn2DeviceID($info["SerialNum"]);
-        }
-        if (empty($info["HWPartNum"])) {
-            $info["HWPartNum"] = "VIRTUAL";
-        }
-        if (empty($info["FWPartNum"])) {
-            $info["FWPartNum"] = "VIRTUAL";
-        }
-        if (empty($info["FWVersion"])) {
-            $info["FWVersion"] = "VIRTUAL";
-        }
-        if (empty($info["Driver"])) {
-            $info["Driver"] = "eVIRTUAL";
-        }
+        $info["DeviceID"]   = devInfo::sn2DeviceID($info["SerialNum"]);
+        $info["HWPartNum"]  = "VIRTUAL";
+        $info["FWPartNum"]  = "VIRTUAL";
+        $info["FWVersion"]  = "VIRTUAL";
+        $info["Driver"]     = "eVIRTUAL";
+        $info["GatewayKey"] = -1;
+        $info["Active"]     = 1;
+        
         if (self::add($info, $replace)) {
             return $info["SerialNum"];
         }
