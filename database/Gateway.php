@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -40,7 +40,7 @@ require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /**
  * Database interface class for gateways
- *   
+ *
  * This class started out as both a database interface class
  * and a class for talking with gateways.  That has changed
  * and it is now only the database interface class.  Use ep_socket
@@ -70,8 +70,8 @@ class Gateway extends HUGnetDB
      * @param int    $GatewayKey The key to use if only one gateway is to be selected
      *
      * @return mixed
-     */    
-    function select($where = " isVisible <> 0 ", $data = array()) 
+     */
+    function select($where = " isVisible <> 0 ", $data = array())
     {
         $rows = $this->getWhere($where, $data);
         $ret = array(VIRTUAL_ENDPOINT_GATEWAY => "Virtual");
@@ -79,15 +79,15 @@ class Gateway extends HUGnetDB
             $ret[$row["GatewayKey"]] = $row["GatewayName"];
         }
         return $ret;
-    }    
-    
+    }
+
 
     /**
      * Try to automatically find out which gateway to use
      *
      * @return mixed false on failure, Array of gateway information on success
      */
-    function find() 
+    function find()
     {
         if (function_exists("posix_uname")) {
             $this->vprint("Trying to figure out which gateway to use...");
@@ -112,7 +112,7 @@ class Gateway extends HUGnetDB
      *
      * @return mixed The output of the last SQL statement
      */
-    function createTable($table = null) 
+    function createTable($table = null)
     {
         if (is_string($table)) $this->table = $table;
 
@@ -125,7 +125,7 @@ class Gateway extends HUGnetDB
                   `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
                   PRIMARY KEY  (`GatewayKey`)
                );";
-                    
+
         $ret = $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'.$this->table.'` (`GatewayName`)');
@@ -140,7 +140,7 @@ class Gateway extends HUGnetDB
      *
      * @return mixed The output of the last SQL statement
      */
-    function createLocalTable($table = null) 
+    function createLocalTable($table = null)
     {
         if (is_string($table)) $this->table = $table;
         $this->id = "DeviceID";
@@ -158,9 +158,9 @@ class Gateway extends HUGnetDB
                   `Job` int(11) NOT null default 0,
                   `Priority` int(11) NOT null default 0,
                   `Local` int(11) NOT null default 0,
-                  PRIMARY KEY  (`DeviceID`)
+                  PRIMARY KEY  (`DeviceID`, `Local`)
                );";
-                    
+
         $ret = $this->query($query);
         $this->getColumns();
         return $ret;
