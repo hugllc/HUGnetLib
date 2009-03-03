@@ -763,6 +763,7 @@ class DriverTest extends PHPUnit_Framework_TestCase
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
                     "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
                     "Units" => array("E", "B", "E", "D", "E"),
+                    "modifyUnits" => 1,
                ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff"), // expectType
                 array("E", "B", "E", "D","E"), // expectUnits
