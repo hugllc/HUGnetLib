@@ -256,7 +256,33 @@ class HUGnetDB
         }
         return true;
     }
-
+    /**
+    *  Adds a field to the devices table for cache information
+    *
+    * @param string $name The name of the field
+    * @param string $var  The class variable where the HUGnetDB object resides
+    *
+    * @return null
+    */
+    public function addField($name, $type="TEXT", $default=null, $null=false)
+    {
+        if (isset($this->fields[$name])) {
+            return true;
+        }
+        $query  = "ALTER TABLE `".$this->table."` ADD `$name` $type ";
+        if (!$null) {
+            $query .= "NOT NULL ";
+        }
+        if (!is_null($default)) {
+            $query .= " DEFAULT '$default'";
+        }
+        if ($this->query($query, array(), false)) {
+            $this->fields[$name] = $type;
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
     * Throws an exception
     *
