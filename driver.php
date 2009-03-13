@@ -308,6 +308,26 @@ class HUGnetDriver
     }
 
     /**
+    * Returns the devices XML file as an array
+    *
+    * @param mixed $obsolete Bool true for yes, bool false for no, anything
+    *                        else for both
+    *
+    * @return array
+    */
+    function getHardwareTypes($obsolete=null)
+    {
+        $xml = simplexml_load_file(HUGNET_INCLUDE_PATH.'/devices.xml');
+        $devs = array();
+        foreach ($xml->endpoints as $d) {
+            $data = get_object_vars($d);
+            if ($data["Obsolete"] == $obsolete) {
+                $devs[] = $data;
+            }
+        }
+        return $devs;
+    }
+    /**
     * Runs a function using the correct driver for the endpoint
     *
     * @param array $Packets Array of information about the device with the data
