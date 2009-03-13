@@ -1,0 +1,84 @@
+<!--
+/**
+* This file defines what devices are about
+*
+* HUGnetLib is a library of HUGnet code
+* Copyright (C) 2009 Hunt Utilities Group, LLC
+* Copyright (C) 2009 Scott Price
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA  02110-1301, USA.
+*/
+
+-->
+
+
+<HUGNet>
+    <!-- Table endpoints -->
+    <endpoints>
+        <HWPartNum>0039-12-01-A</HWPartNum>
+        <Parameters>CPU: attiny26</Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>Test Run.  Only 20 ever made.</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-A</HWPartNum>
+        <Parameters>CPU: attiny26
+            VCC: 3.3V
+        </Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>Very few of these were made.</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-B</HWPartNum>
+        <Parameters>CPU: attiny26
+            VCC: 5V</Parameters>
+        <Obsolete>1</Obsolete>
+        <Notes>Martek made 96 of these.  Scott make a number more than that.
+            There are still a lot of these out in the field.</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-21-01-A</HWPartNum>
+        <Parameters>CPU: atmega16
+            VCC: 5V
+            Firmware: 0039-20-06-C
+            FuseHigh: 0xD0
+            FuseLow: 0x2F
+            LockBits: 0xEF
+            Built: 30
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>This is the current controller board.
+
+            6 were made by Scott
+            6 were made by Barb
+            18 were made by Martek</Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-28-01-A</HWPartNum>
+        <Parameters>CPU: atmega168
+            VCC: 5V
+            Firmware: 0039-20-13-C
+            FuseHigh: 0xD5
+            FuseLow: 0xE2
+            Built: 168
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>This is the current endpoint
+
+            12 were made by Scott
+            156 were made by Martek</Notes>
+    </endpoints>
+</HUGNet>
