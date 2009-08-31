@@ -174,6 +174,8 @@ class Plugins
     var $webdir = "plugins/";
     /** @var string Debug output is contained here. */
     var $_debug_stack = "";
+    /** @var array The directory to skip. */
+    var $_skipDir = array();
 
 
     /**
@@ -532,7 +534,9 @@ class Plugins
         if (!empty($extension)) {
             $this->extension = $extension;
         }
-        $this->_skipDir = $skipDir;
+        if (is_array($skipDir)) {
+            $this->_skipDir = $skipDir;
+        }
         if (!is_array($this->plugins)) {
             $this->findPlugins();
         }
