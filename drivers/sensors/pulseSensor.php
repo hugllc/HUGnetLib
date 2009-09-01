@@ -108,7 +108,7 @@ if (!class_exists('pulseSensor')) {
                    ),
                     "mult" => 0.01,
                     "doTotal" => true,
-               ),
+                ),
                 'bravo3motion' => array(
                     "longName" => "DSC Bravo 3 Motion Sensor",
                     "unitType" => "Pulses",
@@ -120,7 +120,7 @@ if (!class_exists('pulseSensor')) {
                    ),
                     "checkFunction" => "pulseCheck",
                     "doTotal" => true,
-               ),
+                ),
                 'wattnode' => array(
                     "longName" => "CCS WattNode Pulse Output Power Meter",
                     "unitType" => "Power",
@@ -136,8 +136,23 @@ if (!class_exists('pulseSensor')) {
                     "extraText" => "Watt Hours / Pulse",
                     "extraDefault" => 5,
                     "doTotal" => true,
-               ),
-           ),
+                ),
+                'liquidflowmeter' => array(
+                    "longName" => "Liquid Flow Meter",
+                    "unitType" => "Volume",
+                    "validUnits" => array('gal', 'l', 'ml'),
+                    "storageUnit" =>  'gal',
+                    "function" => "liquidFlowMeter",
+                    "unitModes" => array(
+                        'gal' => 'diff, raw',
+                        'l' => 'diff, raw',
+                        'ml' => 'diff, raw',
+                    ),
+                    "extraText" => "Gallons / Pulse",
+                    "extraDefault" => 1000,
+                    "doTotal" => true,
+                ),
+            ),
         );
 
 
@@ -194,7 +209,7 @@ if (!class_exists('pulseSensor')) {
         }
 
         /**
-        * Crunchs the numbers for the WattNode
+        * Crunches the numbers for the WattNode
         *
         * @param int   $val    Output of the A to D converter
         * @param array $sensor The sensor information array
@@ -212,6 +227,27 @@ if (!class_exists('pulseSensor')) {
                 return null;
             }
             return $Wh / 1000;
+        }
+
+        /**
+        * Crunches the numbers for the Liquid Flow Meter
+        *
+        * @param int   $val    Output of the A to D converter
+        * @param array $sensor The sensor information array
+        * @param int   $TC     The time constant
+        * @param mixed $extra  Extra sensor information
+        * @param float $deltaT The time delta in seconds between this record
+        *                      and the last one
+        *
+        * @return float
+        */
+        function liquidFlowMeter($val, $sensor, $TC, $extra, $deltaT=null)
+        {
+            $G = $val * $extra;
+            if ($G < 0) {
+                return null;
+            }
+            return (float)$G;
         }
 
         /**

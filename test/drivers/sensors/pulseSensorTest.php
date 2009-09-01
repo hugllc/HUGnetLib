@@ -233,6 +233,45 @@ class PulseSensorTest extends sensorTestBase
     }
 
     /**
+    * Data provider for testWattNode
+    *
+    * @return array
+    */
+    public static function dataLiquidFlowMeter()
+    {
+        return array(
+            array(500, array(), 1, 5, 300, 2500.0),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param int   $val    Output of the A to D converter
+    * @param array $sensor The sensor information array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra sensor information
+    * @param float $deltaT The time delta in seconds between this record
+    * @param float $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataLiquidFlowMeter
+    * @covers pulseSensor::liquidFlowMeter
+    */
+    public function testLiquidFlowMeter($val, $sensor, $TC, $extra, $deltaT, $expect)
+    {
+        parent::sensorTest("pulseSensor",
+                           "liquidFlowMeter",
+                           $val,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
+    }
+
+    /**
     * Data provider for testGetPPM
     *
     * @return array
