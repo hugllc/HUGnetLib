@@ -280,7 +280,7 @@ class Plugins
             $args = $fArgs;
             array_unshift($args, $return);
             $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
-            $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
+            $this->_debug(" of Type: '".$fct["Types"]."'\n", 3);
             $this->_debug("[PLUGIN OUTPUT]\n", 4);
             $ret = $this->_runFunction($fct["Name"], $args);
             if (!is_null($ret)) {
