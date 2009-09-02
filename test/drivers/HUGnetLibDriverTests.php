@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -64,8 +64,8 @@ require_once 'sensors/resistiveSensorTest.php';
 require_once 'sensors/voltageSensorTest.php';
 require_once 'sensors/windDirectionSensorTest.php';
 // Sockets
-require_once 'socket/dbsocketTest.php'; 
-require_once 'socket/epsocketTest.php'; 
+require_once 'socket/dbsocketTest.php';
+require_once 'socket/epsocketTest.php';
 // Units
 require_once 'units/temperatureUnitsTest.php';
 require_once 'units/heatConductanceUnitsTest.php';
@@ -83,6 +83,7 @@ require_once 'units/humidityUnitsTest.php';
 require_once 'units/lightUnitsTest.php';
 require_once 'units/pressureUnitsTest.php';
 require_once 'units/speedUnitsTest.php';
+require_once 'units/volumeUnitsTest.php';
 /**
  *  This class runs all of the tests.  This must be done with no errors
  * before the software is ever released.
@@ -107,7 +108,7 @@ class HUGnetLibDriverTests
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
- 
+
     /**
      * test suite
      *
@@ -117,7 +118,7 @@ class HUGnetLibDriverTests
     {
         $suite = new PHPUnit_Framework_TestSuite('HUGnetLibDriver');
 
-        // Driver Tests 
+        // Driver Tests
         // Endpoints
         $suite->addTestSuite('eDEFAULTTest');
         $suite->addTestSuite('eVIRTUALTest');
@@ -126,10 +127,10 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('e00391200Test');
         $suite->addTestSuite('e00391201Test');
         $suite->addTestSuite('e00392601Test');
- 
+
         // Filters
         $suite->addTestSuite('medianFilterTest');
-         
+
         // Sensors
         $suite->addTestSuite('capacitiveSensorTest');
         $suite->addTestSuite('currentSensorTest');
@@ -138,11 +139,11 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('resistiveSensorTest');
         $suite->addTestSuite('voltageSensorTest');
         $suite->addTestSuite('windDirectionSensorTest');
-        
+
         // Sockets
         $suite->addTestSuite('dbsocketTest');
         $suite->addTestSuite('epsocketTest');
-        
+
         // Units
         $suite->addTestSuite('heatInsulationUnitsTest');
         $suite->addTestSuite('heatConductanceUnitsTest');
@@ -160,10 +161,11 @@ class HUGnetLibDriverTests
         $suite->addTestSuite('lightUnitsTest');
         $suite->addTestSuite('pressureUnitsTest');
         $suite->addTestSuite('speedUnitsTest');
+        $suite->addTestSuite('volumeUnitsTest');
         return $suite;
     }
 }
- 
+
 if (PHPUnit_MAIN_METHOD == 'HUGnetLibDriverTests::main') {
     HUGnetLibDriverTests::main();
 }

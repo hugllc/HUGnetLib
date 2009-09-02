@@ -63,13 +63,49 @@ if (!class_exists('volumeUnits')) {
             'gal' => array(
                 'longName' => 'US Gallon',
                 'varType' => 'float',
+                'convert' => array(
+                    'l' => 'galtol',
+                ),
             ),
             'l' => array(
                 'longName' => 'Liters',
                 'varType' => 'float',
                 'siPrefix' => array('m'),
+                'convert' => array(
+                    'gal' => 'ltogal',
+                ),
             ),
         );
+
+        /**
+         * Change US Gallons to liters
+         *
+         * @param int    $val  The value to convert
+         * @param int    $time The time in seconds between this record and the last.
+         * @param string $type The type of data (diff, raw, etc)
+         *
+         * @return float null if not differential data, the RPM otherwise
+         *
+         */
+        public function galtol ($val, $time, $type)
+        {
+            return $val * 3.78541178;
+        }
+
+        /**
+         * Change US Gallons to liters
+         *
+         * @param int    $val  The value to convert
+         * @param int    $time The time in seconds between this record and the last.
+         * @param string $type The type of data (diff, raw, etc)
+         *
+         * @return float null if not differential data, the RPM otherwise
+         *
+         */
+        public function ltogal ($val, $time, $type)
+        {
+            return $val / 3.78541178;
+        }
 
 
     }
