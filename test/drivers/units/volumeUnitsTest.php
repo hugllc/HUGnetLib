@@ -155,8 +155,8 @@ class volumeUnitsTest extends UnitTestBase
     /**
      * Tests galtol
      *
-     * @param int    $val    The number of counts
      * @param float  $expect The RPM expected
+     * @param int    $val    The number of counts
      * @param int    $time   The time in seconds between this record and the last.
      * @param string $type   The type of data (diff, raw, etc)
      * @param int    $extra  the number of counts per revolution
