@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -59,7 +59,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392800.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class e00392800Test extends endpointTestBase
@@ -91,7 +91,7 @@ class e00392800Test extends endpointTestBase
                          "VSensors" => 2,
                      ),
                 ),
-                 "Return" => array( 
+                 "Return" => array(
                      "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
                      "DriverInfo" => "0102020202020202027070707070707070",
                      "HWPartNum" => "0039-28-01-A",
@@ -122,7 +122,7 @@ class e00392800Test extends endpointTestBase
                      "Driver" => "e00392800",
                      "DeviceGroup" => "FFFFFF",
                 ),
-                 "Return" => array( 
+                 "Return" => array(
                      "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
                      "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
                      "HWPartNum" => "0039-28-01-A",
@@ -139,7 +139,7 @@ class e00392800Test extends endpointTestBase
                      "Types" => array(2,2,2,2,2,2,2,2,111,111,111,111,111,112,112,112),
                      "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "ignore", "ignore", "ignore", "ignore", "diff", "diff", "diff"),
                      "params" => array(
-                         "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"), 
+                         "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"),
                          "dType" => array(9 => "ignore", 10 => "ignore", 11 => "ignore", 12 => "ignore"),
                      ),
                      "TotalSensors" => 16,
@@ -311,7 +311,7 @@ class e00392800Test extends endpointTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -323,7 +323,7 @@ class e00392800Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesFirmware() 
+    public static function dataDevicesFirmware()
     {
         return parent::devicesArrayDataSource("e00392800", "fw");
     }
@@ -332,7 +332,7 @@ class e00392800Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesHardware() 
+    public static function dataDevicesHardware()
     {
         return parent::devicesArrayDataSource("e00392800", "hw");
     }
@@ -341,7 +341,7 @@ class e00392800Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesVersion() 
+    public static function dataDevicesVersion()
     {
         return parent::devicesArrayDataSource("e00392800", "ver");
     }
@@ -350,7 +350,7 @@ class e00392800Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataConfigArray() 
+    public static function dataConfigArray()
     {
         return parent::dataConfigArray("e00392800");
     }
@@ -358,15 +358,13 @@ class e00392800Test extends endpointTestBase
     /**
      * data provider for test readConfig
      */
-    public static function datareadConfig() 
+    public static function datareadConfig()
     {
         return array(
             array(
                 array("DeviceID" => "000025"),
                 array(
                     array("To" => "000025", "Command" => "5C"),
-                    array("To" => "000025", "Command" => "4C", "Data" => "00"),
-                    array("To" => "000025", "Command" => "4C", "Data" => "01"),
                ),
            ),
         );
