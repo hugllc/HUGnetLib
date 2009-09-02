@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -56,7 +56,7 @@ require_once dirname(__FILE__).'/../../../drivers/units/lightUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class lightUnitsTest extends UnitTestBase
@@ -71,7 +71,7 @@ class lightUnitsTest extends UnitTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -83,7 +83,7 @@ class lightUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("lightUnits");
     }
@@ -92,7 +92,7 @@ class lightUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("lightUnits");
     }
@@ -104,7 +104,7 @@ class lightUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new lightUnits();
     }
@@ -117,9 +117,58 @@ class lightUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
+    /**
+     * Data provider for testFindUnit
+     *
+     * @return array
+     */
+    public static function dataWM2()
+    {
+        return array(
+            array(0, 0, 0, "raw", 0),
+            array(1, 0.317, 0, "raw", 0),
+            array(1, 0.317, 0, "diff", 0),
+        );
+    }
+    /**
+     * Tests galtol
+     *
+     * @param float  $expect The RPM expected
+     * @param int    $val    The number of counts
+     * @param int    $time   The time in seconds between this record and the last.
+     * @param string $type   The type of data (diff, raw, etc)
+     * @param int    $extra  the number of counts per revolution
+     *
+     * @return null
+     *
+     * @dataProvider dataWM2
+     */
+    public function testWM2($expect, $val, $time, $type, $extra)
+    {
+        $this->assertEquals($expect, $this->o->wm2($val, $time, $type, $extra));
+    }
+
+    /**
+     * Tests galtol
+     *
+     * @param int    $val    The number of counts
+     * @param float  $expect The RPM expected
+     * @param int    $time   The time in seconds between this record and the last.
+     * @param string $type   The type of data (diff, raw, etc)
+     * @param int    $extra  the number of counts per revolution
+     *
+     * @return null
+     *
+     * @dataProvider dataWM2
+     */
+    public function testBtuHrFt2($val, $expect, $time, $type, $extra)
+    {
+        $this->assertEquals($expect, $this->o->btuHrFt2($val, $time, $type, $extra));
+    }
+
 
 }
 
