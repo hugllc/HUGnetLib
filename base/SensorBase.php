@@ -105,7 +105,29 @@ class SensorBase
         }
     }
 
-
+    /**
+     * This function performs a linear calibration.
+     *
+     * See http://dev.hugllc.com/wiki/index.php/Project:Linear_Calibration for
+     * more information.  This page also includes how the math was worked out
+     * for this.
+     *
+     * @param mixed $val The value to modify
+     * @param array $cal The calibrations to use
+     *
+     * @return mixed The calibrated value
+     */
+    function linearCalibration($val, $cal)
+    {
+        $deltaA = ($cal[0]["A"] - $cal[1]["A"]);
+        $deltaC = ($cal[0]["C"] - $cal[1]["C"]);
+        if (($deltaA == 0) || ($deltaC == 0)) {
+            return $val;
+        }
+        $m = $deltaC / $deltaA;
+        $b = $cal[1]["C"] - ($cal[1]["A"] * $m);
+        return ($val * $m) + $b;
+    }
 }
 
 ?>
