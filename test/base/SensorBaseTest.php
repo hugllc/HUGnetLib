@@ -261,6 +261,42 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(array(), $this->o->sensors);
     }
+
+    /**
+     * data provider for testConstructor
+     * 
+     * @return array
+     *
+     * @static
+     */
+    public static function dataLinearCalibration()
+    {
+        return array(
+            array(1, array(array("A" => 1,"C" => 2), array("A" => 3,"C" => 4)), 2),
+            array(3, array(array("A" => 1,"C" => 2), array("A" => 3,"C" => 4)), 4),
+            array(0, array(array("A" => 1,"C" => 2), array("A" => 3,"C" => 4)), 1),
+            array(10, array(array("A" => 1,"C" => 2), array("A" => 3,"C" => 4)), 11),
+            array(10, array(array("A" => 1,"C" => 2), array("A" => 1,"C" => 4)), 10),
+            array(10, array(array("A" => 1,"C" => 2), array("A" => 3,"C" => 2)), 10),
+            array(5, null, 5),
+        );
+    }
+    /**
+     * test
+     * 
+     * @param mixed $val    The value to test
+     * @param array $cal    The calibration array
+     * @param mixed $expect The expected value
+     *
+     * @return null
+     *
+     * @dataProvider dataLinearCalibration
+     */
+    public function testLinearCalibration($val, $cal, $expect)
+    {
+        $this->assertSame($expect, $this->o->linearCalibration($val, $cal));
+    }
+
 }
 
 // Call SensorBaseTest::main() if this source file is executed directly.
