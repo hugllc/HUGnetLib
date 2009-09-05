@@ -153,6 +153,50 @@ if (!class_exists('pulseSensor')) {
                     "doTotal" => true,
                 ),
             ),
+            0x7F => array(
+                'hs' => array(
+                    "longName" => "High Speed Pulse Counter",
+                    "unitType" => "Pulses",
+                    "validUnits" => array('PPM', 'counts'),
+                    "storageUnit" =>  'PPM',
+                    "function" => "getPPM",
+                    "unitModes" => array(
+                        'PPM' => 'diff',
+                        'counts' => 'raw,diff',
+                   ),
+                    "checkFunction" => "pulseCheck",
+
+                ),
+                'hsRevolver' => array(
+                    "longName" => "High Speed Revolving Thingy",
+                    "unitType" => "Pulses",
+                    "validUnits" => array('PPM', 'counts', 'RPM'),
+                    "storageUnit" =>  'PPM',
+                    "function" => "getPPM",
+                    "unitModes" => array(
+                        'PPM' => 'diff',
+                        'RPM' => 'diff',
+                        'counts' => 'raw,diff',
+                   ),
+                    "extraText" => "Counts per Revolution",
+                    "extraDefault" => 1,
+                ),
+                'hsliquidflowmeter' => array(
+                    "longName" => "High Speed Liquid Flow Meter",
+                    "unitType" => "Volume",
+                    "validUnits" => array('gal', 'l', 'ml'),
+                    "storageUnit" =>  'gal',
+                    "function" => "liquidFlowMeter",
+                    "unitModes" => array(
+                        'gal' => 'diff, raw',
+                        'l' => 'diff, raw',
+                        'ml' => 'diff, raw',
+                    ),
+                    "extraText" => "Gallons / Pulse",
+                    "extraDefault" => 1000,
+                    "doTotal" => true,
+                ),
+            ),
         );
 
 
@@ -243,7 +287,7 @@ if (!class_exists('pulseSensor')) {
         */
         function liquidFlowMeter($val, $sensor, $TC, $extra, $deltaT=null)
         {
-            $G = $val * $extra;
+            $G = $val / $extra;
             if ($G < 0) {
                 return null;
             }
