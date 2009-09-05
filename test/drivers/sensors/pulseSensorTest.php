@@ -240,7 +240,7 @@ class PulseSensorTest extends sensorTestBase
     public static function dataLiquidFlowMeter()
     {
         return array(
-            array(500, array(), 1, 5, 300, 2500.0),
+            array(500, array(), 1, 5, 300, 100.0),
         );
     }
 
