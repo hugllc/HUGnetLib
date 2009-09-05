@@ -48,7 +48,7 @@ if (!class_exists('lightSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class LightSensor extends sensor_base
+    class LightSensor extends SensorBase
     {
         /** @var array Sensor information array */
         public $sensors = array(

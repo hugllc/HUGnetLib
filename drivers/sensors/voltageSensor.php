@@ -49,7 +49,7 @@ if (!class_exists('voltageSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class VoltageSensor extends sensor_base
+    class VoltageSensor extends SensorBase
     {
         /**
         *    This defines all of the sensors that this driver deals with...

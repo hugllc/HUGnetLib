@@ -48,7 +48,7 @@ if (!class_exists('currentSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class CurrentSensor extends sensor_base
+    class CurrentSensor extends SensorBase
     {
         /**
         * Sensor information array
