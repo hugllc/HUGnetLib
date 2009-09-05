@@ -50,7 +50,7 @@ if (!class_exists('capacitiveSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class CapacitiveSensor extends sensor_base
+    class CapacitiveSensor extends SensorBase
     {
 
         public $sensors = array(

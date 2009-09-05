@@ -51,7 +51,7 @@ if (!class_exists('pulseSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class PulseSensor extends sensor_base
+    class PulseSensor extends SensorBase
     {
 
         /**

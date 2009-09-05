@@ -53,7 +53,7 @@ if (!class_exists('resistiveSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class ResistiveSensor extends sensor_base
+    class ResistiveSensor extends SensorBase
     {
         /** @var float Moisture red zone % */
         protected $Mr = 18;

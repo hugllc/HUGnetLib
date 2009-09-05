@@ -49,7 +49,7 @@ if (!class_exists('windDirectionSensor')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class WindDirectionSensor extends sensor_base
+    class WindDirectionSensor extends SensorBase
     {
 
         /**

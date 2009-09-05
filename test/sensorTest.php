@@ -1216,7 +1216,7 @@ if (PHPUnit_MAIN_METHOD == "sensorTest::main") {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestSensor extends sensor_base
+class TestSensor extends SensorBase
 {
     var $sensors = array(
         0x100 => array(
@@ -1338,7 +1338,7 @@ class TestSensor extends sensor_base
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestSensorExtraSensors extends sensor_base
+class TestSensorExtraSensors extends SensorBase
 {
     /** Sensors array */
     var $sensors = array(
@@ -1361,7 +1361,7 @@ class TestSensorExtraSensors extends sensor_base
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestSensorNoSensors extends sensor_base
+class TestSensorNoSensors extends SensorBase
 {
     /**
      * This is here so that it won't run the sensor_base constructor
