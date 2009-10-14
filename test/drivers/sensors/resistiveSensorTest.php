@@ -141,6 +141,39 @@ class ResistiveSensorTest extends SensorTestBase
         $ret = $o->getResistance($A, $TC, $Bias);
         $this->assertSame($expect, $ret);
     }
+
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
+    public static function dataGetSweep()
+    {
+        return array(
+            array(0, 1, 1, 0.0),
+            array(10000, 1, 10, 1.5274),
+            array(65535, 1, 10, 10.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param int   $TC     The time constant
+    * @param float $Bias   The bias resistance
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSweep
+    */
+    public function testGetSweep($A, $TC, $R, $expect)
+    {
+        $o   = new resistiveSensor();
+        $ret = $o->getSweep($A, $TC, $R);
+        $this->assertSame($expect, $ret);
+    }
+
     /**
      * Data provider for testBCTherm238164066103
      *
@@ -231,6 +264,104 @@ class ResistiveSensorTest extends SensorTestBase
                            $deltaT,
                            $expect);
     }
+
+    /**
+     * Data provider for testBCTherm238164066103
+     *
+     * @return array
+     */
+    public static function dataPotDir()
+    {
+        return array(
+            array(
+                65535,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(10, 0, 0, 180, 10),
+                0,
+                180.0
+            ), // -40.1 degrees
+            array(
+                1150,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(10, 0, 1, 180, 1),
+                0,
+                null
+            ),  // 150.9 degrees
+            array(
+                5000,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(10, 1, 0, 1, 15),
+                0,
+                null,
+            ),
+            array(
+                5000,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(0, 1, 0, 1, 15),
+                0,
+                null,
+            ),
+            array(
+                0,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(),
+                0,
+                0.0,
+            ),
+            array(
+                65535,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(),
+                0,
+                180.0,
+            ),
+            array(
+                32768,
+                array('extraDefault'=>array(10, 0, 0, 180, 10)),
+                1,
+                array(),
+                0,
+                90.0882,
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param int   $A      The a to d reading
+     * @param array $sensor The sensor array
+     * @param int   $TC     The time constant
+     * @param mixed $extra  The extra sensor data
+     * @param float $deltaT The time difference
+     * @param mixed $expect The expected return value
+     *
+     * @return null
+     *
+     * @dataProvider dataPotDir
+     */
+    public function testPotDir($A,
+                               $sensor,
+                               $TC,
+                               $extra,
+                               $deltaT,
+                               $expect)
+    {
+        parent::sensorTest("resistiveSensor",
+                           "potDir",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
+    }
+
 
      /**
     * Data provider for testBCTherm238164066103

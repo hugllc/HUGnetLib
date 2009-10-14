@@ -154,6 +154,24 @@ if (!class_exists('resistiveSensor')) {
                     ),
                     "extraDefault" => array(10,10,10),
                ),
+                'potDirection' => array(
+                    "longName" => "POT Direction Sensor",
+                    "unitType" => "Direction",
+                    "validUnits" => array('&#176;'),
+                    "function" => "potDir",
+                    "storageUnit" => '&#176;',
+                    "unitModes" => array(
+                        '&#176;' => 'raw',
+                   ),
+                    "extraText" => array(
+                        "POT Resistance in kOhms",
+                        "Direction 1 in degrees",
+                        "Resistance 1 in kOhms",
+                        "Direction 2 in degrees",
+                        "Resistance 2 in kOhms",
+                    ),
+                    "extraDefault" => array(25,0, 0, 180, 25),
+               ),
            ),
             0x03 => array(
                 'BaleMoistureV2' => array(
@@ -301,6 +319,58 @@ if (!class_exists('resistiveSensor')) {
         }
 
         /**
+        * Converts a raw AtoD reading into resistance
+        *
+        * This function takes in the AtoD value and returns the calculated
+        * resistance that the sweep is at.  It does this using a fairly complex
+        * formula.  This formula and how it was derived is detailed in
+        *
+        * @param int   $A  Integer The AtoD reading
+        * @param int   $TC Integer The time constant used to get the reading
+        * @param float $R  Float The overall resistance in kOhms
+        * @param int   $Tf See {@link sensor_base::$Tf}
+        * @param int   $D  See {@link sensor_base::$D}
+        * @param int   $s  See {@link sensor_base::$s}
+        * @param int   $Am See {@link sensor_base::$Am}
+        *
+        * @return The resistance corresponding to the values given in k Ohms
+        */
+        function getSweep($A,
+                          $TC,
+                          $R,
+                          $Tf = null,
+                          $D = null,
+                          $s = null,
+                          $Am = null)
+        {
+            if (is_null($Tf)) {
+                $Tf = $this->Tf;
+            }
+            if (is_null($D)) {
+                $D = $this->D;
+            }
+            if (is_null($s)) {
+                $s = $this->s;
+            }
+            if (is_null($Am)) {
+                $Am = $this->Am;
+            }
+
+            if ($D == 0) {
+                return 0.0;
+            }
+            $Den = (($Am*$s*$TC*$Tf)/$D);
+            if (($Den == 0) || !is_numeric($Den)) {
+                $Den = 1.0;
+            }
+            $Rs = (float)(($A*$R)/$Den);
+            if ($Rs > $R) {
+                return round($R, 4);
+            }
+            return round($Rs, 4);
+        }
+
+        /**
         * Converts resistance to temperature for BC Components #2322 640 66103
         * 10K thermistor.
         *
@@ -326,10 +396,11 @@ if (!class_exists('resistiveSensor')) {
         * @param mixed $extra  Extra sensor information
         * @param float $deltaT The time delta in seconds between this record
         *                      and the last one
+        * @param array $cal    The calibration array
         *
         * @return float The temperature in degrees C.
         */
-        function BcTherm238164066103($A, $sensor, $TC, $extra, $deltaT = null)
+        function BcTherm238164066103($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
         {
             if (!is_array($extra)) {
                 $extra = array();
@@ -355,6 +426,71 @@ if (!class_exists('resistiveSensor')) {
             }
             $T = round($T, 4);
             return $T;
+        }
+
+        /**
+        * Converts resistance to temperature for BC Components #2322 640 66103
+        * 10K thermistor.
+        *
+        * <b>BC Components #2322 640 series</b>
+        *
+        * This function implements the formula in $this->BCThermInterpolate
+        * for a is from BCcomponents PDF file for thermistor
+        * #2322 640 series datasheet on page 6.
+        *
+        * <b>Thermistors available:</b>
+        *
+        * -# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor
+        * 0 in the type code.
+        *     - R0 10
+        *     - A 3.354016e-3
+        *     - B 2.569355e-4
+        *     - C 2.626311e-6
+        *     - D 0.675278e-7
+        *
+        * @param int   $A      Output of the A to D converter
+        * @param array $sensor The sensor information array
+        * @param int   $TC     The time constant
+        * @param mixed $extra  Extra sensor information
+        * @param float $deltaT The time delta in seconds between this record
+        *                      and the last one
+        * @param array $cal    The calibration array
+        *
+        * @return float The temperature in degrees C.
+        */
+        function potDir($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
+        {
+            if (!is_array($extra)) {
+                $extra = array();
+            }
+            $RTotal = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+            $dir1   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+            $R1     = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
+            $dir2   = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];
+            $R2     = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];
+            $R      = $this->getSweep($A, $TC, $RTotal);
+
+            if (is_null($R) || ($dir1 == $dir2) || ($R1 == $R2) || ($RTotal == 0)) {
+                return null;
+            }
+            if ($R > $RTotal) {
+                $R = $RTotal;
+            }
+            if ($R < 0) {
+                $R = 0;
+            }
+
+            $m = ($dir1 - $dir2) / ($R1 - $R2);
+            $b = $dir2 - ($m * $R2);
+            $dir = ($m * $R) + $b;
+
+            while ($dir > 360) {
+                $dir -= 360;
+            }
+            while ($dir < 0) {
+                $dir += 360;
+            }
+            return $dir;
         }
 
         /**
@@ -402,10 +538,11 @@ if (!class_exists('resistiveSensor')) {
         * @param mixed $extra  Extra sensor information
         * @param float $deltaT The time delta in seconds between this record
         *                      and the last one
+        * @param array $cal    The calibration array
         *
         * @return float The temperature in degrees F.
         */
-        function imcSolar($A, $sensor, $TC, $extra, $deltaT = null)
+        function imcSolar($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
         {
             if (!is_array($extra)) {
                 $extra = array();
@@ -465,10 +602,13 @@ if (!class_exists('resistiveSensor')) {
         * @param array $sensor The sensor setup array
         * @param int   $TC     The time constant
         * @param mixed $extra  Extra parameters for the sensor
+        * @param float $deltaT The time delta in seconds between this record
+        *                      and the last one
+        * @param array $cal    The calibration array
         *
         * @return float The percentage of time the door is open
         */
-        function resisDoor($A, $sensor, $TC, $extra)
+        function resisDoor($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
         {
             $Bias  = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Fixed = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
@@ -507,10 +647,13 @@ if (!class_exists('resistiveSensor')) {
         * @param array $sensor The sensor setup array
         * @param int   $TC     The time constant
         * @param mixed $extra  Extra parameters for the sensor
+        * @param float $deltaT The time delta in seconds between this record
+        *                      and the last one
+        * @param array $cal    The calibration array
         *
         * @return float The percentage of time the door is open
         */
-        function getMoistureV2($A, $sensor, $TC, $extra)
+        function getMoistureV2($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
         {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
@@ -554,10 +697,13 @@ if (!class_exists('resistiveSensor')) {
         * @param array $sensor The sensor setup array
         * @param int   $TC     The time constant
         * @param mixed $extra  Extra parameters for the sensor
+        * @param float $deltaT The time delta in seconds between this record
+        *                      and the last one
+        * @param array $cal    The calibration array
         *
         * @return float The percentage of time the door is open
         */
-        function getMoistureV1($A, $sensor, $TC, $extra)
+        function getMoistureV1($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
         {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
