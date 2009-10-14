@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 // Get the base class for the sensors
@@ -40,7 +40,7 @@ require_once dirname(__FILE__)."/base/SensorBase.php";
 /**
  * This class controls all of the sensors.  When given the right information
  * it will decode data from any of the sensors that it has information on.
- * 
+ *
  * @category   Sensors
  * @package    HUGnetLib
  * @subpackage Sensors
@@ -56,10 +56,10 @@ class Sensor
      * This registers the sensor Plugins so we know what code we have available.
      *
      * @param object &$plugins This is a object of type plugin
-     * 
+     *
      * @see plugin
       */
-    function __construct(&$plugins = "") 
+    function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) {
@@ -78,13 +78,13 @@ class Sensor
     /**
      * Register a sensor class.
      *
-     * @param mixed  $class The name of the sensor class to register, 
+     * @param mixed  $class The name of the sensor class to register,
      *                  or the actual object
      * @param string $name  The name of the class if the above is an object.
      *
      * @return bool true on success, false on failure
       */
-    public function registerSensor($class, $name=false) 
+    public function registerSensor($class, $name=false)
     {
         if (is_string($class) && class_exists($class)) {
             $this->sensors[$class] = new $class();
@@ -108,23 +108,26 @@ class Sensor
         } else {
             return false;
         }
-    
+
     }
     /**
-     * This is the generic function to get a sensor reading crunched into its correct
-     * and useful value.
-     * 
-     * Returns the value it was given if it doesn't know how to deal with the sensor
-     * specified.
-     * 
-     * @param mixed  $val     The raw reading
-     * @param int    $type    Int The type of sensor
-     * @param string &$sensor The short name of the sensor
-     * @param int    $TC      The time constant
-     *
-     * @return mixed The cruched reading.
-      */
-    function getReading($val, $type, &$sensor, $TC) 
+    * This is the generic function to get a sensor reading crunched into its correct
+    * and useful value.
+    *
+    * Returns the value it was given if it doesn't know how to deal with the sensor
+    * specified.
+    *
+    * @param mixed  $val     The raw reading
+    * @param int    $type    Int The type of sensor
+    * @param string &$sensor The short name of the sensor
+    * @param int    $TC      The time constant
+    * @param float $deltaT The time delta in seconds between this record
+    *                      and the last one
+    * @param array $cal    The calibration array
+    *
+    * @return mixed The cruched reading.
+    */
+    function getReading($val, $type, &$sensor, $TC, $deltaT = null, $cal = array())
     {
         $class = $this->getClass($type, $sensor);
         if (is_object($class)) {
@@ -152,7 +155,7 @@ class Sensor
      *
      * @return mixed The return value of the function
       */
-    function runFunction(&$class, $function, &$args, $return = null) 
+    function runFunction(&$class, $function, &$args, $return = null)
     {
         if (is_string($function)) {
             if (method_exists($class, $function)) {
@@ -171,13 +174,13 @@ class Sensor
      *  This function will modify and correct the type and sensor
      *  arguments given.  It is done here because it makes sense since
      *  this function is finding the class to use
-     * 
+     *
      * @param int    &$type   The type of sensor
      * @param string &$sensor The short name of the sensor
      *
      * @return object A reference to the sensor object
       */
-    function &getClass(&$type, &$sensor) 
+    function &getClass(&$type, &$sensor)
     {
         $type   = (int) $type;
         $sensor = (string) $sensor;
@@ -189,13 +192,13 @@ class Sensor
                 $class  = current($this->dev[$type]);
             }
         }
-        return $this->sensors[$class];    
+        return $this->sensors[$class];
     }
 
     /**
      * Checks the units given for validity based on the sensor and type given
      *
-     * If the unit is valid it will be returned.  If it is not valid, 
+     * If the unit is valid it will be returned.  If it is not valid,
      * the storageUnit will be returned instead.
      *
      * This function can be used to get the storageUnit for a device by not including
@@ -209,7 +212,7 @@ class Sensor
      *
      * @return string A valid unit for the sensor given.
       */
-    function getUnits($type, &$sensor, $unit = false) 
+    function getUnits($type, &$sensor, $unit = false)
     {
         $return = null;
         $class  = $this->getClass($type, $sensor);
@@ -244,7 +247,7 @@ class Sensor
      *
      * @return array Array of information about the extra parameters of the sensor
       */
-    function getExtra($type, &$sensor) 
+    function getExtra($type, &$sensor)
     {
         $return = array();
         $class  = $this->getClass($type, $sensor);
@@ -274,7 +277,7 @@ class Sensor
      *
      * @return string The name of what the sensor is measuring.
       */
-    function getUnitType($type, &$sensor) 
+    function getUnitType($type, &$sensor)
     {
         $return = null;
         $class  = $this->getClass($type, $sensor);
@@ -297,7 +300,7 @@ class Sensor
      *
      * @return int The number of inputs on the endpoint that this sensor takes.
       */
-    function getSize($type, $sensor) 
+    function getSize($type, $sensor)
     {
         $return = 1;
         $class  = $this->getClass($type, $sensor);
@@ -318,7 +321,7 @@ class Sensor
      *
      * @return bool Whether to total instead of average.  Returns false by default
       */
-    function doTotal($type, $sensor) 
+    function doTotal($type, $sensor)
     {
         $return = false;
         $class  = $this->getClass($type, $sensor);
@@ -341,7 +344,7 @@ class Sensor
      *
      * @return string A valid mode for the sensor given.
       */
-    function getUnitMode($type, &$sensor, $unit=null, $mode=false) 
+    function getUnitMode($type, &$sensor, $unit=null, $mode=false)
     {
         $return = array();
         $class  = $this->getClass($type, $sensor);
@@ -367,7 +370,7 @@ class Sensor
                 }
             }
         }
-        // We don't want to return an invalid value, so return ignore if 
+        // We don't want to return an invalid value, so return ignore if
         // we don't get a valid value to return.
         if (empty($return)) $return = "ignore";
         return $return;
@@ -382,7 +385,7 @@ class Sensor
      *
      * @return string
       */
-    function getUnitDefMode($type, &$sensor, $unit) 
+    function getUnitDefMode($type, &$sensor, $unit)
     {
         $return = $this->getUnitMode($type, $sensor, $unit);
         return $return[0];
@@ -396,7 +399,7 @@ class Sensor
      *
      * @return array
       */
-    function getAllUnits($type, &$sensor) 
+    function getAllUnits($type, &$sensor)
     {
         $return = array();
         $class  = $this->getClass($type, $sensor);
@@ -414,7 +417,7 @@ class Sensor
      *
      * @return array
       */
-    function getAllSensors($type) 
+    function getAllSensors($type)
     {
         $type    = (int)$type;
         $sensors = array();
@@ -427,7 +430,7 @@ class Sensor
                     $done[$class] = true;
                 }
             }
-        }    
+        }
 
         return $sensors;
     }
@@ -438,7 +441,7 @@ class Sensor
      *
      * @return array
       */
-    function getSensor($type, $sensor) 
+    function getSensor($type, $sensor)
     {
         $type    = (int)$type;
         $class  = $this->getClass($type, $sensor);
@@ -461,22 +464,22 @@ class Sensor
      *
      * @return null
       */
-    function checkUnits(&$type, &$sensor, &$units, &$mode) 
+    function checkUnits(&$type, &$sensor, &$units, &$mode)
     {
         if (is_array($type)) {
             if (!is_array($units)) $units = array();
             if (!is_array($mode)) $mode = array();
             if (!is_array($sensor)) $sensor = array();
-        
+
             $skip = 0;
-            foreach ($type as $key => $value) {                
+            foreach ($type as $key => $value) {
                 $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
                 $mode[$key]  = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
             }
         } else {
             if (is_array($sensor)) unset($sensor);
             $units = $this->getUnits($type, $sensor, $units);
-            $mode  = $this->getUnitMode($type, $sensor, $units, $mode);           
+            $mode  = $this->getUnitMode($type, $sensor, $units, $mode);
         }
     }
 
@@ -500,13 +503,13 @@ class Sensor
      *
      * @return null
       */
-    function decodeData(&$Info, &$data) 
+    function decodeData(&$Info, &$data)
     {
         if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
         if (is_array($data["raw"])) {
             $skip = 0;
             foreach ($data["raw"] as $rawkey => $rawval) {
-                // This is so we skip useless data points.  If a sensor 
+                // This is so we skip useless data points.  If a sensor
                 // takes more than one input then skip the extra ones.
                 if ($skip > 0) {
                     unset($data["Data".$rawkey]);
@@ -514,11 +517,11 @@ class Sensor
                     $skip--;
                     continue;
                 }
-                $skip = $this->getSize($data["Types"][$rawkey], 
+                $skip = $this->getSize($data["Types"][$rawkey],
                                        $Info['params']['sensorType'][$rawkey]) - 1;
 
                 if (is_null($data['Units'][$rawkey])) {
-                    $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey], 
+                    $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey],
                                                               $Info['params']['sensorType'][$rawkey]);
                 }
                 $data['dType'][$rawkey]    = $this->getUnitMode($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
@@ -531,10 +534,10 @@ class Sensor
                         $newraw = $rawval - $this->lastRecord[$data['DeviceKey']]["raw"][$rawkey];
                         if ($data['deltaT'] < 0) $newraw = abs($newraw);
                         $data["Data".$rawkey] = $this->getReading($newraw,
-                                                    $data["Types"][$rawkey], 
-                                                    $Info['params']["sensorType"][$rawkey], 
-                                                    $data["TimeConstant"], 
-                                                    $Info['params']['Extra'][$rawkey], 
+                                                    $data["Types"][$rawkey],
+                                                    $Info['params']["sensorType"][$rawkey],
+                                                    $data["TimeConstant"],
+                                                    $Info['params']['Extra'][$rawkey],
                                                     $data['deltaT']);
                     } else {
                         unset($data["Data".$rawkey]);
@@ -558,7 +561,7 @@ class Sensor
      *
      * @return null
       */
-    function checkRecord(&$data) 
+    function checkRecord(&$data)
     {
         // Start with the assumption that the packet is good.
         if (!isset($data["Status"])) $data["Status"] = "GOOD";
@@ -585,7 +588,7 @@ class Sensor
      *
      * @return bool true if the record is good, false if it is not
       */
-    function checkPoint($value, $type, $sensor, $mode) 
+    function checkPoint($value, $type, $sensor, $mode)
     {
         $ret   = true;
         $class = $this->getClass($type, $sensor);
