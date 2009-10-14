@@ -1,0 +1,5 @@
+[Buildset]
+Number of Builditems=0
+
+[Project]
+VersionControlSupport=kdevgit
