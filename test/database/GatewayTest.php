@@ -62,6 +62,8 @@ class GatewayTest extends databaseTest
 {
     /** The table to use */
     protected $table = "gateways";
+    /** @var string The name of the id column */
+    protected $id = "GatewayKey";
 
     /**
      * Runs the test methods of this class.
@@ -130,6 +132,7 @@ class GatewayTest extends databaseTest
                         "GatewayLocation" => "asdf",
                         "database" => "HUGnet",
                         "FirmwareStatus" => "BAD",
+                        "isVisible" => "1",
                    ),
                     array(
                         "GatewayKey" => 2,
@@ -138,6 +141,7 @@ class GatewayTest extends databaseTest
                         "GatewayLocation" => "asdf",
                         "database" => "HUGnet",
                         "FirmwareStatus" => "BETA",
+                        "isVisible" => "1",
                    ),
                ),
                 array(
@@ -147,6 +151,7 @@ class GatewayTest extends databaseTest
                     "GatewayLocation" => "asdf",
                     "database" => "HUGnet",
                     "FirmwareStatus" => "BETA",
+                    "isVisible" => "1",
                ),
            ),
 
@@ -166,6 +171,255 @@ class GatewayTest extends databaseTest
     {
         $this->load($preload);
         $ret = $this->o->find();
+        $this->assertSame($expect, $ret);
+    }
+
+
+    /**
+     * Data provider for testFind()
+     *
+     * @return array
+     */
+    public static function dataEncodeIP()
+    {
+        return array(
+            array(
+                array(
+                    "hello" => "182.351.253.211",
+                    "asdf" => "234.512.123.151",
+                ),
+                "hello:182.351.253.211\nasdf:234.512.123.151\n",
+            ),
+            array(
+                "",
+                "",
+            ),
+            array(
+                "192.168.0.1",
+                "192.168.0.1",
+            ),
+        );
+    }
+    /**
+     * Data provider for testFind()
+     *
+     * @return array
+     */
+    public static function dataDecodeIP()
+    {
+        return array(
+            array(
+                "hello:182.351.253.211\nasdf:234.512.123.151\n\n",
+                array(
+                    "hello" => "182.351.253.211",
+                    "asdf" => "234.512.123.151",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+            ),
+            array(
+                "192.168.0.1",
+                "192.168.0.1",
+            ),
+        );
+    }
+    /**
+     * Tests gateway::find()
+     *
+     * @param array $IP      The IP address to test
+     * @param array $expect  The return value to expect
+     *
+     * @return null
+     *
+     * @dataProvider dataDecodeIP().
+     */
+    public function testDecodeIP($IP, $expect)
+    {
+        $ret = $this->o->decodeIP($IP);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Tests gateway::find()
+     *
+     * @param array $IP      The IP address to test
+     * @param array $expect  The return value to expect
+     *
+     * @return null
+     *
+     * @dataProvider dataEncodeIP().
+     */
+    public function testEncodeIP($IP, $expect)
+    {
+        $ret = $this->o->encodeIP($IP);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Data provider for testAdd
+     *
+     * @return array
+     */
+    public static function dataAdd()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "GatewayKey" => "3",
+                    "GatewayIP" => array("test" => "192.168.0.1"),
+                    "GatewayName" => "There",
+                    "GatewayLocation" => "Here",
+                    "database" => "",
+                    "FirmwareStatus" => "RELEASE",
+                    "isVisible" => "1",
+                ),
+                array(
+                    "GatewayKey" => "3",
+                    "GatewayIP" => "test:192.168.0.1\n",
+                    "GatewayName" => "There",
+                    "GatewayLocation" => "Here",
+                    "database" => "",
+                    "FirmwareStatus" => "RELEASE",
+                    "isVisible" => "1",
+                ),
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array $preload Data to preload into the database
+     * @param array $info    The info to add to the database
+     * @param array $expect  The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataAdd
+     */
+    public function testAdd($preload, $info, $expect)
+    {
+        $this->load($preload);
+        $this->o->add($info);
+        $ret = $this->getSingle($expect[$this->id]);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Data provider for testGetWhere
+     *
+     * @return array
+     */
+    public static function dataGetWhere()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "GatewayKey" => "3",
+                        "GatewayIP" => "test:192.168.0.1\n",
+                        "GatewayName" => "There",
+                        "GatewayLocation" => "Here",
+                        "database" => "",
+                        "FirmwareStatus" => "RELEASE",
+                        "isVisible" => "1",
+                    ),
+                ),
+                "GatewayKey = ?",
+                array(3),
+                array(
+                    array(
+                        "GatewayKey" => "3",
+                        "GatewayIP" => array("test" => "192.168.0.1"),
+                        "GatewayName" => "There",
+                        "GatewayLocation" => "Here",
+                        "database" => "",
+                        "FirmwareStatus" => "RELEASE",
+                        "isVisible" => "1",
+                    ),
+                ),
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param string $where   The database key to get the record from
+     * @param array  $data    The data to send with the query
+     * @param array  $expect  The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataGetWhere
+     */
+    public function testGetWhere($preload, $where, $data, $expect)
+    {
+        $this->load($preload);
+        $ret = $this->o->getWhere($where, $data);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Data provider for testUpdate
+     *
+     * @return array
+     */
+    public static function dataUpdateWhere()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "GatewayKey" => "3",
+                        "GatewayIP" => "asdf:193.162.238.3",
+                        "GatewayName" => "There",
+                        "GatewayLocation" => "Here",
+                        "database" => "",
+                        "FirmwareStatus" => "RELEASE",
+                        "isVisible" => "1",
+                    ),
+                ),
+                array(
+                    "GatewayKey" => "3",
+                    "GatewayIP" => array("test" => "192.168.0.1"),
+                    "GatewayName" => "There",
+                    "GatewayLocation" => "Here",
+                    "database" => "",
+                    "FirmwareStatus" => "RELEASE",
+                    "isVisible" => "1",
+                ),
+                "GatewayKey = ?",
+                array(3),
+                array(
+                    "GatewayKey" => "3",
+                    "GatewayIP" => "test:192.168.0.1\n",
+                    "GatewayName" => "There",
+                    "GatewayLocation" => "Here",
+                    "database" => "",
+                    "FirmwareStatus" => "RELEASE",
+                    "isVisible" => "1",
+                ),
+
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param array  $info    The info to add to the database
+     * @param string $where   The database key to get the record from
+     * @param bool   $data    What the function should return
+     * @param array  $expect  The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataUpdateWhere
+     */
+    public function testUpdateWhere($preload, $info, $where, $data, $expect)
+    {
+        $this->load($preload);
+        $this->o->updateWhere($info, $where, $data);
+        $ret = $this->getSingle($expect[$this->id]);
         $this->assertSame($expect, $ret);
     }
 

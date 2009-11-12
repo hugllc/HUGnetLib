@@ -418,6 +418,53 @@ class HUGnetDBTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
     /**
+     * Data provider for testUpdate
+     *
+     * @return array
+     */
+    public static function dataUpdateWhere()
+    {
+        return array(
+            array(
+                array(),
+                array("id" => 3, "name" => "Hi", "value" => "There"),
+                "`id` = ? ",
+                array(3),
+                null,
+           ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                ),
+                array("id" => 1, "name" => "Bye", "value" => "Now"),
+                "`id` = ? ",
+                array(1),
+                array("id" => "1", "name" => "Bye", "value" => "Now"),
+           ),
+        );
+    }
+    /**
+     * test
+     *
+     * @param array  $preload Data to preload into the database
+     * @param array  $info    The info to add to the database
+     * @param string $where   The database key to get the record from
+     * @param bool   $data    What the function should return
+     * @param array  $expect  The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataUpdateWhere
+     */
+    public function testUpdateWhere($preload, $info, $where, $data, $expect)
+    {
+        $this->load($preload);
+        $this->o->updateWhere($info, $where, $data);
+        $ret = $this->getSingle($expect[$this->id]);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
      * test
      *
      * @param array $preload   Data to preload into the database

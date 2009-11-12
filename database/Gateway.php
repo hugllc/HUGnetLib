@@ -60,7 +60,7 @@ class Gateway extends HUGnetDB
     var $table = "gateways";                //!< The database table to use
     var $id = "GatewayKey";     //!< This is the Field name for the key of the record
     /** The number of columns */
-    private $_columns = 6;
+    private $_columns = 7;
     /**
      * This returns an array setup for a HTML select list using the adodb
      * function 'GetMenu'
@@ -81,6 +81,106 @@ class Gateway extends HUGnetDB
         return $ret;
     }
 
+    /**
+    * Gets all rows from the database
+    *
+    * @param string $where   Where clause
+    * @param array  $data    Data for query
+    * @param int    $limit   The maximum number of rows to return (0 to return all)
+    * @param int    $start   The row offset to start returning records at
+    * @param string $orderby The orderby Clause.  Must include "ORDER BY"
+    *
+    * @return array
+    */
+    public function getWhere($where,
+                             $data = array(),
+                             $limit = 0,
+                             $start = 0,
+                             $orderby = "")
+    {
+        $query = parent::getWhere($where, $data, $limit, $start, $orderby);
+        foreach ($query as $key => $row) {
+            $query[$key]["GatewayIP"] = $this->decodeIP($row["GatewayIP"]);
+        }
+        return $query;
+    }
+    /**
+    * Updates a row in the database.
+    *
+    * This function MUST be overwritten by child classes
+    *
+    * @param array  $info  The row in array form.
+    * @param string $where Where clause
+    * @param array  $data  Data for query
+    *
+    * @return mixed
+    */
+    public function updateWhere($info, $where, $data = array())
+    {
+        $info["GatewayIP"] = $this->encodeIP($info["GatewayIP"]);
+        return parent::updateWhere($info, $where, $data);
+    }
+        /**
+    * Adds an row to the database
+    *
+    * @param array $info    The row in array form
+    * @param bool  $replace If true it replaces the "INSERT"
+    *                       keyword with "REPLACE".  Not all
+    *                       databases support "REPLACE".
+    *
+    * @return bool
+    */
+    public function add($info, $replace = false)
+    {
+        $info["GatewayIP"] = $this->encodeIP($info["GatewayIP"]);
+        return parent::add($info, $replace);
+    }
+    /**
+     * Try to automatically find out which gateway to use
+     *
+     * @param string $IP The string to decode
+     *
+     * @return mixed false on failure, Array of gateway information on success
+     */
+    function decodeIP($IP)
+    {
+        $ret = array();
+        if (is_string($IP)) {
+            // This gives us the old way
+            if (stristr($IP, ":") === FALSE) {
+                return $IP;
+            }
+            $ip = explode("\n", $IP);
+            foreach ($ip as $line) {
+                if (empty($line)) {
+                    continue;
+                }
+                $l = explode(":", $line);
+                $ret[$l[0]] = $l[1];
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Try to automatically find out which gateway to use
+     *
+     * @param string $array The array to encode
+     *
+     * @return mixed false on failure, Array of gateway information on success
+     */
+    function encodeIP($array)
+    {
+        $ret = "";
+        if (is_array($array)) {
+            foreach ($array as $key => $val) {
+                $ret .= $key.":".$val."\n";
+            }
+        } if (is_string($array)) {
+            return $array;
+        }
+        return $ret;
+    }
 
     /**
      * Try to automatically find out which gateway to use
@@ -95,7 +195,7 @@ class Gateway extends HUGnetDB
             // Lookup up a gateway based on our host name
             $this->vprint("Looking for ".$stuff['nodename']."...");
             $ip  = gethostbyname($stuff["nodename"]);
-            $res = $this->getWhere("GatewayIP = ? ", array($ip));
+            $res = $this->getWhere("GatewayIP like ? ", array("%$ip%"));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
                 $this->vprint("Using ".$res[0]["GatewayName"].".  I hope that is what you wanted.");
@@ -118,11 +218,12 @@ class Gateway extends HUGnetDB
 
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                   `GatewayKey` int(11) NOT null,
-                  `GatewayIP` varchar(15) NOT null default '',
+                  `GatewayIP` varchar(255) NOT null default '',
                   `GatewayName` varchar(30) NOT null default '',
                   `GatewayLocation` varchar(64) NOT null default '',
                   `database` varchar(64) NOT null default '',
                   `FirmwareStatus` varchar(16) NOT null default 'RELEASE',
+                  `isVisible` int(4) NOT null default 0,
                   PRIMARY KEY  (`GatewayKey`)
                );";
 
