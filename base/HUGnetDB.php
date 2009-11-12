@@ -1057,7 +1057,7 @@ class HUGnetDB
     */
     public function remove($id)
     {
-        $query = " DELETE FROM '".$this->table."' WHERE ".$this->id."= ? ;";
+        $query = " DELETE FROM `".$this->table."` WHERE ".$this->id."= ? ;";
         return $this->query($query, array($id), false);
     }
 
@@ -1071,7 +1071,7 @@ class HUGnetDB
     */
     public function removeWhere($where, $data=array())
     {
-        $query = " DELETE FROM '".$this->table."' WHERE ".$where;
+        $query = " DELETE FROM `".$this->table."` WHERE ".$where;
         return $this->query($query, $data, false);
     }
 
