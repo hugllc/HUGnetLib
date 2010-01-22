@@ -434,6 +434,78 @@ class ResistiveSensorTest extends SensorTestBase
                            $expect);
     }
 
+     /**
+    * Data provider for testBCTherm238164066103
+    *
+    * @return array
+     */
+    public static function dataB57560G0103F000()
+    {
+        return array(
+                array(
+                      63630,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      null), // -40.1 degrees
+                array(
+                      450,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      null),  // 192.2 degrees
+                array(
+                      5000,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(0),
+                      0,
+                      110.0645),
+                array(
+                      5000,
+                      array('extraDefault'=>array(10)),
+                      1,
+                      array(10),
+                      0,
+                      110.0645),
+                array(
+                      5000,
+                      array('extraDefault'=>array(0)),
+                      1,
+                      array(0),
+                      0,
+                      null),
+                );
+    }
+    /**
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param array $sensor The sensor array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  The extra sensor data
+    * @param float $deltaT The time difference
+    * @param mixed $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataB57560G0103F000
+    */
+    public function testB57560G0103F000($A, $sensor, $TC, $extra, $deltaT, $expect)
+    {
+        parent::sensorTest("resistiveSensor",
+                           "B57560G0103F000",
+                           $A,
+                           $sensor,
+                           $TC,
+                           $extra,
+                           $deltaT,
+                           $expect);
+    }
+
+
 
     /**
      * Data provider for testResisDoor
