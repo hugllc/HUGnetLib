@@ -35,20 +35,23 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** The version define for all of HUGnetLib */
-define("HUGNET_LIB_VERSION", "0.8.12+git");
-/** This is for backward compatibility with some older stuff */
-define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
-
 /** The base path to all the files included for HUGnet */
 define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
-if (!defined("HUGNET_DATABASE")) {
-    /** The name of the default HUGnet Database */
-    define("HUGNET_DATABASE", "HUGnet");
-}
+/** The directory Separator */
 if (!defined("DS")) {
     /** The name of the default HUGnet Database */
     define("DS", "/");
+}
+
+/** The version define for all of HUGnetLib */
+//define("HUGNET_LIB_VERSION", "0.8.12+git");
+define("HUGNET_LIB_VERSION", trim(file_get_contents(HUGNET_INCLUDE_PATH.DS."VERSION.TXT")));
+/** This is for backward compatibility with some older stuff */
+define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
+
+if (!defined("HUGNET_DATABASE")) {
+    /** The name of the default HUGnet Database */
+    define("HUGNET_DATABASE", "HUGnet");
 }
 
 $temp_dir = sys_get_temp_dir();
