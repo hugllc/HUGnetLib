@@ -67,6 +67,22 @@
             18 were made by Martek</Notes>
     </endpoints>
     <endpoints>
+        <HWPartNum>0039-21-02-A</HWPartNum>
+        <Parameters>CPU: atmega324
+            VCC: 5V
+            Firmware: 0039-20-15-C
+            FuseExtended: 0xFC
+            FuseHigh: 0xD0
+            FuseLow: 0xE7
+            LockBits: 0x3F
+            Built: 30
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>This is the new controller board.
+
+            6 were made by Martek</Notes>
+    </endpoints>
+    <endpoints>
         <HWPartNum>0039-28-01-A</HWPartNum>
         <Parameters>CPU: atmega168
             VCC: 5V

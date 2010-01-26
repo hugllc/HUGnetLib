@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -91,7 +91,7 @@ class e00392100Test extends endpointTestBase
                         "60" => "0801",
                    ),
                ),
-                "Return" => array( 
+                "Return" => array(
                     "RawSetup" => "00000000CC00392101410039200143000007FFFFFF50FF",
                     "DriverInfo" => "FF",
                     "HWPartNum" => "0039-21-01-A",
@@ -101,7 +101,7 @@ class e00392100Test extends endpointTestBase
                     "SerialNum" => 204,
                     "DeviceGroup" => "FFFFFF",
                     "RawData" => array(
-                        "5C" => "00000000CC00392101410039200143000007FFFFFF50FF", 
+                        "5C" => "00000000CC00392101410039200143000007FFFFFF50FF",
                         "56" => "0000FE0000FC000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
                         "60" => "0801"
                    ),
@@ -130,7 +130,7 @@ class e00392100Test extends endpointTestBase
                     "SerialNum" => 182,
                     "DeviceGroup" => "EEEEEE",
                ),
-                "Return" => array( 
+                "Return" => array(
                     "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
                     "DriverInfo" => "040001E000380000808055",
                     "HWPartNum" => "0039-21-01-A",
@@ -299,7 +299,7 @@ class e00392100Test extends endpointTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -399,6 +399,38 @@ class e00392100Test extends endpointTestBase
                ),
            ),
         );
+    }
+    /**
+     * data provider for testCheckDataArray
+     */
+    public static function dataGetFWPartNum()
+    {
+        return array(
+            array(
+                array("HWPartNum" => "0039-21-01-A"),
+                "0039-20-01-C",
+            ),
+            array(
+                array("HWPartNum" => "0039-21-01-Q"),
+                "0039-20-01-C",
+            ),
+            array(
+                array("HWPartNum" => "0039-21-02-A"),
+                "0039-20-14-C",
+            ),
+        );
+    }
+    /**
+     * test
+     *
+     * @return null
+     *
+     * @dataProvider dataGetFWPartNum()
+     */
+    function testGetFWPartNum($Info, $expect)
+    {
+        $work = $this->o->getFWPartNum($Info);
+        $this->assertSame($expect, $work);
     }
 
 }

@@ -73,9 +73,16 @@ if (!class_exists("e00392100")) {
         var $devices = array(
             "DEFAULT" => array(
                 "0039-21-01-A" => "DEFAULT",
+                "0039-21-02-A" => "DEFAULT",
            ),
         );
-
+        /** var array This is the firmware part number that corresponds to the
+             hardware part number */
+        private $_firmware = array(
+            "0039-21-01-A" => "0039-20-01-C",
+            "0039-21-02-A" => "0039-20-14-C",
+            "DEFAULT"      => "0039-20-01-C",
+        );
         var $Types = array(
             "fake" => array(0x40, 0x50, 0x02, 0x40, 0x50, 0x02),
             "real" => array(0x50, 0x02, 0x40, 0x40, 0x40, 0x40, 0x02, 0x50),
@@ -118,6 +125,7 @@ if (!class_exists("e00392100")) {
             switch ($Info['FWPartNum'])
             {
             case '0039-20-01-C':
+            case '0039-20-02-C':
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_HUGNETPOWER_COMMAND,
@@ -181,6 +189,7 @@ if (!class_exists("e00392100")) {
             switch ($Info['FWPartNum'])
             {
             case '0039-20-01-C':
+            case '0039-20-02-C':
                 $packet[] = array(
                     "To" => $Info["DeviceID"],
                     "Command" => PACKET_READPACKETSTATS_COMMAND,
@@ -673,7 +682,8 @@ if (!class_exists("e00392100")) {
             $return = false;
             if ($Info['bootLoader'] || $update) {
                 //print "\r\nGetting the latest firmware... ";
-                $res = $this->firmware->GetLatestFirmware('0039-20-01-C');
+                $FWPartNum = $this->getFWPartNum($Info);
+                $res = $this->firmware->GetLatestFirmware($FWPartNum);
                 print " v".$res['FirmwareVersion'];
                 if ($Info['bootLoader']) {
                     print "Board is running the bootloader.\r\n";
@@ -701,6 +711,19 @@ if (!class_exists("e00392100")) {
             return $return;
         }
 
+        /**
+         * Runs the application
+         *
+         * @param array $Info        Infomation about the device to use
+         *
+         * @return string The part number for the firmware to use
+         */
+        function getFWPartNum($Info) {
+            if (isset($this->_firmware[$Info["HWPartNum"]])) {
+                return $this->_firmware[$Info["HWPartNum"]];
+            }
+            return $this->_firmware["DEFAULT"];
+        }
 
         /**
          * Runs the application
@@ -716,7 +739,8 @@ if (!class_exists("e00392100")) {
 
             $fw = $this->firmware->get($FirmwareKey);
             if (!is_array($fw)) {
-                $fw = $this->firmware->GetLatestFirmware('0039-20-01-C');
+                $FWPartNum = $this->getFWPartNum($Info);
+                $fw = $this->firmware->GetLatestFirmware($FWPartNum);
             }
             if (is_array($fw[0])) $fw = $fw[0];
             print "\r\nProgramming the device\r\n";
