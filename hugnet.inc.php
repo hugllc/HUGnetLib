@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The version define for all of HUGnetLib */
-define("HUGNET_LIB_VERSION", "0.8.12");
+define("HUGNET_LIB_VERSION", "0.8.12+git");
 /** This is for backward compatibility with some older stuff */
 define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
 
