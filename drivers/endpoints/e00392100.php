@@ -237,7 +237,9 @@ if (!class_exists("e00392100")) {
           */
         private static function _interpConfig00392006C(&$Info)
         {
-            if ($Info['FWPartNum'] == '0039-20-06-C') {
+            if (($Info['FWPartNum'] == '0039-20-06-C')
+             || ($Info['FWPartNum'] == '0039-20-15-C')
+                ) {
                 $Info['mcu'] = array(
                     "SRAM"      => hexdec(substr($Info["DriverInfo"], 0, 4)),
                     "E2"        => hexdec(substr($Info["DriverInfo"], 4, 4)),
