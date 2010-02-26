@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
@@ -59,9 +59,8 @@ class Plog extends HUGnetDB
     private $index = 1;
     /** @var mixed The file to find the SQLite database in */
     protected $file = null;
-    /** @var mixed The description of the critical error that just happened. */ 
+    /** @var mixed The description of the critical error that just happened. */
     public $criticalError = false;
-
     /**
      * Returns the query needed to create the packet log
      *
@@ -103,16 +102,16 @@ class Plog extends HUGnetDB
      *
      * @return mixed
      */
-    
-    function add($info) 
-    {    
+
+    function add($info)
+    {
         if (!isset($info[$this->id])) $info[$this->id] = $this->index++;
         return parent::add($info, true);
     }
-    
+
 
     /**
-     * Converts a packet array into an array for inserting into the 
+     * Converts a packet array into an array for inserting into the
      * packet log tables in the database.
      *
      * @param array  $Packet  The packet that came in.
@@ -121,7 +120,7 @@ class Plog extends HUGnetDB
      *
      * @return array
      */
-    public static function packetLogSetup($Packet, $Gateway, $Type="", $Checked=0) 
+    public static function packetLogSetup($Packet, $Gateway, $Type="", $Checked=0)
     {
         if (empty($Type)) $Type = "UNSOLICITED";
         $Info = array();
@@ -177,7 +176,7 @@ class Plog extends HUGnetDB
         if ($cmd == PACKET_COMMAND_RECONFIG) return "RECONFIG";
 
         return "UNKNOWN";
-    }    
+    }
 
 
 }

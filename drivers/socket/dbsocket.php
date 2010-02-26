@@ -93,6 +93,8 @@ if (!class_exists("dbsocket")) {
         protected $index = 0;
         /** @var int The ID of the reply packet */
         protected $replyId = array();
+        /** @var string The class to use for our database */
+        private $_dbClass = "Plog";
         /**
         * Write data out a socket.
         *
@@ -314,7 +316,7 @@ if (!class_exists("dbsocket")) {
         public function checkConnect()
         {
             $test  = is_object($this->socket);
-            $test  = $test && (get_class($this->socket) == "HUGnetDB");
+            $test  = $test && (get_class($this->socket) == $this->_dbClass);
             return $test;
         }
 
@@ -339,7 +341,8 @@ if (!class_exists("dbsocket")) {
                 return true;
             }
             $this->close();
-            $this->socket = new HUGnetDB($config);
+            $this->socket =& HUGnetDB::getInstance($this->_dbClass, $config);
+            // = new HUGnetDB($config);
             return $this->CheckConnect();
         }
 

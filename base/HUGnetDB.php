@@ -136,6 +136,12 @@ class HUGnetDB
     */
     public function __construct($config = array())
     {
+        // This enables us to put this class other places
+        $this->myclass = strtolower(get_class($this));
+        if (isset($config[$this->myclass."file"])) {
+            $config["file"] = $config[$this->myclass."file"];
+            print "Using a custom file: ".$config["file"]." for ".$this->myclass."\n";
+        }
 
         $this->config = $config;
         $this->file   = is_string($config['file']) ? $config['file'] : HUGNET_LOCAL_DATABASE;
@@ -323,7 +329,7 @@ class HUGnetDB
         }
         if (!is_string($this->cacheConfig["file"])
             || empty($this->cacheConfig["file"])) {
-            $this->cacheConfig["file"] = ":memory:";
+            $this->cacheConfig["file"] = HUGNET_LOCAL_DATABASE;
         }
         $this->vprint("Creating a cache at ".$this->cacheConfig["file"]);
         $class       = get_class($this);
