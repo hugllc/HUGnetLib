@@ -35,10 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-// Call unitConversionTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "unitConversionTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -47,6 +43,7 @@ require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitConversion.php';
 require_once dirname(__FILE__).'/../base/UnitBase.php';
+require_once dirname(__FILE__).'/../lib/plugins.inc.php';
 
 /**
  * Test class for unitConversion.
@@ -553,11 +550,6 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     }
 
 
-}
-
-// Call unitConversionTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "unitConversionTest::main") {
-    unitConversionTest::main();
 }
 
 

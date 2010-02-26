@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call e00392601Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00392800Test::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -83,7 +78,7 @@ class e00392601Test extends endpointTestBase
                      "Driver" => "e00392601",
                      "DeviceGroup" => "FFFFFF",
                 ),
-                 "Return" => array( 
+                 "Return" => array(
                      "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
                      "HWPartNum" => "0039-28-01-A",
                      "FWPartNum" => "0039-20-13-C",
@@ -126,7 +121,7 @@ class e00392601Test extends endpointTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -138,7 +133,7 @@ class e00392601Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesFirmware() 
+    public static function dataDevicesFirmware()
     {
         return parent::devicesArrayDataSource("e00392601", "fw");
     }
@@ -147,7 +142,7 @@ class e00392601Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesHardware() 
+    public static function dataDevicesHardware()
     {
         return parent::devicesArrayDataSource("e00392601", "hw");
     }
@@ -156,7 +151,7 @@ class e00392601Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesVersion() 
+    public static function dataDevicesVersion()
     {
         return parent::devicesArrayDataSource("e00392601", "ver");
     }
@@ -165,7 +160,7 @@ class e00392601Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataConfigArray() 
+    public static function dataConfigArray()
     {
         return parent::dataConfigArray("e00392601");
     }
@@ -174,7 +169,7 @@ class e00392601Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataGetConfigStr() 
+    public static function dataGetConfigStr()
     {
         return array(
         );
@@ -182,7 +177,7 @@ class e00392601Test extends endpointTestBase
     /**
      * data provider for test readConfig
      */
-    public static function datareadConfig() 
+    public static function datareadConfig()
     {
         return array(
             array(
@@ -193,8 +188,8 @@ class e00392601Test extends endpointTestBase
            ),
         );
     }
-    
-    
+
+
     /**
      * test
      *
@@ -202,7 +197,7 @@ class e00392601Test extends endpointTestBase
      *
      * @dataProvider dataGetConfigStr
      */
-    function testGetConfigStr($Info, $expect) 
+    function testGetConfigStr($Info, $expect)
     {
         $ret = e00392601::getConfigStr($Info);
         $this->assertSame($expect, $ret);
@@ -212,14 +207,10 @@ class e00392601Test extends endpointTestBase
      *
      * @return null
      */
-    public function testcheckRecord() 
+    public function testcheckRecord()
     {
         // This test is meaningless on this driver
     }
 }
 
-// Call e00392601Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00392601Test::main") {
-    e00392601Test::main();
-}
 ?>

@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call e00391201Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00391201Test::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -85,7 +81,7 @@ class e00391201Test extends endpointTestBase
                     "SerialNum" => 78,
                     "DeviceGroup" => "FFFFFF",
                ),
-                "Return" => array( 
+                "Return" => array(
                     "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
                     "HWPartNum" => "0039-12-02-B",
                     "FWPartNum" => "0039-20-04-C",
@@ -162,7 +158,7 @@ class e00391201Test extends endpointTestBase
                     "FET3Mult" => 96,
                     "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
                     "params" => array("sensorType" => array("FETBoard", "FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard")),
-               ), 
+               ),
                 "Packets" => array(
                     array(
                         "RawData" => "078511bb00cb11b3006711c6004210ac00fc4d",
@@ -263,7 +259,7 @@ class e00391201Test extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesHardware() 
+    public static function dataDevicesHardware()
     {
         return parent::devicesArrayDataSource("e00391201", "hw");
     }
@@ -288,8 +284,4 @@ class e00391201Test extends endpointTestBase
 
 }
 
-// Call e00391201Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00391201Test::main") {
-    e00391201Test::main();
-}
 ?>

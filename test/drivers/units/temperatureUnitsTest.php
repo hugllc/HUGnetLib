@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -56,7 +56,7 @@ require_once dirname(__FILE__).'/../../../drivers/units/temperatureUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class TemperatureUnitsTest extends UnitTestBase
@@ -71,7 +71,7 @@ class TemperatureUnitsTest extends UnitTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -83,7 +83,7 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("temperatureUnits");
     }
@@ -92,7 +92,7 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("temperatureUnits");
     }
@@ -104,7 +104,7 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new TemperatureUnits();
     }
@@ -117,7 +117,7 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
 
@@ -126,7 +126,7 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataTemperature() 
+    public static function dataTemperature()
     {
         return array(
             array(100, 212, 0, "raw"),
@@ -148,9 +148,9 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @dataProvider dataTemperature
      */
-    public function testCtoF($c, $f, $time, $type) 
+    public function testCtoF($c, $f, $time, $type)
     {
-        $this->assertEquals($f, $this->o->CtoF($c, $time, $type));        
+        $this->assertEquals($f, $this->o->CtoF($c, $time, $type));
     }
 
     /**
@@ -165,15 +165,11 @@ class TemperatureUnitsTest extends UnitTestBase
      *
      * @dataProvider dataTemperature
      */
-    public function testFtoC($c, $f, $time, $type) 
+    public function testFtoC($c, $f, $time, $type)
     {
-        $this->assertEquals($c, $this->o->FtoC($f, $time, $type));        
+        $this->assertEquals($c, $this->o->FtoC($f, $time, $type));
     }
 
 }
 
-// Call TemperatureUnitsTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "TemperatureUnitsTest::main") {
-    TemperatureUnitsTest::main();
-}
 ?>

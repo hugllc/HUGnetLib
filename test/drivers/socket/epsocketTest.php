@@ -31,14 +31,9 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-
-// Call epsocketTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "epsocketTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -80,7 +75,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -96,7 +91,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->proc = proc_open("php ".dirname(__FILE__)."/epsocketTestScript.php", $this->descriptorspec, $this->pipes);
         $config = array(
@@ -114,7 +109,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         fwrite($this->pipes[0], "quit\r\n");
         fflush($this->pipes[0]);
@@ -131,9 +126,9 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    private function _getstring() 
+    private function _getstring()
     {
-    
+
     }
 
     /**
@@ -143,7 +138,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testWrite().
      */
-    public function testWrite() 
+    public function testWrite()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -156,7 +151,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testReadChar().
      */
-    public function testReadChar() 
+    public function testReadChar()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -170,7 +165,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testClose().
      */
-    public function testClose() 
+    public function testClose()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -183,7 +178,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testCheckConnect().
      */
-    public function testCheckConnect() 
+    public function testCheckConnect()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -196,7 +191,7 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testConnect().
      */
-    public function testConnect() 
+    public function testConnect()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -204,8 +199,4 @@ class EpsocketTest extends PHPUnit_Framework_TestCase
 
 }
 
-// Call epsocketTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "epsocketTest::main") {
-    epsocketTest::main();
-}
 ?>

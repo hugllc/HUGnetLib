@@ -36,15 +36,10 @@
  *
  */
 
-// Call epsocketTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "epsocketTest::main");
-}
-
 /** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
+//require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
+//require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
 
@@ -70,6 +65,7 @@ class otherTest extends PHPUnit_Framework_TestCase
      * @access public
      * @static
      */
+/*
     public static function main() 
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
@@ -77,7 +73,7 @@ class otherTest extends PHPUnit_Framework_TestCase
         $suite  = new PHPUnit_Framework_TestSuite("epsocketTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
-
+*/
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -114,8 +110,4 @@ class otherTest extends PHPUnit_Framework_TestCase
     }
 }
 
-// Call epsocketTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "epsocketTest::main") {
-    epsocketTest::main();
-}
 ?>

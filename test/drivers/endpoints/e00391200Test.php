@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call e00391200Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00391200Test::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -59,7 +55,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00391200.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class e00391200Test extends endpointTestBase
@@ -87,7 +83,7 @@ class e00391200Test extends endpointTestBase
                     "SerialNum" => 37,
                     "DeviceGroup" => "FFFFFF",
                ),
-                "Return" => array( 
+                "Return" => array(
                     "RawSetup" => "000000002500391202420039200343000002FFFFFF5001000000000000000000",
                     "DriverInfo" => "01000000000000000000",
                     "HWPartNum" => "0039-12-02-B",
@@ -110,11 +106,11 @@ class e00391200Test extends endpointTestBase
                     "unitType" => array("Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature", "Temperature"),
                     "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw"),
                     "doTotal" => array(false, false, false, false, false, false, false, false, false),
-    
+
                ),
            ),
         );
-    }     
+    }
     /**
      * Data provider
      *
@@ -278,7 +274,7 @@ class e00391200Test extends endpointTestBase
      *
      * @return array
      */
-    public static function datareadConfig() 
+    public static function datareadConfig()
     {
         return array(
             array(
@@ -291,8 +287,4 @@ class e00391200Test extends endpointTestBase
     }
 }
 
-// Call e00391200Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00391200Test::main") {
-    e00391200Test::main();
-}
 ?>

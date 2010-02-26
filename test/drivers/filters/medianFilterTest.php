@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call medianFilterTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "medianFilterTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -65,7 +61,7 @@ class MedianFilterTest extends filterTestBase
 {
     /** @var string Tells what class this is testing */
     public $class = "medianFilter";
-    
+
     /**
      * Runs the test methods of this class.
      *
@@ -74,7 +70,7 @@ class MedianFilterTest extends filterTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -90,7 +86,7 @@ class MedianFilterTest extends filterTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new MedianFilter();
     }
@@ -103,17 +99,17 @@ class MedianFilterTest extends filterTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         unset($this->o);
     }
 
     /**
-     * data provider for dataFilterVariable* 
+     * data provider for dataFilterVariable*
      *
      * @return array
      */
-    public static function dataFilterVariable() 
+    public static function dataFilterVariable()
     {
         return parent::filterArrayDataSource("MedianFilter");
     }
@@ -122,7 +118,7 @@ class MedianFilterTest extends filterTestBase
      *
      * @return null
      */
-    public static function dataMedian() 
+    public static function dataMedian()
     {
         return array(
             array(
@@ -155,7 +151,7 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 9, "data" => array(13,9)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 9, "data" => array(14,9)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-               ),                                      // $expect                
+               ),                                      // $expect
            ),
             array(
                 array(
@@ -187,7 +183,7 @@ class MedianFilterTest extends filterTestBase
                     array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 8, "data" => array(13,8)),
                     array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 11, "data" => array(14,11)),
                     array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
-               ),                                      // $expect                
+               ),                                      // $expect
            ),
         );
     }
@@ -206,7 +202,7 @@ class MedianFilterTest extends filterTestBase
      *
      * @dataProvider dataMedian
      */
-    public function testMedianHistory($history, $index, $filter, $extra, $deltaT, $expect) 
+    public function testMedianHistory($history, $index, $filter, $extra, $deltaT, $expect)
     {
         $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
         $this->assertSame($expect, $history);
@@ -226,7 +222,7 @@ class MedianFilterTest extends filterTestBase
      *
      * @dataProvider dataMedian
      */
-    public function testMedianReturn($history, $index, $filter, $extra, $deltaT, $expect) 
+    public function testMedianReturn($history, $index, $filter, $extra, $deltaT, $expect)
     {
         $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
         $this->assertSame($expect, $history, "history is wrong");
@@ -235,8 +231,4 @@ class MedianFilterTest extends filterTestBase
 
 }
 
-// Call medianFilterTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "medianFilterTest::main") {
-    medianFilterTest::main();
-}
 ?>

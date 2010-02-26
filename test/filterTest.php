@@ -31,15 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Call filterTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "filterTest::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -47,6 +42,7 @@ require_once "PHPUnit/Framework/TestCase.php";
 require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../filter.php';
+require_once dirname(__FILE__).'/../lib/plugins.inc.php';
 
 /**
  * Test class for filter.
@@ -71,7 +67,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -87,7 +83,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new filter();
     }
@@ -100,7 +96,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
         unset($this->o);
     }
@@ -110,7 +106,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataRegisterFilter() 
+    public static function dataRegisterFilter()
     {
         return array(
             array("testFilter", true),
@@ -128,7 +124,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataRegisterFilter
      */
-    public function testRegisterFilter($class, $expect) 
+    public function testRegisterFilter($class, $expect)
     {
         $ret = $this->o->registerFilter($class);
         $this->assertSame($expect, $ret);
@@ -146,7 +142,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataFilter() 
+    public static function dataFilter()
     {
         return array(
         );
@@ -163,7 +159,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataFilter
      */
-    public function testFilter($history, $filters, $expect) 
+    public function testFilter($history, $filters, $expect)
     {
         $this->o->registerFilter("testFilter");
         $ret = $this->o->filter($data, $type, $filter);
@@ -175,7 +171,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testRunFunctionCall() 
+    public function testRunFunctionCall()
     {
         $cName = "testFilter";
         $this->o->registerFilter($this->getMock($cName), $cName);
@@ -191,7 +187,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataRunFunction() 
+    public static function dataRunFunction()
     {
         return array(
             array("testFilter", "Test1", array(array(2,1,0),2,3,4,), array(0,1,2)),
@@ -211,7 +207,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataRunFunction
      */
-    public function testRunFunction($class, $function, $args, $expect) 
+    public function testRunFunction($class, $function, $args, $expect)
     {
         $this->o->registerFilter($class);
         $this->o->runFunction($this->o->filters[$class], $function, $args);
@@ -224,7 +220,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataGetClass() 
+    public static function dataGetClass()
     {
         return array(
             array("testType", "", "sameClass", "testType", "testFilter1"),
@@ -245,7 +241,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataGetClass().
      */
-    public function testGetClass($type, $filter, $expect, $typeExpect, $filterExpect) 
+    public function testGetClass($type, $filter, $expect, $typeExpect, $filterExpect)
     {
         $cName = "testFilter";
         $this->o->registerFilter($cName);
@@ -260,10 +256,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
 
 }
 
-// Call filterTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "filterTest::main") {
-    filterTest::main();
-}
 
 /**
  *  This is a test sensor.  It is not used for anything else.
@@ -307,7 +299,7 @@ class testFilter extends filter_base
      */
     public function test1(&$history, $index, $filter, $extra, $deltaT = null)
     {
-        // This must stay the same. 
+        // This must stay the same.
         return array_reverse($history);
     }
     /**
@@ -321,7 +313,7 @@ class testFilter extends filter_base
      *
      * @return null
      */
-    public function test2(&$history, $index, $filter, $extra, $deltaT = null) 
+    public function test2(&$history, $index, $filter, $extra, $deltaT = null)
     {
     }
 }
@@ -342,7 +334,7 @@ class testFilterNoFilters extends filter_base
     /**
      * constructor
      */
-    function __construct() 
+    function __construct()
     {
         // Make absolutely sure that there are no sensors
         unset($this->filters);

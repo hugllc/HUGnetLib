@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/eVIRTUAL.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class eVIRTUALTest extends endpointTestBase
@@ -82,7 +82,7 @@ class eVIRTUALTest extends endpointTestBase
                      "DeviceGroup" => "FFFFFF",
                      "ActiveSensors" => 2,
                 ),
-                 "Return" => array( 
+                 "Return" => array(
                      "HWPartNum" => "VIRTUAL",
                      "FWPartNum" => "VIRTUAL",
                      "FWVersion" => "VIRTUAL",
@@ -108,7 +108,7 @@ class eVIRTUALTest extends endpointTestBase
                      "DeviceGroup" => "FFFFFF",
                      "ActiveSensors" => 2,
                 ),
-                 "Return" => array( 
+                 "Return" => array(
                      "HWPartNum" => "VIRTUAL",
                      "FWPartNum" => "VIRTUAL",
                      "FWVersion" => "VIRTUAL",
@@ -143,7 +143,7 @@ class eVIRTUALTest extends endpointTestBase
      * @access public
      * @static
      */
-    public static function main() 
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
@@ -155,7 +155,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesFirmware() 
+    public static function dataDevicesFirmware()
     {
         return parent::devicesArrayDataSource("eVIRTUAL", "fw");
     }
@@ -164,7 +164,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesHardware() 
+    public static function dataDevicesHardware()
     {
         return parent::devicesArrayDataSource("eVIRTUAL", "hw");
     }
@@ -173,7 +173,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    public static function dataDevicesVersion() 
+    public static function dataDevicesVersion()
     {
         return parent::devicesArrayDataSource("eVIRTUAL", "ver");
     }
@@ -182,7 +182,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    public static function dataConfigArray() 
+    public static function dataConfigArray()
     {
         return parent::dataConfigArray("eVIRTUAL");
     }
@@ -190,7 +190,7 @@ class eVIRTUALTest extends endpointTestBase
     /**
      * data provider for test readConfig
      */
-    public static function datareadConfig() 
+    public static function datareadConfig()
     {
         return array(
         );
@@ -200,7 +200,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    public static function datacheckRecord() 
+    public static function datacheckRecord()
     {
         return array(
             array(array(), array("Status" => "GOOD"), array("Status" => 'GOOD')),
@@ -212,7 +212,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    function testInterpSensors() 
+    function testInterpSensors()
     {
         $ret = $this->o->interpSensors(array(), array());
         $this->assertSame(array(), $ret);
@@ -223,7 +223,7 @@ class eVIRTUALTest extends endpointTestBase
      *
      * @return array
      */
-    function testReadConfig() 
+    function testReadConfig()
     {
         $ret = $this->o->readConfig(array(), array());
         $this->assertSame(array(), $ret);

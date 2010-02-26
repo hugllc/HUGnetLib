@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,14 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-// Call SensorBaseTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'SensorBaseTest::main');
-}
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 
@@ -106,7 +102,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     {
         unset($this->o);
     }
-    
+
     /**
      * data provider for testConstructor
      *
@@ -114,7 +110,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @static
      */
-    public static function dataConstructorTf() 
+    public static function dataConstructorTf()
     {
         return array(
             array(1,1),
@@ -131,7 +127,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConstructorTf
      */
-    public function testConstructorTf($Tf, $expect) 
+    public function testConstructorTf($Tf, $expect)
     {
         $o = new SensorBase($Tf);
         $this->assertSame($expect, $this->readAttribute($o, "Tf"));
@@ -143,7 +139,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @static
      */
-     public static function dataConstructorD() 
+     public static function dataConstructorD()
      {
          return array(
              array(1,1),
@@ -160,7 +156,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testConstructorD($D, $expect) 
+    public function testConstructorD($D, $expect)
     {
         $o = new SensorBase(false, $D);
         $this->assertSame($expect, $this->readAttribute($o, "D"));
@@ -172,7 +168,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorS() 
+     public static function dataConstructorS()
      {
          return array(
              array(1,1),
@@ -189,7 +185,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testConstructorS($s, $expect) 
+    public function testConstructorS($s, $expect)
     {
         $o = new SensorBase(false, false, $s);
         $this->assertSame($expect, $this->readAttribute($o, "s"));
@@ -201,7 +197,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorAm() 
+     public static function dataConstructorAm()
      {
          return array(
              array(1,1),
@@ -218,7 +214,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConstructorAm
      */
-    public function testConstructorAm($Am, $expect) 
+    public function testConstructorAm($Am, $expect)
     {
         $o = new SensorBase(false, false, false, $Am);
         $this->assertSame($expect, $this->readAttribute($o, "Am"));
@@ -230,7 +226,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-     public static function dataConstructorVcc() 
+     public static function dataConstructorVcc()
      {
          return array(
              array(1,1),
@@ -238,7 +234,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
         );
      }
     /**
-     * Test the vcc value in the constructor 
+     * Test the vcc value in the constructor
      *
      * @dataProvider dataConstructorVcc
      *
@@ -247,7 +243,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testConstructorVcc($Vcc, $expect) 
+    public function testConstructorVcc($Vcc, $expect)
     {
         $o = new SensorBase(false, false, false, false, $Vcc);
         $this->assertSame($expect, $this->readAttribute($o, "Vcc"));
@@ -257,14 +253,14 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testSensorsArray() 
+    public function testSensorsArray()
     {
         $this->assertSame(array(), $this->o->sensors);
     }
 
     /**
      * data provider for testConstructor
-     * 
+     *
      * @return array
      *
      * @static
@@ -283,7 +279,7 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     }
     /**
      * test
-     * 
+     *
      * @param mixed $val    The value to test
      * @param array $cal    The calibration array
      * @param mixed $expect The expected value
@@ -299,8 +295,4 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
 
 }
 
-// Call SensorBaseTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == 'SensorBaseTest::main') {
-    SensorBaseTest::main();
-}
 ?>

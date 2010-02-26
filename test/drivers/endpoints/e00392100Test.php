@@ -35,10 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call e00392100Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "00392100Test::main");
-}
 
 /** The test case class */
 require_once "PHPUnit/Framework/TestCase.php";
@@ -435,8 +431,4 @@ class e00392100Test extends endpointTestBase
 
 }
 
-// Call e00392100Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "e00392100Test::main") {
-    e00392100Test::main();
-}
 ?>

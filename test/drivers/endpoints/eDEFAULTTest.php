@@ -31,19 +31,15 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-// Call e00392800Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "eDEFAULTTest::main");
-}
 
 /** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
+//require_once "PHPUnit/Framework/TestCase.php";
 /** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
+//require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../endpointTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/endpoints/eDEFAULT.php';
@@ -73,21 +69,22 @@ class eDEFAULTTest extends endpointTestBase
      * @access public
      * @static
      */
-    public static function main() 
+/*
+    public static function main()
     {
         include_once "PHPUnit/TextUI/TestRunner.php";
 
         $suite  = new PHPUnit_Framework_TestSuite("eDEFAULTTest");
         $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
-
+*/
     /**
      * This function is here to stop this test from running.  It should
      * be left blank.
      *
      * @return null
      */
-    public function testConfigArray() 
+    public function testConfigArray()
     {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -97,7 +94,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public function testreadConfig() 
+    public function testreadConfig()
     {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -107,7 +104,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public function testDevicesArray() 
+    public function testDevicesArray()
     {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -117,7 +114,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public function testinterpConfig() 
+    public function testinterpConfig()
     {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -127,7 +124,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public function testinterpSensors() 
+    public function testinterpSensors()
     {
         // Do nothing here.  This test is not valid for the default driver
     }
@@ -137,7 +134,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public static function dataConfigArray() 
+    public static function dataConfigArray()
     {
         return parent::dataConfigArray("eDEFAULT");
     }
@@ -146,7 +143,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @return null
      */
-    public function testBadDriver() 
+    public function testBadDriver()
     {
         $this->assertFalse($this->o->badDriver($Info, $fct));
     }
@@ -154,7 +151,7 @@ class eDEFAULTTest extends endpointTestBase
     /**
      * data provider for testCheckDataArray
      */
-    public static function dataCheckDataArray() 
+    public static function dataCheckDataArray()
     {
         return array(
             array(
@@ -170,7 +167,7 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @dataProvider dataCheckDataArray()
      */
-    function testcheckDataArray($work, $expect) 
+    function testcheckDataArray($work, $expect)
     {
         $this->o->checkDataArray($work);
         $this->assertSame($expect, $work);
@@ -184,14 +181,14 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @todo Implement testGetCols()
      */
-    function testGetCols() 
+    function testGetCols()
     {
         $Info = array();
         $cols = $this->o->getCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
         foreach ($cols as $key => $val) {
-            $this->assertType("string", $key, "Array key must be an string");                
-            $this->assertType("string", $val, "Array value must be an string");                
+            $this->assertType("string", $key, "Array key must be an string");
+            $this->assertType("string", $val, "Array value must be an string");
         }
     }
 
@@ -202,21 +199,21 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @todo Implement testGetEditCols()
      */
-    function testGetEditCols() 
+    function testGetEditCols()
     {
         $Info = array();
         $cols = $this->o->getEditCols($Info);
         $this->assertType("array", $cols, "Return must be an array");
         foreach ($cols as $key => $val) {
-            $this->assertType("string", $key, "Array key must be an string");                
-            $this->assertType("string", $val, "Array value must be an string");                
+            $this->assertType("string", $key, "Array key must be an string");
+            $this->assertType("string", $val, "Array value must be an string");
         }
     }
 
     /**
      * data provider for testCompareFWVesrion
      */
-    public static function dataCompareFWVersion() 
+    public static function dataCompareFWVersion()
     {
         return array(
             array("1.2.3", "1.2.3", 0),
@@ -235,11 +232,11 @@ class eDEFAULTTest extends endpointTestBase
      *
      * @dataProvider dataCompareFWVersion
      */
-    function testCompareFWVersion($v1, $v2, $expect) 
+    function testCompareFWVersion($v1, $v2, $expect)
     {
         $ret = $this->o->CompareFWVersion($v1, $v2);
         $this->assertEquals($expect, $ret);
-    }        
+    }
 
     /**
      * test
@@ -247,7 +244,7 @@ class eDEFAULTTest extends endpointTestBase
      * @return null
      *
      */
-    function testcheckRecord() 
+    function testcheckRecord()
     {
         $Rec = array();
         $this->o->checkRecord(array(), $Rec);
@@ -260,18 +257,13 @@ class eDEFAULTTest extends endpointTestBase
      * @return null
      *
      */
-    function testUpdateConfig() 
+    function testUpdateConfig()
     {
         $ret = $this->o->updateConfig(array());
         $this->assertFalse($ret);
     }
 
 
-}
-
-// Call eDEFAULTTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == "eDEFAULTTest::main") {
-    eDEFAULTTest::main();
 }
 
 ?>

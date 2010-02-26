@@ -36,9 +36,6 @@
  *
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'HUGnetLibDriverTests::main');
-}
 /** Test framework */
 require_once 'PHPUnit/Framework.php';
 /** This is for running tests */
@@ -166,7 +163,4 @@ class HUGnetLibDriverTests
     }
 }
 
-if (PHPUnit_MAIN_METHOD == 'HUGnetLibDriverTests::main') {
-    HUGnetLibDriverTests::main();
-}
 ?>
