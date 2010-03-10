@@ -173,14 +173,16 @@ class VoltageSensorTest extends sensorTestBase
     */
     public function testfetBoard($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("voltageSensor",
-                           "fetBoard",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "voltageSensor",
+            "fetBoard",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -233,14 +235,16 @@ class VoltageSensorTest extends sensorTestBase
     */
     public function testIndirect($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("voltageSensor",
-                           "Indirect",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "voltageSensor",
+            "Indirect",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -309,14 +313,16 @@ class VoltageSensorTest extends sensorTestBase
     */
     public function testchsMss($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("voltageSensor",
-                           "chsMss",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "voltageSensor",
+            "chsMss",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -350,14 +356,16 @@ class VoltageSensorTest extends sensorTestBase
     */
     public function testDirect($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("voltageSensor",
-                           "direct",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "voltageSensor",
+            "direct",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
     /**
     * Data provider for testLinearBounded
@@ -400,14 +408,16 @@ class VoltageSensorTest extends sensorTestBase
     */
     public function testLinearBounded($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("voltageSensor",
-                           "linearBounded",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "voltageSensor",
+            "linearBounded",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
      /**
@@ -447,21 +457,24 @@ class VoltageSensorTest extends sensorTestBase
     *
     * @dataProvider dataLinearBoundedIndirect
     */
-    public function testLinearBoundedIndirect($val,
-                                              $sensor,
-                                              $TC,
-                                              $extra,
-                                              $deltaT,
-                                              $expect)
-    {
-        parent::sensorTest("voltageSensor",
-                           "linearBoundedIndirect",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+    public function testLinearBoundedIndirect(
+        $val,
+        $sensor,
+        $TC,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
+        parent::sensorTest(
+            "voltageSensor",
+            "linearBoundedIndirect",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 

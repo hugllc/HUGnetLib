@@ -116,21 +116,24 @@ class PulseSensorTest extends sensorTestBase
     * @dataProvider dataMaximumAnemometer
     * @covers pulseSensor::maximumAnemometer
     */
-    public function testMaximumAnemometer($val,
-                                          $sensor,
-                                          $TC,
-                                          $extra,
-                                          $deltaT,
-                                          $expect)
-    {
-        parent::sensorTest("pulseSensor",
-                           "maximumAnemometer",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+    public function testMaximumAnemometer(
+        $val,
+        $sensor,
+        $TC,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
+        parent::sensorTest(
+            "pulseSensor",
+            "maximumAnemometer",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -163,13 +166,15 @@ class PulseSensorTest extends sensorTestBase
     */
     public function testPulseCheck($value, $sensor, $units, $dType, $expect)
     {
-        parent::sensorCheckTest("pulseSensor",
-                                "pulseCheck",
-                                $value,
-                                $sensor,
-                                $units,
-                                $dType,
-                                $expect);
+        parent::sensorCheckTest(
+            "pulseSensor",
+            "pulseCheck",
+            $value,
+            $sensor,
+            $units,
+            $dType,
+            $expect
+        );
     }
 
     /**
@@ -201,14 +206,16 @@ class PulseSensorTest extends sensorTestBase
     */
     public function testWattNode($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("pulseSensor",
-                           "WattNode",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "pulseSensor",
+            "WattNode",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -240,14 +247,16 @@ class PulseSensorTest extends sensorTestBase
     */
     public function testLiquidFlowMeter($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("pulseSensor",
-                           "liquidFlowMeter",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "pulseSensor",
+            "liquidFlowMeter",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -279,14 +288,16 @@ class PulseSensorTest extends sensorTestBase
     */
     public function testGetPPM($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("pulseSensor",
-                           "GetPPM",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "pulseSensor",
+            "GetPPM",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 }

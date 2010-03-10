@@ -133,21 +133,24 @@ class WindDirectionSensorTest extends sensorTestBase
     * @dataProvider dataMaximumIncSensor
     * @covers windDirectionSensor::maximumIncSensor
     */
-    public function testMaximumIncSensor($ndir,
-                                         $sensor,
-                                         $TC,
-                                         $extra,
-                                         $deltaT,
-                                         $expect)
-    {
-        parent::sensorTest("windDirectionSensor",
-                           "maximumIncSensor",
-                           $ndir,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+    public function testMaximumIncSensor(
+        $ndir,
+        $sensor,
+        $TC,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
+        parent::sensorTest(
+            "windDirectionSensor",
+            "maximumIncSensor",
+            $ndir,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 }

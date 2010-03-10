@@ -154,14 +154,16 @@ class LightSensorTest extends SensorTestBase
     */
     public function testOSRAMBPW34($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("lightSensor",
-                           "OSRAMBPW34",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "lightSensor",
+            "OSRAMBPW34",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 }

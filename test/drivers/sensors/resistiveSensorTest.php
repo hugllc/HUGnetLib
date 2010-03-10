@@ -139,7 +139,7 @@ class ResistiveSensorTest extends SensorTestBase
     *
     * @param int   $A      The a to d reading
     * @param int   $TC     The time constant
-    * @param float $Bias   The bias resistance
+    * @param float $R      The bias resistance
     * @param mixed $expect The expected return value
     *
     * @return null
@@ -227,21 +227,24 @@ class ResistiveSensorTest extends SensorTestBase
      * @covers resistiveSensor::BCTherm238164066103
      * @covers resistiveSensor::_BCTherm2322640Interpolate
      */
-    public function testBCTherm238164066103($A,
-                                              $sensor,
-                                              $TC,
-                                              $extra,
-                                              $deltaT,
-                                              $expect)
-    {
-        parent::sensorTest("resistiveSensor",
-                           "BCTherm238164066103",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+    public function testBCTherm238164066103(
+        $A,
+        $sensor,
+        $TC,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
+        parent::sensorTest(
+            "resistiveSensor",
+            "BCTherm238164066103",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -324,21 +327,24 @@ class ResistiveSensorTest extends SensorTestBase
      *
      * @dataProvider dataPotDir
      */
-    public function testPotDir($A,
-                               $sensor,
-                               $TC,
-                               $extra,
-                               $deltaT,
-                               $expect)
-    {
-        parent::sensorTest("resistiveSensor",
-                           "potDir",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+    public function testPotDir(
+        $A,
+        $sensor,
+        $TC,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
+        parent::sensorTest(
+            "resistiveSensor",
+            "potDir",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 
@@ -403,14 +409,16 @@ class ResistiveSensorTest extends SensorTestBase
     */
     public function testIMCSolar($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor",
-                           "IMCSolar",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "resistiveSensor",
+            "IMCSolar",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
      /**
@@ -474,14 +482,16 @@ class ResistiveSensorTest extends SensorTestBase
     */
     public function testB57560G0103F000($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor",
-                           "B57560G0103F000",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "resistiveSensor",
+            "B57560G0103F000",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 
@@ -576,14 +586,16 @@ class ResistiveSensorTest extends SensorTestBase
      */
     public function testResisDoor($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor",
-                           "resisDoor",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "resistiveSensor",
+            "resisDoor",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -648,14 +660,16 @@ class ResistiveSensorTest extends SensorTestBase
      */
     public function testgetMoistureV2($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor",
-                           "getMoistureV2",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "resistiveSensor",
+            "getMoistureV2",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
     /**
@@ -727,14 +741,16 @@ class ResistiveSensorTest extends SensorTestBase
      */
     public function testgetMoistureV1($A, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("resistiveSensor",
-                           "getMoistureV1",
-                           $A,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "resistiveSensor",
+            "getMoistureV1",
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 }

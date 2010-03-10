@@ -185,14 +185,16 @@ class CurrentSensorTest extends sensorTestBase
     */
     public function testFetBoard($val, $sensor, $TC, $extra, $deltaT, $expect)
     {
-        parent::sensorTest("currentSensor",
-                           "fetBoard",
-                           $val,
-                           $sensor,
-                           $TC,
-                           $extra,
-                           $deltaT,
-                           $expect);
+        parent::sensorTest(
+            "currentSensor",
+            "fetBoard",
+            $val,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT,
+            $expect
+        );
     }
 
 }
