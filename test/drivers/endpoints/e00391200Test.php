@@ -36,11 +36,6 @@
  */
 
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../endpointTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/endpoints/e00391200.php';
 

@@ -36,7 +36,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base path to all the files included for HUGnet */
-define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
+}
 /** The directory Separator */
 if (!defined("DS")) {
     /** The name of the default HUGnet Database */
@@ -59,12 +61,6 @@ $temp_dir = sys_get_temp_dir();
 if (!defined("HUGNET_LOCAL_DATABASE")) {
     /** The name of the default local (sqlite) HUGnet Database */
     define("HUGNET_LOCAL_DATABASE", $temp_dir.DS."HUGnetLocal.sq3");
-}
-
-if (@include 'PHPUnit/Framework.php') {
-    $phpunit = true;
-} else {
-    $phpunit = false;
 }
 
 /** Include the database code */

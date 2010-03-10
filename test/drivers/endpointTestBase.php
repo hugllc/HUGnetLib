@@ -31,19 +31,15 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../driverTest.php';
 require_once dirname(__FILE__).'/../EPacketTest.php';
 require_once dirname(__FILE__).'/../unitConversionTest.php';
+require_once dirname(__FILE__).'/../../drivers/endpoints/eDEFAULT.php';
 
 /**
  * Test class for endpoints.
@@ -70,22 +66,6 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
             "DeviceName" => "Test 1",
        ),
     );
-    
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("endpointTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -95,14 +75,14 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $driver = driverTest::createDriver();
         $driver->registerDriver("testDriver");
         $driver->packet->socket[self::$socket] = new epsocketMock;
         // The reply timeout can be short becuase we should get an instant reply.
         $driver->packet->ReplyTimeout = 1;
-        
+
         $class   = $this->class;
         $this->o = new $class($driver);
 
@@ -128,7 +108,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    protected function setUpPacket($preload) 
+    protected function setUpPacket($preload)
     {
         if (is_array($preload)) {
             foreach ($preload as $data => $reply) {
@@ -146,7 +126,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function devicesArrayDataSource($class, $var) 
+    public static function devicesArrayDataSource($class, $var)
     {
         $driver = driverTest::createDriver();
         $o      = new $class($driver);
@@ -167,11 +147,11 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                         }
                     }
                 }
-                
+
             }
         } else {
             $return = array();
-        }        
+        }
         return $return;
     }
 
@@ -181,8 +161,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * data provider for testDevicesArray
      *
      * @return array
-     */    
-    public static function dataDevicesVersion() 
+     */
+    public static function dataDevicesVersion()
     {
         return array();
     }
@@ -197,7 +177,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataDevicesVersion
      */
-    function testDevicesArrayVersion($fw, $hw, $version) 
+    function testDevicesArrayVersion($fw, $hw, $version)
     {
         $this->assertRegExp("/([0-9]{2}\.[0-9]{2}\.[0-9]{2}|DEFAULT|BAD)/", $version);
     }
@@ -205,8 +185,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * data provider for testDevicesArray
      *
      * @return array
-     */    
-    public static function dataDevicesFirmware() 
+     */
+    public static function dataDevicesFirmware()
     {
         return array();
     }
@@ -220,7 +200,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataDevicesFirmware
      */
-    function testDevicesArrayFirmware($fw, $Firm) 
+    function testDevicesArrayFirmware($fw, $Firm)
     {
         $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
         $this->assertType("array", $Firm);
@@ -229,8 +209,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * data provider for testDevicesArray
      *
      * @return array
-     */    
-    public static function dataDevicesHardware() 
+     */
+    public static function dataDevicesHardware()
     {
         return array();
     }
@@ -245,7 +225,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataDevicesHardware
      */
-    function testDevicesArrayHardware($fw, $hw, $Ver) 
+    function testDevicesArrayHardware($fw, $hw, $Ver)
     {
         $this->assertRegExp("/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|VIRTUAL/", $hw);
         $this->assertType("string", $Ver);
@@ -255,17 +235,17 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testConfigDefault() 
+    function testConfigDefault()
     {
         $this->assertType("array", $this->o->config['DEFAULT'], "Driver '".$this->class."' has no DEFAULT config");
     }
-    
+
     /**
      * Test
      *
      * @return null
      */
-    function testAverageTable() 
+    function testAverageTable()
     {
         $table = $this->o->getAverageTable();
         $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
@@ -276,7 +256,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testHistoryTable() 
+    function testHistoryTable()
     {
         $table = $this->o->getHistoryTable();
         $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
@@ -287,9 +267,9 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testAtoDMax() 
+    function testAtoDMax()
     {
-        $this->assertType("int", $this->o->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");                
+        $this->assertType("int", $this->o->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");
     }
 
     /**
@@ -299,7 +279,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataConfigArray($class=null) 
+    public static function dataConfigArray($class=null)
     {
         $driver = driverTest::createDriver();
         $o      = new $class($driver);
@@ -314,7 +294,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         }
         return $return;
     }
-    
+
     /**
      * Test
      *
@@ -326,13 +306,13 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConfigArray
      */
-    function testConfigArray($class, $fw, $params) 
+    function testConfigArray($class, $fw, $params)
     {
         $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
         $this->assertType("array", $params, "'$fw':Parameters are not an array");
         $this->assertType("array", $this->o->devices[$fw], "'$fw' not found in devices array");
     }
-    
+
     /**
      * Test
      *
@@ -344,12 +324,12 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConfigArray
      */
-    function testConfigArrayFunction($class, $fw, $params) 
+    function testConfigArrayFunction($class, $fw, $params)
     {
         $this->assertType("string", $params["Function"], "'$fw': Parameter 'Function' must be a string");
         $this->assertFalse(empty($params["Function"]), "'$fw': Parameter 'Function' can not be empty");
     }
-    
+
     /**
      * Test
      *
@@ -361,7 +341,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConfigArray
      */
-    function testConfigArraySensors($class, $fw, $params) 
+    function testConfigArraySensors($class, $fw, $params)
     {
         $this->assertType("int", $params["Sensors"], "'$fw': Parameter 'Sensors' must be a int");
         $this->assertThat($params["Sensors"], $this->greaterThanOrEqual(0), "'$fw': The number of sensors must be greater than 0");
@@ -377,7 +357,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConfigArray
      */
-    function testConfigArrayDisplayOrder($class, $fw, $params) 
+    function testConfigArrayDisplayOrder($class, $fw, $params)
     {
         // This is not required so we only check it if it is present
         if (isset($params['DisplayOrder'])) {
@@ -405,7 +385,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @dataProvider dataConfigArray
      *
      */
-    function testConfigArrayBad($class, $fw, $params) 
+    function testConfigArrayBad($class, $fw, $params)
     {
         $this->assertFalse(isset($params["SensorLength"]), "'$fw': Parameter 'SensorLength' is not used anymore and should be removed.");
     }
@@ -414,7 +394,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function datareadSensors() 
+    public static function datareadSensors()
     {
         return array(
             array(
@@ -435,7 +415,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider datareadSensors
      */
-    function testreadSensors($Info, $expect) 
+    function testreadSensors($Info, $expect)
     {
         $ret = $this->o->readSensors($Info);
         $this->assertSame($expect, $ret);
@@ -446,7 +426,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testsaveSensorData() 
+    function testsaveSensorData()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -457,7 +437,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testupdateConfig() 
+    function testupdateConfig()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -468,7 +448,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function datacheckRecord() 
+    public static function datacheckRecord()
     {
         return array(
             array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD")),
@@ -496,7 +476,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataCheckRecord()
      */
-    function testcheckRecord($Info, $Rec, $expect) 
+    function testcheckRecord($Info, $Rec, $expect)
     {
         $this->o->checkRecord($Info, $Rec);
         $this->assertSame($expect, $Rec);
@@ -508,29 +488,29 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testReadMem() 
+    function testReadMem()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
-    
+
     /**
      * Test
      *
      * @return null
      */
-    function testGetConfigVars() 
+    function testGetConfigVars()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
-    
+
     /**
      * data provider for test readConfig
      *
      * @return array
      */
-    public static function datareadConfig() 
+    public static function datareadConfig()
     {
         return array(
             array(
@@ -552,18 +532,18 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @dataProvider datareadConfig()
      */
-    function testreadConfig($Info, $expect) 
+    function testreadConfig($Info, $expect)
     {
         $ret = $this->o->readConfig($Info);
         $this->assertSame($expect, $ret);
     }
-        
+
     /**
      * Test
      *
      * @return null
      */
-    function testUnsolicited() 
+    function testUnsolicited()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
@@ -574,7 +554,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @dataProvider dataInterpConfig()
      * @return null
      */
-    function testInterpConfig($Info, $Return) 
+    function testInterpConfig($Info, $Return)
     {
         $ret = $this->o->interpConfig($Info);
         $this->_checkinterpConfigReturn($Info, $Return);
@@ -588,7 +568,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    private function _checkinterpConfigReturn($ret, $expected) 
+    private function _checkinterpConfigReturn($ret, $expected)
     {
         // Check the stuff we can predict
         foreach ($expected as $key => $val) {
@@ -618,7 +598,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function printArray($ret) 
+    function printArray($ret)
     {
         if (is_array($ret)) {
             foreach ($ret as $name => $val) {
@@ -628,7 +608,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
             }
         }
     }
-    
+
     /**
      * Test
      *
@@ -636,7 +616,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function printArrayVal($val) 
+    function printArrayVal($val)
     {
         if (is_array($val)) {
             print "array(";
@@ -652,12 +632,12 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                         print '"'.$key.'" => ';
                     } else {
                         print $sep;
-                        $sep = ", ";                    
+                        $sep = ", ";
                     }
                     endpointTestBase::printArrayVal($v);
                     if (is_string($key)) print ",\n";
                 }
-            }                
+            }
             print ")";
         } else if (is_string($val)) {
             print '"'.$val.'"';
@@ -672,15 +652,15 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         } else {
             print $val;
         }
-    }    
-        
+    }
+
     /**
      * Test
      *
      * @dataProvider dataInterpSensors()
      * @return null
      */
-    function testInterpSensors($Info, $Packets, $Return) 
+    function testInterpSensors($Info, $Packets, $Return)
     {
         $ret = $this->o->interpSensors($Info, $Packets);
         if (is_array($Return)) {
@@ -700,9 +680,9 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      * @param array  $expected The return that was expected
      * @param string $p        The array key
      *
-     * @return null        
+     * @return null
      */
-    private function _checkinterpSensorsReturn($ret, $expected, $p) 
+    private function _checkinterpSensorsReturn($ret, $expected, $p)
     {
         $this->assertType("array", $ret, $this->class." run $p: return is not an array");
         // Check the stuff we can predict
@@ -731,7 +711,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testGetHistoryTable() 
+    public function testGetHistoryTable()
     {
         $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "history_table");
@@ -743,7 +723,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testGetAverageTable() 
+    public function testGetAverageTable()
     {
         $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "average_table");
@@ -755,7 +735,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testGetLocationTable() 
+    public function testGetLocationTable()
     {
         $Info   = array("Driver" => get_class($this->o));
         $expect = $this->readAttribute($this->o, "location_table");

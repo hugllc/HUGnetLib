@@ -35,11 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-/** Test Case */
-require_once "PHPUnit/Framework/TestCase.php";
-/** Test Suite */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 /** The gateway code to test */
 require_once dirname(__FILE__).'/../../database/Analysis.php';
 /** This is our base class */
@@ -63,21 +58,6 @@ class AnalysisTest extends databaseTest
     /** The table to use */
     protected $table = "analysis";
 
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("AnalysisTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, open a network connection.

@@ -34,12 +34,10 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+}
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
 
 /**
  * General test class for database classes

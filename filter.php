@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,9 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+require_once "lib/plugins.inc.php";
 /**
  * A class for filtering endpoint data.  This class implements drivers that actually
  * do the filtering.
@@ -57,11 +58,11 @@ class Filter
      *
      * @see plugins
       */
-    function __construct(&$plugins = "") 
+    function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
             if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
-            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/filters/", "php");
         }
 
         foreach ($plugins->plugins["Generic"]["filter"] as $driver) {
@@ -77,7 +78,7 @@ class Filter
      *
      * @return bool true on success, false on failure
       */
-    public function registerFilter($class, $name=false) 
+    public function registerFilter($class, $name=false)
     {
         if (is_string($class) && class_exists($class)) {
             $this->filters[$class] = new $class();
@@ -99,7 +100,7 @@ class Filter
         } else {
             return false;
         }
-     
+
     }
 
     /**
@@ -110,15 +111,15 @@ class Filter
      *
      * @return null
      */
-    public function filter(&$history, $filters) 
+    public function filter(&$history, $filters)
     {
         if (!is_array($filters)) return;
         foreach ($filters as $key => $filter) {
             $this->_filterData($history, $key, $filter);
         }
     }
-         
-    
+
+
     /**
      * This function does the actual filtering of the data based on the input given.
      *
@@ -128,7 +129,7 @@ class Filter
      *
      * @return null
      */
-    private function _filterData(&$data, $index, $filter=null) 
+    private function _filterData(&$data, $index, $filter=null)
     {
         $class = $this->getClass($type, $filter);
         if (!is_object($class)) return;
@@ -148,7 +149,7 @@ class Filter
      *
      * @return null
       */
-    function runFunction(&$class, $function, &$args) 
+    function runFunction(&$class, $function, &$args)
     {
         if (!is_string($function)) return;
         if (!method_exists($class, $function)) return;
@@ -166,7 +167,7 @@ class Filter
      *
      * @return object
       */
-    function &getClass($type, &$filter) 
+    function &getClass($type, &$filter)
     {
         $class = $this->dev[$type][$filter];
         if (is_null($class)) {
@@ -174,9 +175,9 @@ class Filter
                 reset($this->dev[$type]);
                 $filter = key($this->dev[$type]);
                 $class  = current($this->dev[$type]);
-            }            
+            }
         }
-        return $this->filters[$class];    
+        return $this->filters[$class];
     }
 }
 
@@ -199,7 +200,7 @@ class Filter_Base
         This defines all of the filters that this driver deals with...
      */
     var $filters = array();
-    
+
     /**
         Constructor.
      */

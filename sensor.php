@@ -36,6 +36,7 @@
  */
 // Get the base class for the sensors
 require_once dirname(__FILE__)."/base/SensorBase.php";
+require_once "lib/plugins.inc.php";
 
 /**
  * This class controls all of the sensors.  When given the right information
@@ -65,7 +66,7 @@ class Sensor
             if (!isset($_SESSION["incdir"])) {
                 $_SESSION["incdir"] = dirname(__FILE__)."/";
             }
-            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/sensors/", "php");
         }
 
         if (is_array($plugins->plugins["Generic"]["sensor"])) {

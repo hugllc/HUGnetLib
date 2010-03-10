@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -53,7 +53,7 @@ define("PACKET_ERROR_BADC_NO", -4);
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 /** Used for manipulating devInfo arrays */
-require_once HUGNET_INCLUDE_PATH."/devInfo.php";
+require_once "../devInfo.php";
 
 
 /**
@@ -69,7 +69,7 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class SocketBase
-{    
+{
 
 
     /** @var int How many times we retry the packet until we get a good one */
@@ -88,21 +88,21 @@ class SocketBase
     var $ReplyTimeout = 5;
 
     /** @var bool Whether we should print out a lot output */
-    var $verbose = false;        
+    var $verbose = false;
 
     /** The preamble byte */
     static $preambleByte = "5A";
 
-    /** Return all packets coming in */    
-    protected $getAll = false;    
+    /** Return all packets coming in */
+    protected $getAll = false;
     /**
      * Sets the flag to get and return all packets.
-     * 
+     *
      * @param bool $val The value to set getAll to.
      *
      * @return bool true if the DeviceID belongs to a gateway, false otherwise.
      */
-    function getAll($val = true) 
+    function getAll($val = true)
     {
         $this->getAll = (bool) $val;
     }
@@ -128,14 +128,14 @@ class SocketBase
      *
      * @return array The packet array created from the string
      */
-    function unbuildPacket($data) 
+    function unbuildPacket($data)
     {
         // Strip off any preamble bytes.
         $data = strtoupper($data);
         self::removePreamble($data);
         $pkt = array();
         $pkt["Command"] = substr($data, 0, 2);
-        $pkt["To"]      = substr($data, 2, 6); 
+        $pkt["To"]      = substr($data, 2, 6);
         devInfo::setStringSize($pkt["To"], 6);
         $pkt["From"] = substr($data, 8, 6);
         devInfo::setStringSize($pkt["From"], 6);
@@ -157,7 +157,7 @@ class SocketBase
      *
      * @return string The checksum
      */
-    public function packetGetChecksum($PktStr) 
+    public function packetGetChecksum($PktStr)
     {
         $chksum = 0;
         for ($i = 0; $i < strlen($PktStr); $i+=2) {
@@ -170,7 +170,7 @@ class SocketBase
 
     /**
      * Builds a packet
-     * 
+     *
      * This function actually builds the packet to write to the socket.  It takes in
      * an array of the form:
      * <code>
@@ -179,14 +179,14 @@ class SocketBase
      * array["Data"][0] = 00;
      * array["Data"][1] = 01;
      * ...
-     * </code> 
+     * </code>
      *
      * @param array  $Packet This is an array with packet commands in it.
      * @param string $from   If the packet is not from me this is the from address to use.
      *
      * @return string The packet in string form.
      */
-    function packetBuild($Packet, $from=null) 
+    function packetBuild($Packet, $from=null)
     {
         if (!is_array($Packet)) $Packet = array();
         $string       = "";
@@ -213,10 +213,10 @@ class SocketBase
      * @param string &$data The preamble will be removed from this packet string
      *
      * @return null
-     */ 
-    protected function removePreamble(&$data) 
+     */
+    protected function removePreamble(&$data)
     {
-        while (substr($data, 0, 2) == SocketBase::$preambleByte) $data = substr($data, 2);    
+        while (substr($data, 0, 2) == SocketBase::$preambleByte) $data = substr($data, 2);
     }
     /**
      * Splits the data string into an array
@@ -224,8 +224,8 @@ class SocketBase
      * @param string $data The preamble will be removed from this packet string
      *
      * @return array
-     */ 
-    protected function splitDataString($data) 
+     */
+    protected function splitDataString($data)
     {
         for ($i = 0; $i < (strlen($data)/2); $i++) {
             $ret[] = hexdec(substr($data, ($i*2), 2));
@@ -242,18 +242,18 @@ class SocketBase
      *
      * @return bool
      */
-    private function _recvPacketGetChar($timeout) 
+    private function _recvPacketGetChar($timeout)
     {
         $char = $this->ReadChar($timeout);
         if ($char !== false) {
             $char = devInfo::hexify(ord($char));
-            
+
             $this->buffer .= $char;
-            
+
             return true;
         } else {
             return false;
-        }    
+        }
     }
     /**
      * Checks to see if what is in the buffer is a packet
@@ -264,7 +264,7 @@ class SocketBase
      *
      * @return mixed
      */
-    private function _recvPacketCheckPkt() 
+    private function _recvPacketCheckPkt()
     {
         $pkt = $this->_recvPacketGetPacket();
         if (is_string($pkt)) {
@@ -274,7 +274,7 @@ class SocketBase
         }
     }
 
-    
+
     /**
      * Finds a potential packet in a string
      *
@@ -282,7 +282,7 @@ class SocketBase
      *
      * @return mixed
      */
-    private function _recvPacketGetPacket() 
+    private function _recvPacketGetPacket()
     {
         $pkt = stristr($this->buffer, SocketBase::$preambleByte.SocketBase::$preambleByte);
         self::removePreamble($pkt);
@@ -295,16 +295,16 @@ class SocketBase
         } else {
             return false;
         }
-    
+
     }
     /**
      * Receives a packet from the socket interface
      *
-     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0    
+     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0
      *
      * @return bool false on failure, the Packet array on success
      */
-    function RecvPacket($timeout=0) 
+    function RecvPacket($timeout=0)
     {
         $timeout  = $this->getReplyTimeout($timeout);
         $Start    = time();
@@ -324,12 +324,12 @@ class SocketBase
      *
      * @return int
      */
-    protected function getReplyTimeout($timeout) 
+    protected function getReplyTimeout($timeout)
     {
         if (!is_numeric($timeout) || ($timeout <= 0)) {
             $timeout = $this->ReplyTimeout;
         }
-        return $timeout;        
+        return $timeout;
     }
     /**
      * Sends out a packet
@@ -339,7 +339,7 @@ class SocketBase
      *
      * @return bool false on failure, true on success
      */
-    function sendPacket($packet, $GetReply=true) 
+    function sendPacket($packet, $GetReply=true)
     {
         if ($this->verbose) print "Sending Pkt: T:".$packet['PacketTo']." C:".$packet['sendCommand']."\n";
         $ret = $this->Write($packet, $GetReply);
@@ -347,7 +347,7 @@ class SocketBase
         return $ret;
 
     }
-    
+
 }
 
 ?>

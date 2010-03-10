@@ -35,6 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+require_once "lib/plugins.inc.php";
 /**
  * Class for doing unit conversions and storing unit information
  *
@@ -75,7 +76,7 @@ class UnitConversion
             if (!isset($_SESSION["incdir"])) {
                 $_SESSION["incdir"] = dirname(__FILE__)."/";
             }
-            $plugins = new Plugins(dirname(__FILE__)."/drivers/", "php");
+            $plugins = new Plugins(dirname(__FILE__)."/drivers/units/", "php");
         }
 
         if (is_array($plugins->plugins["Generic"]["units"])) {

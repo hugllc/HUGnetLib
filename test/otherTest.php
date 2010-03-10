@@ -31,15 +31,10 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-/** The test case class */
-//require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-//require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../hugnet.inc.php';
 
@@ -58,23 +53,6 @@ require_once dirname(__FILE__).'/../hugnet.inc.php';
 class otherTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-/*
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("epsocketTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-*/
-    /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
@@ -82,7 +60,7 @@ class otherTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
     }
 
@@ -94,16 +72,16 @@ class otherTest extends PHPUnit_Framework_TestCase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
-    
+
     /**
      * Test other stuff
      *
      * @return null
      */
-    public function testOther() 
+    public function testOther()
     {
          // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
