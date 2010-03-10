@@ -31,15 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+}
 
 require_once dirname(__FILE__).'/../../filter.php';
 
@@ -54,54 +52,41 @@ require_once dirname(__FILE__).'/../../filter.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class filterTestBase extends PHPUnit_Framework_TestCase
+class FilterTestBase extends PHPUnit_Framework_TestCase
 {
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("filterTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-
-    /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function setUp() 
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function setUp()
     {
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
-    protected function tearDown() 
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
+    protected function tearDown()
     {
     }
     /**
-     *
-     */
-    public static function filterArrayDataSource($class) 
+    * This gets the filter array and returns it.
+    *
+    * @param string $class The class to use
+    *
+    * @return array
+    */
+    public static function filterArrayDataSource($class)
     {
         $o = new $class();
         $return = array();
@@ -117,40 +102,78 @@ class filterTestBase extends PHPUnit_Framework_TestCase
      * Data provider stub for testFilterVariable
      *
      *  This should be redifined in subclasses.
+     *
+     * @return array
      */
-    public static function dataFilterVariable() 
+    public static function dataFilterVariable()
     {
         return array();
     }
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $filter    The filter array
+     *
      * @return null
      *
      * @dataProvider dataFilterVariable
      */
-    public function testFilterVariableLongName($catName, $shortName, $filter) 
+    public function testFilterVariableLongName($catName, $shortName, $filter)
     {
         // Long Name
-        $this->assertType("string", $filter['longName'], $catName.":".$shortName.": Long name is not a string");
-        $this->assertThat(strlen($filter['longName']), $this->greaterThan(0), $catName.":".$shortName.": Long name is not a set");    
+        $this->assertType(
+            "string",
+            $filter['longName'],
+            $catName.":".$shortName.": Long name is not a string"
+        );
+        $this->assertThat(
+            strlen($filter['longName']),
+            $this->greaterThan(0),
+            $catName.":".$shortName.": Long name is not a set"
+        );
     }
     /**
      * test
      *
+     * @param string $catName   The category name
+     * @param string $shortName The sensor short name
+     * @param array  $sensor    The sensor array
+     *
      * @return null
      *
      * @dataProvider dataFilterVariable
      */
-    public function testFilterVariableExtra($catName, $shortName, $sensor) 
+    public function testFilterVariableExtra($catName, $shortName, $sensor)
     {
         if (isset($sensor["extraText"])) {
             if (is_array($sensor["extraText"])) {
-                $this->assertType("array", $sensor['extraDefault'], $this->class.":".$type.":".$shortName.": If extraText is an array extraDefault must also be an array.");
-                $this->assertEquals(count($sensor['extraText']), count($sensor['extraDefault']), $this->class.":".$type.":".$shortName.": extraText and extraDefault must have the same number of elements");
+                $this->assertType(
+                    "array",
+                    $sensor['extraDefault'],
+                    $this->class.":".$type.":".$shortName.": If extraText is an "
+                    ."array extraDefault must also be an array."
+                );
+                $this->assertEquals(
+                    count($sensor['extraText']),
+                    count($sensor['extraDefault']),
+                    $this->class.":".$type.":".$shortName.": extraText and "
+                    ."extraDefault must have the same number of elements"
+                );
             } else {
-                $this->assertType("string", $sensor['extraText'], $this->class.":".$type.":".$shortName.": extraText must either be an array or a string");
-                $this->assertNotType("array", $sensor['extraDefault'], $this->class.":".$type.":".$shortName.": If extraText is not an array extraDefault must also not be an array.");
+                $this->assertType(
+                    "string",
+                    $sensor['extraText'],
+                    $this->class.":".$type.":".$shortName.": extraText must either "
+                    ."be an array or a string"
+                );
+                $this->assertNotType(
+                    "array",
+                    $sensor['extraDefault'],
+                    $this->class.":".$type.":".$shortName.": If extraText is not an "
+                    ."array extraDefault must also not be an array."
+                );
             }
         }
     }
@@ -158,11 +181,17 @@ class filterTestBase extends PHPUnit_Framework_TestCase
     /**
      * Generic function to test filter routines.
      *
+     * @param string $class  The class to use
+     * @param string $method The method to call
+     * @param mixed  $val    The value to expect
+     *
+     * @return null
+     *
      * call by using parent::filterTest()
      */
-    public static function filterTest($class, $method, $val) 
+    public static function filterTest($class, $method, $val)
     {
-    
+
     }
 }
 

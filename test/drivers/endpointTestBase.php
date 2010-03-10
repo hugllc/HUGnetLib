@@ -67,13 +67,13 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     );
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
     protected function setUp()
     {
         $driver = driverTest::createDriver();
@@ -88,43 +88,46 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
     protected function tearDown()
     {
         unset($this->o);
     }
 
     /**
-     * Preloads data into the packet structure so that we can test things.
-     *
-     * @param array $preload Packet data to preload
-     *
-     * @return null
-     */
+    * Preloads data into the packet structure so that we can test things.
+    *
+    * @param array $preload Packet data to preload
+    *
+    * @return null
+    */
     protected function setUpPacket($preload)
     {
         if (is_array($preload)) {
             foreach ($preload as $data => $reply) {
-                $this->o->driver->packet->socket[self::$socket]->setReply($data, $reply);
+                $this->o->driver->packet->socket[self::$socket]->setReply(
+                    $data,
+                    $reply
+                );
             }
         }
     }
 
     /**
-     *  A subclass should call this routine in the dataDevicesArray function
-     *  parent::devicesCheckVersion($class)
-     *
-     * @param string $class The class to use
-     * @param string $var   The variable to return ("fw", "hw", or "ver")
-     *
-     * @return array
-     */
+    *  A subclass should call this routine in the dataDevicesArray function
+    *  parent::devicesCheckVersion($class)
+    *
+    * @param string $class The class to use
+    * @param string $var   The variable to return ("fw", "hw", or "ver")
+    *
+    * @return array
+    */
     public static function devicesArrayDataSource($class, $var)
     {
         $driver = driverTest::createDriver();
@@ -157,132 +160,160 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
 
 
     /**
-     * data provider for testDevicesArray
-     *
-     * @return array
-     */
+    * data provider for testDevicesArray
+    *
+    * @return array
+    */
     public static function dataDevicesVersion()
     {
         return array();
     }
     /**
-     * Test
-     *
-     * @param string $fw      The firmware string
-     * @param string $hw      The hardware string
-     * @param string $version The version string
-     *
-     * @return null
-     *
-     * @dataProvider dataDevicesVersion
-     */
+    * Test
+    *
+    * @param string $fw      The firmware string
+    * @param string $hw      The hardware string
+    * @param string $version The version string
+    *
+    * @return null
+    *
+    * @dataProvider dataDevicesVersion
+    */
     function testDevicesArrayVersion($fw, $hw, $version)
     {
-        $this->assertRegExp("/([0-9]{2}\.[0-9]{2}\.[0-9]{2}|DEFAULT|BAD)/", $version);
+        $this->assertRegExp(
+            "/([0-9]{2}\.[0-9]{2}\.[0-9]{2}|DEFAULT|BAD)/",
+            $version
+        );
     }
     /**
-     * data provider for testDevicesArray
-     *
-     * @return array
-     */
+    * data provider for testDevicesArray
+    *
+    * @return array
+    */
     public static function dataDevicesFirmware()
     {
         return array();
     }
     /**
-     * Test
-     *
-     * @param string $fw   The firmware string
-     * @param array  $Firm The firmware array
-     *
-     * @return null
-     *
-     * @dataProvider dataDevicesFirmware
-     */
+    * Test
+    *
+    * @param string $fw   The firmware string
+    * @param array  $Firm The firmware array
+    *
+    * @return null
+    *
+    * @dataProvider dataDevicesFirmware
+    */
     function testDevicesArrayFirmware($fw, $Firm)
     {
         $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
         $this->assertType("array", $Firm);
     }
     /**
-     * data provider for testDevicesArray
-     *
-     * @return array
-     */
+    * data provider for testDevicesArray
+    *
+    * @return array
+    */
     public static function dataDevicesHardware()
     {
         return array();
     }
     /**
-     * Test
-     *
-     * @param string $fw  The firmware string
-     * @param string $hw  The hardware string
-     * @param string $Ver The version string
-     *
-     * @return null
-     *
-     * @dataProvider dataDevicesHardware
-     */
+    * Test
+    *
+    * @param string $fw  The firmware string
+    * @param string $hw  The hardware string
+    * @param string $Ver The version string
+    *
+    * @return null
+    *
+    * @dataProvider dataDevicesHardware
+    */
     function testDevicesArrayHardware($fw, $hw, $Ver)
     {
         $this->assertRegExp("/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|VIRTUAL/", $hw);
         $this->assertType("string", $Ver);
     }
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testConfigDefault()
     {
-        $this->assertType("array", $this->o->config['DEFAULT'], "Driver '".$this->class."' has no DEFAULT config");
+        $this->assertType(
+            "array",
+            $this->o->config['DEFAULT'],
+            "Driver '".$this->class."' has no DEFAULT config"
+        );
     }
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testAverageTable()
     {
         $table = $this->o->getAverageTable();
-        $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $this->assertType(
+            "string",
+            $table,
+            "Driver '".$this->class."' has no HWName attribute"
+        );
+        $this->assertThat(
+            strlen($table),
+            $this->greaterThan(0),
+            "Driver '".$this->class."' has blank HWName"
+        );
     }
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testHistoryTable()
     {
         $table = $this->o->getHistoryTable();
-        $this->assertType("string", $table, "Driver '".$this->class."' has no HWName attribute");
-        $this->assertThat(strlen($table), $this->greaterThan(0), "Driver '".$this->class."' has blank HWName");
+        $this->assertType(
+            "string",
+            $table, "Driver '".$this->class."' has no HWName attribute"
+        );
+        $this->assertThat(
+            strlen($table),
+            $this->greaterThan(0),
+            "Driver '".$this->class."' has blank HWName"
+        );
     }
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testAtoDMax()
     {
-        $this->assertType("int", $this->o->AtoDMax, "Driver '".$this->class."': AtoDMax must be an integer.");
+        $this->assertType(
+            "int",
+            $this->o->AtoDMax,
+            "Driver '".$this->class."': AtoDMax must be an integer."
+        );
     }
 
     /**
-     * data provider for dataConfigArray* functions
-     *
-     * @param string $class The class to use
-     *
-     * @return array
-     */
+    * data provider for dataConfigArray* functions
+    *
+    * @param string $class The class to use
+    *
+    * @return array
+    */
     public static function dataConfigArray($class=null)
     {
         $driver = driverTest::createDriver();
         $o      = new $class($driver);
-        if (empty($class)) return array();
+        if (empty($class)) {
+            return array();
+        }
         $return = array();
         if (is_array($o->config)) {
             foreach ($o->config as $fw => $params) {
@@ -295,104 +326,153 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @param string $class  The class to use
-     * @param string $fw     The firmware string
-     * @param string $params Firmware parameters
-     *
-     * @return null
-     *
-     * @dataProvider dataConfigArray
-     */
+    * Test
+    *
+    * @param string $class  The class to use
+    * @param string $fw     The firmware string
+    * @param string $params Firmware parameters
+    *
+    * @return null
+    *
+    * @dataProvider dataConfigArray
+    */
     function testConfigArray($class, $fw, $params)
     {
         $this->assertRegExp("/([0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Z]|DEFAULT)/", $fw);
-        $this->assertType("array", $params, "'$fw':Parameters are not an array");
-        $this->assertType("array", $this->o->devices[$fw], "'$fw' not found in devices array");
+        $this->assertType(
+            "array",
+            $params,
+            "'$fw':Parameters are not an array"
+        );
+        $this->assertType(
+            "array",
+            $this->o->devices[$fw],
+            "'$fw' not found in devices array"
+        );
     }
 
     /**
-     * Test
-     *
-     * @param string $class  The class to use
-     * @param string $fw     The firmware string
-     * @param string $params Firmware parameters
-     *
-     * @return null
-     *
-     * @dataProvider dataConfigArray
-     */
+    * Test
+    *
+    * @param string $class  The class to use
+    * @param string $fw     The firmware string
+    * @param string $params Firmware parameters
+    *
+    * @return null
+    *
+    * @dataProvider dataConfigArray
+    */
     function testConfigArrayFunction($class, $fw, $params)
     {
-        $this->assertType("string", $params["Function"], "'$fw': Parameter 'Function' must be a string");
-        $this->assertFalse(empty($params["Function"]), "'$fw': Parameter 'Function' can not be empty");
+        $this->assertType(
+            "string",
+            $params["Function"],
+            "'$fw': Parameter 'Function' must be a string"
+        );
+        $this->assertFalse(
+            empty($params["Function"]),
+            "'$fw': Parameter 'Function' can not be empty"
+        );
     }
 
     /**
-     * Test
-     *
-     * @param string $class  The class to use
-     * @param string $fw     The firmware string
-     * @param string $params Firmware parameters
-     *
-     * @return null
-     *
-     * @dataProvider dataConfigArray
-     */
+    * Test
+    *
+    * @param string $class  The class to use
+    * @param string $fw     The firmware string
+    * @param string $params Firmware parameters
+    *
+    * @return null
+    *
+    * @dataProvider dataConfigArray
+    */
     function testConfigArraySensors($class, $fw, $params)
     {
-        $this->assertType("int", $params["Sensors"], "'$fw': Parameter 'Sensors' must be a int");
-        $this->assertThat($params["Sensors"], $this->greaterThanOrEqual(0), "'$fw': The number of sensors must be greater than 0");
+        $this->assertType(
+            "int",
+            $params["Sensors"],
+            "'$fw': Parameter 'Sensors' must be a int"
+        );
+        $this->assertThat(
+            $params["Sensors"],
+            $this->greaterThanOrEqual(0),
+            "'$fw': The number of sensors must be greater than 0"
+        );
     }
     /**
-     * Test
-     *
-     * @param string $class  The class to use
-     * @param string $fw     The firmware string
-     * @param string $params Firmware parameters
-     *
-     * @return null
-     *
-     * @dataProvider dataConfigArray
-     */
+    * Test
+    *
+    * @param string $class  The class to use
+    * @param string $fw     The firmware string
+    * @param string $params Firmware parameters
+    *
+    * @return null
+    *
+    * @dataProvider dataConfigArray
+    */
     function testConfigArrayDisplayOrder($class, $fw, $params)
     {
         // This is not required so we only check it if it is present
         if (isset($params['DisplayOrder'])) {
-            $this->assertType("string", $params["DisplayOrder"], "'$fw': Parameter 'DisplayOrder' must be a int");
+            $this->assertType(
+                "string",
+                $params["DisplayOrder"],
+                "'$fw': Parameter 'DisplayOrder' must be a int"
+            );
             $do = explode(",", $params['DisplayOrder']);
-            $this->assertEquals(count($do), $params["Sensors"], "'$fw': Number of display items needs to be identical to the number of sensors.");
+            $this->assertEquals(
+                count($do),
+                $params["Sensors"],
+                "'$fw': Number of display items needs to be identical to the "
+                ."number of sensors."
+            );
             $doTmp = array();
             foreach ($do as $order) {
-                $this->assertThat($order, $this->lessThan($params["Sensors"]), "'$fw': Display order items must be less than the number of sensors.");
-                $this->assertThat($order, $this->greaterThanOrEqual(0), "'$fw': Display order items must be greater than or equal to 0");
-                $this->assertFalse(isset($doTmp[$order]), "'$fw': $order already duplicated!  All entries in display order must be unique");
+                $this->assertThat(
+                    $order,
+                    $this->lessThan($params["Sensors"]),
+                    "'$fw': Display order items must be less than the "
+                    ."number of sensors."
+                );
+                $this->assertThat(
+                    $order,
+                    $this->greaterThanOrEqual(0),
+                    "'$fw': Display order items must be greater than or equal to 0"
+                );
+                $this->assertFalse(
+                    isset($doTmp[$order]),
+                    "'$fw': $order already duplicated!  All entries in display "
+                    ."order must be unique"
+                );
                 $doTmp[$order] = true;
             }
         }
     }
     /**
-     * Test
-     *
-     * @param string $class  The class to use
-     * @param string $fw     The firmware string
-     * @param string $params Firmware parameters
-     *
-     * @return null
-     *
-     * @dataProvider dataConfigArray
-     *
-     */
+    * Test
+    *
+    * @param string $class  The class to use
+    * @param string $fw     The firmware string
+    * @param string $params Firmware parameters
+    *
+    * @return null
+    *
+    * @dataProvider dataConfigArray
+    *
+    */
     function testConfigArrayBad($class, $fw, $params)
     {
-        $this->assertFalse(isset($params["SensorLength"]), "'$fw': Parameter 'SensorLength' is not used anymore and should be removed.");
+        $this->assertFalse(
+            isset($params["SensorLength"]),
+            "'$fw': Parameter 'SensorLength' is not used anymore and "
+            ."should be removed."
+        );
     }
     /**
-     * data provider for test readConfig
-     *
-     * @return array
-     */
+    * data provider for test readConfig
+    *
+    * @return array
+    */
     public static function datareadSensors()
     {
         return array(
@@ -405,15 +485,15 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * Test
-     *
-     * @param array $Info   The devInfo array for the device
-     * @param array $expect The expected return
-     *
-     * @return null
-     *
-     * @dataProvider datareadSensors
-     */
+    * Test
+    *
+    * @param array $Info   The devInfo array for the device
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider datareadSensors
+    */
     function testreadSensors($Info, $expect)
     {
         $ret = $this->o->readSensors($Info);
@@ -421,10 +501,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testsaveSensorData()
     {
         // Remove the following line when you implement this test.
@@ -432,10 +512,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testupdateConfig()
     {
         // Remove the following line when you implement this test.
@@ -443,38 +523,74 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider
-     *
-     * @return array
-     */
+    * data provider
+    *
+    * @return array
+    */
     public static function datacheckRecord()
     {
         return array(
-            array(array(), array("Status" => "GOOD"), array("Status" => 'BAD', "StatusOld" => "GOOD")),
             array(
                 array(),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => null, "Data1" => null, "Data2" => null, "Data3" => null, "Data4" => null, "NumSensors" => 5, "Status" => "BAD", "StatusCode" => "All Bad"),
+                array("Status" => "GOOD"),
+                array("Status" => 'BAD', "StatusOld" => "GOOD")
+            ),
+            array(
+                array(),
+                array(
+                    "sendCommand" => PACKET_COMMAND_GETDATA,
+                    "RawData" => "00010203",
+                    "Data0" => null,
+                    "Data1" => null,
+                    "Data2" => null,
+                    "Data3" => null,
+                    "Data4" => null,
+                    "NumSensors" => 5
+                ),
+                array(
+                    "sendCommand" => PACKET_COMMAND_GETDATA,
+                    "RawData" => "00010203",
+                    "Data0" => null,
+                    "Data1" => null,
+                    "Data2" => null,
+                    "Data3" => null,
+                    "Data4" => null,
+                    "NumSensors" => 5,
+                    "Status" => "BAD",
+                    "StatusCode" => "All Bad"
+                ),
            ),
             array(
                 array(),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1),
-                array("sendCommand" => PACKET_COMMAND_GETDATA, "RawData" => "00010203", "Data0" => 1, "NumSensors" => 1, "Status" => "BAD", "StatusCode" => "Bad TC"),
+                array(
+                    "sendCommand" => PACKET_COMMAND_GETDATA,
+                    "RawData" => "00010203",
+                    "Data0" => 1,
+                    "NumSensors" => 1
+                ),
+                array(
+                    "sendCommand" => PACKET_COMMAND_GETDATA,
+                    "RawData" => "00010203",
+                    "Data0" => 1,
+                    "NumSensors" => 1,
+                    "Status" => "BAD",
+                    "StatusCode" => "Bad TC"
+                ),
            ),
         );
     }
 
     /**
-     * Test
-     *
-     * @param array $Info   The devInfo array for the device
-     * @param array $Rec    The record to check
-     * @param array $expect The expected return
-     *
-     * @return null
-     *
-     * @dataProvider dataCheckRecord()
-     */
+    * Test
+    *
+    * @param array $Info   The devInfo array for the device
+    * @param array $Rec    The record to check
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheckRecord()
+    */
     function testcheckRecord($Info, $Rec, $expect)
     {
         $this->o->checkRecord($Info, $Rec);
@@ -483,10 +599,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
 
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testReadMem()
     {
         // Remove the following line when you implement this test.
@@ -494,10 +610,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testGetConfigVars()
     {
         // Remove the following line when you implement this test.
@@ -505,10 +621,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * data provider for test readConfig
-     *
-     * @return array
-     */
+    * data provider for test readConfig
+    *
+    * @return array
+    */
     public static function datareadConfig()
     {
         return array(
@@ -522,15 +638,15 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * Test
-     *
-     * @param array $Info   The devInfo array for the device
-     * @param array $expect The expected return
-     *
-     * @return null
-     *
-     * @dataProvider datareadConfig()
-     */
+    * Test
+    *
+    * @param array $Info   The devInfo array for the device
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider datareadConfig()
+    */
     function testreadConfig($Info, $expect)
     {
         $ret = $this->o->readConfig($Info);
@@ -538,21 +654,24 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @return null
+    */
     function testUnsolicited()
     {
         // Remove the following line when you implement this test.
         $this->markTestIncomplete("This test has not been implemented yet.");
     }
     /**
-     * Test
-     *
-     * @dataProvider dataInterpConfig()
-     * @return null
-     */
+    * Test
+    *
+    * @param array $Info   The devInfo array
+    * @param array $Return The expected return value
+    *
+    * @dataProvider dataInterpConfig()
+    * @return null
+    */
     function testInterpConfig($Info, $Return)
     {
         $ret = $this->o->interpConfig($Info);
@@ -560,43 +679,72 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @param array $ret      The returned value
-     * @param array $expected The expected return
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @param array $ret      The returned value
+    * @param array $expected The expected return
+    *
+    * @return null
+    */
     private function _checkinterpConfigReturn($ret, $expected)
     {
         // Check the stuff we can predict
         foreach ($expected as $key => $val) {
-            $this->assertSame($val, $ret[$key], $this->class.": interpConfig Failure in key $key");
+            $this->assertSame(
+                $val,
+                $ret[$key],
+                $this->class.": interpConfig Failure in key $key"
+            );
         }
-        // Check the stuff we can't predict (it might change witout a change in this code)
+        // Check the stuff we can't predict
+        // (it might change witout a change in this code)
         foreach (array("Labels", "Units", "unitType", "dType", "doTotal") as $type) {
-            $this->assertType("array", $ret[$type], $this->class."Missing array '$type'");
-            $this->assertEquals(count($ret[$type]), $ret['TotalSensors'], $this->class.": $type doesn't have ".$ret['TotalSensors']." elements");
+            $this->assertType(
+                "array",
+                $ret[$type],
+                $this->class."Missing array '$type'"
+            );
+            $this->assertEquals(
+                count($ret[$type]),
+                $ret['TotalSensors'],
+                $this->class.": $type doesn't have ".$ret['TotalSensors']." elements"
+            );
         }
         for ($key = 0; $key < $ret['TotalSensors']; $key++) {
             foreach (array("Labels", "Units", "unitType", "dType") as $type) {
-                $this->assertType("string", $ret[$type][$key], $this->class.": $type element $key is not a string");
+                $this->assertType(
+                    "string",
+                    $ret[$type][$key],
+                    $this->class.": $type element $key is not a string"
+                );
             }
-            $this->assertType("bool", $ret["doTotal"][$key], $this->class.": doTotal element $key is not a boolean");
-            $this->assertType("string", $ret["params"]["sensorType"][$key], $this->class.": params[sensorType] element $key is not a string");
+            $this->assertType(
+                "bool",
+                $ret["doTotal"][$key],
+                $this->class.": doTotal element $key is not a boolean"
+            );
+            $this->assertType(
+                "string",
+                $ret["params"]["sensorType"][$key],
+                $this->class.": params[sensorType] element $key is not a string"
+            );
         }
-        $this->assertType("array", $ret['params'], $this->class.': params element must be an array');
+        $this->assertType(
+            "array",
+            $ret['params'],
+            $this->class.': params element must be an array'
+        );
     }
 
 
 
     /**
-     * Test
-     *
-     * @param array $ret The returned value
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @param array $ret The returned value
+    *
+    * @return null
+    */
     function printArray($ret)
     {
         if (is_array($ret)) {
@@ -609,12 +757,12 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @param array $val The array to print
-     *
-     * @return null
-     */
+    * Test
+    *
+    * @param array $val The array to print
+    *
+    * @return null
+    */
     function printArrayVal($val)
     {
         if (is_array($val)) {
@@ -623,7 +771,9 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
             foreach ($val as $key => $v) {
                 if (is_array($v)) {
                     print "\n    ";
-                    if (is_string($key)) print '"'.$key.'" => ';
+                    if (is_string($key)) {
+                        print '"'.$key.'" => ';
+                    }
                     endpointTestBase::printArrayVal($v);
                     print ",\n";
                 } else {
@@ -634,7 +784,9 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
                         $sep = ", ";
                     }
                     endpointTestBase::printArrayVal($v);
-                    if (is_string($key)) print ",\n";
+                    if (is_string($key)) {
+                        print ",\n";
+                    }
                 }
             }
             print ")";
@@ -654,11 +806,15 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test
-     *
-     * @dataProvider dataInterpSensors()
-     * @return null
-     */
+    * Test
+    *
+    * @param array $Info    The devInfo array
+    * @param array $Packets The packets to interpret
+    * @param array $Return  The expected return value
+    *
+    * @dataProvider dataInterpSensors()
+    * @return null
+    */
     function testInterpSensors($Info, $Packets, $Return)
     {
         $ret = $this->o->interpSensors($Info, $Packets);
@@ -673,28 +829,44 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Checks the return of interpSensors
-     *
-     * @param array  $ret      The returned array
-     * @param array  $expected The return that was expected
-     * @param string $p        The array key
-     *
-     * @return null
-     */
+    * Checks the return of interpSensors
+    *
+    * @param array  $ret      The returned array
+    * @param array  $expected The return that was expected
+    * @param string $p        The array key
+    *
+    * @return null
+    */
     private function _checkinterpSensorsReturn($ret, $expected, $p)
     {
-        $this->assertType("array", $ret, $this->class." run $p: return is not an array");
+        $this->assertType(
+            "array",
+            $ret,
+            $this->class." run $p: return is not an array"
+        );
         // Check the stuff we can predict
         foreach ($expected as $key => $val) {
-            $this->assertSame($val, $ret[$key], $this->class." run $p: interpSensors Failure in key $key");
+            $this->assertSame(
+                $val,
+                $ret[$key],
+                $this->class." run $p: interpSensors Failure in key $key"
+            );
         }
         if (is_array($expected["Types"])) {
-            $nSensors = (isset($expected['ActiveSensors'])) ? $expected['ActiveSensors'] : $expected['NumSensors'];
-//            for ($key = 0; $key < $nSensors; $key++) {
+            if (isset($expected['ActiveSensors'])) {
+                $nSensors = $expected['ActiveSensors'];
+            } else {
+                $nSensors = $expected['NumSensors'];
+            }
             if (is_array($expected["data"])) {
                 foreach ($expected["data"] as $key => $val) {
                     foreach (array("Units", "unitType") as $type) {
-                        $this->assertType("string", $ret[$type][$key], $this->class."run $p : $type element $key is not a string");
+                        $this->assertType(
+                            "string",
+                            $ret[$type][$key],
+                            $this->class."run $p : $type element $key is not a "
+                            ."string"
+                        );
                     }
                 }
             }
@@ -706,10 +878,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         }
     }
     /**
-     * Checks the history table
-     *
-     * @return null
-     */
+    * Checks the history table
+    *
+    * @return null
+    */
     public function testGetHistoryTable()
     {
         $Info   = array("Driver" => get_class($this->o));
@@ -718,10 +890,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Checks the average table
-     *
-     * @return null
-     */
+    * Checks the average table
+    *
+    * @return null
+    */
     public function testGetAverageTable()
     {
         $Info   = array("Driver" => get_class($this->o));
@@ -730,10 +902,10 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Checks the location table
-     *
-     * @return null
-     */
+    * Checks the location table
+    *
+    * @return null
+    */
     public function testGetLocationTable()
     {
         $Info   = array("Driver" => get_class($this->o));

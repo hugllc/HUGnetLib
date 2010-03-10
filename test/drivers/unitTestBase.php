@@ -66,9 +66,11 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testSensorParent()
     {
         // Long Name
-        $this->assertEquals("UnitBase",
-                            get_parent_class($this->o),
-                            $this->class." parent class must be 'Sensor_Base'");
+        $this->assertEquals(
+            "UnitBase",
+            get_parent_class($this->o),
+            $this->class." parent class must be 'Sensor_Base'"
+        );
     }
 
     /**
@@ -101,12 +103,16 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayLongName($shortName, $unit)
     {
         // Long Name
-        $this->assertType("string",
-                          $unit['longName'],
-                          $shortName.": Long name is not a string");
-        $this->assertThat(strlen($unit['longName']),
-                          $this->greaterThan(0),
-                          $shortName.": Long name is not a set");
+        $this->assertType(
+            "string",
+            $unit['longName'],
+            $shortName.": Long name is not a string"
+        );
+        $this->assertThat(
+            strlen($unit['longName']),
+            $this->greaterThan(0),
+            $shortName.": Long name is not a set"
+        );
     }
 
     /**
@@ -122,11 +128,15 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayVarType($shortName, $unit)
     {
         // Var Type
-        $this->assertType("string",
-                          $unit['varType'],
-                          $shortName.": Variable type is not a string");
-        $this->assertTrue($this->_checkvarType($unit['varType']),
-                    $shortName.": Variable type '".$unit['varType']."'is not valid");
+        $this->assertType(
+            "string",
+            $unit['varType'],
+            $shortName.": Variable type is not a string"
+        );
+        $this->assertTrue(
+            $this->_checkvarType($unit['varType']),
+            $shortName.": Variable type '".$unit['varType']."'is not valid"
+        );
     }
 
     /**
@@ -142,9 +152,11 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayConvert($shortName, $unit)
     {
         if (isset($unit["convert"])) {
-            $this->assertType("array",
-                              $unit["convert"],
-                              $shortName.": Mode is not a string");
+            $this->assertType(
+                "array",
+                $unit["convert"],
+                $shortName.": Mode is not a string"
+            );
         }
     }
 
@@ -161,11 +173,15 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayMode($shortName, $unit)
     {
         if (isset($unit["mode"])) {
-            $this->assertType("string",
-                              $unit["mode"],
-                              $shortName.": Mode is not a string");
-            $this->assertTrue($this->_checkMode($unit["mode"]),
-                             $shortName.": Mode '".$unit['varType']."'is not valid");
+            $this->assertType(
+                "string",
+                $unit["mode"],
+                $shortName.": Mode is not a string"
+            );
+            $this->assertTrue(
+                $this->_checkMode($unit["mode"]),
+                $shortName.": Mode '".$unit['varType']."'is not valid"
+            );
         }
     }
     /**
@@ -181,11 +197,15 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayPreferred($shortName, $unit)
     {
         if (isset($unit["preferred"])) {
-            $this->assertType("string",
-                              $unit["preferred"],
-                              $shortName.": Mode is not a string");
-            $this->assertTrue($this->findUnits($unit["preferred"]),
-                              $shortName.": Unit ".$to." doesn't exist");
+            $this->assertType(
+                "string",
+                $unit["preferred"],
+                $shortName.": Mode is not a string"
+            );
+            $this->assertTrue(
+                $this->findUnits($unit["preferred"]),
+                $shortName.": Unit ".$to." doesn't exist"
+            );
         }
     }
     /**
@@ -200,13 +220,15 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     */
     public function testUnitArrayValid($shortName, $unit)
     {
-        $valid = array("mode",
-                       "convert",
-                       "longName",
-                       "varType",
-                       "preferred",
-                       "siPrefix",
-                       "class");
+        $valid = array(
+            "mode",
+            "convert",
+            "longName",
+            "varType",
+            "preferred",
+            "siPrefix",
+            "class"
+        );
         foreach ($valid as $key) {
             unset($unit[$key]);
         }
@@ -247,12 +269,15 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
     public function testUnitArrayConvertFunct($shortName, $to, $function)
     {
         if (substr(trim(strtolower($function)), 0, 6) != "shift:") {
-            $this->assertTrue(method_exists($this->o, $function),
-                              $shortName.": conversion function "
-                                      .$function." doesn't exist");
+            $this->assertTrue(
+                method_exists($this->o, $function),
+                $shortName.": conversion function ".$function." doesn't exist"
+            );
         }
-        $this->assertTrue($this->findUnits($to),
-                          $shortName.": Unit ".$to." doesn't exist");
+        $this->assertTrue(
+            $this->findUnits($to),
+            $shortName.": Unit ".$to." doesn't exist"
+        );
     }
     /**
     * Checks to make sure a vartype is valid
