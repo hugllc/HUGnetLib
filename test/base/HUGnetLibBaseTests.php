@@ -36,11 +36,6 @@
  *
  */
 
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
-/** This is for running tests */
-require_once 'PHPUnit/TextUI/TestRunner.php';
-
 require_once 'FilterBaseTest.php';
 require_once 'SensorBaseTest.php';
 require_once 'HUGnetDBTest.php';
@@ -62,16 +57,6 @@ require_once 'SocketBaseTest.php';
  */
 class HUGnetLibBaseTests
 {
-    /**
-     * main function
-     *
-     * @return null
-     */
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     /**
      * test suite
      *

@@ -37,6 +37,7 @@
 
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/SocketBase.php";
+require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 if (!class_exists("dbsocket")) {
     /**

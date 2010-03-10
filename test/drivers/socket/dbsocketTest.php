@@ -35,12 +35,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../../..");
+}
 
 require_once dirname(__FILE__).'/../../../drivers/socket/dbsocket.php';
 
@@ -61,21 +58,6 @@ class DbSocketTest extends PHPUnit_Framework_TestCase
 {
 
     protected $table = "PacketSend";
-    /**
-    * Runs the test methods of this class.
-    *
-    * @return null
-    *
-    * @access public
-    * @static
-    */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("dbsocketTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
     * Sets up the fixture, for example, open a network connection.

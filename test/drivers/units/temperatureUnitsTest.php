@@ -36,12 +36,6 @@
  *
  */
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../unitTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/units/temperatureUnits.php';
 
@@ -63,21 +57,6 @@ class TemperatureUnitsTest extends UnitTestBase
 {
     var $class = "TemperatureUnits";
 
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("TemperatureUnitsTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
     /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *

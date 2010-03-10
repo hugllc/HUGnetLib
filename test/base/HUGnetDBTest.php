@@ -34,8 +34,6 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
 
 require_once dirname(__FILE__).'/../../base/HUGnetDB.php';
 require_once dirname(__FILE__).'/../database/DatabaseTest.php';

@@ -37,11 +37,6 @@
  */
 
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../unitTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/units/heatConductanceUnits.php';
 
@@ -64,26 +59,11 @@ class heatConductanceUnitsTest extends UnitTestBase
     var $class = "heatConductanceUnits";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("heatConductanceUnitsTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("heatConductanceUnits");
     }
@@ -92,7 +72,7 @@ class heatConductanceUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("heatConductanceUnits");
     }
@@ -104,7 +84,7 @@ class heatConductanceUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new heatConductanceUnits();
     }
@@ -117,7 +97,7 @@ class heatConductanceUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
 
@@ -176,7 +156,7 @@ class heatConductanceUnitsTest extends UnitTestBase
         return array(
             array(1, 1, 1, "raw"),
             array(5, 0.2, 1, "raw"),
-            array(0, null, 1, "raw"),            
+            array(0, null, 1, "raw"),
         );
     }
     /**

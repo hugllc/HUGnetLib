@@ -35,11 +35,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
 
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+}
 require_once dirname(__FILE__).'/../../sensor.php';
 require_once dirname(__FILE__).'/../unitConversionTest.php';
 /**

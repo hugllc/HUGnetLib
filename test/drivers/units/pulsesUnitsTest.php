@@ -31,16 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/units/pulsesUnits.php';
@@ -56,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/units/pulsesUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class pulsesUnitsTest extends UnitTestBase
@@ -64,26 +59,11 @@ class pulsesUnitsTest extends UnitTestBase
     var $class = "pulsesUnits";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("pulsesUnitsTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("pulsesUnits");
     }
@@ -92,7 +72,7 @@ class pulsesUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("pulsesUnits");
     }
@@ -104,7 +84,7 @@ class pulsesUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new pulsesUnits();
     }
@@ -117,7 +97,7 @@ class pulsesUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
 
@@ -126,7 +106,7 @@ class pulsesUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataCnttoRPM() 
+    public static function dataCnttoRPM()
     {
         return array(
             array(0, null, 0, "raw", 0),
@@ -148,7 +128,7 @@ class pulsesUnitsTest extends UnitTestBase
      *
      * @dataProvider dataCnttoRPM
      */
-    public function testCnttoRPM($cnt, $rpm, $time, $type, $cntPerRev) 
+    public function testCnttoRPM($cnt, $rpm, $time, $type, $cntPerRev)
     {
         $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntPerRev));
     }

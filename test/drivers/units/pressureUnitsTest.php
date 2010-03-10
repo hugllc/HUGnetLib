@@ -31,16 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/units/pressureUnits.php';
@@ -56,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/units/pressureUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class pressureUnitsTest extends UnitTestBase
@@ -64,26 +59,11 @@ class pressureUnitsTest extends UnitTestBase
     var $class = "pressureUnits";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("pressureUnitsTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("pressureUnits");
     }
@@ -92,7 +72,7 @@ class pressureUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("pressureUnits");
     }
@@ -104,7 +84,7 @@ class pressureUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new pressureUnits();
     }
@@ -117,7 +97,7 @@ class pressureUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
 

@@ -31,16 +31,11 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
 
 require_once dirname(__FILE__).'/../unitTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/units/directionUnits.php';
@@ -56,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/units/directionUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class directionUnitsTest extends UnitTestBase
@@ -64,26 +59,11 @@ class directionUnitsTest extends UnitTestBase
     var $class = "directionUnits";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main() 
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("directionUnitsTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    /**
      * data provider for testUnitArrayLongName, testUnitArrayVarType,
      *
      * @return array
      */
-    public static function dataUnitArray() 
+    public static function dataUnitArray()
     {
         return self::getDataUnitArray("directionUnits");
     }
@@ -92,7 +72,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataUnitArrayConvertFunct() 
+    public static function dataUnitArrayConvertFunct()
     {
         return self::getDataUnitArrayConvertFunct("directionUnits");
     }
@@ -104,7 +84,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function setUp() 
+    protected function setUp()
     {
         $this->o = new directionUnits();
     }
@@ -117,7 +97,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @access protected
      */
-    protected function tearDown() 
+    protected function tearDown()
     {
     }
     /**
@@ -125,7 +105,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataDirection() 
+    public static function dataDirection()
     {
         // Put stuff that works either direction here.
         return array(
@@ -152,7 +132,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataDirtoNumDir() 
+    public static function dataDirtoNumDir()
     {
         $newStuff = array(
             array(0, "ASDF"),
@@ -169,7 +149,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @dataProvider dataDirtoNumDir
      */
-    public function testDirtonumDir($numdir, $dir) 
+    public function testDirtonumDir($numdir, $dir)
     {
         $this->assertSame($numdir, $this->o->DirtonumDir($dir, 0, 0));
     }
@@ -179,7 +159,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @return array
      */
-    public static function dataNumDirtoDir() 
+    public static function dataNumDirtoDir()
     {
         $newStuff = array(
             array(360, "N"),
@@ -197,7 +177,7 @@ class directionUnitsTest extends UnitTestBase
      *
      * @dataProvider dataNumDirtoDir
      */
-    public function testnumDirtoDir($numdir, $dir) 
+    public function testnumDirtoDir($numdir, $dir)
     {
         $this->assertSame($dir, $this->o->numDirtoDir($numdir, 0, 0));
     }

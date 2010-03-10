@@ -35,11 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
-/** This is for running tests */
-require_once 'PHPUnit/TextUI/TestRunner.php';
-
 require_once dirname(__FILE__).'/../../hugnet.inc.php';
 
 require_once 'AnalysisTest.php';
@@ -69,16 +64,6 @@ require_once 'VirtualHistoryTest.php';
  */
 class HUGnetLibDatabaseTests
 {
-    /**
-     * main function
-     *
-     * @return null
-     */
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     /**
      * test suite
      *
