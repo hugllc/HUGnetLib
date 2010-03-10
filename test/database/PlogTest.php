@@ -35,11 +35,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
-
-require_once dirname(__FILE__).'/../../database/Plog.php';
 require_once dirname(__FILE__).'/DatabaseTest.php';
+require_once dirname(__FILE__).'/../../database/Plog.php';
 
 /**
  * Test class for plog.
@@ -58,22 +55,6 @@ class PlogTest extends databaseTest
 {
     /** The table to use */
     protected $table = "PacketLog";
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once 'PHPUnit/TextUI/TestRunner.php';
-
-        $suite  = new PHPUnit_Framework_TestSuite('plogTest');
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.

@@ -53,7 +53,7 @@ define("PACKET_ERROR_BADC_NO", -4);
 define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 /** Used for manipulating devInfo arrays */
-require_once "../devInfo.php";
+require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 
 
 /**

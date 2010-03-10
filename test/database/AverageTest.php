@@ -35,10 +35,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-/** The gateway code to test */
-require_once dirname(__FILE__).'/../../database/Average.php';
 /** This is our base class */
 require_once dirname(__FILE__).'/DatabaseTest.php';
+/** The code to test */
+require_once dirname(__FILE__).'/../../database/Average.php';
 
 /**
  * Test class for gateway.

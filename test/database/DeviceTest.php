@@ -36,8 +36,8 @@
  */
 
 
-require_once dirname(__FILE__).'/../../database/Device.php';
 require_once dirname(__FILE__).'/DatabaseTest.php';
+require_once dirname(__FILE__).'/../../database/Device.php';
 
 /**
  * Test class for device.
@@ -114,21 +114,6 @@ class DeviceTest extends databaseTest
             "Active" => "1",
         ),
     );
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("deviceTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, open a network connection.

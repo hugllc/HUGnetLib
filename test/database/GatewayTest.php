@@ -35,15 +35,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-/** Test Case */
-require_once "PHPUnit/Framework/TestCase.php";
-/** Test Suite */
-require_once "PHPUnit/Framework/TestSuite.php";
-
-/** The gateway code to test */
-require_once dirname(__FILE__).'/../../database/Gateway.php';
 /** This is our base class */
 require_once dirname(__FILE__).'/DatabaseTest.php';
+/** The gateway code to test */
+require_once dirname(__FILE__).'/../../database/Gateway.php';
 
 /**
  * Test class for gateway.
@@ -64,22 +59,6 @@ class GatewayTest extends databaseTest
     protected $table = "gateways";
     /** @var string The name of the id column */
     protected $id = "GatewayKey";
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("gatewayTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, open a network connection.

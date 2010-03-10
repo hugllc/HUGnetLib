@@ -36,6 +36,7 @@
  */
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
+require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 /**
  * Class for talking with HUGNet endpoints
  *
@@ -266,7 +267,7 @@ class Device extends HUGnetDB
         $info["Driver"]     = "eVIRTUAL";
         $info["GatewayKey"] = -1;
         $info["Active"]     = 1;
-        
+
         if (self::add($info, $replace)) {
             return $info["SerialNum"];
         }

@@ -36,6 +36,7 @@
  */
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
+require_once HUGNET_INCLUDE_PATH."/EPacket.php";
 
 /**
  * This class logs packets into the database
