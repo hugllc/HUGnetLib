@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,16 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
-/** The file to test */
-require_once dirname(__FILE__).'/../../base/SocketBase.php';
 /** The file to test */
 require_once dirname(__FILE__).'/../EPacketTest.php';
+require_once dirname(__FILE__).'/../../base/SocketBase.php';
 
 /**
  * Test class for SensorBase.
@@ -62,11 +59,11 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      * @access protected
      */
     protected $o;
-    /** 
-     * Test packets in array form 
+    /**
+     * Test packets in array form
      *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
+     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr
+     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
      */
     var $testPacketArray = array(
         array(
@@ -95,11 +92,11 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
             "Checksum" => "F5",
        ),
     );
-    /** 
-     * Test packets in array form 
+    /**
+     * Test packets in array form
      *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr     
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr    
+     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr
+     * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
      */
     var $testPacketReplyArray = array(
         array(
@@ -127,44 +124,28 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
             "Checksum" => "A8",
        ),
     );
-    /** 
-     * Test Packets in string form 
+    /**
+     * Test Packets in string form
      *
-     * This array needs to have the same keys as $testPacketArray and $testPacketReplyStr     
-     * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray    
+     * This array needs to have the same keys as $testPacketArray and $testPacketReplyStr
+     * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray
      */
     var $testPacketStr = array(
         "5A5A5A55000ABC0000200401020304C3",
         "5A5A5A5C000ABC00002000CA",
         "5A5A5A5CABCDEF00002000F5",
     );
-    /** 
-     * Test Packets in string form 
+    /**
+     * Test Packets in string form
      *
      * This array needs to have the same keys as $testPacketStr and $testPacketArray
-     * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray    
+     * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray
      */
     var $testPacketReplyStr = array(
         "5A5A5A01000020000ABC040102030497",
         "5A5A5A01000020000ABC0097",
         "5A5A5A01000020ABCDEF00A8",
     );
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     *
-     * @return null
-     */
-    public static function main()
-    {
-        include_once 'PHPUnit/TextUI/TestRunner.php';
-
-        $suite  = new PHPUnit_Framework_TestSuite('SensorBaseTest');
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -196,8 +177,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      * data provider for test PacketBuild()
      *
      * @return array
-     */    
-    public static function dataPacketBuild() 
+     */
+    public static function dataPacketBuild()
     {
         return array(
             array(
@@ -247,7 +228,7 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataPacketBuild
      */
-    public function testPacketBuild($packet, $expect) 
+    public function testPacketBuild($packet, $expect)
     {
         $pkt = $this->o->PacketBuild($packet);
         $this->assertSame($expect, $pkt);
@@ -256,8 +237,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      * data provider for test PacketGetChecksum()
      *
      * @return array
-     */    
-    public static function dataPacketGetChecksum() 
+     */
+    public static function dataPacketGetChecksum()
     {
         return array(
             array("55000ABC0000200401020304", "C3"),
@@ -282,7 +263,7 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataPacketGetChecksum
      */
-    public function testPacketGetChecksum($packet, $expect) 
+    public function testPacketGetChecksum($packet, $expect)
     {
         $cksum = $this->o->PacketGetChecksum($packet);
         $this->assertSame($expect, $cksum);
@@ -295,7 +276,7 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      *
      * @todo Implement testUnbuildPacket().
      */
-    public function testUnbuildPacket() 
+    public function testUnbuildPacket()
     {
         $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
         foreach ($this->testPacketStr as $key => $str) {
@@ -304,7 +285,7 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    
+
 
 }
 ?>

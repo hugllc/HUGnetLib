@@ -1176,8 +1176,8 @@ class HUGnetDB
         if (!isset($instances)) {
             $instances = array();
         }
-        if (file_exists(HUGNET_INCLUDE_PATH.DS."database".DS.$class.".php")) {
-            include_once HUGNET_INCLUDE_PATH.DS."database".DS.$class.".php";
+        if (file_exists(HUGNET_INCLUDE_PATH."/database/".$class.".php")) {
+            include_once HUGNET_INCLUDE_PATH."/database/".$class.".php";
         }
         if (!class_exists($class)) {
             return false;
