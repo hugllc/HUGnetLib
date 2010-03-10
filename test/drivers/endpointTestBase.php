@@ -39,7 +39,6 @@
 require_once dirname(__FILE__).'/../driverTest.php';
 require_once dirname(__FILE__).'/../EPacketTest.php';
 require_once dirname(__FILE__).'/../unitConversionTest.php';
-require_once dirname(__FILE__).'/../../drivers/endpoints/eDEFAULT.php';
 
 /**
  * Test class for endpoints.

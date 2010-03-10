@@ -36,12 +36,6 @@
  *
  */
 
-
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../sensorTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/sensors/lightSensor.php';
 
@@ -62,21 +56,6 @@ class LightSensorTest extends SensorTestBase
 {
     var $class = "lightSensor";
 
-    /**
-    * Runs the test methods of this class.
-    *
-    * @return null
-    *
-    * @access public
-    * @static
-    */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("lightSensorTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
     * Sets up the fixture, for example, open a network connection.

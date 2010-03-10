@@ -36,11 +36,6 @@
  */
 
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../endpointTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392100.php';
 
@@ -286,21 +281,6 @@ class e00392100Test extends endpointTestBase
                ),
            ),
         );
-    }
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("e00392100Test");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
     }
     /**
      * data provider

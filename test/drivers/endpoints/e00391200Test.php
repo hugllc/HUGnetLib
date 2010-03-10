@@ -214,21 +214,6 @@ class e00391200Test extends endpointTestBase
         );
     }
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        require_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("e00391200Test");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-    /**
      * data provider
      *
      * @return array

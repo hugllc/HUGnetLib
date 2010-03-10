@@ -210,7 +210,6 @@ class DeviceTest extends databaseTest
      * @return null
      *
      * @dataProvider dataDiagnose().
-     * @covers device::testDiagnose
      */
     public function testDiagnose($Info, $time, $expect)
     {

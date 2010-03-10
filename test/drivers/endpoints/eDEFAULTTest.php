@@ -35,12 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-
-/** The test case class */
-//require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-//require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../endpointTestBase.php';
 require_once dirname(__FILE__).'/../../../drivers/endpoints/eDEFAULT.php';
 
@@ -61,23 +55,7 @@ class eDEFAULTTest extends endpointTestBase
 {
     /** Class we are testing */
     public $class = "eDEFAULT";
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-/*
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
 
-        $suite  = new PHPUnit_Framework_TestSuite("eDEFAULTTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-*/
     /**
      * This function is here to stop this test from running.  It should
      * be left blank.

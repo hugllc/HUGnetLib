@@ -1,4 +1,4 @@
-PHPUNIT=`which phpunit` --verbose
+PHPUNIT=`which phpunit`
 PHPDOC=`which phpdoc`
 DOXYGEN=`which doxygen`
 PHPCS=`which phpcs`
@@ -6,10 +6,10 @@ BASE_DIR=${PWD}/
 GIT=`which git`
 
 test: clean Documentation/test
-	cd test; ${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
+	${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
                 --log-junit ${BASE_DIR}Documentation/test/log.xml \
                 --testdox-html ${BASE_DIR}Documentation/test/testdox.html \
-                HUGnetLibTests | tee ${BASE_DIR}Documentation/test/testoutput.txt
+                test/ | tee ${BASE_DIR}Documentation/test/testoutput.txt
 
 Documentation/test:
 	mkdir -p ${BASE_DIR}Documentation/test

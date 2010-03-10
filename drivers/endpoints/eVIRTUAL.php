@@ -38,6 +38,7 @@
 
 if (!class_exists('eVIRTUAL')) {
 
+    require_once dirname(__FILE__).'/eDEFAULT.php';
     define("VIRTUAL_ENDPOINT_GATEWAY", -1);
     /**
     * Driver for the polling script (0039-26-01-P)

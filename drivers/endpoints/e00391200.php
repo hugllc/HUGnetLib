@@ -39,6 +39,9 @@
 // Check to see if this class already exists
 if (!class_exists("e00391200")) {
 
+    require_once dirname(__FILE__).'/eDEFAULT.php';
+
+
     /** The location of the time constant in the setup string */
     define("E00391102B_TC", ENDPOINT_CONFIGEND);
     /** The location of the types in the setup string */
@@ -47,17 +50,17 @@ if (!class_exists("e00391200")) {
     define("E00391102B_SENSORS", 9);
 
     /**
-     * Driver for the 0039-12 endpoint board and select firmwares
-     *
-     * @category   Drivers
-     * @package    HUGnetLib
-     * @subpackage Endpoints
-     * @author     Scott Price <prices@hugllc.com>
-     * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
-     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-     */
+    * Driver for the 0039-12 endpoint board and select firmwares
+    *
+    * @category   Drivers
+    * @package    HUGnetLib
+    * @subpackage Endpoints
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2009 Scott Price
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
     class e00391200 extends eDEFAULT
     {
 

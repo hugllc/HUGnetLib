@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,11 +31,13 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 if (!class_exists("e00391201")) {
+
+    require_once dirname(__FILE__).'/eDEFAULT.php';
 
     /*
     define("e00391106", true);
@@ -46,7 +48,7 @@ if (!class_exists("e00391201")) {
     define("e00391106_SETFET1", "6D");
     define("e00391106_SETFET2", "6C");
     define("e00391106_SETFET3", "6B");
-    
+
     define("e00391102B_SENSOR_LENGTH", 28);
     define("e00391103B_SENSOR_LENGTH", 33);
     define("e00391102B_GROUP", 36);
@@ -66,18 +68,18 @@ if (!class_exists("e00391201")) {
 
 
     /**
-     * Driver for the 0039-12 endpoint board and select firmwares
-     *
-     * @category   Drivers
-     * @package    HUGnetLib
-     * @subpackage Endpoints
-     * @author     Scott Price <prices@hugllc.com>
-     * @copyright  2007-2009 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
-     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @version    SVN: $Id$    
-     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-     */
+    * Driver for the 0039-12 endpoint board and select firmwares
+    *
+    * @category   Drivers
+    * @package    HUGnetLib
+    * @subpackage Endpoints
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2009 Scott Price
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @version    SVN: $Id$
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
     class e00391201 extends eDEFAULT
     {
 
@@ -90,7 +92,7 @@ if (!class_exists("e00391201")) {
         var $history_table = "e00391201_history";
         /** Devices served by this driver */
         var $devices = array(
-        
+
             "0039-11-06-A" => array(
                 "0039-12-00-A" => "BAD",
                 "0039-12-01-A" => "BAD",
@@ -118,15 +120,15 @@ if (!class_exists("e00391201")) {
             "DEFAULT" => array(
            ),
         );
-        /** Modes for the FET */        
+        /** Modes for the FET */
         var $modes = array(
-            0 => 'Digital', 
-            1 => 'Analog - High Z', 
-            2 => 'Analog - Voltage', 
+            0 => 'Digital',
+            1 => 'Analog - High Z',
+            2 => 'Analog - Voltage',
             3 => 'Analog - Current'
         );
-        
-        
+
+
         /** Default location variable definition  */
         var $deflocation = array(
             '0039-20-04-C' => array("Fan 1", "Fan 1", "Fan 2", "Fan 2", "Fan 3", "Fan 3", "Fan 4", "Fan 4", "Main"),
@@ -135,8 +137,8 @@ if (!class_exists("e00391201")) {
 
         /** This is where the hardware devices default configurations go. */
         var $config = array(
-            "0039-11-06-A" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
-            "0039-20-04-C" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),        
+            "0039-11-06-A" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),
+            "0039-20-04-C" => array("Function" => "Fan Controller", "Sensors" => 9, "MainV" => 8),
             "0039-11-07-A" => array("Function" => "Power Controller", "Sensors" => 9, "MainV" => 8),
             "0039-11-08-A" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
             "0039-20-05-C" => array("Function" => "Water Level Controller", "Sensors" => 5, "MainV" => 4),
@@ -169,10 +171,10 @@ if (!class_exists("e00391201")) {
         );
 
         /** The columns that are device specific go here */
-        var $cols = array("FET0pMode" => "FET 0 Mode", 
-                                "FET1pMode" => "FET 1 Mode", 
-                                "FET2pMode" => "FET 2 Mode", 
-                                "FET3pMode" => "FET 3 Mode", 
+        var $cols = array("FET0pMode" => "FET 0 Mode",
+                                "FET1pMode" => "FET 1 Mode",
+                                "FET2pMode" => "FET 2 Mode",
+                                "FET3pMode" => "FET 3 Mode",
                                 "NumSensors" => "# Sensors",
                                );
 
@@ -190,7 +192,7 @@ if (!class_exists("e00391201")) {
          */
         function checkRecord($Info, &$Rec)
         {
-            parent::checkRecordBase($Info, $Rec);    
+            parent::checkRecordBase($Info, $Rec);
             if ($Rec["Status"] == "BAD") return;
             if ($Rec["TimeConstant"] == 0) {
                 $Rec["Status"]     = "BAD";
@@ -226,7 +228,7 @@ if (!class_exists("e00391201")) {
             if (isset($this->labels[$Info["FWPartNum"]])) {
                 $Info["Labels"] = $this->labels[$Info["FWPartNum"]];
             } else {
-                $Info["Labels"] = $this->labels["DEFAULT"];            
+                $Info["Labels"] = $this->labels["DEFAULT"];
             }
             $sType = "DEFAULT";
             for ($i = 0; $i < $Info["ActiveSensors"]; $i++) {
@@ -240,14 +242,14 @@ if (!class_exists("e00391201")) {
          *
          * @return null
          */
-        private function _interpConfigFETSetup(&$Info) 
+        private function _interpConfigFETSetup(&$Info)
         {
             $Info["Setup"] = hexdec(substr($Info["RawSetup"], E00391201_SETUP, 2));
             for ($i = 0; $i < 4; $i++) {
                 $mode                   = (($Info["Setup"]>>($i*2)) & 3);
                 $Info["FET".$i."Mode"]  = $mode;
                 $Info["FET".$i."pMode"] = $this->modes[$mode];
-            }                    
+            }
 
             $Info["FET0"]     = hexdec(substr($Info["RawSetup"], E00391201_FET0, 2));
             $Info["FET1"]     = hexdec(substr($Info["RawSetup"], E00391201_FET1, 2));
@@ -260,20 +262,20 @@ if (!class_exists("e00391201")) {
         }
 
 
-    
+
         /**
          * The routine that interprets returned sensor data
-         * 
+         *
          * @param array $Info    The device info array
          * @param array $Packets An array of packets to interpret
          *
          * @return array
          */
-        function interpSensors($Info, $Packets) 
+        function interpSensors($Info, $Packets)
         {
- 
+
             $this->interpConfig($Info);
-        
+
             $ret = array();
             foreach ($Packets as $data) {
                 $data = $this->checkDataArray($data);
@@ -286,17 +288,17 @@ if (!class_exists("e00391201")) {
                     $data["Types"]         = $Info["Types"];
                     $data["DataIndex"]     = $data["Data"][$index++];
                     $data["TimeConstant"]  = 1;
-                 
+
                     if (is_array($data["Data"])) {
                         for ($key = 0; $key < $Info["NumSensors"]; $key++) {
                             $data["raw"][$key]  = $data["Data"][$index++];
                             $data["raw"][$key] += $data["Data"][$index++] << 8;
                         }
-                        
-                    }    
+
+                    }
                     $this->driver->sensors->decodeData($Info, $data);
                     // This changes the voltage across the FET into the output voltage
-                    // Vo = Vmain - Vf 
+                    // Vo = Vmain - Vf
                     $data["Data1"] = $data['data'][1] = round($data["Data8"] -  $data["Data1"], 4);
                     $data["Data3"] = $data['data'][3] = round($data["Data8"] -  $data["Data3"], 4);
                     $data["Data5"] = $data['data'][5] = round($data["Data8"] -  $data["Data5"], 4);
@@ -310,8 +312,8 @@ if (!class_exists("e00391201")) {
             }
             return $ret;
         }
-    
-    
+
+
     }
 }
 if (method_exists($this, "addGeneric")) {
