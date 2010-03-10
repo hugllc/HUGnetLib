@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This where our base class lives */
@@ -56,7 +56,7 @@ class Firmware extends HUGnetDB
     /** This is the Field name for the key of the record */
     var $id = "FirmwareKey";
     /** The number of columns */
-    private $_columns = 11;
+    private $_columns = 12;
     /** This is our data cache */
     var $cache = array();
     /** Cache times out every day. */
@@ -72,12 +72,12 @@ class Firmware extends HUGnetDB
      * @param string $MemBufferEmpty This is what a byte looks like when it is erased.
      *    The default is for flash memory (FF);
      *
-     * @return string The raw memory buffer    
+     * @return string The raw memory buffer
      */
-    function interpSREC($srec, $MemBufferSize, $PageSize=0, $MemBufferEmpty="FF") 
+    function interpSREC($srec, $MemBufferSize, $PageSize=0, $MemBufferEmpty="FF")
     {
         $MemBuffer = str_repeat($MemBufferEmpty, $MemBufferSize);
-    
+
         if (!is_array($srec)) {
             $srec = explode("\n", $srec);
         }
@@ -135,7 +135,7 @@ class Firmware extends HUGnetDB
      *
      * @return null
      */
-    function createTable($table="") 
+    function createTable($table="")
     {
         if (!empty($table)) $this->table = $table;
         $query = "CREATE TABLE IF NOT EXISTS `firmware` (
@@ -150,33 +150,39 @@ class Firmware extends HUGnetDB
                   `FirmwareStatus` varcar(8) NOT NULL default 'DEV',
                   `FirmwareCVSTag` varchar(64) NOT NULL default '',
                   `Target` varchar(16) NOT NULL default 'attiny26',
+                  `FirmwareActive` tinyint(4) NOT NULL default '1',
                   PRIMARY KEY  (`FirmwareKey`)
                  );";
         $this->query($query);
         $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'.$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)');
         $this->getColumns();
     }
-    
+
     /**
      * Returns the latest firmware for the part number given
-     * 
+     *
      * @param string $FWPartNum This is the part number of the firmware wanted
      * @param string $Status    This is the status of the firmware
      * @param bool   $All       If this is true any firmware not listed as BAD is returned
      *
      * @return array The array of firmware information
      */
-    function getLatestFirmware($FWPartNum, $Status=null, $All=false) 
+    function getLatestFirmware($FWPartNum, $Status=null, $All=false)
     {
         $data  = array($FWPartNum);
         $query = " FWPartNum= ? ";
-        if ($Status !== null) {
+        if (!is_null($Status)) {
             $data[] = $Status;
             $query .= " AND "
                     ." FirmwareStatus= ? ";
+            $data[] = 0;
+            $query .= " AND "
+                    ." FirmwareActive<>? ";
         } else if (!$All) {
             $query .= " AND "
                     ." FirmwareStatus<>'BAD' ";
+            $query .= " AND "
+                    ." FirmwareActive<>0 ";
         }
         $query .= " ORDER BY Date DESC "
                 ." LIMIT 0,1 ";
@@ -186,22 +192,28 @@ class Firmware extends HUGnetDB
 
     /**
      * This get the firmware for a particular piece of hardware.
-     * 
+     *
      * @param string $HWPartNum This is the part number of the firmware wanted
      * @param string $Status    This is the status of the firmware
+     * @param string $Active    This is the active state of the firmware
      *
-     * @return array The array of firmware information    
+     * @return array The array of firmware information
      */
-    function getFirmwareFor($HWPartNum, $Status=null) 
+    function getFirmwareFor($HWPartNum, $Status=null, $Active=1)
     {
         $HWPartNum = substr($HWPartNum, 0, 7);
         $data      = array($HWPartNum);
 
         $query = " HWPartNum= ? ";
-        if ($Status !== null) {
+        if (!is_null($Status)) {
             $data[] = $Status;
             $query .= " AND "
                     ." FirmwareStatus= ? ";
+        }
+        if (!is_null($Active)) {
+            $data[] = $Active;
+            $query .= " AND "
+                    ." FirmwareActive= ? ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
         $ret    =  $this->getWhere($query, $data);
@@ -210,27 +222,33 @@ class Firmware extends HUGnetDB
 
     /**
      * Returns a piece of firmware
-     * 
+     *
      * @param string $FWPartNum This is the part number of the firmware wanted
      * @param string $version   The particular version to get
      * @param string $Status    This is the status of the firmware
+     * @param string $Active    This is the active state of the firmware
      *
-     * @return array array of firmware information arrays    
+     * @return array array of firmware information arrays
      */
-    function getFirmware($FWPartNum, $version=null, $Status=null) 
+    function getFirmware($FWPartNum, $version=null, $Status=null, $Active=1)
     {
 
         $data  = array($FWPartNum);
         $query = " FWPartNum= ? ";
-        if ($version !== null) {
+        if (!is_null($version)) {
             $data[] = $version;
             $query .= " AND "
                     ." FirmwareVersion= ? ";
         }
-        if ($Status !== null) {
+        if (!is_null($Status)) {
             $data[] = $Status;
             $query .= " AND "
                     ." FirmwareStatus= ? ";
+        }
+        if (!is_null($Active)) {
+            $data[] = $Active;
+            $query .= " AND "
+                    ." FirmwareActive= ? ";
         }
         $query .= " ORDER BY FWPartNum DESC, Date DESC ";
         return $this->getWhere($query, $data);

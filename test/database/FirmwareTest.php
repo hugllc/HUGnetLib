@@ -37,13 +37,8 @@
  */
 
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
-require_once dirname(__FILE__).'/../../database/Firmware.php';
 require_once dirname(__FILE__).'/DatabaseTest.php';
+require_once dirname(__FILE__).'/../../database/Firmware.php';
 
 /**
  * Test class for firmware.
@@ -76,6 +71,7 @@ class FirmwareTest extends databaseTest
             "FirmwareStatus" => "DEV",
             "FirmwareCVSTag" => "a",
             "Target" => "attiny26",
+            "FirmwareActive" => 1,
         ),
         array(
             "FirmwareKey" => 2,
@@ -89,6 +85,7 @@ class FirmwareTest extends databaseTest
             "FirmwareStatus" => "DEV",
             "FirmwareCVSTag" => "a",
             "Target" => "atmega168",
+            "FirmwareActive" => 1,
         ),
         array(
             "FirmwareKey" => 3,
@@ -102,23 +99,23 @@ class FirmwareTest extends databaseTest
             "FirmwareStatus" => "DEV",
             "FirmwareCVSTag" => "a",
             "Target" => "atmega168",
+            "FirmwareActive" => 1,
+       ),
+        array(
+            "FirmwareKey" => 4,
+            "FirmwareVersion" => "06.13.15",
+            "FirmwareCode" => "0109",
+            "FirmwareData" => "ABCD",
+            "FWPartNum" => "0039-20-03-C",
+            "HWPartNum" => "0039-28",
+            "Date" => "2007-11-25 01:04:21",
+            "FirmwareFileType" => "SREC",
+            "FirmwareStatus" => "DEV",
+            "FirmwareCVSTag" => "a",
+            "Target" => "atmega168",
+            "FirmwareActive" => 0,
        ),
     );
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("firmwareTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, open a network connection.
@@ -259,6 +256,7 @@ S9030000FC",
                     "FirmwareStatus" => "DEV",
                     "FirmwareCVSTag" => "a",
                     "Target" => "atmega168",
+                    "FirmwareActive" => '1',
                ),
            ),
             array(
@@ -285,6 +283,7 @@ S9030000FC",
                     "FirmwareStatus" => "DEV",
                     "FirmwareCVSTag" => "a",
                     "Target" => "atmega168",
+                    "FirmwareActive" => '1',
                ),
            ),
         );
@@ -327,6 +326,7 @@ S9030000FC",
                 firmwareTest::$preload,
                 "0039-28-01-A",
                 null,
+                1,
                 array(
                     array(
                         "FirmwareKey" => "2",
@@ -340,6 +340,7 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
                     ),
                     array(
                         "FirmwareKey" => "3",
@@ -353,19 +354,22 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
-                   ),
-               ),
-           ),
+                        "FirmwareActive" => '1',
+                    ),
+                ),
+            ),
             array(
                 firmwareTest::$preload,
                 "0039-20",
                 null,
+                1,
                 array(),
            ),
             array(
                 firmwareTest::$preload,
                 "0039-28-01-A",
                 "DEV",
+                1,
                 array(
                     array(
                         "FirmwareKey" => "2",
@@ -379,6 +383,7 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
                     ),
                     array(
                         "FirmwareKey" => "3",
@@ -392,9 +397,32 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
+                    ),
+                ),
+            ),
+            array(
+                firmwareTest::$preload,
+                "0039-28-01-A",
+                "DEV",
+                0,
+                array(
+                    array(
+                        "FirmwareKey" => "4",
+                        "FirmwareVersion" => "06.13.15",
+                        "FirmwareCode" => "0109",
+                        "FirmwareData" => "ABCD",
+                        "FWPartNum" => "0039-20-03-C",
+                        "HWPartNum" => "0039-28",
+                        "Date" => "2007-11-25 01:04:21",
+                        "FirmwareFileType" => "SREC",
+                        "FirmwareStatus" => "DEV",
+                        "FirmwareCVSTag" => "a",
+                        "Target" => "atmega168",
+                        "FirmwareActive" => '0',
                    ),
-               ),
-           ),
+                ),
+            ),
         );
     }
     /**
@@ -409,10 +437,10 @@ S9030000FC",
      *
      * @dataProvider dataGetFirmwareFor().
      */
-    public function testGetFirmwareFor($preload, $HWPartNum, $Status, $expect)
+    public function testGetFirmwareFor($preload, $HWPartNum, $Status, $Active, $expect)
     {
         $this->load($preload);
-        $ret = $this->o->getFirmwareFor($HWPartNum, $Status);
+        $ret = $this->o->getFirmwareFor($HWPartNum, $Status, $Active);
         $this->assertSame($expect, $ret);
     }
 
@@ -429,6 +457,7 @@ S9030000FC",
                 "0039-20-03-C",
                 null,
                 null,
+                1,
                 array(
                     array(
                         "FirmwareKey" => "2",
@@ -442,6 +471,7 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
                     ),
                     array(
                         "FirmwareKey" => "3",
@@ -455,6 +485,7 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
                    ),
                ),
            ),
@@ -463,6 +494,7 @@ S9030000FC",
                 "0039-20-01-C",
                 null,
                 false,
+                null,
                 array(),
            ),
             array(
@@ -470,6 +502,7 @@ S9030000FC",
                 "0039-20-03-C",
                 "02.13.15",
                 "DEV",
+                1,
                 array(
                     array(
                         "FirmwareKey" => "2",
@@ -483,6 +516,7 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
                    ),
                ),
            ),
@@ -490,6 +524,7 @@ S9030000FC",
                 firmwareTest::$preload,
                 "0039-20-03-C",
                 "02.13.15",
+                null,
                 null,
                 array(
                     array(
@@ -504,6 +539,30 @@ S9030000FC",
                         "FirmwareStatus" => "DEV",
                         "FirmwareCVSTag" => "a",
                         "Target" => "atmega168",
+                        "FirmwareActive" => '1',
+                   ),
+               ),
+           ),
+            array(
+                firmwareTest::$preload,
+                "0039-20-03-C",
+                "06.13.15",
+                null,
+                0,
+                array(
+                    array(
+                        "FirmwareKey" => "4",
+                        "FirmwareVersion" => "06.13.15",
+                        "FirmwareCode" => "0109",
+                        "FirmwareData" => "ABCD",
+                        "FWPartNum" => "0039-20-03-C",
+                        "HWPartNum" => "0039-28",
+                        "Date" => "2007-11-25 01:04:21",
+                        "FirmwareFileType" => "SREC",
+                        "FirmwareStatus" => "DEV",
+                        "FirmwareCVSTag" => "a",
+                        "Target" => "atmega168",
+                        "FirmwareActive" => '0',
                    ),
                ),
            ),
@@ -523,10 +582,10 @@ S9030000FC",
      *
      * @dataProvider dataGetFirmware().
      */
-    public function testGetFirmware($preload, $FWPartNum, $version, $Status, $expect)
+    public function testGetFirmware($preload, $FWPartNum, $version, $Status, $Active, $expect)
     {
         $this->load($preload);
-        $ret = $this->o->getFirmware($FWPartNum, $version, $Status);
+        $ret = $this->o->getFirmware($FWPartNum, $version, $Status, $Active);
         $this->assertSame($expect, $ret);
     }
 
