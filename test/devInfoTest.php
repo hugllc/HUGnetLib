@@ -37,11 +37,6 @@
  */
 
 
-/** The test case class */
-//require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-//require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../devInfo.php';
 
 /**
@@ -59,21 +54,6 @@ require_once dirname(__FILE__).'/../devInfo.php';
  */
 class DevInfoTest extends PHPUnit_Framework_TestCase
 {
-    /**
-    * Runs the test methods of this class.
-    *
-    * @return null
-    *
-    * @access public
-    * @static
-    */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("devInfoTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -315,8 +295,10 @@ class DevInfoTest extends PHPUnit_Framework_TestCase
         $ret = devInfo::SetDate($Info, $Field);
         $this->assertSame($expect, $Info, "Info modified incorrectly");
         $this->assertSame($expect[$Field], $ret, "Return not correct");
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
-                            $Info[$Field]);
+        $this->assertRegExp(
+            "/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+            $Info[$Field]
+        );
     }
 
     /**
@@ -329,8 +311,10 @@ class DevInfoTest extends PHPUnit_Framework_TestCase
         $Info  = array();
         $Field = "LastConfig";
         $ret   = devInfo::SetDate($Info, $Field);
-        $this->assertRegExp("/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
-                            $Info[$Field]);
+        $this->assertRegExp(
+            "/[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+            $Info[$Field]
+        );
     }
 
 

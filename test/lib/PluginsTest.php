@@ -36,9 +36,6 @@
  *
  */
 
-/** Test framework */
-require_once 'PHPUnit/Framework.php';
-
 require_once dirname(__FILE__).'/../../lib/plugins.inc.php';
 
 /**
@@ -987,11 +984,12 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataGetPluginDir()
     */
-    public function testGetPluginDir($basedir,
-                                     $extension,
-                                     $webdir,
-                                     $expect)
-    {
+    public function testGetPluginDir(
+        $basedir,
+        $extension,
+        $webdir,
+        $expect
+    ) {
         $this->o->extension = $extension;
         $this->o->getPluginDir($basedir, $webdir);
         $this->assertEquals($expect, $this->o->plugins);

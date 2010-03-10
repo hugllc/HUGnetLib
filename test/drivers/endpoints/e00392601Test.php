@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392601.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class e00392601Test extends endpointTestBase
+class E00392601Test extends EndpointTestBase
 {
     public $class = "e00392601";
     /**
@@ -64,7 +64,8 @@ class e00392601Test extends endpointTestBase
         return array(
              array(
                  "Info" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."500102020202020202027070707070707070",
                      "HWPartNum" => "0039-28-01-A",
                      "FWPartNum" => "0039-20-13-C",
                      "FWVersion" => "00.00.05",
@@ -74,7 +75,8 @@ class e00392601Test extends endpointTestBase
                      "DeviceGroup" => "FFFFFF",
                 ),
                  "Return" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
+                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."500102020202020202027070707070707070",
                      "HWPartNum" => "0039-28-01-A",
                      "FWPartNum" => "0039-20-13-C",
                      "FWVersion" => "00.00.05",
@@ -156,6 +158,8 @@ class e00392601Test extends endpointTestBase
     }
     /**
      * data provider for test readConfig
+     *
+     * @return array
      */
     public static function datareadConfig()
     {
@@ -172,6 +176,9 @@ class e00392601Test extends endpointTestBase
 
     /**
      * test
+     *
+     * @param array $Info   The devInfo array for the device
+     * @param array $expect The return array to expect
      *
      * @return null
      *

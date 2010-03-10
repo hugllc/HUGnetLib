@@ -129,10 +129,17 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->registerFilter($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
-            $this->assertThat($this->o->filters[$class], $this->isInstanceOf($class));
+            $this->assertThat(
+                $this->o->filters[$class],
+                $this->isInstanceOf($class)
+            );
             foreach ($this->o->filters[$class]->filters as $type => $sInfo) {
                 foreach ($sInfo as $filter => $val) {
-                    $this->assertSame($this->o->dev[$type][$filter], $class, "'$type->$filter': Not found");
+                    $this->assertSame(
+                        $this->o->dev[$type][$filter],
+                        $class,
+                        "'$type->$filter': Not found"
+                    );
                 }
             }
         }
@@ -176,8 +183,13 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $cName = "testFilter";
         $this->o->registerFilter($this->getMock($cName), $cName);
         $this->o->filters[$cName]->expects($this->once())
-                           ->method('test1')
-                           ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3), $this->equalTo(4));
+            ->method('test1')
+            ->with(
+                $this->equalTo(1),
+                $this->equalTo(2),
+                $this->equalTo(3),
+                $this->equalTo(4)
+            );
         $args = array(1,2,3,4);
         $ret = $this->o->runFunction($this->o->filters[$cName], 'test1', $args, "2");
     }
@@ -191,7 +203,12 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("testFilter", "Test1", array(array(2,1,0),2,3,4,), array(0,1,2)),
-            array("testFilter", "badFunction", array(array(1,2,3),2,3,4), array(1,2,3)),
+            array(
+                "testFilter",
+                "badFunction",
+                array(array(1,2,3),2,3,4),
+                array(1,2,3)
+            ),
             array("badClass", "Test1", array(array(1),2,3,4), array(1)),
         );
     }
@@ -201,7 +218,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * @param string $class    The class to use
      * @param string $function The function to call
      * @param array  $args     The arguments for the function
-     * @param mixed  $expect What to expect from the return
+     * @param mixed  $expect   What to expect from the return
      *
      * @return null
      *
@@ -232,10 +249,12 @@ class FilterTest extends PHPUnit_Framework_TestCase
      * test
      *
      * @param string $type         The type of filter
-     * @param string $filter       The filter to implement.  This can be changed by this routine.
+     * @param string $filter       The filter to implement.  This can be changed
+     *                                 by this routine.
      * @param string $expect       What to expect from the return
      * @param string $typeExpect   The type of filter
-     * @param string $filterExpect The filter to implement.  This can be changed by this routine.
+     * @param string $filterExpect The filter to implement.  This can be changed
+     *                                 by this routine.
      *
      * @return null
      *
@@ -269,7 +288,7 @@ class FilterTest extends PHPUnit_Framework_TestCase
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class testFilter extends filter_base
+class TestFilter extends filter_base
 {
     var $filters = array(
         "testType" => array(
@@ -293,7 +312,7 @@ class testFilter extends filter_base
      * @param int   $index    The index in the history to use
      * @param array $filter   Information on the filter we are implementing
      * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last one
+     * @param int   $deltaT   The difference in time between this record and the last
      *
      * @return null
      */
@@ -309,7 +328,7 @@ class testFilter extends filter_base
      * @param int   $index    The index in the history to use
      * @param array $filter   Information on the filter we are implementing
      * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last one
+     * @param int   $deltaT   The difference in time between this record and the last
      *
      * @return null
      */
@@ -329,7 +348,7 @@ class testFilter extends filter_base
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class testFilterNoFilters extends filter_base
+class TestFilterNoFilters extends filter_base
 {
     /**
      * constructor

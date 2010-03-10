@@ -102,66 +102,286 @@ class MedianFilterTest extends filterTestBase
         return array(
             array(
                 array(
-                    array("Date" => "2007-12-12 4:00:05", "Data0" => 5, "Data1" => 2, "data" => array(5,2)),
-                    array("Date" => "2007-12-12 4:05:05", "Data0" => 6, "Data1" => 3, "data" => array(6,3)),
-                    array("Date" => "2007-12-12 4:10:05", "Data0" => 7, "Data1" => 4, "data" => array(7,4)),
-                    array("Date" => "2007-12-12 4:15:05", "Data0" => 8, "Data1" => 5, "data" => array(8,5)),
-                    array("Date" => "2007-12-12 4:20:05", "Data0" => 9, "Data1" => 6, "data" => array(9,6)),
-                    array("Date" => "2007-12-12 4:25:05", "Data0" => 10, "Data1" => 20, "data" => array(10,20)),
-                    array("Date" => "2007-12-12 4:30:05", "Data0" => 11, "Data1" => 8, "data" => array(11,8)),
-                    array("Date" => "2007-12-12 4:35:05", "Data0" => 12, "Data1" => 9, "data" => array(12,9)),
-                    array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 10, "data" => array(13,10)),
-                    array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 2, "data" => array(14,2)),
-                    array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
+                    array(
+                        "Date" => "2007-12-12 4:00:05",
+                        "Data0" => 5,
+                        "Data1" => 2,
+                        "data" => array(5,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:05:05",
+                        "Data0" => 6,
+                        "Data1" => 3,
+                        "data" => array(6,3)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:10:05",
+                        "Data0" => 7,
+                        "Data1" => 4,
+                        "data" => array(7,4)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:15:05",
+                        "Data0" => 8,
+                        "Data1" => 5,
+                        "data" => array(8,5)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:20:05",
+                        "Data0" => 9,
+                        "Data1" => 6,
+                        "data" => array(9,6)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:25:05",
+                        "Data0" => 10,
+                        "Data1" => 20,
+                        "data" => array(10,20)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:30:05",
+                        "Data0" => 11,
+                        "Data1" => 8,
+                        "data" => array(11,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:35:05",
+                        "Data0" => 12,
+                        "Data1" => 9,
+                        "data" => array(12,9)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:40:05",
+                        "Data0" => 13,
+                        "Data1" => 10,
+                        "data" => array(13,10)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:45:05",
+                        "Data0" => 14,
+                        "Data1" => 2,
+                        "data" => array(14,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:50:05",
+                        "Data0" => 15,
+                        "Data1" => 12,
+                        "data" => array(15,12)
+                    ),
                ),                                      // $history
                 1,                                      // $index
                 array("extraDefault" => array(3, 1)),   // $filter
                 array(),                                // $extra
                 300,                                    // $deltaT
                 array(
-                    array("Date" => "2007-12-12 4:00:05", "Data0" => 5, "Data1" => 2, "data" => array(5,2)),
-                    array("Date" => "2007-12-12 4:05:05", "Data0" => 6, "Data1" => 3, "data" => array(6,3)),
-                    array("Date" => "2007-12-12 4:10:05", "Data0" => 7, "Data1" => 4, "data" => array(7,4)),
-                    array("Date" => "2007-12-12 4:15:05", "Data0" => 8, "Data1" => 5, "data" => array(8,5)),
-                    array("Date" => "2007-12-12 4:20:05", "Data0" => 9, "Data1" => 6, "data" => array(9,6)),
-                    array("Date" => "2007-12-12 4:25:05", "Data0" => 10, "Data1" => 8, "data" => array(10,8)),
-                    array("Date" => "2007-12-12 4:30:05", "Data0" => 11, "Data1" => 8, "data" => array(11,8)),
-                    array("Date" => "2007-12-12 4:35:05", "Data0" => 12, "Data1" => 9, "data" => array(12,9)),
-                    array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 9, "data" => array(13,9)),
-                    array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 9, "data" => array(14,9)),
-                    array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
+                    array(
+                        "Date" => "2007-12-12 4:00:05",
+                        "Data0" => 5,
+                        "Data1" => 2,
+                        "data" => array(5,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:05:05",
+                        "Data0" => 6,
+                        "Data1" => 3,
+                        "data" => array(6,3)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:10:05",
+                        "Data0" => 7,
+                        "Data1" => 4,
+                        "data" => array(7,4)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:15:05",
+                        "Data0" => 8,
+                        "Data1" => 5,
+                        "data" => array(8,5)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:20:05",
+                        "Data0" => 9,
+                        "Data1" => 6,
+                        "data" => array(9,6)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:25:05",
+                        "Data0" => 10,
+                        "Data1" => 8,
+                        "data" => array(10,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:30:05",
+                        "Data0" => 11,
+                        "Data1" => 8,
+                        "data" => array(11,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:35:05",
+                        "Data0" => 12,
+                        "Data1" => 9,
+                        "data" => array(12,9)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:40:05",
+                        "Data0" => 13,
+                        "Data1" => 9,
+                        "data" => array(13,9)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:45:05",
+                        "Data0" => 14,
+                        "Data1" => 9,
+                        "data" => array(14,9)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:50:05",
+                        "Data0" => 15,
+                        "Data1" => 12,
+                        "data" => array(15,12)
+                    ),
                ),                                      // $expect
            ),
             array(
                 array(
-                    array("Date" => "2007-12-12 4:00:05", "Data0" => 5, "Data1" => 2, "data" => array(5,2)),
-                    array("Date" => "2007-12-12 4:05:05", "Data0" => 6, "Data1" => 3, "data" => array(6,3)),
-                    array("Date" => "2007-12-12 4:10:05", "Data0" => 7, "Data1" => 4, "data" => array(7,4)),
-                    array("Date" => "2007-12-12 4:15:05", "Data0" => 8, "Data1" => 5, "data" => array(8,5)),
-                    array("Date" => "2007-12-12 4:20:05", "Data0" => 9, "Data1" => 6, "data" => array(9,6)),
-                    array("Date" => "2007-12-12 4:25:05", "Data0" => 10, "Data1" => 20, "data" => array(10,20)),
-                    array("Date" => "2007-12-12 4:30:05", "Data0" => 11, "Data1" => 8, "data" => array(11,8)),
-                    array("Date" => "2007-12-12 4:35:05", "Data0" => 12, "Data1" => 9, "data" => array(12,9)),
-                    array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 2, "data" => array(13,2)),
-                    array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 11, "data" => array(14,11)),
-                    array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
+                    array(
+                        "Date" => "2007-12-12 4:00:05",
+                        "Data0" => 5,
+                        "Data1" => 2,
+                        "data" => array(5,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:05:05",
+                        "Data0" => 6,
+                        "Data1" => 3,
+                        "data" => array(6,3)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:10:05",
+                        "Data0" => 7,
+                        "Data1" => 4,
+                        "data" => array(7,4)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:15:05",
+                        "Data0" => 8,
+                        "Data1" => 5,
+                        "data" => array(8,5)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:20:05",
+                        "Data0" => 9,
+                        "Data1" => 6,
+                        "data" => array(9,6)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:25:05",
+                        "Data0" => 10,
+                        "Data1" => 20,
+                        "data" => array(10,20)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:30:05",
+                        "Data0" => 11,
+                        "Data1" => 8,
+                        "data" => array(11,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:35:05",
+                        "Data0" => 12,
+                        "Data1" => 9,
+                        "data" => array(12,9)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:40:05",
+                        "Data0" => 13,
+                        "Data1" => 2,
+                        "data" => array(13,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:45:05",
+                        "Data0" => 14,
+                        "Data1" => 11,
+                        "data" => array(14,11)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:50:05",
+                        "Data0" => 15,
+                        "Data1" => 12,
+                        "data" => array(15,12)
+                    ),
                ),                                      // $history
                 1,                                      // $index
                 array("extraDefault" => array(7, 5)),   // $filter
                 array(3, 1),                            // $extra
                 300,                                    // $deltaT
                 array(
-                    array("Date" => "2007-12-12 4:00:05", "Data0" => 5, "Data1" => 2, "data" => array(5,2)),
-                    array("Date" => "2007-12-12 4:05:05", "Data0" => 6, "Data1" => 3, "data" => array(6,3)),
-                    array("Date" => "2007-12-12 4:10:05", "Data0" => 7, "Data1" => 4, "data" => array(7,4)),
-                    array("Date" => "2007-12-12 4:15:05", "Data0" => 8, "Data1" => 5, "data" => array(8,5)),
-                    array("Date" => "2007-12-12 4:20:05", "Data0" => 9, "Data1" => 6, "data" => array(9,6)),
-                    array("Date" => "2007-12-12 4:25:05", "Data0" => 10, "Data1" => 8, "data" => array(10,8)),
-                    array("Date" => "2007-12-12 4:30:05", "Data0" => 11, "Data1" => 8, "data" => array(11,8)),
-                    array("Date" => "2007-12-12 4:35:05", "Data0" => 12, "Data1" => 8, "data" => array(12,8)),
-                    array("Date" => "2007-12-12 4:40:05", "Data0" => 13, "Data1" => 8, "data" => array(13,8)),
-                    array("Date" => "2007-12-12 4:45:05", "Data0" => 14, "Data1" => 11, "data" => array(14,11)),
-                    array("Date" => "2007-12-12 4:50:05", "Data0" => 15, "Data1" => 12, "data" => array(15,12)),
+                    array(
+                        "Date" => "2007-12-12 4:00:05",
+                        "Data0" => 5,
+                        "Data1" => 2,
+                        "data" => array(5,2)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:05:05",
+                        "Data0" => 6,
+                        "Data1" => 3,
+                        "data" => array(6,3)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:10:05",
+                        "Data0" => 7,
+                        "Data1" => 4,
+                        "data" => array(7,4)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:15:05",
+                        "Data0" => 8,
+                        "Data1" => 5,
+                        "data" => array(8,5)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:20:05",
+                        "Data0" => 9,
+                        "Data1" => 6,
+                        "data" => array(9,6)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:25:05",
+                        "Data0" => 10,
+                        "Data1" => 8,
+                        "data" => array(10,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:30:05",
+                        "Data0" => 11,
+                        "Data1" => 8,
+                        "data" => array(11,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:35:05",
+                        "Data0" => 12,
+                        "Data1" => 8,
+                        "data" => array(12,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:40:05",
+                        "Data0" => 13,
+                        "Data1" => 8,
+                        "data" => array(13,8)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:45:05",
+                        "Data0" => 14,
+                        "Data1" => 11,
+                        "data" => array(14,11)
+                    ),
+                    array(
+                        "Date" => "2007-12-12 4:50:05",
+                        "Data0" => 15,
+                        "Data1" => 12,
+                        "data" => array(15,12)
+                    ),
                ),                                      // $expect
            ),
         );
@@ -174,15 +394,21 @@ class MedianFilterTest extends filterTestBase
      * @param int   $index   The index in the history to use
      * @param array $filter  Information on the filter we are implementing
      * @param mixed $extra   Extra setup information on the filter
-     * @param int   $deltaT  The difference in time between this record and the last one
+     * @param int   $deltaT  The difference in time between this record and the last
      * @param array $expect  What we expect the history to look like
      *
      * @return null
      *
      * @dataProvider dataMedian
      */
-    public function testMedianHistory($history, $index, $filter, $extra, $deltaT, $expect)
-    {
+    public function testMedianHistory(
+        $history,
+        $index,
+        $filter,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
         $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
         $this->assertSame($expect, $history);
     }
@@ -194,15 +420,21 @@ class MedianFilterTest extends filterTestBase
      * @param int   $index   The index in the history to use
      * @param array $filter  Information on the filter we are implementing
      * @param mixed $extra   Extra setup information on the filter
-     * @param int   $deltaT  The difference in time between this record and the last one
+     * @param int   $deltaT  The difference in time between this record and the last
      * @param array $expect  What we expect the history to look like
      *
      * @return null
      *
      * @dataProvider dataMedian
      */
-    public function testMedianReturn($history, $index, $filter, $extra, $deltaT, $expect)
-    {
+    public function testMedianReturn(
+        $history,
+        $index,
+        $filter,
+        $extra,
+        $deltaT,
+        $expect
+    ) {
         $ret = $this->o->median($history, $index, $filter, $extra, $deltaT);
         $this->assertSame($expect, $history, "history is wrong");
         $this->assertSame($expect, $ret);

@@ -31,7 +31,7 @@
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -53,21 +53,25 @@ $address = '127.0.0.1';
 $port    = 35000;
 
 if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
-    echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+    echo "socket_create() failed: reason: "
+        .socket_strerror(socket_last_error())."\n";
     die();
 }
 
 if (socket_bind($sock, $address, $port) === false) {
-    echo "socket_bind() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+    echo "socket_bind() failed: reason: "
+        .socket_strerror(socket_last_error($sock))."\n";
     die();
 }
 if (socket_listen($sock) === false) {
-    echo "socket_listen() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+    echo "socket_listen() failed: reason: "
+        .socket_strerror(socket_last_error($sock))."\n";
     die();
 }
 
 if (($msgsock = socket_accept($sock)) === false) {
-    echo "socket_accept() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+    echo "socket_accept() failed: reason: "
+        .socket_strerror(socket_last_error($sock))."\n";
     die();
 }
 
@@ -87,7 +91,9 @@ if (empty($msg)) {
         // remote stuff
         $char = socket_read($msgsock, 1);
         if (false !== $char) {
-            if (strlen($buf) > 3) $buf = substr($buf, 1, 3);
+            if (strlen($buf) > 3) {
+                $buf = substr($buf, 1, 3);
+            }
             $buf .= trim($char);
             printf("%02X", ord($char))."\n";
         }
@@ -95,12 +101,14 @@ if (empty($msg)) {
         $lchar = fgetc($stdin);
         if ($lchar !== false) {
             socket_write($msgsock, $lchar, 1);
-            if (strlen($lbuf) > 3) $buf = substr($lbuf, 1, 3);
-            $lbuf .= trim($lchar);            
+            if (strlen($lbuf) > 3) {
+                $buf = substr($lbuf, 1, 3);
+            }
+            $lbuf .= trim($lchar);
         }
         usleep(50000);
-        
-    } while (($buf != "quit") && ($lbuf != "quit") && ((time() - $start) < $timeout));
+
+    } while (($buf != "quit") && ($lbuf != "quit") && ((time()-$start) < $timeout));
 } else {
     socket_write($msgsock, $msg, strlen($msg));
 }

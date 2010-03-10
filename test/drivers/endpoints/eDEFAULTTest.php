@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/eDEFAULT.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class eDEFAULTTest extends endpointTestBase
+class EDEFAULTTest extends EndpointTestBase
 {
     /** Class we are testing */
     public $class = "eDEFAULT";
@@ -128,18 +128,26 @@ class eDEFAULTTest extends endpointTestBase
 
     /**
      * data provider for testCheckDataArray
+     *
+     * @return array
      */
     public static function dataCheckDataArray()
     {
         return array(
             array(
                 array("RawData" => "000102030405060708090A0B0C0D0E0F"),
-                array("RawData" => "000102030405060708090A0B0C0D0E0F", "Data" => array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)),
+                array(
+                    "RawData" => "000102030405060708090A0B0C0D0E0F",
+                    "Data" => array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+                ),
            ),
         );
     }
     /**
      * test
+     *
+     * @param string $work   the string to work on
+     * @param string $expect The array to expect in return
      *
      * @return null
      *
@@ -190,6 +198,8 @@ class eDEFAULTTest extends endpointTestBase
 
     /**
      * data provider for testCompareFWVesrion
+     *
+     * @return array
      */
     public static function dataCompareFWVersion()
     {
@@ -205,6 +215,10 @@ class eDEFAULTTest extends endpointTestBase
     }
     /**
      * test
+     *
+     * @param string $v1     The first version
+     * @param string $v2     The second version
+     * @param int    $expect What to expect (1, 0, -1)
      *
      * @return null
      *

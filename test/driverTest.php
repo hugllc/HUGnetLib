@@ -89,8 +89,8 @@ class DriverTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * This crates the driver correctly for testing.  It mocks a number of classes to make
-    * it easier to test.
+    * This crates the driver correctly for testing.  It mocks a number of classes
+    * to make it easier to test.
     *
     * @param int $socket The socket to use
     *
@@ -197,7 +197,10 @@ class DriverTest extends PHPUnit_Framework_TestCase
         if (is_object($class)) {
             $this->assertSame($class, $this->o->drivers[get_class($class)]);
         } else {
-            $this->assertThat($this->o->drivers[$class], $this->isInstanceOf($class));
+            $this->assertThat(
+                $this->o->drivers[$class],
+                $this->isInstanceOf($class)
+            );
         }
     }
 
@@ -216,12 +219,20 @@ class DriverTest extends PHPUnit_Framework_TestCase
         if (is_object($class)) {
             $class = get_class($class);
         }
-        $this->assertType("array", $this->o->drivers[$class]->devices, "Devices array missing");
+        $this->assertType(
+            "array",
+            $this->o->drivers[$class]->devices,
+            "Devices array missing"
+        );
         foreach ($this->o->drivers[$class]->devices as $fw => $Firm) {
             foreach ($Firm as $hw => $ver) {
                 $dev = explode(",", $ver);
                 foreach ($dev as $d) {
-                    $this->assertSame($this->o->dev[$hw][$fw][$d], $class, "'$hw->$fw->$d': entry not found");
+                    $this->assertSame(
+                        $this->o->dev[$hw][$fw][$d],
+                        $class,
+                        "'$hw->$fw->$d': entry not found"
+                    );
                 }
             }
         }
@@ -263,15 +274,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionDefaultCall()
     {
         $Info = array();
-        $this->o->registerDriver($this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)), "eDEFAULT");
+        $this->o->registerDriver(
+            $this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)),
+            "eDEFAULT"
+        );
         $this->o->drivers['eDEFAULT']->expects($this->once())
-                               ->method('interpConfig')
-                               ->with($this->arrayHasKey("Driver"));
+            ->method('interpConfig')
+            ->with($this->arrayHasKey("Driver"));
         $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
@@ -279,15 +292,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionBadDriverCall()
     {
         $Info = array("Driver" => "BadDriver");
-        $this->o->registerDriver($this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)), "eDEFAULT");
+        $this->o->registerDriver(
+            $this->getMock("eDEFAULT", array("interpConfig"), array(&$this->o)),
+            "eDEFAULT"
+        );
         $this->o->drivers['eDEFAULT']->expects($this->once())
-                               ->method('interpConfig')
-                               ->with($this->arrayHasKey("Driver"));
+            ->method('interpConfig')
+            ->with($this->arrayHasKey("Driver"));
         $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
@@ -295,15 +310,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionGoodDriverCall()
     {
         $Info = array("Driver" => "testDriver");
-        $this->o->registerDriver($this->getMock("testDriver", array("interpConfig"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("interpConfig"), array(&$this->o)),
+            "testDriver"
+        );
         $this->o->drivers['testDriver']->expects($this->once())
-                               ->method('interpConfig')
-                               ->with($this->arrayHasKey("Driver"));
+            ->method('interpConfig')
+            ->with($this->arrayHasKey("Driver"));
         $ret = $this->o->RunFunction($Info, "interpConfig");
     }
     /**
@@ -311,15 +328,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionMultiArgsCall()
     {
         $Info = array("Driver" => "testDriver");
-        $this->o->registerDriver($this->getMock("testDriver", array("test"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("test"), array(&$this->o)),
+            "testDriver"
+        );
         $this->o->drivers['testDriver']->expects($this->once())
-                               ->method('test')
-                               ->with($this->arrayHasKey("Driver"));
+            ->method('test')
+            ->with($this->arrayHasKey("Driver"));
         $ret = $this->o->RunFunction($Info, "test", "1", "2");
     }
     /**
@@ -327,12 +346,14 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionMissingFunctionCall()
     {
         $Info = array("Driver" => "testDriver");
-        $this->o->registerDriver($this->getMock("testDriver", array("test"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("test"), array(&$this->o)),
+            "testDriver"
+        );
         $ret = $this->o->RunFunction($Info, "test", "1", "2");
         $this->assertEquals(null, $ret);
     }
@@ -342,12 +363,14 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionBadFunctionCall()
     {
         $Info = array("Driver" => "asdf");
-        $this->o->registerDriver($this->getMock("testDriver", array("test"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("test"), array(&$this->o)),
+            "testDriver"
+        );
         $ret = $this->o->RunFunction($Info, "testBad", "1", "2");
         $this->assertEquals(false, $ret);
     }
@@ -356,12 +379,14 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRunFunction().
     */
     public function testRunFunctionGotError()
     {
         $Info = array("Driver" => "testDriver");
-        $this->o->registerDriver($this->getMock("testDriver", array("test"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("test"), array(&$this->o)),
+            "testDriver"
+        );
         $ret = $this->o->RunFunction($Info, "getError", "1", "2");
         $this->assertEquals(false, $ret);
     }
@@ -371,15 +396,21 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider datareadConfig().
     */
     public function testCallCall()
     {
         $Info = array('Driver' => 'testDriver');
-        $this->o->registerDriver($this->getMock("testDriver", array("Test"), array(&$this->o)), "testDriver");
+        $this->o->registerDriver(
+            $this->getMock("testDriver", array("Test"), array(&$this->o)),
+            "testDriver"
+        );
         $this->o->drivers['testDriver']->expects($this->once())
-                               ->method('test')
-                               ->with($this->arrayHasKey("Driver"), $this->equalTo("1"), $this->equalTo("2"));
+            ->method('test')
+            ->with(
+                $this->arrayHasKey("Driver"),
+                $this->equalTo("1"),
+                $this->equalTo("2")
+            );
         $ret = $this->o->Test($Info, "1", "2");
     }
 
@@ -388,7 +419,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider datareadConfig().
     */
     public function testCall()
     {
@@ -397,8 +427,16 @@ class DriverTest extends PHPUnit_Framework_TestCase
         $arg3 = "2";
         $this->o->registerDriver("testDriver");
         $ret = $this->o->Test($Info, $arg2, $arg3);
-        $this->assertEquals($ret['arg2'], $arg2, "Arg2 mangled: '".$ret['arg2']."' != '$arg2'");
-        $this->assertEquals($ret['arg3'], $arg3, "Arg3 mangled: '".$ret['arg3']."' != '$arg3'");
+        $this->assertEquals(
+            $ret['arg2'],
+            $arg2,
+            "Arg2 mangled: '".$ret['arg2']."' != '$arg2'"
+        );
+        $this->assertEquals(
+            $ret['arg3'],
+            $arg3,
+            "Arg3 mangled: '".$ret['arg3']."' != '$arg3'"
+        );
     }
 
     /**
@@ -406,18 +444,21 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider datareadConfig().
     */
     public function testCallNoArgsCall()
     {
         // This has to go to eDEFAULT since it has no args.
-        $this->o->registerDriver($this->getMock("testDriver",
-                                                array("testCall"),
-                                                array(&$this->o)),
-                                                "eDEFAULT");
+        $this->o->registerDriver(
+            $this->getMock(
+                "testDriver",
+                array("testCall"),
+                array(&$this->o)
+            ),
+            "eDEFAULT"
+        );
         $this->o->drivers['eDEFAULT']->expects($this->once())
-                               ->method('testCall')
-                               ->with($this->arrayHasKey("Driver"));
+            ->method('testCall')
+            ->with($this->arrayHasKey("Driver"));
         $ret = $this->o->TestCall();
     }
 
@@ -427,7 +468,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataSetConfig().
     */
     public function testSetConfig()
     {
@@ -440,18 +480,19 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataDone().
     */
     public function testDone()
     {
         $Info = array("GatewayKey" => 1);
         // This has to go to eDEFAULT since it has no args.
-        $this->o->packet = $this->getMock("EPacket",
-                                          array(),
-                                          array("socketType" => "test"));
+        $this->o->packet = $this->getMock(
+            "EPacket",
+            array(),
+            array("socketType" => "test")
+        );
         $this->o->packet->expects($this->once())
-                  ->method('close')
-                  ->with($this->arrayHasKey("GatewayKey"));
+            ->method('close')
+            ->with($this->arrayHasKey("GatewayKey"));
         $this->o->done($Info);
     }
 
@@ -460,7 +501,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataUpdateDevice().
     */
     public function testUpdateDevice()
     {
@@ -483,7 +523,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataUnsolicitedConfigCheck().
     */
     public function testUnsolicitedConfigCheck()
     {
@@ -496,14 +535,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataGetDevice().
     */
     public function testGetDevice()
     {
         $Info = array("DeviceID" => 1);
         /*
         // This has to go to eDEFAULT since it has no args.
-        $this->o->device = $this->getMock("device", array("getDevice"), array(&$this->o));
+        $this->o->device = $this->getMock(
+            "device",
+            array("getDevice"),
+            array(&$this->o)
+        );
         $this->o->device->expects($this->once())
                   ->method('getDevice')
                   ->with($this->arrayHasKey("DeviceID"));
@@ -511,31 +553,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
         */
     }
 
-    /**
-    * test
-    *
-    * @return null
-    *
-    * @todo Implement testIsController().
-    */
-    public function testIsController()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-    * test getInfo()
-    *
-    * @return null
-    *
-    * @dataProvider dataGetInfo().
-    */
-    public function testGetInfo()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
 
     /**
     * Data provider for testInterpConfig()
@@ -552,7 +569,8 @@ class DriverTest extends PHPUnit_Framework_TestCase
                     array(
                         "DeviceKey" => 1,
                         "sendCommand" => PACKET_COMMAND_GETSETUP,
-                        "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                        "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF"
+                            ."500102020202020202027070707070707070",
                         "Date" => "2007-11-12 12:34:04",
                         "From" => "0000E8",
                    ),
@@ -587,7 +605,8 @@ class DriverTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => null,
                     "Date" => "2007-11-12 12:34:04",
                     "RawData" => Array(
-                        "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                        "5C" => "00000000E8ABCDEF01410123456743000005FFFFFF"
+                            ."500102020202020202027070707070707070",
                         "4C" => "12345678",
                    ),
                     "SerialNum" => 232,
@@ -596,7 +615,8 @@ class DriverTest extends PHPUnit_Framework_TestCase
                     "FWVersion" => "0.0.5",
                     "DeviceGroup" => "FFFFFF",
                     "BoredomThreshold" => 80,
-                    "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF500102020202020202027070707070707070",
+                    "RawSetup" => "00000000E8ABCDEF01410123456743000005FFFFFF"
+                        ."500102020202020202027070707070707070",
                     "LastConfig" => "2007-11-12 12:34:04",
                     "DriverInfo" => "0102020202020202027070707070707070",
                     "RawCalibration" => "12345678",
@@ -644,8 +664,16 @@ class DriverTest extends PHPUnit_Framework_TestCase
     {
         // DeviceID and Driver must be present and not empty
         return array(
-            array(array("DeviceID" => "123456", "Driver" => "testDriver"), "history_table", "testhistory"),
-            array(array("DeviceID" => "123456", "Driver" => "testDriver"), "average_table", "testaverage"),
+            array(
+                array("DeviceID" => "123456", "Driver" => "testDriver"),
+                "history_table",
+                "testhistory"
+            ),
+            array(
+                array("DeviceID" => "123456", "Driver" => "testDriver"),
+                "average_table",
+                "testaverage"
+            ),
         );
     }
     /**
@@ -679,11 +707,51 @@ class DriverTest extends PHPUnit_Framework_TestCase
     public static function dataFindDriver()
     {
         return array(
-            array(array("HWPartNum" => 1, "FWPartNum" => 2, "FWVersion" =>3), "eDEFAULT", 1),
-            array(array("HWPartNum" => "testHW2", "FWPartNum" => "testFW", "FWVersion" => "0.2.3"), "testDriver", 2),
-            array(array("HWPartNum" => "testHW1", "FWPartNum" => "testFW", "FWVersion" => "otherVersion"), "testDriver", 3),
-            array(array("HWPartNum" => "testHW3", "FWPartNum" => "otherFW", "FWVersion" => "otherVersion"), "testDriver", 4),
-            array(array("HWPartNum" => "testHW4", "FWPartNum" => "testFW2", "FWVersion" => "otherVersion"), "eDEFAULT", 5),
+            array(
+                array(
+                    "HWPartNum" => 1,
+                    "FWPartNum" => 2,
+                    "FWVersion" =>3
+                ),
+                "eDEFAULT",
+                1
+            ),
+            array(
+                array(
+                    "HWPartNum" => "testHW2",
+                    "FWPartNum" => "testFW",
+                    "FWVersion" => "0.2.3"
+                ),
+                "testDriver",
+                2
+            ),
+            array(
+                array(
+                    "HWPartNum" => "testHW1",
+                    "FWPartNum" => "testFW",
+                    "FWVersion" => "otherVersion"
+                ),
+                "testDriver",
+                3
+            ),
+            array(
+                array(
+                    "HWPartNum" => "testHW3",
+                    "FWPartNum" => "otherFW",
+                    "FWVersion" => "otherVersion"
+                ),
+                "testDriver",
+                4
+            ),
+            array(
+                array(
+                    "HWPartNum" => "testHW4",
+                    "FWPartNum" => "testFW2",
+                    "FWVersion" => "otherVersion"
+                ),
+                "eDEFAULT",
+                5
+            ),
         );
     }
     /**
@@ -725,27 +793,65 @@ class DriverTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
-                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
+                    0 => array(
+                        "Data0" => 1.0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 4,
+                        "Data4" => 6.5,
+                        "data" => array(1.0,2,3,4,6.5),
+                        "Date" => "2007-11-12 16:05:00"
+                    ),
+                    1 => array(
+                        "Data0" => 3.0,
+                        "Data1" => 2,
+                        "Data2" => 4,
+                        "Data3" => 6,
+                        "Data4" => 6.5,
+                        "data" => array(2.0,2,4,6,6.5),
+                        "Date" => "2007-11-12 16:10:00"
+                    ),
                ), // History
                 array(
                     "ActiveSensors" => 5,
                     "dType" => array("raw","diff","diff","raw","diff"),
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2",
+                            "TestSensor1",
+                            "TestSensor2",
+                            "TestSensor2",
+                            "TestSensor2"
+                        )
+                    ),
                     "Units" => array("E", "B", "E", "E", "E"),
                ), // DevInfo
                 2, // dPlaces
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
-                    1 => array("Data0" => 3.0,"Data1" => 2, "Data2" => 4.0, "Data3" => -1.0, "Data4" => 6.5, "data" => array(3.0,2,4.0,-1.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
+                    1 => array(
+                        "Data0" => 3.0,
+                        "Data1" => 2,
+                        "Data2" => 4.0,
+                        "Data3" => -1.0,
+                        "Data4" => 6.5,
+                        "data" => array(3.0,2,4.0,-1.0, 6.5),
+                        "Date" => "2007-11-12 16:10:00",
+                        "deltaT" => 300
+                    ),
                ), // expectHistory
                 array(
                     "ActiveSensors" => 5,
                     "dType" => array("raw","ignore","diff","diff","diff"),
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2", "TestSensor1", "TestSensor2",
+                            "TestSensor2", "TestSensor2"
+                        )
+                    ),
                     "Units" => array("E", "B", "E", "D", "E"),
                     "modifyUnits" => 1,
                ), // expectDevInfo
@@ -771,8 +877,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataModifyUnits().
     */
-    public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsHistory(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectHistory, $history);
     }
@@ -793,8 +908,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataModifyUnits().
     */
-    public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsDevInfo(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectDevInfo, $devInfo);
     }
@@ -815,8 +939,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataModifyUnits().
     */
-    public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsType(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectType, $type);
     }
@@ -837,8 +970,17 @@ class DriverTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataModifyUnits().
     */
-    public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsUnits(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectUnits, $units);
     }

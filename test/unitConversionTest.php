@@ -183,12 +183,18 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
             if (is_array($o->units)) {
                 foreach ($array as $catName => $cat) {
                     if (isset($cat[$unit])) {
-                        return unitConversionTest::_checkUnitModeRaw($cat[$unit]['mode'], $mode);
+                        return unitConversionTest::_checkUnitModeRaw(
+                            $cat[$unit]['mode'],
+                            $mode
+                        );
                     }
                 }
             }
         } else {
-            return unitConversionTest::_checkUnitModeRaw($o->units[$cat][$unit]['mode'], $mode);
+            return unitConversionTest::_checkUnitModeRaw(
+                $o->units[$cat][$unit]['mode'],
+                $mode
+            );
         }
         return false;
     }
@@ -276,7 +282,15 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     public static function dataFindUnit()
     {
         return array(
-            array('&#176;F',array('longName' => '&#176;F','varType' => 'float','convert' => array('&#176;C' => 'FtoC'), 'class' => 'temperatureUnits')),
+            array(
+                '&#176;F',
+                array(
+                    'longName' => '&#176;F',
+                    'varType' => 'float',
+                    'convert' => array('&#176;C' => 'FtoC'),
+                    'class' => 'temperatureUnits'
+                )
+            ),
             array("ASDF", false),
         );
     }
@@ -353,8 +367,16 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConvert
      */
-    public function testConvert($val, $from, $to, $time, $type, $extra, $expect, $toExpect)
-    {
+    public function testConvert(
+        $val,
+        $from,
+        $to,
+        $time,
+        $type,
+        $extra,
+        $expect,
+        $toExpect
+    ) {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
         $this->assertSame($expect, $ret);
     }
@@ -374,8 +396,16 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataConvert
      */
-    public function testConvertTo($val, $from, $to, $time, $type, $extra, $expect, $toExpect)
-    {
+    public function testConvertTo(
+        $val,
+        $from,
+        $to,
+        $time,
+        $type,
+        $extra,
+        $expect,
+        $toExpect
+    ) {
         $ret = $this->o->convert($val, $from, $to, $time, $type, $extra);
         $this->assertSame($toExpect, $to);
     }
@@ -388,8 +418,21 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     public static function dataGetPossConv()
     {
         return array(
-            array("raw", null, array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"), "&#176;" => array("Direction"), "Direction" => array("&#176;"))),
-            array("diff", null, array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"))),
+            array(
+                "raw",
+                null,
+                array(
+                    "&#176;C" => array("&#176;F"),
+                    "&#176;F" => array("&#176;C"),
+                    "&#176;" => array("Direction"),
+                    "Direction" => array("&#176;")
+                )
+            ),
+            array(
+                "diff",
+                null,
+                array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"))
+            ),
             array("raw", "&#176;C", array("&#176;F", "&#176;C")),
             array("diff", "&#176;F", array("&#176;C", "&#176;F")),
             array("raw", "Direction", array("&#176;", "Direction")),
@@ -431,27 +474,62 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    0 => array("Data0" => 1.0, "Data1" => 2, "Data2" => 3, "Data3" => 4, "Data4" => 6.5, "data" => array(1.0,2,3,4,6.5), "Date" => "2007-11-12 16:05:00"),
-                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4, "Data3" => 6, "Data4" => 6.5, "data" => array(2.0,2,4,6,6.5), "Date" => "2007-11-12 16:10:00"),
+                    0 => array(
+                        "Data0" => 1.0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 4,
+                        "Data4" => 6.5,
+                        "data" => array(1.0,2,3,4,6.5),
+                        "Date" => "2007-11-12 16:05:00"
+                    ),
+                    1 => array(
+                        "Data0" => 3.0,
+                        "Data1" => 2,
+                        "Data2" => 4,
+                        "Data3" => 6,
+                        "Data4" => 6.5,
+                        "data" => array(2.0,2,4,6,6.5),
+                        "Date" => "2007-11-12 16:10:00"
+                    ),
                ), // History
                 array(
                     "ActiveSensors" => 5,
                     "dType" => array("raw","diff","diff","raw","diff"),
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2", "TestSensor1", "TestSensor2",
+                            "TestSensor2", "TestSensor2"
+                        )
+                    ),
                     "Units" => array("E", "B", "E", "D", "E"),
                ), // DevInfo
                 2, // dPlaces
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
                 array(
-                    1 => array("Data0" => 3.0, "Data1" => 2, "Data2" => 4.0, "Data3" => -2.0, "Data4" => 6.5, "data" => array(3.0,2,4.0,-2.0, 6.5), "Date" => "2007-11-12 16:10:00", "deltaT" => 300),
+                    1 => array(
+                        "Data0" => 3.0,
+                        "Data1" => 2,
+                        "Data2" => 4.0,
+                        "Data3" => -2.0,
+                        "Data4" => 6.5,
+                        "data" => array(3.0,2,4.0,-2.0, 6.5),
+                        "Date" => "2007-11-12 16:10:00",
+                        "deltaT" => 300
+                    ),
                ), // expectHistory
                 array(
                     "ActiveSensors" => 5,
                     "dType" => array("raw","ignore","diff","diff","diff"),
                     "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array("sensorType"=>array("TestSensor2", "TestSensor1", "TestSensor2", "TestSensor2", "TestSensor2")),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2", "TestSensor1", "TestSensor2",
+                            "TestSensor2", "TestSensor2"
+                        )
+                    ),
                     "Units" => array("E", "B", "E", "D", "E"),
                     "modifyUnits" => 1,
                ), // expectDevInfo
@@ -477,8 +555,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataModifyUnits().
      */
-    public function testModifyUnitsHistory($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsHistory(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectHistory, $history);
     }
@@ -499,8 +586,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataModifyUnits().
      */
-    public function testModifyUnitsDevInfo($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsDevInfo(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectDevInfo, $devInfo);
     }
@@ -521,8 +617,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataModifyUnits().
      */
-    public function testModifyUnitsType($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsType(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectType, $type);
     }
@@ -543,8 +648,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider dataModifyUnits().
      */
-    public function testModifyUnitsUnits($history, $devInfo, $dPlaces, $type, $units, $expectHistory, $expectDevInfo, $expectType, $expectUnits)
-    {
+    public function testModifyUnitsUnits(
+        $history,
+        $devInfo,
+        $dPlaces,
+        $type,
+        $units,
+        $expectHistory,
+        $expectDevInfo,
+        $expectType,
+        $expectUnits
+    ) {
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectUnits, $units);
     }
@@ -563,7 +677,6 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class UnitConversionMock extends unitConversion
@@ -596,10 +709,9 @@ class UnitConversionMock extends unitConversion
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class test1Units extends UnitBase
+class Test1Units extends UnitBase
 {
     var $units = array(
         'A' => array(
@@ -723,10 +835,9 @@ class test1Units extends UnitBase
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class test2Units extends UnitBase
+class Test2Units extends UnitBase
 {
     var $units = array(
         'D' => array(

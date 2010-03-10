@@ -162,17 +162,25 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $db      = $this->getMock("ADONewConnection", array(), array("sqlite"));
-        $this->o = new EPacket(array("GatewayKey" => 1, "socketType" => "test"),
-                               false,
-                               $db,
-                               false);
+        $db      = $this->getMock(
+            "ADONewConnection",
+            array(),
+            array()
+        );
+        $this->o = new EPacket(
+            array("GatewayKey" => 1, "socketType" => "test"),
+            false,
+            $db,
+            false
+        );
 
 
         // This is a fast system.  It doesn't need a long timeout
-        $this->o->socket[2] = $this->getMock('epsocketMock',
-                                      array("connect", "close", "readChar", "write"),
-                                      array("socketType"=>"test"));
+        $this->o->socket[2] = $this->getMock(
+            'epsocketMock',
+            array("connect", "close", "readChar", "write"),
+            array("socketType"=>"test")
+        );
 
         $this->o->ReplyTimeout = 1;
 
@@ -237,16 +245,24 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     public function validPacketArray($a, $test=null, $keys = null)
     {
         $this->assertTrue(is_array($a), "This is not an array!");
-        $this->assertTrue(is_string($a['Command']),
-                          "'".$a['Command']."': Packet command must be a string");
-        $this->assertEquals(2,
-                            strlen($a['Command']),
-                            "'".$a['Command']."': Command is exactly 2 characters");
-        $this->assertTrue(is_string($a['To']),
-                          "'".$a['To']."': Packet to must be a string");
-        $this->assertEquals(6,
-                            strlen($a['To']),
-                                   "'".$a['To']."': To is exactly 6 characters");
+        $this->assertTrue(
+            is_string($a['Command']),
+            "'".$a['Command']."': Packet command must be a string"
+        );
+        $this->assertEquals(
+            2,
+            strlen($a['Command']),
+            "'".$a['Command']."': Command is exactly 2 characters"
+        );
+        $this->assertTrue(
+            is_string($a['To']),
+            "'".$a['To']."': Packet to must be a string"
+        );
+        $this->assertEquals(
+            6,
+            strlen($a['To']),
+            "'".$a['To']."': To is exactly 6 characters"
+        );
         if (is_array($test)) {
             foreach ($test as $key => $var) {
                 // Check to see if the key was specified
@@ -277,24 +293,32 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_string($s), "This is not a string!");
         $s              = strtoupper($s);
         $preambleLength = EPacketTest::getPreambleLength($s);
-        $this->assertTrue((($preambleLength >= 2) && ($preambleLength <= 3)),
-                            "Preamble must be 2 or 3 characters");
+        $this->assertTrue(
+            (($preambleLength >= 2) && ($preambleLength <= 3)),
+            "Preamble must be 2 or 3 characters"
+        );
         $length      = hexdec(substr($s, ($preambleLength + 7) * 2, 2));
         $totalLength = $preambleLength + 8 + $length + 1;
-        $this->assertEquals(($totalLength * 2),
-                             strlen($s),
-                             count($a['command']),
-                             "Packet command must contain exactly 2 characters");
+        $this->assertEquals(
+            ($totalLength * 2),
+            strlen($s),
+            count($a['command']),
+            "Packet command must contain exactly 2 characters"
+        );
         if (is_array($a)) {
             $a   = array_change_key_case($a, CASE_LOWER);
             $to  = $this->_cleanTo($a["to"]);
             $pTo = substr($s, ($preambleLength+1) * 2, 6);
-            $this->assertEquals($to,
-                                $pTo,
-                                "To field is Wrong.  '$to' != '$pTo'");
-            $this->assertEquals($length * 2,
-                                strlen(trim($a['data'])),
-                                "Wrong length parameter.");
+            $this->assertEquals(
+                $to,
+                $pTo,
+                "To field is Wrong.  '$to' != '$pTo'"
+            );
+            $this->assertEquals(
+                $length * 2,
+                strlen(trim($a['data'])),
+                "Wrong length parameter."
+            );
         }
     }
     /**
@@ -313,10 +337,6 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         return $length;
     }
 
-
-
-
-
     /**
     * Test packetCallBackMethod()
     *
@@ -327,8 +347,8 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         $t      = $this->getMock('EPacketTest_CallBack_Class');
         $string = "ABCDE";
         $t->expects($this->once())
-          ->method('test')
-          ->with($this->equalTo($string));
+            ->method('test')
+            ->with($this->equalTo($string));
         $this->o->PacketSetCallBack("test", $t);
         $this->o->PacketCallBack($string);
     }
@@ -516,14 +536,15 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider datasendPacket().
     */
-    public function testsendPacket($Info,
-                                   $pkt,
-                                   $GetReply,
-                                   $pktStr,
-                                   $replyStr,
-                                   $expect,
-                                   $getAll = false)
-    {
+    public function testsendPacket(
+        $Info,
+        $pkt,
+        $GetReply,
+        $pktStr,
+        $replyStr,
+        $expect,
+        $getAll = false
+    ) {
         // This preloads our fake socket to send back the data we want
         if (is_array($pktStr)) {
             foreach ($pktStr as $k => $p) {
@@ -637,10 +658,14 @@ class EPacketTest extends PHPUnit_Framework_TestCase
         // Load these packets up so that it always chooses $SN.
         foreach ($SNArray as $s) {
             if ($s != $SN) {
-                $pkt   = EPacket::PacketBuild(array("Command"=>"03", "To"=>$s),
-                                              "000020");
-                $reply = EPacket::PacketBuild(array("Command"=>"01", "To"=>"000020"),
-                                              $s);
+                $pkt   = EPacket::PacketBuild(
+                    array("Command"=>"03", "To"=>$s),
+                    "000020"
+                );
+                $reply = EPacket::PacketBuild(
+                    array("Command"=>"01", "To"=>"000020"),
+                    $s
+                );
                 $this->o->socket[1]->setReply($pkt, $reply);
             }
         }
@@ -889,7 +914,7 @@ class EPacketTest extends PHPUnit_Framework_TestCase
     {
         $this->o->socket[2] = $this->getMock('epsocketMock');
         $this->o->socket[2]->expects($this->once())
-                     ->method('close');
+            ->method('close');
         $Info = array("GatewayKey" => 2);
         $rep  = $this->o->Close($Info);
     }

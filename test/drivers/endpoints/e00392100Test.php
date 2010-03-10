@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392100.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class e00392100Test extends endpointTestBase
+class E00392100Test extends EndpointTestBase
 {
     public $class = "e00392100";
     /**
@@ -78,7 +78,13 @@ class e00392100Test extends endpointTestBase
                     "DeviceGroup" => "FFFFFF",
                     "RawData" => array(
                         "5C" => "00000000CC00392101410039200143000007FFFFFF50FF",
-                        "56" => "0000FE0000FC000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        "56" => "0000FE0000FC00000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."000000000000000000000000000000000000000000000",
                         "60" => "0801",
                    ),
                ),
@@ -93,11 +99,20 @@ class e00392100Test extends endpointTestBase
                     "DeviceGroup" => "FFFFFF",
                     "RawData" => array(
                         "5C" => "00000000CC00392101410039200143000007FFFFFF50FF",
-                        "56" => "0000FE0000FC000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                        "56" => "0000FE0000FC00000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000000000000000000000000000000000"
+                            ."000000000000000000000000000000000000000000000",
                         "60" => "0801"
                    ),
                     "HWName" => "Controller Board",
-                    "Labels" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
+                    "Labels" => array(
+                        "HUGnet1 Voltage", "HUGnet1 Current", "FET Temp",
+                        "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"
+                    ),
                     "PacketTimeout" => 2,
                     "NumSensors" => 6,
                     "Function" => "HUGnet Controller",
@@ -112,7 +127,8 @@ class e00392100Test extends endpointTestBase
             ),
             array(
                 "Info" => array(
-                    "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
+                    "RawSetup" => "00000000B600392101410039200643000002EEEEEE"
+                        ."50040001E000380000808055",
                     "DriverInfo" => "040001E000380000808055",
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-06-C",
@@ -122,7 +138,8 @@ class e00392100Test extends endpointTestBase
                     "DeviceGroup" => "EEEEEE",
                ),
                 "Return" => array(
-                    "RawSetup" => "00000000B600392101410039200643000002EEEEEE50040001E000380000808055",
+                    "RawSetup" => "00000000B600392101410039200643000002EEEEEE"
+                        ."50040001E000380000808055",
                     "DriverInfo" => "040001E000380000808055",
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-06-C",
@@ -131,7 +148,10 @@ class e00392100Test extends endpointTestBase
                     "SerialNum" => 182,
                     "DeviceGroup" => "EEEEEE",
                     "HWName" => "Controller Board",
-                    "Labels" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
+                    "Labels" => array(
+                        "HUGnet1 Voltage", "HUGnet1 Current", "FET Temp",
+                        "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"
+                    ),
                     "PacketTimeout" => 2,
                     "NumSensors" => 6,
                     "Function" => "HUGnet Controller",
@@ -169,18 +189,30 @@ class e00392100Test extends endpointTestBase
                     "SerialNum" => 204,
                     "DeviceGroup" => "FFFFFF",
                     "HWName" => "Controller Board",
-                    "Labels" => array("HUGnet1 Voltage", "HUGnet1 Current", "FET Temp", "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"),
+                    "Labels" => array(
+                        "HUGnet1 Voltage", "HUGnet1 Current", "FET Temp",
+                        "HUGnet2 Voltage", "HUGnet2 Current", "FET Temp"
+                    ),
                     "PacketTimeout" => 2,
                     "NumSensors" => 6,
                     "Function" => "HUGnet Controller",
                     "ActiveSensors" => 6,
                     "params" => array(
-                        "sensorType" => array("Controller", "Controller", "BCTherm2322640", "Controller", "Controller", "BCTherm2322640"),
-                   ),
+                        "sensorType" => array(
+                            "Controller", "Controller", "BCTherm2322640",
+                            "Controller", "Controller", "BCTherm2322640"
+                        ),
+                    ),
                     "bootLoader" => false,
                     "Types" => array(64, 80, 2, 64, 80, 2),
-                    "unitType" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
-                    "Labels" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
+                    "unitType" => array(
+                        "Voltage", "Current", "Temperature",
+                        "Voltage", "Current", "Temperature"
+                    ),
+                    "Labels" => array(
+                        "Voltage", "Current", "Temperature",
+                        "Voltage", "Current", "Temperature"
+                    ),
                     "Units" => array("V", "mA", "&#176;C", "V", "mA", "&#176;C"),
                     "dType" => array("raw", "raw", "raw", "raw", "raw", "raw"),
                     "doTotal" => array(false, false, false, false, false, false),
@@ -192,7 +224,10 @@ class e00392100Test extends endpointTestBase
                         "Date" => "2007-02-23 22:38:01",
                    ),
                     array(
-                        "RawData" => "00000000000000000000000000000000000000000000000000000000000000000000010000000000000001000000010001000000000000000D0000000000000044000C000000000000000D0000000D000D000000D5090000B602000000000000",
+                        "RawData" => "000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000010000000000000001000000010001"
+                            ."000000000000000D0000000000000044000C000000000000000D0"
+                            ."000000D000D000000D5090000B602000000000000",
                         "sendCommand" => "57",
                         "Date" => "2007-02-23 22:38:01",
                    ),
@@ -202,7 +237,10 @@ class e00392100Test extends endpointTestBase
                         "RawData" => "0BBE003F1E0000004882470000BF1D0B01",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
-                        "Data" => array(11, 190, 0, 63, 30, 0, 0, 0, 72, 130, 71, 0, 0, 191, 29, 11, 1),
+                        "Data" => array(
+                            11, 190, 0, 63, 30, 0, 0, 0, 72, 130,
+                            71, 0, 0, 191, 29, 11, 1
+                        ),
                         "Driver" => "e00392100",
                         "DeviceKey" => 150,
                         "ActiveSensors" => 6,
@@ -210,7 +248,10 @@ class e00392100Test extends endpointTestBase
                         "TimeConstant" => 1,
                         "Types" => array(64, 80, 2, 64, 80, 2),
                         "Units" => array("V", "mA", "&#176;C", "V", "mA", "&#176;C"),
-                        "unitType" => array("Voltage", "Current", "Temperature", "Voltage", "Current", "Temperature"),
+                        "unitType" => array(
+                            "Voltage", "Current", "Temperature",
+                            "Voltage", "Current", "Temperature"
+                        ),
                         "DataIndex" => 11,
                         "raw" => array(190, 7743, 0, 18432, 18306, 0, 7615, 267),
                         "Data0" => 10.718,
@@ -223,10 +264,20 @@ class e00392100Test extends endpointTestBase
                         "StatusOld" => "GOOD",
                    ),
                     array(
-                        "RawData" => "00000000000000000000000000000000000000000000000000000000000000000000010000000000000001000000010001000000000000000D0000000000000044000C000000000000000D0000000D000D000000D5090000B602000000000000",
+                        "RawData" => "000000000000000000000000000000000000000000000"
+                            ."00000000000000000000000010000000000000001000000010001"
+                            ."000000000000000D0000000000000044000C000000000000000D0"
+                            ."000000D000D000000D5090000B602000000000000",
                         "sendCommand" => "57",
                         "Date" => "2007-02-23 22:38:01",
-                        "Data" => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 68, 0, 12, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 13, 0, 13, 0, 0, 0, 213, 9, 0, 0, 182, 2, 0, 0, 0, 0, 0, 0),
+                        "Data" => array(
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+                            0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
+                            0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 68, 0, 12, 0, 0, 0, 0,
+                            0, 0, 0, 13, 0, 0, 0, 13, 0, 13, 0, 0, 0, 213, 9, 0,
+                            0, 182, 2, 0, 0, 0, 0, 0, 0
+                        ),
                         "Driver" => "e00392100",
                         "DeviceKey" => 150,
                         "Stats" => array(
@@ -320,6 +371,8 @@ class e00392100Test extends endpointTestBase
     }
     /**
      * data provider for test readConfig
+     *
+     * @return array
      */
     public static function datareadSensors()
     {
@@ -347,6 +400,8 @@ class e00392100Test extends endpointTestBase
     }
     /**
      * data provider for test readConfig
+     *
+     * @return array
      */
     public static function datareadConfig()
     {
@@ -378,6 +433,8 @@ class e00392100Test extends endpointTestBase
     }
     /**
      * data provider for testCheckDataArray
+     *
+     * @return array
      */
     public static function dataGetFWPartNum()
     {
@@ -398,6 +455,9 @@ class e00392100Test extends endpointTestBase
     }
     /**
      * test
+     *
+     * @param array $Info   devInfo array for the device
+     * @param array $expect return array expected
      *
      * @return null
      *

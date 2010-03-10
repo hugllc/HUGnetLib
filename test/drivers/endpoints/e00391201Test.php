@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00391201.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class e00391201Test extends endpointTestBase
+class E00391201Test extends EndpointTestBase
 {
     public $class = "e00391201";
     /**
@@ -67,7 +67,8 @@ class e00391201Test extends endpointTestBase
         return array(
             array(
                 "Info" => array(
-                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
+                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF"
+                        ."50E48081828330405060",
                     "HWPartNum" => "0039-12-02-B",
                     "FWPartNum" => "0039-20-04-C",
                     "FWVersion" => "00.00.04",
@@ -76,7 +77,8 @@ class e00391201Test extends endpointTestBase
                     "DeviceGroup" => "FFFFFF",
                ),
                 "Return" => array(
-                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
+                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF"
+                        ."50E48081828330405060",
                     "HWPartNum" => "0039-12-02-B",
                     "FWPartNum" => "0039-20-04-C",
                     "FWVersion" => "00.00.04",
@@ -121,7 +123,8 @@ class e00391201Test extends endpointTestBase
             array(
                 "Info" => array(
                     "DeviceKey" => 46,
-                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF50E48081828330405060",
+                    "RawSetup" => "000000004E00391202420039200443000004FFFFFF"
+                        ."50E48081828330405060",
                     "HWPartNum" => "0039-12-02-B",
                     "FWPartNum" => "0039-20-04-C",
                     "FWVersion" => "00.00.04",
@@ -151,7 +154,12 @@ class e00391201Test extends endpointTestBase
                     "FET2Mult" => 80,
                     "FET3Mult" => 96,
                     "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
-                    "params" => array("sensorType" => array("FETBoard", "FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard","FETBoard")),
+                    "params" => array(
+                        "sensorType" => array(
+                            "FETBoard", "FETBoard","FETBoard","FETBoard",
+                            "FETBoard","FETBoard","FETBoard","FETBoard","FETBoard"
+                        )
+                    ),
                ),
                 "Packets" => array(
                     array(
@@ -170,7 +178,10 @@ class e00391201Test extends endpointTestBase
                         "RawData" => "078511bb00cb11b3006711c6004210ac00fc4d",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
-                        "Data" => array(7, 133, 17, 187, 0, 203, 17, 179, 0, 103, 17, 198, 0, 66, 16, 172, 0, 252, 77),
+                        "Data" => array(
+                            7, 133, 17, 187, 0, 203, 17, 179, 0, 103,
+                            17, 198, 0, 66, 16, 172, 0, 252, 77
+                        ),
                         "NumSensors" => 9,
                         "ActiveSensors" => 9,
                         "Driver" => null,
@@ -178,9 +189,15 @@ class e00391201Test extends endpointTestBase
                         "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
                         "DataIndex" => 7,
                         "TimeConstant" => 1,
-                        "raw" => array(4485, 187, 4555, 179, 4455, 198, 4162, 172, 19964),
+                        "raw" => array(
+                            4485, 187, 4555, 179, 4455,
+                            198, 4162, 172, 19964
+                        ),
                         "Data0" => 685.0,
-                        "data" => array(685.0, 24.1654, 695.7, 24.1752, 680.4, 24.152, 635.7, 24.1837, 24.3939),
+                        "data" => array(
+                            685.0, 24.1654, 695.7, 24.1752, 680.4,
+                            24.152, 635.7, 24.1837, 24.3939
+                        ),
                         "Data1" => 24.1654,
                         "Data2" => 695.7,
                         "Data3" => 24.1752,
@@ -197,7 +214,10 @@ class e00391201Test extends endpointTestBase
                         "RawData" => "4b9d11bc008311bb006111bf003810a200004e",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:48:01",
-                        "Data" => array(75, 157, 17, 188, 0, 131, 17, 187, 0, 97, 17, 191, 0, 56, 16, 162, 0, 0, 78),
+                        "Data" => array(
+                            75, 157, 17, 188, 0, 131, 17, 187, 0,
+                            97, 17, 191, 0, 56, 16, 162, 0, 0, 78
+                        ),
                         "NumSensors" => 9,
                         "ActiveSensors" => 9,
                         "Driver" => null,
@@ -205,9 +225,15 @@ class e00391201Test extends endpointTestBase
                         "Types" => array(80, 64, 80, 64, 80, 64, 80, 64, 64),
                         "DataIndex" => 75,
                         "TimeConstant" => 1,
-                        "raw" => array(4509, 188, 4483, 187, 4449, 191, 4152, 162, 19968),
+                        "raw" => array(
+                            4509, 188, 4483, 187, 4449,
+                            191, 4152, 162, 19968
+                        ),
                         "Data0" => 688.7,
-                        "data" => array(688.7, 24.1691, 684.7, 24.1703, 679.5, 24.1654, 634.2, 24.2009, 24.3988),
+                        "data" => array(
+                            688.7, 24.1691, 684.7, 24.1703, 679.5,
+                            24.1654, 634.2, 24.2009, 24.3988
+                        ),
                         "Data1" => 24.1691,
                         "Data2" => 684.7,
                         "Data3" => 24.1703,

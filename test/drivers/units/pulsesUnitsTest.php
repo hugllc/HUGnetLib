@@ -51,10 +51,9 @@ require_once dirname(__FILE__).'/../../../drivers/units/pulsesUnits.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class pulsesUnitsTest extends UnitTestBase
+class PulsesUnitsTest extends UnitTestBase
 {
     var $class = "pulsesUnits";
 
@@ -130,7 +129,10 @@ class pulsesUnitsTest extends UnitTestBase
      */
     public function testCnttoRPM($cnt, $rpm, $time, $type, $cntPerRev)
     {
-        $this->assertEquals($rpm, $this->o->CnttoRPM($cnt, $time, $type, $cntPerRev));
+        $this->assertEquals(
+            $rpm,
+            $this->o->CnttoRPM($cnt, $time, $type, $cntPerRev)
+        );
     }
 
 

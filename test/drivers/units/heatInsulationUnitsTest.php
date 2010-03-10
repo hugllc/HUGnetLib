@@ -51,10 +51,9 @@ require_once dirname(__FILE__).'/../../../drivers/units/heatInsulationUnits.php'
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: heatInsulationUnitsTest.php 1354 2008-05-16 22:04:23Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class heatInsulationUnitsTest extends UnitTestBase
+class HeatInsulationUnitsTest extends UnitTestBase
 {
     var $class = "heatInsulationUnits";
 
@@ -162,8 +161,8 @@ class heatInsulationUnitsTest extends UnitTestBase
     /**
     * test CtoF()
     *
-    * @param float  $m    The heatInsulation in C
-    * @param float  $e    The heatInsulation in F
+    * @param float  $r    The heatInsulation in C
+    * @param float  $u    The heatInsulation in F
     * @param int    $time The time in seconds between this record and the last.
     * @param string $type The type of data (diff, raw, etc)
     *

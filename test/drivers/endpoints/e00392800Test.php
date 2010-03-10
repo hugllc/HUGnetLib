@@ -50,10 +50,9 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392800.php';
  * @copyright  2007-2009 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class e00392800Test extends endpointTestBase
+class E00392800Test extends EndpointTestBase
 {
     public $class = "e00392800";
     /**
@@ -67,74 +66,110 @@ class e00392800Test extends endpointTestBase
     static public function dataInterpConfig()
     {
         return array(
-             array(
-                 "Info" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.05",
-                     "DeviceID" => "0000E8",
-                     "SerialNum" => 232,
-                     "Driver" => "e00392800",
-                     "DeviceGroup" => "FFFFFF",
-                     "params" => array(
+            array(
+                "Info" => array(
+                    "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."500102020202020202027070707070707070",
+                    "DriverInfo" => "0102020202020202027070707070707070",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C",
+                    "FWVersion" => "00.00.05",
+                    "DeviceID" => "0000E8",
+                    "SerialNum" => 232,
+                    "Driver" => "e00392800",
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => array(
                          "VSensors" => 2,
-                     ),
+                    ),
                 ),
-                 "Return" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.05",
-                     "DeviceID" => "0000E8",
-                     "SerialNum" => 232,
-                     "Driver" => "e00392800",
-                     "DeviceGroup" => "FFFFFF",
-                     "HWName" => "0039-28 Endpoint",
-                     "NumSensors" => 16,
-                     "Function" => "Sensor Board",
-                     "TimeConstant" => 1,
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
-                     "TotalSensors" => 18,
-               ),
+                "Return" => array(
+                    "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."500102020202020202027070707070707070",
+                    "DriverInfo" => "0102020202020202027070707070707070",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C",
+                    "FWVersion" => "00.00.05",
+                    "DeviceID" => "0000E8",
+                    "SerialNum" => 232,
+                    "Driver" => "e00392800",
+                    "DeviceGroup" => "FFFFFF",
+                    "HWName" => "0039-28 Endpoint",
+                    "NumSensors" => 16,
+                    "Function" => "Sensor Board",
+                    "TimeConstant" => 1,
+                    "DriverInfo" => "0102020202020202027070707070707070",
+                    "Types" => array(
+                        2,2,2,2,2,2,2,2,
+                        112,112,112,112,112,112,112,112
+                    ),
+                    "TotalSensors" => 18,
+                ),
             ),
-             array(
-                 "Info" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
-                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.08",
-                     "DeviceID" => "0000E8",
-                     "SerialNum" => 232,
-                     "Driver" => "e00392800",
-                     "DeviceGroup" => "FFFFFF",
+            array(
+                "Info" => array(
+                    "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."5000102020202020202026F6F6F6F6F707070",
+                    "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C",
+                    "FWVersion" => "00.00.08",
+                    "DeviceID" => "0000E8",
+                    "SerialNum" => 232,
+                    "Driver" => "e00392800",
+                    "DeviceGroup" => "FFFFFF",
                 ),
-                 "Return" => array(
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF5000102020202020202026F6F6F6F6F707070",
-                     "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.08",
-                     "DeviceID" => "0000E8",
-                     "SerialNum" => 232,
-                     "Driver" => "e00392800",
-                     "DeviceGroup" => "FFFFFF",
-                     "HWName" => "0039-28 Endpoint",
-                     "NumSensors" => 16,
-                     "Function" => "Sensor Board",
-                     "TimeConstant" => 1,
-                     "Types" => array(2,2,2,2,2,2,2,2,111,111,111,111,111,112,112,112),
-                     "dType" => array("raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw", "ignore", "ignore", "ignore", "ignore", "diff", "diff", "diff"),
-                     "params" => array(
-                         "sensorType" => array("BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "BCTherm2322640", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "maximum-inc", "generic", "generic", "generic"),
-                         "dType" => array(9 => "ignore", 10 => "ignore", 11 => "ignore", 12 => "ignore"),
-                     ),
-                     "TotalSensors" => 16,
-               ),
+                "Return" => array(
+                    "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."5000102020202020202026F6F6F6F6F707070",
+                    "DriverInfo" => "0102020202020202026F6F6F6F6F707070",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C",
+                    "FWVersion" => "00.00.08",
+                    "DeviceID" => "0000E8",
+                    "SerialNum" => 232,
+                    "Driver" => "e00392800",
+                    "DeviceGroup" => "FFFFFF",
+                    "HWName" => "0039-28 Endpoint",
+                    "NumSensors" => 16,
+                    "Function" => "Sensor Board",
+                    "TimeConstant" => 1,
+                    "Types" => array(
+                        2,2,2,2,2,2,2,2,
+                        111,111,111,111,111,112,112,112
+                    ),
+                    "dType" => array(
+                        "raw", "raw", "raw", "raw", "raw", "raw", "raw", "raw",
+                        "raw", "ignore", "ignore", "ignore", "ignore", "diff",
+                        "diff", "diff"
+                    ),
+                    "params" => array(
+                        "sensorType" => array(
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "BCTherm2322640",
+                            "maximum-inc",
+                            "maximum-inc",
+                            "maximum-inc",
+                            "maximum-inc",
+                            "maximum-inc",
+                            "generic",
+                            "generic",
+                            "generic"
+                        ),
+                        "dType" => array(
+                            9 => "ignore",
+                            10 => "ignore",
+                            11 => "ignore",
+                            12 => "ignore"
+                        ),
+                    ),
+                    "TotalSensors" => 16,
+                ),
             ),
         );
     }
@@ -148,52 +183,73 @@ class e00392800Test extends endpointTestBase
         return array(
             array(
                 "Info" => array(
-                     "DeviceKey" => 182,
-                     "RawSetup" => "00000000E800392801410039201343000005FFFFFF500102020202020202027070707070707070",
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "HWPartNum" => "0039-28-01-A",
-                     "FWPartNum" => "0039-20-13-C",
-                     "FWVersion" => "00.00.05",
-                     "DeviceID" => "0000E8",
-                     "SerialNum" => 232,
-                     "Driver" => "e00392800",
-                     "DeviceGroup" => "FFFFFF",
-                     "HWName" => "0039-28 Endpoint",
-                     "NumSensors" => 16,
-                     "ActiveSensors" => 7,
-                     "Function" => "Sensor Board",
-                     "TimeConstant" => 1,
-                     "DriverInfo" => "0102020202020202027070707070707070",
-                     "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
-               ),
+                    "DeviceKey" => 182,
+                    "RawSetup" => "00000000E800392801410039201343000005FFFFFF"
+                        ."500102020202020202027070707070707070",
+                    "DriverInfo" => "0102020202020202027070707070707070",
+                    "HWPartNum" => "0039-28-01-A",
+                    "FWPartNum" => "0039-20-13-C",
+                    "FWVersion" => "00.00.05",
+                    "DeviceID" => "0000E8",
+                    "SerialNum" => 232,
+                    "Driver" => "e00392800",
+                    "DeviceGroup" => "FFFFFF",
+                    "HWName" => "0039-28 Endpoint",
+                    "NumSensors" => 16,
+                    "ActiveSensors" => 7,
+                    "Function" => "Sensor Board",
+                    "TimeConstant" => 1,
+                    "DriverInfo" => "0102020202020202027070707070707070",
+                    "Types" => array(
+                        2,2,2,2,2,2,2,2,
+                        112,112,112,112,112,112,112,112
+                    ),
+                ),
                 "Packets" => array(
                     array(
-                        "RawData" => "070001369E00F09C00919D00C89C00EE9C000A9D00BEFF00BFFF00000000",
+                        "RawData" => "070001369E00F09C00919D00C89C00EE9"
+                            ."C000A9D00BEFF00BFFF00000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
-                   ),
+                    ),
                     array(
-                        "RawData" => "130001309E00F09C00909D00CA9C00F19C000A9D00BFFF00BFFF00000000",
+                        "RawData" => "130001309E00F09C00909D00CA9C00F19C"
+                            ."000A9D00BFFF00BFFF00000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:48:01",
                    ),
                ),
                 "Return" => array(
                     array(
-                        "RawData" => "070001369E00F09C00919D00C89C00EE9C000A9D00BEFF00BFFF00000000",
+                        "RawData" => "070001369E00F09C00919D00C89C00EE9"
+                            ."C000A9D00BEFF00BFFF00000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
-                        "Data" => array(7, 0, 1, 54, 158, 0, 240, 156, 0, 145, 157, 0, 200, 156, 0, 238, 156, 0, 10, 157, 0, 190, 255, 0, 191, 255, 0, 0, 0, 0),
+                        "Data" => array(
+                            7, 0, 1, 54, 158, 0, 240, 156, 0, 145, 157, 0, 200,
+                            156, 0, 238, 156, 0, 10, 157, 0, 190, 255, 0, 191, 255,
+                            0, 0, 0, 0
+                        ),
                         "NumSensors" => 16,
                         "ActiveSensors" => 7,
                         "Driver" => "e00392800",
                         "DeviceKey" => 182,
-                        "Types" => array(2,2,2,2,2,2,2,2,112,112,112,112,112,112,112,112),
+                        "Types" => array(
+                            2,2,2,2,2,2,2,2,
+                            112,112,112,112,112,112,112,112
+                        ),
                         "DataIndex" => 7,
                         "TimeConstant" => 1,
-                        "raw" => array(40502, 40176, 40337, 40136, 40174, 40202, 65470, 65471, 0, 0, 0, 0, 0, 0, 0, 0),
+                        "raw" => array(
+                            40502, 40176, 40337, 40136, 40174, 40202, 65470, 65471,
+                            0, 0, 0, 0, 0, 0, 0, 0
+                        ),
                         "Data0" => 14.2962,
-                        "data" => array(14.2962, 14.7482, 14.5252, 14.8037, 14.751, 14.7122, null, null, null, null, null, null, null, null, null, null),
+                        "data" => array(
+                            14.2962, 14.7482, 14.5252, 14.8037, 14.751, 14.7122,
+                            null, null, null, null, null, null, null, null,
+                            null, null
+                        ),
                         "Data1" => 14.7482,
                         "Data2" => 14.5252,
                         "Data3" => 14.8037,
@@ -205,22 +261,36 @@ class e00392800Test extends endpointTestBase
                         "deltaT" => 0,
                         "Status" => "GOOD",
                         "StatusOld" => "GOOD",
-                   ),
+                    ),
                     array(
-                        "RawData" => "130001309E00F09C00909D00CA9C00F19C000A9D00BFFF00BFFF00000000",
+                        "RawData" => "130001309E00F09C00909D00CA9C00F19C0"
+                            ."00A9D00BFFF00BFFF00000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:48:01",
-                        "Data" => array(19, 0, 1, 48, 158, 0, 240, 156, 0, 144, 157, 0, 202, 156, 0, 241, 156, 0, 10, 157, 0, 191, 255, 0, 191, 255, 0, 0, 0, 0),
+                        "Data" => array(
+                            19, 0, 1, 48, 158, 0, 240, 156, 0, 144, 157, 0, 202,
+                            156, 0, 241, 156, 0, 10, 157, 0, 191, 255, 0, 191,
+                            255, 0, 0, 0, 0
+                        ),
                         "NumSensors" => 16,
                         "ActiveSensors" => 7,
                         "Driver" => "e00392800",
                         "DeviceKey" => 182,
-                        "Types" => array(2, 2, 2, 2, 2, 2, 2, 2, 112,112,112, 112,112,112,112,112),
+                        "Types" => array(
+                            2, 2, 2, 2, 2, 2, 2, 2,
+                            112,112,112, 112,112,112,112,112
+                        ),
                         "DataIndex" => 19,
                         "TimeConstant" => 1,
-                        "raw" => array(40496, 40176, 40336, 40138, 40177, 40202, 65471, 65471, 0, 0, 0, 0, 0, 0, 0, 0),
+                        "raw" => array(
+                            40496, 40176, 40336, 40138, 40177, 40202, 65471, 65471,
+                            0, 0, 0, 0, 0, 0, 0, 0
+                        ),
                         "Data0" => 14.3045,
-                        "data" => array(14.3045, 14.7482, 14.5265, 14.8009, 14.7469, 14.7122, null, null, 0, 0, 0, 0, 0, 0, 0, 0),
+                        "data" => array(
+                            14.3045, 14.7482, 14.5265, 14.8009, 14.7469, 14.7122,
+                            null, null, 0, 0, 0, 0, 0, 0, 0, 0
+                        ),
                         "Data1" => 14.7482,
                         "Data2" => 14.5265,
                         "Data3" => 14.8009,
@@ -238,7 +308,8 @@ class e00392800Test extends endpointTestBase
             array(
                 "Info" => array(
                      "DeviceKey" => 178,
-                     "RawSetup" => "00000000E400392801410039201343000008FFFFFF500102020202101002026F6F6F6F6F707070",
+                     "RawSetup" => "00000000E400392801410039201343000008FFFFFF"
+                        ."500102020202101002026F6F6F6F6F707070",
                      "DriverInfo" => "0102020202020202027070707070707070",
                      "HWPartNum" => "0039-28-01-A",
                      "FWPartNum" => "0039-20-13-C",
@@ -253,31 +324,55 @@ class e00392800Test extends endpointTestBase
                      "Function" => "Sensor Board",
                      "TimeConstant" => 1,
                      "DriverInfo" => "0102020202101002026F6F6F6F6F707070",
-                     "Types" => array(2,2,2,2,16,16,2,2,111,111,111,111,111,112,112,112),
-               ),
+                     "Types" => array(
+                        2,2,2,2,16,16,2,2,
+                        111,111,111,111,111,112,112,112
+                    ),
+                ),
                 "Packets" => array(
                     array(
-                        "RawData" => "330001C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00101010000000000000000000000000040100000000000000",
+                        "RawData" => "330001C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0"
+                            ."FF00C0FF001010100000000000000000000000000401"
+                            ."00000000000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
                    ),
                ),
                 "Return" => array(
                     array(
-                        "RawData" => "330001C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00101010000000000000000000000000040100000000000000",
+                        "RawData" => "330001C0FF00C0FF00C0FF00C0FF00C0FF00C0FF00C0"
+                            ."FF00C0FF001010100000000000000000000000000401"
+                            ."00000000000000",
                         "sendCommand" => "55",
                         "Date" => "2007-02-23 22:38:01",
-                        "Data" => array(51, 0, 1, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 0, 0, 0, 0, 0, 0, 0),
+                        "Data" => array(
+                            51, 0, 1, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192,
+                            255, 0, 192, 255, 0, 192, 255, 0, 192, 255, 0, 192,
+                            255, 0, 16, 16, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 4, 1, 0, 0, 0, 0, 0, 0, 0
+                        ),
                         "NumSensors" => 16,
                         "ActiveSensors" => 15,
                         "Driver" => "e00392800",
                         "DeviceKey" => 178,
-                        "Types" => array(2,2,2,2,16,16,2,2,111,111,111,111,111,112,112,112),
+                        "Types" => array(
+                            2, 2, 2, 2, 16, 16, 2, 2,
+                            111, 111, 111, 111, 111, 112, 112, 112
+                        ),
                         "DataIndex" => 51,
                         "TimeConstant" => 1,
-                        "raw" => array(65472, 65472, 65472, 65472, 65472, 65472, 65472, 65472, 16, 0, 0, 0, 0, 260, 0, 0),
+                        "raw" => array(
+                            65472, 65472, 65472, 65472, 65472, 65472, 65472, 65472,
+                            16, 0, 0, 0, 0, 260, 0, 0
+                        ),
                         "Data0" => null,
-                        "data" => array(null, null, null, null, 110.0, 110.0, null, null, 180.0, 13 => null, 14 => null, 15 => null),
+                        "data" => array(
+                            null, null, null, null, 110.0, 110.0,
+                            null, null, 180.0,
+                            13 => null,
+                            14 => null,
+                            15 => null
+                        ),
                         "Data1" => null,
                         "Data2" => null,
                         "Data3" => null,
@@ -333,6 +428,8 @@ class e00392800Test extends endpointTestBase
 
     /**
      * data provider for test readConfig
+     *
+     * @return array
      */
     public static function datareadConfig()
     {
