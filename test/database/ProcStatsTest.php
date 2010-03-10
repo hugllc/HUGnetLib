@@ -529,14 +529,15 @@ class ProcStatsTest extends databaseTest
      *
      * @dataProvider dataGetStat().
      */
-    public function testGetStat($preload,
-                                $Program,
-                                $type,
-                                $name,
-                                $date,
-                                $PID,
-                                $expect)
-    {
+    public function testGetStat(
+        $preload,
+        $Program,
+        $type,
+        $name,
+        $date,
+        $PID,
+        $expect
+    ) {
         $this->load($preload);
         $ret = $this->o->getStat($name, $Program, $date, $type, $PID);
         $this->assertEquals($expect, $ret);

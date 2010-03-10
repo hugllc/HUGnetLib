@@ -207,8 +207,8 @@ class GatewayTest extends databaseTest
     /**
      * Tests gateway::find()
      *
-     * @param array $IP      The IP address to test
-     * @param array $expect  The return value to expect
+     * @param array $IP     The IP address to test
+     * @param array $expect The return value to expect
      *
      * @return null
      *
@@ -222,8 +222,8 @@ class GatewayTest extends databaseTest
     /**
      * Tests gateway::find()
      *
-     * @param array $IP      The IP address to test
-     * @param array $expect  The return value to expect
+     * @param array $IP     The IP address to test
+     * @param array $expect The return value to expect
      *
      * @return null
      *

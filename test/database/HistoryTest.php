@@ -229,13 +229,14 @@ class HistoryTest extends databaseTest
      *
      * @dataProvider dataGetDates
      */
-    public function testGetDates($preload,
-                                 $devInfo,
-                                 $startDate,
-                                 $endDate,
-                                 $maxRec,
-                                 $expect)
-    {
+    public function testGetDates(
+        $preload,
+        $devInfo,
+        $startDate,
+        $endDate,
+        $maxRec,
+        $expect
+    ) {
         $this->load($preload);
         $ret = $this->o->GetDates($devInfo, $startDate, $endDate, $maxRec);
         $this->assertSame($expect, $ret);
