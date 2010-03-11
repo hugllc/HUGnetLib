@@ -103,18 +103,22 @@ class ResistiveSensorTest extends SensorTestBase
         );
     }
     /**
-     * test
-     *
-     * @param int   $A      The a to d reading
-     * @param int   $TC     The time constant
-     * @param float $Bias   The bias resistance
-     * @param mixed $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataGetResistance
-     * @covers resistiveSensor::GetResistance
-     */
+    * test
+    *
+    * @param int   $A      The a to d reading
+    * @param int   $TC     The time constant
+    * @param float $Bias   The bias resistance
+    * @param mixed $expect The expected return value
+    * @param int   $Tf     See {@link sensor_base::$Tf}
+    * @param int   $D      See {@link sensor_base::$D}
+    * @param int   $s      See {@link sensor_base::$s}
+    * @param int   $Am     See {@link sensor_base::$Am}
+    *
+    * @return null
+    *
+    * @dataProvider dataGetResistance
+    * @covers resistiveSensor::GetResistance
+    */
     public function testGetResistance(
         $A,
         $TC,
@@ -153,6 +157,10 @@ class ResistiveSensorTest extends SensorTestBase
     * @param int   $TC     The time constant
     * @param float $R      The bias resistance
     * @param mixed $expect The expected return value
+    * @param int   $Tf     See {@link sensor_base::$Tf}
+    * @param int   $D      See {@link sensor_base::$D}
+    * @param int   $s      See {@link sensor_base::$s}
+    * @param int   $Am     See {@link sensor_base::$Am}
     *
     * @return null
     *

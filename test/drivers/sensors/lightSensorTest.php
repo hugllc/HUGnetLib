@@ -112,6 +112,10 @@ class LightSensorTest extends SensorTestBase
     * @param int   $A      The raw AtoD reading
     * @param int   $TC     The time constant used to get the reading
     * @param mixed $expect The expected return value
+    * @param int   $Tf     See {@link sensor_base::$Tf}
+    * @param int   $D      See {@link sensor_base::$D}
+    * @param int   $s      See {@link sensor_base::$s}
+    * @param int   $Am     See {@link sensor_base::$Am}
     *
     * @return null
     *
