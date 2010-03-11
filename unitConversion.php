@@ -73,9 +73,6 @@ class UnitConversion
     function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
-            if (!isset($_SESSION["incdir"])) {
-                $_SESSION["incdir"] = dirname(__FILE__)."/";
-            }
             $plugins = new Plugins(dirname(__FILE__)."/drivers/units/", "php");
         }
 
@@ -104,9 +101,6 @@ class UnitConversion
 
         if (is_array($this->unitsClass[$class]->units)) {
             $this->units[$name] = $this->unitsClass[$class]->units;
-            if (!is_array($this->units[$name])) {
-                return true;
-            }
             foreach ($this->units[$name] as $key => $val) {
                 $this->units[$name][$key]["class"] = $class;
             }
@@ -340,24 +334,12 @@ class UnitConversion
             $history = array();
         }
         foreach ($history as $key => $val) {
-            if (is_array($val)) {
-                if (isset($history[$key])) {
-                    $this->_modifyUnitsDiff(
-                        $history,
-                        $devInfo,
-                        $type,
-                        $key
-                    );
-                    $this->_modifyUnitsRaw(
-                        &$history,
-                        &$devInfo,
-                        $dPlaces,
-                        &$type,
-                        &$units,
-                        $key
-                    );
-                }
+            if (!is_array($val) || !isset($history[$key])) {
+                unset($history[$key]);
+                continue;
             }
+            $this->_modifyUnitsDiff($history, $devInfo, $type, $key);
+            $this->_modifyUnits($history, $devInfo, $dPlaces, $type, $units, $key);
         }
         for ($i = 0; $i < $totalSensors; $i ++) {
             if (!empty($units[$i])) {
@@ -444,7 +426,7 @@ class UnitConversion
      *
      * @return null
      */
-    private function _modifyUnitsRaw(
+    private function _modifyUnits(
         &$history,
         &$devInfo,
         $dPlaces,

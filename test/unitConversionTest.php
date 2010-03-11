@@ -67,6 +67,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'varType' => 'float',
                 'convert' => array(
                     '&#176;F' => 'CtoF',
+                    '&#176;K' => 'shift:3',
                 ),
                 'preferred' => '&#176;F',
                 'class' => 'temperatureUnits',
@@ -77,6 +78,11 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'convert' => array(
                     '&#176;C' => 'FtoC',
                 ),
+                'class' => 'temperatureUnits',
+            ),
+            '&#176;K' => array(
+                'longName' => '&#176;K',
+                'varType' => 'float',
                 'class' => 'temperatureUnits',
             ),
         ),
@@ -242,6 +248,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         return array(
             array("&#176;C", true),
             array("Direction", false),
+            array("Bogus", false),
         );
     }
     /**
@@ -298,11 +305,85 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
+    public static function dataRegisterUnits()
+    {
+        return array(
+            array(
+                array("Name" => "Bogus Name", "Class" => "Bogus Class"),
+                array(),
+            ),
+            array(
+                array("Name" => "Bogus Name", "Class" => "Test3Units"),
+                array(),
+            ),
+            array(
+                array("Name" => "Stuff", "Class" => "Test2Units"),
+                array(
+                    "Stuff" => array(
+                        'D' => array(
+                            'longName' => 'D',
+                            'varType' => 'float',
+                            'convert' => array(
+                                'E' => 'aToB',
+                                'F' => 'aToC',
+                            ),
+                            "class" => "Test2Units",
+                        ),
+                        'E' => array(
+                            'longName' => 'E',
+                            'varType' => 'float',
+                            'convert' => array(
+                                'D' => 'bToA',
+                                'F' => 'bToC',
+                            ),
+                            'preferred' => 'D',
+                            "class" => "Test2Units",
+                        ),
+                        'F' => array(
+                            'longName' => 'C',
+                            'varType' => 'float',
+                            'convert' => array(
+                                'D' => 'cToA',
+                                'E' => 'cToB',
+                            ),
+                            "class" => "Test2Units",
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+     * Tests getDataType()
+     *
+     * @param string $from    The starting unit
+     * @param string $to      The unit to be converted into
+     * @param string $default The data type to use if none is specified
+     * @param array  $expect  What expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataRegisterUnits
+     */
+    public function testRegisterUnits($units, $expect)
+    {
+        // Start with a clean slate
+        $this->o->units = array();
+        $this->o->registerUnits($units);
+        $this->assertSame($expect, $this->o->units);
+    }
+
+    /**
+     * Data provider for testFindUnit
+     *
+     * @return array
+     */
     public static function dataDataType()
     {
         return array(
             array("&#176;C", "", "asdf", "asdf"),
             array("Direction", "", "asdf", "raw"),
+            array("Direction", "&#176;C", "ignore", "ignore"),
         );
     }
     /**
@@ -333,6 +414,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
             array(32, "&#176;F", "&#176;C", 0, "raw", null, 0.0, "&#176;C"),
             array(32, "&#176;F", "&#176;F", 0, "diff", null, 32, "&#176;F"),
             array(32, "&#176;F", "Direction", 0, "diff", null, 32, "&#176;F"),
+            array(32, "&#176;C", "&#176;K", 0, "raw", null, (double)32000, "&#176;K"),
         );
     }
     /**
@@ -399,6 +481,67 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
+    public static function dataGetAllUnits()
+    {
+        return array(
+            array(
+                null,
+                false,
+                array(
+                    "Temperature" => array(
+                        "&#176;C" => "&#176;C",
+                        "&#176;F" => "&#176;F",
+                        "&#176;K" => "&#176;K",
+                    ),
+                    "Direction" => array(
+                        "&#176;" => "&#176;",
+                        "Direction" => "Direction",
+                    ),
+                )
+            ),
+            array(
+                "Temperature",
+                false,
+                array(
+                    "&#176;C" => "&#176;C",
+                    "&#176;F" => "&#176;F",
+                    "&#176;K" => "&#176;K",
+                )
+            ),
+            array(
+                null,
+                true,
+                array(
+                    "&#176;C" => "Temperature:&#176;C",
+                    "&#176;F" => "Temperature:&#176;F",
+                    "&#176;K" => "Temperature:&#176;K",
+                    "&#176;" => "Direction:&#176;",
+                    "Direction" => "Direction:Direction",
+                )
+            ),
+        );
+    }
+    /**
+     * Tests getAllUnits()
+     *
+     * @param string $type   The data type to use if none is specified
+     * @param bool   $flat   Flat format or not
+     * @param array  $expect What expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataGetAllUnits
+     */
+    public function testGetAllUnits($type, $flat, $expect)
+    {
+        $this->assertSame($expect, $this->o->getAllUnits($type, $flat));
+    }
+
+    /**
+     * Data provider for testFindUnit
+     *
+     * @return array
+     */
     public static function dataGetPossConv()
     {
         return array(
@@ -406,7 +549,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 "raw",
                 null,
                 array(
-                    "&#176;C" => array("&#176;F"),
+                    "&#176;C" => array("&#176;F", "&#176;K"),
                     "&#176;F" => array("&#176;C"),
                     "&#176;" => array("Direction"),
                     "Direction" => array("&#176;")
@@ -415,13 +558,17 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
             array(
                 "diff",
                 null,
-                array("&#176;C" => array("&#176;F"), "&#176;F" => array("&#176;C"))
+                array(
+                    "&#176;C" => array("&#176;F","&#176;K" ),
+                    "&#176;F" => array("&#176;C")
+                )
             ),
-            array("raw", "&#176;C", array("&#176;F", "&#176;C")),
+            array("raw", "&#176;C", array("&#176;F", "&#176;K", "&#176;C")),
             array("diff", "&#176;F", array("&#176;C", "&#176;F")),
             array("raw", "Direction", array("&#176;", "Direction")),
         );
     }
+
     /**
      * Tests getPossConv()
      *
@@ -456,6 +603,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     public static function dataModifyUnits()
     {
         return array(
+            // Test #0
             array(
                 array(
                     0 => array(
@@ -466,7 +614,8 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "Data4" => 6.5,
                         "Data5" => 3,
                         "data" => array(1.0,2,3,4,6.5,4),
-                        "Date" => "2007-11-12 16:05:00"
+                        "Date" => "2007-11-12 16:05:00",
+                        "Units" => array(3 => "D"),
                     ),
                     1 => array(
                         "Data0" => 3.0,
@@ -478,6 +627,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "data" => array(2.0,2,4,6,6.5,8),
                         "Date" => "2007-11-12 16:10:00"
                     ),
+                    2 => "This is not an array",
                 ), // History
                 array(
                     "ActiveSensors" => 6,
@@ -506,7 +656,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "Date" => "2007-11-12 16:10:00",
                         "deltaT" => 300
                     ),
-               ), // expectHistory
+                ), // expectHistory
                 array(
                     "ActiveSensors" => 6,
                     "dType" => array("raw","ignore","diff","diff","diff", "raw"),
@@ -519,10 +669,47 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                     ),
                     "Units" => array("E", "B", "E", "D", "E", "A"),
                     "modifyUnits" => 1,
-               ), // expectDevInfo
+                ), // expectDevInfo
                 array("raw", "ignore", "diff", "diff", "diff", "raw"), // expectType
                 array("E", "B", "E", "D", "E", "A"), // expectUnits
-           ),
+            ),
+            // Test #1
+            array(
+                "Hello", // This is not an array
+                array(
+                    "TotalSensors" => 6,
+                    "ActiveSensors" => 6,
+                    "dType" => array("raw","diff","diff","raw","diff", "raw"),
+                    "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100, 0x100),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2", "TestSensor1", "TestSensor2",
+                            "TestSensor2", "TestSensor2", "TestSensor2",
+                        )
+                    ),
+                    "Units" => array("E", "B", "E", "D", "E", "B"),
+                ), // DevInfo
+                2, // dPlaces
+                array("raw", "ignore", "diff", "diff", "raw"), // Type
+                array("E", "B", "E", "D", "E"), // Units
+                array(), // expectHistory
+                array(
+                    "TotalSensors" => 6,
+                    "ActiveSensors" => 6,
+                    "dType" => array("raw","ignore","diff","diff","raw", null),
+                    "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100, 0x100),
+                    "params"=> array(
+                        "sensorType"=>array(
+                            "TestSensor2", "TestSensor1", "TestSensor2",
+                            "TestSensor2", "TestSensor2", "TestSensor2",
+                        )
+                    ),
+                    "Units" => array("E", "B", "E", "D", "E", "B"),
+                    "modifyUnits" => 1,
+                ), // expectDevInfo
+                array("raw", "ignore", "diff", "diff", "raw"), // expectType
+                array("E", "B", "E", "D", "E"), // expectUnits
+            ),
         );
     }
     /**
@@ -940,5 +1127,23 @@ class Test2Units extends UnitBase
     }
 
 
+}
+/**
+ *  This is a mock class to test the rest of the system.
+ *
+ * @category   Test
+ * @package    HUGnetLib
+ * @subpackage Test
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class Test3Units extends UnitBase
+{
+    // This is a string for a reason.  Leave it that way.  ;)
+    // This is to test what happens if a bad units variable is used.
+    var $units = "Bogus Units";
 }
 ?>
