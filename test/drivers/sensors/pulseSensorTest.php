@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -46,7 +46,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/pulseSensor.php';
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -98,6 +98,10 @@ class PulseSensorTest extends sensorTestBase
     {
         return array(
             array(500, array(), 1, array(), 300, 2.7275),
+            array(500, array(), 1, array(), 0, null),
+            array(0, array(), 1, array(), 0, null),
+            array(-1, array(), 1, array(), 300, 0.0),
+            array(0.000001, array(), 1, array(), 100000, 0.0),
         );
     }
 
@@ -186,6 +190,7 @@ class PulseSensorTest extends sensorTestBase
     {
         return array(
             array(500, array(), 1, 5, 300, 2.5),
+            array(-500, array(), 1, 1, 300, null),
         );
     }
 
@@ -227,6 +232,7 @@ class PulseSensorTest extends sensorTestBase
     {
         return array(
             array(500, array(), 1, 5, 300, 100.0),
+            array(500, array(), 1, -5, 300, null),
         );
     }
 
@@ -268,6 +274,9 @@ class PulseSensorTest extends sensorTestBase
     {
         return array(
             array(500, array(), 1, 5, 300, 100.0),
+            array(500, array(), 1, 5, 0, null),
+            array(500, array(), 1, 5, -1, null),
+            array(-500, array(), 1, 5, 300, null),
         );
     }
 

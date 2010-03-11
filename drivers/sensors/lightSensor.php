@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -43,7 +43,7 @@ if (!class_exists('lightSensor')) {
     * @package    HUGnetLib
     * @subpackage Sensors
     * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2007-2010 Hunt Utilities Group, LLC
     * @copyright  2009 Scott Price
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -119,7 +119,7 @@ if (!class_exists('lightSensor')) {
         */
         function osramBPW34($A, $sensor, $TC, $extra=null)
         {
-
+/*
             $den = $this->Am*$this->s*$this->D;
             if ($den == 0) {
                 return(1500.0);
@@ -129,6 +129,8 @@ if (!class_exists('lightSensor')) {
             $L += 1500.0;
 
             return round($L, 4);
+*/
+            return $this->getLight($A, $TC);
         }
     }
 }

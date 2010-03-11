@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -45,7 +45,7 @@ if (!class_exists('capacitiveSensor')) {
     * @package    HUGnetLib
     * @subpackage Sensors
     * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2007-2010 Hunt Utilities Group, LLC
     * @copyright  2009 Scott Price
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -92,7 +92,7 @@ if (!class_exists('capacitiveSensor')) {
                 return(0);
             }
             $insideLN = (1 - (($A * $this->D)/$Den1));
-            if ($insideLN < 0) {
+            if ($insideLN <= 0) {
                 return(0);
             }
             $Den2 = $R * log($insideLN);

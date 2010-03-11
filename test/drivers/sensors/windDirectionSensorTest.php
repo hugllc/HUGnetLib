@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/windDirectionSensor.ph
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -113,8 +113,14 @@ class WindDirectionSensorTest extends sensorTestBase
             array(0x30, array(), 0, 0, 0, 202.5),
             array(0x60, array(), 0, 0, 0, 247.5),
             array(0xC0, array(), 0, 0, 0, 292.5),
+            // Two cardinal directions
             array(0x05, array(), 0, 0, 0, null),
+            // No Bits set
             array(0x00, array(), 0, 0, 0, null),
+            // Cardinal and ordinal not 45deg from eachother
+            array(0x21, array(), 0, 0, 0, null),
+            // Two ordinal directions
+            array(0x0A, array(), 0, 0, 0, null),
         );
     }
     /**

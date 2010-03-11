@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -48,7 +48,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/capacitiveSensor.php';
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -111,6 +111,7 @@ class CapacitiveSensorTest extends sensorTestBase
             array(0, 1, 2, 3, 0),
             array(1, 0, 2, 3, 0),
             array(1, 2, 0, 3, 0),
+            array(65537, 1, 1, 3, 0),
         );
     }
     /**

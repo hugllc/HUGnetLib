@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/lightSensor.php';
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -67,6 +67,8 @@ class LightSensorTest extends SensorTestBase
     */
     protected function setUp()
     {
+        $this->o   = new lightSensor();
+
     }
 
     /**
@@ -101,6 +103,7 @@ class LightSensorTest extends SensorTestBase
             array(65472, 1, 0.0), //This is the maximum reading (minimum light)
             array(0, 1, 1500.0),  // This is the minimum reading (maximum light)
             array(65472, 0, 1500.0),  // Woops!  Time constant is 0
+            array(65472, 1, 1500.0, null, 0, 0, 0),  // Woops!
         );
     }
     /**
@@ -115,10 +118,29 @@ class LightSensorTest extends SensorTestBase
     * @dataProvider dataGetLight
     * @covers lightSensor::GetLight
     */
-    public function testGetLight($A, $TC, $expect)
-    {
-        $o   = new lightSensor();
-        $ret = $o->getLight($A, $TC);
+    public function testGetLight(
+        $A,
+        $TC,
+        $expect,
+        $Tf = null,
+        $D = null,
+        $s = null,
+        $Am = null
+    ) {
+        if (!is_null($Tf)) {
+            $this->o->Tf = $Tf;
+        }
+        if (!is_null($D)) {
+            $this->o->D = $D;
+        }
+        if (!is_null($s)) {
+            $this->o->s = $s;
+        }
+        if (!is_null($Am)) {
+            $this->o->Am = $Am;
+        }
+
+        $ret = $this->o->getLight($A, $TC, $Tf, $D, $s, $Am);
         $this->assertSame($expect, $ret);
     }
 

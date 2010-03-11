@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -44,7 +44,7 @@ if (!class_exists('voltageSensor')) {
     * @package    HUGnetLib
     * @subpackage Sensors
     * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2007-2010 Hunt Utilities Group, LLC
     * @copyright  2009 Scott Price
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -220,7 +220,6 @@ if (!class_exists('voltageSensor')) {
                 return 0.0;
             }
             $numer = $A * $this->D * $Vref * ($R1 + $R2);
-
             $Read = $numer/$denom;
             return round($Read, 4);
         }
@@ -241,7 +240,7 @@ if (!class_exists('voltageSensor')) {
             $R2 = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $V  = $this->getDividerVoltage($val, $R1, $R2, $TC);
             if ($V < 0) {
-                $V = null;
+                return null;
             }
             $V = round($V, 4);
             return $V;
@@ -263,7 +262,7 @@ if (!class_exists('voltageSensor')) {
             $Vref = (float)(empty($extra[2])) ? $sensor['extraDefault'][2]:$extra[2];
             $V    = $this->getDividerVoltage($val, $R1, $R2, $TC, $Vref);
             if ($V < 0) {
-                $V = null;
+                return null;
             }
             $V = round($V, 4);
             return $V;
@@ -381,14 +380,14 @@ if (!class_exists('voltageSensor')) {
             $Pmin = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
             $Pmax = (empty($extra[3])) ? $sensor['extraDefault'][3] : $extra[3];
             $Vref = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];
+            if ($Vmax == $Vmin) {
+                return null;
+            }
             $V    = $this->getVoltage($A, $T, (float) $Vref);
             if ($V > $Vmax) {
                 return null;
             }
             if ($V < $Vmin) {
-                return null;
-            }
-            if ($Vmax == $Vmin) {
                 return null;
             }
             $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);
@@ -432,14 +431,14 @@ if (!class_exists('voltageSensor')) {
             $Pmin = (empty($extra[4])) ? $sensor['extraDefault'][4] : $extra[4];
             $Pmax = (empty($extra[5])) ? $sensor['extraDefault'][5] : $extra[5];
             $Vref = (empty($extra[6])) ? $sensor['extraDefault'][6] : $extra[6];
+            if ($Vmax == $Vmin) {
+                return null;
+            }
             $V    = $this->getDividerVoltage($A, $R1, $R2, $T);
             if ($V > $Vmax) {
                 return null;
             }
             if ($V < $Vmin) {
-                return null;
-            }
-            if ($Vmax == $Vmin) {
                 return null;
             }
             $m = ($Pmax - $Pmin) / ($Vmax - $Vmin);

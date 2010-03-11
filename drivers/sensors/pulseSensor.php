@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -46,7 +46,7 @@ if (!class_exists('pulseSensor')) {
     * @package    HUGnetLib
     * @subpackage Sensors
     * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2009 Hunt Utilities Group, LLC
+    * @copyright  2007-2010 Hunt Utilities Group, LLC
     * @copyright  2009 Scott Price
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -225,13 +225,13 @@ if (!class_exists('pulseSensor')) {
                 return null;
             }
             if ($val <= 0) {
-                return 0;
+                return 0.0;
             }
             $speed = (($val / $deltaT) * 1.6965) - 0.1;
             if ($speed < 0) {
-                $speed = 0;
+                $speed = 0.0;
             }
-            return $speed;
+            return round($speed, 4);
         }
 
         /**
@@ -270,7 +270,7 @@ if (!class_exists('pulseSensor')) {
             if ($Wh < 0) {
                 return null;
             }
-            return $Wh / 1000;
+            return round($Wh / 1000, 4);
         }
 
         /**
@@ -291,7 +291,7 @@ if (!class_exists('pulseSensor')) {
             if ($G < 0) {
                 return null;
             }
-            return (float)$G;
+            return round((float)$G, 4);
         }
 
         /**
@@ -315,7 +315,7 @@ if (!class_exists('pulseSensor')) {
             if ($ppm < 0) {
                 return null;
             }
-            return $ppm;
+            return round($ppm, 4);
         }
 
     }

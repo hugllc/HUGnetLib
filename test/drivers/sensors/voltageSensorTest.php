@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -46,7 +46,7 @@ require_once dirname(__FILE__).'/../../../drivers/sensors/voltageSensor.php';
  * @package    HUGnetLibTest
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -130,30 +130,46 @@ class VoltageSensorTest extends sensorTestBase
     public static function datafetBoard()
     {
         return array(
-            array(1000,
-                  array("extraDefault"=>array(1, 1)),
-                  1,
-                  array(1, 1),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1)),
-                  1,
-                  array(1, 0),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1)),
-                  1,
-                  array(0, 1),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1)),
-                  1,
-                  null,
-                  0,
-                  0.1527),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1)),
+                1,
+                array(1, 1),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1)),
+                1,
+                array(1, 0),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1)),
+                1,
+                array(0, 1),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1)),
+                1,
+                null,
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                array(-10, 5),
+                0,
+                null
+            ),
         );
     }
     /**
@@ -193,30 +209,46 @@ class VoltageSensorTest extends sensorTestBase
     public static function dataIndirect()
     {
         return array(
-            array(1000,
-                  array("extraDefault"=>array(1, 1, 5)),
-                  1,
-                  array(1, 1, 5),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1, 5)),
-                  1,
-                  array(1, 0, 5),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1, 5)),
-                  1,
-                  array(0, 1, 5),
-                  0,
-                  0.1527),
-            array(1000,
-                  array("extraDefault"=>array(1, 1, 5)),
-                  1,
-                  null,
-                  0,
-                  0.1527),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                array(1, 1, 5),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                array(1, 0, 5),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                array(0, 1, 5),
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                null,
+                0,
+                0.1527
+            ),
+            array(
+                1000,
+                array("extraDefault"=>array(1, 1, 5)),
+                1,
+                array(-10, 5, 5),
+                0,
+                null
+            ),
         );
     }
     /**
@@ -294,6 +326,7 @@ class VoltageSensorTest extends sensorTestBase
             array(10000, array("extraDefault"=>1.1), 1, 0, 0, 16.8),
             array(65535, array("extraDefault"=>1.1), 1, 1.1, 0, 110.11),
             array(-10000, array("extraDefault"=>1.1), 1, 1.1, 0, null),
+            array(null, array("extraDefault"=>1.1), 1, 1.1, 0, null),
         );
     }
     /**
@@ -338,6 +371,7 @@ class VoltageSensorTest extends sensorTestBase
             array(10000, array("extraDefault"=>array(5)), 1, array(0), 0, .7637),
             array(65535, array("extraDefault"=>array(5)), 1, array(1.1), 0, null),
             array(-10000, array("extraDefault"=>array(5)), 1, array(1.1), 0, null),
+            array(null, array("extraDefault"=>array(5)), 1, array(1.1), 0, null),
         );
     }
     /**
@@ -440,6 +474,7 @@ class VoltageSensorTest extends sensorTestBase
             array(null, $sensor, 1, $extra3, 0, null),
             array(0, $sensor, 1, $extra3, 0, null),
             array(65535, $sensor, 1, $extra3, 0, null),
+            array(65535, $sensor, 1, $extra2, 0, null),
 
         );
     }
