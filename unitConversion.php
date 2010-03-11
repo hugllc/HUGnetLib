@@ -88,23 +88,25 @@ class UnitConversion
     /**
      * Register a sensor class.
      *
-     * @param mixed  $class The name of the sensor class to register,
-     *                  or the actual object
-     * @param string $name  The name of the class if the above is an object.
+     * @param array $units Array with "Name" and "Class" defined.
      *
      * @return bool true on success, false on failure
-      */
+     */
     public function registerUnits($units)
     {
         $class = (string) $units["Class"];
         $name  = (string) $units["Name"];
-        if (!class_exists($class)) return;
+        if (!class_exists($class)) {
+            return;
+        }
 
         $this->unitsClass[$class] = new $class();
 
         if (is_array($this->unitsClass[$class]->units)) {
             $this->units[$name] = $this->unitsClass[$class]->units;
-            if (!is_array($this->units[$name])) return true;
+            if (!is_array($this->units[$name])) {
+                return true;
+            }
             foreach ($this->units[$name] as $key => $val) {
                 $this->units[$name][$key]["class"] = $class;
             }
@@ -143,7 +145,9 @@ class UnitConversion
     {
         $unit = trim($unit);
         $u    = $this->findUnit($unit);
-        if ($u === false) return false;
+        if ($u === false) {
+            return false;
+        }
         if (($u['varType'] == 'int') || ($u['varType'] == 'float')) {
             return true;
         } else {
@@ -163,7 +167,9 @@ class UnitConversion
     {
 
         foreach ($this->units as $key => $value) {
-            if (isset($value[$unit])) return $this->units[$key][$unit];
+            if (isset($value[$unit])) {
+                return $this->units[$key][$unit];
+            }
         }
         return false;
 
@@ -180,7 +186,9 @@ class UnitConversion
      */
     public function getDataType($from, $to, $default = 'all')
     {
-        if (trim(strtolower($default)) == 'ignore') return $default;
+        if (trim(strtolower($default)) == 'ignore') {
+            return $default;
+        }
         $u = $this->findUnit($from);
         if ($u !== false) {
             if (isset($u['mode'])) {
@@ -201,7 +209,9 @@ class UnitConversion
      */
     protected function getConvFunct($from, $to, $type)
     {
-        if ($to == $from) return null;
+        if ($to == $from) {
+            return null;
+        }
         $f = $this->findUnit($from);
         $t = $this->findUnit($to);
         if (empty($t['mode']) || ($t['mode'] == $type)) {
@@ -229,8 +239,15 @@ class UnitConversion
             $shift = (int)substr($func, 6);
             $val = $this->unitsClass[$class]->shift($val, $shift);
         } else {
-            if (method_exists($this->unitsClass[$class], $func) && ($val !== null)) {
-                $val = $this->unitsClass[$class]->{$func}($val, $time, $type, $extra);
+            if (method_exists($this->unitsClass[$class], $func)
+                && ($val !== null)
+            ) {
+                $val = $this->unitsClass[$class]->{$func}(
+                    $val,
+                    $time,
+                    $type,
+                    $extra
+                );
             } else {
                 $to = $from;
             }
@@ -254,7 +271,9 @@ class UnitConversion
         foreach ($this->units as $c => $cat) {
             foreach ($cat as $f => $info) {
                 if (($info["mode"] == $type) || !isset($info["mode"])) {
-                    if (!is_array($info["convert"])) continue;
+                    if (!is_array($info["convert"])) {
+                        continue;
+                    }
                     foreach ($info['convert'] as $t => $func) {
                         $ret[$f][] = $t;
                     }
@@ -272,6 +291,7 @@ class UnitConversion
      * Gets all units, or all units from $type if $type != null
      *
      * @param string $type The data type to use if none is specified
+     * @param bool   $flat If the data returned should be flat
      *
      * @return array The possible conversions
      */
@@ -287,8 +307,12 @@ class UnitConversion
             }
         }
 
-        if (!is_null($type)) return $ret[$type];
-        if ($flat) return $flatret;
+        if (!is_null($type)) {
+            return $ret[$type];
+        }
+        if ($flat) {
+            return $flatret;
+        }
         return $ret;
     }
 
@@ -297,8 +321,10 @@ class UnitConversion
      *
      * This expects all the units to be correct.
      *
-     * @param array &$history The history to modify.  This array gets directly modified.
-     * @param array &$devInfo The devInfo array to modify.  This array gets directly modified.
+     * @param array &$history The history to modify.  This array gets directly
+     *                           modified.
+     * @param array &$devInfo The devInfo array to modify.  This array gets
+     *                           directly modified.
      * @param int   $dPlaces  The maximum number of decimal places to show.
      * @param array &$type    The types to change to
      * @param array &$units   The units to change to
@@ -309,60 +335,181 @@ class UnitConversion
     {
         $devInfo["modifyUnits"]++;
         $lastRecord = null;
-        $totalSensors = (empty($devInfo["TotalSensors"])) ? $devInfo["ActiveSensors"] : $devInfo["TotalSensors"];
-        if (!is_array($history)) $history = array();
+        $totalSensors = $this->_totalSensors($devInfo);
+        if (!is_array($history)) {
+            $history = array();
+        }
         foreach ($history as $key => $val) {
             if (is_array($val)) {
-                if (($lastRecord !== null) || (count($history) < 2)) {
-                    for ($i = 0; $i < $totalSensors; $i ++) {
-                        if (empty($type[$i])) $type[$i] = $devInfo["params"]["dType"][$i];
-                        if ($type[$i] == "ignore") continue;
-                        if ($type[$i] != $devInfo["dType"][$i]) {
-                            switch($type[$i]) {
-                            case 'diff':
-                                if (!isset($val['deltaT'])) $history[$key]['deltaT'] = strtotime($val['Date']) - strtotime($lastRecord['Date']);
-                                $history[$key]["Data".$i] = $lastRecord["Data".$i] - $val["Data".$i];
-                                break;
-                            default:
-                                // Do nothing by default.
-                                // That means we need to make sure we change the data type
-                                // in the $type array to reflect what we have not done.  ;)
-                                if (!empty($devInfo["dType"][$i])) {
-                                    $type[$i] = $devInfo["dType"][$i];
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    $lastRecord = $val;
-                } else {
-                    $lastRecord = $val;
-                    unset($history[$key]);
-                }
                 if (isset($history[$key])) {
-                    for ($i = 0; $i < $totalSensors; $i ++) {
-                        if (is_null($history[$key]['Data'.$i])) continue;
-                        if ($type[$i] == "ignore") continue;
-                        if (empty($units[$i])) $units[$i] = $devInfo["params"]['Units'][$i];
-                        if (empty($units[$i])) $units[$i] = $this->preferredUnit($from);
-                        if (!empty($units[$i])) {
-                            $from = isset($val['Units'][$i]) ? $val['Units'][$i] : $devInfo['Units'][$i];
-                            $history[$key]['Data'.$i] = $this->convert($history[$key]['Data'.$i], $from, $units[$i], $history[$key]['deltaT'], $type[$i], $extra[$i]);
-                        }
-                        if (isset($dPlaces) && is_numeric($dPlaces) && is_numeric($history[$key]["Data".$i])) {
-                            $history[$key]["Data".$i] = round($history[$key]["Data".$i], $dPlaces);
-                        }
-                        $history[$key]['data'][$i] = $history[$key]['Data'.$i];
-                    }
+                    $this->_modifyUnitsDiff(
+                        $history,
+                        $devInfo,
+                        $type,
+                        $key
+                    );
+                    $this->_modifyUnitsRaw(
+                        &$history,
+                        &$devInfo,
+                        $dPlaces,
+                        &$type,
+                        &$units,
+                        $key
+                    );
                 }
             }
         }
         for ($i = 0; $i < $totalSensors; $i ++) {
-            if (!empty($units[$i])) $devInfo["Units"][$i] = $units[$i];
+            if (!empty($units[$i])) {
+                $devInfo["Units"][$i] = $units[$i];
+            }
             $devInfo["dType"][$i] = $type[$i];
         }
     }
 
+
+    /**
+    * This function deals with the diff data type.
+    *
+     * @param array &$history The history to modify.  This array gets directly
+     *                           modified.
+     * @param array &$devInfo The devInfo array to modify.  This array gets
+     *                           directly modified.
+     * @param array &$type    The types to change to
+     * @param int   $key      The history key to use
+     *
+     * @return null
+    *
+    */
+    private function _modifyUnitsDiff(
+        &$history,
+        &$devInfo,
+        &$type,
+        $key
+    ) {
+        static $lastRecord;
+
+        $totalSensors = $this->_totalSensors($devInfo);
+        if (($lastRecord !== null) || (count($history) < 2)) {
+            for ($i = 0; $i < $totalSensors; $i ++) {
+                if (empty($type[$i])) {
+                    $type[$i] = $devInfo["params"]["dType"][$i];
+                }
+                if ($type[$i] == "ignore") {
+                    continue;
+                }
+                if ($type[$i] != $devInfo["dType"][$i]) {
+                    switch($type[$i]) {
+                    case 'diff':
+                        if (!isset($history[$key]['deltaT'])) {
+                            $history[$key]['deltaT']
+                                = strtotime($history[$key]['Date'])
+                                - strtotime($lastRecord['Date']);
+                        }
+                        $history[$key]["Data".$i]
+                            = $lastRecord["Data".$i]
+                            - $history[$key]["Data".$i];
+                        break;
+                    default:
+                        // Do nothing by default.
+                        // That means we need to make sure we change the
+                        // data type in the $type array to reflect what
+                        // we have not done.  ;)
+                        if (!empty($devInfo["dType"][$i])) {
+                            $type[$i] = $devInfo["dType"][$i];
+                        }
+                        break;
+                    }
+                }
+            }
+            $lastRecord = $history[$key];
+        } else {
+            $lastRecord = $history[$key];
+            unset($history[$key]);
+        }
+
+    }
+    /**
+     * Modifies the units based on input.
+     *
+     * This expects all the units to be correct.
+     *
+     * @param array &$history The history to modify.  This array gets directly
+     *                           modified.
+     * @param array &$devInfo The devInfo array to modify.  This array gets
+     *                           directly modified.
+     * @param int   $dPlaces  The maximum number of decimal places to show.
+     * @param array &$type    The types to change to
+     * @param array &$units   The units to change to
+     *
+     * @return null
+     */
+    private function _modifyUnitsRaw(
+        &$history,
+        &$devInfo,
+        $dPlaces,
+        &$type,
+        &$units,
+        $key
+    ) {
+        $totalSensors = $this->_totalSensors($devInfo);
+        for ($i = 0; $i < $totalSensors; $i ++) {
+            if (is_null($history[$key]['Data'.$i])) {
+                continue;
+            }
+            if ($type[$i] == "ignore") {
+                continue;
+            }
+            if (empty($units[$i])) {
+                $units[$i] = $devInfo["params"]['Units'][$i];
+            }
+            if (isset($history[$key]['Units'][$i])) {
+                $from = $history[$key]['Units'][$i];
+            } else {
+                $from = $devInfo['Units'][$i];
+            }
+            if (empty($units[$i])) {
+                $units[$i] = $this->preferredUnit($from);
+            }
+            if (!empty($units[$i])) {
+                $history[$key]['Data'.$i] = $this->convert(
+                    $history[$key]['Data'.$i],
+                    $from,
+                    $units[$i],
+                    $history[$key]['deltaT'],
+                    $type[$i],
+                    $extra[$i]
+                );
+            }
+            if (isset($dPlaces) && is_numeric($dPlaces)
+                && is_numeric($history[$key]["Data".$i])
+            ) {
+                $history[$key]["Data".$i] = round(
+                    $history[$key]["Data".$i],
+                    $dPlaces
+                );
+            }
+            $history[$key]['data'][$i] = $history[$key]['Data'.$i];
+        }
+
+    }
+    /**
+    * This function deals with the diff data type.
+    *
+     * @param array &$devInfo The devInfo array to modify.
+     *
+     * @return int The total number of sensors
+    *
+    */
+    private function _totalSensors(&$devInfo)
+    {
+        if (empty($devInfo["TotalSensors"])) {
+            return $devInfo["ActiveSensors"];
+        }
+        return $devInfo["TotalSensors"];
+
+
+    }
 
 }
 

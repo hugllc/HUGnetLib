@@ -103,22 +103,6 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     );
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        include_once "PHPUnit/TextUI/TestRunner.php";
-
-        $suite  = new PHPUnit_Framework_TestSuite("unitConversionTest");
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-
-    /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
@@ -480,7 +464,8 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "Data2" => 3,
                         "Data3" => 4,
                         "Data4" => 6.5,
-                        "data" => array(1.0,2,3,4,6.5),
+                        "Data5" => 3,
+                        "data" => array(1.0,2,3,4,6.5,4),
                         "Date" => "2007-11-12 16:05:00"
                     ),
                     1 => array(
@@ -489,22 +474,23 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "Data2" => 4,
                         "Data3" => 6,
                         "Data4" => 6.5,
-                        "data" => array(2.0,2,4,6,6.5),
+                        "Data5" => 8,
+                        "data" => array(2.0,2,4,6,6.5,8),
                         "Date" => "2007-11-12 16:10:00"
                     ),
-               ), // History
+                ), // History
                 array(
-                    "ActiveSensors" => 5,
-                    "dType" => array("raw","diff","diff","raw","diff"),
-                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
+                    "ActiveSensors" => 6,
+                    "dType" => array("raw","diff","diff","raw","diff", "raw"),
+                    "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100, 0x100),
                     "params"=> array(
                         "sensorType"=>array(
                             "TestSensor2", "TestSensor1", "TestSensor2",
-                            "TestSensor2", "TestSensor2"
+                            "TestSensor2", "TestSensor2", "TestSensor2",
                         )
                     ),
-                    "Units" => array("E", "B", "E", "D", "E"),
-               ), // DevInfo
+                    "Units" => array("E", "B", "E", "D", "E", "B"),
+                ), // DevInfo
                 2, // dPlaces
                 array("raw", "ignore", "diff", "diff", "raw"), // Type
                 array("E", "B", "E", "D", "E"), // Units
@@ -515,26 +501,27 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                         "Data2" => 4.0,
                         "Data3" => -2.0,
                         "Data4" => 6.5,
-                        "data" => array(3.0,2,4.0,-2.0, 6.5),
+                        "Data5" => 4.0,
+                        "data" => array(3.0,2,4.0,-2.0, 6.5, 4.0),
                         "Date" => "2007-11-12 16:10:00",
                         "deltaT" => 300
                     ),
                ), // expectHistory
                 array(
-                    "ActiveSensors" => 5,
-                    "dType" => array("raw","ignore","diff","diff","diff"),
-                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
+                    "ActiveSensors" => 6,
+                    "dType" => array("raw","ignore","diff","diff","diff", "raw"),
+                    "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100, 0x100),
                     "params"=> array(
                         "sensorType"=>array(
                             "TestSensor2", "TestSensor1", "TestSensor2",
-                            "TestSensor2", "TestSensor2"
+                            "TestSensor2", "TestSensor2", "TestSensor2",
                         )
                     ),
-                    "Units" => array("E", "B", "E", "D", "E"),
+                    "Units" => array("E", "B", "E", "D", "E", "A"),
                     "modifyUnits" => 1,
                ), // expectDevInfo
-                array("raw", "ignore", "diff", "diff", "diff"), // expectType
-                array("E", "B", "E", "D","E"), // expectUnits
+                array("raw", "ignore", "diff", "diff", "diff", "raw"), // expectType
+                array("E", "B", "E", "D", "E", "A"), // expectUnits
            ),
         );
     }
@@ -566,6 +553,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         $expectType,
         $expectUnits
     ) {
+        $this->o = new unitConversionMock();
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectHistory, $history);
     }
@@ -597,6 +585,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         $expectType,
         $expectUnits
     ) {
+        $this->o = new unitConversionMock();
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectDevInfo, $devInfo);
     }
@@ -628,6 +617,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         $expectType,
         $expectUnits
     ) {
+        $this->o = new unitConversionMock();
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectType, $type);
     }
@@ -659,6 +649,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
         $expectType,
         $expectUnits
     ) {
+        $this->o = new unitConversionMock();
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
         $this->assertSame($expectUnits, $units);
     }
@@ -720,26 +711,26 @@ class Test1Units extends UnitBase
             'convert' => array(
                 'B' => 'aToB',
                 'C' => 'aToC',
-           ),
-       ),
+            ),
+        ),
         'B' => array(
             'longName' => 'B',
             'varType' => 'float',
             'convert' => array(
                 'A' => 'bToA',
                 'C' => 'bToC',
-           ),
+            ),
             'preferred' => 'A',
-       ),
+        ),
         'C' => array(
             'longName' => 'C',
             'varType' => 'float',
             'convert' => array(
                 'A' => 'cToA',
                 'B' => 'cToB',
-           ),
+            ),
             'preferred' => 'A',
-       ),
+        ),
     );
     /**
      * Converts units A to B
@@ -846,25 +837,25 @@ class Test2Units extends UnitBase
             'convert' => array(
                 'E' => 'aToB',
                 'F' => 'aToC',
-           ),
-       ),
+            ),
+        ),
         'E' => array(
             'longName' => 'E',
             'varType' => 'float',
             'convert' => array(
                 'D' => 'bToA',
                 'F' => 'bToC',
-           ),
+            ),
             'preferred' => 'D',
-       ),
+        ),
         'F' => array(
             'longName' => 'C',
             'varType' => 'float',
             'convert' => array(
                 'D' => 'cToA',
                 'E' => 'cToB',
-           ),
-       ),
+            ),
+        ),
     );
     /**
      * Converts units A to B
