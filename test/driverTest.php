@@ -41,7 +41,6 @@ if (!defined("HUGNET_INCLUDE_PATH")) {
 require_once dirname(__FILE__).'/../hugnet.inc.php';
 require_once HUGNET_INCLUDE_PATH."/driver.php";
 require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
-require_once dirname(__FILE__).'/unitConversionTest.php';
 require_once dirname(__FILE__).'/drivers/socket/epsocketTest.php';
 require_once dirname(__FILE__).'/EPacketTest.php';
 require_once dirname(__FILE__).'/database/GatewayTest.php';
@@ -111,7 +110,6 @@ class DriverTest extends PHPUnit_Framework_TestCase
 
         $driver = new HUGnetDriver($config);
 
-        $driver->unit    = new unitConversionMock();
         $driver->gateway =& HUGnetDB::getInstance("GatewayMock", $config);
 
         $driver->packet->socket[$socket] = new epsocketMock();
@@ -791,73 +789,7 @@ class DriverTest extends PHPUnit_Framework_TestCase
     public static function dataModifyUnits()
     {
         return array(
-            array(
-                array(
-                    0 => array(
-                        "Data0" => 1.0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 4,
-                        "Data4" => 6.5,
-                        "data" => array(1.0,2,3,4,6.5),
-                        "Date" => "2007-11-12 16:05:00"
-                    ),
-                    1 => array(
-                        "Data0" => 3.0,
-                        "Data1" => 2,
-                        "Data2" => 4,
-                        "Data3" => 6,
-                        "Data4" => 6.5,
-                        "data" => array(2.0,2,4,6,6.5),
-                        "Date" => "2007-11-12 16:10:00"
-                    ),
-               ), // History
-                array(
-                    "ActiveSensors" => 5,
-                    "dType" => array("raw","diff","diff","raw","diff"),
-                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array(
-                        "sensorType"=>array(
-                            "TestSensor2",
-                            "TestSensor1",
-                            "TestSensor2",
-                            "TestSensor2",
-                            "TestSensor2"
-                        )
-                    ),
-                    "Units" => array("E", "B", "E", "E", "E"),
-               ), // DevInfo
-                2, // dPlaces
-                array("raw", "ignore", "diff", "diff", "raw"), // Type
-                array("E", "B", "E", "D", "E"), // Units
-                array(
-                    1 => array(
-                        "Data0" => 3.0,
-                        "Data1" => 2,
-                        "Data2" => 4.0,
-                        "Data3" => -1.0,
-                        "Data4" => 6.5,
-                        "data" => array(3.0,2,4.0,-1.0, 6.5),
-                        "Date" => "2007-11-12 16:10:00",
-                        "deltaT" => 300
-                    ),
-               ), // expectHistory
-                array(
-                    "ActiveSensors" => 5,
-                    "dType" => array("raw","ignore","diff","diff","diff"),
-                    "Types" => array(0x100, 0x100, 0x100, 0x100,0x100),
-                    "params"=> array(
-                        "sensorType"=>array(
-                            "TestSensor2", "TestSensor1", "TestSensor2",
-                            "TestSensor2", "TestSensor2"
-                        )
-                    ),
-                    "Units" => array("E", "B", "E", "D", "E"),
-                    "modifyUnits" => 1,
-               ), // expectDevInfo
-                array("raw", "ignore", "diff", "diff", "diff"), // expectType
-                array("E", "B", "E", "D","E"), // expectUnits
-           ),
+            array("a", "b", "c", "d", "e"),
         );
     }
     /**
@@ -868,124 +800,30 @@ class DriverTest extends PHPUnit_Framework_TestCase
     * @param int   $dPlaces       The maximum number of decimal places to show.
     * @param array $type          The types to change to
     * @param array $units         The units to change to
-    * @param array $expectHistory The history we expect after mofication
-    * @param array $expectDevInfo The devInfo array we expect after mofication
-    * @param array $expectType    The types we expect after mofication
-    * @param array $expectUnits   The units we expect after mofication
     *
     * @return null
     *
     * @dataProvider dataModifyUnits().
     */
-    public function testModifyUnitsHistory(
+    public function testModifyUnits(
         $history,
         $devInfo,
         $dPlaces,
         $type,
-        $units,
-        $expectHistory,
-        $expectDevInfo,
-        $expectType,
-        $expectUnits
+        $units
     ) {
+        $this->o->unit = $this->getMock("UnitConversion", array("modifyUnits"));
+        $this->o->unit->expects($this->once())
+            ->method("modifyUnits")
+            ->with(
+                $this->equalTo($history),
+                $this->equalTo($devInfo),
+                $this->equalTo($dPlaces),
+                $this->equalTo($type),
+                $this->equalTo($units)
+            );
         $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
-        $this->assertSame($expectHistory, $history);
     }
-    /**
-    * Test the history from modifyUnits
-    *
-    * @param array $history       The history to modify.
-    * @param array $devInfo       The devInfo array to modify.
-    * @param int   $dPlaces       The maximum number of decimal places to show.
-    * @param array $type          The types to change to
-    * @param array $units         The units to change to
-    * @param array $expectHistory The history we expect after mofication
-    * @param array $expectDevInfo The devInfo array we expect after mofication
-    * @param array $expectType    The types we expect after mofication
-    * @param array $expectUnits   The units we expect after mofication
-    *
-    * @return null
-    *
-    * @dataProvider dataModifyUnits().
-    */
-    public function testModifyUnitsDevInfo(
-        $history,
-        $devInfo,
-        $dPlaces,
-        $type,
-        $units,
-        $expectHistory,
-        $expectDevInfo,
-        $expectType,
-        $expectUnits
-    ) {
-        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
-        $this->assertSame($expectDevInfo, $devInfo);
-    }
-    /**
-    * Test the history from modifyUnits
-    *
-    * @param array $history       The history to modify.
-    * @param array $devInfo       The devInfo array to modify.
-    * @param int   $dPlaces       The maximum number of decimal places to show.
-    * @param array $type          The types to change to
-    * @param array $units         The units to change to
-    * @param array $expectHistory The history we expect after mofication
-    * @param array $expectDevInfo The devInfo array we expect after mofication
-    * @param array $expectType    The types we expect after mofication
-    * @param array $expectUnits   The units we expect after mofication
-    *
-    * @return null
-    *
-    * @dataProvider dataModifyUnits().
-    */
-    public function testModifyUnitsType(
-        $history,
-        $devInfo,
-        $dPlaces,
-        $type,
-        $units,
-        $expectHistory,
-        $expectDevInfo,
-        $expectType,
-        $expectUnits
-    ) {
-        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
-        $this->assertSame($expectType, $type);
-    }
-    /**
-    * Test the history from modifyUnits
-    *
-    * @param array $history       The history to modify.
-    * @param array $devInfo       The devInfo array to modify.
-    * @param int   $dPlaces       The maximum number of decimal places to show.
-    * @param array $type          The types to change to
-    * @param array $units         The units to change to
-    * @param array $expectHistory The history we expect after mofication
-    * @param array $expectDevInfo The devInfo array we expect after mofication
-    * @param array $expectType    The types we expect after mofication
-    * @param array $expectUnits   The units we expect after mofication
-    *
-    * @return null
-    *
-    * @dataProvider dataModifyUnits().
-    */
-    public function testModifyUnitsUnits(
-        $history,
-        $devInfo,
-        $dPlaces,
-        $type,
-        $units,
-        $expectHistory,
-        $expectDevInfo,
-        $expectType,
-        $expectUnits
-    ) {
-        $ret = $this->o->modifyUnits($history, $devInfo, $dPlaces, $type, $units);
-        $this->assertSame($expectUnits, $units);
-    }
-
-
 
 
 }
