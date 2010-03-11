@@ -57,24 +57,24 @@ class HUGnetDBTest extends databaseTest
     protected $pdo;
 
     /**
-     * @var    HUGnetDB
-     * @access protected
-     */
+    * @var    HUGnetDB
+    * @access protected
+    */
     protected $o;
 
     /**
-     * The name of the table we are using
-     */
+    * The name of the table we are using
+    */
     protected $table = "HUGnetDBTest";
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @return null
-     *
-     * @access public
-     * @static
-     */
+    * Runs the test methods of this class.
+    *
+    * @return null
+    *
+    * @access public
+    * @static
+    */
     public static function main()
     {
         include_once 'PHPUnit/TextUI/TestRunner.php';
@@ -84,17 +84,16 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function setUp()
     {
         parent::setUp();
-//        $this->o = new HUGnetDBClassTest($this->pdo, $this->table, $this->id);
         $this->o =& HUGnetDB::getInstance("HUGnetDBClassTest", $this->config);
         $this->o->createTable();
         // Clear out the database
@@ -102,13 +101,13 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function tearDown()
     {
         if (is_object($this->pdo) && (get_class($this->pdo) == "PDO")) {
@@ -119,10 +118,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testAddArray
-     *
-     * @return array
-     */
+    * Data provider for testAddArray
+    *
+    * @return array
+    */
     public static function dataCreatePDO()
     {
         return array(
@@ -132,22 +131,26 @@ class HUGnetDBTest extends databaseTest
                 "PDO",
                 "sqlite",
             ),
-            array(array("driver" => "badPDODriver", "file" => ":memory:"), "PDO", "sqlite"),
+            array(
+                array("driver" => "badPDODriver", "file" => ":memory:"),
+                "PDO",
+                "sqlite"
+            ),
         );
     }
     /**
-     * Tests to make sure this function fails if
-     * someone tries to make a cache from a memory
-     * sqlite instance.
-     *
-     * @param string $config       The configuration to use
-     * @param mixed  $expect       The expected value.  Set to FALSE or the class name
-     * @param mixed  $expectDriver The expected driver
-     *
-     * @return null
-     *
-     * @dataProvider dataCreatePDO()
-     */
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $config       The configuration to use
+    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+    * @param mixed  $expectDriver The expected driver
+    *
+    * @return null
+    *
+    * @dataProvider dataCreatePDO()
+    */
     public function testCreatePDO($config, $expect, $expectDriver)
     {
         $o = HUGnetDB::createPDO($config);
@@ -156,23 +159,26 @@ class HUGnetDBTest extends databaseTest
         } else {
             $this->assertType("object", $o);
             $this->assertSame($expect, get_class($o));
-            $this->assertSame($expectDriver, $o->getAttribute(PDO::ATTR_DRIVER_NAME));
+            $this->assertSame(
+                $expectDriver,
+                $o->getAttribute(PDO::ATTR_DRIVER_NAME)
+            );
         }
         unset($o);
     }
 
 
     /**
-     * Tests to make sure this function fails if
-     * someone tries to make a cache from a memory
-     * sqlite instance.
-     *
-     * @return null
-     */
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @return null
+    */
     public function testCreateCacheMemory()
     {
         $config = array("file" => ":MeMoRy:");
-        $o =& HUGnetDB::getInstance("HUGnetDBClassTest", $config); //new HUGnetDBClassTest($file);
+        $o =& HUGnetDB::getInstance("HUGnetDBClassTest", $config);
         $ret = $o->createCache();
         $this->assertFalse($ret);
         unset($o);
@@ -180,10 +186,10 @@ class HUGnetDBTest extends databaseTest
 
 
     /**
-     * Tests if getColumns works correctly
-     *
-     * @return null
-     */
+    * Tests if getColumns works correctly
+    *
+    * @return null
+    */
     public function testGetColumns()
     {
         $expect = array(
@@ -196,10 +202,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testAddArray
-     *
-     * @return array
-     */
+    * Data provider for testAddArray
+    *
+    * @return array
+    */
     public static function dataAddArray()
     {
         return array(
@@ -230,16 +236,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $info    The info to add to the database
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataAddArray
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $info    The info to add to the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataAddArray
+    */
     public function testAddArray($preload, $info, $expect)
     {
         $this->load($preload);
@@ -249,10 +255,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testAdd
-     *
-     * @return array
-     */
+    * Data provider for testAdd
+    *
+    * @return array
+    */
     public static function dataAdd()
     {
         return array(
@@ -271,16 +277,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $info    The info to add to the database
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataAdd
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $info    The info to add to the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataAdd
+    */
     public function testAdd($preload, $info, $expect)
     {
         $this->load($preload);
@@ -290,10 +296,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testCleanSql
-     *
-     * @return array
-     */
+    * Data provider for testCleanSql
+    *
+    * @return array
+    */
     public static function dataCleanSql()
     {
         return array(
@@ -310,29 +316,32 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param string $string        Data to preload into the database
-     * @param array  $autoincrement The info to add to the database
-     * @param array  $expect        The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataCleanSql
-     */
+    * test
+    *
+    * @param string $string        Data to preload into the database
+    * @param array  $autoincrement The info to add to the database
+    * @param array  $expect        The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataCleanSql
+    */
     public function testCleanSql($string, $autoincrement, $expect)
     {
         $ret = $this->o->tCleanSql($string);
         $this->assertSame($expect, $ret);
-        $this->assertSame($autoincrement, $this->readAttribute($this->o, "autoIncrement"));
+        $this->assertSame(
+            $autoincrement,
+            $this->readAttribute($this->o, "autoIncrement")
+        );
     }
 
 
     /**
-     * Data provider for testAdd
-     *
-     * @return array
-     */
+    * Data provider for testAdd
+    *
+    * @return array
+    */
     public static function dataReplace()
     {
         return array(
@@ -351,16 +360,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $info    The info to add to the database
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataReplace
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $info    The info to add to the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataReplace
+    */
     public function testReplace($preload, $info, $expect)
     {
         $this->load($preload);
@@ -370,10 +379,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testUpdate
-     *
-     * @return array
-     */
+    * Data provider for testUpdate
+    *
+    * @return array
+    */
     public static function dataUpdate()
     {
         return array(
@@ -396,18 +405,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $info    The info to add to the database
-     * @param int   $key     The database key to get the record from
-     * @param array $expect  The info to expect returned
-     * @param bool  $retExpect What the function should return
-     *
-     * @return null
-     *
-     * @dataProvider dataUpdate
-     */
+    * test
+    *
+    * @param array $preload   Data to preload into the database
+    * @param array $info      The info to add to the database
+    * @param int   $key       The database key to get the record from
+    * @param array $expect    The info to expect returned
+    * @param bool  $retExpect What the function should return
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdate
+    */
     public function testUpdate($preload, $info, $key, $expect, $retExpect)
     {
         $this->load($preload);
@@ -416,10 +425,10 @@ class HUGnetDBTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
     /**
-     * Data provider for testUpdate
-     *
-     * @return array
-     */
+    * Data provider for testUpdate
+    *
+    * @return array
+    */
     public static function dataUpdateWhere()
     {
         return array(
@@ -442,18 +451,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param array  $info    The info to add to the database
-     * @param string $where   The database key to get the record from
-     * @param bool   $data    What the function should return
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataUpdateWhere
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param array  $info    The info to add to the database
+    * @param string $where   The database key to get the record from
+    * @param bool   $data    What the function should return
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdateWhere
+    */
     public function testUpdateWhere($preload, $info, $where, $data, $expect)
     {
         $this->load($preload);
@@ -463,18 +472,18 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @param array $preload   Data to preload into the database
-     * @param array $info      The info to add to the database
-     * @param int   $key       The database key to get the record from
-     * @param array $expect    The info to expect returned
-     * @param bool  $retExpect What the function should return
-     *
-     * @return null
-     *
-     * @dataProvider dataUpdate
-     */
+    * test
+    *
+    * @param array $preload   Data to preload into the database
+    * @param array $info      The info to add to the database
+    * @param int   $key       The database key to get the record from
+    * @param array $expect    The info to expect returned
+    * @param bool  $retExpect What the function should return
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdate
+    */
     /*
     public function testUpdateReturn($preload, $info, $key, $expect, $retExpect)
     {
@@ -485,10 +494,10 @@ class HUGnetDBTest extends databaseTest
     */
 
     /**
-     * Data provider for testGetAll
-     *
-     * @return array
-     */
+    * Data provider for testGetAll
+    *
+    * @return array
+    */
     public static function dataGetAll()
     {
         return array(
@@ -507,15 +516,15 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGetAll
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAll
+    */
     public function testGetAll($preload, $expect)
     {
         $this->load($preload);
@@ -524,10 +533,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testGet
-     *
-     * @return array
-     */
+    * Data provider for testGet
+    *
+    * @return array
+    */
     public static function dataGet()
     {
         return array(
@@ -561,16 +570,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param int   $key     The database key to get the record from
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGet
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param int   $key     The database key to get the record from
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
     public function testGet($preload, $key, $expect)
     {
         $this->load($preload);
@@ -579,10 +588,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testGetWhere
-     *
-     * @return array
-     */
+    * Data provider for testGetWhere
+    *
+    * @return array
+    */
     public static function dataGetWhere()
     {
         return array(
@@ -619,17 +628,17 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $where   The database key to get the record from
-     * @param array  $data    The data to send with the query
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGetWhere
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param string $where   The database key to get the record from
+    * @param array  $data    The data to send with the query
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGetWhere
+    */
     public function testGetWhere($preload, $where, $data, $expect)
     {
         $this->load($preload);
@@ -638,10 +647,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testGetWhere
-     *
-     * @return array
-     */
+    * Data provider for testGetWhere
+    *
+    * @return array
+    */
     public static function dataGetOneWhere()
     {
         return array(
@@ -674,17 +683,17 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $where   The database key to get the record from
-     * @param array  $data    The data to send with the query
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGetOneWhere
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param string $where   The database key to get the record from
+    * @param array  $data    The data to send with the query
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGetOneWhere
+    */
     public function testGetOneWhere($preload, $where, $data, $expect)
     {
         $this->load($preload);
@@ -692,10 +701,10 @@ class HUGnetDBTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
     /**
-     * Data provider for testGetOne
-     *
-     * @return array
-     */
+    * Data provider for testGetOne
+    *
+    * @return array
+    */
     public static function dataGetOne()
     {
         return array(
@@ -722,15 +731,15 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGetOne
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGetOne
+    */
     public function testGetOne($preload, $expect)
     {
         $this->load($preload);
@@ -739,10 +748,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testGetNextID
-     *
-     * @return array
-     */
+    * Data provider for testGetNextID
+    *
+    * @return array
+    */
     public static function dataGetNextID()
     {
         return array(
@@ -770,15 +779,15 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataGetNextID
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataGetNextID
+    */
     public function testGetNextID($preload, $expect)
     {
         $this->load($preload);
@@ -787,10 +796,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for HUGnetDBTest::testQuery()
-     *
-     * @return array
-     */
+    * Data provider for HUGnetDBTest::testQuery()
+    *
+    * @return array
+    */
     public static function dataQuery()
     {
         return array(
@@ -835,18 +844,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $query   The query to perform
-     * @param array  $data    The data to send with the query
-     * @param bool   $getRet  Whether to expect a return
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQuery().
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param string $query   The query to perform
+    * @param array  $data    The data to send with the query
+    * @param bool   $getRet  Whether to expect a return
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQuery().
+    */
     public function testQuery($preload, $query, $data, $getRet, $expect)
     {
         $this->load($preload);
@@ -855,10 +864,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for HUGnetDBTest::testQueryNoDb()
-     *
-     * @return array
-     */
+    * Data provider for HUGnetDBTest::testQueryNoDb()
+    *
+    * @return array
+    */
     public static function dataQueryNoDb()
     {
         return array(
@@ -891,18 +900,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $value  The data to kill the db with
-     * @param string $query  The query to perform
-     * @param array  $data   The data to send with the query
-     * @param bool   $getRet Whether to expect a return
-     * @param array  $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQueryNoDb().
-     */
+    * test
+    *
+    * @param array  $value  The data to kill the db with
+    * @param string $query  The query to perform
+    * @param array  $data   The data to send with the query
+    * @param bool   $getRet Whether to expect a return
+    * @param array  $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQueryNoDb().
+    */
     public function testQueryNoDb($value, $query, $data, $getRet, $expect)
     {
         $this->o->killDb($value);
@@ -912,18 +921,18 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @param array  $value  The data to kill the db with
-     * @param string $query  The query to perform
-     * @param array  $data   The data to send with the query
-     * @param bool   $getRet Whether to expect a return
-     * @param array  $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQueryNoDb().
-     */
+    * test
+    *
+    * @param array  $value  The data to kill the db with
+    * @param string $query  The query to perform
+    * @param array  $data   The data to send with the query
+    * @param bool   $getRet Whether to expect a return
+    * @param array  $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQueryNoDb().
+    */
     public function testQueryNoDbErrorState($value, $query, $data, $getRet, $expect)
     {
         $this->o->killDb($value);
@@ -931,37 +940,40 @@ class HUGnetDBTest extends databaseTest
         $this->assertSame("NODBE", $this->readAttribute($this->o, "errorState"));
     }
     /**
-     * test
-     *
-     * @param array  $value  The data to kill the db with
-     * @param string $query  The query to perform
-     * @param array  $data   The data to send with the query
-     * @param bool   $getRet Whether to expect a return
-     * @param array  $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQueryNoDb().
-     */
+    * test
+    *
+    * @param array  $value  The data to kill the db with
+    * @param string $query  The query to perform
+    * @param array  $data   The data to send with the query
+    * @param bool   $getRet Whether to expect a return
+    * @param array  $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQueryNoDb().
+    */
     public function testQueryNoDbErrorMsg($value, $query, $data, $getRet, $expect)
     {
         $this->o->killDb($value);
         $ret = $this->o->query($query, $data, $getRet);
-        $this->assertSame("Database Not Connected", $this->readAttribute($this->o, "errorMsg"));
+        $this->assertSame(
+            "Database Not Connected",
+            $this->readAttribute($this->o, "errorMsg")
+        );
     }
     /**
-     * test
-     *
-     * @param array  $value  The data to kill the db with
-     * @param string $query  The query to perform
-     * @param array  $data   The data to send with the query
-     * @param bool   $getRet Whether to expect a return
-     * @param array  $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQueryNoDb().
-     */
+    * test
+    *
+    * @param array  $value  The data to kill the db with
+    * @param string $query  The query to perform
+    * @param array  $data   The data to send with the query
+    * @param bool   $getRet Whether to expect a return
+    * @param array  $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQueryNoDb().
+    */
     public function testQueryNoDbError($value, $query, $data, $getRet, $expect)
     {
         $this->o->killDb($value);
@@ -970,10 +982,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for HUGnetDBTest::testQueryCache()
-     *
-     * @return array
-     */
+    * Data provider for HUGnetDBTest::testQueryCache()
+    *
+    * @return array
+    */
     public static function dataQueryCache()
     {
         return array(
@@ -1010,18 +1022,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $query   The query to perform
-     * @param array  $data    The data to send with the query
-     * @param bool   $getRet  Whether to expect a return
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataQueryCache().
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param string $query   The query to perform
+    * @param array  $data    The data to send with the query
+    * @param bool   $getRet  Whether to expect a return
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataQueryCache().
+    */
     public function testQueryCache($preload, $query, $data, $getRet, $expect)
     {
         $this->o->createCache();
@@ -1039,10 +1051,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testRemove
-     *
-     * @return array
-     */
+    * Data provider for testRemove
+    *
+    * @return array
+    */
     public static function dataRemove()
     {
         return array(
@@ -1077,16 +1089,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array $preload Data to preload into the database
-     * @param int   $key     The database key to get the record from
-     * @param array $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataRemove
-     */
+    * test
+    *
+    * @param array $preload Data to preload into the database
+    * @param int   $key     The database key to get the record from
+    * @param array $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataRemove
+    */
     public function testRemove($preload, $key, $expect)
     {
         $this->load($preload);
@@ -1096,10 +1108,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testRemoveWhere
-     *
-     * @return array
-     */
+    * Data provider for testRemoveWhere
+    *
+    * @return array
+    */
     public static function dataRemoveWhere()
     {
         return array(
@@ -1141,17 +1153,17 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param array  $preload Data to preload into the database
-     * @param string $where   Where clause
-     * @param array  $data    Data for where clause
-     * @param array  $expect  The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataRemoveWhere
-     */
+    * test
+    *
+    * @param array  $preload Data to preload into the database
+    * @param string $where   Where clause
+    * @param array  $data    Data for where clause
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataRemoveWhere
+    */
     public function testRemoveWhere($preload, $where, $data, $expect)
     {
         $this->load($preload);
@@ -1161,10 +1173,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testRemove
-     *
-     * @return array
-     */
+    * Data provider for testRemove
+    *
+    * @return array
+    */
     public static function dataVerbose()
     {
         return array(
@@ -1175,15 +1187,15 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param int $val    The database key to get the record from
-     * @param int $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataVerbose
-     */
+    * test
+    *
+    * @param int $val    The database key to get the record from
+    * @param int $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataVerbose
+    */
     public function testVerbose($val, $expect)
     {
         $this->o->verbose($val);
@@ -1191,10 +1203,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @return null
-     */
+    * test
+    *
+    * @return null
+    */
     public function testIsConnected()
     {
         $ret = $this->o->isConnected();
@@ -1202,10 +1214,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @return null
-     */
+    * test
+    *
+    * @return null
+    */
     public function testIsConnectedServerLeft()
     {
         $this->o->metaError = HUGNETDB_META_ERROR_SERVER_GONE;
@@ -1214,10 +1226,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * test
-     *
-     * @return null
-     */
+    * test
+    *
+    * @return null
+    */
     public function testPrintError()
     {
         $this->o->verbose(6);
@@ -1233,19 +1245,22 @@ class HUGnetDBTest extends databaseTest
         $file   = $this->readAttribute($this->o, "file");
         $class  = get_class($this->o);
         $driver = $this->readAttribute($this->o, "driver");
-        $this->assertSame("(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
-                         ."(".$class." - ".$driver." ".$file.") Error: -1\n"
-                         ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
-                         ."(".$class." - ".$driver." ".$file.") Meta Error: -1\n"
-                         ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an error\n",
-                         $ret);
+        $this->assertSame(
+            "(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
+            ."(".$class." - ".$driver." ".$file.") Error: -1\n"
+            ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
+            ."(".$class." - ".$driver." ".$file.") Meta Error: -1\n"
+            ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an "
+            ."error\n",
+            $ret
+        );
     }
 
     /**
-     * Tests print out when there is no error
-     *
-     * @return null
-     */
+    * Tests print out when there is no error
+    *
+    * @return null
+    */
     public function testPrintErrorNone()
     {
         $this->o->verbose(true);
@@ -1260,10 +1275,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * tests printout when verbose is off
-     *
-     * @return null
-     */
+    * tests printout when verbose is off
+    *
+    * @return null
+    */
     public function testPrintErrorNotVerbose()
     {
         ob_start();
@@ -1274,20 +1289,20 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * tests printout when verbose is off
-     *
-     * @return null
-     */
+    * tests printout when verbose is off
+    *
+    * @return null
+    */
     public function testCreateTable()
     {
         $this->assertFalse(HUGnetDB::createTable());
     }
 
     /**
-     * Data provider for testSqlDate
-     *
-     * @return array
-     */
+    * Data provider for testSqlDate
+    *
+    * @return array
+    */
     public static function dataSqlDate()
     {
         return array(
@@ -1299,25 +1314,25 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param mixed $date   The date
-     * @param int   $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataSqlDate
-     */
+    * test
+    *
+    * @param mixed $date   The date
+    * @param int   $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataSqlDate
+    */
     public function testSqlDate($date, $expect)
     {
         $ret = $this->o->sqlDate($date);
         $this->assertSame($expect, $ret);
     }
     /**
-     * Data provider for testFixType
-     *
-     * @return array
-     */
+    * Data provider for testFixType
+    *
+    * @return array
+    */
     public static function dataFixType()
     {
         return array(
@@ -1330,16 +1345,16 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * test
-     *
-     * @param mixed $value  The value to fix
-     * @param mixed $type   The type of SQL column it is from
-     * @param int   $expect The info to expect returned
-     *
-     * @return null
-     *
-     * @dataProvider dataFixType
-     */
+    * test
+    *
+    * @param mixed $value  The value to fix
+    * @param mixed $type   The type of SQL column it is from
+    * @param int   $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataFixType
+    */
     public function testFixType($value, $type, $expect)
     {
         $ret = $this->o->fixType($value, $type);
@@ -1347,10 +1362,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testAddArray
-     *
-     * @return array
-     */
+    * Data provider for testAddArray
+    *
+    * @return array
+    */
     public static function dataGetInstance()
     {
         return array(
@@ -1389,18 +1404,18 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * Tests to make sure this function fails if
-     * someone tries to make a cache from a memory
-     * sqlite instance.
-     *
-     * @param string $config The DSN to use to create the PDO object
-     * @param string $class  The password
-     * @param mixed  $expect The expected value.  Set to FALSE or the class name
-     *
-     * @return null
-     *
-     * @dataProvider dataGetInstance()
-     */
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $config The DSN to use to create the PDO object
+    * @param string $class  The password
+    * @param mixed  $expect The expected value.  Set to FALSE or the class name
+    *
+    * @return null
+    *
+    * @dataProvider dataGetInstance()
+    */
     public function testGetInstance($config, $class, $expect)
     {
         $o = HUGnetDB::getInstance($class, $config);
@@ -1414,10 +1429,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testAddArray
-     *
-     * @return array
-     */
+    * Data provider for testAddArray
+    *
+    * @return array
+    */
     public static function dataGetInstanceCache()
     {
         return array(
@@ -1431,17 +1446,17 @@ class HUGnetDBTest extends databaseTest
         );
     }
     /**
-     * Tests to make sure this function fails if
-     * someone tries to make a cache from a memory
-     * sqlite instance.
-     *
-     * @param string $config The DSN to use to create the PDO object
-     * @param string $class  The password
-     *
-     * @return null
-     *
-     * @dataProvider dataGetInstanceCache()
-     */
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $config The DSN to use to create the PDO object
+    * @param string $class  The password
+    *
+    * @return null
+    *
+    * @dataProvider dataGetInstanceCache()
+    */
     public function testGetInstanceCache($config, $class)
     {
         $o = HUGnetDB::getInstance($class, $config);
@@ -1452,17 +1467,17 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Tests to make sure this function fails if
-     * someone tries to make a cache from a memory
-     * sqlite instance.
-     *
-     * @param string $config The DSN to use to create the PDO object
-     * @param string $class  The password
-     *
-     * @return null
-     *
-     * @dataProvider dataGetInstanceCache()
-     */
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $config The DSN to use to create the PDO object
+    * @param string $class  The password
+    *
+    * @return null
+    *
+    * @dataProvider dataGetInstanceCache()
+    */
     public function testGetInstancePBO($config, $class)
     {
         $o = HUGnetDB::getInstance($class, $config);
@@ -1473,10 +1488,10 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-     * Data provider for testFixType
-     *
-     * @return array
-     */
+    * Data provider for testFixType
+    *
+    * @return array
+    */
     public static function dataFromCSV()
     {
         return array(
@@ -1504,7 +1519,7 @@ class HUGnetDBTest extends databaseTest
     * @param string $CSV      The CSV string to use
     * @param string $fieldSep The separator to use.  "," is the default
     * @param string $rowSep   The separator for rows.  "\n" is the default
-    * @param array  $expect The info to expect returned
+    * @param array  $expect   The info to expect returned
     *
     * @return null
     *
@@ -1536,24 +1551,26 @@ class HUGnetDBTest extends databaseTest
 class HUGnetDBClassTest extends HUGnetDB
 {
     /**
-     * The name of the table we are using
-     */
+    * The name of the table we are using
+    */
     protected $table = "HUGnetDBTest";
     /** The number of columns */
     private $_columns = 3;
 
     /**
-     * Creates the database table.
-     *
-     * Must be defined in child classes
-     *
-     * @param string $table The name of the table to use
-     *
-     * @return bool
-     */
+    * Creates the database table.
+    *
+    * Must be defined in child classes
+    *
+    * @param string $table The name of the table to use
+    *
+    * @return bool
+    */
     public function createTable($table="")
     {
-        if (!empty($table)) $this->table = $table;
+        if (!empty($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
               `id` int(11) NOT null,
               `name` varchar(16) NOT null default '',
@@ -1566,12 +1583,12 @@ class HUGnetDBClassTest extends HUGnetDB
     }
 
     /**
-     * kills the database so we can test the class when it doesn't ahve a database
-     *
-     * @param mixed $val The value to kill the database with
-     *
-     * @return null
-     */
+    * kills the database so we can test the class when it doesn't ahve a database
+    *
+    * @param mixed $val The value to kill the database with
+    *
+    * @return null
+    */
     public function killDb($val = null)
     {
         $this->db = null;
@@ -1579,12 +1596,12 @@ class HUGnetDBClassTest extends HUGnetDB
     }
 
     /**
-     * Calls the protected function cleanSql()
-     *
-     * @param mixed $string The value to clean
-     *
-     * @return null
-     */
+    * Calls the protected function cleanSql()
+    *
+    * @param mixed $string The value to clean
+    *
+    * @return null
+    */
     public function tCleanSql($string)
     {
         return $this->cleanSql($string);

@@ -56,19 +56,19 @@ require_once dirname(__FILE__).'/../../base/SensorBase.php';
 class SensorBaseTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var    SensorBase
-     * @access protected
-     */
+    * @var    SensorBase
+    * @access protected
+    */
     protected $object;
 
     /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     *
-     * @return null
-     */
+    * Runs the test methods of this class.
+    *
+    * @access public
+    * @static
+    *
+    * @return null
+    */
     public static function main()
     {
         include_once 'PHPUnit/TextUI/TestRunner.php';
@@ -78,38 +78,38 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function setUp()
     {
         $this->o = new SensorBase();
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     *
-     * @return null
-     */
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function tearDown()
     {
         unset($this->o);
     }
 
     /**
-     * data provider for testConstructor
-     *
-     * @return array
-     *
-     * @static
-     */
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
     public static function dataConstructorTf()
     {
         return array(
@@ -118,153 +118,153 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @param int $Tf     The value to test
-     * @param int $expect The expected value
-     *
-     * @return null
-     *
-     * @dataProvider dataConstructorTf
-     */
+    * test
+    *
+    * @param int $Tf     The value to test
+    * @param int $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorTf
+    */
     public function testConstructorTf($Tf, $expect)
     {
         $o = new SensorBase($Tf);
         $this->assertSame($expect, $this->readAttribute($o, "Tf"));
     }
     /**
-     * data provider for testConstructorD
-     *
-     * @return array
-     *
-     * @static
-     */
-     public static function dataConstructorD()
-     {
-         return array(
+    * data provider for testConstructorD
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataConstructorD()
+    {
+        return array(
              array(1,1),
              array(false, 65536),
         );
-     }
+    }
     /**
-     * Test the constructor
-     *
-     * @dataProvider dataConstructorD
-     *
-     * @param int $D      The value to test
-     * @param int $expect The expected value
-     *
-     * @return null
-     */
+    * Test the constructor
+    *
+    * @param int $D      The value to test
+    * @param int $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorD
+    */
     public function testConstructorD($D, $expect)
     {
         $o = new SensorBase(false, $D);
         $this->assertSame($expect, $this->readAttribute($o, "D"));
     }
     /**
-     * data provider for testConstructorS
-     *
-     * @static
-     *
-     * @return array
-     */
-     public static function dataConstructorS()
-     {
-         return array(
+    * data provider for testConstructorS
+    *
+    * @static
+    *
+    * @return array
+    */
+    public static function dataConstructorS()
+    {
+        return array(
              array(1,1),
              array(false, 64),
         );
-     }
+    }
     /**
-     * Test the constructor
-     *
-     * @dataProvider dataConstructorS
-     *
-     * @param int $s     The value to test
-     * @param int $expect The expected value
-     *
-     * @return null
-     */
+    * Test the constructor
+    *
+    * @param int $s      The value to test
+    * @param int $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorS
+    */
     public function testConstructorS($s, $expect)
     {
         $o = new SensorBase(false, false, $s);
         $this->assertSame($expect, $this->readAttribute($o, "s"));
     }
     /**
-     * data provider for testConstructorAm
-     *
-     * @static
-     *
-     * @return array
-     */
-     public static function dataConstructorAm()
-     {
-         return array(
+    * data provider for testConstructorAm
+    *
+    * @static
+    *
+    * @return array
+    */
+    public static function dataConstructorAm()
+    {
+        return array(
              array(1,1),
              array(false, 1023),
         );
-     }
+    }
     /**
-     * test
-     *
-     * @param int $Am     The value to test
-     * @param int $expect The expected value
-     *
-     * @return null
-     *
-     * @dataProvider dataConstructorAm
-     */
+    * test
+    *
+    * @param int $Am     The value to test
+    * @param int $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorAm
+    */
     public function testConstructorAm($Am, $expect)
     {
         $o = new SensorBase(false, false, false, $Am);
         $this->assertSame($expect, $this->readAttribute($o, "Am"));
     }
     /**
-     * data provider for testConstructorVcc
-     *
-     * @static
-     *
-     * @return array
-     */
-     public static function dataConstructorVcc()
-     {
-         return array(
+    * data provider for testConstructorVcc
+    *
+    * @static
+    *
+    * @return array
+    */
+    public static function dataConstructorVcc()
+    {
+        return array(
              array(1,1),
              array(false, 5),
         );
-     }
+    }
     /**
-     * Test the vcc value in the constructor
-     *
-     * @dataProvider dataConstructorVcc
-     *
-     * @param float $Vcc    The value to test
-     * @param float $expect The expected value
-     *
-     * @return null
-     */
+    * Test the vcc value in the constructor
+    *
+    * @param float $Vcc    The value to test
+    * @param float $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorVcc
+    */
     public function testConstructorVcc($Vcc, $expect)
     {
         $o = new SensorBase(false, false, false, false, $Vcc);
         $this->assertSame($expect, $this->readAttribute($o, "Vcc"));
     }
     /**
-     * Test the sensors array to make sure it is blank and an array
-     *
-     * @return null
-     */
+    * Test the sensors array to make sure it is blank and an array
+    *
+    * @return null
+    */
     public function testSensorsArray()
     {
         $this->assertSame(array(), $this->o->sensors);
     }
 
     /**
-     * data provider for testConstructor
-     *
-     * @return array
-     *
-     * @static
-     */
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
     public static function dataLinearCalibration()
     {
         return array(
@@ -278,16 +278,16 @@ class SensorBaseTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-     * test
-     *
-     * @param mixed $val    The value to test
-     * @param array $cal    The calibration array
-     * @param mixed $expect The expected value
-     *
-     * @return null
-     *
-     * @dataProvider dataLinearCalibration
-     */
+    * test
+    *
+    * @param mixed $val    The value to test
+    * @param array $cal    The calibration array
+    * @param mixed $expect The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataLinearCalibration
+    */
     public function testLinearCalibration($val, $cal, $expect)
     {
         $this->assertSame($expect, $this->o->linearCalibration($val, $cal));

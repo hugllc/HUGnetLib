@@ -257,9 +257,11 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     {
         $columns = $this->readAttribute($this->o, "_columns");
         $fields  = $this->readAttribute($this->o, "fields");
-        $this->assertSame($columns,
-                          count($fields),
-                          "Table was either not built or modified.");
+        $this->assertSame(
+            $columns,
+            count($fields),
+            "Table was either not built or modified."
+        );
     }
 
 }

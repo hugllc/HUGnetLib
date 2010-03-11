@@ -62,7 +62,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test packets in array form
      *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr
+     * This array needs to have the same keys as $testPacketStr and
+     * $testPacketReplyStr
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
      */
     var $testPacketArray = array(
@@ -95,7 +96,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test packets in array form
      *
-     * This array needs to have the same keys as $testPacketStr and $testPacketReplyStr
+     * This array needs to have the same keys as $testPacketStr and
+     * $testPacketReplyStr
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketReplyStr
      */
     var $testPacketReplyArray = array(
@@ -127,7 +129,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test Packets in string form
      *
-     * This array needs to have the same keys as $testPacketArray and $testPacketReplyStr
+     * This array needs to have the same keys as $testPacketArray and
+     * $testPacketReplyStr
      * @see EPacketTest::testPacketReplyStr, EPacketTest::testPacketArray
      */
     var $testPacketStr = array(
@@ -138,7 +141,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test Packets in string form
      *
-     * This array needs to have the same keys as $testPacketStr and $testPacketArray
+     * This array needs to have the same keys as $testPacketStr and
+     * $testPacketArray
      * @see EPacketTest::testPacketStr, EPacketTest::testPacketArray
      */
     var $testPacketReplyStr = array(
@@ -281,7 +285,11 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
         $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
         foreach ($this->testPacketStr as $key => $str) {
             $pkt = $this->o->unbuildPacket($str);
-            EPacketTest::validPacketArray($pkt, $this->testPacketArray[$key], $check);
+            EPacketTest::validPacketArray(
+                $pkt,
+                $this->testPacketArray[$key],
+                $check
+            );
         }
     }
 

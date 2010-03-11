@@ -273,12 +273,13 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataSelectDevice().
      */
-    public function testSelectDevice($preload,
-                                     $name,
-                                     $selected,
-                                     $GatewayKey,
-                                     $expect)
-    {
+    public function testSelectDevice(
+        $preload,
+        $name,
+        $selected,
+        $GatewayKey,
+        $expect
+    ) {
         $this->load($preload);
         $ret = $this->o->selectDevice($name, $selected, $GatewayKey);
         $this->assertSame($expect, $ret);
@@ -651,12 +652,13 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataUpdateDevice().
      */
-    public function testUpdateDevice($preload,
-                                     $Info,
-                                     $DeviceKey,
-                                     $retExpect,
-                                     $expect)
-    {
+    public function testUpdateDevice(
+        $preload,
+        $Info,
+        $DeviceKey,
+        $retExpect,
+        $expect
+    ) {
         $this->load($preload);
         $ret = $this->o->updateDevice($Info);
         $this->assertSame($retExpect, $ret);
@@ -705,7 +707,8 @@ class DeviceTest extends databaseTest
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
-                    "params" => "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MjoiYW4iO3M6NToiYXJyYXkiO30=",
+                    "params" => "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6Mjoi"
+                        ."YW4iO3M6NToiYXJyYXkiO30=",
                ),
                 true,
            ),
@@ -739,7 +742,8 @@ class DeviceTest extends databaseTest
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
-                    "params" => "YTo1OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOjM7aTo0O2k6NDtpOjU7fQ==",
+                    "params" => "YTo1OntpOjA7aToxO2k6MTtpOjI7aToyO2k6MztpOj"
+                        ."M7aTo0O2k6NDtpOjU7fQ==",
                ),
                 true,
            ),
@@ -898,9 +902,11 @@ class DeviceTest extends databaseTest
     public function testEncodeParams($params, $expect)
     {
         $ret = device::encodeParams($params);
-        $this->assertSame($expect,
-                      $params,
-                      "Input array passed by reference was not modified correctly");
+        $this->assertSame(
+            $expect,
+            $params,
+            "Input array passed by reference was not modified correctly"
+        );
     }
     /**
      * test
@@ -966,9 +972,11 @@ class DeviceTest extends databaseTest
     public function testDecodeParams($params, $expect)
     {
         $ret = device::decodeParams($params);
-        $this->assertSame($expect,
-                       $params,
-                       "Input array passed by reference was not modified correctly");
+        $this->assertSame(
+            $expect,
+            $params,
+            "Input array passed by reference was not modified correctly"
+        );
     }
 
     /**
@@ -1071,11 +1079,12 @@ class DeviceTest extends databaseTest
      *
      * @dataProvider dataAddVirtual().
      */
-    public function testAddVirtual($Info,
-                                   $replace,
-                                   $retExpect,
-                                   $expect)
-    {
+    public function testAddVirtual(
+        $Info,
+        $replace,
+        $retExpect,
+        $expect
+    ) {
         $ret = $this->o->addVirtual($Info, $replace);
         $this->assertSame($retExpect, $ret);
         $ret = $this->getSingle(1);
