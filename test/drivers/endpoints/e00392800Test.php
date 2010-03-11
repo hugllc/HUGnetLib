@@ -6,7 +6,7 @@
  *
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2009 Hunt Utilities Group, LLC
+ * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage Drivers
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/../../../drivers/endpoints/e00392800.php';
  * @package    HUGnetLibTest
  * @subpackage Drivers
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2009 Hunt Utilities Group, LLC
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -289,7 +289,7 @@ class E00392800Test extends EndpointTestBase
                         "Data0" => 14.3045,
                         "data" => array(
                             14.3045, 14.7482, 14.5265, 14.8009, 14.7469, 14.7122,
-                            null, null, 0, 0, 0, 0, 0, 0, 0, 0
+                            null, null, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
                         ),
                         "Data1" => 14.7482,
                         "Data2" => 14.5265,
@@ -299,7 +299,7 @@ class E00392800Test extends EndpointTestBase
                         "Data6" => null,
                         "Data7" => null,
                         "deltaT" => 600,
-                        "Data8" => 0,
+                        "Data8" => 0.0,
                         "Status" => "GOOD",
                         "StatusOld" => "GOOD",
                    ),
