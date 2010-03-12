@@ -24,7 +24,8 @@ doc-clean:
 
 clean: doc-clean
 	rm -Rf *~ */*~ */*/*~ */*/*/*~
-
+	rm -Rf :MeMoRy: */*/\:MeMoRy\: */\:MeMoRy\: */*/*/\:MeMoRy\:
+	rm -Rf HUGNET_LOCAL_DATABASE */*/*/HUGNET_LOCAL_DATABASE */*/HUGNET_LOCAL_DATABASE */HUGNET_LOCAL_DATABASE
 
 style:
 	mkdir -p ${BASE_DIR}Documentation
