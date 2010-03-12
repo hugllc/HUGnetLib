@@ -5,7 +5,7 @@ PHPCS=`which phpcs`
 BASE_DIR=${PWD}/
 GIT=`which git`
 
-test: clean Documentation/test
+test: doc-clean Documentation/test
 	${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
                 --log-junit ${BASE_DIR}Documentation/test/log.xml \
                 --testdox-html ${BASE_DIR}Documentation/test/testdox.html \
@@ -19,8 +19,11 @@ doc:
 	mkdir -p ${BASE_DIR}Documentation
 	${PHPDOC} -c phpdoc.ini  | tee ${BASE_DIR}Documentation/build.txt
 
-clean:
+doc-clean:
 	rm -Rf ${BASE_DIR}Documentation/test
+
+clean: doc-clean
+	rm -Rf *~ */*~ */*/*~ */*/*/*~
 
 
 style:
