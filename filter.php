@@ -34,7 +34,10 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-require_once "lib/plugins.inc.php";
+require_once dirname(__FILE__)."/lib/plugins.inc.php";
+require_once dirname(__FILE__)."/base/FilterBase.php";
+
+
 /**
  * A class for filtering endpoint data.  This class implements drivers that actually
  * do the filtering.
@@ -108,14 +111,15 @@ class Filter
      *
      * @param array &$history The history to filter
      * @param array $filters  The array of filters to use
+     * @param mixed $extra    The extra stuff to add to the filter
      *
      * @return null
      */
-    public function filter(&$history, $filters)
+    public function filter(&$history, $filters, $extra)
     {
         if (!is_array($filters)) return;
-        foreach ($filters as $key => $filter) {
-            $this->_filterData($history, $key, $filter);
+        foreach ($filters as $index => $filter) {
+            $this->_filterData($history, $index, $filter, $extra);
         }
     }
 
@@ -124,18 +128,21 @@ class Filter
      * This function does the actual filtering of the data based on the input given.
      *
      * @param array  &$data  The data to filter
-     * @param int    $index  The index to use in the data array
+     * @param int    $index  The index in the history to use
      * @param string $filter Which filter to use
      *
      * @return null
      */
     private function _filterData(&$data, $index, $filter=null)
     {
+        // Type is set by getClass
         $class = $this->getClass($type, $filter);
         if (!is_object($class)) return;
         $args = func_get_args();
         unset($args[2]); // Remove the $filter
         $stuff   = $class->filters[$type][$filter];
+        // This makes sure the reference is passed instead of a copy of it
+        $args[0] = &$data;
         $args[2] = $stuff;
         $this->runFunction($class, $stuff['function'], $args);
     }
@@ -162,14 +169,15 @@ class Filter
      * Just give $filter a blank variable.  This will be set to the name of the filter
      * tat it finds.
      *
-     * @param string $type    The type of filter
+     * @param string &$type   The type of filter
      * @param string &$filter The filter to implement.  This can be changed by this routine.
      *
      * @return object
       */
-    function &getClass($type, &$filter)
+    function &getClass(&$type, &$filter)
     {
         $class = $this->dev[$type][$filter];
+        // Try by type
         if (is_null($class)) {
             if (is_array($this->dev[$type])) {
                 reset($this->dev[$type]);
@@ -177,39 +185,18 @@ class Filter
                 $class  = current($this->dev[$type]);
             }
         }
+        // Try by filter name.  This will take the first that it finds that matches
+        if (is_null($class)) {
+            foreach ($this->dev as $t => $filters) {
+                if (isset($filters[$filter])) {
+                    $class = $filters[$filter];
+                    $type = $t;
+                    break;
+                }
+            }
+        }
         return $this->filters[$class];
     }
-}
-
-
-/**
- * Base class for filters.
- *
- * @category   Filters
- * @package    HUGnetLib
- * @subpackage Filters
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*/
-class Filter_Base
-{
-    /**
-        This defines all of the filters that this driver deals with...
-     */
-    var $filters = array();
-
-    /**
-        Constructor.
-     */
-    function __construct()
-    {
-
-    }
-
-
 }
 
 ?>

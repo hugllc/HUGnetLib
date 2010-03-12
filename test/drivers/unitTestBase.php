@@ -39,8 +39,11 @@
 if (!defined("HUGNET_INCLUDE_PATH")) {
     define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
 }
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 require_once dirname(__FILE__).'/../../sensor.php';
-require_once dirname(__FILE__).'/../unitConversionTest.php';
+require_once dirname(__FILE__).'/../unitConversionMocks.php';
 /**
  * This class is the basis for all sensor driver tests.  This class should be
  * inherited by all sensor test driver classes.  Tests in here can be overridden

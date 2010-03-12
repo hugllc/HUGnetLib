@@ -36,9 +36,14 @@
  *
  */
 
-require_once dirname(__FILE__).'/../driverTest.php';
-require_once dirname(__FILE__).'/../EPacketTest.php';
-require_once dirname(__FILE__).'/../unitConversionTest.php';
+require_once dirname(__FILE__).'/../EPacketMocks.php';
+
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+}
+
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
  * Test class for endpoints.
@@ -76,7 +81,8 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $driver = driverTest::createDriver();
+        $driver = $this->createDriver();
+
         $driver->registerDriver("testDriver");
         $driver->packet->socket[self::$socket] = new epsocketMock;
         // The reply timeout can be short becuase we should get an instant reply.
@@ -98,6 +104,28 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         unset($this->o);
+    }
+    /**
+    * This crates the driver correctly for testing.  It mocks a number of classes
+    * to make it easier to test.
+    *
+    * @return object
+    */
+    public function &createDriver()
+    {
+        $config["file"]       = ":memory:";
+        $config["servers"][0] = array(
+            'host' => 'localhost',
+            'user' => '',
+            'pass' => '',
+            'dsn' => "sqlite::memory:",
+        );
+
+        $driver = new HUGnetDriver($config);
+
+        // The reply timeout can be short becuase we should get an instant reply.
+        $driver->packet->ReplyTimeout = 1;
+        return $driver;
     }
 
     /**
@@ -130,7 +158,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     */
     public static function devicesArrayDataSource($class, $var)
     {
-        $driver = driverTest::createDriver();
+        $driver = self::createDriver();
         $o      = new $class($driver);
         $return = array();
         if (isset($o->devices)) {
@@ -309,7 +337,7 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     */
     public static function dataConfigArray($class=null)
     {
-        $driver = driverTest::createDriver();
+        $driver = self::createDriver();
         $o      = new $class($driver);
         if (empty($class)) {
             return array();

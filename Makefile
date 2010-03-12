@@ -5,11 +5,11 @@ PHPCS=`which phpcs`
 BASE_DIR=${PWD}/
 GIT=`which git`
 
-test: doc-clean Documentation/test
-	${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
+test: clean doc-clean Documentation/test
+	cd test; ${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
                 --log-junit ${BASE_DIR}Documentation/test/log.xml \
                 --testdox-html ${BASE_DIR}Documentation/test/testdox.html \
-                test/ | tee ${BASE_DIR}Documentation/test/testoutput.txt
+                .| tee ${BASE_DIR}Documentation/test/testoutput.txt
 
 Documentation/test:
 	mkdir -p ${BASE_DIR}Documentation/test
@@ -22,8 +22,10 @@ doc:
 doc-clean:
 	rm -Rf ${BASE_DIR}Documentation/test
 
-clean: doc-clean
+clean: 
 	rm -Rf *~ */*~ */*/*~ */*/*/*~
+	rm -Rf \:MeMoRy\: */\:MeMoRy\: */*/\:MeMoRy\: */*/*/\:MeMoRy\:
+	rm -Rf HUGNET_LOCAL_DATABASE */HUGNET_LOCAL_DATABASE */*/HUGNET_LOCAL_DATABASE */*/*/HUGNET_LOCAL_DATABASE
 
 
 style:

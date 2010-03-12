@@ -36,13 +36,9 @@
  *
  */
 
-/** The test case class */
-require_once "PHPUnit/Framework/TestCase.php";
-/** The test suite class */
-require_once "PHPUnit/Framework/TestSuite.php";
-
 require_once dirname(__FILE__).'/../filter.php';
 require_once dirname(__FILE__).'/../lib/plugins.inc.php';
+require_once dirname(__FILE__).'/filterMocks.php';
 
 /**
  * Test class for filter.
@@ -152,6 +148,12 @@ class FilterTest extends PHPUnit_Framework_TestCase
     public static function dataFilter()
     {
         return array(
+            array(
+                array(1,2,3,4,5,6),
+                array("testFilter1"),
+                array(),
+                array(6,5,4,3,2,1),
+            ),
         );
     }
 
@@ -160,17 +162,18 @@ class FilterTest extends PHPUnit_Framework_TestCase
      *
      * @param array $history The history to filter
      * @param array $filters The array of filters to use
+     * @param mixed $extra   Extra stuff for the filter
      * @param array $expect  What to expect from the return
      *
      * @return null
      *
      * @dataProvider dataFilter
      */
-    public function testFilter($history, $filters, $expect)
+    public function testFilter($history, $filters, $extra, $expect)
     {
         $this->o->registerFilter("testFilter");
-        $ret = $this->o->filter($data, $type, $filter);
-        $this->assertSame($expect, $ret);
+        $this->o->filter($history, $filters, $extra);
+        $this->assertSame($expect, $history);
     }
 
     /**
@@ -242,7 +245,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
         return array(
             array("testType", "", "sameClass", "testType", "testFilter1"),
             array("testType", "testFilter2", "sameClass", "testType", "testFilter2"),
-            array("badType", "testFilter2", null, "badType", "testFilter2"),
+            array("badType", "testFilter2", "sameClass", "testType", "testFilter2"),
+            array("badType", "badFilter", null, "badType", "badFilter"),
         );
     }
     /**
@@ -273,91 +277,6 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($filter, $filterExpect, "Sensor changed incorrectly");
     }
 
-}
-
-
-/**
- *  This is a test sensor.  It is not used for anything else.
- *
- * @category   Filters
- * @package    HUGnetLibTest
- * @subpackage Filters
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-class TestFilter extends filter_base
-{
-    var $filters = array(
-        "testType" => array(
-            "testFilter1" => array(
-                "longName" => "Generic Test Sensor 1",
-                "function" => "test1",
-                "extraText" => "extraTest",
-                "extraDefault" => "extraDefaultTest",
-           ),
-            "testFilter2" => array(
-                "longName" => "Generic Test Sensor 2",
-                "function" => "test2",
-           ),
-       ),
-    );
-
-    /**
-     * Some Function
-     *
-     * @param array &$history The history to filter
-     * @param int   $index    The index in the history to use
-     * @param array $filter   Information on the filter we are implementing
-     * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last
-     *
-     * @return null
-     */
-    public function test1(&$history, $index, $filter, $extra, $deltaT = null)
-    {
-        // This must stay the same.
-        return array_reverse($history);
-    }
-    /**
-     * Some Function
-     *
-     * @param array &$history The history to filter
-     * @param int   $index    The index in the history to use
-     * @param array $filter   Information on the filter we are implementing
-     * @param mixed $extra    Extra setup information on the filter
-     * @param int   $deltaT   The difference in time between this record and the last
-     *
-     * @return null
-     */
-    public function test2(&$history, $index, $filter, $extra, $deltaT = null)
-    {
-    }
-}
-/**
- * This class is to test how things handle not having a sensors variable;
- *
- * @category   Filters
- * @package    HUGnetLibTest
- * @subpackage Filters
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
-class TestFilterNoFilters extends filter_base
-{
-    /**
-     * constructor
-     */
-    function __construct()
-    {
-        // Make absolutely sure that there are no sensors
-        unset($this->filters);
-    }
 }
 
 ?>

@@ -38,6 +38,8 @@ if (!defined("HUGNET_INCLUDE_PATH")) {
     define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
 }
 
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 
 /**
  * General test class for database classes

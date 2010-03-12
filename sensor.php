@@ -63,9 +63,6 @@ class Sensor
     function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
-            if (!isset($_SESSION["incdir"])) {
-                $_SESSION["incdir"] = dirname(__FILE__)."/";
-            }
             $plugins = new Plugins(dirname(__FILE__)."/drivers/sensors/", "php");
         }
 
@@ -446,7 +443,9 @@ class Sensor
     {
         $type    = (int)$type;
         $class  = $this->getClass($type, $sensor);
-        if (is_object($class)) return $class->sensors[$type][$sensor];
+        if (is_object($class)) {
+            return $class->sensors[$type][$sensor];
+        }
         return null;
     }
 
