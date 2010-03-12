@@ -341,7 +341,10 @@ class SocketBase
      */
     function sendPacket($packet, $GetReply=true)
     {
-        if ($this->verbose) print "Sending Pkt: T:".$packet['PacketTo']." C:".$packet['sendCommand']."\n";
+        if ($this->verbose) {
+            print "Sending Pkt: T:".$packet['PacketTo'];
+            print " C:".$packet['sendCommand']."\n";
+        }
         $ret = $this->Write($packet, $GetReply);
         if (empty($ret)) return false;
         return $ret;

@@ -262,6 +262,9 @@ if (!class_exists("dbsocket")) {
         */
         function unbuildPacket($data)
         {
+            if (!is_array($data) || empty($data)) {
+                return array();
+            }
             // Strip off any preamble bytes.
             $pkt = array();
 
@@ -284,7 +287,7 @@ if (!class_exists("dbsocket")) {
             }
             devInfo::setStringSize($pkt["From"], 6);
 
-            $pkt["Length"]       = strlen($data["RawData"] / 2);
+            $pkt["Length"]       = strlen($data["RawData"]) / 2;
             $pkt["RawData"]      = $data["RawData"];
             $pkt["Data"]         = self::splitDataString($pkt["RawData"]);
             $pkt["Checksum"]     = self::PacketGetChecksum($pkt["RawData"]);
@@ -357,7 +360,6 @@ if (!class_exists("dbsocket")) {
         */
         public function __construct($config = array())
         {
-
             if (empty($config["socketTable"])) {
                 $config["table"] = "PacketLog";
             } else {

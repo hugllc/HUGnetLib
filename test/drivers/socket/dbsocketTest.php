@@ -84,14 +84,13 @@ class DbSocketTest extends PHPUnit_Framework_TestCase
             'user'   => '',
             'pass'   => '',
         );
-        HUGnetDB::setConfig($this->config);
 
-        $this->plog = &HUGnetDB::getInstance("Plog");
+        $this->plog = &HUGnetDB::getInstance("Plog", $this->config);
         $this->plog->createTable($this->table);
 
         $this->pdo =& $this->readAttribute($this->plog, "db");
         $this->pdo->query($query);
-        $this->o = new dbsocket(); //new dbsocket($this->pdo);
+        $this->o = new dbsocket($this->config); //new dbsocket($this->pdo);
     }
 
     /**
@@ -175,6 +174,203 @@ class DbSocketTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $res);
         */
     }
+        /**
+    * data provider for testWrite
+    *
+    * @return array
+    */
+    public static function dataRecvPacket()
+    {
+        return array(
+            array(
+                array(),
+                2,
+                true,
+                false,
+                null,
+            ),
+            array(
+                array(
+                    array(
+                        "id" => 1,
+                        "DeviceKey" => 42,
+                        "GatewayKey" => 2,
+                        "Date" => "2007-12-25 00:00:00",
+                        "Command" => "01",
+                        "SendCommand" => "5A",
+                        "PacketFrom" => "123456",
+                        "PacketTo" => "000011",
+                        "RawData" => "00392802410039201340001231FFFFFF",
+                        "sentRawData" => "",
+                        "Type" => "REPLY",
+                        "Status" => "NEW",
+                        "ReplyTime" => 2.532123,
+                        "Checked" => 0,
+                    ),
+                ),
+                2,
+                true,
+                false,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param array $config The packet to test with
+    * @param array $expect What we expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataRecvPacket
+    */
+    public function testRecvPacket($preload, $timeout, $reply, $getAll, $expect)
+    {
+        $this->o->socket->addArray($preload);
+        $this->o->getAll($getAll);
+        $this->o->recvPacket($timeout, $reply);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * data provider for testWrite
+    *
+    * @return array
+    */
+    public static function dataConfig()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "table" => "PacketLog",
+                ),
+            ),
+            array(
+                array(
+                    "socketTable" => "TestTable",
+                    "asdf" => "dfsa",
+                ),
+                array(
+                    "socketTable" => "TestTable",
+                    "asdf" => "dfsa",
+                    "table" => "TestTable",
+                ),
+            ),
+
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param array $config The packet to test with
+    * @param array $expect What we expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataConfig
+    */
+    public function testConfig($config, $expect)
+    {
+        $o = new dbsocket($config);
+        $this->assertSame($expect, $o->config);
+    }
+
+    /**
+    * data provider for testWrite
+    *
+    * @return array
+    */
+    public static function dataUnbuildPacket()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+            ),
+            array(
+                "This is not an array",
+                array(),
+            ),
+            array(
+                array(
+                    "sendCommand" => "5A",
+                    "To" => "123456",
+                    "From" => "678901",
+                    "RawData" => "123456789012",
+                ),
+                array(
+                    "Command" => "5A",
+                    "To" => "123456",
+                    "From" => "678901",
+                    "Length" => 6,
+                    "RawData" => "123456789012",
+                    "Data" => array(18, 52, 86, 120, 144, 18),
+                    "Checksum" => "8A",
+                    "CalcChecksum" => "8A",
+                ),
+            ),
+            array(
+                array(
+                    "Command" => "5A",
+                    "PacketTo" => "123456",
+                    "PacketFrom" => "678901",
+                    "RawData" => "123456789012",
+                ),
+                array(
+                    "Command" => "5A",
+                    "To" => "123456",
+                    "From" => "678901",
+                    "Length" => 6,
+                    "RawData" => "123456789012",
+                    "Data" => array(18, 52, 86, 120, 144, 18),
+                    "Checksum" => "8A",
+                    "CalcChecksum" => "8A",
+                ),
+            ),
+            array(
+                array(
+                    "Command" => "5A",
+                    "sendCommand" => "5B",
+                    "PacketTo" => "123456",
+                    "To" => "678901",
+                    "PacketFrom" => "678901",
+                    "From" => "123456",
+                    "RawData" => "123456789012",
+                ),
+                array(
+                    "Command" => "5A",
+                    "To" => "123456",
+                    "From" => "678901",
+                    "Length" => 6,
+                    "RawData" => "123456789012",
+                    "Data" => array(18, 52, 86, 120, 144, 18),
+                    "Checksum" => "8A",
+                    "CalcChecksum" => "8A",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param array $data   The packet to test with
+    * @param array $expect What we expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataUnbuildPacket
+    */
+    public function testUnbuildPacket($data, $expect)
+    {
+        $ret = $this->o->unbuildPacket($data);
+        $this->assertSame($expect, $ret);
+    }
+
 
     /**
     * data provider for testWriteBadDB()
