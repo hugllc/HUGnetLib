@@ -87,7 +87,9 @@ class Sensor
         if (is_string($class) && class_exists($class)) {
             $this->sensors[$class] = new $class();
         } else if (is_object($class)) {
-            if (empty($name)) $name = get_class($class);
+            if (empty($name)) {
+                $name = get_class($class);
+            }
             $this->sensors[$name] = $class;
             $class                = $name;
         } else {
@@ -119,9 +121,9 @@ class Sensor
     * @param int    $type    Int The type of sensor
     * @param string &$sensor The short name of the sensor
     * @param int    $TC      The time constant
-    * @param float $deltaT The time delta in seconds between this record
-    *                      and the last one
-    * @param array $cal    The calibration array
+    * @param float  $deltaT  The time delta in seconds between this record
+    *                        and the last one
+    * @param array  $cal     The calibration array
     *
     * @return mixed The cruched reading.
     */
@@ -133,11 +135,18 @@ class Sensor
             $args[1]; // Remove the $type
             unset($args[2]); // Remove the $sensor
             $stuff = $class->sensors[$type][$sensor];
-            if (isset($stuff['mult'])) $val *= $stuff['mult'];
+            if (isset($stuff['mult'])) {
+                $val *= $stuff['mult'];
+            }
             $args[0] = $val;
             $args[1] = $stuff;
             $args    = array_merge($args); // Compacts the array
-            $val     = $this->runFunction($class, $stuff['function'], $args, $args[0]);
+            $val     = $this->runFunction(
+                $class,
+                $stuff['function'],
+                $args,
+                $args[0]
+            );
         }
         return $val;
     }
@@ -215,7 +224,8 @@ class Sensor
         $return = null;
         $class  = $this->getClass($type, $sensor);
         if (is_object($class)) {
-            if (array_search($unit, $class->sensors[$type][$sensor]['validUnits']) !== false) {
+            $validUnits = &$class->sensors[$type][$sensor]['validUnits'];
+            if (array_search($unit, $validUnits) !== false) {
                 $return = $unit;
             } else {
                 $return = $class->sensors[$type][$sensor]['storageUnit'];
@@ -250,14 +260,16 @@ class Sensor
         $return = array();
         $class  = $this->getClass($type, $sensor);
         if (is_object($class)) {
-            if (is_array($class->sensors[$type][$sensor]['extraText'])) {
-                foreach ($class->sensors[$type][$sensor]['extraText'] as $key => $val) {
+            $extraText    = &$class->sensors[$type][$sensor]['extraText'];
+            $extraDefault = &$class->sensors[$type][$sensor]['extraDefault'];
+            if (is_array($extraText)) {
+                foreach ($extraText as $key => $val) {
                     $return[$key]['text']    = $val;
-                    $return[$key]['default'] = $class->sensors[$type][$sensor]['extraDefault'][$key];
+                    $return[$key]['default'] = $extraDefault[$key];
                 }
-            } else if (isset($class->sensors[$type][$sensor]['extraText'])) {
-                $return[0]['text']    = $class->sensors[$type][$sensor]['extraText'];
-                $return[0]['default'] = $class->sensors[$type][$sensor]['extraDefault'];
+            } else if (isset($extraText)) {
+                $return[0]['text']    = $extraText;
+                $return[0]['default'] = $extraDefault;
             }
         }
         return $return;
@@ -307,7 +319,9 @@ class Sensor
                 $return = $class->sensors[$type][$sensor]['inputSize'];
             }
         }
-        if ($return < 1) $return = 1;
+        if ($return < 1) {
+            $return = 1;
+        }
         return $return;
     }
 
@@ -370,7 +384,9 @@ class Sensor
         }
         // We don't want to return an invalid value, so return ignore if
         // we don't get a valid value to return.
-        if (empty($return)) $return = "ignore";
+        if (empty($return)) {
+            $return = "ignore";
+        }
         return $return;
     }
 
@@ -424,7 +440,9 @@ class Sensor
             foreach ($this->dev[$type] as $key => $class) {
                 if ($done[$class] !== true) {
                     $s = $this->sensors[$class]->sensors[$type];
-                    if (is_array($s)) $sensors = array_merge($sensors, $s);
+                    if (is_array($s)) {
+                        $sensors = array_merge($sensors, $s);
+                    }
                     $done[$class] = true;
                 }
             }
@@ -435,7 +453,8 @@ class Sensor
     /**
      * Gets all possible sensors for a sensor type
      *
-     * @param int $type Int The type of sensor
+     * @param int    $type   The type of sensor
+     * @param string $sensor The sensor type to use
      *
      * @return array
       */
@@ -467,17 +486,33 @@ class Sensor
     function checkUnits(&$type, &$sensor, &$units, &$mode)
     {
         if (is_array($type)) {
-            if (!is_array($units)) $units = array();
-            if (!is_array($mode)) $mode = array();
-            if (!is_array($sensor)) $sensor = array();
-
+            if (!is_array($units)) {
+                $units = array();
+            }
+            if (!is_array($mode)) {
+                $mode = array();
+            }
+            if (!is_array($sensor)) {
+                $sensor = array();
+            }
             $skip = 0;
             foreach ($type as $key => $value) {
-                $units[$key] = $this->getUnits($type[$key], $sensor[$key], $units[$key]);
-                $mode[$key]  = $this->getUnitMode($type[$key], $sensor[$key], $units[$key], $mode[$key]);
+                $units[$key] = $this->getUnits(
+                    $type[$key],
+                    $sensor[$key],
+                    $units[$key]
+                );
+                $mode[$key]  = $this->getUnitMode(
+                    $type[$key],
+                    $sensor[$key],
+                    $units[$key],
+                    $mode[$key]
+                );
             }
         } else {
-            if (is_array($sensor)) unset($sensor);
+            if (is_array($sensor)) {
+                unset($sensor);
+            }
             $units = $this->getUnits($type, $sensor, $units);
             $mode  = $this->getUnitMode($type, $sensor, $units, $mode);
         }
@@ -505,7 +540,9 @@ class Sensor
       */
     function decodeData(&$Info, &$data)
     {
-        if (!isset($data["Date"])) $data["Date"] = date("Y-m-d H:i:s");
+        if (!isset($data["Date"])) {
+            $data["Date"] = date("Y-m-d H:i:s");
+        }
         if (is_array($data["raw"])) {
             $skip = 0;
             foreach ($data["raw"] as $rawkey => $rawval) {
@@ -517,34 +554,61 @@ class Sensor
                     $skip--;
                     continue;
                 }
-                $skip = $this->getSize($data["Types"][$rawkey],
-                                       $Info['params']['sensorType'][$rawkey]) - 1;
+                $skip = $this->getSize(
+                    $data["Types"][$rawkey],
+                    $Info['params']['sensorType'][$rawkey]
+                ) - 1;
 
                 if (is_null($data['Units'][$rawkey])) {
-                    $data['Units'][$rawkey] = $this->getUnits($data["Types"][$rawkey],
-                                                              $Info['params']['sensorType'][$rawkey]);
+                    $data['Units'][$rawkey] = $this->getUnits(
+                        $data["Types"][$rawkey],
+                        $Info['params']['sensorType'][$rawkey]
+                    );
                 }
-                $data['dType'][$rawkey]    = $this->getUnitMode($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey], $data['Units'][$rawkey], $Info['params']['dType'][$rawkey]);
-                $data['unitType'][$rawkey] = $this->getUnitType($data["Types"][$rawkey], $Info['params']['sensorType'][$rawkey]);
+                $data['dType'][$rawkey]    = $this->getUnitMode(
+                    $data["Types"][$rawkey],
+                    $Info['params']['sensorType'][$rawkey],
+                    $data['Units'][$rawkey],
+                    $Info['params']['dType'][$rawkey]
+                );
+                $data['unitType'][$rawkey] = $this->getUnitType(
+                    $data["Types"][$rawkey],
+                    $Info['params']['sensorType'][$rawkey]
+                );
                 if ($data['dType'][$rawkey] == 'diff') {
                     if (isset($this->lastRecord[$data['DeviceKey']])) {
                         if (!isset($data['deltaT'])) {
-                            $data['deltaT'] =  strtotime($data['Date']) - strtotime($this->lastRecord[$data['DeviceKey']]['Date']);
+                            $data['deltaT'] = strtotime($data['Date'])
+                                - strtotime(
+                                    $this->lastRecord[$data['DeviceKey']]['Date']
+                                );
                         }
-                        $newraw = $rawval - $this->lastRecord[$data['DeviceKey']]["raw"][$rawkey];
-                        if ($data['deltaT'] < 0) $newraw = abs($newraw);
-                        $data["Data".$rawkey] = $this->getReading($newraw,
-                                                    $data["Types"][$rawkey],
-                                                    $Info['params']["sensorType"][$rawkey],
-                                                    $data["TimeConstant"],
-                                                    $Info['params']['Extra'][$rawkey],
-                                                    $data['deltaT']);
+                        $newraw = $rawval
+                            - $this->lastRecord[$data['DeviceKey']]["raw"][$rawkey];
+                        if ($data['deltaT'] < 0) {
+                            $newraw = abs($newraw);
+                        }
+                        $data["Data".$rawkey] = $this->getReading(
+                            $newraw,
+                            $data["Types"][$rawkey],
+                            $Info['params']["sensorType"][$rawkey],
+                            $data["TimeConstant"],
+                            $Info['params']['Extra'][$rawkey],
+                            $data['deltaT']
+                        );
                     } else {
                         unset($data["Data".$rawkey]);
                         unset($data["data"][$rawkey]);
                     }
                 } else {
-                    $data["Data".$rawkey] = $this->getReading($rawval, $data["Types"][$rawkey], $Info['params']["sensorType"][$rawkey], $data["TimeConstant"], $Info['params']['Extra'][$rawkey], $data["deltaT"]);
+                    $data["Data".$rawkey] = $this->getReading(
+                        $rawval,
+                        $data["Types"][$rawkey],
+                        $Info['params']["sensorType"][$rawkey],
+                        $data["TimeConstant"],
+                        $Info['params']['Extra'][$rawkey],
+                        $data["deltaT"]
+                    );
                 }
                 $data["data"][$rawkey] = $data["Data".$rawkey];
             }
@@ -564,11 +628,19 @@ class Sensor
     function checkRecord(&$data)
     {
         // Start with the assumption that the packet is good.
-        if (!isset($data["Status"])) $data["Status"] = "GOOD";
-
+        if (!isset($data["Status"])) {
+            $data["Status"] = "GOOD";
+        }
         // Check each reading.
         for ($i = 0; $i < $data['ActiveSensors']; $i++) {
-            if (!$this->checkPoint($data['Data'.$i], $data['Types'][$i], $data['params']['sensorType'][$i], $data['Units'][$i], $data['dType'][$i])) {
+            $check = $this->checkPoint(
+                $data['Data'.$i],
+                $data['Types'][$i],
+                $data['params']['sensorType'][$i],
+                $data['Units'][$i],
+                $data['dType'][$i]
+            );
+            if (!$check) {
                 $data['Data'.$i]  = null;
                 $data['data'][$i] = null;
             }
@@ -597,7 +669,12 @@ class Sensor
             $args[1] = $class->sensors[$type][$sensor]; // This overwrites the type
             unset($args[2]); // Remove the $sensor
             $stuff = $class->sensors[$type][$sensor];
-            $ret   = $this->runFunction($class, $stuff['checkFunction'], $args, true);
+            $ret   = $this->runFunction(
+                $class,
+                $stuff['checkFunction'],
+                $args,
+                true
+            );
         }
         return $ret;
     }
