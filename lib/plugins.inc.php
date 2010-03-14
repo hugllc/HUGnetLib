@@ -662,9 +662,6 @@ class Plugins
     */
     private function _checkFile($file)
     {
-        if (function_exists("runkit_lint_file")) {
-            return runkit_lint_file($file);
-        }
         return true;
     }
 

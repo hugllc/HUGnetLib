@@ -35,17 +35,18 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/**
-* Test Function
-*
-* @return none
-*
-* @static
-*/
-function pluginTestParseErrorPlugin1()
-{
+if (!function_exists("pluginTestParseErrorPlugin1")) {
+    /**
+    * Test Function
+    *
+    * @return none
+    * 
+    * @static
+    */
+    function pluginTestParseErrorPlugin1()
+    {
+    }
 }
-
 //$this->registerFunction("pluginTestParseError", "filter", "messy", "messier");
 
 ?>

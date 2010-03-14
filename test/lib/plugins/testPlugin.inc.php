@@ -34,18 +34,19 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/**
-* Test Function
-*
-* @return none
-*
-* @static
-*/
-function pluginTestPlugin1()
-{
+if (!function_exists("pluginTestPlugin1")) {
+    /**
+    * Test Function
+    *
+    * @return none
+    *
+    * @static
+    */
+    function pluginTestPlugin1()
+    {  
 
+    }
 }
-
 $this->registerFunction("pluginTestPlugin1", "filter", "messy", "messier");
 
 ?>
