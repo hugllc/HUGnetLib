@@ -423,6 +423,7 @@ class UnitConversion
      * @param int   $dPlaces  The maximum number of decimal places to show.
      * @param array &$type    The types to change to
      * @param array &$units   The units to change to
+     * @param int   $key      The Key to use
      *
      * @return null
      */
