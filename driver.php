@@ -202,10 +202,12 @@ class HUGnetDriver
         }
 
         if (is_object($this->drivers[$use_driver])
-            && method_exists($this->drivers[$use_driver], $function)) {
+            && method_exists($this->drivers[$use_driver], $function)
+        ) {
             return $use_driver;
         } else if (is_object($this->drivers["eDEFAULT"])
-            && method_exists($this->drivers["eDEFAULT"], $function)) {
+            && method_exists($this->drivers["eDEFAULT"], $function)
+        ) {
             return "eDEFAULT";
         } else {
             //add_debug_output("All Drivers (including eDEFAULT) failed.<BR>\n");
@@ -368,13 +370,19 @@ class HUGnetDriver
             $cal                    = $this->query($query);
             $devInfo["Calibration"] = array();
             if (is_array($cal[0])) {
-                $devInfo["Calibration"] = $this->getCalibration($devInfo, $cal[0]['RawCalibration']);
+                $devInfo["Calibration"] = $this->getCalibration(
+                    $devInfo,
+                    $cal[0]['RawCalibration']
+                );
             }
             $gw = $this->gateway->get($devInfo["GatewayKey"]);
             if (is_array($gw)) {
                 $devInfo['Gateway'] = $gw[0];
             }
-            $devInfo['Controller'] = $this->device->getDevice($devInfo["ControllerKey"], $type);
+            $devInfo['Controller'] = $this->device->getDevice(
+                $devInfo["ControllerKey"],
+                $type
+            );
         }
         return $devInfo;
 
@@ -421,7 +429,10 @@ class HUGnetDriver
             $this->Info[$DeviceID] = $gw;
             $dev                   = $this->interpConfig(array($Info));
             if (is_array($dev[0])) {
-                $this->Info[$DeviceID] = array_merge($this->Info[$DeviceID], $dev[0]);
+                $this->Info[$DeviceID] = array_merge(
+                    $this->Info[$DeviceID],
+                    $dev[0]
+                );
             }
         }
         return($this->Info[$DeviceID]);
@@ -470,7 +481,8 @@ class HUGnetDriver
 
             // Save all of the raw data by DeviceID.  We don't necessarily know what
             // Device we are dealing with.
-            $RawData[$packet['DeviceID']][$packet['sendCommand']] = $packet['RawData'];
+            $RawData[$packet['DeviceID']][$packet['sendCommand']]
+                = $packet['RawData'];
 
         }
         // If it is not a general config packet, it is a specific one.   It will not

@@ -64,7 +64,9 @@ class Filter
     function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
-            if (!isset($_SESSION["incdir"])) $_SESSION["incdir"] = dirname(__FILE__)."/";
+            if (!isset($_SESSION["incdir"])) {
+                $_SESSION["incdir"] = dirname(__FILE__)."/";
+            }
             $plugins = new Plugins(dirname(__FILE__)."/drivers/filters/", "php");
         }
 
@@ -76,7 +78,8 @@ class Filter
     /**
      * Register a filter class.
      *
-     * @param mixed  $class The name of the sensor class to register, or the actual object
+     * @param mixed  $class The name of the sensor class to register, or the
+     *                      actual object
      * @param string $name  The name of the class if the above is an object.
      *
      * @return bool true on success, false on failure
@@ -86,7 +89,9 @@ class Filter
         if (is_string($class) && class_exists($class)) {
             $this->filters[$class] = new $class();
         } else if (is_object($class)) {
-            if (empty($name)) $name = get_class($class);
+            if (empty($name)) {
+                $name = get_class($class);
+            }
             $this->filters[$name] = $class;
             $class                = $name;
         } else {
@@ -117,7 +122,9 @@ class Filter
      */
     public function filter(&$history, $filters, $extra)
     {
-        if (!is_array($filters)) return;
+        if (!is_array($filters)) {
+            return;
+        }
         foreach ($filters as $index => $filter) {
             $this->_filterData($history, $index, $filter, $extra);
         }
@@ -137,7 +144,9 @@ class Filter
     {
         // Type is set by getClass
         $class = $this->getClass($type, $filter);
-        if (!is_object($class)) return;
+        if (!is_object($class)) {
+            return;
+        }
         $args = func_get_args();
         unset($args[2]); // Remove the $filter
         $stuff   = $class->filters[$type][$filter];
@@ -158,19 +167,23 @@ class Filter
       */
     function runFunction(&$class, $function, &$args)
     {
-        if (!is_string($function)) return;
-        if (!method_exists($class, $function)) return;
+        if (!is_string($function) || !method_exists($class, $function)) {
+            return;
+        }
         $ret = call_user_func_array(array(&$class, $function), $args);
-        if (!empty($ret)) $args[0] = $ret;
+        if (!empty($ret)) {
+            $args[0] = $ret;
+        }
     }
 
     /**
      * Returns the class.  If you want the default filter for the filter type
-     * Just give $filter a blank variable.  This will be set to the name of the filter
-     * tat it finds.
+     * Just give $filter a blank variable.  This will be set to the name of the
+     * filter that it finds.
      *
      * @param string &$type   The type of filter
-     * @param string &$filter The filter to implement.  This can be changed by this routine.
+     * @param string &$filter The filter to implement.  This can be changed by
+     *                        this routine.
      *
      * @return object
       */

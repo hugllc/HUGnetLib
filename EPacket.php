@@ -364,8 +364,10 @@ class EPacket
             $index = $this->_setupsendPacket($Info, $Packet, $pktTimeout, $GetReply);
             $tries = 0;
             while ($tries < $this->Retries) {
-                $retval = $this->socket[$socket]->SendPacket($this->Packets[$index],
-                                                             $GetReply);
+                $retval = $this->socket[$socket]->SendPacket(
+                    $this->Packets[$index],
+                    $GetReply
+                );
                 if ($retval) {
                     $retval = $this->_sendPacketGetReply($socket, $index);
                 }
@@ -409,8 +411,10 @@ class EPacket
             return true;
         }
         do {
-            $pktRet = $this->recvPacket($socket,
-                                        $this->Packets[$index]["pktTimeout"]);
+            $pktRet = $this->recvPacket(
+                $socket,
+                $this->Packets[$index]["pktTimeout"]
+            );
             if (is_array($pktRet)) {
                 $ret[] = $pktRet;
                 if ($pktRet["Reply"] === true) {
@@ -705,7 +709,8 @@ class EPacket
 
             if (!($this->getAll
                 ||  ($pkt["Unsolicited"]
-                && $this->_getUnsolicited))) {
+                && $this->_getUnsolicited))
+            ) {
                 $pkt = false;
             }
         }
@@ -892,8 +897,9 @@ class EPacket
         }
         if ($this->_DeviceIDCheck) {
             if (($this->SN == false)
-                 || ((hexdec($this->SN) >= $this->maxSN)
-                 || (hexdec($this->SN) < 1))) {
+                || ((hexdec($this->SN) >= $this->maxSN)
+                || (hexdec($this->SN) < 1))
+            ) {
                 $this->changeSN($config);
                 if ($this->verbose) {
                     print "Using Serial Number ".$this->SN."\r\n";

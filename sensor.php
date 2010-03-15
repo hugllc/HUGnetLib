@@ -54,12 +54,12 @@ require_once "lib/plugins.inc.php";
 class Sensor
 {
     /**
-     * This registers the sensor Plugins so we know what code we have available.
-     *
-     * @param object &$plugins This is a object of type plugin
-     *
-     * @see plugin
-      */
+    * This registers the sensor Plugins so we know what code we have available.
+    *
+    * @param object &$plugins This is a object of type plugin
+    *
+    * @see plugin
+    */
     function __construct(&$plugins = "")
     {
         if (!is_object($plugins)) {
@@ -74,14 +74,14 @@ class Sensor
     }
 
     /**
-     * Register a sensor class.
-     *
-     * @param mixed  $class The name of the sensor class to register,
-     *                  or the actual object
-     * @param string $name  The name of the class if the above is an object.
-     *
-     * @return bool true on success, false on failure
-      */
+    * Register a sensor class.
+    *
+    * @param mixed  $class The name of the sensor class to register,
+    *                  or the actual object
+    * @param string $name  The name of the class if the above is an object.
+    *
+    * @return bool true on success, false on failure
+    */
     public function registerSensor($class, $name=false)
     {
         if (is_string($class) && class_exists($class)) {
@@ -152,16 +152,16 @@ class Sensor
     }
 
     /**
-     * Runs teh specified function or if that function doesn't exist returns
-     * whatever was specified in the return paramter.
-     *
-     * @param object &$class   Reference to the class the function is a method of
-     * @param string $function the name of the function to call
-     * @param array  &$args    The arguments to send to that function
-     * @param mixed  $return   The default return value
-     *
-     * @return mixed The return value of the function
-      */
+    * Runs teh specified function or if that function doesn't exist returns
+    * whatever was specified in the return paramter.
+    *
+    * @param object &$class   Reference to the class the function is a method of
+    * @param string $function the name of the function to call
+    * @param array  &$args    The arguments to send to that function
+    * @param mixed  $return   The default return value
+    *
+    * @return mixed The return value of the function
+    */
     function runFunction(&$class, $function, &$args, $return = null)
     {
         if (is_string($function)) {
@@ -174,19 +174,19 @@ class Sensor
     }
 
     /**
-     *  Finds the class for the sensor given.
-     *
-     *  Returns null if no class is found.
-     *
-     *  This function will modify and correct the type and sensor
-     *  arguments given.  It is done here because it makes sense since
-     *  this function is finding the class to use
-     *
-     * @param int    &$type   The type of sensor
-     * @param string &$sensor The short name of the sensor
-     *
-     * @return object A reference to the sensor object
-      */
+    *  Finds the class for the sensor given.
+    *
+    *  Returns null if no class is found.
+    *
+    *  This function will modify and correct the type and sensor
+    *  arguments given.  It is done here because it makes sense since
+    *  this function is finding the class to use
+    *
+    * @param int    &$type   The type of sensor
+    * @param string &$sensor The short name of the sensor
+    *
+    * @return object A reference to the sensor object
+    */
     function &getClass(&$type, &$sensor)
     {
         $type   = (int) $type;
@@ -203,22 +203,22 @@ class Sensor
     }
 
     /**
-     * Checks the units given for validity based on the sensor and type given
-     *
-     * If the unit is valid it will be returned.  If it is not valid,
-     * the storageUnit will be returned instead.
-     *
-     * This function can be used to get the storageUnit for a device by not including
-     * the unit parameter.
-     *
-     *  It will return null if the sensor doesn't exist.
-     *
-     * @param int    $type    Int The type of sensor
-     * @param string &$sensor The short name of the sensor
-     * @param string $unit    The unit to check.
-     *
-     * @return string A valid unit for the sensor given.
-      */
+    * Checks the units given for validity based on the sensor and type given
+    *
+    * If the unit is valid it will be returned.  If it is not valid,
+    * the storageUnit will be returned instead.
+    *
+    * This function can be used to get the storageUnit for a device by not including
+    * the unit parameter.
+    *
+    *  It will return null if the sensor doesn't exist.
+    *
+    * @param int    $type    Int The type of sensor
+    * @param string &$sensor The short name of the sensor
+    * @param string $unit    The unit to check.
+    *
+    * @return string A valid unit for the sensor given.
+    */
     function getUnits($type, &$sensor, $unit = false)
     {
         $return = null;
@@ -235,26 +235,26 @@ class Sensor
     }
 
     /**
-     * Gets the information on the extra parameters that go with a sensor.
-     *
-     * This returns an array of the form:
-     * <code>
-     * array(
-     *  0 => array(
-     *    'text' => "Text description of this field",
-     *    'default' => "default",
-     * ),
-     *);
-     * </code>
-     *
-     * This array will have as many members as there are extra fields for that
-     * sensor.
-     *
-     * @param int    $type    The type of sensor
-     * @param string &$sensor The short name of the sensor
-     *
-     * @return array Array of information about the extra parameters of the sensor
-      */
+    * Gets the information on the extra parameters that go with a sensor.
+    *
+    * This returns an array of the form:
+    * <code>
+    * array(
+    *  0 => array(
+    *    'text' => "Text description of this field",
+    *    'default' => "default",
+    * ),
+    *);
+    * </code>
+    *
+    * This array will have as many members as there are extra fields for that
+    * sensor.
+    *
+    * @param int    $type    The type of sensor
+    * @param string &$sensor The short name of the sensor
+    *
+    * @return array Array of information about the extra parameters of the sensor
+    */
     function getExtra($type, &$sensor)
     {
         $return = array();
@@ -276,17 +276,17 @@ class Sensor
     }
 
     /**
-     * Returns the text name for the type of thing the sensor is measuring.
-     *
-     * A temperature sensor would return "Temperature".
-     *
-     * Returns null if no sensor is found.
-     *
-     * @param int    $type    Int The type of sensor
-     * @param string &$sensor The short name of the sensor
-     *
-     * @return string The name of what the sensor is measuring.
-      */
+    * Returns the text name for the type of thing the sensor is measuring.
+    *
+    * A temperature sensor would return "Temperature".
+    *
+    * Returns null if no sensor is found.
+    *
+    * @param int    $type    Int The type of sensor
+    * @param string &$sensor The short name of the sensor
+    *
+    * @return string The name of what the sensor is measuring.
+    */
     function getUnitType($type, &$sensor)
     {
         $return = null;
@@ -298,18 +298,18 @@ class Sensor
     }
 
     /**
-     * Returns how many inputs a sensor takes
-     *
-     * Most sensors will return 1, so it assumes the value
-     * is 1 if the sensor doesn't specify this value.
-     *
-     * Returns 1 if no sensor is found.
-     *
-     * @param int    $type   The type of sensor
-     * @param string $sensor The short name of the sensor
-     *
-     * @return int The number of inputs on the endpoint that this sensor takes.
-      */
+    * Returns how many inputs a sensor takes
+    *
+    * Most sensors will return 1, so it assumes the value
+    * is 1 if the sensor doesn't specify this value.
+    *
+    * Returns 1 if no sensor is found.
+    *
+    * @param int    $type   The type of sensor
+    * @param string $sensor The short name of the sensor
+    *
+    * @return int The number of inputs on the endpoint that this sensor takes.
+    */
     function getSize($type, $sensor)
     {
         $return = 1;
@@ -326,13 +326,13 @@ class Sensor
     }
 
     /**
-     * Check if we should total the readings instead of averaging them.
-     *
-     * @param int    $type   Int The type of sensor
-     * @param string $sensor The short name of the sensor
-     *
-     * @return bool Whether to total instead of average.  Returns false by default
-      */
+    * Check if we should total the readings instead of averaging them.
+    *
+    * @param int    $type   Int The type of sensor
+    * @param string $sensor The short name of the sensor
+    *
+    * @return bool Whether to total instead of average.  Returns false by default
+    */
     function doTotal($type, $sensor)
     {
         $return = false;
@@ -344,18 +344,18 @@ class Sensor
     }
 
     /**
-     * Check to see if a mode is valid.
-     *
-     *  If the mode is valid it is returned.  Otherwise a valid mode
-     *  is found and returned.
-     *
-     * @param int    $type    The type of sensor
-     * @param string &$sensor The short name of the sensor
-     * @param string $unit    The unit to check
-     * @param string $mode    The mode to check
-     *
-     * @return string A valid mode for the sensor given.
-      */
+    * Check to see if a mode is valid.
+    *
+    *  If the mode is valid it is returned.  Otherwise a valid mode
+    *  is found and returned.
+    *
+    * @param int    $type    The type of sensor
+    * @param string &$sensor The short name of the sensor
+    * @param string $unit    The unit to check
+    * @param string $mode    The mode to check
+    *
+    * @return string A valid mode for the sensor given.
+    */
     function getUnitMode($type, &$sensor, $unit=null, $mode=false)
     {
         $return = array();
@@ -391,14 +391,14 @@ class Sensor
     }
 
     /**
-     * Get the default units for a sensor
-     *
-     * @param int    $type    The type of sensor
-     * @param string &$sensor The short name of the sensor
-     * @param string $unit    The unit to check
-     *
-     * @return string
-      */
+    * Get the default units for a sensor
+    *
+    * @param int    $type    The type of sensor
+    * @param string &$sensor The short name of the sensor
+    * @param string $unit    The unit to check
+    *
+    * @return string
+    */
     function getUnitDefMode($type, &$sensor, $unit)
     {
         $return = $this->getUnitMode($type, $sensor, $unit);
@@ -406,13 +406,13 @@ class Sensor
     }
 
     /**
-     * Get all possible units for this sensor.
-     *
-     * @param int    $type    The type of sensor
-     * @param string &$sensor The short name of the sensor
-     *
-     * @return array
-      */
+    * Get all possible units for this sensor.
+    *
+    * @param int    $type    The type of sensor
+    * @param string &$sensor The short name of the sensor
+    *
+    * @return array
+    */
     function getAllUnits($type, &$sensor)
     {
         $return = array();
@@ -425,12 +425,12 @@ class Sensor
 
 
     /**
-     * Gets all possible sensors for a sensor type
-     *
-     * @param int $type Int The type of sensor
-     *
-     * @return array
-      */
+    * Gets all possible sensors for a sensor type
+    *
+    * @param int $type Int The type of sensor
+    *
+    * @return array
+    */
     function getAllSensors($type)
     {
         $type    = (int)$type;
@@ -451,13 +451,13 @@ class Sensor
         return $sensors;
     }
     /**
-     * Gets all possible sensors for a sensor type
-     *
-     * @param int    $type   The type of sensor
-     * @param string $sensor The sensor type to use
-     *
-     * @return array
-      */
+    * Gets all possible sensors for a sensor type
+    *
+    * @param int    $type   The type of sensor
+    * @param string $sensor The sensor type to use
+    *
+    * @return array
+    */
     function getSensor($type, $sensor)
     {
         $type    = (int)$type;
@@ -469,20 +469,20 @@ class Sensor
     }
 
     /**
-     * Check to see if an array of units is valid
-     *
-     *  This checks each unit in the array.  It expects all
-     *  of its parameters to be arrays and they all have to
-     *  be indexed identically.  It works directly on the arrays
-     *  given and can modify any of them.
-     *
-     * @param array &$type   The type of sensor
-     * @param array &$sensor The short name of the sensor
-     * @param array &$units  The unit to check
-     * @param array &$mode   The mode to check
-     *
-     * @return null
-      */
+    * Check to see if an array of units is valid
+    *
+    *  This checks each unit in the array.  It expects all
+    *  of its parameters to be arrays and they all have to
+    *  be indexed identically.  It works directly on the arrays
+    *  given and can modify any of them.
+    *
+    * @param array &$type   The type of sensor
+    * @param array &$sensor The short name of the sensor
+    * @param array &$units  The unit to check
+    * @param array &$mode   The mode to check
+    *
+    * @return null
+    */
     function checkUnits(&$type, &$sensor, &$units, &$mode)
     {
         if (is_array($type)) {
@@ -519,25 +519,25 @@ class Sensor
     }
 
     /**
-     *  Decodes the data given based on the device information.
-     *
-     *  This routine does the meat of the sensor decode.  It takes
-     *  raw data from devices and turns it into numbers with units
-     *  and data types.  It will change records into differential if
-     *  that is required by whatever sensor is reading the data.
-     *
-     *  This requires that there is an array of integers in the data array
-     *  called data['raw'].  This should be indexed numerically according to
-     *  the sensors on the particular device specified in the Info array.
-     *
-     *  This returns the data as data['DataX'] and data['data'][X], where X is
-     *  the sensor number.
-     *
-     * @param array &$Info The device information array for this device
-     * @param array &$data The data to decode
-     *
-     * @return null
-      */
+    *  Decodes the data given based on the device information.
+    *
+    *  This routine does the meat of the sensor decode.  It takes
+    *  raw data from devices and turns it into numbers with units
+    *  and data types.  It will change records into differential if
+    *  that is required by whatever sensor is reading the data.
+    *
+    *  This requires that there is an array of integers in the data array
+    *  called data['raw'].  This should be indexed numerically according to
+    *  the sensors on the particular device specified in the Info array.
+    *
+    *  This returns the data as data['DataX'] and data['data'][X], where X is
+    *  the sensor number.
+    *
+    * @param array &$Info The device information array for this device
+    * @param array &$data The data to decode
+    *
+    * @return null
+    */
     function decodeData(&$Info, &$data)
     {
         if (!isset($data["Date"])) {
@@ -575,42 +575,7 @@ class Sensor
                     $data["Types"][$rawkey],
                     $Info['params']['sensorType'][$rawkey]
                 );
-                if ($data['dType'][$rawkey] == 'diff') {
-                    if (isset($this->lastRecord[$data['DeviceKey']])) {
-                        if (!isset($data['deltaT'])) {
-                            $data['deltaT'] = strtotime($data['Date'])
-                                - strtotime(
-                                    $this->lastRecord[$data['DeviceKey']]['Date']
-                                );
-                        }
-                        $newraw = $rawval
-                            - $this->lastRecord[$data['DeviceKey']]["raw"][$rawkey];
-                        if ($data['deltaT'] < 0) {
-                            $newraw = abs($newraw);
-                        }
-                        $data["Data".$rawkey] = $this->getReading(
-                            $newraw,
-                            $data["Types"][$rawkey],
-                            $Info['params']["sensorType"][$rawkey],
-                            $data["TimeConstant"],
-                            $Info['params']['Extra'][$rawkey],
-                            $data['deltaT']
-                        );
-                    } else {
-                        unset($data["Data".$rawkey]);
-                        unset($data["data"][$rawkey]);
-                    }
-                } else {
-                    $data["Data".$rawkey] = $this->getReading(
-                        $rawval,
-                        $data["Types"][$rawkey],
-                        $Info['params']["sensorType"][$rawkey],
-                        $data["TimeConstant"],
-                        $Info['params']['Extra'][$rawkey],
-                        $data["deltaT"]
-                    );
-                }
-                $data["data"][$rawkey] = $data["Data".$rawkey];
+                $this->_decodeDataGetReading($Info, $data, $rawkey);
             }
             $data['deltaT']                       = abs($data['deltaT']);
             $this->lastRecord[$data['DeviceKey']] = $data;
@@ -619,12 +584,65 @@ class Sensor
     }
 
     /**
-     * Checks a record based on the sensor information.
-     *
-     * @param array &$data The data to decode
-     *
-     * @return null
-      */
+    * Gets the reading.
+    *
+    * If the record type is diff, then it also calculates the diff.
+    *
+    * @param array &$Info   The device information array for this device
+    * @param array &$data   The data to decode
+    * @param array &$rawkey The key used for the raw data
+    *
+    * @return null
+    */
+    function _decodeDataGetReading(&$Info, &$data, &$rawkey)
+    {
+        $rawval = &$data["raw"][$rawkey];
+        if ($data['dType'][$rawkey] == 'diff') {
+            if (isset($this->lastRecord[$data['DeviceKey']])) {
+                if (!isset($data['deltaT'])) {
+                    $data['deltaT'] = strtotime($data['Date'])
+                        - strtotime(
+                            $this->lastRecord[$data['DeviceKey']]['Date']
+                        );
+                }
+                $newraw = $rawval
+                    - $this->lastRecord[$data['DeviceKey']]["raw"][$rawkey];
+                if ($data['deltaT'] < 0) {
+                    $newraw = abs($newraw);
+                }
+                $data["Data".$rawkey] = $this->getReading(
+                    $newraw,
+                    $data["Types"][$rawkey],
+                    $Info['params']["sensorType"][$rawkey],
+                    $data["TimeConstant"],
+                    $Info['params']['Extra'][$rawkey],
+                    $data['deltaT']
+                );
+            } else {
+                unset($data["Data".$rawkey]);
+                unset($data["data"][$rawkey]);
+            }
+        } else {
+            $data["Data".$rawkey] = $this->getReading(
+                $rawval,
+                $data["Types"][$rawkey],
+                $Info['params']["sensorType"][$rawkey],
+                $data["TimeConstant"],
+                $Info['params']['Extra'][$rawkey],
+                $data["deltaT"]
+            );
+        }
+        $data["data"][$rawkey] = $data["Data".$rawkey];
+    }
+
+
+    /**
+    * Checks a record based on the sensor information.
+    *
+    * @param array &$data The data to decode
+    *
+    * @return null
+    */
     function checkRecord(&$data)
     {
         // Start with the assumption that the packet is good.
@@ -648,18 +666,18 @@ class Sensor
     }
 
     /**
-     * Check to see if a data point is valid
-     *
-     *  This uses the check function in the sensor information to check
-     *  to see if a reading is valid.
-     *
-     * @param mixed  $value  The value to check
-     * @param int    $type   The type of sensor
-     * @param string $sensor The short name of the sensor
-     * @param string $mode   The mode
-     *
-     * @return bool true if the record is good, false if it is not
-      */
+    * Check to see if a data point is valid
+    *
+    *  This uses the check function in the sensor information to check
+    *  to see if a reading is valid.
+    *
+    * @param mixed  $value  The value to check
+    * @param int    $type   The type of sensor
+    * @param string $sensor The short name of the sensor
+    * @param string $mode   The mode
+    *
+    * @return bool true if the record is good, false if it is not
+    */
     function checkPoint($value, $type, $sensor, $mode)
     {
         $ret   = true;
