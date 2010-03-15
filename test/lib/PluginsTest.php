@@ -117,9 +117,9 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     public static function dataRegisterFunction()
     {
         return array(
-            array("name", "type", "title", "desc", null),
-            array("", "type", "title", "desc", null),
-            array(array(), "type", "title", "desc", null),
+            array("name", "type", "title", "desc", array()),
+            array("", "type", "title", "desc", array()),
+            array(array(), "type", "title", "desc", array()),
             array(
                 "pluginTestFunction1",
                 null,
@@ -227,20 +227,6 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
     * data provider for testConstructor
     *
@@ -251,7 +237,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     public static function dataRegisterFunctionRaw()
     {
         return array(
-            array(array(), null),
+            array(array(), array()),
             array(
                 array(
                     "Name" => "pluginTestFunction1",
@@ -274,7 +260,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 "This is not an array",
-                null,
+                array(),
             ),
         );
     }
@@ -308,7 +294,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 "",
                 "HTML",
                 "type",
-                null,
+                array(),
             ),
             array(
                 "name",
@@ -829,6 +815,14 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                     "pluginTestFunction2" => array(4,3,2,1),
                 ),
             ),
+            array(
+                "type",
+                array(1,2,3,4),
+                $plugins,
+                array(
+                    "pluginTestFunction2" => array(4,3,2,1),
+                ),
+            ),
         );
     }
     /**
@@ -1011,6 +1005,156 @@ class PluginsTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->comparePlugins($a, $b);
         $this->assertEquals($expect, $ret);
     }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(
+                "a", "b", "c", array("d"), 4,
+                "dir",
+                "a",
+            ),
+            array(
+                "a", "b", "c", array("d"), 4,
+                "extension",
+                "b",
+            ),
+            array(
+                "a", "b", "c", array("d"), 4,
+                "webdir",
+                "c",
+            ),
+            array(
+                "a", "b", "c", array("d"), 4,
+                "_skipDir",
+                array("d"),
+            ),
+            array(
+                "a", "b", "c", "d", 4,
+                "verbose",
+                4,
+            ),
+            array(
+                "", "", "", "d", "Not an Integer",
+                "dir",
+                "./plugins/",
+            ),
+            array(
+                "", "", "", "d", "Not an Integer",
+                "extension",
+                ".plugin.php",
+            ),
+            array(
+                "", "", "", "d", "Not an Integer",
+                "webdir",
+                "plugins/",
+            ),
+            array(
+                "", "", "", "d", "Not an Integer",
+                "_skipDir",
+                array(),
+            ),
+            array(
+                "", "", "", "d", "Not an Integer",
+                "verbose",
+                0,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $basedir   the directory to look for Plugins in.  Sets this->dir
+    * @param string $extension the file extension to look for.  Sets this->extension
+    * @param string $webdir    the directory that it will be in on the web site.
+    * @param array  $skipDir   Array of Strings Directories to not look into for
+    *                          plugins.
+    * @param int    $verbose   The verbosity level
+    * @param string $attribute The attribute to check
+    * @param array  $expect    The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor
+    */
+    public function testConstructor(
+        $basedir,
+        $extension,
+        $webdir,
+        $skipDir,
+        $verbose,
+        $attribute,
+        $expect
+    ) {
+        $o = new plugins($basedir, $extension, $webdir, $skipDir, $verbose);
+        $this->assertAttributeEquals($expect, $attribute, $o);
+    }
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataIncludeFile()
+    {
+        return array(
+            array(
+                "Bad File",
+                "Bad Directory",
+                "Nothing Here",
+                array(),
+            ),
+            array(
+                "testPlugin.inc.php",
+                dirname(__FILE__)."/plugins/",
+                "Nothing Here",
+                array(
+                    "Functions" => array(
+                        "filter" => array(
+                            0 => array(
+                                "Name" => "pluginTestPlugin1",
+                                "Types" => "filter",
+                                "Title" => "messy",
+                                "Description" => "messier",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $file    The full or relative path to the file to be included.
+    * @param string $filedir The filesystem directory where the files are located.
+    * @param string $webdir  The web directory where they are located (the path
+    *     relative to DOCUMENT_ROOT)
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataIncludeFile
+    */
+    public function testIncludeFile(
+        $file,
+        $filedir,
+        $webdir,
+        $expect
+    ) {
+        $this->o->includeFile($file, $filedir, $webdir);
+        $this->assertAttributeEquals($expect, "plugins", $this->o);
+    }
+
 
     /**
     * data provider for testConstructor
