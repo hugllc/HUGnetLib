@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,15 +31,16 @@
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
 /** Define defaults for signals if they are not already present. */
-if (!defined("SIGKILL")) define("SIGKILL", 9);
-
+if (!defined("SIGKILL")) {
+    define("SIGKILL", 9);
+}
 /**
  * A class for controlling processes
  *
@@ -65,27 +66,28 @@ class Process extends HUGnetDB
 
 
     /**
-     * constructor
-     *
-     * @param array $config The configuration
-     */
-    function __construct($config = array()) 
+    * constructor
+    *
+    * @param array $config The configuration
+    */
+    function __construct($config = array())
     {
         $config["driver"] = "sqlite";
         parent::__construct($config);
         $this->createTable();
         $this->me = self::getMyInfo();
     }
-    
+
     /**
-     * Sets up all the information about the current process and returns it as anarray
-     *
-     * @param string $block Type of blocking.  Default "NORMAL"
-     * @param string $name  The program name.  Automatically found if left out.
-     *
-     * @return array
-     */
-    static public function getMyInfo($block="NORMAL", $name = false) 
+    * Sets up all the information about the current process and returns it
+    * as anarray
+    *
+    * @param string $block Type of blocking.  Default "NORMAL"
+    * @param string $name  The program name.  Automatically found if left out.
+    *
+    * @return array
+    */
+    static public function getMyInfo($block="NORMAL", $name = false)
     {
         $stuff        = posix_uname();
         $me["Host"]   = $stuff["nodename"];
@@ -104,39 +106,42 @@ class Process extends HUGnetDB
     }
 
     /**
-     * Check to see if a process is running on the local machine.
-     *
-     * @param int $PID The process ID of the process to check.
-     *
-     * @return bool true if the process is running, false otherwise
-    */    
-    function checkProcess($PID) 
+    * Check to see if a process is running on the local machine.
+    *
+    * @param int $PID The process ID of the process to check.
+    *
+    * @return bool true if the process is running, false otherwise
+    */
+    function checkProcess($PID)
     {
         return(posix_getpgid($PID));
     }
 
     /**
-     * Checks all of the defined processes to see if they are running.
-     * 
-     * Checks all defined processes.  If they are not running it makes sure they
-     * are dead, then deletes them from the database, or deletes the PID file.    
-     *
-     * @return null
-     */
-    function checkAll() 
+    * Checks all of the defined processes to see if they are running.
+    *
+    * Checks all defined processes.  If they are not running it makes sure they
+    * are dead, then deletes them from the database, or deletes the PID file.
+    *
+    * @return null
+    */
+    function checkAll()
     {
         if ($this->FileOnly === false) {
             $res = array();
             $KillTime = $this->KillTime * 60;
-            if ($KillTime < 600) $KillTime = 600;
+            if ($KillTime < 600) {
+                $KillTime = 600;
+            }
             $setTime = time() - $KillTime;
             foreach ($res as $key => $val) {
                 if ($val["Host"] != $this->me["Host"]) {
-                    print "[".$this->me["PID"]."] Checking ".$val["Program"]." @ ".$val["Host"]." ";
-                    if (($setTime > strtotime($val["LastCheckin"])) 
+                    print "[".$this->me["PID"]."] Checking ".$val["Program"];
+                    print " @ ".$val["Host"]." ";
+                    if (($setTime > strtotime($val["LastCheckin"]))
                         &&($setTime > strtotime($val["LastChecked"]))
-                        &&($setTime > strtotime($val["Started"]))                
-                       ) {
+                        &&($setTime > strtotime($val["Started"]))
+                    ) {
                         if ($this->remove($val["ProcessKey"])) {
                             print " Deleted ";
                         } else {
@@ -148,10 +153,11 @@ class Process extends HUGnetDB
                     print "\r\n";
                 }
             }
-    
+
             $res = array();
             foreach ($res as $key => $val) {
-                print "[".$this->me["PID"]."] Checking ".$val["Program"]." (".$val["PID"].") ";
+                print "[".$this->me["PID"]."] Checking ".$val["Program"];
+                print " (".$val["PID"].") ";
                 if ($this->CheckProcess($val["PID"])) {
                     print " Okay ";
                     $val["LastChecked"] = date("Y-m-d H:i:s");
@@ -159,85 +165,91 @@ class Process extends HUGnetDB
                 } else {
                     posix_kill($val["PID"], SIGKILL);
                     print " Killed ";
-                    
-                    if ($this->remove($val["ProcessKey"])) print " deleted stale process information ";
+
+                    if ($this->remove($val["ProcessKey"])) {
+                        print " deleted stale process information ";
+                    }
                 }
                 print "\r\n";
             }
         }
     }
-    
+
     /**
-     * Registers this process if it is not blocked.
-     *
-     * @param bool $verbose Whether to spew a whole bunch of output out.
-     *
-     * @return bool true if registered.  false if blocked.
-     */
-    function register($verbose=true) 
+    * Registers this process if it is not blocked.
+    *
+    * @param bool $verbose Whether to spew a whole bunch of output out.
+    *
+    * @return bool true if registered.  false if blocked.
+    */
+    function register($verbose=true)
     {
         $this->me['LastCheckin'] = date("Y-m-d H:i:s");
         $this->dbRegistered      = true;
-        if ($this->FileOnly === false) $this->dbRegister();
+        if ($this->FileOnly === false) {
+            $this->dbRegister();
+        }
         $this->fileRegister();
         $this->Registered = $this->dbRegistered && $this->fileRegistered;
         return $this->Registered;
     }
 
     /**
-     * Checks in with the database so that it won't get killed
-     *
-     * This function will continously try to check in by calling process::FastCheckin().
-     * 
-     * @return null
-     *
-     * @todo make it so this can't be an infinite loop.
-     */
-    function checkin() 
+    * Checks in with the database so that it won't get killed
+    *
+    * This function will continously try to check in by calling
+    * process::FastCheckin().
+    *
+    * @return null
+    *
+    * @todo make it so this can't be an infinite loop.
+    */
+    function checkin()
     {
         while (false == $this->FastCheckin()) {
             sleep(60);
         }
     }
-    
+
     /**
-     * Updates its information in the database
-     * 
-     * If the information in the database is not updated periodically the process will lose
-     * its registration and maybe get killed.  This tries once and if it fails it returns false.    
-     *
-     * @return bool true on success, false on failure
-     */
-    function fastCheckin() 
+    * Updates its information in the database
+    *
+    * If the information in the database is not updated periodically the
+    * process will lose its registration and maybe get killed.  This tries
+    * once and if it fails it returns false.
+    *
+    * @return bool true on success, false on failure
+    */
+    function fastCheckin()
     {
         if ($this->FileOnly === false) {
             if ($this->Registered) {
                 $info                = $this->me;
-                $info["LastCheckin"] = date("Y-m-d H:i:s");        
+                $info["LastCheckin"] = date("Y-m-d H:i:s");
                 $res                 = $this->save($this->me);
-                
+
                 if ($res === false) {
                     $return = $this->dbRegister();
                 } else {
                     $return = true;
                 }
-    
+
             } else {
                 $return = $this->Register(true);
             }
         } else {
-            $return = true;    
+            $return = true;
         }
 
         return($return);
     }
 
     /**
-     * Registers with the database.
-     *
-     * @return bool true if successful, false if failed
-     */
-    function dbRegister() 
+    * Registers with the database.
+    *
+    * @return bool true if successful, false if failed
+    */
+    function dbRegister()
     {
         if (($this->FileOnly === false) && $this->CheckDB()) {
 
@@ -256,21 +268,21 @@ class Process extends HUGnetDB
 
             $this->dbRegistered = $this->query($query);
             return $this->dbRegistered;
-            */            
+            */
             return $this->add($info);
         } else {
-            return(true);    
+            return(true);
         }
     }
-    
+
     /**
-     * Registers with the database.
-     *
-     * @param int $PID The process id
-     *
-     * @return bool true if successful, false if failed
-     */
-    function dbUnregister($PID = null) 
+    * Registers with the database.
+    *
+    * @param int $PID The process id
+    *
+    * @return bool true if successful, false if failed
+    */
+    function dbUnregister($PID = null)
     {
         if (is_null($PID)) {
             $PID = $this->me["PID"];
@@ -280,33 +292,36 @@ class Process extends HUGnetDB
         }
         $query = "DELETE FROM '".$this->table."' "
                 ." WHERE PID=".($PID);
-        $return = $this->query($query);            
-        if ($me) $this->Registered = !$return;
+        $return = $this->query($query);
+        if ($me) {
+            $this->Registered = !$return;
+        }
         return $return;
     }
     /**
-     * Unregisters this process.
-     *
-     * @return null
-     */
-    function unregister() 
+    * Unregisters this process.
+    *
+    * @return null
+    */
+    function unregister()
     {
         $this->dbUnregister();
         $this->fileUnregister();
     }
 
-    
+
     /**
-     * Creates the SQLite DB table
-     *
-     * @param string $table Table to use if not the default
-     * 
-     * @return null
-     */
-    function createTable($table=null) 
+    * Creates the SQLite DB table
+    *
+    * @param string $table Table to use if not the default
+    *
+    * @return null
+    */
+    function createTable($table=null)
     {
-        if (is_string($table) && !empty($table)) $this->table = $table;
-        
+        if (is_string($table) && !empty($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS '".$this->table."' (
                       'PID' int(11) NOT null default '0',
                       'Program' varchar(128) NOT null default '',
@@ -321,52 +336,72 @@ class Process extends HUGnetDB
     }
 
     /**
-     * Checks to see if we are registered
-     *
-     * @param bool $dieonfailure Whether to die if failed to register.  Defaults to false
-     * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
-     *
-     * @return null
-     *
-     * @todo Make this do something other than just print stuff if $dieonfailure is false
-     */
-    function checkRegistered($dieonfailure=false, $verbose=true) 
+    * Checks to see if we are registered
+    *
+    * @param bool $dieonfailure Whether to die if failed to register.
+    *                           Defaults to false
+    * @param bool $verbose      If set to true It prints output for what it
+    *                           is doing.  Defaults to true
+    *
+    * @return null
+    *
+    * @todo Make this do something other than just print stuff if
+    *       $dieonfailure is false
+    */
+    function checkRegistered($dieonfailure=false, $verbose=true)
     {
         if ($this->Registered == false) {
-            if ($verbose) print "[".$this->me["PID"]."] Registration Failed\r\n";
-            if ($dieonfailure) die();
+            if ($verbose) {
+                print "[".$this->me["PID"]."] Registration Failed\r\n";
+            }
+            if ($dieonfailure) {
+                die();
+            }
         } else {
-            if ($verbose) print "[".$this->me["PID"]."] Registered as ".$this->me["Program"]." @ ".$this->me["Host"]."\r\n";
+            if ($verbose) {
+                print "[".$this->me["PID"]."] Registered as ";
+                print $this->me["Program"]." @ ".$this->me["Host"]."\r\n";
+            }
         }
     }
 
 
     /**
-     * Checks to see if we are unregistered
-     *
-     * @param bool $dieonfailure Whether to die if failed to unregister.  Defaults to false
-     * @param bool $verbose      If set to true It prints output for what it is doing.  Defaults to true
-     *
-     * @return null
-     *
-     * @todo Make this do something other than just print stuff if $dieonfailure is false
-     */
-    function checkUnregistered($dieonfailure=false, $verbose=true) 
+    * Checks to see if we are unregistered
+    *
+    * @param bool $dieonfailure Whether to die if failed to unregister.
+    *                           Defaults to false
+    * @param bool $verbose      If set to true It prints output for what it
+    *                           is doing.  Defaults to true
+    *
+    * @return null
+    *
+    * @todo Make this do something other than just print stuff if
+    *        $dieonfailure is false
+    */
+    function checkUnregistered($dieonfailure=false, $verbose=true)
     {
         if ($this->Registered == true) {
-            if ($verbose) print "[".$this->me["PID"]."] Unregistration Failed\r\n";
-            if ($dieonfailure) die();
+            if ($verbose) {
+                print "[".$this->me["PID"]."] Unregistration Failed\r\n";
+            }
+            if ($dieonfailure) {
+                die();
+            }
         } else {
-            if ($verbose) print "[".$this->me["PID"]."] Unregistered ".$this->me["Program"]." @ ".$this->me["Host"]."\r\n";
+            if ($verbose) {
+                print "[".$this->me["PID"]."] Unregistered ";
+                print $this->me["Program"]." @ ".$this->me["Host"]."\r\n";
+            }
         }
     }
 
     /**
-     * Creates a PID file
-     *
-     * @return bool true on success, false on failure
-     */
-    function fileRegister() 
+    * Creates a PID file
+    *
+    * @return bool true on success, false on failure
+    */
+    function fileRegister()
     {
         if ($this->checkFile()) {
 
@@ -380,35 +415,38 @@ class Process extends HUGnetDB
             }
         } else {
             $this->fileRegistered = false;
-        } 
+        }
         return $this->fileRegistered;
     }
 
     /**
-     * Deletes the PID file
-     *
-     * @return null
-     */
-    function fileUnregister() 
+    * Deletes the PID file
+    *
+    * @return null
+    */
+    function fileUnregister()
     {
-        if (file_exists($this->me["File"])) unlink($this->me["File"]);
+        if (file_exists($this->me["File"])) {
+            unlink($this->me["File"]);
+        }
     }
 
     /**
-     * Checks each PID in the PID file if they exist.
-     *
-     * This function checks the PIDs in the PID file to make sure they are
-     * all still running.
-     *
-     * @return bool true if we can run, false if we are blocked.     
-     */
-    function checkFile() 
+    * Checks each PID in the PID file if they exist.
+    *
+    * This function checks the PIDs in the PID file to make sure they are
+    * all still running.
+    *
+    * @return bool true if we can run, false if we are blocked.
+    */
+    function checkFile()
     {
         $return = true;
         if (file_exists($this->me["File"])) {
             foreach (file($this->me["File"]) as $key => $val) {
                 if (is_numeric($val) && !empty($val)) {
-                    print "[".$this->me["PID"]."] Checking ".$val." from ".$this->me["File"];
+                    print "[".$this->me["PID"]."] Checking ".$val;
+                    print " from ".$this->me["File"];
                     if ($this->CheckProcess($val)) {
                         print " Okay ";
                         $return = false;
@@ -424,13 +462,13 @@ class Process extends HUGnetDB
         return($return);
     }
     /**
-     * Checks each PID in the PID file if they exist.
-     *
-     * This function checks the PIDs in the PID file to make sure they are
-     * all still running.
-     *
-     * @return bool true if we can run, false if we are blocked.        
-     */
+    * Checks each PID in the PID file if they exist.
+    *
+    * This function checks the PIDs in the PID file to make sure they are
+    * all still running.
+    *
+    * @return bool true if we can run, false if we are blocked.
+    */
     function checkProcessDB()
     {
         $return = true;
@@ -443,7 +481,7 @@ class Process extends HUGnetDB
             } else {
                 posix_kill($row['PID'], SIGKILL);
                 print " Killed ";
-                $this->dbUnregister($row['PID']);                    
+                $this->dbUnregister($row['PID']);
 
             }
               print "\r\n";
@@ -451,12 +489,12 @@ class Process extends HUGnetDB
         return $return;
     }
     /**
-     * Checks to see if this driver is valid.
-     *
-     * @param string $driver The driver to check
-     *
-     * @return string A valid driver.
-     */
+    * Checks to see if this driver is valid.
+    *
+    * @param string $driver The driver to check
+    *
+    * @return string A valid driver.
+    */
     function checkDriver($driver)
     {
         return "sqlite";

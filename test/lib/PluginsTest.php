@@ -267,8 +267,8 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     /**
     * test
     *
-    * @param mixed  $info   The name to test
-    * @param int    $expect The expected value
+    * @param mixed $info   The name to test
+    * @param int   $expect The expected value
     *
     * @return null
     *

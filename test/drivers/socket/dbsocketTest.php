@@ -219,8 +219,11 @@ class DbSocketTest extends PHPUnit_Framework_TestCase
     /**
     * test
     *
-    * @param array $config The packet to test with
-    * @param array $expect What we expect returned
+    * @param array $preload Data to preload into the database
+    * @param int   $timeout The timeout value for the test
+    * @param bool  $reply   Whether what we are seeing is a reply
+    * @param bool  $getAll  Whether to return all packets or not
+    * @param array $expect  What we expect returned
     *
     * @return null
     *

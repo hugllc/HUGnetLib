@@ -285,8 +285,8 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
      */
     public function testUnbuildPacket()
     {
-/*
-    $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
+        /*
+        $check = array("Command", "To", "From", "RawData", "Checksum", "Length");
         foreach ($this->testPacketStr as $key => $str) {
             $pkt = $this->o->unbuildPacket($str);
             EPacketTest::validPacketArray(
@@ -295,7 +295,7 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
                 $check
             );
         }
-*/
+        */
     }
 
 

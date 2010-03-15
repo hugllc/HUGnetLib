@@ -71,8 +71,10 @@ class VirtualHistory extends Average
      * Gets history between two dates and returns it as an array
      *
      * @param array &$devInfo  The key for the device to get the history for
-     * @param mixed $startDate The first date chronoligically.  Either a unix date or a string
-     * @param mixed $endDate   The second date chronologically.  Either a unix date or a string
+     * @param mixed $startDate The first date chronoligically.  Either a unix
+     *                         date or a string
+     * @param mixed $endDate   The second date chronologically.  Either a unix
+     *                         date or a string
      * @param int   $maxRec    The max number of records to return
      *
      * @return array
@@ -85,15 +87,31 @@ class VirtualHistory extends Average
             $devKey   = (int) $devInfo["params"]["device"][$i];
             $input = (int) $devInfo["params"]["input"][$i] - 1;
 
-            if (empty($devKey)) continue;
-            $dev = array("DeviceKey" => $devKey, "Driver" => $devInfo["params"]["Driver"][$i]);
-            if (!is_object($this->hist[$devKey])) $this->hist[$devKey] = $endpoint->getHistoryInstance(array(), $dev);
-            if (!is_array($this->histBuf[$devKey])) $this->histBuf[$devKey] = $this->hist[$devKey]->getDates($dev, $startDate, $endDate, $maxRec);
+            if (empty($devKey)) {
+                continue;
+            }
+            $dev = array(
+                "DeviceKey" => $devKey,
+                "Driver" => $devInfo["params"]["Driver"][$i]
+            );
+            if (!is_object($this->hist[$devKey])) {
+                $this->hist[$devKey] = $endpoint->getHistoryInstance(array(), $dev);
+            }
+            if (!is_array($this->histBuf[$devKey])) {
+                $this->histBuf[$devKey] = $this->hist[$devKey]->getDates(
+                    $dev,
+                    $startDate,
+                    $endDate,
+                    $maxRec
+                );
+            }
         }
         foreach ($this->histBuf as $devKey => $hist) {
             foreach ($hist as $row) {
                 for ($i = 0; $i < $devInfo["ActiveSensors"]; $i++) {
-                    if ($devKey != $devInfo["params"]["device"][$i]) continue;
+                    if ($devKey != $devInfo["params"]["device"][$i]) {
+                        continue;
+                    }
                     $input =  (int) $devInfo["params"]["input"][$i] - 1;
                     $history[$row["Date"]]["Data".$i] = $row["Data".$input];
                     $history[$row["Date"]]["data"][$i] = $row["Data".$input];

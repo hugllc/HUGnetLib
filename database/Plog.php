@@ -57,7 +57,7 @@ class Plog extends HUGnetDB
     /** The number of columns */
     private $_columns = 14;
     /** @var int Some kind of index */
-    private $index = 1;
+    protected $index = 1;
     /** @var mixed The file to find the SQLite database in */
     protected $file = null;
     /** @var mixed The description of the critical error that just happened. */
@@ -71,7 +71,9 @@ class Plog extends HUGnetDB
       */
     function createTable($table="")
     {
-        if (empty($table)) $table = $this->table;
+        if (empty($table)) {
+            $table = $this->table;
+        }
         $query = " CREATE TABLE IF NOT EXISTS '".$table."' (
                       'id' int(11) NOT null,
                       'DeviceKey' int(11) NOT null default '0',
@@ -106,7 +108,9 @@ class Plog extends HUGnetDB
 
     function add($info)
     {
-        if (!isset($info[$this->id])) $info[$this->id] = $this->index++;
+        if (!isset($info[$this->id])) {
+            $info[$this->id] = $this->index++;
+        }
         return parent::add($info, true);
     }
 
@@ -118,12 +122,15 @@ class Plog extends HUGnetDB
      * @param array  $Packet  The packet that came in.
      * @param int    $Gateway The gateway key of the gateway this packet came from
      * @param string $Type    They type of packet it is.
+     * @param int    $Checked Index to say what process has touched this last
      *
      * @return array
      */
     public static function packetLogSetup($Packet, $Gateway, $Type="", $Checked=0)
     {
-        if (empty($Type)) $Type = "UNSOLICITED";
+        if (empty($Type)) {
+            $Type = "UNSOLICITED";
+        }
         $Info = array();
         if (isset($Packet["DeviceKey"])) {
             $Info["DeviceKey"] = $Packet["DeviceKey"];
@@ -136,12 +143,18 @@ class Plog extends HUGnetDB
         if (!empty($Packet["Time"])) {
             $Info["Date"] = gmdate("Y-m-d H:i:s", $Packet["Time"]);
         } else {
+            // @codeCoverageIgnoreStart
             $Info["Date"] = gmdate("Y-m-d H:i:s");
+            // @codeCoverageIgnoreEnd
         }
         $Info["PacketTo"]    = $Packet["To"];
         $Info["PacketFrom"]  = $Packet["From"];
         $Info["Command"]     = $Packet["Command"];
-        $Info["sendCommand"] = isset($Packet["sendCommand"]) ? $Packet["sendCommand"] : '  ';
+        if (isset($Packet["sendCommand"])) {
+            $Info["sendCommand"] = $Packet["sendCommand"];
+        } else {
+            $Info["sendCommand"] = '  ';
+        }
         $Info["Type"]        = (!empty($Type)) ? $Type : $Packet["Type"];
         $Info["Checked"]     = $Checked;
 
@@ -157,25 +170,60 @@ class Plog extends HUGnetDB
     static public function packetType($pkt)
     {
         $cmd = $pkt["Command"];
-        if (empty($cmd)) $cmd = $pkt["command"];
-        if (empty($cmd)) $cmd = $pkt["sendCommand"];
-        if ($pkt["Unsolicited"] === true) return "UNSOLICITED";
-        if ($pkt["Reply"] === true) return "REPLY";
-        if ($cmd == PACKET_COMMAND_REPLY) return "REPLY";
-        if ($cmd == PACKET_COMMAND_ECHOREQUEST) return "PING";
-        if ($cmd == PACKET_COMMAND_FINDECHOREQUEST) return "FINDPING";
-        if ($cmd == PACKET_COMMAND_GETCALIBRATION) return "CALIBRATION";
-        if ($cmd == PACKET_COMMAND_GETCALIBRATION_NEXT) return "CAL_NEXT";
-        if ($cmd == PACKET_COMMAND_GETSETUP) return "CONFIG";
-        if ($cmd == PACKET_COMMAND_GETDATA) return "SENSORREAD";
-        if ($cmd == PACKET_COMMAND_BADC) return "BAD COMMAND";
-        if ($cmd == PACKET_COMMAND_READE2) return "READ_E2";
-        if ($cmd == PACKET_COMMAND_READRAM) return "READ_RAM";
-        if ($cmd == PACKET_SETRTC_COMMAND) return "SET CLOCK";
-        if ($cmd == PACKET_READRTC_COMMAND) return "READ CLOCK";
-        if ($cmd == PACKET_COMMAND_POWERUP) return "POWERUP";
-        if ($cmd == PACKET_COMMAND_RECONFIG) return "RECONFIG";
-
+        if (empty($cmd)) {
+            $cmd = $pkt["command"];
+        }
+        if (empty($cmd)) {
+            $cmd = $pkt["sendCommand"];
+        }
+        if ($pkt["Unsolicited"] === true) {
+            return "UNSOLICITED";
+        }
+        if ($pkt["Reply"] === true) {
+            return "REPLY";
+        }
+        if ($cmd == PACKET_COMMAND_REPLY) {
+            return "REPLY";
+        }
+        if ($cmd == PACKET_COMMAND_ECHOREQUEST) {
+            return "PING";
+        }
+        if ($cmd == PACKET_COMMAND_FINDECHOREQUEST) {
+            return "FINDPING";
+        }
+        if ($cmd == PACKET_COMMAND_GETCALIBRATION) {
+            return "CALIBRATION";
+        }
+        if ($cmd == PACKET_COMMAND_GETCALIBRATION_NEXT) {
+            return "CAL_NEXT";
+        }
+        if ($cmd == PACKET_COMMAND_GETSETUP) {
+            return "CONFIG";
+        }
+        if ($cmd == PACKET_COMMAND_GETDATA) {
+            return "SENSORREAD";
+        }
+        if ($cmd == PACKET_COMMAND_BADC) {
+            return "BAD COMMAND";
+        }
+        if ($cmd == PACKET_COMMAND_READE2) {
+            return "READ_E2";
+        }
+        if ($cmd == PACKET_COMMAND_READRAM) {
+            return "READ_RAM";
+        }
+        if ($cmd == PACKET_SETRTC_COMMAND) {
+            return "SET CLOCK";
+        }
+        if ($cmd == PACKET_READRTC_COMMAND) {
+            return "READ CLOCK";
+        }
+        if ($cmd == PACKET_COMMAND_POWERUP) {
+            return "POWERUP";
+        }
+        if ($cmd == PACKET_COMMAND_RECONFIG) {
+            return "RECONFIG";
+        }
         return "UNKNOWN";
     }
 

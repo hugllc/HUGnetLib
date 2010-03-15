@@ -459,8 +459,10 @@ class Plugins
     private function _getRaw($Type, $pType)
     {
         if (is_array($this->plugins[$pType]["ALL_TYPES"])) {
-            $return = array_merge($this->plugins[$pType][$Type],
-                                  $this->plugins[$pType]["ALL_TYPES"]);
+            $return = array_merge(
+                $this->plugins[$pType][$Type],
+                $this->plugins[$pType]["ALL_TYPES"]
+            );
         } else {
             $return = $this->plugins[$pType][$Type];
         }
@@ -514,12 +516,13 @@ class Plugins
     *
     * @return null
     */
-    function __construct($basedir   = "",
-                         $extension = "",
-                         $webdir    = "",
-                         $skipDir   = array(),
-                         $verbose   = 0)
-    {
+    function __construct(
+        $basedir   = "",
+        $extension = "",
+        $webdir    = "",
+        $skipDir   = array(),
+        $verbose   = 0
+    ) {
         if (!empty($basedir)) {
             $this->dir = $basedir;
         }
@@ -552,11 +555,12 @@ class Plugins
     *
     * @return null
     */
-    function getPluginDir($basedir   = ".",
-                          $webdir    = "plugins/",
-                          $Level     = 0,
-                          $recursive = true)
-    {
+    function getPluginDir(
+        $basedir   = ".",
+        $webdir    = "plugins/",
+        $Level     = 0,
+        $recursive = true
+    ) {
         $this->_debug("Checking for Plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         if ($plugindir) {
@@ -583,14 +587,17 @@ class Plugins
                             }
                         }
                     } else if (($file != "CVS")
-                                && ($file != ".svn")
-                                && (is_dir($basefile))) {
+                        && ($file != ".svn")
+                        && (is_dir($basefile))
+                    ) {
                         $dName  = str_replace($webdir, "", $webfile);
                         $search = array_search($dName, $this->_skipDir);
                         if (($search === false) && ($recursive)) {
-                            $count += $this->getPluginDir($basefile."/",
-                                                          $webfile."/",
-                                                          $Level + 1);
+                            $count += $this->getPluginDir(
+                                $basefile."/",
+                                $webfile."/",
+                                $Level + 1
+                            );
                         } else {
                             $this->_debug("Skipping directory ".$dName."\n");
                         }

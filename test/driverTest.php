@@ -513,6 +513,11 @@ class DriverTest extends PHPUnit_Framework_TestCase
     /**
     * test getDevice
     *
+    * @param mixed $id     This is either the DeviceID, DeviceName or DeviceKey
+    * @param int   $type   The type of the 'id' parameter.  It is "ID" for DeviceID,
+    *         "NAME" for   DeviceName or "KEY" for DeviceKey.  "KEY" is the default.
+    * @param mixed $expect The expected return value
+    *
     * @return null
     *
     * @dataProvider dataGetDevice
@@ -766,11 +771,11 @@ class DriverTest extends PHPUnit_Framework_TestCase
     /**
     * Test the history from modifyUnits
     *
-    * @param array $history       The history to modify.
-    * @param array $devInfo       The devInfo array to modify.
-    * @param int   $dPlaces       The maximum number of decimal places to show.
-    * @param array $type          The types to change to
-    * @param array $units         The units to change to
+    * @param array $history The history to modify.
+    * @param array $devInfo The devInfo array to modify.
+    * @param int   $dPlaces The maximum number of decimal places to show.
+    * @param array $type    The types to change to
+    * @param array $units   The units to change to
     *
     * @return null
     *

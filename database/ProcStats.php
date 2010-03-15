@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** The base for all database classes */
@@ -75,20 +75,20 @@ class ProcStats extends HUGnetDB
      *
      * @param array $config The configuration
      */
-    function __construct($config = array()) 
+    function __construct($config = array())
     {
         $config["driver"] = "sqlite";
         parent::__construct($config);
         $this->createTable();
         $this->me = process::getMyInfo();
     }
-    
+
     /**
      * Creates the SQLite DB table
-     * 
+     *
      * @return null
      */
-    function createTable() 
+    function createTable()
     {
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                       `PID` int(11) NOT null,
@@ -100,7 +100,7 @@ class ProcStats extends HUGnetDB
                       PRIMARY KEY  (`PID`,`Program`,`stype`,`sdate`,`sname`)
                      );
                     ";
-        $this->query($query);        
+        $this->query($query);
         $this->getColumns();
     }
 
@@ -111,13 +111,15 @@ class ProcStats extends HUGnetDB
      *
      * @return null
      */
-    function incStat($stat) 
+    function incStat($stat)
     {
         $d = time();
-        if (is_int($this->forceDate)) $d = $this->forceDate;
+        if (is_int($this->forceDate)) {
+            $d = $this->forceDate;
+        }
         $this->incField('totals', $stat);
         foreach ($this->statPeriodic as $type => $format) {
-            $this->incField($type, $stat, date($format, $d));        
+            $this->incField($type, $stat, date($format, $d));
         }
     }
 
@@ -131,7 +133,7 @@ class ProcStats extends HUGnetDB
      *
      * @return null
      */
-    function incField($type, $name, $date="now") 
+    function incField($type, $name, $date="now")
     {
         $value = $this->getMyStat($name, $date, $type);
         $value++;
@@ -147,11 +149,11 @@ class ProcStats extends HUGnetDB
      *
      * @return mixed The statistic in question
      */
-    function getMyStat($name, $date="now", $type="stat") 
+    function getMyStat($name, $date="now", $type="stat")
     {
         return $this->getStat($name, $this->me['Program'], $date, $type, true);
     }
-    
+
     /**
      * Retrieves a statistic
      *
@@ -163,7 +165,7 @@ class ProcStats extends HUGnetDB
      *
      * @return mixed The statistic in question
      */
-    function getStat($name, $Program, $date="now", $type="stat", $PID=false) 
+    function getStat($name, $Program, $date="now", $type="stat", $PID=false)
     {
         $data  = array($Program, $type, $date, $name);
         $query = " Program= ? "
@@ -175,7 +177,9 @@ class ProcStats extends HUGnetDB
             $data[] = $this->me['PID'];
         }
         $ret = $this->getWhere($query, $data);
-        if (isset($ret[0]['svalue'])) return $ret[0]['svalue'];    
+        if (isset($ret[0]['svalue'])) {
+            return $ret[0]['svalue'];
+        }
         return 0;
     }
 
@@ -189,10 +193,12 @@ class ProcStats extends HUGnetDB
      *
      * @return mixed The statistic in question
      */
-    function setStat($name, $value, $date="now", $type="stat") 
+    function setStat($name, $value, $date="now", $type="stat")
     {
         $d = time();
-        if (is_int($this->forceDate)) $d = $this->forceDate;
+        if (is_int($this->forceDate)) {
+            $d = $this->forceDate;
+        }
         $this->_setStat($name, $value, $date, $type);
         return $this->_setStat('StatDate', date("Y-m-d H:i:s", $d));
     }
@@ -207,7 +213,7 @@ class ProcStats extends HUGnetDB
      *
      * @return mixed The statistic in question
      */
-    private function _setStat($name, $value, $date="now", $type="stat") 
+    private function _setStat($name, $value, $date="now", $type="stat")
     {
         $data = array(
             "PID" => $this->me["PID"],
@@ -225,7 +231,7 @@ class ProcStats extends HUGnetDB
      *
      * @return null
      */
-    function clearStats() 
+    function clearStats()
     {
         $data  = array($this->me['Program']);
         $query = "DELETE FROM '".$this->table."' "
@@ -240,7 +246,7 @@ class ProcStats extends HUGnetDB
      *
      * @return array An array of statistics.
      */
-    function getPeriodicStats($Program) 
+    function getPeriodicStats($Program)
     {
         $data  = array($Program);
         $query = " Program= ? "
@@ -251,7 +257,7 @@ class ProcStats extends HUGnetDB
             $query .= $sep."stype= ? ";
             $sep    = " OR ";
         }
-        $query .= ") ORDER BY sdate desc";            
+        $query .= ") ORDER BY sdate desc";
         $rows   = $this->getWhere($query, $data);
         $ret    = array();
         foreach ($rows as $row) {
@@ -268,7 +274,7 @@ class ProcStats extends HUGnetDB
      *
      * @return array An array of statistics.
      */
-    function getTotalStats($Program) 
+    function getTotalStats($Program)
     {
         $data  = array($Program);
         $query = " Program = ? "

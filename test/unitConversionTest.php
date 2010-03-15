@@ -352,10 +352,8 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
     /**
      * Tests getDataType()
      *
-     * @param string $from    The starting unit
-     * @param string $to      The unit to be converted into
-     * @param string $default The data type to use if none is specified
-     * @param array  $expect  What expect returned
+     * @param string $units  The units to test
+     * @param array  $expect What expect returned
      *
      * @return null
      *
@@ -410,7 +408,16 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
             array(32, "&#176;F", "&#176;C", 0, "raw", null, 0.0, "&#176;C"),
             array(32, "&#176;F", "&#176;F", 0, "diff", null, 32, "&#176;F"),
             array(32, "&#176;F", "Direction", 0, "diff", null, 32, "&#176;F"),
-            array(32, "&#176;C", "&#176;K", 0, "raw", null, (double)32000, "&#176;K"),
+            array(
+                32,
+                "&#176;C",
+                "&#176;K",
+                0,
+                "raw",
+                null,
+                (double)32000,
+                "&#176;K"
+            ),
         );
     }
     /**

@@ -282,9 +282,104 @@ class PlogTest extends databaseTest
     public static function dataPacketType()
     {
         return array(
-            array(array("Unsolicited" => true, "Command" => "55"), "UNSOLICITED"),
-            array(array("Reply" => true, "Command" => "55"), "REPLY"),
-            array(array("Command" => "55"), "SENSORREAD"),
+            array(
+                array(
+                    "Unsolicited" => true,
+                    "command" => PACKET_COMMAND_GETDATA
+                ),
+                "UNSOLICITED"
+            ),
+            array(
+                array(
+                    "Reply" => true,
+                    "sendCommand" => PACKET_COMMAND_GETDATA
+                ),
+                "REPLY"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_REPLY
+                ),
+                "REPLY"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_ECHOREQUEST
+                ),
+                "PING"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_FINDECHOREQUEST
+                ),
+                "FINDPING"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_GETCALIBRATION
+                ),
+                "CALIBRATION"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_GETCALIBRATION_NEXT
+                ),
+                "CAL_NEXT"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_GETSETUP
+                ),
+                "CONFIG"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_GETDATA
+                ),
+                "SENSORREAD"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_BADC
+                ),
+                "BAD COMMAND"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_READE2
+                ),
+                "READ_E2"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_READRAM
+                ),
+                "READ_RAM"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_SETRTC_COMMAND
+                ),
+                "SET CLOCK"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_READRTC_COMMAND
+                ),
+                "READ CLOCK"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_POWERUP
+                ),
+                "POWERUP"
+            ),
+            array(
+                array(
+                    "Command" => PACKET_COMMAND_RECONFIG
+                ),
+                "RECONFIG"
+            ),
             array(array(), "UNKNOWN"),
         );
     }

@@ -120,7 +120,10 @@ class SensorTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->registerSensor($class);
         $this->assertSame($expect, $ret);
         if ($expect) {
-            $this->assertThat($this->o->sensors[$class], $this->isInstanceOf($class));
+            $this->assertThat(
+                $this->o->sensors[$class],
+                $this->isInstanceOf($class)
+            );
             foreach ($this->o->sensors[$class]->sensors as $type => $sInfo) {
                 foreach ($sInfo as $sensor => $val) {
                     $this->assertEquals(
@@ -221,7 +224,12 @@ class SensorTest extends PHPUnit_Framework_TestCase
                 $this->equalTo(4)
             );
         $args = array(1,2,3,4);
-        $ret  = $this->o->runFunction($this->o->sensors[$cName], 'Test1', $args, "2");
+        $ret  = $this->o->runFunction(
+            $this->o->sensors[$cName],
+            'Test1',
+            $args,
+            "2"
+        );
     }
     /**
      * data provider
@@ -252,7 +260,12 @@ class SensorTest extends PHPUnit_Framework_TestCase
     public function testRunFunction($class, $function, $args, $default, $expect)
     {
         $this->o->registerSensor($class);
-        $ret = $this->o->runFunction($this->o->sensors[$class], $function, $args, $default);
+        $ret = $this->o->runFunction(
+            $this->o->sensors[$class],
+            $function,
+            $args,
+            $default
+        );
         $this->assertSame($expect, $ret);
     }
     /**
@@ -683,8 +696,9 @@ class SensorTest extends PHPUnit_Framework_TestCase
     /**
      * test
      *
-     * @param int   $type   The type of the sensor
-     * @param mixed $expect The output to expect
+     * @param int    $type   The type of the sensor
+     * @param string $sensor The sensor type to test
+     * @param mixed  $expect The output to expect
      *
      * @return null
      *

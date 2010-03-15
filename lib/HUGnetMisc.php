@@ -47,7 +47,8 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetMisc {
+class HUGnetMisc
+{
     /**
     * Gets the ip address, netmask and broadcast address
     *
