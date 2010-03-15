@@ -155,7 +155,11 @@ print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>
 class Plugins
 {
     /** @var array Plugin Functions */
-    var $plugins = array();
+    var $plugins = array(
+                         "Functions" => array(),
+                         "Menu" => array(),
+                         "Generic" => array()
+                        );
     /** @var array This is where information on the plugin files is stored. */
     var $plugin_info = array();
     /** @var string This is the directory where Plugins will be looked for. */
@@ -535,7 +539,11 @@ class Plugins
         if (is_array($skipDir)) {
             $this->_skipDir = $skipDir;
         }
-        $this->findPlugins();
+        $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
+        if (!is_array($this->plugins)) {
+            $this->plugins = array();
+            $this->findPlugins();
+        }
         $this->verbose = (int) $verbose;
 
     }
@@ -782,7 +790,7 @@ class Plugins
         if ($this->verbose >= $level) {
             print $text;
         }
-        // @codeCoverageIgnore
+        // @codeCoverageIgnoreEnd
     }
 
 }

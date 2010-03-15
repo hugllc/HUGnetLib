@@ -226,7 +226,6 @@ class PluginsTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->plugins);
     }
 
-
     /**
     * data provider for testConstructor
     *
@@ -1013,6 +1012,90 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     *
     * @static
     */
+    public static function dataGetPluginDir()
+    {
+        return array(
+            array(
+                dirname(__FILE__)."/plugins/",
+                "inc.php",
+                "plugins/",
+                0,
+                true,
+                array(
+                    "Functions" => array(
+                        "filter" => array(
+                            array(
+                                "Name"        => "pluginTestPlugin2",
+                                "Types"       => "filter",
+                                "Title"       => "clean",
+                                "Description" => "cleaner",
+                            ),
+                            array(
+                                "Name"        => "pluginTestPlugin1",
+                                "Types"       => "filter",
+                                "Title"       => "messy",
+                                "Description" => "messier",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                dirname(__FILE__)."/plugins/",
+                "inc.php",
+                "plugins/",
+                0,
+                false,
+                array(
+                    "Functions" => array(
+                        "filter" => array(
+                            array(
+                                "Name"        => "pluginTestPlugin1",
+                                "Types"       => "filter",
+                                "Title"       => "messy",
+                                "Description" => "messier",
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $basedir   The base directory to scan plugins in
+    * @param array  $extension The file extension
+    * @param string $webdir    The base directory on the web
+    * @param int    $level     The level we are currently at
+    * @param bool   $recursive Whether or not to recurse through the directories
+    * @param array  $expect    The expected plugin array
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPluginDir()
+    */
+    public function testGetPluginDir(
+        $basedir,
+        $extension,
+        $webdir,
+        $level,
+        $recursive,
+        $expect
+    ) {
+        $this->o->extension = $extension;
+        $this->o->getPluginDir($basedir, $webdir, $level, $recursive);
+        $this->assertEquals($expect, $this->o->plugins);
+    }
+
+
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
     public static function dataConstructor()
     {
         return array(
@@ -1035,7 +1118,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 "a", "b", "c", array("d"), 4,
                 "_skipDir",
                 array("d"),
-            ),
+           ),
             array(
                 "a", "b", "c", "d", 4,
                 "verbose",
@@ -1156,88 +1239,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     }
 
 
-    /**
-    * data provider for testConstructor
-    *
-    * @return array
-    *
-    * @static
-    */
-    public static function dataGetPluginDir()
-    {
-        return array(
-            array(
-                dirname(__FILE__)."/plugins/",
-                "inc.php",
-                "plugins/",
-                0,
-                true,
-                array(
-                    "Functions" => array(
-                        "filter" => array(
-                            array(
-                                "Name"        => "pluginTestPlugin2",
-                                "Types"       => "filter",
-                                "Title"       => "clean",
-                                "Description" => "cleaner",
-                            ),
-                            array(
-                                "Name"        => "pluginTestPlugin1",
-                                "Types"       => "filter",
-                                "Title"       => "messy",
-                                "Description" => "messier",
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            array(
-                dirname(__FILE__)."/plugins/",
-                "inc.php",
-                "plugins/",
-                0,
-                false,
-                array(
-                    "Functions" => array(
-                        "filter" => array(
-                            array(
-                                "Name"        => "pluginTestPlugin1",
-                                "Types"       => "filter",
-                                "Title"       => "messy",
-                                "Description" => "messier",
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-    /**
-    * test
-    *
-    * @param mixed  $basedir   The base directory to scan plugins in
-    * @param array  $extension The file extension
-    * @param string $webdir    The base directory on the web
-    * @param int    $level     The level we are currently at
-    * @param bool   $recursive Whether or not to recurse through the directories
-    * @param array  $expect    The expected plugin array
-    *
-    * @return null
-    *
-    * @dataProvider dataGetPluginDir()
-    */
-    public function testGetPluginDir(
-        $basedir,
-        $extension,
-        $webdir,
-        $level,
-        $recursive,
-        $expect
-    ) {
-        $this->o->extension = $extension;
-        $this->o->getPluginDir($basedir, $webdir, $level, $recursive);
-        $this->assertEquals($expect, $this->o->plugins);
-    }
+
 
 }
 
