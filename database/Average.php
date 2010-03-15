@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -68,10 +68,12 @@ class Average extends History
      *
      * @return null
      */
-    public function __construct($config = array()) 
+    public function __construct($config = array())
     {
         parent::__construct($config);
-        if (empty($this->config["Type"])) $this->config["Type"] = "15MIN";
+        if (empty($this->config["Type"])) {
+            $this->config["Type"] = "15MIN";
+        }
     }
     /**
      * Creates the database table
@@ -80,43 +82,53 @@ class Average extends History
      * @param mixed  $elements The number of data fields
      *
      * @return null
-     */   
+     */
     public function createTable($table=null, $elements=null)
     {
         $elements = (int) $elements;
-        if (!empty($elements)) $this->_elements = $elements;
+        if (!empty($elements)) {
+            $this->_elements = $elements;
+        }
         $this->_columns = 3 + $this->_elements;
-        
-        if (is_string($table) && !empty($table)) $this->table = $table;
+
+        if (is_string($table) && !empty($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                   `DeviceKey` int(11) NOT NULL default '0',
                   `Date` datetime NOT NULL default '0000-00-00 00:00:00',
                   `Type` varchar(16) NOT NULL default '15MIN',
                  ";
-//                  `Type` enum('15MIN', 'HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', '15MINTOTAL', 'HOURLYTOTAL', 'DAILYTOTAL', 'WEEKLYTOTAL', 'MONTHLYTOTAL', 'YEARLYTOTAL') NOT NULL default '15MIN',
         for ($i = 0; $i < $this->_elements; $i++) {
             $query .= "`Data".$i."` float default NULL,\n";
         }
         $query .= "PRIMARY KEY  (`DeviceKey`, `Date`)\n);";
-        $ret    = $this->query($query, false);        
-        //$ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceKey` ON `'.$this->table.'` (`DeviceKey`,`Date`)', false);
+        $ret    = $this->query($query, false);
         $this->getColumns();
         return $ret;
     }
     /**
      * Gets all rows from the database
      *
-     * @param string $where Where clause
-     * @param array  $data  Data for query
-     * @param int    $limit The maximum number of rows to return (0 to return all)
-     * @param int    $start The row offset to start returning records at
+     * @param string $where   Where clause
+     * @param array  $data    Data for query
+     * @param int    $limit   The maximum number of rows to return (0 to return all)
+     * @param int    $start   The row offset to start returning records at
+     * @param string $orderby The 'ORDER BY' SQL clause
      *
      * @return array
      */
-    public function getWhere($where, $data = array(), $limit = 0, $start = 0, $orderby) 
-    {
+    public function getWhere(
+        $where,
+        $data = array(),
+        $limit = 0,
+        $start = 0,
+        $orderby = ""
+    ) {
         if (strtolower($this->config["Type"]) != "all") {
-            if (!empty($where)) $where .= " AND";
+            if (!empty($where)) {
+                $where .= " AND";
+            }
             $where .= " Type = ?";
             $data[] = $this->config["Type"];
         }

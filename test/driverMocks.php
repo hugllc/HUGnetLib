@@ -34,6 +34,9 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 require_once HUGNET_INCLUDE_PATH."/driver.php";
 require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
 

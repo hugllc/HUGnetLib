@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id: Analysis.php 1557 2008-09-15 14:50:12Z prices $    
+ * @version    SVN: $Id: Analysis.php 1557 2008-09-15 14:50:12Z prices $
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
@@ -58,22 +58,23 @@ define("HUGNET_ERROR_OLD_CONFIG", 3);
 class Error extends HUGnetDB
 {
     /** The database table to use */
-    var $table = "error";            
+    var $table = "error";
     /** This is the Field name for the key of the record */
-    var $id = "id";     
+    var $id = "id";
     /** The number of columns */
     private $_columns = 9;
     /**
      * Creates the SQLite DB table
      *
      * @param string $table Table to use if not the default
-     * 
+     *
      * @return null
      */
-    public function createTable($table=null) 
+    public function createTable($table=null)
     {
-        if (is_string($table) && !empty($table)) $this->table = $table;
-        
+        if (is_string($table) && !empty($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS `error` (
             `id` varchar(16) NOT NULL,
             `err` int(11) NOT NULL,
@@ -83,14 +84,17 @@ class Error extends HUGnetDB
             `program` varchar(64) NOT NULL,
             `type` varchar(16) NOT NULL,
             `status` varchar(8) default 'NEW',
-            `errorCount` int(8) default 0         
+            `errorCount` int(8) default 0
         );";
         $query = $this->cleanSql($query);
         $ret = $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `errorKey` ON `'.$this->table.'` (`err`,`errorDate`,`id`)');
+        $ret = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `errorKey` ON `'
+            .$this->table.'` (`err`,`errorDate`,`id`)'
+        );
         $this->getColumns();
     }
-    
+
     /**
     * Adds an row to the database
     *
@@ -103,11 +107,16 @@ class Error extends HUGnetDB
     */
     public function add($info, $replace = false)
     {
-        if (isset($info["err"])) $info["err"] = (int) $info["err"];      
-        $ret = $this->getWhere("id = ? AND err = ? AND errorLastSeen > ?", array($info["id"], $info["err"], date("Y-m-d H:i:s", time()-86400)));
+        if (isset($info["err"])) {
+            $info["err"] = (int) $info["err"];
+        }
+        $ret = $this->getWhere(
+            "id = ? AND err = ? AND errorLastSeen > ?",
+            array($info["id"], $info["err"], date("Y-m-d H:i:s", time()-86400))
+        );
         if (count($ret) == 0) {
             $info["errorLastSeen"] = $info["errorDate"];
-            $info["errorCount"] = 1;         
+            $info["errorCount"] = 1;
             return parent::add($info);
         } else {
             $where = "id = ? AND err = ? AND errorDate = ?";
@@ -115,12 +124,12 @@ class Error extends HUGnetDB
             $info["errorLastSeen"] = $info["errorDate"];
             unset($info["errorDate"]);
             $info["errorCount"] = $ret[0]["errorCount"] + 1;
-            $info["status"] = 'NEW';         
+            $info["status"] = 'NEW';
             return parent::updateWhere($info, $where, $data);
-        }                  
+        }
     }
-       
-    
+
+
 }
 
 ?>

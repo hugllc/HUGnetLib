@@ -68,9 +68,10 @@ class Firmware extends HUGnetDB
      *
      * @param string $srec           The S record to change.
      * @param int    $MemBufferSize  The total available space in the memory buffer
-     * @param int    $PageSize       The total number of bytes in 1 page of memory.  0 means no pages
-     * @param string $MemBufferEmpty This is what a byte looks like when it is erased.
-     *    The default is for flash memory (FF);
+     * @param int    $PageSize       The total number of bytes in 1 page of
+     *                               memory.  0 means no pages
+     * @param string $MemBufferEmpty This is what a byte looks like when it is
+     *    erased.  The default is for flash memory (FF);
      *
      * @return string The raw memory buffer
      */
@@ -98,7 +99,12 @@ class Firmware extends HUGnetDB
                     $csum = false;
                 }
                 if ($data != false) {
-                    $MemBuffer = substr_replace($MemBuffer, $data, ($addr*2), ($size*2));
+                    $MemBuffer = substr_replace(
+                        $MemBuffer,
+                        $data,
+                        ($addr*2),
+                        ($size*2)
+                    );
                 }
             }
         }
@@ -121,7 +127,9 @@ class Firmware extends HUGnetDB
             }
             $MemBuffer = array_reverse($MemBuffer);
         } else {
-            while (substr($MemBuffer, (strlen($MemBuffer)-2), 2) == $MemBufferEmpty) {
+            while (
+                substr($MemBuffer, (strlen($MemBuffer)-2), 2) == $MemBufferEmpty
+            ) {
                 $MemBuffer = substr($MemBuffer, 0, (strlen($MemBuffer)-2));
             }
         }
@@ -137,7 +145,9 @@ class Firmware extends HUGnetDB
      */
     function createTable($table="")
     {
-        if (!empty($table)) $this->table = $table;
+        if (!empty($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS `firmware` (
                   `FirmwareKey` mediumint(9) NOT NULL,
                   `FirmwareVersion` varchar(8) NOT NULL default '',
@@ -154,7 +164,10 @@ class Firmware extends HUGnetDB
                   PRIMARY KEY  (`FirmwareKey`)
                  );";
         $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'.$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)');
+        $ret = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `FirmwareVersion` ON `'
+            .$this->table.'` (`FirmwareVersion`,`FWPartNum`,`HWPartNum`)'
+        );
         $this->getColumns();
     }
 
@@ -163,7 +176,8 @@ class Firmware extends HUGnetDB
      *
      * @param string $FWPartNum This is the part number of the firmware wanted
      * @param string $Status    This is the status of the firmware
-     * @param bool   $All       If this is true any firmware not listed as BAD is returned
+     * @param bool   $All       If this is true any firmware not listed as BAD
+     *                          is returned
      *
      * @return array The array of firmware information
      */

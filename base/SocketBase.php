@@ -110,10 +110,11 @@ class SocketBase
     /**
      * Constructor.
      *
-     * @param array $config The configuration array
-     *
      * This just sets up the variables if they are passed to it.
      *
+     * @param array $config The configuration array
+     *
+     * @return null
      */
     function __construct($config=array())
     {
@@ -182,28 +183,38 @@ class SocketBase
      * </code>
      *
      * @param array  $Packet This is an array with packet commands in it.
-     * @param string $from   If the packet is not from me this is the from address to use.
+     * @param string $from   If the packet is not from me this is the from
+     *                       address to use.
      *
      * @return string The packet in string form.
      */
     function packetBuild($Packet, $from=null)
     {
-        if (!is_array($Packet)) $Packet = array();
+        if (!is_array($Packet)) {
+            $Packet = array();
+        }
         $string       = "";
         $Packet       = array_change_key_case($Packet, CASE_LOWER);
-        if (empty($from)) $from = $Packet["from"];
+        if (empty($from)) {
+            $from = $Packet["from"];
+        }
         $return       = false;
         $Packet["to"] = trim($Packet["to"]);
         $Packet["to"] = substr($Packet["to"], 0, 6);
         if (strlen($Packet["to"]) > 0) {
-            $Packet["to"] = str_pad($Packet["to"], 6, "0", STR_PAD_LEFT);
-            $string       = $Packet["command"];
-            $string      .= $Packet["to"];
-            $string      .= substr(trim($from), 0, 6);
-            $string      .= sprintf("%02X", (strlen($Packet["data"])/2));
-            $string      .= $Packet["data"];
-            $return       = self::$preambleByte.self::$preambleByte.self::$preambleByte;
-            $return      .= $string.self::PacketGetChecksum($string);
+            $Packet["to"] = str_pad(
+                $Packet["to"],
+                6,
+                "0",
+                STR_PAD_LEFT
+            );
+            $string  = $Packet["command"];
+            $string .= $Packet["to"];
+            $string .= substr(trim($from), 0, 6);
+            $string .= sprintf("%02X", (strlen($Packet["data"])/2));
+            $string .= $Packet["data"];
+            $return  = self::$preambleByte.self::$preambleByte.self::$preambleByte;
+            $return .= $string.self::PacketGetChecksum($string);
         }
         return($return);
     }
@@ -216,7 +227,9 @@ class SocketBase
      */
     protected function removePreamble(&$data)
     {
-        while (substr($data, 0, 2) == SocketBase::$preambleByte) $data = substr($data, 2);
+        while (substr($data, 0, 2) == SocketBase::$preambleByte) {
+            $data = substr($data, 2);
+        }
     }
     /**
      * Splits the data string into an array
@@ -237,7 +250,6 @@ class SocketBase
      *
      * Returns the packet array on success, and false on failure
      *
-     * @param int $socket  The socket we are using
      * @param int $timeout The timeout to use.
      *
      * @return bool
@@ -259,8 +271,6 @@ class SocketBase
      * Checks to see if what is in the buffer is a packet
      *
      * Returns the packet array on success, and false on failure
-     *
-     * @param int $socket The socket we are using
      *
      * @return mixed
      */
@@ -284,7 +294,10 @@ class SocketBase
      */
     private function _recvPacketGetPacket()
     {
-        $pkt = stristr($this->buffer, SocketBase::$preambleByte.SocketBase::$preambleByte);
+        $pkt = stristr(
+            $this->buffer,
+            SocketBase::$preambleByte.SocketBase::$preambleByte
+        );
         self::removePreamble($pkt);
         $len = hexdec(substr($pkt, 14, 2));
         if (strlen($pkt) >= ((9 + $len)*2)) {
@@ -304,15 +317,19 @@ class SocketBase
      *
      * @return bool false on failure, the Packet array on success
      */
-    function RecvPacket($timeout=0)
+    function recvPacket($timeout=0)
     {
         $timeout  = $this->getReplyTimeout($timeout);
         $Start    = time();
         $GotReply = false;
         while ((time() - $Start) < $timeout) {
-            if (!$this->_recvPacketGetChar($timeout)) continue;
+            if (!$this->_recvPacketGetChar($timeout)) {
+                continue;
+            }
             $GotReply = $this->_recvPacketCheckPkt();
-            if ($GotReply !== false) break;
+            if ($GotReply !== false) {
+                break;
+            }
         }
         return $GotReply;
 
@@ -346,7 +363,9 @@ class SocketBase
             print " C:".$packet['sendCommand']."\n";
         }
         $ret = $this->Write($packet, $GetReply);
-        if (empty($ret)) return false;
+        if (empty($ret)) {
+            return false;
+        }
         return $ret;
 
     }

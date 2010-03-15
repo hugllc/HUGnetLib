@@ -73,12 +73,13 @@ class Device extends HUGnetDB
      *
      * @return array
      */
-    public function getWhere($where,
-                             $data    = array(),
-                             $limit   = 0,
-                             $start   = 0,
-                             $orderby = "")
-    {
+    public function getWhere(
+        $where,
+        $data    = array(),
+        $limit   = 0,
+        $start   = 0,
+        $orderby = ""
+    ) {
         $data = parent::getWhere($where, $data, $limit, $start, $orderby);
         foreach ($data as $key => $val) {
             $data[$key]["params"] = self::decodeParams($val["params"]);
@@ -416,10 +417,14 @@ class Device extends HUGnetDB
 
         $query = $this->cleanSql($query);
         $ret   = $this->query($query);
-        $ret   = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'
-                            .$this->table.'` (`SerialNum`)');
-        $ret   = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'
-                            .$this->table.'` (`DeviceID`,`GatewayKey`)');
+        $ret   = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `SerialNum` ON `'
+            .$this->table.'` (`SerialNum`)'
+        );
+        $ret   = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `DeviceID` ON `'
+            .$this->table.'` (`DeviceID`,`GatewayKey`)'
+        );
         $this->getColumns();
         return $ret;
     }

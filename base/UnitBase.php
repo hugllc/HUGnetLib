@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$    
+ * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /**
@@ -71,7 +71,7 @@ class UnitBase
         "a"      => -18,
         "z"      => -21,
         "y"      => -24,
-    ); 
+    );
     private $_siName = array(
         "Y"      => "yotta",
         "Z"      => "zetta",
@@ -94,7 +94,7 @@ class UnitBase
         "a"      => "atto",
         "z"      => "zepto",
         "y"      => "yocto",
-    ); 
+    );
     /** Unit data will be stored here */
     public $units = array();
 
@@ -116,20 +116,30 @@ class UnitBase
      */
     public function siSetup()
     {
-        if (!is_array($this->units)) return;
+        if (!is_array($this->units)) {
+            return;
+        }
         foreach ($this->units as $unit => $value) {
-            if (!is_array($value["siPrefix"])) continue;
+            if (!is_array($value["siPrefix"])) {
+                continue;
+            }
             foreach ($value["siPrefix"] as $prefix) {
                 $prefix = trim($prefix);
-                $this->units[$unit]["convert"][$prefix.$unit] = "shift:".$this->siGetShift("", $prefix);
+                $this->units[$unit]["convert"][$prefix.$unit]
+                    = "shift:".$this->siGetShift("", $prefix);
                 $this->units[$prefix.$unit] = array(
                     "longName" => $this->siGetName($prefix).$value["longName"],
                     "varType" => $value["varType"],
-                    "convert" => array($unit => "shift:".$this->siGetShift($prefix, "")),
+                    "convert" => array(
+                        $unit => "shift:".$this->siGetShift($prefix, "")
+                    ),
                 );
                 foreach ($value["siPrefix"] as $p) {
-                    if ($p == $prefix) continue;
-                    $this->units[$prefix.$unit]["convert"][$p.$unit] = "shift:".$this->siGetShift($prefix, $p);
+                    if ($p == $prefix) {
+                        continue;
+                    }
+                    $this->units[$prefix.$unit]["convert"][$p.$unit]
+                        = "shift:".$this->siGetShift($prefix, $p);
                 }
             }
         }
@@ -146,11 +156,11 @@ class UnitBase
      * @return float
      *
      */
-    public function unity ($val, $time, $type, $extra) 
+    public function unity ($val, $time, $type, $extra)
     {
         return $val;
     }
-    
+
     /**
      * This shifts the decimal places in SI units
      *
@@ -159,20 +169,19 @@ class UnitBase
      *
      * @return float
      */
-    public function siGetShift ($from, $to) 
+    public function siGetShift ($from, $to)
     {
         return (int)($this->siGetExp($to) - $this->siGetExp($from));
     }
     /**
      * This shifts the decimal places in SI units
      *
-     * @param float  $val  The input value
-     * @param string $from The prefix to shift from
-     * @param string $to   The prefix to shift to
+     * @param float  $val   The input value
+     * @param string $shift The number of places to shift the decimal point
      *
      * @return float
      */
-    public function shift ($val, $shift) 
+    public function shift ($val, $shift)
     {
         return (float)($val * pow(10, $shift));
     }
@@ -186,7 +195,7 @@ class UnitBase
      *
      * @return float
      */
-    public function siShift ($val, $from, $to) 
+    public function siShift ($val, $from, $to)
     {
         $shift = (int)($this->siGetExp($to) - $this->siGetExp($from));
         return $this->shift($val, $shift);
@@ -201,7 +210,9 @@ class UnitBase
      */
     public function siGetExp($prefix)
     {
-        if (isset($this->_si[$prefix])) return $this->_si[$prefix];
+        if (isset($this->_si[$prefix])) {
+            return $this->_si[$prefix];
+        }
         return 0;
     }
     /**
@@ -213,10 +224,12 @@ class UnitBase
      */
     public function siGetName($prefix)
     {
-        if (isset($this->_siName[$prefix])) return $this->_siName[$prefix];
+        if (isset($this->_siName[$prefix])) {
+            return $this->_siName[$prefix];
+        }
         return "";
     }
-    
+
 }
 
 ?>

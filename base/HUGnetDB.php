@@ -65,6 +65,7 @@ class HUGnetDB
     protected $id = "id";
     /** SQL date format */
     protected $dateFormat = "Y-m-d H:i:s";
+    /** The default file */
 
     /**
     *  These are the database fields
@@ -140,11 +141,18 @@ class HUGnetDB
         $this->myclass = strtolower(get_class($this));
         if (isset($config[$this->myclass."file"])) {
             $config["file"] = $config[$this->myclass."file"];
-            print "Using a custom file: ".$config["file"]." for ".$this->myclass."\n";
+            print "Using a custom file: ".$config["file"];
+            print " for ".$this->myclass."\n";
         }
 
         $this->config = $config;
-        $this->file   = is_string($config['file']) ? $config['file'] : HUGNET_LOCAL_DATABASE;
+        if (is_string($config['file'])) {
+            $this->file = $config['file'];
+        } else if (defined("HUGNET_LOCAL_DATABASE")) {
+            $this->file = HUGNET_LOCAL_DATABASE;
+        } else {
+            $this->file = sys_get_temp_dir()."/HUGnet.sq3";
+        }
 
         if (is_string($config["table"])) {
             $this->table = $config["table"];
@@ -171,6 +179,7 @@ class HUGnetDB
         $this->getColumns();
     }
 
+
     /**
     * Creates a database object
     *
@@ -184,26 +193,55 @@ class HUGnetDB
 
         $key = serialize($config);
         if (empty($PDO[$key])) {
-            $verbose = is_int($config['verbose'])    ? $config['verbose'] : 0;
-            $file    = is_string($config['file'])    ? $config['file']    : HUGNET_LOCAL_DATABASE;
-            $db_name = is_string($config['db_name']) ? $config['db_name'] : HUGNET_DATABASE;
-            $servers = is_array($config['servers'])  ? $config['servers'] : array();
-
-            $servers[0]['host']     = is_string($config["servers"][0]['host'])     ? $config["servers"][0]['host']     : 'localhost';
-            $servers[0]['user']     = is_string($config["servers"][0]['user'])     ? $config["servers"][0]['user']     : null;
-            $servers[0]['password'] = is_string($config["servers"][0]['password']) ? $config["servers"][0]['password'] : null;
+            $verbose = (int)$config['verbose'];
+            if (is_string($config['file'])) {
+                $file = $config['file'];
+            } else if (defined("HUGNET_LOCAL_DATABASE")) {
+                $file = HUGNET_LOCAL_DATABASE;
+            } else {
+                $file = sys_get_temp_dir()."/HUGnet.sq3";
+            }
+            if (is_string($config['db_name'])) {
+                $db_name = $config['db_name'];
+            } else {
+                $db_name = HUGNET_DATABASE;
+            }
+            if (is_array($config['servers'])) {
+                $servers = $config['servers'];
+            } else {
+                $servers = array();
+            }
+            if (is_string($config["servers"][0]['host'])) {
+                $servers[0]['host'] = $config["servers"][0]['host'];
+            } else {
+                $servers[0]['host'] = 'localhost';
+            }
+            if (is_string($config["servers"][0]['user'])) {
+                $servers[0]['user'] = $config["servers"][0]['user'];
+            } else {
+                $servers[0]['user'] = null;
+            }
+            if (is_string($config["servers"][0]['password'])) {
+                $servers[0]['password'] = $config["servers"][0]['password'];
+            } else {
+                $servers[0]['password'] = null;
+            }
 
             // Okday, now try to connect
             foreach ($servers as $serv) {
                 $useDriver = is_string($serv['driver']) ? $serv['driver'] : "sqlite";
-                $dsn       = self::_createDSN($useDriver,
-                                              $db_name,
-                                              $file,
-                                              $serv["host"]);
-                $PDO[$key] = self::_createPDO($dsn,
-                                              $serv["user"],
-                                              $serv["password"],
-                                              $verbose);
+                $dsn       = self::_createDSN(
+                    $useDriver,
+                    $db_name,
+                    $file,
+                    $serv["host"]
+                );
+                $PDO[$key] = self::_createPDO(
+                    $dsn,
+                    $serv["user"],
+                    $serv["password"],
+                    $verbose
+                );
                 if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) {
                     break;
                 }
@@ -222,11 +260,12 @@ class HUGnetDB
     *
     * @return object PDO object
     */
-    static private function &_createPDO($dsn,
-                                        $user = null,
-                                        $pass = null,
-                                        $verbose = false)
-    {
+    static private function &_createPDO(
+        $dsn,
+        $user = null,
+        $pass = null,
+        $verbose = false
+    ) {
         try {
             $db = new PDO($dsn, $user, $pass);
         } catch (PDOException $e) {
@@ -265,8 +304,10 @@ class HUGnetDB
     /**
     *  Adds a field to the devices table for cache information
     *
-    * @param string $name The name of the field
-    * @param string $var  The class variable where the HUGnetDB object resides
+    * @param string $name    The name of the field
+    * @param string $type    The type of field to add
+    * @param mixed  $default The default value for the field
+    * @param bool   $null    Whether null is a valid value for the field
     *
     * @return null
     */
@@ -328,7 +369,8 @@ class HUGnetDB
             }
         }
         if (!is_string($this->cacheConfig["file"])
-            || empty($this->cacheConfig["file"])) {
+            || empty($this->cacheConfig["file"])
+        ) {
             $this->cacheConfig["file"] = HUGNET_LOCAL_DATABASE;
         }
         $this->vprint("Creating a cache at ".$this->cacheConfig["file"]);
@@ -703,12 +745,13 @@ class HUGnetDB
     *
     * @return array
     */
-    public function getWhere($where,
-                             $data = array(),
-                             $limit = 0,
-                             $start = 0,
-                             $orderby = "")
-    {
+    public function getWhere(
+        $where,
+        $data = array(),
+        $limit = 0,
+        $start = 0,
+        $orderby = ""
+    ) {
         $query = " SELECT * FROM `".$this->table."` WHERE ".$where." ".$orderby;
         $limit = (int) $limit;
         $start = (int) $start;
@@ -1290,7 +1333,9 @@ class HUGnetDB
         $ret = array();
         $count = 0;
         foreach ($CSV as $row) {
-            if (empty($row)) continue;
+            if (empty($row)) {
+                continue;
+            }
             $r = explode($fieldSep, $row);
             $index = 0;
             foreach (array_keys($this->fields) as $field) {

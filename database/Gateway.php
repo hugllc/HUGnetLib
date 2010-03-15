@@ -65,9 +65,8 @@ class Gateway extends HUGnetDB
      * This returns an array setup for a HTML select list using the adodb
      * function 'GetMenu'
      *
-     * @param string $name       The name of the select list
-     * @param mixed  $selected   The entry that is currently selected
-     * @param int    $GatewayKey The key to use if only one gateway is to be selected
+     * @param string $where SQL Where clause
+     * @param mixed  $data  The data to use in the where clause
      *
      * @return mixed
      */
@@ -92,12 +91,13 @@ class Gateway extends HUGnetDB
     *
     * @return array
     */
-    public function getWhere($where,
-                             $data = array(),
-                             $limit = 0,
-                             $start = 0,
-                             $orderby = "")
-    {
+    public function getWhere(
+        $where,
+        $data = array(),
+        $limit = 0,
+        $start = 0,
+        $orderby = ""
+    ) {
         $query = parent::getWhere($where, $data, $limit, $start, $orderby);
         foreach ($query as $key => $row) {
             $query[$key]["GatewayIP"] = $this->decodeIP($row["GatewayIP"]);
@@ -147,7 +147,7 @@ class Gateway extends HUGnetDB
         $ret = array();
         if (is_string($IP)) {
             // This gives us the old way
-            if (stristr($IP, ":") === FALSE) {
+            if (stristr($IP, ":") === false) {
                 return $IP;
             }
             $ip = explode("\n", $IP);
@@ -198,7 +198,10 @@ class Gateway extends HUGnetDB
             $res = $this->getWhere("GatewayIP like ? ", array("%$ip%"));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
-                $this->vprint("Using ".$res[0]["GatewayName"].".  I hope that is what you wanted.");
+                $this->vprint(
+                    "Using ".$res[0]["GatewayName"].".  I hope that is "
+                    ."what you wanted."
+                );
                 return $res[0];
             }
         }
@@ -214,8 +217,9 @@ class Gateway extends HUGnetDB
      */
     function createTable($table = null)
     {
-        if (is_string($table)) $this->table = $table;
-
+        if (is_string($table)) {
+            $this->table = $table;
+        }
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
                   `GatewayKey` int(11) NOT null,
                   `GatewayIP` varchar(255) NOT null default '',
@@ -228,8 +232,14 @@ class Gateway extends HUGnetDB
                );";
 
         $ret = $this->query($query);
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'.$this->table.'` (`GatewayIP`)');
-        $ret = $this->query('CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'.$this->table.'` (`GatewayName`)');
+        $ret = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `GatewayIP` ON `'
+            .$this->table.'` (`GatewayIP`)'
+        );
+        $ret = $this->query(
+            'CREATE UNIQUE INDEX IF NOT EXISTS `GatewayName` ON `'
+            .$this->table.'` (`GatewayName`)'
+        );
         $this->getColumns();
         return $ret;
     }
@@ -243,7 +253,9 @@ class Gateway extends HUGnetDB
      */
     function createLocalTable($table = null)
     {
-        if (is_string($table)) $this->table = $table;
+        if (is_string($table)) {
+            $this->table = $table;
+        }
         $this->id = "DeviceID";
 
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (

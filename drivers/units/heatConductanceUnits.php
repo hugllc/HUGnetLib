@@ -8,17 +8,17 @@
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
  * Copyright (C) 2009 Scott Price
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -38,7 +38,7 @@
 /** Get the required base class */
 require_once dirname(__FILE__)."/heatInsulationUnits.php";
 
-if (!class_exists('heatConductanceUnits')) {
+if (!class_exists('HeatConductanceUnits')) {
     /**
     * This class implements photo sensors.
     *
@@ -47,11 +47,11 @@ if (!class_exists('heatConductanceUnits')) {
     * @subpackage Units
     * @author     Scott Price <prices@hugllc.com>
     * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+    * @copyright  2009 Scott Price
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class heatConductanceUnits extends unitBase
+    class HeatConductanceUnits extends unitBase
     {
         /**
         *  This is the array that defines all of our units and how to
@@ -90,7 +90,7 @@ if (!class_exists('heatConductanceUnits')) {
         {
             return heatInsulationUnits::engToMetric($e, $time, $type);
         }
-        
+
             /**
         *  Converts from &#176; F to &#176; C.
         *
@@ -104,11 +104,11 @@ if (!class_exists('heatConductanceUnits')) {
         {
             return heatInsulationUnits::metricToEng($m, $time, $type);
         }
-                
+
             /**
         *  Converts from &#176; F to &#176; C.
         *
-        * @param float  $m    The insulation in m^2 C/ W
+        * @param float  $r    The insulation in m^2 C/ W
         * @param int    $time The time in seconds between this record and the last.
         * @param string $type The type of data (diff, raw, etc)
         *
@@ -124,7 +124,13 @@ if (!class_exists('heatConductanceUnits')) {
 
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "Heat Conductance", "Type" => "units", "Class" => "heatConductanceUnits"));
+    $this->addGeneric(
+        array(
+            "Name" => "Heat Conductance",
+            "Type" => "units",
+            "Class" => "heatConductanceUnits"
+        )
+    );
 }
 
 
