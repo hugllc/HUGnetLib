@@ -512,8 +512,6 @@ class Plugins
     * @param array  $skipDir   Array of Strings Directories to not look into for
     *                          plugins.
     * @param int    $verbose   The verbosity level
-    * @param bool   $doCache   This controls whether a cache is used.  It is mostly
-    *                          used for unit testing
     *
     * @return null
     */
@@ -522,8 +520,7 @@ class Plugins
         $extension = "",
         $webdir    = "",
         $skipDir   = array(),
-        $verbose   = 0,
-        $doCache   = true
+        $verbose   = 0
     ) {
 
         $this->verbose = (int) $verbose;
