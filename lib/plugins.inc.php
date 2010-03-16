@@ -525,7 +525,6 @@ class Plugins
         $verbose   = 0,
         $doCache   = true
     ) {
-//        static $cache;
 
         $this->verbose = (int) $verbose;
 
@@ -541,18 +540,7 @@ class Plugins
         if (is_array($skipDir)) {
             $this->_skipDir = $skipDir;
         }
-        // This is a cache.  This line speeds up the code tremendously.
-        // DO NOT REMOVE IT!
-//        if ($doCache) {
-//            $key  = $this->dir.$this->webdir.$this->extension;
-//            $key .= serialize($this->_skipDir);
-//            $this->plugins = &$cache[$key];
-//        }
-        // This gets the plugins if we didn't get anything in the cache
-//        if (!is_array($this->plugins) || empty($this->plugins)) {
-//            $this->plugins = array();
-            $this->findPlugins();
-//        }
+        $this->findPlugins();
     }
 
     /**
@@ -750,7 +738,7 @@ class Plugins
     *
     * Copys the info parameter into its array of generic plugins.
     *
-    * @param array $info  this is all of the information about the plugin.
+    * @param array $info this is all of the information about the plugin.
     *
     * @return null
     */
