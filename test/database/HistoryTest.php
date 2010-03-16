@@ -242,6 +242,159 @@ class HistoryTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
 
+    /**
+     * Data provider for testGetDates
+     *
+     * @return array
+     */
+    public static function dataVirtualSensorHistory()
+    {
+        return array(
+            // No virtual Sensors.
+            array(
+                array(
+                    array(
+                        "Date" => "2007-12-12 02:32:12",
+                        "Data0" => 1,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                    ),
+                ),
+                array(
+                    "NumSensors" => 3,
+                    "TotalSensors" => 3,
+                ),
+                array(
+                    array(
+                        "Date" => "2007-12-12 02:32:12",
+                        "Data0" => 1,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                    ),
+                ),
+                array(
+                    "NumSensors" => 3,
+                    "TotalSensors" => 3,
+                ),
+            ),
+            // Virtual Sensors
+            array(
+                array(
+                    array(
+                        "Date" => "2007-12-12 02:32:12",
+                        "Data0" => 1,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "data" => array(1,2,3),
+                    ),
+                    array(
+                        "Date" => "2007-12-12 02:37:12",
+                        "Data0" => 2,
+                        "Data1" => 3,
+                        "Data2" => 1,
+                        "data" => array(2,3,1),
+                    ),
+                ),
+                array(
+                    "NumSensors" => 3,
+                    "TotalSensors" => 7,
+                    "params" => array(
+                        "VSensors" => 2,
+                        "sensorMax" => array(3 => 6),
+                        "sensorMin" => array(3 => 0, 4 => 0),
+                        "Math" => array(
+                            3 => "({2} * {3}) + {1}",
+                            4 => "{3} - {2}",
+                            5 => "{}?<>",
+                            6 => '$hello',
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "Date" => "2007-12-12 02:32:12",
+                        "Data0" => 1,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "data" => array(1,2,3,6,1,null,null),
+                        "Data3" => 6,
+                        "Data4" => 1,
+                        "Data5" => null,
+                        "Data6" => null,
+                    ),
+                    array(
+                        "Date" => "2007-12-12 02:37:12",
+                        "Data0" => 2,
+                        "Data1" => 3,
+                        "Data2" => 1,
+                        "data" => array(2,3,1,5,0,null,null),
+                        "Data3" => 5,
+                        "Data4" => 0,
+                        "Data5" => null,
+                        "Data6" => null,
+                    ),
+                ),
+                array(
+                    "NumSensors" => 3,
+                    "TotalSensors" => 7,
+                    "params" => array(
+                        "VSensors" => 2,
+                        "sensorMax" => array(3 => 6),
+                        "sensorMin" => array(3 => 0, 4 => 0),
+                        "Math" => array(
+                            3 => "({2} * {3}) + {1}",
+                            4 => "{3} - {2}",
+                            5 => "{}?<>",
+                            6 => '$hello',
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @param array  &$history The history row to use
+     * @param array  &$devInfo The device array to use.
+     * @param int    $expect    The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataVirtualSensorHistory
+     */
+    public function testVirtualSensorHistory(
+        $history,
+        $devInfo,
+        $historyExpect,
+        $devInfoExpect
+    ) {
+        $ret = $this->o->virtualSensorHistory($history, $devInfo);
+        $this->assertSame($historyExpect, $history);
+    }
+
+    /**
+     * test
+     *
+     * @param array  &$history The history row to use
+     * @param array  &$devInfo The device array to use.
+     * @param int    $expect    The info to expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataVirtualSensorHistory
+     */
+    public function testVirtualSensorHistoryDevInfo(
+        $history,
+        $devInfo,
+        $historyExpect,
+        $devInfoExpect
+    ) {
+        $ret = $this->o->virtualSensorHistory($history, $devInfo);
+        $this->assertSame($devInfoExpect, $devInfo);
+    }
+
 
 }
 

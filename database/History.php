@@ -165,14 +165,25 @@ class History extends HUGnetDB
      *
      * @return bool|string The name of the function created.
      */
-    public function createFunction($DeviceKey, $input, $math)
+    private function _createFunction($DeviceKey, $input, $math)
     {
-        $mathCode = $math;
+        // This cleans off everything but characters we want
+        $mathCode = ereg_replace("[^0-9\{\}+-/*()]", "", $math);
+        // This inserts the variable code
         for ($i = 1; $i < 20; $i++) {
             $index = $i - 1;
             $mathCode = str_replace('{'.$i.'}', '$row["Data'.$index.'"]', $mathCode);
         }
-        $code = 'return ('.$mathCode.');';
+        // Clean off any extra stuff
+        $mathCode = str_replace("{", "", $mathCode);
+        $mathCode = str_replace("}", "", $mathCode);
+        // If we are left without a function, return false
+        if (empty($mathCode)) {
+            return false;
+        } else {
+            $code = 'return ('.$mathCode.');';
+        }
+        // Otherwise, return a function name.
         return create_function('$row', $code);
     }
 
@@ -192,7 +203,7 @@ class History extends HUGnetDB
         }
         foreach ($history as $key => $hist) {
             for ($i = $devInfo["NumSensors"]; $i < $devInfo["TotalSensors"]; $i++) {
-                $history[$key]["Data".$i] = $this->virtualSensorValue(
+                $history[$key]["Data".$i] = $this->_virtualSensorValue(
                     $i,
                     $history[$key],
                     $devInfo
@@ -211,17 +222,17 @@ class History extends HUGnetDB
      *
      * @return null
      */
-    public function virtualSensorValue($sensor, &$history, &$devInfo)
+    private function _virtualSensorValue($sensor, &$history, &$devInfo)
     {
         $function =& $this->_functions[$devInfo["DeviceKey"]][$sensor];
         if (!function_exists($function)) {
-            $function = $this->createFunction(
+            $function = $this->_createFunction(
                 $devInfo["DeviceKey"],
                 $sensor,
-                $devInfo["params"]["Math"][$senser]
+                $devInfo["params"]["Math"][$sensor]
             );
         }
-        if (!function_exists($function)) {
+        if (!is_string($function) || !function_exists($function)) {
             return null;
         }
         $d = $function($history);
