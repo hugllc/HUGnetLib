@@ -211,11 +211,6 @@ class HUGnetDB
             } else {
                 $servers = array();
             }
-            if (is_string($config["servers"][0]['host'])) {
-                $servers[0]['host'] = $config["servers"][0]['host'];
-            } else {
-                $servers[0]['host'] = 'localhost';
-            }
             if (is_string($config["servers"][0]['user'])) {
                 $servers[0]['user'] = $config["servers"][0]['user'];
             } else {
@@ -1216,9 +1211,6 @@ class HUGnetDB
     function &getInstance($class = "HUGnetDB", $config = null)
     {
         static $instances;
-        if (!isset($instances)) {
-            $instances = array();
-        }
         if (file_exists(HUGNET_INCLUDE_PATH."/database/".$class.".php")) {
             include_once HUGNET_INCLUDE_PATH."/database/".$class.".php";
         }
@@ -1304,9 +1296,6 @@ class HUGnetDB
     private function _config($config = null, $overwrite = true)
     {
         static $saveConfig;
-        if (is_null($saveConfig)) {
-            $saveConfig = array();
-        }
 
         if (is_array($config) && (empty($saveConfig) || $overwrite)) {
             $saveConfig = $config;
