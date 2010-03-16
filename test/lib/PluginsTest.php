@@ -91,7 +91,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new plugins();
+        $this->o = new plugins("", "", "", array(), 0, false);
     }
 
     /**
@@ -1100,30 +1100,25 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "a", "b", "c", array("d"), 4,
+                "a", "b", "c", array("d"), 0,
                 "dir",
                 "a",
             ),
             array(
-                "a", "b", "c", array("d"), 4,
+                "a", "b", "c", array("d"), 0,
                 "extension",
                 "b",
             ),
             array(
-                "a", "b", "c", array("d"), 4,
+                "a", "b", "c", array("d"), 0,
                 "webdir",
                 "c",
             ),
             array(
-                "a", "b", "c", array("d"), 4,
+                "a", "b", "c", array("d"), 0,
                 "_skipDir",
                 array("d"),
            ),
-            array(
-                "a", "b", "c", "d", 4,
-                "verbose",
-                4,
-            ),
             array(
                 "", "", "", "d", "Not an Integer",
                 "dir",
@@ -1162,6 +1157,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     * @param int    $verbose   The verbosity level
     * @param string $attribute The attribute to check
     * @param array  $expect    The expected value
+    * @param bool   $cache     Cache the plugins.
     *
     * @return null
     *
@@ -1174,9 +1170,10 @@ class PluginsTest extends PHPUnit_Framework_TestCase
         $skipDir,
         $verbose,
         $attribute,
-        $expect
+        $expect,
+        $cache = false
     ) {
-        $o = new plugins($basedir, $extension, $webdir, $skipDir, $verbose);
+        $o = new plugins($basedir, $extension, $webdir, $skipDir, $verbose, $cache);
         $this->assertAttributeEquals($expect, $attribute, $o);
     }
 

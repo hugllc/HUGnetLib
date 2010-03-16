@@ -155,11 +155,7 @@ print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>
 class Plugins
 {
     /** @var array Plugin Functions */
-    var $plugins = array(
-                         "Functions" => array(),
-                         "Menu" => array(),
-                         "Generic" => array()
-                        );
+    var $plugins = array();
     /** @var array This is where information on the plugin files is stored. */
     var $plugin_info = array();
     /** @var string This is the directory where Plugins will be looked for. */
@@ -176,7 +172,6 @@ class Plugins
     var $_debug_stack = "";
     /** @var array The directory to skip. */
     var $_skipDir = array();
-
 
     /**
     * Registers a function as a plugin
@@ -517,6 +512,8 @@ class Plugins
     * @param array  $skipDir   Array of Strings Directories to not look into for
     *                          plugins.
     * @param int    $verbose   The verbosity level
+    * @param bool   $doCache   This controls whether a cache is used.  It is mostly
+    *                          used for unit testing
     *
     * @return null
     */
@@ -525,8 +522,13 @@ class Plugins
         $extension = "",
         $webdir    = "",
         $skipDir   = array(),
-        $verbose   = 0
+        $verbose   = 0,
+        $doCache   = true
     ) {
+//        static $cache;
+
+        $this->verbose = (int) $verbose;
+
         if (!empty($basedir)) {
             $this->dir = $basedir;
         }
@@ -539,13 +541,18 @@ class Plugins
         if (is_array($skipDir)) {
             $this->_skipDir = $skipDir;
         }
-        $this->plugins = &$GLOBALS['df_plugins'][$basedir][$extension];
-        if (!is_array($this->plugins)) {
-            $this->plugins = array();
+        // This is a cache.  This line speeds up the code tremendously.
+        // DO NOT REMOVE IT!
+//        if ($doCache) {
+//            $key  = $this->dir.$this->webdir.$this->extension;
+//            $key .= serialize($this->_skipDir);
+//            $this->plugins = &$cache[$key];
+//        }
+        // This gets the plugins if we didn't get anything in the cache
+//        if (!is_array($this->plugins) || empty($this->plugins)) {
+//            $this->plugins = array();
             $this->findPlugins();
-        }
-        $this->verbose = (int) $verbose;
-
+//        }
     }
 
     /**
@@ -572,8 +579,6 @@ class Plugins
         $this->_debug("Checking for Plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         if ($plugindir) {
-
-            $print_debug .= "\n";
             while ($file = readdir($plugindir)) {
                 $files[] = $file;
             }
@@ -583,7 +588,6 @@ class Plugins
                 $file     = str_replace("/", "", trim($file));
                 $webfile  = str_replace("//", "/", $webdir."/".$file);
                 $basefile = str_replace("//", "/", $basedir."/".$file);
-
                 if (($file != "..") && ($file != ".")) {
                     if (is_file($basefile)) {
                         $r = '/[.]*'.str_replace(".", "\\.", $this->extension).'*/';
@@ -634,26 +638,43 @@ class Plugins
     */
     function includeFile($file, $filedir = "", $webdir = "")
     {
-        global $debug;
-        $plugin_info = false;
-        $this->_debug("Checking File:  ".$file."\n", 4);
-        // These files might need to be included more than once, so we use include
-        try {
-            if ($this->_checkFile($filedir.$file)) {
-                $freturn = include $filedir.$file;
+        static $cache;
+        // This allows _setPluginVar to write to the cache
+        $this->incFileCache = &$cache;
+        $realFile = realpath($filedir.$file);
+        if (empty($cache[$realFile]) || !is_array($cache[$realFile])) {
+            $plugin_info = false;
+            $this->_debug("Checking File:  ".$file."\n", 4);
+            // This tells the cache what file to use
+            $this->incFile = $realFile;
+            try {
+                if ($this->_checkFile($filedir.$file)) {
+                    // These files might need to be included more than once,
+                    // so we use include
+                    $freturn = include $filedir.$file;
+                }
+            } catch (ErrorException $e) {
+                $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
+                $freturn = false;
+            } catch (Exception $e) {
+                $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+                $freturn = false;
             }
-        } catch (ErrorException $e) {
-            $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
-            $freturn = false;
-        } catch (Exception $e) {
-            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
-            $freturn = false;
-        }
-        if (!$freturn) {
-            $this->_debug($freturn, 4);
-            $this->_debug("\tErrors encountered parsing file.");
-            $this->_debug("Skipping ".$file.".\n", 4);
-            return;
+            // Have to make sure that this unset
+            unset($this->incFile);
+
+            // Bad things happened.  ;)
+            if (!$freturn) {
+                $this->_debug($freturn, 4);
+                $this->_debug("\tErrors encountered parsing file.");
+                $this->_debug("Skipping ".$file.".\n", 4);
+                return;
+            }
+        } else {
+            $this->_debug("Cache Hit: $realFile\n");
+             // Have to make sure that this unset.  Otherwise could we double cache
+            unset($this->incFile);
+            $this->_setPluginVar($cache[$realFile]);
         }
         $this->file_count++;
 
@@ -691,6 +712,7 @@ class Plugins
     {
         $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
         $this->_debug("\t\tType:  ".$info["Types"]."\t\t", 4);
+        $plugins = array();
         if (!is_array($info)) {
             $this->_debug(" Failed (Bad arguments to registerFunction)", 4);
             return;
@@ -705,24 +727,46 @@ class Plugins
         }
         if (is_array($info["Types"])) {
             foreach ($info["Types"] as $Type) {
-                $this->plugins["Functions"][$Type][] = $info;
+                $plugins["Functions"][$Type][] = $info;
             }
         } else {
             if (trim($info["Types"]) != "") {
                 foreach (explode(",", $info["Types"]) as $Type) {
-                    $this->plugins["Functions"][trim($Type)][] = $info;
+                    $plugins["Functions"][trim($Type)][] = $info;
                 }
             } else {
-                $this->plugins["Functions"]["ALL_TYPES"][] = $info;
+                $plugins["Functions"]["ALL_TYPES"][] = $info;
             }
         }
+        $this->_setPluginVar($plugins);
         $this->_debug(" Done!", 4);
         $this->function_count++;
         $this->plugin_count++;
         $this->_debug("\n", 4);
     }
 
-
+    /**
+    * Adds a generic plugin to the list of valid plugins.
+    *
+    * Copys the info parameter into its array of generic plugins.
+    *
+    * @param array $info  this is all of the information about the plugin.
+    *
+    * @return null
+    */
+    private function _setPluginVar($info)
+    {
+        if (!empty($this->incFile)) {
+            $this->incFileCache[$this->incFile] = $info;
+        }
+        foreach ($info as $cat => $catInfo) {
+            foreach ($catInfo as $type => $plugins) {
+                foreach ($plugins as $key => $plugin) {
+                    $this->plugins[$cat][$type][] = $plugin;
+                }
+            }
+        }
+    }
 
     /**
     * Adds a generic plugin to the list of valid plugins.
@@ -737,7 +781,6 @@ class Plugins
     */
     function addGenericRaw($info)
     {
-
         $info["Name"] = trim($info["Name"]);
         if (!isset($info["Type"])) {
             $info["Type"] = "ALL_TYPES";
@@ -746,14 +789,14 @@ class Plugins
         $this->_debug("\t\tType:  ".$info["Type"], 4);
         if ($info["Name"] != "") {
             $this->_debug("  Done", 4);
-            $this->plugins["Generic"][$info["Type"]][] = $info;
+            $plugins["Generic"][$info["Type"]][] = $info;
+            $this->_setPluginVar($plugins);
             $this->generic_count++;
             $this->plugin_count++;
         } else {
             $this->_debug("  Failed", 4);
         }
         $this->_debug("\n", 4);
-
     }
 
 
