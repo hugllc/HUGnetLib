@@ -182,9 +182,9 @@ class VirtualHistoryTest extends databaseTest
                 self::$preload,
                 array(
                     "DeviceKey" => 6,
-                    "ActiveSensors" => 3,
+                    "ActiveSensors" => 4,
                     "params" => array(
-                        "device" => array(1,2,3),
+                        "device" => array(1,2,3,0),
                         "input" => array(3,2,1),
                     ),
                 ),
@@ -199,7 +199,7 @@ class VirtualHistoryTest extends databaseTest
                         "Data2" => 8.0,
                         "DeviceKey" => 6,
                         "Date" => "2007-12-20 02:15:00",
-                   ),
+                    ),
                     array(
                         "Data0" => 3.0,
                         "data" => array(3.0, 3.0, 3.0),
@@ -207,9 +207,9 @@ class VirtualHistoryTest extends databaseTest
                         "Data2" => 3.0,
                         "DeviceKey" => 6,
                         "Date" => "2007-12-20 02:00:00",
-                   ),
-               ),
-           ),
+                    ),
+                ),
+            ),
             array(
                 self::$preload,
                 array(
