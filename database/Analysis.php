@@ -37,6 +37,7 @@
 
 /** The base for all database classes */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
+require_once HUGNET_INCLUDE_PATH."/database/Device.php";
 
 /**
  * A class for controlling processes
@@ -96,7 +97,7 @@ class Analysis extends HUGnetDB
      *
      * @return array The array of health information
      *
-     * @todo This should be moved to the device class
+     * @todo SQLite does not support the STD function.  This should be fixed.
      */
     function health($where, $data = array(), $days = 7, $start=null)
     {
@@ -154,10 +155,12 @@ class Analysis extends HUGnetDB
         $data[] = date("Y-m-d H:i:s", $end);
         $res = $this->query($query, $data);
 
+        // @codeCoverageIgnoreStart
         if (isset($res[0])) {
             $res = $res[0];
         }
-        return $res;
+         // @codeCoverageIgnoreEnd
+       return $res;
     }
 
 

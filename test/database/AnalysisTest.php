@@ -56,9 +56,44 @@ require_once dirname(__FILE__).'/../../database/Analysis.php';
 class AnalysisTest extends databaseTest
 {
     /** The table to use */
-    protected $table = "analysis";
+    public $table = "analysis";
 
-
+    /** Preload data */
+    public static $preload = array(
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-21",
+            "AveragePollTime" => 2.568,
+            "Polls" => 253,
+            "AverageReplyTime" => 1.253,
+            "Replies" => 253,
+            "Reconfigs" => 2,
+            "Boredom" => 0,
+            "Powerups" => 1,
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-22",
+            "AveragePollTime" => 2.898,
+            "Polls" => 253,
+            "AverageReplyTime" => 1.113,
+            "Replies" => 253,
+            "Reconfigs" => 0,
+            "Boredom" => 0,
+            "Powerups" => 0,
+        ),
+        array(
+            "DeviceKey" => 1,
+            "Date" => "2007-12-23",
+            "AveragePollTime" => 3.218,
+            "Polls" => 251,
+            "AverageReplyTime" => 1.083,
+            "Replies" => 251,
+            "Reconfigs" => 5,
+            "Boredom" => 1,
+            "Powerups" => 6,
+        ),
+    );
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -71,7 +106,11 @@ class AnalysisTest extends databaseTest
     {
         parent::setUp();
         $this->o =& HUGnetDB::getInstance("Analysis", $this->config);
-        $this->o->createTable();
+        $config = $this->config;
+        $config["table"] = "devices";
+        $device =& HUGnetDB::getInstance("Device", $config);
+        $device->createTable();
+        $this->o->createTable($this->table);
 
     }
 
@@ -87,6 +126,59 @@ class AnalysisTest extends databaseTest
     {
         parent::tearDown();
         unset($this->o);
+    }
+    /**
+     * Data provider for testGetLatestFirmware
+     *
+     * @return array
+     */
+    public static function dataHealth()
+    {
+        return array(
+            array(
+                array(),
+                1,
+                null,
+                7,
+                null,
+                array(),
+            ),
+            array(
+                self::$preload,
+                "DeviceKey = ?",
+                array(1),
+                7,
+                "2007-12-26",
+                array(),
+            ),
+        );
+    }
+
+    /**
+     * test
+     *
+     * @param array  $preload   Data to preload into the database
+     * @param string $where Extra where clause for the SQL
+     * @param array  $data  The data to use for the where clause
+     * @param int    $days  The number of days back to go
+     * @param mixed  $start The start date of the health report
+     * @param array  $expect    The data we expect returned
+     *
+     * @return null
+     *
+     * @dataProvider dataHealth().
+     */
+    public function testHealth(
+        $preload,
+        $where,
+        $data,
+        $days,
+        $start,
+        $expect
+    ) {
+        $this->load($preload);
+        $ret = $this->o->health($where, $data, $days, $start);
+        $this->assertSame($expect, $ret);
     }
 
 }

@@ -75,7 +75,7 @@ class RawHistoryTest extends databaseTest
     {
         parent::setUp();
         $this->o =& HUGnetDB::getInstance("RawHistory", $this->config);
-        $this->o->createTable();
+        $this->o->createTable($this->table);
 
     }
 

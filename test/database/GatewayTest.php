@@ -72,7 +72,7 @@ class GatewayTest extends databaseTest
     {
         parent::setUp();
         $this->o =& HUGnetDB::getInstance("Gateway", $this->config);
-        $this->o->createTable();
+        $this->o->createTable($this->table);
 
     }
 
@@ -150,6 +150,125 @@ class GatewayTest extends databaseTest
     {
         $this->load($preload);
         $ret = $this->o->find();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+     * Data provider for testFind()
+     *
+     * @return array
+     */
+    public static function dataSelect()
+    {
+        $stuff = posix_uname();
+        $ip    = gethostbyname($stuff["nodename"]);
+
+        return array(
+            array(array(), "", "", array(VIRTUAL_ENDPOINT_GATEWAY => "Virtual")),
+            array(
+                array(
+                    array(
+                        "GatewayKey" => 1,
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayName" => "crazyharry",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BAD",
+                        "isVisible" => "1",
+                    ),
+                    array(
+                        "GatewayKey" => 2,
+                        "GatewayIP" => $ip,
+                        "GatewayName" => "thing2",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BETA",
+                        "isVisible" => "1",
+                    ),
+                ),
+                1,
+                "",
+                array(
+                    VIRTUAL_ENDPOINT_GATEWAY => "Virtual",
+                    1 => "crazyharry",
+                    2 => "thing2",
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "GatewayKey" => 1,
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayName" => "crazyharry",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BAD",
+                        "isVisible" => "1",
+                    ),
+                    array(
+                        "GatewayKey" => 2,
+                        "GatewayIP" => $ip,
+                        "GatewayName" => "thing2",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BETA",
+                        "isVisible" => "1",
+                    ),
+                ),
+                "GatewayKey = ?",
+                array(1),
+                array(
+                    VIRTUAL_ENDPOINT_GATEWAY => "Virtual",
+                    1 => "crazyharry",
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "GatewayKey" => 1,
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayName" => "crazyharry",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BAD",
+                        "isVisible" => "0",
+                    ),
+                    array(
+                        "GatewayKey" => 2,
+                        "GatewayIP" => $ip,
+                        "GatewayName" => "thing2",
+                        "GatewayLocation" => "asdf",
+                        "database" => "HUGnet",
+                        "FirmwareStatus" => "BETA",
+                        "isVisible" => "1",
+                    ),
+                ),
+                null,
+                array(1),
+                array(
+                    VIRTUAL_ENDPOINT_GATEWAY => "Virtual",
+                    2 => "thing2",
+                ),
+            ),
+        );
+    }
+    /**
+     * Tests gateway::select()
+     *
+     * @param array $preload The data to preload into the database
+     * @param array $expect  The return value to expect
+     *
+     * @return null
+     *
+     * @dataProvider dataSelect().
+     */
+    public function testSelect($preload, $where, $data, $expect)
+    {
+        $this->load($preload);
+        if (is_null($where)) {
+            $ret = $this->o->select();
+        } else {
+            $ret = $this->o->select($where, $data);
+        }
         $this->assertSame($expect, $ret);
     }
 
@@ -402,6 +521,23 @@ class GatewayTest extends databaseTest
         $this->assertSame($expect, $ret);
     }
 
+    /**
+     * This function tests to see if there are any fields defined
+     *
+     * @return null
+     */
+    function testLocalFieldCount()
+    {
+        $o =& HUGnetDB::getInstance("Gateway", $this->config);
+        $o->createLocalTable($this->table);
+        $columns = $this->readAttribute($o, "_columns");
+        $fields  = $this->readAttribute($o, "fields");
+        $this->assertSame(
+            $columns,
+            count($fields),
+            "$columns != ".count($fields)." Table was either not built or modified."
+        );
+    }
 }
 
 /**

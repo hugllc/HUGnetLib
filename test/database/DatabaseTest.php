@@ -262,7 +262,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame(
             $columns,
             count($fields),
-            "Table was either not built or modified."
+            "$columns != ".count($fields)." Table was either not built or modified."
         );
     }
 

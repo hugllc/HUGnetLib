@@ -38,6 +38,9 @@
 /** This where our base class lives */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 
+if (!defined("VIRTUAL_ENDPOINT_GATEWAY")) {
+    define("VIRTUAL_ENDPOINT_GATEWAY", -1);
+}
 /**
  * Database interface class for gateways
  *
