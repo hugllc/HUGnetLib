@@ -254,8 +254,10 @@ class GatewayTest extends databaseTest
     /**
      * Tests gateway::select()
      *
-     * @param array $preload The data to preload into the database
-     * @param array $expect  The return value to expect
+     * @param array  $preload The data to preload into the database
+     * @param string $where   The where clause to use
+     * @param array  $data    The data to use for the where clause
+     * @param array  $expect  The return value to expect
      *
      * @return null
      *

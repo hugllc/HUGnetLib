@@ -356,9 +356,10 @@ class HistoryTest extends databaseTest
     /**
      * test
      *
-     * @param array  &$history The history row to use
-     * @param array  &$devInfo The device array to use.
-     * @param int    $expect    The info to expect returned
+     * @param array $history       The history row to use
+     * @param array $devInfo       The device array to use.
+     * @param array $historyExpect The history row to expect
+     * @param array $devInfoExpect The device array to expect.
      *
      * @return null
      *
@@ -377,9 +378,10 @@ class HistoryTest extends databaseTest
     /**
      * test
      *
-     * @param array  &$history The history row to use
-     * @param array  &$devInfo The device array to use.
-     * @param int    $expect    The info to expect returned
+     * @param array $history       The history row to use
+     * @param array $devInfo       The device array to use.
+     * @param array $historyExpect The history row to expect
+     * @param array $devInfoExpect The device array to expect.
      *
      * @return null
      *

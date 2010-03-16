@@ -157,12 +157,12 @@ class AnalysisTest extends databaseTest
     /**
      * test
      *
-     * @param array  $preload   Data to preload into the database
-     * @param string $where Extra where clause for the SQL
-     * @param array  $data  The data to use for the where clause
-     * @param int    $days  The number of days back to go
-     * @param mixed  $start The start date of the health report
-     * @param array  $expect    The data we expect returned
+     * @param array  $preload Data to preload into the database
+     * @param string $where   Extra where clause for the SQL
+     * @param array  $data    The data to use for the where clause
+     * @param int    $days    The number of days back to go
+     * @param mixed  $start   The start date of the health report
+     * @param array  $expect  The data we expect returned
      *
      * @return null
      *
