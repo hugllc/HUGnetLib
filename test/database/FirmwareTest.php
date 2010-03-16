@@ -259,6 +259,7 @@ S9030000FC",
         $MemBufferEmpty,
         $expect
     ) {
+        $this->o->createTable($this->table);
         $ret = $this->o->interpSREC(
             $srec,
             $MemBufferSize,

@@ -1018,6 +1018,7 @@ class DeviceTest extends databaseTest
     {
         return array(
             array(
+                array(),
                 array(
                     "DeviceID" => "000030",
                     "DeviceName" => "dev1",
@@ -1033,10 +1034,11 @@ class DeviceTest extends databaseTest
                     "PollInterval" => "15",
                     "ActiveSensors" => "0",
                     "params" => "YToy",
-               ),
-               false,
-               -1,
-               array(
+                ),
+                false,
+                -1,
+                1,
+                array(
                     "DeviceKey" => "1",
                     "DeviceID" => "V00001",
                     "DeviceName" => "dev1",
@@ -1063,32 +1065,118 @@ class DeviceTest extends databaseTest
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => "0",
                     "params" => "YToy",
-               ),
-           ),
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "DeviceKey" => "1",
+                        "DeviceID" => "V00001",
+                        "DeviceName" => "dev1",
+                        "SerialNum" => "-1",
+                        "HWPartNum" => "VIRTUAL",
+                        "FWPartNum" => "VIRTUAL",
+                        "FWVersion" => "VIRTUAL",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eVIRTUAL",
+                        "PollInterval" => "15",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "",
+                        "BoredomThreshold" => "0",
+                        "LastConfig" => "0000-00-00 00:00:00",
+                        "LastPoll" => "0000-00-00 00:00:00",
+                        "LastHistory" => "0000-00-00 00:00:00",
+                        "LastAnalysis" => "0000-00-00 00:00:00",
+                        "MinAverage" => "15MIN",
+                        "CurrentGatewayKey" => "0",
+                        "params" => "YToy",
+                    ),
+                ),
+                array(
+                    "DeviceID" => "000030",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "48",
+                    "RawSetup" => "",
+                    "Active" => "0",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "params" => "YToy",
+                ),
+                false,
+                -2,
+                2,
+                array(
+                    "DeviceKey" => "2",
+                    "DeviceID" => "V00002",
+                    "DeviceName" => "dev1",
+                    "SerialNum" => "-2",
+                    "HWPartNum" => "VIRTUAL",
+                    "FWPartNum" => "VIRTUAL",
+                    "FWVersion" => "VIRTUAL",
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "-1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eVIRTUAL",
+                    "PollInterval" => "15",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "",
+                    "BoredomThreshold" => "0",
+                    "LastConfig" => "0000-00-00 00:00:00",
+                    "LastPoll" => "0000-00-00 00:00:00",
+                    "LastHistory" => "0000-00-00 00:00:00",
+                    "LastAnalysis" => "0000-00-00 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => "0",
+                    "params" => "YToy",
+                ),
+            ),
         );
     }
     /**
      * test
      *
-     * @param array $Info      The name of the select list
-     * @param int   $replace   Whether or not to replace this device
-     * @param bool  $retExpect What we expect returned
-     * @param array $expect    What we expect returned
+     * @param array $preload      Data to preload into the database
+     * @param array $Info         The name of the select list
+     * @param int   $replace      Whether or not to replace this device
+     * @param bool  $retExpect    What we expect returned
+     * @param int   $retDeviceKey The device key for the insert
+     * @param array $expect       What we expect returned
      *
      * @return null
      *
      * @dataProvider dataAddVirtual().
      */
     public function testAddVirtual(
+        $preload,
         $Info,
         $replace,
         $retExpect,
+        $retDeviceKey,
         $expect
     ) {
+        $this->load($preload);
         $ret = $this->o->addVirtual($Info, $replace);
-        $this->assertSame($retExpect, $ret);
-        $ret = $this->getSingle(1);
-        $this->assertSame($expect, $ret);
+        $this->assertSame($retExpect, $ret, "Oops Return failed");
+        if (is_int($ret)) {
+            $ret = $this->getSingle($retDeviceKey);
+            $this->assertSame($expect, $ret, "Insert Failed");
+        }
     }
 
 }

@@ -206,9 +206,11 @@ class Device extends HUGnetDB
         if (strtotime($res["LastConfig"]) > strtotime($DevInfo["LastConfig"])) {
             return false;
         }
+        // @codeCoverageIgnoreStart
         if (empty($DevInfo['SerialNum'])) {
             unset($DevInfo['SerialNum']);
         }
+        // @codeCoverageIgnoreEnd
         $DevInfo["DeviceKey"] = $res["DeviceKey"];
         return $this->update($DevInfo);
     }
@@ -272,7 +274,9 @@ class Device extends HUGnetDB
         if (self::add($info, $replace)) {
             return $info["SerialNum"];
         }
+        // @codeCoverageIgnoreStart
         return false;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -352,9 +356,11 @@ class Device extends HUGnetDB
     function diagnose($Info, $time = null)
     {
         $problem = array();
+        // @codeCoverageIgnoreStart
         if (empty($time)) {
             $time = time();
         }
+        // @codeCoverageIgnoreEnd
         if ($Info["PollInterval"] <= 0) {
             return array();
         }

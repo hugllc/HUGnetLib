@@ -99,12 +99,7 @@ class Firmware extends HUGnetDB
                     $csum = false;
                 }
                 if ($data != false) {
-                    $MemBuffer = substr_replace(
-                        $MemBuffer,
-                        $data,
-                        ($addr*2),
-                        ($size*2)
-                    );
+                    $MemBuffer = substr_replace($MemBuffer, $data, $addr*2, $size*2);
                 }
             }
         }
