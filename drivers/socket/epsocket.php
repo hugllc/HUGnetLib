@@ -97,7 +97,7 @@ if (!class_exists("epsocket")) {
         *
         * @return int The number of bytes written on success, false on failure
         */
-        function write($packet)
+        function write($packet, $GetReply = true)
         {
             $pktData = self::packetBuild($packet["packet"]);
             $data    = devInfo::deHexify($pktData);

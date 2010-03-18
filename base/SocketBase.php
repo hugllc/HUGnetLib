@@ -54,6 +54,8 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 
 /** Used for manipulating devInfo arrays */
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
+/** Misc stuff */
+require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
 
 
 /**
@@ -68,7 +70,7 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SocketBase
+abstract class SocketBase
 {
 
 
@@ -96,26 +98,26 @@ class SocketBase
     /** Return all packets coming in */
     protected $getAll = false;
     /**
-     * Sets the flag to get and return all packets.
-     *
-     * @param bool $val The value to set getAll to.
-     *
-     * @return bool true if the DeviceID belongs to a gateway, false otherwise.
-     */
+    * Sets the flag to get and return all packets.
+    *
+    * @param bool $val The value to set getAll to.
+    *
+    * @return bool true if the DeviceID belongs to a gateway, false otherwise.
+    */
     function getAll($val = true)
     {
         $this->getAll = (bool) $val;
     }
 
     /**
-     * Constructor.
-     *
-     * This just sets up the variables if they are passed to it.
-     *
-     * @param array $config The configuration array
-     *
-     * @return null
-     */
+    * Constructor.
+    *
+    * This just sets up the variables if they are passed to it.
+    *
+    * @param array $config The configuration array
+    *
+    * @return null
+    */
     function __construct($config=array())
     {
         $this->verbose = $config["verbose"];
@@ -123,12 +125,12 @@ class SocketBase
     }
 
     /**
-     * Turns a packet string into an array of values.
-     *
-     * @param string $data The raw packet to parse
-     *
-     * @return array The packet array created from the string
-     */
+    * Turns a packet string into an array of values.
+    *
+    * @param string $data The raw packet to parse
+    *
+    * @return array The packet array created from the string
+    */
     function unbuildPacket($data)
     {
         // Strip off any preamble bytes.
@@ -152,12 +154,12 @@ class SocketBase
         return $pkt;
     }
     /**
-     * Computes the checksum of a packet
-     *
-     * @param string $PktStr The raw packet string
-     *
-     * @return string The checksum
-     */
+    * Computes the checksum of a packet
+    *
+    * @param string $PktStr The raw packet string
+    *
+    * @return string The checksum
+    */
     public function packetGetChecksum($PktStr)
     {
         $chksum = 0;
@@ -170,24 +172,24 @@ class SocketBase
     }
 
     /**
-     * Builds a packet
-     *
-     * This function actually builds the packet to write to the socket.  It takes in
-     * an array of the form:
-     * <code>
-     * array["To"] = "0000A5";
-     * array["Command"] = 02;
-     * array["Data"][0] = 00;
-     * array["Data"][1] = 01;
-     * ...
-     * </code>
-     *
-     * @param array  $Packet This is an array with packet commands in it.
-     * @param string $from   If the packet is not from me this is the from
-     *                       address to use.
-     *
-     * @return string The packet in string form.
-     */
+    * Builds a packet
+    *
+    * This function actually builds the packet to write to the socket.  It takes in
+    * an array of the form:
+    * <code>
+    * array["To"] = "0000A5";
+    * array["Command"] = 02;
+    * array["Data"][0] = 00;
+    * array["Data"][1] = 01;
+    * ...
+    * </code>
+    *
+    * @param array  $Packet This is an array with packet commands in it.
+    * @param string $from   If the packet is not from me this is the from
+    *                       address to use.
+    *
+    * @return string The packet in string form.
+    */
     function packetBuild($Packet, $from=null)
     {
         if (!is_array($Packet)) {
@@ -219,12 +221,12 @@ class SocketBase
         return($return);
     }
     /**
-     * Removes the preamble from a packet string
-     *
-     * @param string &$data The preamble will be removed from this packet string
-     *
-     * @return null
-     */
+    * Removes the preamble from a packet string
+    *
+    * @param string &$data The preamble will be removed from this packet string
+    *
+    * @return null
+    */
     protected function removePreamble(&$data)
     {
         while (substr($data, 0, 2) == SocketBase::$preambleByte) {
@@ -232,31 +234,32 @@ class SocketBase
         }
     }
     /**
-     * Splits the data string into an array
-     *
-     * @param string $data The preamble will be removed from this packet string
-     *
-     * @return array
-     */
+    * Splits the data string into an array
+    *
+    * @param string $data The preamble will be removed from this packet string
+    *
+    * @return array
+    */
     protected function splitDataString($data)
     {
+        $ret = array();
         for ($i = 0; $i < (strlen($data)/2); $i++) {
             $ret[] = hexdec(substr($data, ($i*2), 2));
         }
         return $ret;
     }
     /**
-     *  Gets a character
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @param int $timeout The timeout to use.
-     *
-     * @return bool
-     */
+    *  Gets a character
+    *
+    * Returns the packet array on success, and false on failure
+    *
+    * @param int $timeout The timeout to use.
+    *
+    * @return bool
+    */
     private function _recvPacketGetChar($timeout)
     {
-        $char = $this->ReadChar($timeout);
+        $char = $this->readChar($timeout);
         if ($char !== false) {
             $char = devInfo::hexify(ord($char));
 
@@ -268,12 +271,12 @@ class SocketBase
         }
     }
     /**
-     * Checks to see if what is in the buffer is a packet
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @return mixed
-     */
+    * Checks to see if what is in the buffer is a packet
+    *
+    * Returns the packet array on success, and false on failure
+    *
+    * @return mixed
+    */
     private function _recvPacketCheckPkt()
     {
         $pkt = $this->_recvPacketGetPacket();
@@ -286,12 +289,12 @@ class SocketBase
 
 
     /**
-     * Finds a potential packet in a string
-     *
-     * Returns the packet array on success, and false on failure
-     *
-     * @return mixed
-     */
+    * Finds a potential packet in a string
+    *
+    * Returns the packet array on success, and false on failure
+    *
+    * @return mixed
+    */
     private function _recvPacketGetPacket()
     {
         $pkt = stristr(
@@ -311,12 +314,12 @@ class SocketBase
 
     }
     /**
-     * Receives a packet from the socket interface
-     *
-     * @param int $timeout Timeout for waiting.  Default is used if timeout == 0
-     *
-     * @return bool false on failure, the Packet array on success
-     */
+    * Receives a packet from the socket interface
+    *
+    * @param int $timeout Timeout for waiting.  Default is used if timeout == 0
+    *
+    * @return bool false on failure, the Packet array on success
+    */
     function recvPacket($timeout=0)
     {
         $timeout  = $this->getReplyTimeout($timeout);
@@ -335,12 +338,12 @@ class SocketBase
 
     }
     /**
-     * Figures out if we should use the timeout given or the default one
-     *
-     * @param int $timeout The timeout to use, if it is set
-     *
-     * @return int
-     */
+    * Figures out if we should use the timeout given or the default one
+    *
+    * @param int $timeout The timeout to use, if it is set
+    *
+    * @return int
+    */
     protected function getReplyTimeout($timeout)
     {
         if (!is_numeric($timeout) || ($timeout <= 0)) {
@@ -349,19 +352,20 @@ class SocketBase
         return $timeout;
     }
     /**
-     * Sends out a packet
-     *
-     * @param array $packet   the packet to send out
-     * @param bool  $GetReply Whether to expect a reply or not
-     *
-     * @return bool false on failure, true on success
-     */
+    * Sends out a packet
+    *
+    * @param array $packet   the packet to send out
+    * @param bool  $GetReply Whether to expect a reply or not
+    *
+    * @return bool false on failure, true on success
+    */
     function sendPacket($packet, $GetReply=true)
     {
-        if ($this->verbose) {
-            print "Sending Pkt: T:".$packet['PacketTo'];
-            print " C:".$packet['sendCommand']."\n";
-        }
+        HUGnetMisc::vprint(
+            "Sending Pkt: T:".$packet['PacketTo']
+            ." C:".$packet['sendCommand']."\n",
+            2
+        );
         $ret = $this->Write($packet, $GetReply);
         if (empty($ret)) {
             return false;
@@ -369,6 +373,28 @@ class SocketBase
         return $ret;
 
     }
+
+    /**
+    *  Gets a character
+    *
+    * Returns the packet array on success, and false on failure
+    *
+    * @param int $timeout The timeout to use.
+    *
+    * @return bool
+    */
+    abstract protected function readChar($timeout = -1);
+
+    /**
+    * Sends out a packet
+    *
+    * @param array $packet   the packet to send out
+    * @param bool  $GetReply Whether to expect a reply or not
+    *
+    * @return bool false on failure, true on success
+    */
+    abstract protected function Write($packet, $GetReply = true);
+
 
 }
 

@@ -349,6 +349,18 @@ if (!class_exists("dbsocket")) {
             // = new HUGnetDB($config);
             return $this->CheckConnect();
         }
+        /**
+        *  Gets a character
+        *
+        * Returns the packet array on success, and false on failure
+        *
+        * @param int $timeout The timeout to use.
+        *
+        * @return bool
+        */
+        protected function readChar($timeout = -1)
+        {
+        }
 
 
         /**

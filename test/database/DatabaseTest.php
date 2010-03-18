@@ -128,11 +128,21 @@ class DatabaseTest extends PHPUnit_Extensions_Database_TestCase
         unset($this->config);
     }
 
+    /**
+    * This function is for the database_testcase class
+    *
+    * @return mixed
+    */
     protected function getConnection()
     {
         return $this->createDefaultDBConnection($this->pdo, 'sqlite');
     }
 
+    /**
+    * This function is for the database_testcase class
+    *
+    * @return mixed
+    */
     protected function getDataSet()
     {
         return $this->createFlatXMLDataSet($this->dataSet);
