@@ -64,7 +64,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->o = new sensor();
+        $this->plugins = null;
+        $this->o = new sensor($this->plugins);
     }
 
     /**
@@ -99,36 +100,99 @@ class SensorTest extends PHPUnit_Framework_TestCase
     public static function dataRegisterSensor()
     {
         return array(
-            array("TestSensor", true),
-            array("TestSensorBad", false),
-            array("TestSensorNoSensors", false),
+            array(
+                "TestSensor", false, true,
+                array(
+                    256 => array(
+                        "TestSensor1" => "TestSensor",
+                        "TestSensor2" => "TestSensor",
+                        "TestSensor3" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    257 => array(
+                        "test1" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    258 => array(
+                        "test2" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    259 => array(
+                        "test3" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                ),
+            ),
+            array(
+                "TestSensorBad", false, false,
+                array()
+            ),
+            array(
+                "TestSensorNoSensors", false, false,
+                array()
+            ),
+            array(
+                new TestSensor(),
+                false,
+                true,
+                array(
+                    256 => array(
+                        "TestSensor1" => "TestSensor",
+                        "TestSensor2" => "TestSensor",
+                        "TestSensor3" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    257 => array(
+                        "test1" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    258 => array(
+                        "test2" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                    259 => array(
+                        "test3" => "TestSensor",
+                        "default" => "TestSensor",
+                    ),
+                ),
+            ),
         );
     }
     /**
      * test
      *
-     * @param string $class  The class to use
-     * @param mixed  $expect What to expect
+     * @param mixed  $class     The class to use
+     * @param string $name      The name of the sensor
+     * @param mixed  $expect    What to expect
+     * @param array  $devExpect The expected value of the dev array
      *
      * @return null
      *
      * @dataProvider dataRegisterSensor
      */
-    public function testRegisterSensor($class, $expect)
+    public function testRegisterSensor($class, $name, $expect, $devExpect)
     {
-        $o   = new sensor();
-        $ret = $this->o->registerSensor($class);
+        $ret = $this->o->registerSensor($class, $name);
         $this->assertSame($expect, $ret);
+        $this->assertAttributeSame($devExpect, "dev", $this->o);
         if ($expect) {
+            $dev = $this->readAttribute($this->o, "dev");
+            $sensors = $this->readAttribute($this->o, "sensors");
+            if (is_object($class)) {
+                $name = get_class($class);
+            } else {
+                $name = $class;
+            }
             $this->assertThat(
-                $this->o->sensors[$class],
-                $this->isInstanceOf($class)
+                $sensors[$name],
+                $this->isInstanceOf($name),
+                "This is the wrong class"
             );
-            foreach ($this->o->sensors[$class]->sensors as $type => $sInfo) {
+            foreach ($sensors[$name]->sensors as $type => $sInfo) {
                 foreach ($sInfo as $sensor => $val) {
                     $this->assertEquals(
-                        $this->o->dev[$type][$sensor],
-                        $class,
+                        $dev[$type][$sensor],
+                        $name,
                         "'$type->$sensor': Not found"
                     );
                 }
@@ -439,6 +503,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
         return array(
             array(0x100, "TestSensor3", 3),
             array(0x100, "TestSensor1", 1),
+            array(0x103, "Test1", 1),
             array(0x400, "TestSensor3", 1),
         );
     }
@@ -725,6 +790,15 @@ class SensorTest extends PHPUnit_Framework_TestCase
         return array(
             array(0x100, "TestSensor1", "A", "diff", "TestSensor1", "A", "diff"),
             array(
+                0x100,
+                array("TestSensor1"),
+                "A",
+                "diff",
+                array("TestSensor1"),
+                "A",
+                "diff"
+            ),
+            array(
                 array(0x100, 0x100),
                 "TestSensor1",
                 "A",
@@ -881,9 +955,9 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor3", "TestSensor2"
                             ),
                             "Extra" => array(5,4,3,2,1),
-                       ),
-                   ),
-               ),
+                        ),
+                    ),
+                ),
                 "data" => array(
                     array(
                         "Date" => "2007-01-02 03:00:00",
@@ -893,7 +967,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:10:00",
                         "DeviceKey" => 1,
@@ -902,7 +976,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:20:00",
                         "DeviceKey" => 1,
@@ -911,8 +985,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
-               ),
+                    ),
+                ),
                 "expectInfo" => array(
                     1 => array(
                         "params" => array(
@@ -921,9 +995,9 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor3", "TestSensor2"
                             ),
                             "Extra" => array(5,4,3,2,1),
-                       ),
-                   ),
-               ),
+                        ),
+                    ),
+                ),
                 "expectData" => array(
                     1 => array(
                         array(
@@ -941,7 +1015,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data3" => 8,
                             "deltaT" => 0,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:10:00",
                             "DeviceKey" => 1,
@@ -958,7 +1032,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data2" => 8,
                             "Data3" => 10,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:20:00",
                             "DeviceKey" => 1,
@@ -975,12 +1049,10 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data2" => 10,
                             "Data3" => 12,
                             "Status" => "GOOD",
-                       ),
-                   ),
-               ),
-                "run" => 1,
-           ),
-
+                        ),
+                    ),
+                ),
+            ),
             // Test case 2
             // This test case has 2 alternating devices in it
             array(
@@ -992,8 +1064,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor3", "TestSensor2"
                             ),
                             "Extra" => array(5,4,3,2,1),
-                       ),
-                   ),
+                        ),
+                    ),
                     2 => array(
                         "params" => array(
                             "sensorType" => array(
@@ -1001,9 +1073,9 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor1", "TestSensor1"
                             ),
                             "Extra" => array(11,12,2,3,4),
-                       ),
-                   ),
-               ),
+                        ),
+                    ),
+                ),
                 "data" => array(
                     array(
                         "Date" => "2007-01-02 03:00:00",
@@ -1013,7 +1085,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:00:00",
                         "DeviceKey" => 2,
@@ -1022,7 +1094,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("E", "E", "E", "B", "B"),
                         "dType" => array("diff", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:10:00",
                         "DeviceKey" => 1,
@@ -1031,7 +1103,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:10:00",
                         "DeviceKey" => 2,
@@ -1040,7 +1112,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("E", "E", "E", "B", "B"),
                         "dType" => array("diff", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:20:00",
                         "DeviceKey" => 1,
@@ -1049,7 +1121,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("A", "B", null, "B", "B"),
                         "dType" => array("raw", "diff", "diff", "ignore", "raw"),
-                   ),
+                    ),
                     array(
                         "Date" => "2007-01-02 03:20:00",
                         "DeviceKey" => 2,
@@ -1058,8 +1130,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
                         "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
                         "Units" => array("E", "E", "E", "B", "B"),
                         "dType" => array("diff", "diff", "diff", "ignore", "raw"),
-                   ),
-               ),
+                    ),
+                ),
                 "expectInfo" => array(
                     1 => array(
                         "params" => array(
@@ -1068,8 +1140,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor3", "TestSensor2"
                             ),
                             "Extra" => array(5,4,3,2,1),
-                       ),
-                   ),
+                        ),
+                    ),
                     2 => array(
                         "params" => array(
                             "sensorType" => array(
@@ -1077,9 +1149,9 @@ class SensorTest extends PHPUnit_Framework_TestCase
                                 "TestSensor1", "TestSensor1"
                             ),
                             "Extra" => array(11,12,2,3,4),
-                       ),
-                   ),
-               ),
+                        ),
+                    ),
+                ),
                 "expectData" => array(
                     1 => array(
                         array(
@@ -1097,7 +1169,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data3" => 8,
                             "deltaT" => 0,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:10:00",
                             "DeviceKey" => 1,
@@ -1114,7 +1186,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data2" => 8,
                             "Data3" => 10,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:20:00",
                             "DeviceKey" => 1,
@@ -1131,8 +1203,8 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data2" => 10,
                             "Data3" => 12,
                             "Status" => "GOOD",
-                       ),
-                   ),
+                        ),
+                    ),
                     2 => array(
                         array(
                             "Date" => "2007-01-02 03:00:00",
@@ -1151,7 +1223,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data2" => 26,
                             "deltaT" => 0,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:10:00",
                             "DeviceKey" => 2,
@@ -1171,7 +1243,7 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data3" => 33,
                             "Data4" => 44,
                             "Status" => "GOOD",
-                       ),
+                        ),
                         array(
                             "Date" => "2007-01-02 03:20:00",
                             "DeviceKey" => 2,
@@ -1191,11 +1263,119 @@ class SensorTest extends PHPUnit_Framework_TestCase
                             "Data3" => -27,
                             "Data4" => -36,
                             "Status" => "GOOD",
-                       ),
-                   ),
-               ),
-                "run" => 2,
-           ),
+                        ),
+                    ),
+                ),
+            ),
+            // Test case 3
+            // Same as test case 1 but the data is in reverse date order
+            array(
+                "info" => array(
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array(
+                                "TestSensor1", "TestSensor1", "TestSensor2",
+                                "TestSensor3", "TestSensor2"
+                            ),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
+                    ),
+                ),
+                "data" => array(
+                    array(
+                        "Date" => "2007-01-02 03:20:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(3,5,5,6,7),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", null, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:10:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(2,3,4,5,6),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", null, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                    array(
+                        "Date" => "2007-01-02 03:00:00",
+                        "DeviceKey" => 1,
+                        "ActiveSensors" => 5,
+                        "raw" => array(1,2,3,4,5),
+                        "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                        "Units" => array("A", "B", null, "B", "B"),
+                        "dType" => array("raw", "diff", "diff", "ignore", "raw"),
+                    ),
+                ),
+                "expectInfo" => array(
+                    1 => array(
+                        "params" => array(
+                            "sensorType" => array(
+                                "TestSensor1", "TestSensor1", "TestSensor2",
+                                "TestSensor3", "TestSensor2"
+                            ),
+                            "Extra" => array(5,4,3,2,1),
+                        ),
+                    ),
+                ),
+                "expectData" => array(
+                    1 => array(
+                        array(
+                            "Date" => "2007-01-02 03:20:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(3,5,5,6,7),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 15,
+                            "data" => array(15, null, 10, 12),
+                            "Data2" => 10,
+                            "Data3" => 12,
+                            "deltaT" => 0,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:10:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(2,3,4,5,6),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 10,
+                            "data" => array(10, 8, 8, 10),
+                            "deltaT" => 600,
+                            "Data1" => 8,
+                            "Data2" => 8,
+                            "Data3" => 10,
+                            "Status" => "GOOD",
+                        ),
+                        array(
+                            "Date" => "2007-01-02 03:00:00",
+                            "DeviceKey" => 1,
+                            "ActiveSensors" => 5,
+                            "raw" => array(1,2,3,4,5),
+                            "Types" => array(0x100, 0x100, 0x100, 0x100, 0x100),
+                            "Units" => array("A", "B", "E", "B", "B"),
+                            "dType" => array("raw", "diff", "raw", "ignore", "raw"),
+                            "unitType" => array("Test", "Test", "Test2", "Test"),
+                            "Data0" => 5,
+                            "data" => array(5, 4, 6, 8),
+                            "deltaT" => 600,
+                            "Data1" => 4,
+                            "Data2" => 6,
+                            "Data3" => 8,
+                            "Status" => "GOOD",
+                        ),
+                    ),
+                ),
+            ),
 
         );
     }
@@ -1227,6 +1407,30 @@ class SensorTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expectData, $newData, "Data is not the same");
     }
 
+    /**
+    * This test makes sure that DataDecode function returns a valid date
+    *
+    * The exact date can not be tested for, because we have no way of knowing
+    * what date it will return.  We could be close, but we don't know how close.
+    * This just checks to make sure it is returning a valid date.  This will make
+    * sure that the date is >= 2000.  That way if it returns unix date 0 (in 1969)
+    * it will be an error.
+    *
+    * @return null
+    *
+    */
+    public function testDecodeDataDate()
+    {
+        $info = array();
+        $data = array();
+        $this->o->decodeData($info, $data);
+        preg_match(
+            "/2[0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9] "
+            ."([0-1][0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]/",
+                       $data["Date"],
+                       $match);
+        $this->assertSame($match[0], $data["Date"]);
+    }
 
     /**
      * Data provider for testcheckRecord

@@ -53,6 +53,12 @@ require_once "lib/plugins.inc.php";
  */
 class Sensor
 {
+    /** @var This is where the device names and classes are stored */
+    protected $dev = array();
+
+    /** @var This is where the sensor classes are stored */
+    public $sensors = array();
+
     /**
     * This registers the sensor Plugins so we know what code we have available.
     *
@@ -62,7 +68,7 @@ class Sensor
     */
     function __construct(&$plugins = "")
     {
-        if (!is_object($plugins)) {
+        if (!is_object($plugins) && !is_null($plugins)) {
             $plugins = new Plugins(dirname(__FILE__)."/drivers/sensors/", "php");
         }
 

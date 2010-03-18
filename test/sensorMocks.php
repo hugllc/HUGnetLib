@@ -68,8 +68,8 @@ class TestSensor extends SensorBase
                     'A' => 'raw,diff',
                     'B' => 'diff',
                     'C' => 'raw',
-               ),
-           ),
+                ),
+            ),
             "TestSensor2" => array(
                 "longName" => "Generic Test Sensor 2",
                 "unitType" => "Test2",
@@ -82,8 +82,8 @@ class TestSensor extends SensorBase
                     'E' => 'raw,diff',
                     'D' => 'diff',
                     'F' => 'raw',
-               ),
-           ),
+                ),
+            ),
             "TestSensor3" => array(
                 "longName" => "Generic Test Sensor 3",
                 "unitType" => "Test",
@@ -94,26 +94,27 @@ class TestSensor extends SensorBase
                 "extraDefault" => array("extraDefaultTest1", "extraDefaultTest2"),
                 "unitModes" => array(
                     'A' => 'raw,diff',
-               ),
+                ),
                 "inputSize" => 3,
                 "doTotal" => true,
-           ),
-       ),
+            ),
+        ),
         0x101 => array(
             "test1" => array(
                 "longName" => "Invalid1",
-           ),
-       ),
+            ),
+        ),
         0x102 => array(
             "test2" => array(
                 "longName" => "Invalid2",
-           ),
-       ),
+            ),
+        ),
         0x103 => array(
             "test3" => array(
                 "longName" => "Invalid3",
-           ),
-       ),
+                "inputSize" => 0,
+            ),
+        ),
     );
 
     /**
