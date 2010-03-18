@@ -24,8 +24,6 @@ doc-clean:
 
 clean: 
 	rm -Rf *~ */*~ */*/*~ */*/*/*~
-	rm -Rf \:MeMoRy\: */\:MeMoRy\: */*/\:MeMoRy\: */*/*/\:MeMoRy\:
-	rm -Rf HUGNET_LOCAL_DATABASE */HUGNET_LOCAL_DATABASE */*/HUGNET_LOCAL_DATABASE */*/*/HUGNET_LOCAL_DATABASE
 
 
 style:

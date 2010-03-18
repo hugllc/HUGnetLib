@@ -61,11 +61,6 @@ if (!defined("HUGNET_DATABASE")) {
 
 $temp_dir = sys_get_temp_dir();
 
-if (!defined("HUGNET_LOCAL_DATABASE")) {
-    /** The name of the default local (sqlite) HUGnet Database */
-    define("HUGNET_LOCAL_DATABASE", $temp_dir.DS."HUGnetLocal.sq3");
-}
-
 /** Include the database code */
 require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
 /** Include the endpoint driver code */

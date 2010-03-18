@@ -58,6 +58,9 @@ class DatabaseTest extends PHPUnit_Extensions_Database_TestCase
     /** @var string The name of the id column */
     protected $id = "id";
 
+    /** This tells the test to use memory based sqlite */
+    protected $useFile = false;
+
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -71,8 +74,12 @@ class DatabaseTest extends PHPUnit_Extensions_Database_TestCase
         if (empty($this->table)) {
             throw new exception(get_class($this)."->table not defined!", -1);
         }
-        $this->config["file"] = tempnam(sys_get_temp_dir(), get_class($this));
-        //$this->config["file"] = ":memory:";
+        if ($this->useFile) {
+            $this->config["file"] = tempnam(sys_get_temp_dir(), get_class($this));
+            $this->filesUsed[] = $this->config["file"];
+        } else {
+            $this->config["file"] = ":memory:";
+        }
         $this->file           = $this->config["file"];
         if (!empty($this->id)) {
             $this->config["id"] = $this->id;
@@ -105,12 +112,17 @@ class DatabaseTest extends PHPUnit_Extensions_Database_TestCase
             $this->pdo->query("DROP TABLE `".$this->table."`");
         }
         $this->pdo = null;
-        if (file_exists($this->config["file"])) {
-            unlink($this->config["file"]);
-        }
         $class = strtolower(get_class($this));
         if (file_exists($this->config[$class."file"])) {
             unlink($this->config[$class."file"]);
+        }
+
+        if (is_array($this->filesUsed)) {
+            foreach ($this->filesUsed as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
         }
 
         unset($this->config);

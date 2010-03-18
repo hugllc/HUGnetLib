@@ -140,10 +140,13 @@ class HUGnetDB
         // If this is not already defined by here, we need to define it.
         // I put it here so that there can be ample opportunity to define it
         // other places.
+        // @codeCoverageIgnoreStart
+        // This is run from an ignored file first, so It never gets counted, even
+        // though it is run.
         if (!defined("HUGNET_LOCAL_DATABASE")) {
             define("HUGNET_LOCAL_DATABASE", sys_get_temp_dir()."/HUGnet.sq3");
         }
-
+        // @codeCoverageIgnoreEnd
         $this->config = $config;
 
         $this->file = $this->setFile($config);
@@ -163,6 +166,7 @@ class HUGnetDB
 
         $this->db = &HUGnetDB::createPDO($config);
         // @codeCoverageIgnoreStart
+        // This is impossible to test because it would cause the test to abort.
         if (!$this->checkDB()) {
             $except = "No Database Connection in class ".get_class($this);
             self::throwException($except, -2);
@@ -254,7 +258,7 @@ class HUGnetDB
         if (!is_array($options)) {
             $options = array();
         }
-        $key = $dsn.$user;
+        $key = md5($dsn.$user.serialize($options));
         if (!is_object($pdo[$key]) || (get_class($pdo[$key]) != "PDO")) {
             try {
                 $pdo[$key] = new PDO($dsn, $user, $pass);
@@ -335,6 +339,7 @@ class HUGnetDB
     protected function throwException($msg, $code)
     {
         // @codeCoverageIgnoreStart
+        // No way to test this as it will kill the test. ;)
         if (is_object($this) && ($this->config["silent"])) {
             return;
         }
@@ -370,7 +375,6 @@ class HUGnetDB
         $this->cache->createTable($this->table);
         $this->doCache = true;
         $this->cache->createTable();
-
         return true;
     }
 
@@ -439,7 +443,10 @@ class HUGnetDB
         }
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table);
         foreach ($columns as $col) {
+            // @codeCoverageIgnoreStart
+            // This is impossible to test without a mysql server
             $this->fields[$col['Field']] = $col['Type'];
+            // @codeCoverageIgnoreEnd
         }
 
     }
@@ -497,11 +504,13 @@ class HUGnetDB
         $query = $this->addQuery($infoArray[0], $keys, $replace);
         $ret   = $this->db->prepare($query);
         $count = 0;
-        foreach ($infoArray as $info) {
-            $data = $this->prepareData($info, $keys);
-            $val  = $this->queryExecute($query, $ret, $data, false);
-            if ($val) {
-                $count++;
+        if (is_object($ret)) {
+            foreach ($infoArray as $info) {
+                $data = $this->prepareData($info, $keys);
+                $val  = $this->queryExecute($query, $ret, $data, false);
+                if ($val) {
+                    $count++;
+                }
             }
         }
         return $count;
@@ -516,10 +525,13 @@ class HUGnetDB
     */
     private function _getAttribute($attrib)
     {
-        if (!$this->checkDb()) {
-            return null;
+        if ($this->checkDb()) {
+            return $this->db->getAttribute($attrib);
         }
-        return $this->db->getAttribute($attrib);
+        // @codeCoverageIgnoreStart
+        // Can't get here.  So far every call is checked by checkDB before the call
+        return null;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -1001,9 +1013,10 @@ class HUGnetDB
         // Clear out the error
         $this->errorInfo(true);
 
-        $badRet = false;
         if ($getRet) {
             $badRet = array();
+        } else {
+            $badRet = false;
         }
         if (!$this->checkDb()) {
             return $badRet;
@@ -1018,14 +1031,11 @@ class HUGnetDB
         $ret = $this->db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
-        } else {
-            $this->errorInfo();
         }
 
-        if ($getRet) {
-            return array();
-        }
-        return false;
+        $this->errorInfo();
+
+        return $badRet;
     }
 
     /**
@@ -1037,12 +1047,11 @@ class HUGnetDB
     * @param bool   $getRes Whether to expect a result back.
     *
     * @return mixed
+    *
+    * @todo Think about removing the check on the object
     */
     protected function queryExecute($query, &$ret, &$data, $getRes = false)
     {
-        if (!is_object($ret)) {
-            return false;
-        }
         $this->vprint("Executing using data: \n".print_r($data, true));
         $res = $ret->execute($data);
         if ($getRes) {
@@ -1075,13 +1084,7 @@ class HUGnetDB
         if ($getRet) {
             $badRet = array();
         }
-        if (!is_array($data)) {
-            return $badRet;
-        }
-        if (!is_object($this->cache)) {
-            return $badRet;
-        }
-        if (!$this->doCache) {
+        if (!$this->doCache || !is_array($data) || !is_object($this->cache)) {
             return $badRet;
         }
         $ret = $this->cache->query($query, $data, $getRet);
@@ -1097,13 +1100,7 @@ class HUGnetDB
     */
     protected function cacheResult($res)
     {
-        if (!is_array($res)) {
-            return false;
-        }
-        if (!is_object($this->cache)) {
-            return false;
-        }
-        if (!$this->doCache) {
+        if (!$this->doCache || !is_array($res) || !is_object($this->cache)) {
             return false;
         }
         $tries = count($res);
@@ -1198,7 +1195,10 @@ class HUGnetDB
         if ($this->driver == "sqlite") {
             return true;
         }
-        return $this->db->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
+        // @codeCoverageIgnoreStart
+        // This is impossible to test without a MySQL server.
+        return $this->_getAttribute(PDO::ATTR_CONNECTION_STATUS);
+        // @codeCoverageIgnoreEnd
     }
 
     /**

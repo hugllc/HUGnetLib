@@ -117,21 +117,6 @@ class HUGnetDBTest extends databaseTest
         parent::tearDown();
         unset($this->o);
     }
-    /**
-    * Removes a file if it exists
-    *
-    * @param string $file The file to remove
-    *
-    * @access protected
-    *
-    * @return null
-    */
-    protected function unlink($file)
-    {
-        if (file_exists($file)) {
-            unlink($file);
-        }
-    }
 
     /**
     * Data provider for testConstructor
@@ -208,9 +193,7 @@ class HUGnetDBTest extends databaseTest
     */
     public function testConstructor($config, $attribute, $expect)
     {
-        if ($attribute == "file") {
-            $this->unlink($att);
-        }
+        $this->filesUsed[] = $attribute["file"];
         $o = new HUGnetDBClassTest($config);
         $att = $this->readAttribute($o, $attribute);
         $this->assertEquals($expect, $att);
@@ -380,8 +363,8 @@ class HUGnetDBTest extends databaseTest
         $expectFile,
         $attribs = array()
     ) {
-        $this->unlink($file);
-        $this->unlink($expectFile);
+        $this->filesUsed[] = $file;
+        $this->filesUsed[] = $expectFile;
         $o = new HUGnetDBClassTest($config);
         $o->setAttributes($attribs);
         $ret = $o->createCache($file);
@@ -1626,6 +1609,10 @@ class HUGnetDBTest extends databaseTest
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
                 ),
+                array(
+                    "file" => tempnam(sys_get_temp_dir(), "HUGnetDB"),
+                    "table" => "HUGnetDBTest",
+                ),
                 "1",
                 "SELECT * FROM `HUGnetDBTest` WHERE id = 3",
                 null,
@@ -1642,6 +1629,10 @@ class HUGnetDBTest extends databaseTest
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
                 ),
+                array(
+                    "file" => tempnam(sys_get_temp_dir(), "HUGnetDB"),
+                    "table" => "HUGnetDBTest",
+                ),
                 "1",
                 "SELECT * FROM `HUGnetDBTest` WHERE id = ?",
                 array(1),
@@ -1658,7 +1649,29 @@ class HUGnetDBTest extends databaseTest
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
                 ),
+                array(
+                    "file" => tempnam(sys_get_temp_dir(), "HUGnetDB"),
+                    "table" => "HUGnetDBTest",
+                ),
                 "id = 15",
+                "SELECT * FROM `HUGnetDBTest` WHERE id = ?",
+                array(1),
+                true,
+                array(),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                array(
+                    "file" => tempnam(sys_get_temp_dir(), "HUGnetDB"),
+                    "table" => "HUGnetDBTest",
+                ),
+                "id = 1",
                 "SELECT * FROM `HUGnetDBTest` WHERE id = ?",
                 array(1),
                 true,
@@ -1672,6 +1685,7 @@ class HUGnetDBTest extends databaseTest
     * test
     *
     * @param array  $preload Data to preload into the database
+    * @param array  $config  The configuration to use
     * @param stirng $where   Where clause for the database read
     * @param string $query   The query to perform
     * @param array  $data    The data to send with the query
@@ -1682,19 +1696,28 @@ class HUGnetDBTest extends databaseTest
     *
     * @dataProvider dataQueryCache().
     */
-    public function testQueryCache($preload, $where, $query, $data, $getRet, $expect)
-    {
-        $this->o->createCache();
-
+    public function testQueryCache(
+        $preload,
+        $config,
+        $where,
+        $query,
+        $data,
+        $getRet,
+        $expect
+    ) {
+        $this->filesUsed[] = $config["file"];
+        $this->pdo = &HUGnetDB::createPDO($config);
+        $o = new HUGnetDBClassTest($config);
+        $o->createTable($config["table"]);
+        $o->createCache();
         // Preload the database
         $this->load($preload);
         // Preload the cache
-        $this->o->getWhere($where);
+        $o->getWhere($where);
         // Erase what is in the database without touching the cache
-        $this->pdo->query("delete from ".$this->table);
+        $this->pdo->query("delete from ".$config["table"]);
         // Query from the database (this should hit the cache)
-        $ret = $this->o->query($query, $data, $getRet);
-
+        $ret = $o->query($query, $data, $getRet);
         $this->assertSame($expect, $ret);
     }
 
@@ -1852,6 +1875,230 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataAddField()
+    {
+        return array(
+            array(
+                "id", "TEXT", null, false,
+                array(
+                    "id"    => "int(11)",
+                    "name"  => "varchar(16)",
+                    "value" => "text",
+                ),
+                true,
+            ),
+            // This one fails because I am setting a not null column to a default
+            // of null.
+            array(
+                "did", "TEXT", null, false,
+                array(
+                    "id"    => "int(11)",
+                    "name"  => "varchar(16)",
+                    "value" => "text",
+                ),
+                false,
+            ),
+            array(
+                "did", "TEXT", null, true,
+                array(
+                    "id"    => "int(11)",
+                    "name"  => "varchar(16)",
+                    "value" => "text",
+                    "did"   => "TEXT",
+                ),
+                true,
+            ),
+            array(
+                "did", "TEXT", "Hello Nurse", true,
+                array(
+                    "id"    => "int(11)",
+                    "name"  => "varchar(16)",
+                    "value" => "text",
+                    "did"   => "TEXT",
+                ),
+                true,
+            ),
+            array(
+                "did", "int", 1, false,
+                array(
+                    "id"    => "int(11)",
+                    "name"  => "varchar(16)",
+                    "value" => "text",
+                    "did"   => "int",
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param int    $name    The name of the field
+    * @param string $type    The type of field to add
+    * @param mixed  $default The default value for the field
+    * @param bool   $null    Whether null is a valid value for the field
+    * @param int    $fields  What the field variable should look like
+    * @param bool   $expect  The expected function return
+    *
+    * @return null
+    *
+    * @dataProvider dataAddField
+    */
+    public function testAddField(
+        $name,
+        $type,
+        $default,
+        $null,
+        $fields,
+        $expect
+    ) {
+        $ret = $this->o->AddField($name, $type, $default, $null);
+        $this->assertSame($expect, $ret);
+        $this->assertAttributeSame($fields, "fields", $this->o, "Field Check 1");
+        $this->o->qGetColumns();
+        $this->assertAttributeSame($fields, "fields", $this->o, "Field Check 2");
+    }
+
+    /**
+    * Data provider for testPrepareData
+    *
+    * @return array
+    */
+    public static function dataPrepareData()
+    {
+        return array(
+            // extra values
+            array(
+                array(
+                    "id" => 1,
+                    "name" => "Hello",
+                    "value" => "There",
+                    "other" => "Junk",
+                ),
+                array("id", "name", "value"),
+                array(),
+                array(1, "Hello", "There"),
+            ),
+            // Autoincrement, extra keys
+            array(
+                array(
+                    "name" => "Hello",
+                    "value" => "There",
+                ),
+                array("id", "name", "value", "stuff"),
+                array("autoIncrement" => true),
+                array(1, "Hello", "There", null),
+            ),
+            // No keys
+            array(
+                array(
+                    "id" => 1,
+                    "name" => "Hello",
+                    "value" => "There",
+                ),
+                array(),
+                array(),
+                array(),
+            ),
+            // Keys not an array
+            array(
+                array(
+                    "id" => 1,
+                    "name" => "Hello",
+                    "value" => "There",
+                ),
+                "This is not an array",
+                array(),
+                array(),
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param array $data    The data to use
+    * @param array $keys    The keys to use
+    * @param array $attribs Attributes to set in the object
+    * @param array $expect  The expected function return
+    *
+    * @return null
+    *
+    * @dataProvider dataPrepareData
+    */
+    public function testPrepareData($data, $keys, $attribs, $expect) {
+        $this->o->setAttributes($attribs);
+        $ret = $this->o->qPrepareData($data, $keys);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for testMetaErrorInfo
+    *
+    * @return array
+    */
+    public static function dataMetaErrorInfo()
+    {
+        return array(
+            // Reset the error
+            array(
+                null,
+                array(),
+                null,
+                null,
+            ),
+            // Server Gone
+            array(
+                array(1 => 2006),
+                array("driver" => "mysql"),
+                constant("HUGNETDB_META_ERROR_SERVER_GONE"),
+                constant("HUGNETDB_META_ERROR_SERVER_GONE_MSG"),
+            ),
+            // Duplicate entry
+            array(
+                array(1 => 1062),
+                array("driver" => "mysql"),
+                constant("HUGNETDB_META_ERROR_DUPLICATE"),
+                constant("HUGNETDB_META_ERROR_DUPLICATE_MSG"),
+            ),
+            // Duplicate entry
+            array(
+                array(1 => 1062),
+                array("driver" => "sqlite"),
+                null,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param array $err       The original error
+    * @param array $attribs    Attributes to set in the object
+    * @param int   $expect     The expected return
+    * @param string $expectMsg The expected message
+    *
+    * @return null
+    *
+    * @dataProvider dataMetaErrorInfo
+    */
+    public function testMetaErrorInfo($err, $attribs, $expect, $expectMsg) {
+        $this->o->setAttributes($attribs);
+        $ret = $this->o->qMetaErrorInfo($err);
+        $this->assertAttributeSame($expect, "metaError", $this->o, "Wrong Code");
+        $this->assertAttributeSame(
+            $expectMsg, "metaErrorMsg", $this->o, "Wrong Message"
+        );
+    }
+
+
+    /**
     * Data provider for testIsConnected
     *
     * @return array
@@ -1863,14 +2110,36 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(
                     "db" => "This is not an object",
+                    "driver"    => "sqlite",
                 ),
                 false,
             ),
             array(
                 array(
                     "metaError" => constant("HUGNETDB_META_ERROR_SERVER_GONE"),
+                    "driver"    => "sqlite",
                 ),
                 false,
+            ),
+            array(
+                array(
+                    "db" => "This is not an object",
+                    "driver"    => "mysql",
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "metaError" => constant("HUGNETDB_META_ERROR_SERVER_GONE"),
+                    "driver"    => "mysql",
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "driver" => "sqlite",
+                ),
+                true,
             ),
         );
     }
@@ -2008,6 +2277,30 @@ class HUGnetDBTest extends databaseTest
         $ret = $this->o->sqlDate($date);
         $this->assertSame($expect, $ret);
     }
+
+    /**
+    * This test makes sure that SqlDate("NOW") returns a valid date
+    *
+    * The exact date can not be tested for, because we have no way of knowing
+    * what date it will return.  We could be close, but we don't know how close.
+    * This just checks to make sure it is returning a valid date.  This will make
+    * sure that the date is >= 2000.  That way if it returns unix date 0 (in 1969)
+    * it will be an error.
+    *
+    * @return null
+    *
+    */
+    public function testSqlDateNow()
+    {
+        $ret = $this->o->sqlDate("NOW");
+        preg_match(
+            "/2[0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9] "
+            ."([0-1][0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]/",
+                       $ret,
+                       $match);
+        $this->assertSame($match[0], $ret);
+    }
+
 
     /**
     * Data provider for testFixType
@@ -2309,7 +2602,32 @@ class HUGnetDBClassTest extends HUGnetDB
     */
     public function qGetColumns()
     {
-        $this->getColumns();
+        return $this->getColumns();
+    }
+
+    /**
+    * Creates the field array
+    *
+    * @param array $err The error array
+    *
+    * @return null
+    */
+    public function qMetaErrorInfo($err)
+    {
+        return $this->metaErrorInfo($err);
+    }
+
+    /**
+    * Creates the field array
+    *
+    * @param array $data The data to prepare
+    * @param array $keys The keys to use
+    *
+    * @return null
+    */
+    public function qPrepareData($data, $keys)
+    {
+        return $this->prepareData($data, $keys);
     }
 
     /**
