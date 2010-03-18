@@ -186,54 +186,50 @@ class HUGnetDB
     */
     static public function &createPDO($config = array())
     {
-        static $PDO;
+        $verbose = (int)$config['verbose'];
+        $file = self::setFile($config);
+        if (is_string($config['db_name'])) {
+            $db_name = $config['db_name'];
+        } else {
+            $db_name = HUGNET_DATABASE;
+        }
+        if (is_array($config['servers'])) {
+            $servers = $config['servers'];
+        } else {
+            $servers = array();
+        }
+        if (is_string($config["servers"][0]['user'])) {
+            $servers[0]['user'] = $config["servers"][0]['user'];
+        } else {
+            $servers[0]['user'] = null;
+        }
+        if (is_string($config["servers"][0]['password'])) {
+            $servers[0]['password'] = $config["servers"][0]['password'];
+        } else {
+            $servers[0]['password'] = null;
+        }
 
-        $key = serialize($config);
-        if (empty($PDO[$key])) {
-            $verbose = (int)$config['verbose'];
-            $file = self::setFile($config);
-            if (is_string($config['db_name'])) {
-                $db_name = $config['db_name'];
-            } else {
-                $db_name = HUGNET_DATABASE;
-            }
-            if (is_array($config['servers'])) {
-                $servers = $config['servers'];
-            } else {
-                $servers = array();
-            }
-            if (is_string($config["servers"][0]['user'])) {
-                $servers[0]['user'] = $config["servers"][0]['user'];
-            } else {
-                $servers[0]['user'] = null;
-            }
-            if (is_string($config["servers"][0]['password'])) {
-                $servers[0]['password'] = $config["servers"][0]['password'];
-            } else {
-                $servers[0]['password'] = null;
-            }
-
-            // Okday, now try to connect
-            foreach ($servers as $serv) {
-                $useDriver = is_string($serv['driver']) ? $serv['driver'] : "sqlite";
-                $dsn       = self::createDSN(
-                    $useDriver,
-                    $db_name,
-                    $file,
-                    $serv["host"]
-                );
-                $PDO[$key] = self::_createPDO(
-                    $dsn,
-                    $serv["user"],
-                    $serv["password"],
-                    $verbose
-                );
-                if (is_object($PDO[$key]) && (get_class($PDO[$key]) == "PDO")) {
-                    break;
-                }
+        // Okday, now try to connect
+        foreach ($servers as $serv) {
+            $useDriver = is_string($serv['driver']) ? $serv['driver'] : "sqlite";
+            $dsn       = self::createDSN(
+                $useDriver,
+                $db_name,
+                $file,
+                $serv["host"]
+            );
+            $pdo = self::_createPDO(
+                $dsn,
+                $serv["user"],
+                $serv["password"],
+                $serv["options"],
+                $verbose
+            );
+            if (is_object($pdo)) {
+                return $pdo;
             }
         }
-        return $PDO[$key];
+        return null;
     }
 
     /**
@@ -242,6 +238,7 @@ class HUGnetDB
     * @param string $dsn     The DSN to use to create the PDO object
     * @param string $user    The username
     * @param string $pass    The password
+    * @param array  $options Options to pass to the PDO constructor
     * @param int    $verbose The verbosity number
     *
     * @return object PDO object
@@ -250,18 +247,29 @@ class HUGnetDB
         $dsn,
         $user = null,
         $pass = null,
-        $verbose = false
+        $options = array(),
+        $verbose = 0
     ) {
-        try {
-            $db = new PDO($dsn, $user, $pass);
-        } catch (PDOException $e) {
-            if ($verbose) {
-                print "Error (".$e->getCode()."): ".$e->getMessage()."\n";
-            }
-            return null;
+        static $pdo;
+        if (!is_array($options)) {
+            $options = array();
         }
-        return $db;
+        $key = $dsn.$user;
+        if (!is_object($pdo[$key]) || (get_class($pdo[$key]) != "PDO")) {
+            try {
+                $pdo[$key] = new PDO($dsn, $user, $pass);
+            } catch (PDOException $e) {
+                self::vprint(
+                    "Error (".$e->getCode()."): ".$e->getMessage()."\n",
+                    1,
+                    $verbose
+                );
+                return null;
+            }
+        }
+        return $pdo[$key];
     }
+
     /**
     * Checks to see if the database object is valid
     *
@@ -351,7 +359,6 @@ class HUGnetDB
         if ($this->driver == "sqlite") {
             $file = substr(trim(strtolower($this->file)), 0, 7);
             if ($file == ":memory") {
-//                $this->cache = null;
                 return false;
             }
             $this->cacheConfig["file"] = ":memory:";
@@ -1151,12 +1158,17 @@ class HUGnetDB
     *
     * @param string $str The string to print out
     * @param int    $val The minimum value to print this for
+    * @param int    $verbose The verbosity level
+    *                        (This is for if we are not an object)
     *
     * @return null
     */
-    protected function vprint($str, $val = 6)
+    protected function vprint($str, $val = 6, $verbose = 0)
     {
-        if (($this->verbose < $val) || empty($str)){
+        if (is_object($this)) {
+            $verbose = $this->verbose;
+        }
+        if (($verbose < $val) || empty($str)) {
             return;
         }
         if (is_object($this)) {
@@ -1214,12 +1226,10 @@ class HUGnetDB
     *
     * @param string $class  The class to create
     * @param array  $config The configuration to use
-    * @param bool   $cache  Whether or not to cache the output.  This is for testing
-    *                       purposes and shouldn't be used generally.
     *
     * @return object A reference to a driver object
     */
-    function &getInstance($class = "HUGnetDB", $config = null, $cache = true)
+    function &getInstance($class = "HUGnetDB", $config = null)
     {
         static $instances;
         if (file_exists(HUGNET_INCLUDE_PATH."/database/".$class.".php")) {
@@ -1235,16 +1245,12 @@ class HUGnetDB
             $config = self::getConfig();
         }
         $key = serialize($config);
-        if ($cache) {
-            if (empty($instances[$class][$key])) {
-                self::setConfig($config, false);
+        if (empty($instances[$class][$key])) {
+            self::setConfig($config, false);
 
-                $instances[$class][$key] = new $class($config);
-            }
-            return $instances[$class][$key];
-        } else {
-            return new $class($config);
+            $instances[$class][$key] = new $class($config);
         }
+        return $instances[$class][$key];
 
     }
 
