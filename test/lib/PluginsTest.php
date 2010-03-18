@@ -66,22 +66,6 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     protected $o;
 
     /**
-    * Runs the test methods of this class.
-    *
-    * @access public
-    * @static
-    *
-    * @return null
-    */
-    public static function main()
-    {
-        include_once 'PHPUnit/TextUI/TestRunner.php';
-
-        $suite  = new PHPUnit_Framework_TestSuite('PluginsTest');
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
-
-    /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
     *

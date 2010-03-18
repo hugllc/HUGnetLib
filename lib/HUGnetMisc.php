@@ -61,6 +61,8 @@ class HUGnetMisc
     */
     public function getNetInfo()
     {
+        //@codeCoverageIgnoreStart
+        // This is not testable because it doesn't work on all systems.
         // I know this works on Linux
         $Info = trim(`/sbin/ifconfig|grep Bcast`);
         $Info = explode("  ", $Info);
@@ -72,6 +74,7 @@ class HUGnetMisc
         }
         $netInfo = array_change_key_case($netInfo, CASE_LOWER);
         return $netInfo;
+        //@codeCoverageIgnoreEnd
     }
     /**
     * Prints out a string
@@ -85,7 +88,7 @@ class HUGnetMisc
     */
     public function vprint($str, $val = 6, $verbose = 0)
     {
-        if (is_object($this)) {
+        if (is_object($this) && empty($verbose)) {
             $verbose = $this->verbose;
         }
         if (($verbose < $val) || empty($str)) {
