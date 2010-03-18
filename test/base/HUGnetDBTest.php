@@ -116,9 +116,106 @@ class HUGnetDBTest extends databaseTest
         parent::tearDown();
         unset($this->o);
     }
+    /**
+    * Removes a file if it exists
+    *
+    * @param string $file The file to remove
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function unlink($file)
+    {
+        if (file_exists($file)) {
+            unlink($file);
+        }
+    }
 
     /**
-    * Data provider for testAddArray
+    * Data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(
+                array(
+                    "table" => "myTable",
+                ),
+                "table",
+                "myTable",
+            ),
+            array(
+                array(
+                    "table" => "myTable",
+                ),
+                "config",
+                array(
+                    "table" => "myTable",
+                ),
+            ),
+            array(
+                array(
+                    "id" => "myField",
+                ),
+                "id",
+                "myField",
+            ),
+            array(
+                array(
+                    "file" => sys_get_temp_dir()."/myFile.sq3",
+                ),
+                "file",
+                sys_get_temp_dir()."/myFile.sq3",
+            ),
+            array(
+                array(
+                    "verbose" => 1,
+                ),
+                "verbose",
+                1,
+            ),
+            array(
+                array(
+                    "dbTimeout" => 10,
+                ),
+                "dbTimeout",
+                10,
+            ),
+            array(
+                array(
+                    "hugnetdbclasstestfile" => sys_get_temp_dir()."/myFile2.sq3",
+                ),
+                "file",
+                sys_get_temp_dir()."/myFile2.sq3",
+            ),
+
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $config    the directory to look for Plugins in.  Sets this->dir
+    * @param string $attribute The attribute to check
+    * @param mixed  $expect    The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor
+    */
+    public function testConstructor($config, $attribute, $expect) {
+        if ($attribute == "file") {
+            $this->unlink($att);
+        }
+        $o = new HUGnetDBClassTest($config);
+        $att = $this->readAttribute($o, $attribute);
+        $this->assertEquals($expect, $att);
+    }
+
+    /**
+    * Data provider for testCreatePDO
     *
     * @return array
     */
@@ -183,39 +280,213 @@ class HUGnetDBTest extends databaseTest
         unset($o);
     }
 
+    /**
+    * Data provider for testCreateCache
+    *
+    * @return array
+    */
+    public static function dataCreateCache()
+    {
+        return array(
+            array(array(), null, "HUGnetDBClassTest", true, "sqlite", ":memory:"),
+            array(
+                array(),
+                null,
+                "HUGnetDBClassTest",
+                true,
+                "sqlite",
+                sys_get_temp_dir()."/HUGnet.sq3",
+                array(
+                    "driver" => "mysql",
+                    "file" => "",
+                ),
+            ),
+            array(
+                array(),
+                null,
+                "HUGnetDBClassTest",
+                true,
+                "sqlite",
+                sys_get_temp_dir()."/testFile.sq3",
+                array(
+                    "driver" => "mysql",
+                    "file" => sys_get_temp_dir()."/testFile.sq3",
+                ),
+            ),
+            array(
+                array(),
+                sys_get_temp_dir()."/anotherTestFile",
+                "HUGnetDBClassTest",
+                true,
+                "sqlite",
+                sys_get_temp_dir()."/anotherTestFile",
+                array(
+                    "driver" => "mysql",
+                    "file" => sys_get_temp_dir()."/testFile",
+                ),
+            ),
+            array(
+                array("hugnetdbclasstestfile" => sys_get_temp_dir()."/myFile.sq3"),
+                "",
+                "HUGnetDBClassTest",
+                true,
+                "sqlite",
+                sys_get_temp_dir()."/myFile.sq3",
+                array(
+                    "driver" => "mysql",
+                    "file" => "",
+                ),
+            ),
+            array(
+                array(),
+                sys_get_temp_dir()."/anotherTestFile",
+                "HUGnetDBClassTest",
+                false,
+                "sqlite", // Not used in this run
+                sys_get_temp_dir()."/anotherTestFile", // Not used in this run.
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                ),
+            ),
+        );
+    }
 
     /**
     * Tests to make sure this function fails if
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
+    * @param array  $config       The configuration to use
+    * @param string $file         The file to use
+    * @param mixed  $class        The expected result
+    * @param mixed  $expect       The expected return value
+    * @param string $expectDriver The driver to expect in the cache
+    * @param string $expectFile   The file the driver should be using
+    * @param array  $attribs      Attributes to set in the class.
+    *
     * @return null
+    *
+    * @dataProvider dataCreateCache
     */
-    public function testCreateCacheMemory()
-    {
-        $config = array("file" => ":MeMoRy:");
-        $o =& HUGnetDB::getInstance("HUGnetDBClassTest", $config);
-        $ret = $o->createCache();
-        $this->assertFalse($ret);
+    public function testCreateCache(
+        $config,
+        $file,
+        $class,
+        $expect,
+        $expectDriver,
+        $expectFile,
+        $attribs = array()
+    ) {
+        $this->unlink($file);
+        $this->unlink($expectFile);
+        $o =& HUGnetDB::getInstance($class, $config, false);
+        $o->setAttributes($attribs);
+        $ret = $o->createCache($file);
+        $cache = $this->readAttribute($o, "cache");
         unset($o);
+        $this->assertSame($expect, $ret);
+        if ($expect === false) {
+            $this->assertNull($cache);
+        } else {
+            $this->assertType("object", $cache, "Cache is not an object");
+            $this->assertSame($class, get_class($cache), "Cache is the wrong class");
+            $db = $this->readAttribute($cache, "db");
+            $this->assertSame(
+                $expectDriver,
+                $db->getAttribute(PDO::ATTR_DRIVER_NAME),
+                "Cache is using the wrong driver"
+            );
+            $this->assertAttributeSame($expectFile, "file", $cache, "File is wrong");
+        }
     }
 
+    /**
+    * Data provider for testGetColumns
+    *
+    * @return array
+    */
+    public static function dataGetColumns()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "id" => "int(11)",
+                    "name" => "varchar(16)",
+                    "value" => "text",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "driver" => "mysql",
+                ),
+            ),
+        );
+    }
 
     /**
     * Tests if getColumns works correctly
     *
+    * @param array $preload   Data to preload into the database
+    * @param array $expect    The info to expect returned
+    * @param array $attribs   Attributes to set in the class.
+    *
+    * @dataProvider dataGetColumns
     * @return null
     */
-    public function testGetColumns()
+    public function testGetColumns($preload, $expect, $attribs = array())
     {
-        $expect = array(
-            "id" => "int(11)",
-            "name" => "varchar(16)",
-            "value" => "text",
-        );
-        $actual = $this->readAttribute($this->o, "fields");
-        $this->assertSame($expect, $actual);
+        $this->o->setAttributes($attribs);
+        $this->o->qGetColumns();
+        $this->assertAttributeSame($expect, "fields", $this->o);
     }
+
+    /**
+    * Data provider for testGetColumns
+    *
+    * @return array
+    */
+    public static function dataCreateDSN()
+    {
+        return array(
+            array(
+                "mysql",
+                "database",
+                "file",
+                "127.0.0.1",
+                "mysql:host=127.0.0.1;dbname=database",
+            ),
+            array(
+                "",
+                "",
+                "",
+                "",
+                "sqlite::memory:",
+            ),
+        );
+    }
+
+    /**
+    * Tests if createDSN works correctly
+    *
+    * @param string $driver The PDO driver to use
+    * @param string $db     The database to use
+    * @param string $file   The file to use if the driver is 'sqlite'
+    * @param array  $host   The host to use
+    * @param array  $expect The DSN to expect returned
+    *
+    * @dataProvider dataCreateDSN
+    * @return null
+    */
+    public function testCreateDSN($driver, $db, $file, $host, $expect)
+    {
+        $ret = HUGnetDB::createDSN($driver, $db, $file, $host);
+        $this->assertSame($expect, $ret);
+    }
+
 
     /**
     * Data provider for testAddArray
@@ -248,21 +519,75 @@ class HUGnetDBTest extends databaseTest
                 0,
             ),
             array(
+                array(
+                    array("id" => 1, "name" => "Hi", "value" => "There"),
+                ),
+                array(
+                    array("id" => 2, "name" => "This", "value" => "is"),
+                ),
+                false,
+                array(
+                    array("id" => "1", "name" => "Hi", "value" => "There"),
+                ),
+                0,
+                array(
+                    "db" => "This is not an object",
+                ),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "Hi", "value" => "There"),
+                ),
+                array(
+                    array("id" => 2, "name" => "This", "value" => "is"),
+                ),
+                false,
+                array(
+                    array("id" => "1", "name" => "Hi", "value" => "There"),
+                ),
+                0,
+                array(
+                    "fields" => array(),
+                ),
+            ),
+            array(
                 array(),
                 array(
-                    array("id" => 1, "name" => "Hi",        "value" => "There"  ),
-                    array("id" => 2, "name" => "This",      "value" => "is"     ),
-                    array("id" => 3, "name" => "Eddie",     "value" => "your"   ),
+                    array("id" => 1, "name" => "Hi",        "value" => "There"   ),
+                    array("id" => 2, "name" => "This",      "value" => "is"      ),
+                    array("id" => 3, "name" => "Eddie",     "value" => "your"    ),
                     array("id" => 4, "name" => "shipboard", "value" => "computer"),
                 ),
                 false,
                 array(
-                    array("id" => "1", "name" => "Hi",        "value" => "There"  ),
-                    array("id" => "2", "name" => "This",      "value" => "is"     ),
-                    array("id" => "3", "name" => "Eddie",     "value" => "your"   ),
+                    array("id" => "1", "name" => "Hi",        "value" => "There"   ),
+                    array("id" => "2", "name" => "This",      "value" => "is"      ),
+                    array("id" => "3", "name" => "Eddie",     "value" => "your"    ),
                     array("id" => "4", "name" => "shipboard", "value" => "computer"),
                 ),
                 4,
+            ),
+            array(
+                array(),
+                array(
+                    array("name" => "Hi",        "value" => "There"  ),
+                    array("name" => "This",      "value" => "is"     ),
+                    array("name" => "Eddie",     "value" => "your"   ),
+                    array("name" => "shipboard", "value" => "computer"),
+                    array("name" => "Hmmmm"),
+                ),
+                false,
+                array(
+                    array("id" => "1", "name" => "Hi",        "value" => "There"   ),
+                    array("id" => "2", "name" => "This",      "value" => "is"      ),
+                    array("id" => "3", "name" => "Eddie",     "value" => "your"    ),
+                    array("id" => "4", "name" => "shipboard", "value" => "computer"),
+                    array("id" => "5", "name" => "Hmmmm",     "value" => null      ),
+                ),
+                5,
+                array(
+                    "autoIncrement" => true,
+                ),
             ),
         );
     }
@@ -276,13 +601,21 @@ class HUGnetDBTest extends databaseTest
     *                         databases support "REPLACE".
     * @param array $expect    The info to expect returned
     * @param int   $retExpect The expected return of the function call
+    * @param array $attribs   Attributes to set in the class.
     *
     * @return null
     *
     * @dataProvider dataAddArray
     */
-    public function testAddArray($preload, $info, $replace, $expect)
-    {
+    public function testAddArray(
+        $preload,
+        $info,
+        $replace,
+        $expect,
+        $retExpect,
+        $attribs = array()
+    ) {
+        $this->o->setAttributes($attribs);
         $this->load($preload);
         $this->o->addArray($info, $replace);
         $ret = $this->getAll();
@@ -299,13 +632,21 @@ class HUGnetDBTest extends databaseTest
     *                         databases support "REPLACE".
     * @param array $expect    The info to expect returned
     * @param int   $retExpect The expected return of the function call
+    * @param array $attribs   Attributes to set in the class.
     *
     * @return null
     *
     * @dataProvider dataAddArray
     */
-    public function testAddArrayRet($preload, $info, $replace, $expect, $retExpect)
-    {
+    public function testAddArrayRet(
+        $preload,
+        $info,
+        $replace,
+        $expect,
+        $retExpect,
+        $attribs = array()
+    ) {
+        $this->o->setAttributes($attribs);
         $this->load($preload);
         $ret = $this->o->addArray($info, $replace);
         $this->assertSame($retExpect, $ret);
@@ -322,15 +663,39 @@ class HUGnetDBTest extends databaseTest
             array(
                 array(),
                 array("id" => 3, "name" => "Hi", "value" => "There"),
-                array("id" => "3", "name" => "Hi", "value" => "There"),
-           ),
+                array(
+                    array("id" => "3", "name" => "Hi", "value" => "There"),
+                ),
+            ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
-               ),
+                ),
                 array("id" => 1, "name" => "Hi", "value" => "There"),
-                array("id" => "1", "name" => "hello", "value" => "there"),
-           ),
+                array(
+                    array("id" => "1", "name" => "hello", "value" => "there"),
+                ),
+            ),
+            array(
+                array(),
+                array("id" => 3, "name" => "Hi"),
+                array(
+                    array("id" => "3", "name" => "Hi", "value" => null),
+                ),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                ),
+                array("name" => "Hi", "value" => "There"),
+                array(
+                    array("id" => "1", "name" => "hello", "value" => "there"),
+                    array("id" => "2", "name" => "Hi", "value" => "There"),
+                ),
+                array(
+                    "autoIncrement" => true,
+                ),
+            ),
         );
     }
     /**
@@ -339,16 +704,18 @@ class HUGnetDBTest extends databaseTest
     * @param array $preload Data to preload into the database
     * @param array $info    The info to add to the database
     * @param array $expect  The info to expect returned
+    * @param array $attribs Attributes to set in the class.
     *
     * @return null
     *
     * @dataProvider dataAdd
     */
-    public function testAdd($preload, $info, $expect)
+    public function testAdd($preload, $info, $expect, $attribs = array())
     {
+        $this->o->setAttributes($attribs);
         $this->load($preload);
         $this->o->add($info);
-        $ret = $this->getSingle($expect["id"]);
+        $ret = $this->getAll();
         $this->assertSame($expect, $ret);
     }
 
@@ -1103,13 +1470,21 @@ class HUGnetDBTest extends databaseTest
     * @param array  $data    The data to send with the query
     * @param bool   $getRet  Whether to expect a return
     * @param array  $expect  The info to expect returned
+    * @param array  $attribs Attributes to set
     *
     * @return null
     *
     * @dataProvider dataQuery().
     */
-    public function testQuery($preload, $query, $data, $getRet, $expect)
-    {
+    public function testQuery(
+        $preload,
+        $query,
+        $data,
+        $getRet,
+        $expect,
+        $attribs = array()
+    ) {
+        $this->o->setAttributes($attribs);
         $this->load($preload);
         $ret = $this->o->query($query, $data, $getRet);
         $this->assertSame($expect, $ret);
@@ -1248,14 +1623,15 @@ class HUGnetDBTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-               ),
+                ),
+                "1",
                 "SELECT * FROM `HUGnetDBTest` WHERE id = 3",
                 null,
                 true,
                 array(
                     array("id" => "3", "name" => "taking", "value" => "the"),
-               ),
-           ),
+                ),
+            ),
             array(
                 array(
                     array("id" => 1, "name" => "hello", "value" => "there"),
@@ -1263,20 +1639,38 @@ class HUGnetDBTest extends databaseTest
                     array("id" => 3, "name" => "taking", "value" => "the"),
                     array("id" => 4, "name" => "trouble", "value" => "to"),
                     array("id" => 5, "name" => "change", "value" => "these"),
-               ),
+                ),
+                "1",
                 "SELECT * FROM `HUGnetDBTest` WHERE id = ?",
                 array(1),
                 true,
                 array(
                     array("id" => "1", "name" => "hello", "value" => "there"),
-               ),
-           ),
+                ),
+            ),
+            array(
+                array(
+                    array("id" => 1, "name" => "hello", "value" => "there"),
+                    array("id" => 2, "name" => "I", "value" => "am"),
+                    array("id" => 3, "name" => "taking", "value" => "the"),
+                    array("id" => 4, "name" => "trouble", "value" => "to"),
+                    array("id" => 5, "name" => "change", "value" => "these"),
+                ),
+                "id = 15",
+                "SELECT * FROM `HUGnetDBTest` WHERE id = ?",
+                array(1),
+                true,
+                array(
+                    array("id" => "1", "name" => "hello", "value" => "there"),
+                ),
+            ),
         );
     }
     /**
     * test
     *
     * @param array  $preload Data to preload into the database
+    * @param stirng $where   Where clause for the database read
     * @param string $query   The query to perform
     * @param array  $data    The data to send with the query
     * @param bool   $getRet  Whether to expect a return
@@ -1286,14 +1680,14 @@ class HUGnetDBTest extends databaseTest
     *
     * @dataProvider dataQueryCache().
     */
-    public function testQueryCache($preload, $query, $data, $getRet, $expect)
+    public function testQueryCache($preload, $where, $query, $data, $getRet, $expect)
     {
         $this->o->createCache();
 
         // Preload the database
         $this->load($preload);
         // Preload the cache
-        $this->o->getAll();
+        $this->o->getWhere($where);
         // Erase what is in the database without touching the cache
         $this->pdo->query("delete from ".$this->table);
         // Query from the database (this should hit the cache)
@@ -1433,9 +1827,10 @@ class HUGnetDBTest extends databaseTest
     {
         return array(
             array(0, 0),
+            array(6, 6),
             array(15, 15),
             array(false, 0),
-            array(true, 0),
+            array(true, 1),
         );
     }
     /**
@@ -1451,18 +1846,46 @@ class HUGnetDBTest extends databaseTest
     public function testVerbose($val, $expect)
     {
         $this->o->verbose($val);
-        $this->assertSame($expect, $this->readAttribute($this->o, "verbose"));
+        $this->assertAttributeSame($expect, "verbose", $this->o);
     }
+
+    /**
+    * Data provider for testIsConnected
+    *
+    * @return array
+    */
+    public static function dataIsConnected()
+    {
+        return array(
+            array(array(), true),
+            array(
+                array(
+                    "db" => "This is not an object",
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "metaError" => constant("HUGNETDB_META_ERROR_SERVER_GONE"),
+                ),
+                false,
+            ),
+        );
+    }
+
 
     /**
     * test
     *
     * @return null
+    *
+    * @dataProvider dataIsConnected
     */
-    public function testIsConnected()
+    public function testIsConnected($attribs, $expect)
     {
+        $this->o->setAttributes($attribs);
         $ret = $this->o->isConnected();
-        $this->assertTrue($ret);
+        $this->assertSame($expect, $ret);
     }
 
     /**
@@ -1616,7 +2039,7 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-    * Data provider for testAddArray
+    * Data provider for testGetInstance
     *
     * @return array
     */
@@ -1663,6 +2086,11 @@ class HUGnetDBTest extends databaseTest
                 "HUGnetDBClassTest2",
                 false,
             ),
+            array(
+                null,
+                "HUGnetDB",
+                "HUGnetDB",
+            ),
         );
     }
     /**
@@ -1691,7 +2119,7 @@ class HUGnetDBTest extends databaseTest
     }
 
     /**
-    * Data provider for testAddArray
+    * Data provider for testGetInstanceCache
     *
     * @return array
     */
@@ -1836,7 +2264,7 @@ class HUGnetDBClassTest extends HUGnetDB
         $query = "CREATE TABLE IF NOT EXISTS `".$this->table."` (
               `id` int(11) NOT null,
               `name` varchar(16) NOT null default '',
-              `value` text NOT null,
+              `value` text,
               PRIMARY KEY  (`id`)
            );";
 
@@ -1870,18 +2298,50 @@ class HUGnetDBClassTest extends HUGnetDB
     }
 
     /**
-    * Calls the protected function cleanSql()
-    *
-    * @param array $fields The fields to set.  If blank it just returns the fields.
+    * Creates the field array
     *
     * @return null
     */
-    public function setFields($fields = null)
+    public function qGetColumns()
     {
-        if (!is_null($fields)) {
-            $this->fields = $fields;
+        $this->getColumns();
+    }
+
+    /**
+    * Sets and returns protected and private attributes
+    *
+    * @param string $attrib The attribute to set
+    * @param mixed  $value  The value to set them at.  If blank it just returns
+    *                      the value of the attribute.
+    *
+    * @return mixed
+    */
+    public function setAttribute($attrib, $value = null)
+    {
+        if (empty($attrib) || !is_string($attrib)) {
+            return null;
         }
-        return $this->fields;
+        if (!is_null($value)) {
+            $this->$attrib = $value;
+        }
+        return $this->$attrib;
+    }
+
+    /**
+    * Sets protected and private attributes
+    *
+    * @param array $attribs The attributes to set
+    *
+    * @return mixed
+    */
+    public function setAttributes($attribs)
+    {
+        if (empty($attribs) || !is_array($attribs)) {
+            return;
+        }
+        foreach ($attribs as $key => $value) {
+            $this->setAttribute($key, $value);
+        }
     }
 
 

@@ -137,22 +137,16 @@ class HUGnetDB
     */
     public function __construct($config = array())
     {
-        // This enables us to put this class other places
-        $this->myclass = strtolower(get_class($this));
-        if (isset($config[$this->myclass."file"])) {
-            $config["file"] = $config[$this->myclass."file"];
-            print "Using a custom file: ".$config["file"];
-            print " for ".$this->myclass."\n";
+        // If this is not already defined by here, we need to define it.
+        // I put it here so that there can be ample opportunity to define it
+        // other places.
+        if (!defined("HUGNET_LOCAL_DATABASE")) {
+            define("HUGNET_LOCAL_DATABASE", sys_get_temp_dir()."/HUGnet.sq3");
         }
 
         $this->config = $config;
-        if (is_string($config['file'])) {
-            $this->file = $config['file'];
-        } else if (defined("HUGNET_LOCAL_DATABASE")) {
-            $this->file = HUGNET_LOCAL_DATABASE;
-        } else {
-            $this->file = sys_get_temp_dir()."/HUGnet.sq3";
-        }
+
+        $this->file = $this->setFile($config);
 
         if (is_string($config["table"])) {
             $this->table = $config["table"];
@@ -160,7 +154,7 @@ class HUGnetDB
         if (is_string($config["id"])) {
             $this->id = $config["id"];
         }
-        if (is_string($config["dbTimeout"])) {
+        if (is_int($config["dbTimeout"])) {
             $this->dbTimeout = $config["dbTimeout"];
         }
         $this->verbose($config["verbose"]);
@@ -168,15 +162,18 @@ class HUGnetDB
         unset($config["id"]);
 
         $this->db = &HUGnetDB::createPDO($config);
+        // @codeCoverageIgnoreStart
         if (!$this->checkDB()) {
             $except = "No Database Connection in class ".get_class($this);
             self::throwException($except, -2);
             die("No database server available");
         }
+        // @codeCoverageIgnoreEnd
         $this->driver = $this->_getAttribute(PDO::ATTR_DRIVER_NAME);
         $this->db->setAttribute(PDO::ATTR_TIMEOUT, $this->dbTimeout);
 
         $this->getColumns();
+
     }
 
 
@@ -194,13 +191,7 @@ class HUGnetDB
         $key = serialize($config);
         if (empty($PDO[$key])) {
             $verbose = (int)$config['verbose'];
-            if (is_string($config['file'])) {
-                $file = $config['file'];
-            } else if (defined("HUGNET_LOCAL_DATABASE")) {
-                $file = HUGNET_LOCAL_DATABASE;
-            } else {
-                $file = sys_get_temp_dir()."/HUGnet.sq3";
-            }
+            $file = self::setFile($config);
             if (is_string($config['db_name'])) {
                 $db_name = $config['db_name'];
             } else {
@@ -225,7 +216,7 @@ class HUGnetDB
             // Okday, now try to connect
             foreach ($servers as $serv) {
                 $useDriver = is_string($serv['driver']) ? $serv['driver'] : "sqlite";
-                $dsn       = self::_createDSN(
+                $dsn       = self::createDSN(
                     $useDriver,
                     $db_name,
                     $file,
@@ -335,11 +326,13 @@ class HUGnetDB
     */
     protected function throwException($msg, $code)
     {
+        // @codeCoverageIgnoreStart
         if (is_object($this) && ($this->config["silent"])) {
             return;
         }
 
         throw new Exception($msg, $code);
+        // @codeCoverageIgnoreEnd
     }
     /**
     * Constructor
@@ -350,33 +343,53 @@ class HUGnetDB
     */
     public function createCache($file = null)
     {
+        $class = get_class($this);
+        $lowClass = strtolower($class);
+        $this->cacheConfig[$lowClass."file"] = $this->config[$lowClass."file"];
         $this->cacheConfig["file"] = $this->file;
         // Can't cache a sqlite database server
         if ($this->driver == "sqlite") {
             $file = substr(trim(strtolower($this->file)), 0, 7);
             if ($file == ":memory") {
+//                $this->cache = null;
                 return false;
             }
             $this->cacheConfig["file"] = ":memory:";
         } else {
-            if (is_string($file) && !empty($file)) {
-                $this->cacheConfig["file"] = $file;
-            }
+            $this->setFile($this->cacheConfig, $file);
         }
-        if (!is_string($this->cacheConfig["file"])
-            || empty($this->cacheConfig["file"])
-        ) {
-            $this->cacheConfig["file"] = HUGNET_LOCAL_DATABASE;
-        }
-        $this->vprint("Creating a cache at ".$this->cacheConfig["file"]);
-        $class       = get_class($this);
+        $this->vprint("Creating a cache at ".$this->cacheConfig["file"], 1);
         $this->cache =& self::getInstance($class, $this->cacheConfig);
         $this->cache->createTable($this->table);
         $this->doCache = true;
         $this->cache->createTable();
+
         return true;
     }
 
+    /**
+    * Figures out what file to use and returns it.
+    *
+    * @param array  &$config The configuration array
+    * @param string $file    The file to set it to
+    *
+    * @return null
+    */
+    protected function setFile(&$config, $file=null)
+    {
+        // This enables us to put this class other places
+        $myclass = strtolower(get_class($this));
+        if (!empty($myclass) && isset($config[$myclass."file"])) {
+            $config["file"] = $config[$myclass."file"];
+            self::vprint("Using a custom file: ".$config["file"], 1);
+            self::vprint(" for ".$myclass."\n", 1);
+        } else if (is_string($file) && !empty($file)) {
+            $config["file"] = $file;
+        } else if (!is_string($config["file"]) || empty($config["file"])) {
+            $config["file"] = constant("HUGNET_LOCAL_DATABASE");
+        }
+        return $config["file"];
+    }
 
 
     /**
@@ -402,9 +415,6 @@ class HUGnetDB
             return;
         }
         $columns = $this->query("PRAGMA table_info(".$this->table.")");
-        if (!is_array($columns)) {
-            return;
-        }
         foreach ($columns as $col) {
             $this->fields[$col['name']] = $col['type'];
         }
@@ -421,9 +431,6 @@ class HUGnetDB
             return;
         }
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table);
-        if (!is_array($columns)) {
-            return;
-        }
         foreach ($columns as $col) {
             $this->fields[$col['Field']] = $col['Type'];
         }
@@ -443,8 +450,12 @@ class HUGnetDB
         if ($this->driver == "sqlite") {
             return;
         }
+        // @codeCoverageIgnoreStart
+        // There is no way to test this function.  The exception will cause the test
+        // to fail.
         self::throwException("Driver ".$this->driver." is not implemented.", -1);
     }
+    // @codeCoverageIgnoreEnd
 
     /**
     * Creates the database table.
@@ -518,6 +529,10 @@ class HUGnetDB
             return array();
         }
         $ret = array();
+        if (!isset($data[$this->id]) && $this->autoIncrement) {
+            $data[$this->id] = $this->getNextID();
+        }
+
         foreach ($keys as $k) {
             $ret[] = $data[$k];
         }
@@ -629,7 +644,6 @@ class HUGnetDB
         }
         // Build the rest of the query.
         $query .= " INTO `".$this->table."` (".$fields.") VALUES (".$v.")";
-
         return $query;
     }
 
@@ -1129,12 +1143,6 @@ class HUGnetDB
     public function verbose($level=0)
     {
         $level = (int) $level;
-        // This means that it requires verbose level 6 to show anything
-        if ($level > 5) {
-            $level == 1;
-        } else {
-            $level = 0;
-        }
         $this->verbose = $level;
     }
 
@@ -1142,23 +1150,24 @@ class HUGnetDB
     * Prints out a string
     *
     * @param string $str The string to print out
+    * @param int    $val The minimum value to print this for
     *
     * @return null
     */
-    protected function vprint($str)
+    protected function vprint($str, $val = 6)
     {
-        if (!$this->verbose) {
+        if (($this->verbose < $val) || empty($str)){
             return;
         }
-        if (empty($str)) {
-            return;
+        if (is_object($this)) {
+            $class  = get_class($this);
+            $driver = $this->driver;
+            if ($driver == "sqlite") {
+                $file = $this->file;
+            }
+            print "(".$class." - ".$driver." ".$file.") ";
         }
-        $class  = get_class($this);
-        $driver = $this->driver;
-        if ($driver == "sqlite") {
-            $file = $this->file;
-        }
-        print "(".$class." - ".$driver." ".$file.") ".$str."\n";
+        print $str."\n";
     }
 
     /**
@@ -1205,10 +1214,12 @@ class HUGnetDB
     *
     * @param string $class  The class to create
     * @param array  $config The configuration to use
+    * @param bool   $cache  Whether or not to cache the output.  This is for testing
+    *                       purposes and shouldn't be used generally.
     *
     * @return object A reference to a driver object
     */
-    function &getInstance($class = "HUGnetDB", $config = null)
+    function &getInstance($class = "HUGnetDB", $config = null, $cache = true)
     {
         static $instances;
         if (file_exists(HUGNET_INCLUDE_PATH."/database/".$class.".php")) {
@@ -1224,13 +1235,17 @@ class HUGnetDB
             $config = self::getConfig();
         }
         $key = serialize($config);
+        if ($cache) {
+            if (empty($instances[$class][$key])) {
+                self::setConfig($config, false);
 
-        if (empty($instances[$class][$key])) {
-            self::setConfig($config, false);
-
-            $instances[$class][$key] = new $class($config);
+                $instances[$class][$key] = new $class($config);
+            }
+            return $instances[$class][$key];
+        } else {
+            return new $class($config);
         }
-        return $instances[$class][$key];
+
     }
 
     /**
@@ -1243,7 +1258,7 @@ class HUGnetDB
     *
     * @return null
     */
-    function _createDSN($driver, $db, $file, $host)
+    function createDSN($driver, $db, $file, $host)
     {
         $driver = strtolower($driver);
 
