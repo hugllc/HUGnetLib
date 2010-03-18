@@ -43,6 +43,8 @@ define("HUGNETDB_META_ERROR_SERVER_GONE_MSG", "The server has gone away");
 define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 /** The database went away */
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
+/** Misc stuff */
+require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
 /**
  * Base class for all database work
  *
@@ -125,7 +127,7 @@ class HUGnetDB
     public $metaErrorMsg = "";
 
     /** @var int The verbosity level */
-    protected $verbose = 0;
+    public $verbose = 0;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -263,7 +265,7 @@ class HUGnetDB
             try {
                 $pdo[$key] = new PDO($dsn, $user, $pass);
             } catch (PDOException $e) {
-                self::vprint(
+                HUGnetMisc::vprint(
                     "Error (".$e->getCode()."): ".$e->getMessage()."\n",
                     1,
                     $verbose
@@ -370,7 +372,7 @@ class HUGnetDB
         } else {
             $this->setFile($this->cacheConfig, $file);
         }
-        $this->vprint("Creating a cache at ".$this->cacheConfig["file"], 1);
+        HUGnetMisc::vprint("Creating a cache at ".$this->cacheConfig["file"], 1);
         $this->cache =& self::getInstance($class, $this->cacheConfig);
         $this->cache->createTable($this->table);
         $this->doCache = true;
@@ -392,8 +394,8 @@ class HUGnetDB
         $myclass = strtolower(get_class($this));
         if (!empty($myclass) && isset($config[$myclass."file"])) {
             $config["file"] = $config[$myclass."file"];
-            self::vprint("Using a custom file: ".$config["file"], 1);
-            self::vprint(" for ".$myclass."\n", 1);
+            HUGnetMisc::vprint("Using a custom file: ".$config["file"], 1);
+            HUGnetMisc::vprint(" for ".$myclass."\n", 1);
         } else if (is_string($file) && !empty($file)) {
             $config["file"] = $file;
         } else if (!is_string($config["file"]) || empty($config["file"])) {
@@ -983,19 +985,19 @@ class HUGnetDB
     {
         if ($this->verbose) {
             if (!empty($this->errorState) && ($this->errorState != "00000")) {
-                $this->vprint("Error State: ".$this->errorState);
+                HUGnetMisc::vprint("Error State: ".$this->errorState);
             }
             if (!empty($this->error)) {
-                $this->vprint("Error: ".$this->error);
+                HUGnetMisc::vprint("Error: ".$this->error);
             }
             if (!empty($this->errorMsg)) {
-                $this->vprint("Error Message: ".$this->errorMsg);
+                HUGnetMisc::vprint("Error Message: ".$this->errorMsg);
             }
             if (!empty($this->metaError)) {
-                $this->vprint("Meta Error: ".$this->metaError);
+                HUGnetMisc::vprint("Meta Error: ".$this->metaError);
             }
             if (!empty($this->metaErrorMsg)) {
-                $this->vprint("Meta Error Message: ".$this->metaErrorMsg);
+                HUGnetMisc::vprint("Meta Error Message: ".$this->metaErrorMsg);
             }
         }
     }
@@ -1027,7 +1029,7 @@ class HUGnetDB
         }
 
         $this->cacheQuery($query, $data, $getRet);
-        $this->vprint("Preparing query: ".$query."\n");
+        HUGnetMisc::vprint("Preparing query: ".$query."\n");
         $ret = $this->db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
@@ -1052,19 +1054,19 @@ class HUGnetDB
     */
     protected function queryExecute($query, &$ret, &$data, $getRes = false)
     {
-        $this->vprint("Executing using data: \n".print_r($data, true));
+        HUGnetMisc::vprint("Executing using data: \n".print_r($data, true));
         $res = $ret->execute($data);
         if ($getRes) {
             $res = $ret->fetchAll(PDO::FETCH_ASSOC);
             if (empty($res)) {
                 $res = $this->cacheQuery($query, $data, $getRes);
             }
-            $this->vprint("Query Returned: ".count($res)." rows");
+            HUGnetMisc::vprint("Query Returned: ".count($res)." rows");
             $this->cacheResult($res);
             $this->errorInfo(false, $ret);
             return $res;
         } else {
-            $this->vprint("Query Returned: ".print_r($res, true));
+            HUGnetMisc::vprint("Query Returned: ".print_r($res, true));
         }
         $this->errorInfo(false, $ret);
         return $res;
@@ -1105,7 +1107,7 @@ class HUGnetDB
         }
         $tries = count($res);
         $count = $this->cache->addArray($res, true);
-        $this->vprint("Cache entry: $count/$tries");
+        HUGnetMisc::vprint("Cache entry: $count/$tries");
 
     }
 
@@ -1148,35 +1150,6 @@ class HUGnetDB
     {
         $level = (int) $level;
         $this->verbose = $level;
-    }
-
-    /**
-    * Prints out a string
-    *
-    * @param string $str The string to print out
-    * @param int    $val The minimum value to print this for
-    * @param int    $verbose The verbosity level
-    *                        (This is for if we are not an object)
-    *
-    * @return null
-    */
-    protected function vprint($str, $val = 6, $verbose = 0)
-    {
-        if (is_object($this)) {
-            $verbose = $this->verbose;
-        }
-        if (($verbose < $val) || empty($str)) {
-            return;
-        }
-        if (is_object($this)) {
-            $class  = get_class($this);
-            $driver = $this->driver;
-            if ($driver == "sqlite") {
-                $file = $this->file;
-            }
-            print "(".$class." - ".$driver." ".$file.") ";
-        }
-        print $str."\n";
     }
 
     /**

@@ -35,6 +35,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
+if (!defined("HUGNET_INCLUDE_PATH")) {
+    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+}
+
 require_once dirname(__FILE__).'/../../base/HUGnetDB.php';
 require_once dirname(__FILE__).'/../database/DatabaseTest.php';
 
@@ -2195,11 +2199,11 @@ class HUGnetDBTest extends databaseTest
         $class  = get_class($this->o);
         $driver = $this->readAttribute($this->o, "driver");
         $this->assertSame(
-            "(".$class." - ".$driver." ".$file.") Error State: ABCDE\n"
-            ."(".$class." - ".$driver." ".$file.") Error: -1\n"
-            ."(".$class." - ".$driver." ".$file.") Error Message: This is an error\n"
-            ."(".$class." - ".$driver." ".$file.") Meta Error: -1\n"
-            ."(".$class." - ".$driver." ".$file.") Meta Error Message: This is an "
+            "(".$class.") Error State: ABCDE\n"
+            ."(".$class.") Error: -1\n"
+            ."(".$class.") Error Message: This is an error\n"
+            ."(".$class.") Meta Error: -1\n"
+            ."(".$class.") Meta Error Message: This is an "
             ."error\n",
             $ret
         );
