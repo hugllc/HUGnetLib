@@ -171,7 +171,7 @@ class UnitBase
      */
     public function siGetShift ($from, $to)
     {
-        return (int)($this->siGetExp($to) - $this->siGetExp($from));
+        return (int)($this->siGetExp($from) - $this->siGetExp($to));
     }
     /**
      * This shifts the decimal places in SI units
@@ -197,7 +197,7 @@ class UnitBase
      */
     public function siShift ($val, $from, $to)
     {
-        $shift = (int)($this->siGetExp($to) - $this->siGetExp($from));
+        $shift = $this->siGetShift($from, $to);
         return $this->shift($val, $shift);
     }
 
