@@ -94,7 +94,8 @@ class HUGnetDBTest extends databaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->o =& HUGnetDB::getInstance("HUGnetDBClassTest", $this->config);
+        //$this->o =& HUGnetDB::getInstance("HUGnetDBClassTest", $this->config);
+        $this->o = new HUGnetDBClassTest($this->config);
         $this->o->createTable();
         // Clear out the database
         $this->pdo->query("DELETE FROM ".$this->table);
@@ -205,7 +206,8 @@ class HUGnetDBTest extends databaseTest
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($config, $attribute, $expect) {
+    public function testConstructor($config, $attribute, $expect)
+    {
         if ($attribute == "file") {
             $this->unlink($att);
         }
@@ -380,7 +382,7 @@ class HUGnetDBTest extends databaseTest
     ) {
         $this->unlink($file);
         $this->unlink($expectFile);
-        $o =& HUGnetDB::getInstance($class, $config, false);
+        $o = new HUGnetDBClassTest($config);
         $o->setAttributes($attribs);
         $ret = $o->createCache($file);
         $cache = $this->readAttribute($o, "cache");
@@ -430,9 +432,9 @@ class HUGnetDBTest extends databaseTest
     /**
     * Tests if getColumns works correctly
     *
-    * @param array $preload   Data to preload into the database
-    * @param array $expect    The info to expect returned
-    * @param array $attribs   Attributes to set in the class.
+    * @param array $preload Data to preload into the database
+    * @param array $expect  The info to expect returned
+    * @param array $attribs Attributes to set in the class.
     *
     * @dataProvider dataGetColumns
     * @return null
@@ -1876,6 +1878,9 @@ class HUGnetDBTest extends databaseTest
 
     /**
     * test
+    *
+    * @param array $attribs Attributes to set in the class.
+    * @param array $expect  The info to expect returned
     *
     * @return null
     *

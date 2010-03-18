@@ -39,7 +39,7 @@ if (!defined("HUGNET_INCLUDE_PATH")) {
 }
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
+require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
  * General test class for database classes
@@ -53,7 +53,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DatabaseTest extends PHPUnit_Framework_TestCase
+class DatabaseTest extends PHPUnit_Extensions_Database_TestCase
 {
     /** @var string The name of the id column */
     protected $id = "id";
@@ -72,6 +72,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
             throw new exception(get_class($this)."->table not defined!", -1);
         }
         $this->config["file"] = tempnam(sys_get_temp_dir(), get_class($this));
+        //$this->config["file"] = ":memory:";
         $this->file           = $this->config["file"];
         if (!empty($this->id)) {
             $this->config["id"] = $this->id;
@@ -87,6 +88,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         );
         HUGnetDB::setConfig($this->config);
         $this->pdo =& HUGnetDB::createPDO($this->config);
+
     }
 
     /**
@@ -100,14 +102,30 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         if (is_object($this->pdo) && (get_class($this->pdo) == "PDO")) {
-            $this->pdo->query("delete from ".$this->table);
-            $this->pdo = null;
+            $this->pdo->query("DROP TABLE `".$this->table."`");
         }
+        $this->pdo = null;
         if (file_exists($this->config["file"])) {
             unlink($this->config["file"]);
         }
+        $class = strtolower(get_class($this));
+        if (file_exists($this->config[$class."file"])) {
+            unlink($this->config[$class."file"]);
+        }
+
         unset($this->config);
     }
+
+    protected function getConnection()
+    {
+        return $this->createDefaultDBConnection($this->pdo, 'sqlite');
+    }
+
+    protected function getDataSet()
+    {
+        return $this->createFlatXMLDataSet($this->dataSet);
+    }
+
 
     /**
      *  This pre-loads two rows into the database into the database

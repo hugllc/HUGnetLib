@@ -141,8 +141,7 @@ class ProcStatsTest extends databaseTest
     {
         parent::setUp();
         $this->o =& HUGnetDB::getInstance("ProcStatsTestClass", $this->config);
-        // Clear out the database
-        $this->pdo->query("DELETE FROM `".$this->table."`");
+        $this->o->createTable($this->table);
         $this->o->forceMe($this->me);
     }
 
