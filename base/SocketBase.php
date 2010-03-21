@@ -366,7 +366,7 @@ abstract class SocketBase
             ." C:".$packet['sendCommand']."\n",
             2
         );
-        $ret = $this->Write($packet, $GetReply);
+        $ret = $this->write($packet, $GetReply);
         if (empty($ret)) {
             return false;
         }
@@ -393,7 +393,7 @@ abstract class SocketBase
     *
     * @return bool false on failure, true on success
     */
-    abstract protected function Write($packet, $GetReply = true);
+    abstract protected function write($packet, $GetReply = true);
 
 
 }

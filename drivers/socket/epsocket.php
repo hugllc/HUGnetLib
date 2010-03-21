@@ -93,7 +93,8 @@ if (!class_exists("epsocket")) {
         /**
         * Write data out a socket
         *
-        * @param string $packet The packet to send out the socket
+        * @param string $packet   The packet to send out the socket
+        * @param bool   $GetReply This says whether we expect a reply
         *
         * @return int The number of bytes written on success, false on failure
         */
@@ -225,11 +226,13 @@ if (!class_exists("epsocket")) {
             if ($this->verbose) {
                 print "Opening socket to ".$this->Server.":".$this->Port."\r\n";
             }
-            $this->socket = @fsockopen($this->Server,
-                                       $this->Port,
-                                       $this->Errno,
-                                       $this->Error,
-                                       $this->SockTimeout);
+            $this->socket = @fsockopen(
+                $this->Server,
+                $this->Port,
+                $this->Errno,
+                $this->Error,
+                $this->SockTimeout
+            );
             if ($this->socket !== false) {
                 stream_set_blocking($this->socket, false);
                 if ($this->verbose) {

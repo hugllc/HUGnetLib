@@ -300,6 +300,9 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * TestUnbuildPacket
      *
+     * @param string $packet The packet to unbuild
+     * @param array  $expect The expected return
+     *
      * @return null
      *
      * @dataProvider dataUnbuildPacket().
@@ -452,9 +455,9 @@ class SocketBaseTest extends PHPUnit_Framework_TestCase
     /**
      * Test sendPacket()
      *
-     * @param array $packet    Hex string "packet(s)" to receive
-     * @param bool  $getReply  The value to give
-     * @param mixed $expect    What to expect to be returned
+     * @param array $packet   Hex string "packet(s)" to receive
+     * @param bool  $getReply The value to give
+     * @param mixed $expect   What to expect to be returned
      *
      * @return null
      *
@@ -518,7 +521,7 @@ class SocketBaseClassTest extends SocketBase
     *
     * @return bool false on failure, true on success
     */
-    protected function Write($packet, $GetReply = true)
+    protected function write($packet, $GetReply = true)
     {
         $this->writePacket = $packet;
         return $GetReply;

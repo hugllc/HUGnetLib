@@ -119,7 +119,7 @@ if (!class_exists('lightSensor')) {
         */
         function osramBPW34($A, $sensor, $TC, $extra=null)
         {
-/*
+            /*
             $den = $this->Am*$this->s*$this->D;
             if ($den == 0) {
                 return(1500.0);
@@ -129,16 +129,20 @@ if (!class_exists('lightSensor')) {
             $L += 1500.0;
 
             return round($L, 4);
-*/
+            */
             return $this->getLight($A, $TC);
         }
     }
 }
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "lightSensor",
-                            "Type" => "sensor",
-                            "Class" => "lightSensor"));
+    $this->addGeneric(
+        array(
+            "Name" => "lightSensor",
+            "Type" => "sensor",
+            "Class" => "lightSensor"
+        )
+    );
 }
 
 

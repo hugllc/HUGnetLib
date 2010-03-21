@@ -400,14 +400,15 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return The resistance corresponding to the values given in k Ohms
         */
-        function getResistance($A,
-                               $TC,
-                               $Bias,
-                               $Tf = null,
-                               $D = null,
-                               $s = null,
-                               $Am = null)
-        {
+        function getResistance(
+            $A,
+            $TC,
+            $Bias,
+            $Tf = null,
+            $D = null,
+            $s = null,
+            $Am = null
+        ) {
             if (is_null($Tf)) {
                 $Tf = $this->Tf;
             }
@@ -448,14 +449,15 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return The resistance corresponding to the values given in k Ohms
         */
-        function getSweep($A,
-                          $TC,
-                          $R,
-                          $Tf = null,
-                          $D = null,
-                          $s = null,
-                          $Am = null)
-        {
+        function getSweep(
+            $A,
+            $TC,
+            $R,
+            $Tf = null,
+            $D = null,
+            $s = null,
+            $Am = null
+        ) {
             if (is_null($Tf)) {
                 $Tf = $this->Tf;
             }
@@ -516,20 +518,28 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return float The temperature in degrees C.
         */
-        function BcTherm238164066103($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
-        {
+        function bcTherm238164066103(
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT = null,
+            $cal=array()
+        ) {
             if (!is_array($extra)) {
                 $extra = array();
             }
             $Bias      = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $baseTherm = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $ohms      = $this->getResistance($A, $TC, $Bias);
-            $T         = $this->_BcTherm2322640Interpolate($ohms,
-                                                           $baseTherm,
-                                                           3.354016e-3,
-                                                           2.569355e-4,
-                                                           2.626311e-6,
-                                                           0.675278e-7);
+            $T         = $this->_BcTherm2322640Interpolate(
+                $ohms,
+                $baseTherm,
+                3.354016e-3,
+                2.569355e-4,
+                2.626311e-6,
+                0.675278e-7
+            );
 
             if (is_null($T)) {
                 return null;
@@ -606,7 +616,7 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return float The Temperature in degrees C
         */
-        private function _BcTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
+        private function _bcTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
         {
             // This gets out bad values
             if ($R <= 0) {
@@ -665,9 +675,9 @@ if (!class_exists('resistiveSensor')) {
         *                      and the last one
         * @param array $cal    The calibration array
         *
-        * @return float The temperature in degrees F.
+        * @return float The temperature in degrees C.
         */
-        function B57560G0103F000(
+        function b57560G0103F000(
             $A,
             $sensor,
             $TC,
@@ -788,8 +798,14 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return float The percentage of time the door is open
         */
-        function getMoistureV2($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
-        {
+        function getMoistureV2(
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT = null,
+            $cal=array()
+        ) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $Ry   = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
@@ -838,8 +854,14 @@ if (!class_exists('resistiveSensor')) {
         *
         * @return float The percentage of time the door is open
         */
-        function getMoistureV1($A, $sensor, $TC, $extra, $deltaT = null, $cal=array())
-        {
+        function getMoistureV1(
+            $A,
+            $sensor,
+            $TC,
+            $extra,
+            $deltaT = null,
+            $cal=array()
+        ) {
             $Bias = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
             $Rr   = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
             $Ry   = (empty($extra[2])) ? $sensor['extraDefault'][2] : $extra[2];
@@ -871,9 +893,13 @@ if (!class_exists('resistiveSensor')) {
 }
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "resistiveSensor",
-                            "Type" => "sensor",
-                            "Class" => "resistiveSensor"));
+    $this->addGeneric(
+        array(
+            "Name" => "resistiveSensor",
+            "Type" => "sensor",
+            "Class" => "resistiveSensor"
+        )
+    );
 }
 
 ?>

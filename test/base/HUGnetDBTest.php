@@ -2035,7 +2035,8 @@ class HUGnetDBTest extends databaseTest
     *
     * @dataProvider dataPrepareData
     */
-    public function testPrepareData($data, $keys, $attribs, $expect) {
+    public function testPrepareData($data, $keys, $attribs, $expect)
+    {
         $this->o->setAttributes($attribs);
         $ret = $this->o->qPrepareData($data, $keys);
         $this->assertSame($expect, $ret);
@@ -2083,16 +2084,17 @@ class HUGnetDBTest extends databaseTest
     /**
     * test
     *
-    * @param array $err       The original error
-    * @param array $attribs    Attributes to set in the object
-    * @param int   $expect     The expected return
+    * @param array  $err       The original error
+    * @param array  $attribs   Attributes to set in the object
+    * @param int    $expect    The expected return
     * @param string $expectMsg The expected message
     *
     * @return null
     *
     * @dataProvider dataMetaErrorInfo
     */
-    public function testMetaErrorInfo($err, $attribs, $expect, $expectMsg) {
+    public function testMetaErrorInfo($err, $attribs, $expect, $expectMsg)
+    {
         $this->o->setAttributes($attribs);
         $ret = $this->o->qMetaErrorInfo($err);
         $this->assertAttributeSame($expect, "metaError", $this->o, "Wrong Code");
@@ -2300,8 +2302,9 @@ class HUGnetDBTest extends databaseTest
         preg_match(
             "/2[0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9] "
             ."([0-1][0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]/",
-                       $ret,
-                       $match);
+            $ret,
+            $match
+        );
         $this->assertSame($match[0], $ret);
     }
 

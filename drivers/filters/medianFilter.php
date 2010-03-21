@@ -35,19 +35,19 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-if (!class_exists('medianFilter')) {
+if (!class_exists('MedianFilter')) {
     /**
-     * Implements a median filter
-     *
-     * @category   Misc
-     * @package    HUGnetLib
-     * @subpackage UnitConversion
-     * @author     Scott Price <prices@hugllc.com>
-     * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
-     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-     */
+    * Implements a median filter
+    *
+    * @category   Misc
+    * @package    HUGnetLib
+    * @subpackage UnitConversion
+    * @author     Scott Price <prices@hugllc.com>
+    * @copyright  2007-2010 Hunt Utilities Group, LLC
+    * @copyright  2009 Scott Price
+    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    */
     class MedianFilter extends FilterBase
     {
         /** @var array Filter information array */
@@ -63,16 +63,17 @@ if (!class_exists('medianFilter')) {
         );
 
         /**
-         * This function implements a n pole median filter
-         *
-         * @param array &$history The history to filter
-         * @param int   $index    The index in the history to use
-         * @param array $filter   Information on the filter we are implementing
-         * @param mixed $extra    Extra setup information on the filter
-         * @param int   $deltaT   The difference in time between this record and the last one
-         *
-         * @return array
-         */
+        * This function implements a n pole median filter
+        *
+        * @param array &$history The history to filter
+        * @param int   $index    The index in the history to use
+        * @param array $filter   Information on the filter we are implementing
+        * @param mixed $extra    Extra setup information on the filter
+        * @param int   $deltaT   The difference in time between this record
+        *                         and the last one
+        *
+        * @return array
+        */
         public function median(&$history, $index, $filter, $extra, $deltaT=null)
         {
             $poles   = is_int($extra[0]) ? $extra[0] : $filter["extraDefault"][0];
@@ -86,8 +87,12 @@ if (!class_exists('medianFilter')) {
                 for ($i = $start; $i < $end; $i++) {
                     $mArray[] = $history[$keys[$i]]["Data".$index];
                 }
-                $history[$keys[$key]]["Data".$index]  = $this->_getMedian($mArray, $active);
-                $history[$keys[$key]]["data"][$index] = $history[$keys[$key]]["Data".$index];
+                $history[$keys[$key]]["Data".$index]  = $this->_getMedian(
+                    $mArray,
+                    $active
+                );
+                $history[$keys[$key]]["data"][$index]
+                    = $history[$keys[$key]]["Data".$index];
             }
             return $history;
         }
@@ -102,13 +107,21 @@ if (!class_exists('medianFilter')) {
          */
         private function _getMedian($val, $active = null)
         {
-            if (!is_int($active)) $active = ((int)(count($val) / 2)) + 1;
+            if (!is_int($active)) {
+                $active = ((int)(count($val) / 2)) + 1;
+            }
             sort($val);
             return $val[$active];
         }
     }
 }
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "medianFilter", "Type" => "filter", "Class" => "MedianFilter"));
+    $this->addGeneric(
+        array(
+            "Name" => "medianFilter",
+            "Type" => "filter",
+            "Class" => "MedianFilter"
+        )
+    );
 }
 ?>

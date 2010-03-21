@@ -51,7 +51,7 @@ if (!class_exists('BaleMoistureUnits')) {
     * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
     * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class baleMoistureUnits extends unitBase
+    class BaleMoistureUnits extends unitBase
     {
         /**
         *  This is the array that defines all of our units and how to

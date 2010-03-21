@@ -322,9 +322,13 @@ if (!class_exists('pulseSensor')) {
 
 }
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "pulseSensor",
-                            "Type" => "sensor",
-                            "Class" => "pulseSensor"));
+    $this->addGeneric(
+        array(
+            "Name" => "pulseSensor",
+            "Type" => "sensor",
+            "Class" => "pulseSensor"
+        )
+    );
 }
 
 

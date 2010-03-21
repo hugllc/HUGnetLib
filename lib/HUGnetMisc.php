@@ -79,8 +79,8 @@ class HUGnetMisc
     /**
     * Prints out a string
     *
-    * @param string $str The string to print out
-    * @param int    $val The minimum value to print this for
+    * @param string $str     The string to print out
+    * @param int    $val     The minimum value to print this for
     * @param int    $verbose The verbosity level
     *                        (This is for if we are not an object)
     *

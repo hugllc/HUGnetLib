@@ -123,9 +123,13 @@ if (!class_exists('capacitiveSensor')) {
 }
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array("Name" => "capacitiveSensor",
-                            "Type" => "sensor",
-                            "Class" => "capacitiveSensor"));
+    $this->addGeneric(
+        array(
+            "Name" => "capacitiveSensor",
+            "Type" => "sensor",
+            "Class" => "capacitiveSensor"
+        )
+    );
 }
 
 ?>

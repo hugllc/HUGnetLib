@@ -159,8 +159,8 @@ class Analysis extends HUGnetDB
         if (isset($res[0])) {
             $res = $res[0];
         }
-         // @codeCoverageIgnoreEnd
-       return $res;
+        // @codeCoverageIgnoreEnd
+        return $res;
     }
 
 

@@ -133,11 +133,13 @@ if (!class_exists('currentSensor')) {
 }
 
 if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(array(
-                            "Name" => "currentSensor",
-                            "Type" => "sensor",
-                            "Class" => "currentSensor"
-                           ));
+    $this->addGeneric(
+        array(
+            "Name" => "currentSensor",
+            "Type" => "sensor",
+            "Class" => "currentSensor"
+        )
+    );
 }
 
 
