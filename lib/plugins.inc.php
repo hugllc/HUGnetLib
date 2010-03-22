@@ -632,6 +632,9 @@ class Plugins
             $this->_debug("Checking File:  ".$file."\n", 4);
             // This tells the cache what file to use
             $this->incFile = $realFile;
+            // Check to see if a class for this filename exists
+            $class = $this->_stripFileExtension($file);
+            $possClass = !class_exists($class);
             try {
                 if ($this->_checkFile($filedir.$file)) {
                     // These files might need to be included more than once,
@@ -654,6 +657,10 @@ class Plugins
                 $this->_debug("\tErrors encountered parsing file.");
                 $this->_debug("Skipping ".$file.".\n", 4);
                 return;
+            } else {
+                if ($possClass) {
+                    $this->registerClass($class);
+                }
             }
         } else {
             $this->_debug("Cache Hit: $realFile\n");
@@ -665,6 +672,48 @@ class Plugins
 
     }
 
+
+    /**
+    * Strips the extension off of a file
+    *
+    * @param string $name The name of the file to be stripped
+    *
+    * @return string The stripped name
+    */
+    private function _stripFileExtension($name)
+    {
+        $pos = strpos($name, $this->extension);
+        if ($pos > 0) {
+            $pos-=1;  // Remove the trailing .
+        }
+        return substr($name, 0, $pos);
+    }
+
+    /**
+    * Tries to register a class
+    *
+    * The class has to have a public static function 'register' or a public
+    * static variable "register" that returns the correct array for
+    * addGenericRaw.
+    *
+    * @param string $name The name of the class to try and register
+    *
+    * @return bool
+    */
+    public function registerClass($name)
+    {
+        if (!class_exists($name)) {
+            return false;
+        }
+        $reg = eval("if (isset($name::\$register)) return $name::\$register;");
+        if (method_exists($name, "register")) {
+            $reg = eval("return $name::register();");
+        }
+        if (!empty($reg)) {
+            $reg["Class"] = $name;
+        }
+        return $this->addGenericRaw($reg);
+    }
     /**
     *  Deals with the plugin files.
     *

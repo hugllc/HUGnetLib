@@ -1006,6 +1006,20 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 0,
                 true,
                 array(
+                    "Generic" => array(
+                        "testClass" => array(
+                            array(
+                                "Name" => "AutoClassPlugin",
+                                "Type" => "testClass",
+                                "Class" => "autoClassPlugin",
+                            ),
+                            array(
+                                "Name" => "AutoClassPlugin2",
+                                "Type" => "testClass",
+                                "Class" => "autoClassPlugin2",
+                            ),
+                        ),
+                    ),
                     "Functions" => array(
                         "filter" => array(
                             array(
