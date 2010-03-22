@@ -54,6 +54,11 @@ if (!class_exists('pulseSensor')) {
     class PulseSensor extends SensorBase
     {
 
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "pulseSensor",
+            "Type" => "sensor",
+        );
         /**
         * This defines all of the sensors that this driver deals with...
         *
@@ -320,15 +325,6 @@ if (!class_exists('pulseSensor')) {
 
     }
 
-}
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "pulseSensor",
-            "Type" => "sensor",
-            "Class" => "pulseSensor"
-        )
-    );
 }
 
 

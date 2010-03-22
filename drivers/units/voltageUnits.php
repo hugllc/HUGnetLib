@@ -53,6 +53,11 @@ if (!class_exists('VoltageUnits')) {
     */
     class VoltageUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Voltage",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -69,16 +74,6 @@ if (!class_exists('VoltageUnits')) {
 
 
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Voltage",
-            "Type" => "units",
-            "Class" => "voltageUnits"
-        )
-    );
 }
 
 

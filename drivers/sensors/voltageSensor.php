@@ -51,6 +51,11 @@ if (!class_exists('voltageSensor')) {
     */
     class VoltageSensor extends SensorBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "voltageSensor",
+            "Type" => "sensor",
+        );
         /**
         *    This defines all of the sensors that this driver deals with...
         */
@@ -450,16 +455,5 @@ if (!class_exists('voltageSensor')) {
 
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "voltageSensor",
-            "Type" => "sensor",
-            "Class" => "voltageSensor"
-        )
-    );
-}
-
 
 ?>

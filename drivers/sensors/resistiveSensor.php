@@ -60,6 +60,11 @@ if (!class_exists('resistiveSensor')) {
         /** @var float Moisture yellow zone % */
         protected $My = 12;
 
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "resistiveSensor",
+            "Type" => "sensor",
+        );
         /**
         * This is the array of sensor information.
         *
@@ -890,16 +895,6 @@ if (!class_exists('resistiveSensor')) {
         }
 
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "resistiveSensor",
-            "Type" => "sensor",
-            "Class" => "resistiveSensor"
-        )
-    );
 }
 
 ?>

@@ -36,11 +36,11 @@
  *
  */
 
-require_once dirname(__FILE__).'/../EPacketMocks.php';
-
 if (!defined("HUGNET_INCLUDE_PATH")) {
-    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+    define("HUGNET_INCLUDE_PATH", realpath(dirname(__FILE__)."/../.."));
 }
+require_once dirname(__FILE__).'/../EPacketMocks.php';
+require_once HUGNET_INCLUDE_PATH.'/driver.php';
 
 // Need to make sure this file is not added to the code coverage
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
@@ -127,7 +127,57 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         $driver->packet->ReplyTimeout = 1;
         return $driver;
     }
-
+    /**
+     *  This function makes sure the parent of the class is correct
+     *
+     * @return null
+     */
+    public function testDriverParent()
+    {
+        if (get_class($this->o) == "eDEFAULT") {
+            return;
+        }
+        // parent
+        $this->assertEquals(
+            "eDEFAULT",
+            get_parent_class($this->o),
+            $this->class." parent class must be 'eDEFAULT'"
+        );
+    }
+    /**
+    *  This function makes sure the class registration variable is correct
+    *
+    * @return null
+    */
+    /*
+    public function testRegisterPlugin()
+    {
+        if (empty($this->class)) {
+            return;
+        }
+        // Get the value.
+        $reg = eval(
+            "if (isset(".$this->class."::\$registerPlugin))".
+            " return ".$this->class."::\$registerPlugin;"
+        );
+        // Long Name
+        $this->assertType(
+            "array",
+            $reg,
+            "\$registerPlugin must be an array"
+        );
+        $this->assertType(
+            "string",
+            $reg["Name"],
+            '$registerPlugin["Name"] must be a string'
+        );
+        $this->assertSame(
+            "driver",
+            $reg["Type"],
+            '$registerPlugin["Type"] must be "driver"'
+        );
+    }
+*/
     /**
     * Preloads data into the packet structure so that we can test things.
     *

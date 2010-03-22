@@ -36,7 +36,7 @@
  *
  */
 if (!defined("HUGNET_INCLUDE_PATH")) {
-    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+    define("HUGNET_INCLUDE_PATH", realpath(dirname(__FILE__)."/../.."));
 }
 
 require_once dirname(__FILE__).'/../../filter.php';
@@ -60,27 +60,54 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 class FilterTestBase extends PHPUnit_Framework_TestCase
 {
     /**
-    * Sets up the fixture, for example, open a network connection.
-    * This method is called before a test is executed.
-    *
-    * @return null
-    *
-    * @access protected
-    */
-    protected function setUp()
+     *  This function makes sure the parent of the class is correct
+     *
+     * @return null
+     */
+    public function testFilterParent()
     {
+        if (empty($this->class)) {
+            return;
+        }
+        $o = new $this->class;
+        // Long Name
+        $this->assertEquals(
+            "FilterBase",
+            get_parent_class($o),
+            $this->class." parent class must be 'FilterBase'"
+        );
     }
-
     /**
-    * Tears down the fixture, for example, close a network connection.
-    * This method is called after a test is executed.
+    *  This function makes sure the class registration variable is correct
     *
     * @return null
-    *
-    * @access protected
     */
-    protected function tearDown()
+    public function testRegisterPlugin()
     {
+        if (empty($this->class)) {
+            return;
+        }
+        // Get the value.
+        $reg = eval(
+            "if (isset(".$this->class."::\$registerPlugin))".
+            " return ".$this->class."::\$registerPlugin;"
+        );
+        // Long Name
+        $this->assertType(
+            "array",
+            $reg,
+            "\$registerPlugin must be an array"
+        );
+        $this->assertType(
+            "string",
+            $reg["Name"],
+            '$registerPlugin["Name"] must be a string'
+        );
+        $this->assertSame(
+            "filter",
+            $reg["Type"],
+            '$registerPlugin["Type"] must be "filter"'
+        );
     }
     /**
     * This gets the filter array and returns it.
@@ -112,6 +139,7 @@ class FilterTestBase extends PHPUnit_Framework_TestCase
     {
         return array();
     }
+
     /**
      * test
      *

@@ -75,6 +75,35 @@ abstract class SensorTestBase extends PHPUnit_Framework_TestCase
             $this->class." parent class must be 'SensorBase'"
         );
     }
+    /**
+    *  This function makes sure the class registration variable is correct
+    *
+    * @return null
+    */
+    public function testRegisterPlugin()
+    {
+        // Get the value.
+        $reg = eval(
+            "if (isset(".$this->class."::\$registerPlugin))".
+            " return ".$this->class."::\$registerPlugin;"
+        );
+        // Long Name
+        $this->assertType(
+            "array",
+            $reg,
+            "\$registerPlugin must be an array"
+        );
+        $this->assertType(
+            "string",
+            $reg["Name"],
+            '$registerPlugin["Name"] must be a string'
+        );
+        $this->assertSame(
+            "sensor",
+            $reg["Type"],
+            '$registerPlugin["Type"] must be "sensor"'
+        );
+    }
 
     /**
      * data provider

@@ -48,6 +48,9 @@
 */
 class UnitBase
 {
+    /** @var This is to register the class */
+    static public $registerPlugin = null;
+
     /** prefix factors for SI units */
     private $_si = array(
         "Y"      => 24,

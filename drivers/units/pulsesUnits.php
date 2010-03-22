@@ -53,6 +53,11 @@ if (!class_exists('PulsesUnits')) {
     */
     class PulsesUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Pulses",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -107,16 +112,6 @@ if (!class_exists('PulsesUnits')) {
 
 
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Pulses",
-            "Type" => "units",
-            "Class" => "pulsesUnits"
-        )
-    );
 }
 
 

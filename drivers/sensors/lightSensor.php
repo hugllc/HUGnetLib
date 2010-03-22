@@ -50,6 +50,11 @@ if (!class_exists('lightSensor')) {
     */
     class LightSensor extends SensorBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "lightSensor",
+            "Type" => "sensor",
+        );
         /** @var array Sensor information array */
         public $sensors = array(
             0x30 => array(
@@ -133,16 +138,6 @@ if (!class_exists('lightSensor')) {
             return $this->getLight($A, $TC);
         }
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "lightSensor",
-            "Type" => "sensor",
-            "Class" => "lightSensor"
-        )
-    );
 }
 
 

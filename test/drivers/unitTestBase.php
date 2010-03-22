@@ -41,6 +41,10 @@ if (!defined("HUGNET_INCLUDE_PATH")) {
 }
 // Need to make sure this file is not added to the code coverage
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHPUnit_Util_Filter::removeDirectoryFromFilter(
+  HUGNET_INCLUDE_PATH.'/drivers/units', '.php'
+);
+
 
 require_once dirname(__FILE__).'/../../sensor.php';
 require_once dirname(__FILE__).'/../unitConversionMocks.php';
@@ -72,7 +76,37 @@ abstract class UnitTestBase extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             "UnitBase",
             get_parent_class($this->o),
-            $this->class." parent class must be 'Sensor_Base'"
+            $this->class." parent class must be 'UnitBase'"
+        );
+    }
+
+    /**
+    *  This function makes sure the class registration variable is correct
+    *
+    * @return null
+    */
+    public function testRegisterPluginArray()
+    {
+        // Get the value.
+        $reg = eval(
+            "if (isset(".$this->class."::\$registerPlugin))".
+            " return ".$this->class."::\$registerPlugin;"
+        );
+        // Long Name
+        $this->assertType(
+            "array",
+            $reg,
+            "\$registerPlugin must be an array"
+        );
+        $this->assertType(
+            "string",
+            $reg["Name"],
+            '$registerPlugin["Name"] must be a string'
+        );
+        $this->assertSame(
+            "units",
+            $reg["Type"],
+            '$registerPlugin["Type"] must be "units"'
         );
     }
 

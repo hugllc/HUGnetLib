@@ -53,6 +53,11 @@ if (!class_exists('PowerUnits')) {
     */
     class PowerUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Power",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -142,17 +147,5 @@ if (!class_exists('PowerUnits')) {
 
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Power",
-            "Type" => "units",
-            "Class" => "powerUnits"
-        )
-    );
-}
-
-
 
 ?>

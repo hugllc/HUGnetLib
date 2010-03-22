@@ -53,6 +53,11 @@ if (!class_exists('LengthUnits')) {
     */
     class LengthUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Length",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -67,17 +72,6 @@ if (!class_exists('LengthUnits')) {
         );
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Length",
-            "Type" => "units",
-            "Class" => "lengthUnits"
-        )
-    );
-}
-
 
 
 ?>

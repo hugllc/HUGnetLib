@@ -50,7 +50,8 @@ if (!class_exists("AutoClassPlugin2")) {
     */
     class AutoClassPlugin2
     {
-        public static $register = array(
+        /** @var This is the registration information */
+        public static $registerPlugin = array(
             "Name" => "AutoClassPlugin2",
             "Type" => "testClass",
         );

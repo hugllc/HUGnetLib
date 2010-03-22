@@ -53,6 +53,11 @@ if (!class_exists('HeatInsulationUnits')) {
     */
     class HeatInsulationUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Heat Insulation",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -124,18 +129,6 @@ if (!class_exists('HeatInsulationUnits')) {
 
     }
 }
-
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Heat Insulation",
-            "Type" => "units",
-            "Class" => "heatInsulationUnits"
-        )
-    );
-}
-
 
 
 ?>

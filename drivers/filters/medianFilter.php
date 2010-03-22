@@ -50,6 +50,11 @@ if (!class_exists('MedianFilter')) {
     */
     class MedianFilter extends FilterBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "medianFilter",
+            "Type" => "filter",
+        );
         /** @var array Filter information array */
         var $filters = array(
             "numeric" => array(
@@ -114,14 +119,5 @@ if (!class_exists('MedianFilter')) {
             return $val[$active];
         }
     }
-}
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "medianFilter",
-            "Type" => "filter",
-            "Class" => "MedianFilter"
-        )
-    );
 }
 ?>

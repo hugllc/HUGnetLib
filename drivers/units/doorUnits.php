@@ -53,6 +53,11 @@ if (!class_exists('DoorUnits')) {
     */
     class DoorUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Door",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -69,17 +74,5 @@ if (!class_exists('DoorUnits')) {
 
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Door",
-            "Type" => "units",
-            "Class" => "doorUnits"
-        )
-    );
-}
-
-
 
 ?>

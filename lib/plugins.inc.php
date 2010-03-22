@@ -648,6 +648,11 @@ class Plugins
                 $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
                 $freturn = false;
             }
+            // Check to see if there is a class in here somewhere
+            if ($freturn && $possClass) {
+                $this->registerClass($class);
+            }
+
             // Have to make sure that this unset
             unset($this->incFile);
 
@@ -657,10 +662,6 @@ class Plugins
                 $this->_debug("\tErrors encountered parsing file.");
                 $this->_debug("Skipping ".$file.".\n", 4);
                 return;
-            } else {
-                if ($possClass) {
-                    $this->registerClass($class);
-                }
             }
         } else {
             $this->_debug("Cache Hit: $realFile\n");
@@ -705,12 +706,14 @@ class Plugins
         if (!class_exists($name)) {
             return false;
         }
-        $reg = eval("if (isset($name::\$register)) return $name::\$register;");
-        if (method_exists($name, "register")) {
-            $reg = eval("return $name::register();");
+        $reg = eval(
+            "if (isset($name::\$registerPlugin)) return $name::\$registerPlugin;"
+        );
+        if (method_exists($name, "registerPlugin")) {
+            $reg = eval("return $name::registerPlugin();");
         }
         if (!empty($reg)) {
-            $reg["Class"] = $name;
+            $reg["Class"] = ucfirst($name);
         }
         return $this->addGenericRaw($reg);
     }

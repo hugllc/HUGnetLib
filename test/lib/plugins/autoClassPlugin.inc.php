@@ -50,7 +50,12 @@ if (!class_exists("AutoClassPlugin")) {
     */
     class AutoClassPlugin
     {
-        public static function register()
+        /**
+        * This function Registers the plugin
+        *
+        * @return array The registration information
+        */
+        public static function registerPlugin()
         {
             return array(
                 "Name" => "AutoClassPlugin",

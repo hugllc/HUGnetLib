@@ -53,6 +53,11 @@ if (!class_exists('HumidityUnits')) {
     */
     class HumidityUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Humidity",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -69,17 +74,5 @@ if (!class_exists('HumidityUnits')) {
 
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Humidity",
-            "Type" => "units",
-            "Class" => "humidityUnits"
-        )
-    );
-}
-
-
 
 ?>

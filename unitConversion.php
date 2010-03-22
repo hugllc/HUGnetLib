@@ -81,6 +81,7 @@ class UnitConversion
                 $this->registerUnits($units);
             }
         }
+
     }
     /**
      * Register a sensor class.
@@ -230,8 +231,10 @@ class UnitConversion
     {
         list($class, $func) = $this->getConvFunct($from, $to, $type);
         if (substr(trim(strtolower($func)), 0, 6) == "shift:") {
-            $shift = (int)substr($func, 6);
-            $val = $this->unitsClass[$class]->shift($val, $shift);
+            if (method_exists($this->unitsClass[$class], "shift")) {
+                $shift = (int)substr($func, 6);
+                $val = $this->unitsClass[$class]->shift($val, $shift);
+            }
         } else {
             if (method_exists($this->unitsClass[$class], $func)
                 && ($val !== null)

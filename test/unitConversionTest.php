@@ -66,7 +66,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                     '&#176;K' => 'shift:3',
                 ),
                 'preferred' => '&#176;F',
-                'class' => 'temperatureUnits',
+                'class' => 'TemperatureUnits',
             ),
             '&#176;F' => array(
                 'longName' => '&#176;F',
@@ -74,12 +74,12 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'convert' => array(
                     '&#176;C' => 'FtoC',
                 ),
-                'class' => 'temperatureUnits',
+                'class' => 'TemperatureUnits',
             ),
             '&#176;K' => array(
                 'longName' => '&#176;K',
                 'varType' => 'float',
-                'class' => 'temperatureUnits',
+                'class' => 'TemperatureUnits',
             ),
         ),
         'Direction' => array(
@@ -90,7 +90,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'convert' => array(
                     'Direction' => 'numDirtoDir',
                 ),
-                'class' => 'directionUnits',
+                'class' => 'DirectionUnits',
             ),
             'Direction' => array(
                 'longName' => 'Direction',
@@ -99,7 +99,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                 'convert' => array(
                     '&#176;' => 'DirtonumDir',
                 ),
-                'class' => 'directionUnits',
+                'class' => 'DirectionUnits',
             ),
         ),
     );
@@ -275,7 +275,7 @@ class UnitConversionTest extends PHPUnit_Framework_TestCase
                     'longName' => '&#176;F',
                     'varType' => 'float',
                     'convert' => array('&#176;C' => 'FtoC'),
-                    'class' => 'temperatureUnits'
+                    'class' => 'TemperatureUnits'
                 )
             ),
             array("ASDF", false),

@@ -53,6 +53,11 @@ if (!class_exists('DirectionUnits')) {
     */
     class DirectionUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Direction",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -221,17 +226,5 @@ if (!class_exists('DirectionUnits')) {
 
     }
 }
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Direction",
-            "Type" => "units",
-            "Class" => "directionUnits"
-        )
-    );
-}
-
-
 
 ?>

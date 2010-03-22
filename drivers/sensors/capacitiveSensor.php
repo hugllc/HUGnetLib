@@ -52,6 +52,11 @@ if (!class_exists('capacitiveSensor')) {
     */
     class CapacitiveSensor extends SensorBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "capacitiveSensor",
+            "Type" => "sensor",
+        );
 
         public $sensors = array(
             0x20 => array(
@@ -120,16 +125,6 @@ if (!class_exists('capacitiveSensor')) {
             return $val;
         }
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "capacitiveSensor",
-            "Type" => "sensor",
-            "Class" => "capacitiveSensor"
-        )
-    );
 }
 
 ?>

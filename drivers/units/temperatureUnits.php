@@ -53,6 +53,11 @@ if (!class_exists('TemperatureUnits')) {
     */
     class TemperatureUnits extends unitBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "Temperature",
+            "Type" => "units",
+        );
         /**
         *  This is the array that defines all of our units and how to
         * display and use them.
@@ -122,16 +127,6 @@ if (!class_exists('TemperatureUnits')) {
         }
 
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "Temperature",
-            "Type" => "units",
-            "Class" => "temperatureUnits"
-        )
-    );
 }
 
 

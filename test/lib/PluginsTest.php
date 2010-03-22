@@ -1011,12 +1011,12 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                             array(
                                 "Name" => "AutoClassPlugin",
                                 "Type" => "testClass",
-                                "Class" => "autoClassPlugin",
+                                "Class" => "AutoClassPlugin",
                             ),
                             array(
                                 "Name" => "AutoClassPlugin2",
                                 "Type" => "testClass",
-                                "Class" => "autoClassPlugin2",
+                                "Class" => "AutoClassPlugin2",
                             ),
                         ),
                     ),
@@ -1045,6 +1045,20 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 0,
                 false,
                 array(
+                    "Generic" => array(
+                        "testClass" => array(
+                            array(
+                                "Name" => "AutoClassPlugin",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin",
+                            ),
+                            array(
+                                "Name" => "AutoClassPlugin2",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin2",
+                            ),
+                        ),
+                    ),
                     "Functions" => array(
                         "filter" => array(
                             array(

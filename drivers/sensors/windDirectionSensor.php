@@ -51,6 +51,11 @@ if (!class_exists('windDirectionSensor')) {
     */
     class WindDirectionSensor extends SensorBase
     {
+        /** @var This is to register the class */
+        public static $registerPlugin = array(
+            "Name" => "windDirectionSensor",
+            "Type" => "sensor",
+        );
 
         /**
         * This defines all of the sensors that this driver deals with...
@@ -145,16 +150,6 @@ if (!class_exists('windDirectionSensor')) {
         }
 
     }
-}
-
-if (method_exists($this, "addGeneric")) {
-    $this->addGeneric(
-        array(
-            "Name" => "windDirectionSensor",
-            "Type" => "sensor",
-            "Class" => "windDirectionSensor"
-        )
-    );
 }
 
 ?>

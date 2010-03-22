@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../../drivers/filters/medianFilter.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class MedianFilterTest extends filterTestBase
+class MedianFilterTest extends FilterTestBase
 {
     /** @var string Tells what class this is testing */
     public $class = "medianFilter";
