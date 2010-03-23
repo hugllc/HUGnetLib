@@ -37,82 +37,79 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('LightUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class LightUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Light",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class LightUnits extends unitBase
-    {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Light",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            'W/m^2' => array(
-                'longName' => 'Watts per Meter Squared',
-                'varType' => 'float',
-                'convert' => array(
-                    'BTU/hr/ft^2' => 'btuHrFt2',
-                ),
+    var $units = array(
+        'W/m^2' => array(
+            'longName' => 'Watts per Meter Squared',
+            'varType' => 'float',
+            'convert' => array(
+                'BTU/hr/ft^2' => 'btuHrFt2',
             ),
-            'BTU/hr/ft^2' => array(
-                'longName' => 'BTU per Hour per Foot Squared',
-                'varType' => 'float',
-                'convert' => array(
-                    'W/m^2' => 'wM2',
-                ),
-             ),
-        );
+        ),
+        'BTU/hr/ft^2' => array(
+            'longName' => 'BTU per Hour per Foot Squared',
+            'varType' => 'float',
+            'convert' => array(
+                'W/m^2' => 'wM2',
+            ),
+            ),
+    );
 
-        /**
-        * Change US Gallons to liters
-        *
-        * @param int    $val  The value to convert
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float null if not differential data, the RPM otherwise
-        *
-        */
-        public function  wM2($val, $time, $type)
-        {
-            return $val / 0.317;
-        }
-
-        /**
-        * Change US Gallons to liters
-        *
-        * @param int    $val  The value to convert
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float null if not differential data, the RPM otherwise
-        *
-        */
-        public function btuHrFt2($val, $time, $type)
-        {
-            return $val * 0.317;
-        }
-
-
+    /**
+    * Change US Gallons to liters
+    *
+    * @param int    $val  The value to convert
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float null if not differential data, the RPM otherwise
+    *
+    */
+    public function  wM2($val, $time, $type)
+    {
+        return $val / 0.317;
     }
+
+    /**
+    * Change US Gallons to liters
+    *
+    * @param int    $val  The value to convert
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float null if not differential data, the RPM otherwise
+    *
+    */
+    public function btuHrFt2($val, $time, $type)
+    {
+        return $val * 0.317;
+    }
+
+
 }
 
 ?>

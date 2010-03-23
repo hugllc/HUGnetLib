@@ -70,8 +70,10 @@ class Filter
             $plugins = new Plugins(dirname(__FILE__)."/drivers/filters/", "php");
         }
 
-        foreach ($plugins->plugins["Generic"]["filter"] as $driver) {
-            $this->registerFilter($driver["Class"]);
+        if (is_array($plugins->plugins["Generic"]["filter"])) {
+            foreach ($plugins->plugins["Generic"]["filter"] as $driver) {
+                $this->registerFilter($driver["Class"]);
+            }
         }
     }
 

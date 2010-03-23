@@ -35,106 +35,104 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-if (!class_exists('currentSensor')) {
+/**
+* Class for dealing with current sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Sensors
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class CurrentSensor extends SensorBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "currentSensor",
+        "Type" => "sensor",
+    );
     /**
-    * Class for dealing with current sensors.
-    *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Sensors
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    * Sensor information array
     */
-    class CurrentSensor extends SensorBase
+    public $sensors = array(
+        0x50 => array(
+            "fetBoard" => array(
+                "longName" => "FET Board Current Sensor",
+                "unitType" => "Current",
+                "validUnits" => array('mA', 'A'),
+                "defaultUnits" =>  'mA',
+                "function" => "fetBoard",
+                "storageUnit" => 'mA',
+                "unitModes" => array(
+                    'mA' => 'raw,diff',
+                    'A' => 'raw,diff',
+                ),
+                "extraText" => array("R in Ohms", "Gain"),
+                "extraDefault" => array(0.5, 1),
+            ),
+            "Controller" => array(
+                "longName" => "Controller Board Current Sensor",
+                "unitType" => "Current",
+                "validUnits" => array('mA', 'A'),
+                "defaultUnits" =>  'mA',
+                "function" => "fetBoard",
+                "storageUnit" => 'mA',
+                "unitModes" => array(
+                    'mA' => 'raw,diff',
+                    'A' => 'raw,diff',
+                ),
+                "extraText" => array("R in Ohms", "Gain"),
+                "extraDefault" => array(0.5, 7),
+            ),
+        ),
+    );
+    /**
+    * This takes in a raw AtoD reading and returns the current.
+    *
+    * This is further documented at: {@link
+    * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current
+    * Sensors }
+    *
+    * @param int   $A The raw AtoD reading
+    * @param float $R The resistance of the current sensing resistor
+    * @param float $G The gain of the circuit
+    * @param int   $T The time constant
+    *
+    * @return float The current sensed
+    */
+    function getCurrent($A, $R, $G, $T)
     {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "currentSensor",
-            "Type" => "sensor",
-        );
-        /**
-        * Sensor information array
-        */
-        public $sensors = array(
-            0x50 => array(
-                "fetBoard" => array(
-                    "longName" => "FET Board Current Sensor",
-                    "unitType" => "Current",
-                    "validUnits" => array('mA', 'A'),
-                    "defaultUnits" =>  'mA',
-                    "function" => "fetBoard",
-                    "storageUnit" => 'mA',
-                    "unitModes" => array(
-                        'mA' => 'raw,diff',
-                        'A' => 'raw,diff',
-                   ),
-                    "extraText" => array("R in Ohms", "Gain"),
-                    "extraDefault" => array(0.5, 1),
-               ),
-                "Controller" => array(
-                    "longName" => "Controller Board Current Sensor",
-                    "unitType" => "Current",
-                    "validUnits" => array('mA', 'A'),
-                    "defaultUnits" =>  'mA',
-                    "function" => "fetBoard",
-                    "storageUnit" => 'mA',
-                    "unitModes" => array(
-                        'mA' => 'raw,diff',
-                        'A' => 'raw,diff',
-                   ),
-                    "extraText" => array("R in Ohms", "Gain"),
-                    "extraDefault" => array(0.5, 7),
-               ),
-           ),
-        );
-        /**
-        * This takes in a raw AtoD reading and returns the current.
-        *
-        * This is further documented at: {@link
-        * https://dev.hugllc.com/index.php/Project:HUGnet_Current_Sensors Current
-        * Sensors }
-        *
-        * @param int   $A The raw AtoD reading
-        * @param float $R The resistance of the current sensing resistor
-        * @param float $G The gain of the circuit
-        * @param int   $T The time constant
-        *
-        * @return float The current sensed
-        */
-        function getCurrent($A, $R, $G, $T)
-        {
-            $denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
-            if ($denom == 0) {
-                return 0.0;
-            }
-            $numer = $A * $this->D * $this->Vcc;
-
-            $Read = $numer/$denom;
-            return round($Read, 4);
+        $denom = $this->s * $T * $this->Tf * $this->Am * $G * $R;
+        if ($denom == 0) {
+            return 0.0;
         }
+        $numer = $A * $this->D * $this->Vcc;
 
-        /**
-        *  This is specifically for the current sensor in the FET board.
-        *
-        * @param float $val    The incoming value
-        * @param array $sensor The sensor setup array
-        * @param int   $TC     The time constant
-        * @param mixed $extra  Extra parameters for the sensor
-        *
-        * @return float Current rounded to 1 place
-        */
-        function fetBoard($val, $sensor, $TC, $extra=null)
-        {
-            $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
-            $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
-            $A = $this->getCurrent($val, $R, $G, $TC);
-            return round($A * 1000, 1);
-        }
-
+        $Read = $numer/$denom;
+        return round($Read, 4);
     }
+
+    /**
+    *  This is specifically for the current sensor in the FET board.
+    *
+    * @param float $val    The incoming value
+    * @param array $sensor The sensor setup array
+    * @param int   $TC     The time constant
+    * @param mixed $extra  Extra parameters for the sensor
+    *
+    * @return float Current rounded to 1 place
+    */
+    function fetBoard($val, $sensor, $TC, $extra=null)
+    {
+        $R = (empty($extra[0])) ? $sensor['extraDefault'][0] : $extra[0];
+        $G = (empty($extra[1])) ? $sensor['extraDefault'][1] : $extra[1];
+        $A = $this->getCurrent($val, $R, $G, $TC);
+        return round($A * 1000, 1);
+    }
+
 }
 
 

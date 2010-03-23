@@ -37,42 +37,39 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('DoorUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class DoorUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Door",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class DoorUnits extends unitBase
-    {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Door",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            '%' => array(
-                'longName' => 'Percentage Open',
-                'varType' => 'float',
-            ),
-        );
+    var $units = array(
+        '%' => array(
+            'longName' => 'Percentage Open',
+            'varType' => 'float',
+        ),
+    );
 
 
-    }
 }
 
 ?>

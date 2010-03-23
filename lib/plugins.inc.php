@@ -632,14 +632,16 @@ class Plugins
             $this->_debug("Checking File:  ".$file."\n", 4);
             // This tells the cache what file to use
             $this->incFile = $realFile;
-            // Check to see if a class for this filename exists
-            $class = $this->_stripFileExtension($file);
-            $possClass = !class_exists($class);
             try {
-                if ($this->_checkFile($filedir.$file)) {
+                if ($this->_checkFile($realFile)) {
                     // These files might need to be included more than once,
                     // so we use include
-                    $freturn = include $filedir.$file;
+                    $freturn = include_once $realFile;
+                    // Register a possible class.  This will try to register
+                    // a class whether or not the file actually included
+                    // It will fail silently if it doesn't exist
+                    $class = $this->_stripFileExtension($file);
+                    $this->registerClass($class);
                 }
             } catch (ErrorException $e) {
                 $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
@@ -647,10 +649,6 @@ class Plugins
             } catch (Exception $e) {
                 $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
                 $freturn = false;
-            }
-            // Check to see if there is a class in here somewhere
-            if ($freturn && $possClass) {
-                $this->registerClass($class);
             }
 
             // Have to make sure that this unset
@@ -712,7 +710,7 @@ class Plugins
         if (method_exists($name, "registerPlugin")) {
             $reg = eval("return $name::registerPlugin();");
         }
-        if (!empty($reg)) {
+        if (!empty($reg) && empty($reg["Class"])) {
             $reg["Class"] = ucfirst($name);
         }
         return $this->addGenericRaw($reg);

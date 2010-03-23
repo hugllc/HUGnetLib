@@ -37,86 +37,81 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class VolumeUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Volume",
+        "Type" => "units",
+    );
 
-if (!class_exists('VolumeUnits')) {
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class VolumeUnits extends unitBase
+    var $units = array(
+        'gal' => array(
+            'longName' => 'US Gallon',
+            'varType' => 'float',
+            'convert' => array(
+                'l' => 'galtol',
+            ),
+        ),
+        'l' => array(
+            'longName' => 'Liters',
+            'varType' => 'float',
+            'siPrefix' => array('m'),
+            'convert' => array(
+                'gal' => 'ltogal',
+            ),
+        ),
+    );
+
+    /**
+    * Change US Gallons to liters
+    *
+    * @param int    $val  The value to convert
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float null if not differential data, the RPM otherwise
+    *
+    */
+    public function galtol ($val, $time, $type)
     {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Volume",
-            "Type" => "units",
-        );
-
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            'gal' => array(
-                'longName' => 'US Gallon',
-                'varType' => 'float',
-                'convert' => array(
-                    'l' => 'galtol',
-                ),
-            ),
-            'l' => array(
-                'longName' => 'Liters',
-                'varType' => 'float',
-                'siPrefix' => array('m'),
-                'convert' => array(
-                    'gal' => 'ltogal',
-                ),
-            ),
-        );
-
-        /**
-        * Change US Gallons to liters
-        *
-        * @param int    $val  The value to convert
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float null if not differential data, the RPM otherwise
-        *
-        */
-        public function galtol ($val, $time, $type)
-        {
-            return $val * 3.78541178;
-        }
-
-        /**
-        * Change US Gallons to liters
-        *
-        * @param int    $val  The value to convert
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float null if not differential data, the RPM otherwise
-        *
-        */
-        public function ltogal ($val, $time, $type)
-        {
-            return $val / 3.78541178;
-        }
-
-
+        return $val * 3.78541178;
     }
+
+    /**
+    * Change US Gallons to liters
+    *
+    * @param int    $val  The value to convert
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float null if not differential data, the RPM otherwise
+    *
+    */
+    public function ltogal ($val, $time, $type)
+    {
+        return $val / 3.78541178;
+    }
+
+
 }
-
-
 
 ?>

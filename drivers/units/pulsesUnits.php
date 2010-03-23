@@ -37,83 +37,78 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('PulsesUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class PulsesUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Pulses",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class PulsesUnits extends unitBase
+    var $units = array(
+        'counts' => array(
+            'longName' => 'Counts',
+            'varType' => 'int',
+            'convert' => array(
+                'RPM' => 'CnttoRPM',
+                'PPM' => 'CnttoRPM',
+            ),
+        ),
+        'PPM' => array(
+            'longName' => 'Pulses Per Minute',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),
+        'RPM' => array(
+            'longName' => 'Revolutions Per Minute',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),
+    );
+
+    /**
+    * Change counts into revolutions per minute
+    *
+    * @param int    $cnt       The number of counts
+    * @param int    $time      The time in seconds between this record
+    *                          and the last.
+    * @param string $type      The type of data (diff, raw, etc)
+    * @param int    $cntPerRev the number of counts per revolution
+    *
+    * @return float null if not differential data, the RPM otherwise
+    *
+    */
+    public function cntToRPM ($cnt, $time, $type, $cntPerRev)
     {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Pulses",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            'counts' => array(
-                'longName' => 'Counts',
-                'varType' => 'int',
-                'convert' => array(
-                    'RPM' => 'CnttoRPM',
-                    'PPM' => 'CnttoRPM',
-                ),
-            ),
-            'PPM' => array(
-                'longName' => 'Pulses Per Minute',
-                'mode' => 'diff',
-                'varType' => 'float',
-            ),
-            'RPM' => array(
-                'longName' => 'Revolutions Per Minute',
-                'mode' => 'diff',
-                'varType' => 'float',
-            ),
-        );
-
-        /**
-        * Change counts into revolutions per minute
-        *
-        * @param int    $cnt       The number of counts
-        * @param int    $time      The time in seconds between this record
-        *                          and the last.
-        * @param string $type      The type of data (diff, raw, etc)
-        * @param int    $cntPerRev the number of counts per revolution
-        *
-        * @return float null if not differential data, the RPM otherwise
-        *
-        */
-        public function cntToRPM ($cnt, $time, $type, $cntPerRev)
-        {
-            if ($cntPerRev <= 0) {
-                $cntPerRev = 1;
-            }
-            if ($type == 'diff') {
-                $rpm = ($cnt/$time/$cntPerRev)*60;
-                return($rpm);
-            } else {
-                return(null);
-            }
+        if ($cntPerRev <= 0) {
+            $cntPerRev = 1;
         }
-
-
+        if ($type == 'diff') {
+            $rpm = ($cnt/$time/$cntPerRev)*60;
+            return($rpm);
+        } else {
+            return(null);
+        }
     }
+
+
 }
-
-
 
 ?>

@@ -37,46 +37,41 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('SpeedUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class SpeedUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Speed",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class SpeedUnits extends unitBase
-    {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Speed",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            'MPH' => array(
-                'longName' => 'Miles Per Hour',
-                'mode' => 'diff',
-                'varType' => 'float',
-            ),
+    var $units = array(
+        'MPH' => array(
+            'longName' => 'Miles Per Hour',
+            'mode' => 'diff',
+            'varType' => 'float',
+        ),
 
-        );
+    );
 
 
-    }
 }
-
-
 
 ?>

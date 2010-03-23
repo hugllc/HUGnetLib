@@ -37,98 +37,93 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('TemperatureUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TemperatureUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Temperature",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class TemperatureUnits extends unitBase
+    var $units = array(
+        '&#176;C' => array(
+            'longName' => '&#176;C',
+            'varType' => 'float',
+            'convert' => array(
+                '&#176;F' => 'CtoF',
+            ),
+            'preferred' => '&#176;F',
+        ),
+        '&#176;F' => array(
+            'longName' => '&#176;F',
+            'varType' => 'float',
+            'convert' => array(
+                '&#176;C' => 'FtoC',
+            ),
+        ),
+
+    );
+
+    /**
+    * Converts from &#176; C to &#176; F.
+    *
+    * If the temperature is differential we can't add 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
+    *
+    * @param float  $c    The temperature in C
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float The temperature in F
+    */
+    public function cToF($c, $time, $type)
     {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Temperature",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            '&#176;C' => array(
-                'longName' => '&#176;C',
-                'varType' => 'float',
-                'convert' => array(
-                    '&#176;F' => 'CtoF',
-                ),
-                'preferred' => '&#176;F',
-            ),
-            '&#176;F' => array(
-                'longName' => '&#176;F',
-                'varType' => 'float',
-                'convert' => array(
-                    '&#176;C' => 'FtoC',
-                ),
-            ),
-
-        );
-
-        /**
-        * Converts from &#176; C to &#176; F.
-        *
-        * If the temperature is differential we can't add 32 like we would
-        * for an absolute temperature.  This is because it is already factored
-        * out by the subtraction in the difference.
-        *
-        * @param float  $c    The temperature in C
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float The temperature in F
-        */
-        public function cToF($c, $time, $type)
-        {
-            $F = ((9*$c)/5);
-            if ($type != 'diff') {
-                $F += 32;
-            }
-            return($F);
+        $F = ((9*$c)/5);
+        if ($type != 'diff') {
+            $F += 32;
         }
-
-        /**
-        *  Converts from &#176; F to &#176; C.
-        *
-        * If the temperature is differential we can't subtract 32 like we would
-        * for an absolute temperature.  This is because it is already factored
-        * out by the subtraction in the difference.
-        *
-        * @param float  $f    The temperature in F
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float The temperature in C
-        */
-        public function fToC($f, $time, $type)
-        {
-            if ($type != 'diff') {
-                $f -= 32;
-            }
-            return((5/9)*($f));
-        }
-
+        return($F);
     }
+
+    /**
+    *  Converts from &#176; F to &#176; C.
+    *
+    * If the temperature is differential we can't subtract 32 like we would
+    * for an absolute temperature.  This is because it is already factored
+    * out by the subtraction in the difference.
+    *
+    * @param float  $f    The temperature in F
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float The temperature in C
+    */
+    public function fToC($f, $time, $type)
+    {
+        if ($type != 'diff') {
+            $f -= 32;
+        }
+        return((5/9)*($f));
+    }
+
 }
-
-
 
 ?>

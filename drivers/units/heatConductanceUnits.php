@@ -37,95 +37,90 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/heatInsulationUnits.php";
-
-if (!class_exists('HeatConductanceUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class HeatConductanceUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Heat Conductance",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class HeatConductanceUnits extends unitBase
-    {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Heat Conductance",
-            "Type" => "units",
-        );
+    var $units = array(
+        'W / m^2 C' => array(
+            'longName' => 'W / m^2 C',
+            'varType' => 'float',
+            'convert' => array(
+                'Btu / ft^2 F h' => 'engToMetric',
+            ),
+        ),
+        'Btu / ft^2 F h' => array(
+            'longName' => 'Btu / ft^2 F h',
+            'varType' => 'float',
+            'convert' => array(
+                'W / m^2 C' => 'metricToEng',
+            ),
+        ),
+
+    );
+
         /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
+    * Converts
+    *
+    * @param float  $e    The insulation in ft^2 F h/Btu
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float The insulation in F
         */
-        var $units = array(
-            'W / m^2 C' => array(
-                'longName' => 'W / m^2 C',
-                'varType' => 'float',
-               'convert' => array(
-                    'Btu / ft^2 F h' => 'engToMetric',
-               ),
-            ),
-            'Btu / ft^2 F h' => array(
-                'longName' => 'Btu / ft^2 F h',
-                'varType' => 'float',
-                'convert' => array(
-                    'W / m^2 C' => 'metricToEng',
-                ),
-            ),
+    public function engToMetric($e, $time, $type)
+    {
+        return heatInsulationUnits::engToMetric($e, $time, $type);
+    }
 
-        );
+        /**
+    *  Converts from &#176; F to &#176; C.
+    *
+    * @param float  $m    The insulation in m^2 C/ W
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float The insulation in C
+        */
+    public function metricToEng($m, $time, $type)
+    {
+        return heatInsulationUnits::metricToEng($m, $time, $type);
+    }
 
-            /**
-        * Converts
-        *
-        * @param float  $e    The insulation in ft^2 F h/Btu
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float The insulation in F
-            */
-        public function engToMetric($e, $time, $type)
-        {
-            return heatInsulationUnits::engToMetric($e, $time, $type);
-        }
-
-            /**
-        *  Converts from &#176; F to &#176; C.
-        *
-        * @param float  $m    The insulation in m^2 C/ W
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float The insulation in C
-            */
-        public function metricToEng($m, $time, $type)
-        {
-            return heatInsulationUnits::metricToEng($m, $time, $type);
-        }
-
-            /**
-        *  Converts from &#176; F to &#176; C.
-        *
-        * @param float  $r    The insulation in m^2 C/ W
-        * @param int    $time The time in seconds between this record and the last.
-        * @param string $type The type of data (diff, raw, etc)
-        *
-        * @return float The insulation in C
-            */
-        public function rToU($r, $time, $type)
-        {
-            return heatInsulationUnits::rToU($r, $time, $type);
-        }
+        /**
+    *  Converts from &#176; F to &#176; C.
+    *
+    * @param float  $r    The insulation in m^2 C/ W
+    * @param int    $time The time in seconds between this record and the last.
+    * @param string $type The type of data (diff, raw, etc)
+    *
+    * @return float The insulation in C
+        */
+    public function rToU($r, $time, $type)
+    {
+        return heatInsulationUnits::rToU($r, $time, $type);
     }
 }
-
-
 
 ?>

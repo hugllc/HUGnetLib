@@ -36,127 +36,124 @@
  *
  */
 
-if (!class_exists('eVIRTUAL')) {
+require_once dirname(__FILE__).'/eDEFAULT.php';
+define("VIRTUAL_ENDPOINT_GATEWAY", -1);
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class eVIRTUAL extends eDEFAULT
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "eVIRTUAL",
+        "Type" => "driver",
+        "Class" => "eVIRTUAL"
+    );
+    /** Hardware name */
+    protected $HWName = "Virtual Endpoint";
 
-    require_once dirname(__FILE__).'/eDEFAULT.php';
-    define("VIRTUAL_ENDPOINT_GATEWAY", -1);
+    /** Devices */
+    public $devices = array(
+        "DEFAULT" => array(
+            "VIRTUAL" => "DEFAULT",
+    ),
+    );
+    /** Average table to use */
+    protected $average_table = "VirtualHistory";
+
+    /** Configurations supported */
+    var $config = array(
+        "DEFAULT" => array("Function" => "Virtual", "Sensors" => 16),
+    );
+
+
     /**
-    * Driver for the polling script (0039-26-01-P)
+    * Returns the packet to send to read the configuration out of an endpoint
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Endpoints
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+    * @param array $Info Infomation about the device to use
+    *
+    * @return null
     */
-    class eVIRTUAL extends eDEFAULT
+    function readConfig($Info)
     {
-        /** Hardware name */
-        protected $HWName = "Virtual Endpoint";
-
-        /** Devices */
-        public $devices = array(
-            "DEFAULT" => array(
-                "VIRTUAL" => "DEFAULT",
-        ),
-        );
-        /** Average table to use */
-        protected $average_table = "VirtualHistory";
-
-        /** Configurations supported */
-        var $config = array(
-            "DEFAULT" => array("Function" => "Virtual", "Sensors" => 16),
-        );
-
-
-        /**
-        * Returns the packet to send to read the configuration out of an endpoint
-        *
-        * @param array $Info Infomation about the device to use
-        *
-        * @return null
-        */
-        function readConfig($Info)
-        {
-            return array();
-        }
-
-        /**
-        * Checks a data record to determine what its status is.  It changes
-        * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
-        * is the status that the record had originally.
-        *
-        * @param array $Info The information array on the device
-        * @param array &$Rec The data record to check
-        *
-        * @return null
-        */
-        function checkRecord($Info, &$Rec)
-        {
-
-        }
-
-        /**
-        * Interpret the configuration
-        *
-        * @param array &$Info The devInfo array
-        *
-        * @return array
-        */
-        function interpConfig(&$Info)
-        {
-            parent::interpConfigHW($Info);
-            parent::interpConfigFW($Info);
-            parent::interpConfigDriverInfo($Info);
-            $Info["Labels"] = array();
-            $Info["Units"] = array();
-            $Info["dType"] = array();
-            $Info["doTotal"] = array();
-            $Info["params"]["sensorType"] = array();
-            $Info["params"]["Driver"] = array();
-            $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? (int)($Info["NumSensors"] + $Info["params"]["VSensors"]) : (int)$Info["NumSensors"];
-            for ($i = 0; $i < $Info["NumSensors"]; $i++) {
-                $devKey   =& $Info["params"]["device"][$i];
-                $input =  $Info["params"]["input"][$i] - 1;
-
-                if (!is_array($this->dev[$devKey]) && ($devKey != $Info["DeviceKey"])) {
-                    $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
-                }
-                $dev =& $this->dev[$devKey];
-                $Info["Units"][$i]                = is_null($dev["Units"][$input])                ? "Unknown"   : $dev["Units"][$input];
-                $Info["dType"][$i]                = is_null($dev["dType"][$input])                ? "Ignore"    : $dev["dType"][$input];
-                $Info["params"]["sensorType"][$i] = is_null($dev["params"]["sensorType"][$input]) ? "Unknown"   : $dev["params"]["sensorType"][$input];
-                $Info["unitType"][$i]             = (is_null($dev["unitType"][$input]))           ? "Unknown"   : $dev["unitType"][$input];
-                $Info["Labels"][$i]               = (is_null($dev["Labels"][$input]))             ? "Sensor $i" : $dev["Labels"][$input];
-                $Info["params"]["Driver"][$i]     = is_null($dev["Driver"])                       ? "eDEFAULT"  : $dev["Driver"];
-                $Info["doTotal"][$i]              = (bool)$dev["doTotal"][$i];
-            }
-            $this->interpConfigVSensorSetup($Info);
-            $Info["GatewayKey"] = VIRTUAL_ENDPOINT_GATEWAY;
-        }
-
-        /**
-        * This is just to kill the default behaviour
-        *
-        * @param array $Info    The devInfo array
-        * @param array $Packets The packets to interpret
-        *
-        * @return array
-        */
-        function interpSensors($Info, $Packets)
-        {
-            return array();
-        }
+        return array();
     }
-}
-// Protect us in case this is included differently
-if (method_exists($this, 'addGeneric')) {
-    $this->addGeneric(array("Name" => "eVIRTUAL",
-                            "Type" => "driver",
-                            "Class" => "eVIRTUAL"));
+
+    /**
+    * Checks a data record to determine what its status is.  It changes
+    * Rec['Status'] to reflect the status and adds Rec['Statusold'] which
+    * is the status that the record had originally.
+    *
+    * @param array $Info The information array on the device
+    * @param array &$Rec The data record to check
+    *
+    * @return null
+    */
+    function checkRecord($Info, &$Rec)
+    {
+
+    }
+
+    /**
+    * Interpret the configuration
+    *
+    * @param array &$Info The devInfo array
+    *
+    * @return array
+    */
+    function interpConfig(&$Info)
+    {
+        parent::interpConfigHW($Info);
+        parent::interpConfigFW($Info);
+        parent::interpConfigDriverInfo($Info);
+        $Info["Labels"] = array();
+        $Info["Units"] = array();
+        $Info["dType"] = array();
+        $Info["doTotal"] = array();
+        $Info["params"]["sensorType"] = array();
+        $Info["params"]["Driver"] = array();
+        $Info["TotalSensors"] = ($Info["params"]["VSensors"] > 0) ? (int)($Info["NumSensors"] + $Info["params"]["VSensors"]) : (int)$Info["NumSensors"];
+        for ($i = 0; $i < $Info["NumSensors"]; $i++) {
+            $devKey   =& $Info["params"]["device"][$i];
+            $input =  $Info["params"]["input"][$i] - 1;
+
+            if (!is_array($this->dev[$devKey]) && ($devKey != $Info["DeviceKey"])) {
+                $this->dev[$devKey] = $this->driver->getDevice($devKey, "KEY");
+            }
+            $dev =& $this->dev[$devKey];
+            $Info["Units"][$i]                = is_null($dev["Units"][$input])                ? "Unknown"   : $dev["Units"][$input];
+            $Info["dType"][$i]                = is_null($dev["dType"][$input])                ? "Ignore"    : $dev["dType"][$input];
+            $Info["params"]["sensorType"][$i] = is_null($dev["params"]["sensorType"][$input]) ? "Unknown"   : $dev["params"]["sensorType"][$input];
+            $Info["unitType"][$i]             = (is_null($dev["unitType"][$input]))           ? "Unknown"   : $dev["unitType"][$input];
+            $Info["Labels"][$i]               = (is_null($dev["Labels"][$input]))             ? "Sensor $i" : $dev["Labels"][$input];
+            $Info["params"]["Driver"][$i]     = is_null($dev["Driver"])                       ? "eDEFAULT"  : $dev["Driver"];
+            $Info["doTotal"][$i]              = (bool)$dev["doTotal"][$i];
+        }
+        $this->interpConfigVSensorSetup($Info);
+        $Info["GatewayKey"] = VIRTUAL_ENDPOINT_GATEWAY;
+    }
+
+    /**
+    * This is just to kill the default behaviour
+    *
+    * @param array $Info    The devInfo array
+    * @param array $Packets The packets to interpret
+    *
+    * @return array
+    */
+    function interpSensors($Info, $Packets)
+    {
+        return array();
+    }
 }
 
 ?>

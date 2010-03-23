@@ -37,115 +37,112 @@
  */
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitBase.php";
-
-if (!class_exists('PowerUnits')) {
+/**
+* This class implements photo sensors.
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Units
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class PowerUnits extends unitBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Power",
+        "Type" => "units",
+    );
     /**
-    * This class implements photo sensors.
+    *  This is the array that defines all of our units and how to
+    * display and use them.
+    *  @var array
     *
-    * @category   Drivers
-    * @package    HUGnetLib
-    * @subpackage Units
-    * @author     Scott Price <prices@hugllc.com>
-    * @copyright  2007-2010 Hunt Utilities Group, LLC
-    * @copyright  2009 Scott Price
-    * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-    * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
     */
-    class PowerUnits extends unitBase
+    var $units = array(
+        'kWh' => array(
+            'longName' => 'Kilowatt Hours',
+            'varType' => 'float',
+            'convert' => array(
+                'Wh' => 'shift:-3',
+                'kW' => 'kWhTokW',
+                'W' => 'kWhToW',
+            ),
+        ),
+        'kW' => array(
+            'longName' => 'Kilowatts',
+            'mode' => 'diff',
+            'varType' => 'float',
+            'convert' => array(
+                'W' => 'shift:-3',
+            ),
+        ),
+        'W' => array(
+            'longName' => 'Watts',
+            'mode' => 'diff',
+            'varType' => 'float',
+            'convert' => array(
+                'kW' => 'shift:3',
+            ),
+        ),
+        'Wh' => array(
+            'longName' => 'Watt Hours',
+            'varType' => 'float',
+            'convert' => array(
+                'kWh' => 'shift:3',
+                'W' => 'kWhTokW',
+            ),
+        ),
+    );
+
+    /**
+    *  This function changes kWh into kW
+    *
+    *  It does this by dividing the delta time out of it.  I am
+    *  not sure if this is a valid way to do it.
+    *
+    * @param float  $val   The input value
+    * @param int    $time  The time in seconds between this record and the last.
+    * @param string $type  The type of data (diff, raw, etc)
+    * @param mixed  $extra The extra information from the sensor.
+    *
+    * @return float The kW value
+    */
+    public function kWhTokW ($val, $time, $type, $extra)
     {
-        /** @var This is to register the class */
-        public static $registerPlugin = array(
-            "Name" => "Power",
-            "Type" => "units",
-        );
-        /**
-        *  This is the array that defines all of our units and how to
-        * display and use them.
-        *  @var array
-        *
-        */
-        var $units = array(
-            'kWh' => array(
-                'longName' => 'Kilowatt Hours',
-                'varType' => 'float',
-                'convert' => array(
-                    'Wh' => 'shift:-3',
-                    'kW' => 'kWhTokW',
-                    'W' => 'kWhToW',
-                ),
-            ),
-            'kW' => array(
-                'longName' => 'Kilowatts',
-                'mode' => 'diff',
-                'varType' => 'float',
-                'convert' => array(
-                    'W' => 'shift:-3',
-                ),
-            ),
-            'W' => array(
-                'longName' => 'Watts',
-                'mode' => 'diff',
-                'varType' => 'float',
-                'convert' => array(
-                    'kW' => 'shift:3',
-                ),
-            ),
-            'Wh' => array(
-                'longName' => 'Watt Hours',
-                'varType' => 'float',
-                'convert' => array(
-                    'kWh' => 'shift:3',
-                    'W' => 'kWhTokW',
-                ),
-            ),
-        );
-
-        /**
-        *  This function changes kWh into kW
-        *
-        *  It does this by dividing the delta time out of it.  I am
-        *  not sure if this is a valid way to do it.
-        *
-        * @param float  $val   The input value
-        * @param int    $time  The time in seconds between this record and the last.
-        * @param string $type  The type of data (diff, raw, etc)
-        * @param mixed  $extra The extra information from the sensor.
-        *
-        * @return float The kW value
-        */
-        public function kWhTokW ($val, $time, $type, $extra)
-        {
-            if (empty($time)) {
-                return null;
-            }
-            if ($type != "diff") {
-                return null;
-            }
-            return ($val / (abs($time) / 3600));
+        if (empty($time)) {
+            return null;
         }
-
-        /**
-        *  This function changes kWh into W
-        *
-        * @param float  $val   The input value
-        * @param int    $time  The time in seconds between this record and the last.
-        * @param string $type  The type of data (diff, raw, etc)
-        * @param mixed  $extra The extra information from the sensor.
-        *
-        * @return float The W value
-        *
-        * @uses unitConversion::kWhTokW()
-        */
-        public function kWhToW ($val, $time, $type, $extra)
-        {
-            $val = self::kWhTokW($val, $time, $type, $extra);
-            if (is_null($val)) {
-                return $val;
-            }
-            return $val * 1000;
+        if ($type != "diff") {
+            return null;
         }
-
+        return ($val / (abs($time) / 3600));
     }
+
+    /**
+    *  This function changes kWh into W
+    *
+    * @param float  $val   The input value
+    * @param int    $time  The time in seconds between this record and the last.
+    * @param string $type  The type of data (diff, raw, etc)
+    * @param mixed  $extra The extra information from the sensor.
+    *
+    * @return float The W value
+    *
+    * @uses unitConversion::kWhTokW()
+    */
+    public function kWhToW ($val, $time, $type, $extra)
+    {
+        $val = self::kWhTokW($val, $time, $type, $extra);
+        if (is_null($val)) {
+            return $val;
+        }
+        return $val * 1000;
+    }
+
 }
 
 ?>
