@@ -94,6 +94,71 @@ class HUGnetMiscTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(method_exists("HUGnetMisc", "getNetInfo"));
     }
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataGetYdhms()
+    {
+        return array(
+            array(100000, 0, "1d 3h 46m 40s"),
+            array("1234", 0, "20m 34s"),
+            array(array(), 0, "0s"),
+            array(0, 0, "0s"),
+            array(1234567890, 0, "39Y 44d 5h 31m 30s"),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $val    The value to feed the function
+    * @param int    $digits The number of digits
+    * @param string $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetYdhms
+    */
+    public function testGetYdhms($val, $digits, $expect)
+    {
+        $ret = HUGnetMisc::getYdhms($val, $digits);
+        $this->assertEquals($expect, $ret);
+    }
+
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataGetBytes()
+    {
+        return array(
+            array(10000, 2, "9.77 k bytes"),
+            array("1234", 2, "1.21 k bytes"),
+            array(array(), 2, "0.00 bytes"),
+            array(0, 2, "0.00 bytes"),
+        );
+    }
+    /**
+    * test
+    *
+    * @param mixed  $val    The value to feed the function
+    * @param int    $digits The number of digits
+    * @param string $expect The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetBytes
+    */
+    public function testGetBytes($val, $digits, $expect)
+    {
+        $ret = HUGnetMisc::getBytes($val, $digits);
+        $this->assertEquals($expect, $ret);
+    }
+
+
+
 }
 
 ?>

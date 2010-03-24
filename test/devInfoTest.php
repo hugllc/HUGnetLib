@@ -78,6 +78,73 @@ class DevInfoTest extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
+    /**
+    * data provider for testSetDate
+    *
+    * @return array
+    */
+    public static function dataFixDate()
+    {
+        return array(
+            array(
+                "2007-11-27 12:23:47",
+                true,
+                "/2007-11-27 12:23:47/"
+            ),
+            array(
+                "2007-11-27",
+                true,
+                "/2007-11-27 00:00:00/"
+            ),
+            array(
+                "NOW",
+                false,
+                "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9]/"
+            ),
+            array(
+                "",
+                true,
+                "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/"
+            ),
+            array(
+                array("Hello"),
+                true,
+                "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/"
+            ),
+            array(
+                1234423523,
+                "This is not a bool",
+                "/009-02-12 01:25:23/"
+            ),
+            array(
+                1234423523,
+                0,
+                "/009-02-12/"
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param mixed  $Date    The date to check
+    * @param bool   $getTime Whether or not to include the time
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFixDate
+    */
+    public function testFixDate($Date, $getTime, $expect)
+    {
+
+        $ret = devInfo::fixDate($Date, $getTime);
+        $this->assertRegExp(
+            $expect,
+            $ret
+        );
+    }
+
 
     /**
     * data provider for testDeviceID

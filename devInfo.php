@@ -158,6 +158,47 @@ class DevInfo extends HUGnetClass
         return $Info[$Field];
     }
 
+    /**
+    * Where statement for the reporting period dates
+    *
+    * @param string $date    Date to use in MySQL format ("Y-m-d H:i:s")
+    * @param bool   $getTime Make sure there is time attached to it
+    *
+    * @return array
+    */
+    public function fixDate($date, $getTime = true)
+    {
+        static $fixDate;
+        if ($getTime) {
+            $dateStr = "Y-m-d H:i:s";
+        } else {
+            $dateStr = "Y-m-d";
+        }
+        if ((strtolower(trim($date)) == "now")
+            || (!is_int($date) && !is_string($date))
+            || empty($date)
+        ) {
+            return date($dateStr);
+        }
+        if (empty($fixDate[$date])) {
+            if (is_string($date)) {
+                preg_match("/[1-9][0-9]{3}-[0-1]{0,1}[0-9]-[0-3]{0,1}[0-9]/",
+                        $date,
+                        $ret);
+                preg_match("/([0-1][0-9]|2[0-3]):[0-5]?[0-9](:[0-5]?[0-9])?/",
+                        $date,
+                        $time);
+                $t = $time[0];
+                if ($getTime && empty($t) && !empty($ret[0])) {
+                    $t = "00:00:00";
+                }
+                $fixDate[$date] = trim($ret[0]." ".$t);
+            } else if (is_int($date)) {
+                $fixDate[$date] = date($dateStr, $date);
+            }
+        }
+        return $fixDate[$date];
+    }
 
     /**
     * Sets the string to a particular size. It modifies the $value

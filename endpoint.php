@@ -105,67 +105,8 @@ class Endpoint extends HUGnetClass
     private $_packet_log_table = "PacketLog";
     /** @var array Our configuration */
     private $_config = array();
-
-    /** These are the endpoint information bits */
-    /** @var array The list of keys here */
-    private $_attributes = array(
-        "DeviceKey", "DeviceID", "DeviceName", "SerialNum", "HWPartNum",
-        "FWPartNum", "FWVersion", "RawSetup", "Active", "GatewayKey",
-        "ControllerKey", "ControllerIndex", "DeviceLocation", "DeviceJob",
-        "Driver", "PollInterval", "ActiveSensors", "DeviceGroup",
-        "BoredomThreshold", "LastConfig", "LastPoll", "LastHistory",
-        "LastAnalysis", "MinAverage", "params",
-    );
-    /** @var int The main key in the database */
-    public $DeviceKey;
-    /** @var string This is the 'name' used to contact this unit */
-    public $DeviceID;
-    /** @var string The name this device has been given */
-    public $DeviceName;
-    /** @var int The serial number of this device */
-    public $SerialNum;
-    /** @var string The hardware part number of this device */
-    public $HWPartNum;
-    /** @var string The firmware part number of this device */
-    public $FWPartNum;
-    /** @var string The firmware version of this device */
-    public $FWVersion;
-    /** @var string The raw setup for this device */
-    public $RawSetup;
-    /** @var int Whether or not this device is active */
-    public $Active;
-    /** @var int The Gateway this device is attached to */
-    public $GatewayKey;
-    /** @var int The Controller this device is attached to */
-    public $ControllerKey;
-    /** @var int The HUGnet port on the controller for this device */
-    public $ControllerIndex;
-    /** @var string The location this device is in */
-    public $DeviceLocation;
-    /** @var string The job of this device */
-    public $DeviceJob;
-    /** @var string The driver to use for this device */
-    public $Driver;
-    /** @var int The poll interval in minutes */
-    public $PollInterval;
-    /** @var int How many active sensors are on this device */
-    public $ActiveSensors;
-    /** @var string The group this device is in */
-    public $DeviceGroup;
-    /** @var int The boredom threshold.  **** NOT CURRENTLY USED **** */
-    public $BoredomThreshold;
-    /** @var string The last time the configuration on this device was checked */
-    public $LastConfig;
-    /** @var string The last time this device was polled */
-    public $LastPoll;
-    /** @var string The last time the history was updated for this device */
-    public $LastHistory;
-    /** @var string The last time this device was analyzed */
-    public $LastAnalysis;
-    /** @var string The minimum average to calculate for this device */
-    public $MinAverage;
-    /** @var array Device parameters */
-    public $params;
+    /** @var object This is our devInfo object */
+    private $_devInfo;
 
     /**
     * returns an endpoint object with the device in it.
@@ -205,45 +146,6 @@ class Endpoint extends HUGnetClass
     }
 
     /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $devInfo This is an array of this class's attributes
-    *
-    * @return null
-    */
-    function fromArray($devInfo)
-    {
-        foreach ($this->_attributes as $attrib) {
-            if (isset($devInfo[$attrib])) {
-                $this->$attrib = $devInfo[$attrib];
-            }
-        }
-        $this->_checkDevice();
-        $this->_setDriver();
-        if ($this->_checkDriver()) {
-            $this->_driver->fromArray($devInfo);
-            $this->_driver->checkDevice();
-        }
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $devInfo This is an array of this class's attributes
-    *
-    * @return null
-    */
-    function toArray()
-    {
-        foreach ($this->_attributes as $attrib) {
-            $devInfo[$attrib] = $this->$attrib;
-        }
-        if ($this->_checkDriver()) {
-            $driver = $this->_driver->toArray();
-            $devInfo = array_merge($devInfo, $driver);
-        }
-        return $devInfo;
-    }
-    /**
     * Checks to make sure that all of the device information is valid
     *
     * Mostly this just forces the type of variable.  In other cases it does other
@@ -254,7 +156,7 @@ class Endpoint extends HUGnetClass
     function _checkDevice()
     {
         foreach ($this->_attributes as $attrib) {
-            if (method_exists($this, $attrib)) {
+            if (method_exists($this->devInfo, $attrib)) {
                 $this->$attrib();
             }
         }
