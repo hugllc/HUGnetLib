@@ -91,6 +91,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("Attrib1", 16, 16),
+            array("testVar", 13.0, 13.0),
             array("Attrib1", "16Test", 16),
             array("Attrib5", "Hello", null),
             array("Attrib1", 16, 16, false, "HUGnetContainerTestClass2"),
@@ -175,6 +176,248 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "Attrib1",
+                0,
+            ),
+            array(
+                "Attrib7",
+                1.0,
+            ),
+            array(
+                "testVar",
+                15,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The attribute name to get
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $expect)
+    {
+        $o = new HUGnetContainerTestClass("", "HUGnetContainerTestClass2");
+        $ret = $o->$name;
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataClearData()
+    {
+        return array(
+            array(true, "HUGnetContainerTestClass2"),
+            array(false, ""),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    *
+    * @dataProvider dataClearData
+    */
+    public function testClearData(
+        $expectExtra = false,
+        $class = ""
+    ) {
+        $o = new HUGnetContainerTestClass("", "HUGnetContainerTestClass2");
+        $o->clearData();
+        if ($expectExtra) {
+            $obj = $this->readAttribute($o, "_extra");
+        } else {
+            $obj = &$o;
+        }
+        $this->assertSame(
+            $this->readAttribute($obj, "default"),
+            $this->readAttribute($obj, "data")
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataTString()
+    {
+        return array(
+            array("HUGnetContainerTestClass2", "DefaultBlank String"),
+            array("", "Default"),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class for extra
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataTString
+    */
+    public function testToString($class, $expect)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $ret = $o->toString();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib1" => 0,
+                    "Attrib2" => "Default",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hello"),
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("One Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
+                ),
+            ),
+            array(
+                "",
+                array(
+                    "Attrib1" => 0,
+                    "Attrib2" => "Default",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hello"),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class for extra
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($class, $expect)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $ret = $o->toArray();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromArray()
+    {
+        return array(
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+                array(
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
+                ),
+            ),
+            array(
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                    "Attrib5" => "NonBlank String",
+                    "Attrib6" => array("Three Element"),
+                    "Attrib7" => 1.15,
+                    "Attrib8" => 9.95,
+                ),
+                "",
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $array       The array to use to build it
+    * @param string $class       The class for extra
+    * @param array  $expect      The expected return
+    * @param array  $expectExtra The expected return from extra
+    *
+    * @return null
+    *
+    * @dataProvider dataFromArray
+    */
+    public function testFromArray($array, $class, $expect, $expectExtra)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $o->fromArray($array);
+        $this->assertSame(
+            $expect,
+            $this->readAttribute($o, "data")
+        );
+        if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
+            $this->assertSame(
+                $expectExtra,
+                $this->readAttribute($extra, "data")
+            );
+
+        }
+
+    }
 
 }
 /**
@@ -192,14 +435,19 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
  */
 class HUGnetContainerTestClass extends HUGnetContainer
 {
+    /** @var test variable */
+    protected $testVar = 15;
+
     /** These are the endpoint information bits */
-    /** @var array The list of keys here */
-    protected $data = array(
+    /** @var array This is the default values for the data */
+    protected $default = array(
         "Attrib1" => 0,
-        "Attrib2" => null,
-        "Attrib3" => null,
-        "Attrib4" => null,
+        "Attrib2" => "Default",
+        "Attrib3" => "Data",
+        "Attrib4" => array("Hello"),
     );
+    /** @var array This is where the data is stored */
+    protected $data = array();
 
     /**
     * function to check Attrib1
@@ -209,6 +457,33 @@ class HUGnetContainerTestClass extends HUGnetContainer
     protected function attrib1()
     {
         $this->Attrib1 = (int) $this->Attrib1;
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        $devInfo = (array) unserialize($string);
+        foreach ($this->getAttributes() as $attrib) {
+            if (isset($devInfo[$attrib])) {
+                $this->$attrib = $devInfo[$attrib];
+            }
+        }
+        parent::fromString($string);
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @return string
+    */
+    public function toString()
+    {
+        $string = $this->Attrib2;
+        return $string.parent::toString();
     }
 
 }
@@ -229,22 +504,51 @@ class HUGnetContainerTestClass extends HUGnetContainer
 class HUGnetContainerTestClass2 extends HUGnetContainer
 {
     /** These are the endpoint information bits */
-    /** @var array The list of keys here */
-    protected $data = array(
-        "Attrib5" => "",
-        "Attrib6" => null,
-        "Attrib7" => null,
-        "Attrib8" => null,
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "Attrib5" => "Blank String",
+        "Attrib6" => array("One Element"),
+        "Attrib7" => 1.0,
+        "Attrib8" => 4,
     );
+    /** @var array This is where the data is stored */
+    protected $data = array();
 
     /**
     * function to check Attrib5
     *
     * @return null
     */
-    protected function attrib5()
+    protected function Attrib5()
     {
         $this->Attrib5 = (string) $this->Attrib5;
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        $devInfo = (array) unserialize($string);
+        foreach ($this->getAttributes() as $attrib) {
+            if (isset($devInfo[$attrib])) {
+                $this->$attrib = $devInfo[$attrib];
+            }
+        }
+        parent::fromString($string);
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @return string
+    */
+    public function toString()
+    {
+        $string = $this->Attrib5;
+        return $string.parent::toString();
     }
 
 }

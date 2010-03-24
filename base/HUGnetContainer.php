@@ -67,6 +67,7 @@ abstract class HUGnetContainer extends HUGnetClass
         if (class_exists($extra)) {
             $this->_extra = new $extra($mixed, null);
         }
+        $this->clearData();
         if (is_string($mixed)) {
             $this->fromString($mixed);
         } else if (is_array($mixed)) {
@@ -83,7 +84,7 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __set($name, $value)
     {
-        if (array_key_exists($name, $this->data)) {
+        if (array_key_exists($name, $this->default)) {
             $this->data[$name] = $value;
             if (method_exists($this, $name)) {
                 $this->$name();
@@ -103,7 +104,7 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     private function __get($name)
     {
-        if (array_key_exists($name, $this->data)) {
+        if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
         } else if (property_exists($this, $name)) {
             return $this->$name;
@@ -144,7 +145,7 @@ abstract class HUGnetContainer extends HUGnetClass
         if (is_object($this->_extra)) {
             $extra = $this->_extra->getAttributes();
         }
-        return array_merge(array_keys((array)$this->data), (array)$extra);
+        return array_merge(array_keys((array)$this->default), (array)$extra);
     }
 
     /**
@@ -152,13 +153,11 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @return mixed The value of the attribute
     */
-    public function clearAttributes()
+    public function clearData()
     {
-        foreach ($this->attributes as $attrib) {
-           $this->$attrib = null;
-        }
+        $this->data = $this->default;
         if (is_object($this->_extra)) {
-            $this->_extra->clearAttributes();
+            $this->_extra->clearData();
         }
     }
     /**
@@ -186,13 +185,11 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function toArray()
     {
-        foreach ($this->getAttributes() as $attrib) {
-            $devInfo[$attrib] = $this->$attrib;
-        }
+
         if (is_object($this->_extra)) {
             $extra = $this->_extra->toArray();
         }
-        return array_merge($devInfo, (array)$extra);
+        return array_merge($this->data, (array)$extra);
     }
 
     /**
@@ -216,7 +213,7 @@ abstract class HUGnetContainer extends HUGnetClass
     public function toString()
     {
         if (is_object($this->_extra)) {
-            $this->_extra->toString();
+            $extra = $this->_extra->toString();
         }
         return $string.$extra;
     }
