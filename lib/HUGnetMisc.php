@@ -76,30 +76,6 @@ class HUGnetMisc
         return $netInfo;
         //@codeCoverageIgnoreEnd
     }
-    /**
-    * Prints out a string
-    *
-    * @param string $str     The string to print out
-    * @param int    $val     The minimum value to print this for
-    * @param int    $verbose The verbosity level
-    *                        (This is for if we are not an object)
-    *
-    * @return null
-    */
-    public function vprint($str, $val = 6, $verbose = 0)
-    {
-        if (is_object($this) && empty($verbose)) {
-            $verbose = $this->verbose;
-        }
-        if (($verbose < $val) || empty($str)) {
-            return;
-        }
-        if (is_object($this)) {
-            $class  = get_class($this);
-            print "(".$class.") ";
-        }
-        print $str."\n";
-    }
 
 }
 

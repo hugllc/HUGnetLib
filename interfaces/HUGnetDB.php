@@ -50,16 +50,6 @@
 interface HUGnetDBInterface
 {
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param mixed $config The configuration array
-    *
-    * @return null
-    */
-    public function __construct($config = array());
-
-    /**
     * Creates a database object
     *
     * @param mixed $config The configuration to use

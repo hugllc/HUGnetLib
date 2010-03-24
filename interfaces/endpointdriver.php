@@ -274,18 +274,5 @@ interface EndpointDriverInterface
     * @return mixed The name of the table as a string on success, false on failure
     */
     public function getLocationTable();
-
-    /**
-    * Constructor.
-    *
-    * This function sets up $this->history, $this->location, and $this->averages to
-    * their default value.
-    *
-    * @param object &$driver An object of class Driver.
-    * @param array  $config  The configuration to use
-    *
-    * @return null
-    */
-    public function __construct(HUGnetDriver &$driver, $config = null);
 }
 ?>

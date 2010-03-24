@@ -34,6 +34,8 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+ /** This is for the base class */
+require_once dirname(__FILE__)."/HUGnetClass.php";
 /**
  * Base class for sensors.
  *
@@ -46,7 +48,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class UnitBase
+class UnitBase extends HUGnetClass
 {
     /** @var This is to register the class */
     static public $registerPlugin = null;
@@ -107,8 +109,9 @@ class UnitBase
      * This just sets up the variables if they are passed to it.
      *
      */
-    function __construct()
+    function __construct($config = array())
     {
+        parent::__construct($config);
         $this->siSetup();
     }
 

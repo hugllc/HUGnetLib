@@ -44,7 +44,7 @@ define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 /** The database went away */
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /** Misc stuff */
-require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
+require_once dirname(__FILE__)."/HUGnetClass.php";
 require_once HUGNET_INCLUDE_PATH."/interfaces/HUGnetDB.php";
 /**
  * Base class for all database work
@@ -60,7 +60,7 @@ require_once HUGNET_INCLUDE_PATH."/interfaces/HUGnetDB.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetDB implements HUGnetDBInterface
+class HUGnetDB extends HUGnetClass implements HUGnetDBInterface
 {
     /** @var string The database table to use */
     protected $table = "none";
@@ -150,7 +150,9 @@ class HUGnetDB implements HUGnetDBInterface
             define("HUGNET_LOCAL_DATABASE", sys_get_temp_dir()."/HUGnet.sq3");
         }
         // @codeCoverageIgnoreEnd
+
         $this->config = $config;
+        parent::__construct($config);
 
         $this->file = $this->setFile($config);
 
@@ -266,7 +268,7 @@ class HUGnetDB implements HUGnetDBInterface
             try {
                 $pdo[$key] = new PDO($dsn, $user, $pass);
             } catch (PDOException $e) {
-                HUGnetMisc::vprint(
+                self::vprint(
                     "Error (".$e->getCode()."): ".$e->getMessage()."\n",
                     1,
                     $verbose
@@ -373,7 +375,7 @@ class HUGnetDB implements HUGnetDBInterface
         } else {
             $this->setFile($this->cacheConfig, $file);
         }
-        HUGnetMisc::vprint("Creating a cache at ".$this->cacheConfig["file"], 1);
+        self::vprint("Creating a cache at ".$this->cacheConfig["file"], 1);
         $this->cache =& self::getInstance($class, $this->cacheConfig);
         $this->cache->createTable($this->table);
         $this->doCache = true;
@@ -395,8 +397,8 @@ class HUGnetDB implements HUGnetDBInterface
         $myclass = strtolower(get_class($this));
         if (!empty($myclass) && isset($config[$myclass."file"])) {
             $config["file"] = $config[$myclass."file"];
-            HUGnetMisc::vprint("Using a custom file: ".$config["file"], 1);
-            HUGnetMisc::vprint(" for ".$myclass."\n", 1);
+            self::vprint("Using a custom file: ".$config["file"], 1);
+            self::vprint(" for ".$myclass."\n", 1);
         } else if (is_string($file) && !empty($file)) {
             $config["file"] = $file;
         } else if (!is_string($config["file"]) || empty($config["file"])) {
@@ -986,19 +988,19 @@ class HUGnetDB implements HUGnetDBInterface
     {
         if ($this->verbose) {
             if (!empty($this->errorState) && ($this->errorState != "00000")) {
-                HUGnetMisc::vprint("Error State: ".$this->errorState);
+                self::vprint("Error State: ".$this->errorState);
             }
             if (!empty($this->error)) {
-                HUGnetMisc::vprint("Error: ".$this->error);
+                self::vprint("Error: ".$this->error);
             }
             if (!empty($this->errorMsg)) {
-                HUGnetMisc::vprint("Error Message: ".$this->errorMsg);
+                self::vprint("Error Message: ".$this->errorMsg);
             }
             if (!empty($this->metaError)) {
-                HUGnetMisc::vprint("Meta Error: ".$this->metaError);
+                self::vprint("Meta Error: ".$this->metaError);
             }
             if (!empty($this->metaErrorMsg)) {
-                HUGnetMisc::vprint("Meta Error Message: ".$this->metaErrorMsg);
+                self::vprint("Meta Error Message: ".$this->metaErrorMsg);
             }
         }
     }
@@ -1030,7 +1032,7 @@ class HUGnetDB implements HUGnetDBInterface
         }
 
         $this->cacheQuery($query, $data, $getRet);
-        HUGnetMisc::vprint("Preparing query: ".$query."\n");
+        self::vprint("Preparing query: ".$query."\n");
         $ret = $this->db->prepare($query);
         if (is_object($ret)) {
             return $this->queryExecute($query, $ret, $data, $getRet);
@@ -1055,19 +1057,19 @@ class HUGnetDB implements HUGnetDBInterface
     */
     protected function queryExecute($query, &$ret, &$data, $getRes = false)
     {
-        HUGnetMisc::vprint("Executing using data: \n".print_r($data, true));
+        self::vprint("Executing using data: \n".print_r($data, true));
         $res = $ret->execute($data);
         if ($getRes) {
             $res = $ret->fetchAll(PDO::FETCH_ASSOC);
             if (empty($res)) {
                 $res = $this->cacheQuery($query, $data, $getRes);
             }
-            HUGnetMisc::vprint("Query Returned: ".count($res)." rows");
+            self::vprint("Query Returned: ".count($res)." rows");
             $this->cacheResult($res);
             $this->errorInfo(false, $ret);
             return $res;
         } else {
-            HUGnetMisc::vprint("Query Returned: ".print_r($res, true));
+            self::vprint("Query Returned: ".print_r($res, true));
         }
         $this->errorInfo(false, $ret);
         return $res;
@@ -1108,7 +1110,7 @@ class HUGnetDB implements HUGnetDBInterface
         }
         $tries = count($res);
         $count = $this->cache->addArray($res, true);
-        HUGnetMisc::vprint("Cache entry: $count/$tries");
+        self::vprint("Cache entry: $count/$tries");
 
     }
 

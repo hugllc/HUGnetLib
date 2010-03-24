@@ -193,15 +193,15 @@ class Gateway extends HUGnetDB implements HUGnetDBInterface
     function find()
     {
         if (function_exists("posix_uname")) {
-            HUGnetMisc::vprint("Trying to figure out which gateway to use...");
+            self::vprint("Trying to figure out which gateway to use...");
             $stuff = posix_uname();
             // Lookup up a gateway based on our host name
-            HUGnetMisc::vprint("Looking for ".$stuff['nodename']."...");
+            self::vprint("Looking for ".$stuff['nodename']."...");
             $ip  = gethostbyname($stuff["nodename"]);
             $res = $this->getWhere("GatewayIP like ? ", array("%$ip%"));
             if (isset($res[0])) {
                 // We found one.  Set it up and warn the user.
-                HUGnetMisc::vprint(
+                self::vprint(
                     "Using ".$res[0]["GatewayName"].".  I hope that is "
                     ."what you wanted."
                 );

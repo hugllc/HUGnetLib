@@ -35,7 +35,10 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-require_once "lib/plugins.inc.php";
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
+/** This is the plugin interface */
+require_once dirname(__FILE__)."/lib/plugins.inc.php";
 /**
  * Class for doing unit conversions and storing unit information
  *
@@ -53,7 +56,7 @@ require_once "lib/plugins.inc.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class UnitConversion
+class UnitConversion extends HUGnetClass
 {
 
     /**

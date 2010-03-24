@@ -34,19 +34,8 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/**
- * This class controls all of the sensors.  When given the right information
- * it will decode data from any of the sensors that it has information on.
- *
- * @category   Sensors
- * @package    HUGnetLib
- * @subpackage Sensors
- * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
- * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- */
+/** This is for the base class */
+require_once dirname(__FILE__)."/HUGnetClass.php";
 /**
  * Base class for sensors.
  *
@@ -59,7 +48,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class SensorBase
+class SensorBase extends HUGnetClass
 {
 
     /** @var int The maximum value for the AtoD convertor from */

@@ -55,7 +55,7 @@ define("PACKET_ERROR_BADC", "Board responded: Bad Command");
 /** Used for manipulating devInfo arrays */
 require_once HUGNET_INCLUDE_PATH."/devInfo.php";
 /** Misc stuff */
-require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
+require_once dirname(__FILE__)."/HUGnetClass.php";
 
 
 /**
@@ -70,7 +70,7 @@ require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class SocketBase
+abstract class SocketBase extends HUGnetClass
 {
 
 
@@ -120,7 +120,7 @@ abstract class SocketBase
     */
     function __construct($config=array())
     {
-        $this->verbose = $config["verbose"];
+        parent::__construct($config);
         $this->config = $config;
     }
 
@@ -361,7 +361,7 @@ abstract class SocketBase
     */
     function sendPacket($packet, $GetReply=true)
     {
-        HUGnetMisc::vprint(
+        self::vprint(
             "Sending Pkt: T:".$packet['PacketTo']
             ." C:".$packet['sendCommand']."\n",
             2

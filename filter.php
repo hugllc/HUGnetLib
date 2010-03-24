@@ -34,8 +34,12 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is the plugin interface */
 require_once dirname(__FILE__)."/lib/plugins.inc.php";
+/** This is the base class for all filters */
 require_once dirname(__FILE__)."/base/FilterBase.php";
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
 
 /**
@@ -51,7 +55,7 @@ require_once dirname(__FILE__)."/base/FilterBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Filter
+class Filter extends HUGnetClass
 {
 
     /**

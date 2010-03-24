@@ -40,8 +40,12 @@
 if (!defined(HUGNET_INCLUDE_PATH)) {
     define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
 }
+/** This is our interface */
 require_once HUGNET_INCLUDE_PATH."/interfaces/endpoint.php";
+/** This is the plugin interface */
 require_once HUGNET_INCLUDE_PATH."/lib/plugins.inc.php";
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
 /**
  * Class for talking with HUGNet endpoints
@@ -57,7 +61,7 @@ require_once HUGNET_INCLUDE_PATH."/lib/plugins.inc.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Endpoint
+class Endpoint extends HUGnetClass
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;

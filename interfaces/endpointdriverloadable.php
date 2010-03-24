@@ -51,7 +51,7 @@
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-interface EndpointDriverLoadableInterface
+interface EndpointDriverLoadableInterface extends EndpointDriverInterface
 {
     /**
     * Programs a page of flash

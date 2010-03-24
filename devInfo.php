@@ -35,10 +35,9 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
-if (class_exists("devInfo")) {
-     return;
-}
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -52,7 +51,7 @@ if (class_exists("devInfo")) {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DevInfo
+class DevInfo extends HUGnetClass
 {
     /**
     * Sets the DeviceID if it is not set.  Valid places to set

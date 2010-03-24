@@ -35,6 +35,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 /**
  * This class handles plugins
  *
@@ -152,7 +154,7 @@ print "Hello There!  This is a test plugin to make sure Plugins are working.<BR>
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Plugins
+class Plugins extends HUGnetClass
 {
     /** @var array Plugin Functions */
     var $plugins = array();
@@ -168,8 +170,6 @@ class Plugins
     var $file_count = 0;
     /** @var string This is the directory according to the URL */
     var $webdir = "plugins/";
-    /** @var string Debug output is contained here. */
-    var $_debug_stack = "";
     /** @var array The directory to skip. */
     var $_skipDir = array();
 
@@ -263,7 +263,7 @@ class Plugins
     function runFilter($Argument, $Type)
     {
         $return = $Argument;
-        $this->_debug("Running Plugin Filters of Type: ".$Type."\n", 4);
+        $this->vprint("Running Plugin Filters of Type: ".$Type."\n", 4);
         if (!is_array($this->plugins["Functions"][$Type])) {
             return $Argument;
         }
@@ -271,18 +271,18 @@ class Plugins
         array_shift($fArgs); // Shift off the argument
         array_shift($fArgs); // Shift off the name of the function
         foreach ($this->plugins["Functions"][$Type] as $fct) {
-            $this->_debug("Running Plugin ".$fct["Name"]."\n", 4);
+            $this->vprint("Running Plugin ".$fct["Name"]."\n", 4);
             $args = $fArgs;
             array_unshift($args, $return);
-            $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
-            $this->_debug(" of Type: '".$fct["Types"]."'\n", 3);
-            $this->_debug("[PLUGIN OUTPUT]\n", 4);
+            $this->vprint("Running Plugin '".$fct["Name"]."'", 3);
+            $this->vprint(" of Type: '".$fct["Types"]."'\n", 3);
+            $this->vprint("[PLUGIN OUTPUT]\n", 4);
             $ret = $this->_runFunction($fct["Name"], $args);
             if (!is_null($ret)) {
                 $return = $ret;
             }
-            $this->_debug($output, 4);
-            $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+            $this->vprint($output, 4);
+            $this->vprint("[END PLUGIN OUTPUT]\n", 4);
         }
         return $return;
     }
@@ -303,20 +303,20 @@ class Plugins
 
         $fct = $this->getFunction($Name);
         if (($fct === false) || !function_exists($fct["Name"])) {
-            $this->_debug("Function ".$Name." Not Found!\n", 4);
+            $this->vprint("Function ".$Name." Not Found!\n", 4);
             return false;
         }
-        $this->_debug("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 3);
+        $this->vprint("Running Plugin '".$Name."' of Type: '".$fct["Type"]."'\n", 3);
         $args = func_get_args();
         array_shift($args); // Shift off the name of the function
-        $this->_debug("Running command:\n".$command."\n", 4);
-        $this->_debug("[PLUGIN OUTPUT]\n", 4);
+        $this->vprint("Running command:\n".$command."\n", 4);
+        $this->vprint("[PLUGIN OUTPUT]\n", 4);
         $output = $this->_runFunction($fct["Name"], $args);
         if (trim($output) != "") {
             $return = $output;
         }
-        $this->_debug($output, 4);
-        $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+        $this->vprint($output, 4);
+        $this->vprint("[END PLUGIN OUTPUT]\n", 4);
         return true;
     }
 
@@ -363,7 +363,7 @@ class Plugins
     {
 
         $count = 0;
-        $this->_debug("Running Plugins of Type: ".$Type."\n", 4);
+        $this->vprint("Running Plugins of Type: ".$Type."\n", 4);
         if (!is_array($this->plugins["Functions"][$Type])) {
             return 0;
         }
@@ -371,12 +371,12 @@ class Plugins
         array_shift($fArgs); // Shift off the name of the function
         foreach ($this->getFunctions($Type) as $fct) {
             $args = $fArgs;
-            $this->_debug("Running Plugin '".$fct["Name"]."'", 3);
-            $this->_debug(" of Type: '".$fct["Type"]."'\n", 3);
-            $this->_debug("[PLUGIN OUTPUT]\n", 4);
+            $this->vprint("Running Plugin '".$fct["Name"]."'", 3);
+            $this->vprint(" of Type: '".$fct["Type"]."'\n", 3);
+            $this->vprint("[PLUGIN OUTPUT]\n", 4);
             $output = $this->_runFunction($fct["Name"], $args);
-            $this->_debug($output, 4);
-            $this->_debug("[END PLUGIN OUTPUT]\n", 4);
+            $this->vprint($output, 4);
+            $this->vprint("[END PLUGIN OUTPUT]\n", 4);
             $count++;
         }
         return $count;
@@ -396,17 +396,17 @@ class Plugins
     private function _runFunction($name, $args)
     {
         if (!function_exists($name)) {
-            $this->_debug("Function $name does not exist\n", 3);
+            $this->vprint("Function $name does not exist\n", 3);
             return false;
         }
 
         try {
             $output = call_user_func_array($name, $args);
         } catch (ErrorException $e) {
-            $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
+            $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
             return null;
         } catch (Exception $e) {
-            $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+            $this->vprint("Caught Exception: ".$e->getMessage()."\n", 1);
             return null;
         }
         return $output;
@@ -484,9 +484,9 @@ class Plugins
     function findPlugins()
     {
         $count = $this->getPluginDir($this->dir, $this->webdir, 0);
-        $this->_debug("Registered ".$this->plugin_count." plugin(s)", 4);
-        $this->_debug("in ".$this->file_count." File(s)\n\n", 4);
-        //$this->_debug(get_stuff($this->plugins, "plugins"), 5);
+        $this->vprint("Registered ".$this->plugin_count." plugin(s)", 4);
+        $this->vprint("in ".$this->file_count." File(s)\n\n", 4);
+        //$this->vprint(get_stuff($this->plugins, "plugins"), 5);
     }
     /**
     *  Sorts the plugin arrays.
@@ -522,8 +522,10 @@ class Plugins
         $skipDir   = array(),
         $verbose   = 0
     ) {
-
-        $this->verbose = (int) $verbose;
+        $config = array(
+            "verbose" => $verbose,
+        );
+        parent::__construct($config);
 
         if (!empty($basedir)) {
             $this->dir = $basedir;
@@ -561,7 +563,7 @@ class Plugins
         $Level     = 0,
         $recursive = true
     ) {
-        $this->_debug("Checking for Plugins in ".$basedir."\n", 4);
+        $this->vprint("Checking for Plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         if ($plugindir) {
             while ($file = readdir($plugindir)) {
@@ -578,7 +580,7 @@ class Plugins
                         $r = '/[.]*'.str_replace(".", "\\.", $this->extension).'*/';
                         if (preg_match($r, $file) && !preg_match('/[.]*~/', $file)) {
                             if (substr($file, 0, 2) == ".#") {
-                                $this->_debug("Skipping CVS file $file\n");
+                                $this->vprint("Skipping CVS file $file\n");
                             } else {
                                 $this->includeFile($file, $basedir, $webdir);
                             }
@@ -596,14 +598,14 @@ class Plugins
                                 $Level + 1
                             );
                         } else {
-                            $this->_debug("Skipping directory ".$dName."\n");
+                            $this->vprint("Skipping directory ".$dName."\n");
                         }
                     }
                 }
             }
             $return = $count;
         } else {
-            $this->_debug("Error:  Directory ".$basedir." not found.\n\n", 4);
+            $this->vprint("Error:  Directory ".$basedir." not found.\n\n", 4);
             $return = 0;
         }
         return($return);
@@ -629,7 +631,7 @@ class Plugins
         $realFile = realpath($filedir.$file);
         if (empty($cache[$realFile]) || !is_array($cache[$realFile])) {
             $plugin_info = false;
-            $this->_debug("Checking File:  ".$file."\n", 4);
+            $this->vprint("Checking File:  ".$file."\n", 4);
             // This tells the cache what file to use
             $this->incFile = $realFile;
             try {
@@ -644,10 +646,10 @@ class Plugins
                     $this->registerClass($class);
                 }
             } catch (ErrorException $e) {
-                $this->_debug("Caught Error: ".$e->getMessage()."\n", 1);
+                $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
                 $freturn = false;
             } catch (Exception $e) {
-                $this->_debug("Caught Exception: ".$e->getMessage()."\n", 1);
+                $this->vprint("Caught Exception: ".$e->getMessage()."\n", 1);
                 $freturn = false;
             }
 
@@ -656,13 +658,13 @@ class Plugins
 
             // Bad things happened.  ;)
             if (!$freturn) {
-                $this->_debug($freturn, 4);
-                $this->_debug("\tErrors encountered parsing file.");
-                $this->_debug("Skipping ".$file.".\n", 4);
+                $this->vprint($freturn, 4);
+                $this->vprint("\tErrors encountered parsing file.");
+                $this->vprint("Skipping ".$file.".\n", 4);
                 return;
             }
         } else {
-            $this->_debug("Cache Hit: $realFile\n");
+            $this->vprint("Cache Hit: $realFile\n");
              // Have to make sure that this unset.  Otherwise could we double cache
             unset($this->incFile);
             $this->_setPluginVar($cache[$realFile]);
@@ -745,19 +747,19 @@ class Plugins
     */
     function registerFunctionRaw($info)
     {
-        $this->_debug("\tRegistering Function:  ".$info["Name"], 4);
-        $this->_debug("\t\tType:  ".$info["Types"]."\t\t", 4);
+        $this->vprint("\tRegistering Function:  ".$info["Name"], 4);
+        $this->vprint("\t\tType:  ".$info["Types"]."\t\t", 4);
         $plugins = array();
         if (!is_array($info)) {
-            $this->_debug(" Failed (Bad arguments to registerFunction)", 4);
+            $this->vprint(" Failed (Bad arguments to registerFunction)", 4);
             return;
         }
         if (empty($info["Name"])) {
-            $this->_debug(" Failed (Name not set), 4");
+            $this->vprint(" Failed (Name not set), 4");
             return;
         }
         if (!function_exists($info["Name"])) {
-            $this->_debug(" Failed (Function doesn't Exist)", 4);
+            $this->vprint(" Failed (Function doesn't Exist)", 4);
             return;
         }
         if (is_array($info["Types"])) {
@@ -774,10 +776,10 @@ class Plugins
             }
         }
         $this->_setPluginVar($plugins);
-        $this->_debug(" Done!", 4);
+        $this->vprint(" Done!", 4);
         $this->function_count++;
         $this->plugin_count++;
-        $this->_debug("\n", 4);
+        $this->vprint("\n", 4);
     }
 
     /**
@@ -820,18 +822,18 @@ class Plugins
         if (!isset($info["Type"])) {
             $info["Type"] = "ALL_TYPES";
         }
-        $this->_debug("\tRegistering Generic:  ".$info["Name"], 4);
-        $this->_debug("\t\tType:  ".$info["Type"], 4);
+        $this->vprint("\tRegistering Generic:  ".$info["Name"], 4);
+        $this->vprint("\t\tType:  ".$info["Type"], 4);
         if ($info["Name"] != "") {
-            $this->_debug("  Done", 4);
+            $this->vprint("  Done", 4);
             $plugins["Generic"][$info["Type"]][] = $info;
             $this->_setPluginVar($plugins);
             $this->generic_count++;
             $this->plugin_count++;
         } else {
-            $this->_debug("  Failed", 4);
+            $this->vprint("  Failed", 4);
         }
-        $this->_debug("\n", 4);
+        $this->vprint("\n", 4);
     }
 
 
@@ -849,26 +851,6 @@ class Plugins
     public function comparePlugins($a, $b)
     {
         return strnatcasecmp($a["Name"], $b["Name"]);
-    }
-
-
-
-    /**
-    *  Saves debug information.
-    *
-    * @param string $text  Text to add to the stack
-    * @param int    $level 0-5 How much to log to the stack.
-    *
-    * @return null
-    */
-    private function _debug($text, $level = 1)
-    {
-        $level = (int) $level;
-        // @codeCoverageIgnoreStart
-        if ($this->verbose >= $level) {
-            print $text;
-        }
-        // @codeCoverageIgnoreEnd
     }
 
 }

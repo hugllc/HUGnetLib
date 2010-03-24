@@ -34,9 +34,12 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-// Get the base class for the sensors
+/** Get the base class for the sensors */
 require_once dirname(__FILE__)."/base/SensorBase.php";
+/** This is the plugin class */
 require_once "lib/plugins.inc.php";
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
 /**
  * This class controls all of the sensors.  When given the right information
@@ -51,7 +54,7 @@ require_once "lib/plugins.inc.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Sensor
+class Sensor extends HUGnetClass
 {
     /** @var This is where the device names and classes are stored */
     protected $dev = array();

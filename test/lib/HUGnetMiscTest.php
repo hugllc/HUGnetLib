@@ -86,41 +86,14 @@ class HUGnetMiscTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * data provider for testConstructor
+    * Tests to make sure that the network function exists
     *
-    * @return array
-    *
-    * @static
+    * return null
     */
-    public static function dataVPrint()
+    function testGetNetInfo()
     {
-        return array(
-            array("", 3, 10, ""),
-            array("This is a test", 3, 10, "(HUGnetMiscTest) This is a test\n"),
-            array("This is a test", 3, 0, ""),
-        );
+        $this->assertTrue(method_exists("HUGnetMisc", "getNetInfo"));
     }
-    /**
-    * test
-    *
-    * @param string $str     The string to print out
-    * @param int    $val     The required value to print
-    * @param int    $verbose The current value
-    * @param int    $expect  The expected stuff printed
-    *
-    * @return null
-    *
-    * @dataProvider dataVPrint
-    */
-    public function testVPrint($str, $val, $verbose, $expect)
-    {
-        ob_start();
-        HUGnetMisc::vprint($str, $val, $verbose);
-        $ret = ob_get_contents();
-        ob_end_clean();
-        $this->assertSame($expect, $ret);
-    }
-
 }
 
 ?>

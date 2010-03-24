@@ -36,6 +36,8 @@
  */
 /** This is the base socket code */
 require_once HUGNET_INCLUDE_PATH."/base/SocketBase.php";
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
 /** The placeholder for the Acknoledge command */
 define("PACKET_COMMAND_ACK", "01");
@@ -133,7 +135,7 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EPacket
+class EPacket extends HUGnetClass
 {
     /** This contains all of the endpoints we know about */
     var $EndPoints = array();

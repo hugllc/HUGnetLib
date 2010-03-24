@@ -35,6 +35,8 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/base/HUGnetClass.php";
 
 /** Where in the config string the hardware part number starts  */
 define("ENDPOINT_HW_START", 10);
@@ -77,7 +79,7 @@ require_once HUGNET_INCLUDE_PATH."/drivers/endpoints/eDEFAULT.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetDriver
+class HUGnetDriver extends HUGnetClass
 {
     /** This is the default number of decimal places to use if
     *  it is not specified anywhere else
