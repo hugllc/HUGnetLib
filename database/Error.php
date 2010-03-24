@@ -55,7 +55,7 @@ define("HUGNET_ERROR_OLD_CONFIG", 3);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Error extends HUGnetDB
+class Error extends HUGnetDB implements HUGnetDBInterface
 {
     /** The database table to use */
     var $table = "error";

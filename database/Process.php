@@ -53,7 +53,7 @@ if (!defined("SIGKILL")) {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Process extends HUGnetDB
+class Process extends HUGnetDB implements HUGnetDBInterface
 {
     /** Database table to use */
     protected $table = "process";

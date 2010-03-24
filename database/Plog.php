@@ -50,7 +50,7 @@ require_once HUGNET_INCLUDE_PATH."/EPacket.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Plog extends HUGnetDB
+class Plog extends HUGnetDB implements HUGnetDBInterface
 {
     /** @var string Database table to use */
     protected $table = "PacketLog";
@@ -63,12 +63,12 @@ class Plog extends HUGnetDB
     /** @var mixed The description of the critical error that just happened. */
     public $criticalError = false;
     /**
-     * Returns the query needed to create the packet log
-     *
-     * @param string $table The table to use in the query
-     *
-     * @return string
-      */
+    * Returns the query needed to create the packet log
+    *
+    * @param string $table The table to use in the query
+    *
+    * @return string
+    */
     function createTable($table="")
     {
         if (empty($table)) {
@@ -99,14 +99,14 @@ class Plog extends HUGnetDB
 
 
     /**
-     * Returns the first row the where statement finds
-     *
-     * @param array $info The row to insert into the database
-     *
-     * @return mixed
-     */
-
-    function add($info)
+    * Returns the first row the where statement finds
+    *
+    * @param array $info    The row to insert into the database
+    * @param bool  $replace Not used here.
+    *
+    * @return mixed
+    */
+    public function add($info, $replace = false)
     {
         if (!isset($info[$this->id])) {
             $info[$this->id] = $this->index++;
@@ -116,16 +116,16 @@ class Plog extends HUGnetDB
 
 
     /**
-     * Converts a packet array into an array for inserting into the
-     * packet log tables in the database.
-     *
-     * @param array  $Packet  The packet that came in.
-     * @param int    $Gateway The gateway key of the gateway this packet came from
-     * @param string $Type    They type of packet it is.
-     * @param int    $Checked Index to say what process has touched this last
-     *
-     * @return array
-     */
+    * Converts a packet array into an array for inserting into the
+    * packet log tables in the database.
+    *
+    * @param array  $Packet  The packet that came in.
+    * @param int    $Gateway The gateway key of the gateway this packet came from
+    * @param string $Type    They type of packet it is.
+    * @param int    $Checked Index to say what process has touched this last
+    *
+    * @return array
+    */
     public static function packetLogSetup($Packet, $Gateway, $Type="", $Checked=0)
     {
         if (empty($Type)) {
@@ -161,12 +161,12 @@ class Plog extends HUGnetDB
         return $Info;
     }
     /**
-     * returns a string with the packet type
-     *
-     * @param array $pkt The packet array
-     *
-     * @return string
-     */
+    * returns a string with the packet type
+    *
+    * @param array $pkt The packet array
+    *
+    * @return string
+    */
     static public function packetType($pkt)
     {
         $cmd = $pkt["Command"];
@@ -226,8 +226,6 @@ class Plog extends HUGnetDB
         }
         return "UNKNOWN";
     }
-
-
 }
 
 ?>

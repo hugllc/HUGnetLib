@@ -50,7 +50,7 @@ require_once HUGNET_INCLUDE_PATH."/database/History.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Average extends History
+class Average extends History implements HUGnetDBInterface
 {
     /** The database table to use */
     protected $table = "average";

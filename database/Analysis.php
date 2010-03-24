@@ -51,7 +51,7 @@ require_once HUGNET_INCLUDE_PATH."/database/Device.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Analysis extends HUGnetDB
+class Analysis extends HUGnetDB implements HUGnetDBInterface
 {
     /** The database table to use */
     var $table = "analysis";

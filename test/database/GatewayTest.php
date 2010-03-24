@@ -554,14 +554,14 @@ class GatewayTest extends databaseTest
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayMock extends gateway
+class GatewayMock extends gateway implements HUGnetDBInterface
 {
     /**
      * Mock getAll that always returns localhost.
      *
      * @return array
      */
-    function getAll()
+    public function getAll($limit = 0, $start = 0, $orderby="")
     {
         return array(
             array(

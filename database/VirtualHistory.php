@@ -51,7 +51,7 @@ require_once HUGNET_INCLUDE_PATH."/driver.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class VirtualHistory extends Average
+class VirtualHistory extends Average implements HUGnetDBInterface
 {
     /** History buffer */
     protected $hist = array();

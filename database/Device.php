@@ -49,7 +49,7 @@ require_once HUGNET_INCLUDE_PATH."/devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Device extends HUGnetDB
+class Device extends HUGnetDB implements HUGnetDBInterface
 {
     /** The table devices are stored in */
     var $table = "devices";

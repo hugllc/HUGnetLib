@@ -45,6 +45,7 @@ define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /** Misc stuff */
 require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
+require_once HUGNET_INCLUDE_PATH."/interfaces/HUGnetDB.php";
 /**
  * Base class for all database work
  *
@@ -59,7 +60,7 @@ require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetDB
+class HUGnetDB implements HUGnetDBInterface
 {
     /** @var string The database table to use */
     protected $table = "none";

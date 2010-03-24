@@ -49,7 +49,7 @@ require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class Firmware extends HUGnetDB
+class Firmware extends HUGnetDB implements HUGnetDBInterface
 {
     /** The table to use */
     var $table = "firmware";

@@ -58,7 +58,7 @@ if (!defined("VIRTUAL_ENDPOINT_GATEWAY")) {
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class Gateway extends HUGnetDB
+class Gateway extends HUGnetDB implements HUGnetDBInterface
 {
     var $table = "gateways";                //!< The database table to use
     var $id = "GatewayKey";     //!< This is the Field name for the key of the record

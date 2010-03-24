@@ -52,7 +52,7 @@ require_once HUGNET_INCLUDE_PATH."/database/Process.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ProcStats extends HUGnetDB
+class ProcStats extends HUGnetDB implements HUGnetDBInterface
 {
     /** Stats table to use */
     protected $table = 'procStats';
