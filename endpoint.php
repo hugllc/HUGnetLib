@@ -201,10 +201,7 @@ class Endpoint extends HUGnetClass
     */
     public function isController()
     {
-        if (!$this->_checkDriver()) {
-            return false;
-        }
-        return method_exists($this->_driver, "checkProgram");
+        return (bool) $this->_driver->isController;
     }
 
     /**
@@ -223,10 +220,28 @@ class Endpoint extends HUGnetClass
         }
         $this->_checkDevice();
         $this->_setDriver();
-        if ($this->_checkDriver) {
+        if ($this->_checkDriver()) {
             $this->_driver->fromArray($devInfo);
             $this->_driver->checkDevice();
         }
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $devInfo This is an array of this class's attributes
+    *
+    * @return null
+    */
+    function toArray()
+    {
+        foreach ($this->_attributes as $attrib) {
+            $devInfo[$attrib] = $this->$attrib;
+        }
+        if ($this->_checkDriver()) {
+            $driver = $this->_driver->toArray();
+            $devInfo = array_merge($devInfo, $driver);
+        }
+        return $devInfo;
     }
     /**
     * Checks to make sure that all of the device information is valid
@@ -238,6 +253,11 @@ class Endpoint extends HUGnetClass
     */
     function _checkDevice()
     {
+        foreach ($this->_attributes as $attrib) {
+            if (method_exists($this, $attrib)) {
+                $this->$attrib();
+            }
+        }
     }
     /**
     * Checks to see if the driver is valid.  If it is it returns true.
