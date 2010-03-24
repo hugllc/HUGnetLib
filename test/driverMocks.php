@@ -137,7 +137,7 @@ class TestDriver extends eDEFAULT
     *
     * @return null
     */
-    public function __construct(&$driver = false)
+    public function __construct(&$driver = null, $config = null)
     {
         if (is_object($driver)) {
             parent::__construct($driver);

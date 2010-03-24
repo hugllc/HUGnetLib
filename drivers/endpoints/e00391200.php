@@ -47,6 +47,9 @@ define("E00391102B_TYPES", ENDPOINT_CONFIGEND+4);
 /** The number of sensors for this device */
 define("E00391102B_SENSORS", 9);
 
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
+
 /**
 * Driver for the 0039-12 endpoint board and select firmwares
 *
@@ -59,7 +62,7 @@ define("E00391102B_SENSORS", 9);
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class e00391200 extends eDEFAULT
+class e00391200 extends eDEFAULT implements endpointDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(

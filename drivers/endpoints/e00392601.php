@@ -38,6 +38,9 @@
 
 
 require_once dirname(__FILE__).'/eDEFAULT.php';
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
+
 /**
 * Driver for the polling script (0039-26-01-P)
 *
@@ -50,7 +53,7 @@ require_once dirname(__FILE__).'/eDEFAULT.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class e00392601 extends eDEFAULT
+class e00392601 extends eDEFAULT implements endpointDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(

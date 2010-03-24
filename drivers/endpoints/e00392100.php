@@ -46,6 +46,9 @@ define('PACKET_READPACKETSTATS_COMMAND', '57');
 /** Reads the downstream unit serial numbers */
 define('PACKET_HUGNETPOWER_COMMAND', '60');
 
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriverloadable.php";
 
 
 
@@ -61,7 +64,7 @@ define('PACKET_HUGNETPOWER_COMMAND', '60');
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class e00392100 extends eDEFAULT
+class e00392100 extends eDEFAULT implements endpointDriverInterface, EndpointDriverLoadableInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
@@ -111,7 +114,8 @@ class e00392100 extends eDEFAULT
     /**
         * This function reads the configuration out of the endpoint.
         *
-        * @param array $Info devInfo array of the endpoint to read the configuration of
+        * @param array $Info devInfo array of the endpoint to read the configuration
+        *                           of
         *
         * @return mixed
         */
@@ -888,7 +892,7 @@ class e00392100 extends eDEFAULT
         *
         * @param object &$driver Driver
         */
-    function __construct (&$driver, $config=null)
+    function __construct (HUGnetDriver &$driver, $config = null)
     {
         parent::__construct($driver, $config);
         $this->firmware =& HUGnetDB::getInstance("Firmware", $config);

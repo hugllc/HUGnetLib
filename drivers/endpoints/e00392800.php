@@ -37,6 +37,8 @@
  */
 
 require_once dirname(__FILE__).'/eDEFAULT.php';
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
 
 /**
 * Driver for the 0039-12 endpoint board and select firmwares
@@ -50,7 +52,7 @@ require_once dirname(__FILE__).'/eDEFAULT.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class e00392800 extends eDEFAULT
+class e00392800 extends eDEFAULT implements endpointDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(

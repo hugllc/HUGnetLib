@@ -37,6 +37,10 @@
  */
 require_once dirname(__FILE__).'/eDEFAULT.php';
 
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
+
+
 /*
 define("e00391106", true);
 define("e00391102B_EEPROM_READ", "0A");
@@ -78,7 +82,7 @@ define("E00391201_SENSORS", 9);
 * @version    SVN: $Id$
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class e00391201 extends eDEFAULT
+class e00391201 extends eDEFAULT implements endpointDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(

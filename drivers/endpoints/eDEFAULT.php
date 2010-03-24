@@ -43,6 +43,8 @@ define("EDEFAULT_SENSOR_READ", "55");
 /** The default command to set the group  */
 define("EDEFAULT_SETGROUP", "5B");
 
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
 /**
 * The default driver class
 *
@@ -787,13 +789,12 @@ class eDEFAULT
     * Gets calibration data for this endpoint
     *
     * @param array  $Info   Infomation about the device to use
-    * @param string $rawcal The raw calibration data to use
     *
     * @return null
     *
     * @todo make this function work?
     */
-    public function readCalibration($Info, $rawcal)
+    public function readCalibration($Info)
     {
     }
 
@@ -913,7 +914,7 @@ class eDEFAULT
     *
     * @return null
     */
-    public function __construct(&$driver, $config = null)
+    public function __construct(HUGnetDriver &$driver, $config = null)
     {
         $this->dbConfig = $config;
         $this->driver  =& $driver;

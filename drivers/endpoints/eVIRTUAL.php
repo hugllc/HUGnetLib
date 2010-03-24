@@ -37,6 +37,9 @@
  */
 
 require_once dirname(__FILE__).'/eDEFAULT.php';
+// This is the interface we are implementing
+require_once HUGNET_INCLUDE_PATH."/interfaces/endpointdriver.php";
+
 define("VIRTUAL_ENDPOINT_GATEWAY", -1);
 /**
 * Driver for the polling script (0039-26-01-P)
@@ -50,7 +53,7 @@ define("VIRTUAL_ENDPOINT_GATEWAY", -1);
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class eVIRTUAL extends eDEFAULT
+class eVIRTUAL extends eDEFAULT implements endpointDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
