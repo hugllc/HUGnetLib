@@ -155,8 +155,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $extra  Extra class to load
-    * @param int    $expect The expected return
+    * @param mixed $extra  Extra class to load
+    * @param int   $expect The expected return
     *
     * @return null
     *
@@ -211,7 +211,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $name   The attribute name to get
     * @param int    $expect The expected return
-    * @param string $class The class for extra
+    * @param string $class  The class for extra
     *
     * @return null
     *
@@ -261,9 +261,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $name   The attribute name to get
-    * @param int    $expect The expected return
-    * @param string $class The class for extra
+    * @param string $name        The attribute name to get
+    * @param int    $expect      The expected return
+    * @param string $class       The class for extra
     * @param array  $expectExtra The expected return from extra
     *
     * @return null
@@ -317,8 +317,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $name   The attribute name to get
     * @param int    $expect The expected return
-    * @param string $class The class for extra
-    * @param array  $expectExtra The expected return from extra
+    * @param string $class  The class for extra
     *
     * @return null
     *
@@ -345,8 +344,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $expect      The expected return
     * @param array  $expectExtra The expected return from extra
+    * @param string $class       The expected class
     *
     * @return null
     *
@@ -387,7 +386,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class The class for extra
+    * @param string $class  The class for extra
     * @param string $expect The expected return
     *
     * @return null
@@ -406,7 +405,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class The class for extra
+    * @param string $class  The class for extra
     * @param string $expect The expected return
     *
     * @return null
@@ -456,7 +455,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class The class for extra
+    * @param string $class  The class for extra
     * @param string $expect The expected return
     *
     * @return null
@@ -870,7 +869,7 @@ class HUGnetContainerTestClass2 extends HUGnetContainer
     *
     * @return null
     */
-    protected function Attrib5()
+    protected function attrib5()
     {
         $this->data["Attrib5"] = (string) $this->data["Attrib5"];
     }
