@@ -231,7 +231,7 @@ abstract class HUGnetContainerLinkedList extends HUGnetContainer
     /**
     * Converts the object to a string
     *
-    * @param string $var      The name of the variable to break
+    * @param string $var The name of the variable to break
     *
     * @return bool True if the variable is linked
     */

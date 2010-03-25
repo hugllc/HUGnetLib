@@ -163,8 +163,8 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $var   The variable to find the class in
-    * @param string $class The class to expect
+    * @param mixed  $var    The variable to find the class in
+    * @param string $class  The class to expect
     * @param bool   $expect The return value to expect
     *
     * @return null
@@ -175,7 +175,6 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
         $var,
         $class,
         $expect
-
     ) {
         $ret = $this->$var->linkPrev();
         $this->assertSame($expect, $ret);
@@ -219,7 +218,6 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
         $var,
         $class,
         $expect
-
     ) {
         $ret = $this->$var->breakNext();
         $this->assertSame($expect, $ret);
@@ -262,7 +260,6 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
         $var,
         $class,
         $expect
-
     ) {
         $ret = $this->$var->breakPrev();
         $this->assertSame($expect, $ret);
@@ -399,8 +396,8 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $var    The variable to find the class in
-    * @param bool   $expect The return value to expect
+    * @param mixed $var    The variable to find the class in
+    * @param bool  $expect The return value to expect
     *
     * @return null
     *
@@ -446,8 +443,8 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $var    The variable to find the class in
-    * @param bool   $expect The return value to expect
+    * @param mixed $var    The variable to find the class in
+    * @param bool  $expect The return value to expect
     *
     * @return null
     *
