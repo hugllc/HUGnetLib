@@ -187,14 +187,42 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array(
                 "Attrib1",
                 0,
+                "HUGnetContainerTestClass2",
             ),
             array(
                 "Attrib7",
                 1.0,
+                "HUGnetContainerTestClass2",
             ),
             array(
                 "testVar",
                 15,
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "secondTestVar",
+                "String",
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "Attrib1",
+                0,
+                "",
+            ),
+            array(
+                "Attrib7",
+                null,
+                "",
+            ),
+            array(
+                "testVar",
+                15,
+                "",
+            ),
+            array(
+                "secondTestVar",
+                null,
+                "",
             ),
         );
     }
@@ -204,18 +232,98 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $name   The attribute name to get
     * @param int    $expect The expected return
+    * @param string $class The class for extra
     *
     * @return null
     *
     * @dataProvider dataGet
     */
-    public function testGet($name, $expect)
+    public function testGet($name, $expect, $class = "")
     {
-        $o = new HUGnetContainerTestClass("", "HUGnetContainerTestClass2");
+        $o = new HUGnetContainerTestClass("", $class);
         $ret = $o->$name;
         $this->assertSame(
             $expect,
             $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataUnset()
+    {
+        return array(
+            array(
+                "Attrib1",
+                null,
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "Attrib7",
+                null,
+                "HUGnetContainerTestClass2",
+                true
+            ),
+            array(
+                "testVar",
+                null,
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "secondTestVar",
+                null,
+                "HUGnetContainerTestClass2",
+                true,
+            ),
+            array(
+                "Attrib1",
+                null,
+                "",
+            ),
+            array(
+                "Attrib7",
+                null,
+                "",
+            ),
+            array(
+                "testVar",
+                null,
+                "",
+            ),
+            array(
+                "secondTestVar",
+                null,
+                "",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The attribute name to get
+    * @param int    $expect The expected return
+    * @param string $class The class for extra
+    * @param array  $expectExtra The expected return from extra
+    *
+    * @return null
+    *
+    * @dataProvider dataUnset
+    */
+    public function testUnset($name, $expect, $class = "", $expectExtra = false)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        unset($o->$name);
+        if ($expectExtra) {
+            $obj = $this->readAttribute($o, "_extra");
+        } else {
+            $obj = &$o;
+        }
+        $this->assertSame(
+            $expect,
+            $obj->$name
         );
     }
     /**
@@ -232,6 +340,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     }
     /**
     * test the set routine when an extra class exists
+    *
+    * @param array  $expect      The expected return
+    * @param array  $expectExtra The expected return from extra
     *
     * @return null
     *
@@ -282,6 +393,24 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame(
             $expect,
             $ret
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class for extra
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataTString
+    */
+    public function testToString2($class, $expect)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $this->assertSame(
+            $expect,
+            (string)$o
         );
     }
     /**
@@ -418,6 +547,220 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         }
 
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromString()
+    {
+        return array(
+            array(
+                serialize(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib4" => array("Hi"),
+                        "Attrib5" => "Another string",
+                        "Attrib6" => array("Two Element"),
+                        "Attrib8" => 4.321,
+                    )
+                ),
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+                array(
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
+                ),
+            ),
+            array(
+                serialize(
+                    array(
+                        "Attrib1" => 100,
+                        "Attrib2" => "Hello There",
+                        "Attrib3" => "Some Data",
+                        "Attrib4" => array("Hello Everyone"),
+                        "Attrib5" => "NonBlank String",
+                        "Attrib6" => array("Three Element"),
+                        "Attrib7" => 1.15,
+                        "Attrib8" => 9.95,
+                    )
+                ),
+                "",
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string      The array to use to build it
+    * @param string $class       The class for extra
+    * @param array  $expect      The expected return
+    * @param array  $expectExtra The expected return from extra
+    *
+    * @return null
+    *
+    * @dataProvider dataFromString
+    */
+    public function testFromString($string, $class, $expect, $expectExtra)
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $o->fromString($string);
+        $this->assertSame(
+            $expect,
+            $this->readAttribute($o, "data")
+        );
+        if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
+            $this->assertSame(
+                $expectExtra,
+                $this->readAttribute($extra, "data")
+            );
+        }
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataConstructorData()
+    {
+        return array(
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+                array(
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
+                ),
+            ),
+            array(
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                    "Attrib5" => "NonBlank String",
+                    "Attrib6" => array("Three Element"),
+                    "Attrib7" => 1.15,
+                    "Attrib8" => 9.95,
+                ),
+                "",
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+                null,
+            ),
+            array(
+                serialize(
+                    array(
+                        "Attrib1" => 10,
+                        "Attrib2" => "Hello",
+                        "Attrib4" => array("Hi"),
+                        "Attrib5" => "Another string",
+                        "Attrib6" => array("Two Element"),
+                        "Attrib8" => 4.321,
+                    )
+                ),
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+                array(
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
+                ),
+            ),
+            array(
+                serialize(
+                    array(
+                        "Attrib1" => 100,
+                        "Attrib2" => "Hello There",
+                        "Attrib3" => "Some Data",
+                        "Attrib4" => array("Hello Everyone"),
+                        "Attrib5" => "NonBlank String",
+                        "Attrib6" => array("Three Element"),
+                        "Attrib7" => 1.15,
+                        "Attrib8" => 9.95,
+                    )
+                ),
+                "",
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $data        The data used to build the stuff
+    * @param string $class       The class for extra
+    * @param array  $expect      The expected return
+    * @param array  $expectExtra The expected return from extra
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructorData
+    */
+    public function testConstructorData($data, $class, $expect, $expectExtra)
+    {
+        $o = new HUGnetContainerTestClass($data, $class);
+        $this->assertSame(
+            $expect,
+            $this->readAttribute($o, "data")
+        );
+        if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
+            $this->assertSame(
+                $expectExtra,
+                $this->readAttribute($extra, "data")
+            );
+
+        }
+
+    }
 
 }
 /**
@@ -503,6 +846,9 @@ class HUGnetContainerTestClass extends HUGnetContainer
  */
 class HUGnetContainerTestClass2 extends HUGnetContainer
 {
+    /** @var test variable */
+    protected $secondTestVar = "String";
+
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -521,7 +867,7 @@ class HUGnetContainerTestClass2 extends HUGnetContainer
     */
     protected function Attrib5()
     {
-        $this->Attrib5 = (string) $this->Attrib5;
+        $this->data["Attrib5"] = (string) $this->data["Attrib5"];
     }
     /**
     * Creates the object from a string
