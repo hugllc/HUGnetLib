@@ -120,8 +120,6 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             unset($this->data[$name]);
-        } else if (property_exists($this, $name)) {
-            unset($this->$name);
         } else if (is_object($this->_extra)) {
             unset($this->_extra->$name);
         }
