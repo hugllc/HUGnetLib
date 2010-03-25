@@ -205,7 +205,16 @@ abstract class HUGnetContainer extends HUGnetClass
         if (is_object($this->_extra)) {
             $extra = $this->_extra->toArray();
         }
-        return array_merge($this->data, (array)$extra);
+        foreach (array_keys((array)$this->data) as $key) {
+            if (is_object($this->data[$key])
+                && method_exists($this->data[$key], "toArray")
+            ) {
+                $data[$key] = $this->data[$key]->toArray();
+            } else {
+                $data[$key] = $this->data[$key];
+            }
+        }
+        return array_merge($data, (array)$extra);
     }
 
     /**

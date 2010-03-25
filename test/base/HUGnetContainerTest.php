@@ -429,11 +429,26 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                array(
+                    "Attrib1" => 0,
+                    "Attrib2" => "Default",
+                    "Attrib3" => new HUGnetContainerTestClass2(),
+                    "Attrib4" => array("Hello"),
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("One Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
+                ),
                 "HUGnetContainerTestClass2",
                 array(
                     "Attrib1" => 0,
                     "Attrib2" => "Default",
-                    "Attrib3" => "Data",
+                    "Attrib3" => array(
+                        "Attrib5" => "Blank String",
+                        "Attrib6" => array("One Element"),
+                        "Attrib7" => 1.0,
+                        "Attrib8" => 4,
+                    ),
                     "Attrib4" => array("Hello"),
                     "Attrib5" => "Blank String",
                     "Attrib6" => array("One Element"),
@@ -442,6 +457,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                "",
                 "",
                 array(
                     "Attrib1" => 0,
@@ -455,16 +471,17 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $class  The class for extra
-    * @param string $expect The expected return
+    * @param array  $preload What to preload the object with
+    * @param string $class   The class for extra
+    * @param array  $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($class, $expect)
+    public function testToArray($preload, $class, $expect)
     {
-        $o = new HUGnetContainerTestClass("", $class);
+        $o = new HUGnetContainerTestClass($preload, $class);
         $ret = $o->toArray();
         $this->assertSame(
             $expect,
