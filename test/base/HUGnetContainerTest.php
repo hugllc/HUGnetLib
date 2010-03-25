@@ -372,6 +372,52 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         }
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataReset()
+    {
+        return array(
+            array("Attrib1", 16, 0),
+            array("Attrib1", "16Test", 0),
+            array("Attrib5", "Hello", null),
+            array("Attrib1", 16, 0, false, "HUGnetContainerTestClass2"),
+            array("Attrib5", "Hello", "Blank String", true, "HUGnetContainerTestClass2"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $attrib      This is the attribute to set
+    * @param mixed  $value       The value to set it to
+    * @param int    $expect      The expected return
+    * @param bool   $expectExtra Expect the output to be saved in _extra
+    * @param string $class       The extra class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testReset(
+        $attrib,
+        $value,
+        $expect,
+        $expectExtra = false,
+        $class = ""
+    ) {
+        $o = new HUGnetContainerTestClass("", $class);
+        $o->$attrib = $value;
+        $o->reset($attrib);
+        if ($expectExtra) {
+            //$class = $this->readAttribute($o, "_extra");
+            //$this->assertSame($expect, $class->$attrib);
+        } else {
+            $this->assertSame($expect, $o->$attrib);
+        }
+    }
+    /**
     * data provider for testToString
     *
     * @return array

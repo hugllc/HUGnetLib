@@ -177,6 +177,22 @@ abstract class HUGnetContainer extends HUGnetClass
         }
     }
     /**
+    * resets a value to its default
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function reset($name)
+    {
+        if (array_key_exists($name, $this->default)) {
+            $this->data[$name] = $this->default[$name];
+        } else if (is_object($this->_extra)) {
+            $this->_extra->reset($name);
+        }
+    }
+
+    /**
     * Sets all of the endpoint attributes from an array
     *
     * @param array $devInfo This is an array of this class's attributes
