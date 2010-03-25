@@ -286,6 +286,55 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataIsset()
+    {
+        return array(
+            array(
+                "Attrib1",
+                true,
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "Attrib9",
+                false,
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                "Attrib1",
+                true,
+                "",
+            ),
+            array(
+                "Attrib7",
+                false,
+                "",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The attribute name to get
+    * @param int    $expect The expected return
+    * @param string $class The class for extra
+    * @param array  $expectExtra The expected return from extra
+    *
+    * @return null
+    *
+    * @dataProvider dataIsset
+    */
+    public function testIsset($name, $expect, $class = "")
+    {
+        $o = new HUGnetContainerTestClass("", $class);
+        $ret = isset($o->$name);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataClearData()
     {
         return array(

@@ -59,19 +59,19 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * This is the constructor
     *
-    * @param mixed  $mixed This is an array or string to create the object from
+    * @param mixed  $data  This is an array or string to create the object from
     * @param string $extra This should be an extension of the devInfo object
     */
-    function __construct($mixed="", $extra=null)
+    function __construct($data="", $extra=null)
     {
         if (class_exists($extra)) {
             $this->_extra = new $extra($mixed, null);
         }
         $this->clearData();
-        if (is_string($mixed)) {
-            $this->fromString($mixed);
-        } else if (is_array($mixed)) {
-            $this->fromArray($mixed);
+        if (is_string($data)) {
+            $this->fromString($data);
+        } else if (is_array($data)) {
+            $this->fromArray($data);
         }
     }
     /**
@@ -123,6 +123,22 @@ abstract class HUGnetContainer extends HUGnetClass
         } else if (is_object($this->_extra)) {
             unset($this->_extra->$name);
         }
+    }
+    /**
+    * Check if something is set
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    private function __isset($name)
+    {
+        if (array_key_exists($name, $this->default)) {
+            return (bool)isset($this->data[$name]);
+        } else if (is_object($this->_extra)) {
+            return (bool)isset($this->_extra->$name);
+        }
+        return false;
     }
 
     /**
