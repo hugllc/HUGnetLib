@@ -54,7 +54,9 @@ require_once dirname(__FILE__)."/HUGnetClass.php";
 abstract class HUGnetContainer extends HUGnetClass
 {
     /** @var object The extra stuff class */
-    private $_extra;
+    private $_extra = null;
+    /** @var object The locked values */
+    private $_lock = array();
 
     /**
     * This is the constructor
@@ -84,7 +86,9 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __set($name, $value)
     {
-        if (array_key_exists($name, $this->default)) {
+        if (array_key_exists($name, $this->default)
+            && !$this->locked($name)
+        ) {
             $this->data[$name] = $value;
             if (method_exists($this, $name)) {
                 $this->$name();
@@ -118,7 +122,9 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     private function __unset($name)
     {
-        if (array_key_exists($name, $this->default)) {
+        if (array_key_exists($name, $this->default)
+            && !$this->locked($name)
+        ) {
             unset($this->data[$name]);
         } else if (is_object($this->_extra)) {
             unset($this->_extra->$name);
@@ -171,7 +177,11 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function clearData()
     {
-        $this->data = $this->default;
+        foreach ($this->default as $name => $value) {
+            if (!$this->locked($name)) {
+                $this->data[$name] = $this->default[$name];
+            }
+        }
         if (is_object($this->_extra)) {
             $this->_extra->clearData();
         }
@@ -185,13 +195,81 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function reset($name)
     {
-        if (array_key_exists($name, $this->default)) {
+        if (array_key_exists($name, $this->default)
+            && !$this->locked($name)
+        ) {
             $this->data[$name] = $this->default[$name];
         } else if (is_object($this->_extra)) {
             $this->_extra->reset($name);
         }
     }
+    /**
+    * resets a value to its default
+    *
+    * @param mixed $names Array of names to lock
+    *
+    * @return mixed The value of the attribute
+    */
+    public function lock($names = array())
+    {
+        if (is_array($names)) {
+            foreach ($this->default as $name => $value) {
+                if (!is_bool(array_search($name, (array)$names))) {
+                    $this->_lock[$name] = $name;
+                }
+            }
+        } else if (is_string($names)) {
+            if (array_key_exists($names, $this->default)) {
+                $this->_lock[$names] = $names;
+            }
+        }
+        if (is_object($this->_extra)) {
+            $this->_extra->lock($names);
+        }
+    }
 
+
+    /**
+    * resets a value to its default
+    *
+    * @param mixed $names Array of names to lock
+    *
+    * @return mixed The value of the attribute
+    */
+    public function unlock($names = array())
+    {
+        if (is_array($names)) {
+            foreach ($this->default as $name => $value) {
+                if (!is_bool(array_search($name, (array)$names))) {
+                    unset($this->_lock[$name]);
+                }
+            }
+        } else if (is_string($names)) {
+            if (array_key_exists($names, $this->default)) {
+                unset($this->_lock[$names]);
+            }
+        }
+        if (is_object($this->_extra)) {
+            $this->_extra->unlock($names);
+        }
+    }
+
+    /**
+    * resets a value to its default
+    *
+    * @param string $names Array of names to lock
+    *
+    * @return mixed The value of the attribute
+    */
+    public function locked($name)
+    {
+        if (array_key_exists($name, $this->default)) {
+            return isset($this->_lock[$name]);
+        } else if (is_object($this->_extra)) {
+            return $this->_extra->locked($name);
+        }
+        return false;
+    }
     /**
     * Sets all of the endpoint attributes from an array
     *
