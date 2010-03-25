@@ -91,7 +91,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("Attrib1", 16, 16),
-            array("testVar", 13.0, 13.0),
             array("Attrib1", "16Test", 16),
             array("Attrib5", "Hello", null),
             array("Attrib1", 16, 16, false, "HUGnetContainerTestClass2"),
@@ -195,32 +194,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 "HUGnetContainerTestClass2",
             ),
             array(
-                "testVar",
-                15,
-                "HUGnetContainerTestClass2",
-            ),
-            array(
-                "secondTestVar",
-                "String",
-                "HUGnetContainerTestClass2",
-            ),
-            array(
                 "Attrib1",
                 0,
                 "",
             ),
             array(
                 "Attrib7",
-                null,
-                "",
-            ),
-            array(
-                "testVar",
-                15,
-                "",
-            ),
-            array(
-                "secondTestVar",
                 null,
                 "",
             ),
@@ -267,33 +246,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 true
             ),
             array(
-                "testVar",
-                null,
-                "HUGnetContainerTestClass2",
-            ),
-            array(
-                "secondTestVar",
-                null,
-                "HUGnetContainerTestClass2",
-                true,
-            ),
-            array(
                 "Attrib1",
                 null,
                 "",
             ),
             array(
                 "Attrib7",
-                null,
-                "",
-            ),
-            array(
-                "testVar",
-                null,
-                "",
-            ),
-            array(
-                "secondTestVar",
                 null,
                 "",
             ),
@@ -775,9 +733,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
  */
 class HUGnetContainerTestClass extends HUGnetContainer
 {
-    /** @var test variable */
-    protected $testVar = 15;
-
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -843,9 +798,6 @@ class HUGnetContainerTestClass extends HUGnetContainer
  */
 class HUGnetContainerTestClass2 extends HUGnetContainer
 {
-    /** @var test variable */
-    protected $secondTestVar = "String";
-
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(

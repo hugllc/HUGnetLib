@@ -89,8 +89,6 @@ abstract class HUGnetContainer extends HUGnetClass
             if (method_exists($this, $name)) {
                 $this->$name();
             }
-        } else if (property_exists($this, $name)) {
-            $this->$name = $value;
         } else if (is_object($this->_extra)) {
             $this->_extra->$name = $value;
         }
@@ -106,8 +104,6 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
-        } else if (property_exists($this, $name)) {
-            return $this->$name;
         } else if (is_object($this->_extra)) {
             return $this->_extra->$name;
         }
