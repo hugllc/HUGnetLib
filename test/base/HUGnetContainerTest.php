@@ -121,7 +121,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", $class);
         $o->$attrib = $value;
         if ($expectExtra) {
-            $class = &$o->_extra;
+            $class = $this->readAttribute($o, "_extra");
         } else {
             $class = &$o;
         }
@@ -275,7 +275,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", $class);
         unset($o->$name);
         if ($expectExtra) {
-            $obj = &$o->_extra;
+            $obj = $this->readAttribute($o, "_extra");
         } else {
             $obj = &$o;
         }
@@ -313,7 +313,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", "HUGnetContainerTestClass2");
         $o->clearData();
         if ($expectExtra) {
-            $obj = &$o->_extra;
+            $obj = $this->readAttribute($o, "_extra");
         } else {
             $obj = &$o;
         }
@@ -496,9 +496,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             $this->readAttribute($o, "data")
         );
         if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
             $this->assertSame(
                 $expectExtra,
-                $this->readAttribute($o->_extra, "data")
+                $this->readAttribute($extra, "data")
             );
 
         }
@@ -582,9 +583,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             $this->readAttribute($o, "data")
         );
         if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
             $this->assertSame(
                 $expectExtra,
-                $this->readAttribute($o->_extra, "data")
+                $this->readAttribute($extra, "data")
             );
         }
     }
@@ -708,9 +710,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             $this->readAttribute($o, "data")
         );
         if (!is_null($expectExtra)) {
+            $extra = $this->readAttribute($o, "_extra");
             $this->assertSame(
                 $expectExtra,
-                $this->readAttribute($o->_extra, "data")
+                $this->readAttribute($extra, "data")
             );
 
         }
