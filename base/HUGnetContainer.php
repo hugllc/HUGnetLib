@@ -86,7 +86,12 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __set($name, $value)
     {
-        if (array_key_exists($name, $this->default)
+        if ($this->locked($name)) {
+            self::vprint(
+                "Error: Trying to access a locked property\n",
+                1
+            );
+        } else if (array_key_exists($name, $this->default)
             && !$this->locked($name)
         ) {
             $this->data[$name] = $value;
@@ -122,9 +127,12 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     private function __unset($name)
     {
-        if (array_key_exists($name, $this->default)
-            && !$this->locked($name)
-        ) {
+        if ($this->locked($name)) {
+            self::vprint(
+                "Error: Trying to access a locked property\n",
+                1
+            );
+        } else if (array_key_exists($name, $this->default)) {
             unset($this->data[$name]);
         } else if (is_object($this->_extra)) {
             unset($this->_extra->$name);
@@ -193,14 +201,17 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @return mixed The value of the attribute
     */
-    public function reset($name)
+    public function setDefault($name)
     {
-        if (array_key_exists($name, $this->default)
-            && !$this->locked($name)
-        ) {
+        if ($this->locked($name)) {
+            self::vprint(
+                "Error: Trying to access a locked property\n",
+                1
+            );
+        } else if (array_key_exists($name, $this->default)) {
             $this->data[$name] = $this->default[$name];
         } else if (is_object($this->_extra)) {
-            $this->_extra->reset($name);
+            $this->_extra->setDefault($name);
         }
     }
     /**
@@ -261,10 +272,15 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @return mixed The value of the attribute
     */
-    public function locked($name)
+    public function locked($name = null)
     {
         if (array_key_exists($name, $this->default)) {
             return isset($this->_lock[$name]);
+        } else if (is_null($name)) {
+            if (is_object($this->_extra)) {
+                $extra = $this->_extra->locked();
+            }
+            return array_merge(array_keys($this->_lock), (array) $extra);
         } else if (is_object($this->_extra)) {
             return $this->_extra->locked($name);
         }

@@ -460,7 +460,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataReset()
+    public static function dataSetDefault()
     {
         return array(
             array("Attrib1", 16, "", 0),
@@ -486,9 +486,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataReset
+    * @dataProvider dataSetDefault
     */
-    public function testReset(
+    public function testSetDefault(
         $attrib,
         $value,
         $lock,
@@ -498,7 +498,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", $class);
         $o->$attrib = $value;
         $o->lock($lock);
-        $o->reset($attrib);
+        $o->setDefault($attrib);
         $this->assertSame($expect, $o->$attrib, "$expect != ".$o->$attrib);
     }
     /**
@@ -511,12 +511,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
-                array("Attrib1"=>"Attrib1", "Attrib4" => "Attrib4"),
+                array("Attrib1", "Attrib4"),
                 "HUGnetContainerTestClass2",
             ),
             array(
                 "Attrib1",
-                array("Attrib1"=>"Attrib1"),
+                array("Attrib1"),
                 "HUGnetContainerTestClass2",
             ),
         );
@@ -540,7 +540,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     ) {
         $o = new HUGnetContainerTestClass("", $class);
         $o->lock($lock);
-        $this->assertAttributeSame($expect, "_lock", $o);
+        $this->assertSame($expect, $o->locked());
     }
     /**
     * data provider for testDeviceID
@@ -553,19 +553,19 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 array("Attrib1"),
-                array("Attrib4" => "Attrib4"),
+                array("Attrib4"),
                 "HUGnetContainerTestClass2",
             ),
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 "Attrib4",
-                array("Attrib1" => "Attrib1"),
+                array("Attrib1"),
                 "",
             ),
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 "Attrib8",
-                array("Attrib1" => "Attrib1", "Attrib4" => "Attrib4"),
+                array("Attrib1", "Attrib4"),
                 "HUGnetContainerTestClass2",
             ),
         );
@@ -592,7 +592,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", $class);
         $o->lock($lock);
         $o->unlock($unlock);
-        $this->assertAttributeSame($expect, "_lock", $o);
+        $this->assertSame($expect, $o->locked());
     }
     /**
     * data provider for testDeviceID
@@ -604,32 +604,32 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array("Attrib1", "Attrib4", "Attrib5"),
-                array(
-                    "Attrib1" => "Attrib1",
-                    "Attrib4" => "Attrib4",
-                ),
                 "Attrib2",
                 false,
                 "HUGnetContainerTestClass2",
             ),
             array(
                 array("Attrib1", "Attrib4", "Attrib5"),
-                array(
-                    "Attrib1" => "Attrib1",
-                    "Attrib4" => "Attrib4",
-                ),
                 "Attrib5",
                 true,
                 "HUGnetContainerTestClass2",
             ),
             array(
                 array("Attrib1", "Attrib4", "Attrib5"),
-                array(
-                    "Attrib1" => "Attrib1",
-                    "Attrib4" => "Attrib4",
-                ),
                 "Attrib5",
                 false,
+                "",
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5"),
+                null,
+                array("Attrib1", "Attrib4", "Attrib5"),
+                "HUGnetContainerTestClass2",
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5"),
+                null,
+                array("Attrib1", "Attrib4"),
                 "",
             ),
         );
@@ -639,7 +639,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array  $lock      The stuff to lock
-    * @param array  $lockCheck The stuff to lock
     * @param string $check     The stuff to unlock
     * @param bool   $expect    The expected return
     * @param string $class     The extra class to use
@@ -650,7 +649,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testLocked(
         $lock,
-        $lockCheck,
         $check,
         $expect,
         $class = ""
@@ -658,7 +656,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $o = new HUGnetContainerTestClass("", $class);
         $o->lock($lock);
         $ret = $o->locked($check);
-        $this->assertAttributeSame($lockCheck, "_lock", $o);
         $this->assertSame($expect, $ret);
     }
 
