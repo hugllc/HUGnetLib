@@ -96,12 +96,9 @@ interface HUGnetContainerInterface
     /**
     * Sets the extra attributes field
     *
-    * @param string $var   The name of the variable to traverse
-    *                      *** For internal use only ***
-    *
     * @return mixed The value of the attribute
     */
-    public function clearData($var = null);
+    public function clearData();
     /**
     * resets a value to its default
     *
@@ -129,9 +126,9 @@ interface HUGnetContainerInterface
     /**
     * resets a value to its default
     *
-    * @param string $names Array of names to lock
-    * @param string $var   The name of the variable to traverse
-    *                      *** For internal use only ***
+    * @param string $name Array of names to lock
+    * @param string $var  The name of the variable to traverse
+    *                     *** For internal use only ***
     *
     * @return mixed The value of the attribute
     */
@@ -139,16 +136,13 @@ interface HUGnetContainerInterface
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param array $devInfo This is an array of this class's attributes
+    * @param array $array This is an array of this class's attributes
     *
     * @return null
     */
-    public function fromArray($devInfo);
+    public function fromArray($array);
     /**
     * Sets all of the endpoint attributes from an array
-    *
-    * @param string $var   The name of the variable to traverse
-    *                      *** For internal use only ***
     *
     * @return null
     */
@@ -163,8 +157,6 @@ interface HUGnetContainerInterface
     public function fromString($string);
     /**
     * Returns the object as a string
-    *
-    * @param string $next Go towards the next in the chain if true, prev if false
     *
     * @return string
     */

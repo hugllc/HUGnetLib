@@ -55,7 +55,8 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInterface
+abstract class HUGnetContainer extends HUGnetClass
+    implements HUGnetContainerInterface
 {
     /** @var object The extra stuff class */
     private $_extra = null;
@@ -69,9 +70,9 @@ abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInt
     /**
     * This is the constructor
     *
-    * @param mixed  $data This is an array or string to create the object from
-    * @param object $next The next object in the list
-    * @param object $prev The previous object in the list
+    * @param mixed  $data  This is an array or string to create the object from
+    * @param object &$next The next object in the list
+    * @param object &$prev The previous object in the list
     */
     function __construct($data="", &$next=null, &$prev=null)
     {
@@ -87,8 +88,8 @@ abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInt
     /**
     * Registers extra vars
     *
-    * @param mixed  &$obj The class or object to use
-    * @param string $var  The variable to register the object on
+    * @param mixed  &$obj    The class or object to use
+    * @param string $var     The variable to register the object on
     * @param bool   $recurse Whether to modify this new object
     *
     * @return null
@@ -308,18 +309,15 @@ abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInt
         $myMethods = get_class_methods(__CLASS__);
         $methods = array_diff(get_class_methods(get_class($this)), $myMethods);
         $methods = array_merge($methods, (array)$extra);
-       return $methods;
+        return $methods;
     }
 
     /**
     * Sets the extra attributes field
     *
-    * @param string $var   The name of the variable to traverse
-    *                      *** For internal use only ***
-    *
     * @return mixed The value of the attribute
     */
-    public function clearData($var = null)
+    public function clearData()
     {
         foreach ($this->getProperties() as $name) {
             $this->setDefault($name);
@@ -370,8 +368,8 @@ abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInt
     /**
     * resets a value to its default
     *
-    * @param mixed $names Array of names to lock
-    * @param bool  $lock  Lock if true, unlock if false
+    * @param mixed  $names  Array of names to lock
+    * @param string $method 'lock' or 'unlock'
     *
     * @return mixed The value of the attribute
     */
@@ -399,9 +397,9 @@ abstract class HUGnetContainer extends HUGnetClass implements HUGnetContainerInt
     /**
     * resets a value to its default
     *
-    * @param string $names Array of names to lock
-    * @param string $var   The name of the variable to traverse
-    *                      *** For internal use only ***
+    * @param string $name Array of names to lock
+    * @param string $var  The name of the variable to traverse
+    *                     *** For internal use only ***
     *
     * @return mixed The value of the attribute
     */

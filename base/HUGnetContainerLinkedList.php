@@ -62,9 +62,9 @@ abstract class HUGnetContainerLinkedList extends HUGnetContainer
     /**
     * This is the constructor
     *
-    * @param mixed  $data This is an array or string to create the object from
-    * @param object $next The next object in the list
-    * @param object $prev The previous object in the list
+    * @param mixed  $data  This is an array or string to create the object from
+    * @param object &$next The next object in the list
+    * @param object &$prev The previous object in the list
     */
     function __construct($data="", &$next=null, &$prev=null)
     {
