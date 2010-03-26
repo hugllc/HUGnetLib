@@ -215,8 +215,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $expect The expected return
-    * @param string $var    The variable to check
+    * @param int $expect The expected return
     *
     * @return null
     *
@@ -401,9 +400,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload The expected return from extra
-    * @param array  $expect  The expected return from extra
-    * @param mixed  $lock    The stuff to lock
+    * @param array $preload The expected return from extra
+    * @param array $expect  The expected return from extra
+    * @param mixed $lock    The stuff to lock
     *
     * @return null
     *
@@ -491,8 +490,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $lock   The stuff to lock
-    * @param array  $expect The expected return
+    * @param array $lock   The stuff to lock
+    * @param array $expect The expected return
     *
     * @return null
     *
@@ -535,9 +534,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $lock   The stuff to lock
-    * @param array  $unlock The stuff to unlock
-    * @param array  $expect The expected return
+    * @param array $lock   The stuff to lock
+    * @param array $unlock The stuff to unlock
+    * @param array $expect The expected return
     *
     * @return null
     *
@@ -546,8 +545,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     public function testUnlock(
         $lock,
         $unlock,
-        $expect,
-        $obj = null
+        $expect
     ) {
         $o = new HUGnetContainerTestClass("");
         $o->lock($lock);
@@ -742,9 +740,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $array       The array to use to build it
-    * @param array  $expect      The expected return
-    * @param array  $expectExtra The expected return from extra
+    * @param array $array       The array to use to build it
+    * @param array $expect      The expected return
+    * @param array $expectExtra The expected return from extra
     *
     * @return null
     *
@@ -1048,8 +1046,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $data   The data used to build the stuff
-    * @param array  $expect The expected return
+    * @param array $data   The data used to build the stuff
+    * @param array $expect The expected return
     *
     * @return null
     *

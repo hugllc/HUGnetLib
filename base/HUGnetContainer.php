@@ -70,8 +70,7 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * This is the constructor
     *
-    * @param mixed  $data This is an array or string to create the object from
-    * @param object &$obj The object to register
+    * @param mixed $data This is an array or string to create the object from
     */
     function __construct($data="")
     {
@@ -85,9 +84,8 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * Registers extra vars
     *
-    * @param mixed  &$obj    The class or object to use
-    * @param string $var     The variable to register the object on
-    * @param bool   $recurse Whether to modify this new object
+    * @param mixed  &$obj The class or object to use
+    * @param string $var  The variable to register the object on
     *
     * @return null
     */
