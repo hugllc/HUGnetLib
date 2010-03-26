@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../base/HUGnetContainer.php';
+require_once dirname(__FILE__).'/../../base/HUGnetExtensibleContainer.php';
 
 /**
  * Test class for filter.
@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../base/HUGnetContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetContainerTest extends PHPUnit_Framework_TestCase
+class HUGnetExtensibleContainerTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -65,7 +65,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new HUGnetContainerTestClass();
+        $this->o = new HUGnetEContainerTestClass();
     }
 
     /**
@@ -94,8 +94,16 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array("Attrib1", 16, 0, "Attrib1"),
             array("Attrib1", "16Test", 16),
             array("Attrib5", "Hello", null),
-            array("Attrib1", 16, 16, ""),
-            array("Attrib1", 16, 0, "Attrib1"),
+            array("Attrib1", 16, 16, "", new HUGnetEContainerTestClass2()),
+            array("Attrib1", 16, 0, "Attrib1", new HUGnetEContainerTestClass2()),
+            array(
+                "Attrib5", "Hello", "Hello",
+                "", new HUGnetEContainerTestClass2()
+            ),
+            array(
+                "Attrib5", "Hello", "Blank String",
+                "Attrib5", new HUGnetEContainerTestClass2()
+            ),
         );
     }
 
@@ -106,6 +114,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * @param mixed  $value  The value to set it to
     * @param int    $expect The expected return
     * @param mixed  $lock   The spot to lock
+    * @param object $obj    The class for extra
     *
     * @return null
     *
@@ -115,9 +124,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $attrib,
         $value,
         $expect,
-        $lock = ""
+        $lock = "",
+        $obj = null
     ) {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->lock($lock);
         $o->$attrib = $value;
         $this->assertSame($expect, $o->$attrib);
@@ -132,11 +142,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new HUGnetContainerTestClass2(),
+                new HUGnetEContainerTestClass2(),
                 "test",
                 true,
                 array(
                     "Attrib5", "Attrib6", "Attrib7", "Attrib8",
+                    "Attrib1", "Attrib2", "Attrib3", "Attrib4",
                 ),
             ),
             array(
@@ -146,11 +157,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 null,
             ),
             array(
-                new HUGnetContainerTestClass2(),
+                new HUGnetEContainerTestClass2(),
                 "atest",
                 true,
                 array(
                     "Attrib5", "Attrib6", "Attrib7", "Attrib8",
+                    "Attrib1", "Attrib2", "Attrib3", "Attrib4",
                 ),
             ),
         );
@@ -170,7 +182,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testRegister($obj, $var, $expect, $properties)
     {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass();
         $ret = $o->register($obj, $var);
         $this->assertSame($expect, $ret);
         if ($expect) {
@@ -190,6 +202,50 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataCall()
+    {
+        return array(
+            array(
+                "myFunction",
+                array(1,2,3,4),
+                null,
+                null,
+                null,
+            ),
+            array(
+                "args",
+                array(1,2,3,4),
+                new HUGnetEContainerTestClass2(),
+                null,
+                array(1,2,3,4),
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param string $function The name of the function to run
+    * @param array  $args     The function arguments
+    * @param object $obj      The class or object to use for next
+    * @param object $obj2     The class or object to use for prev
+    * @param bool   $expect   The return expected
+    *
+    * @return null
+    *
+    * @dataProvider dataCall
+    */
+    public function testCall($function, $args, $obj, $obj2, $expect)
+    {
+        $o = new HUGnetEContainerTestClass("", $obj, $obj2);
+        $ret = call_user_func_array(array($o, $function), $args);
+        $this->assertSame($expect, $ret);
+    }
 
     /**
     * data provider for testDeviceID
@@ -200,11 +256,22 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                new HUGnetEContainerTestClass2(),
                 array(
                     "Attrib1", "Attrib2", "Attrib3", "Attrib4",
+                    "Attrib5", "Attrib6", "Attrib7", "Attrib8"
                 ),
             ),
             array(
+                new HUGnetEContainerTestClass2(),
+                array(
+                    "Attrib1", "Attrib2", "Attrib3", "Attrib4",
+                    "Attrib5", "Attrib6", "Attrib7", "Attrib8"
+                ),
+                "_extraNext",
+            ),
+            array(
+                "",
                 array(
                     "Attrib1", "Attrib2", "Attrib3", "Attrib4",
                 ),
@@ -215,6 +282,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param object $obj    Extra class to load
     * @param int    $expect The expected return
     * @param string $var    The variable to check
     *
@@ -222,10 +290,112 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataGetProperties
     */
-    public function testGetProperties($expect)
+    public function testGetProperties($obj, $expect, $var = null)
     {
-        $o = new HUGnetContainerTestClass();
-        $ret = $o->getProperties();
+        $o = new HUGnetEContainerTestClass("", $obj);
+        $ret = $o->getProperties($var);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetMethods()
+    {
+        return array(
+            array(
+                new HUGnetEContainerTestClass2(),
+                array(
+                    "attrib1", "attrib5", "args"
+                ),
+            ),
+            array(
+                new HUGnetEContainerTestClass2(),
+                array(
+                    "attrib1", "attrib5", "args"
+                ),
+                "_extraNext",
+            ),
+            array(
+                "",
+                array(
+                    "attrib1",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param object $obj    Extra class to load
+    * @param int    $expect The expected return
+    * @param string $var    The variable to check
+    *
+    * @return null
+    *
+    * @dataProvider dataGetMethods
+    */
+    public function testGetMethods($obj, $expect, $var = null)
+    {
+        $o = new HUGnetEContainerTestClass("", $obj);
+        $ret = $o->getMethods($var);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "Attrib1",
+                0,
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                "Attrib7",
+                1.0,
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                "Attrib1",
+                0,
+                '',
+            ),
+            array(
+                "Attrib7",
+                null,
+                $nothing,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The attribute name to get
+    * @param int    $expect The expected return
+    * @param object $obj    The class for extra
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $expect, $obj = null)
+    {
+        $o = new HUGnetEContainerTestClass("", $obj);
+        $ret = $o->$name;
         $this->assertSame(
             $expect,
             $ret
@@ -242,32 +412,45 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array(
                 "Attrib1",
                 null,
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 "Attrib7",
                 null,
+                new HUGnetEContainerTestClass2(),
                 true
             ),
             array(
                 "Attrib1",
                 null,
+                null,
             ),
             array(
                 "Attrib7",
+                null,
                 null,
             ),
             array(
                 "Attrib1",
                 0,
-                "Attrib1",
-            ),
-            array(
-                "Attrib1",
-                0,
+                new HUGnetEContainerTestClass2(),
                 "Attrib1",
             ),
             array(
                 "Attrib7",
+                1.0,
+                new HUGnetEContainerTestClass2(),
+                "Attrib7",
+            ),
+            array(
+                "Attrib1",
+                0,
+                null,
+                "Attrib1",
+            ),
+            array(
+                "Attrib7",
+                null,
                 null,
                 "Attrib7",
             ),
@@ -279,15 +462,16 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $name   The attribute name to get
     * @param int    $expect The expected return
+    * @param object $obj    The class for extra
     * @param mixed  $lock   The attribute to lock
     *
     * @return null
     *
     * @dataProvider dataUnset
     */
-    public function testUnset($name, $expect, $lock = "")
+    public function testUnset($name, $expect, $obj = null, $lock = "")
     {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->lock($lock);
         unset($o->$name);
         $this->assertSame($expect, $o->$name);
@@ -303,18 +487,27 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array(
                 "Attrib1",
                 true,
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 "Attrib9",
                 false,
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                "Attrib8",
+                true,
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 "Attrib1",
                 true,
+                null,
             ),
             array(
                 "Attrib7",
                 false,
+                null,
             ),
         );
     }
@@ -324,14 +517,15 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $name   The attribute name to get
     * @param int    $expect The expected return
+    * @param object $obj    The class for extra
     *
     * @return null
     *
     * @dataProvider dataIsset
     */
-    public function testIsset($name, $expect)
+    public function testIsset($name, $expect, $obj = null)
     {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass("", $obj);
         $ret = isset($o->$name);
         $this->assertSame($expect, $ret);
     }
@@ -359,8 +553,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib2" => "Default",
                     "Attrib3" => "Data",
                     "Attrib4" => array("Hello"),
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("One Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
                 ),
                 array(),
+                new HUGnetEContainerTestClass2()
             ),
             array(
                 array(
@@ -378,8 +577,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib2" => "Default",
                     "Attrib3" => "Data",
                     "Attrib4" => array("Hello"),
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
                 ),
                 array("Attrib1", "Attrib6"),
+                new HUGnetEContainerTestClass2()
             ),
             array(
                 array(
@@ -395,6 +599,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib4" => array("Hello"),
                 ),
                 "Attrib2",
+                null
             ),
         );
     }
@@ -404,6 +609,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * @param array  $preload The expected return from extra
     * @param array  $expect  The expected return from extra
     * @param mixed  $lock    The stuff to lock
+    * @param object $obj     The class for extra
     *
     * @return null
     *
@@ -412,9 +618,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     public function testClearData(
         $preload,
         $expect,
-        $lock
+        $lock,
+        $obj = null
     ) {
-        $o = new HUGnetContainerTestClass($preload);
+        $o = new HUGnetEContainerTestClass($preload, $obj);
         $o->lock($lock);
         $o->clearData();
         $obj = &$o;
@@ -434,10 +641,18 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array("Attrib1", 16, "", 0),
             array("Attrib1", "16Test", "", 0),
             array("Attrib5", "Hello", "", null),
-            array("Attrib1", 16, "", 0),
+            array("Attrib1", 16, "", 0, new HUGnetEContainerTestClass2()),
+            array(
+                "Attrib5", "Hello", "", "Blank String",
+                new HUGnetEContainerTestClass2()
+            ),
             array("Attrib1", 16, "Attrib5", 0),
             array("Attrib5", "Hello", "Attrib5", null),
-            array("Attrib1", 16, "Attrib1", 16),
+            array("Attrib1", 16, "Attrib1", 16, new HUGnetEContainerTestClass2()),
+            array(
+                "Attrib5", "Hello", "Attrib5", "Hello",
+                new HUGnetEContainerTestClass2()
+            ),
         );
     }
 
@@ -448,6 +663,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * @param mixed  $value  The value to set it to
     * @param mixed  $lock   The attribute to lock
     * @param int    $expect The expected return
+    * @param object $obj    The class for extra
     *
     * @return null
     *
@@ -457,9 +673,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $attrib,
         $value,
         $lock,
-        $expect
+        $expect,
+        $obj = null
     ) {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->$attrib = $value;
         $o->lock($lock);
         $o->setDefault($attrib);
@@ -476,14 +693,22 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 array("Attrib1", "Attrib4"),
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 "Attrib1",
                 array("Attrib1"),
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                array("asfd", "Attrib1", "fdscdd", "Attrib4", "Attrib5", "Attrib8"),
+                array("Attrib1", "Attrib4", "Attrib5", "Attrib8"),
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4", "Attrib5", "Attrib8"),
                 array("Attrib1", "Attrib4"),
+                "",
             ),
         );
     }
@@ -493,6 +718,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param array  $lock   The stuff to lock
     * @param array  $expect The expected return
+    * @param string $obj    The extra class to use
     *
     * @return null
     *
@@ -500,9 +726,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testLock(
         $lock,
-        $expect
+        $expect,
+        $obj = null
     ) {
-        $o = new HUGnetContainerTestClass();
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->lock($lock);
         $this->assertSame($expect, $o->locked());
     }
@@ -518,16 +745,19 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 array("Attrib1"),
                 array("Attrib4"),
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 "Attrib4",
                 array("Attrib1"),
+                "",
             ),
             array(
                 array("asfd", "Attrib1", "fdscdd", "Attrib4"),
                 "Attrib8",
                 array("Attrib1", "Attrib4"),
+                new HUGnetEContainerTestClass2(),
             ),
         );
     }
@@ -538,6 +768,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * @param array  $lock   The stuff to lock
     * @param array  $unlock The stuff to unlock
     * @param array  $expect The expected return
+    * @param object $obj    The class for extra
     *
     * @return null
     *
@@ -549,7 +780,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $expect,
         $obj = null
     ) {
-        $o = new HUGnetContainerTestClass("");
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->lock($lock);
         $o->unlock($unlock);
         $this->assertSame($expect, $o->locked());
@@ -566,16 +797,51 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 array("Attrib1", "Attrib4", "Attrib5"),
                 "Attrib2",
                 false,
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5"),
+                "Attrib5",
+                true,
+                new HUGnetEContainerTestClass2(),
             ),
             array(
                 array("Attrib1", "Attrib4", "Attrib5"),
                 "Attrib5",
                 false,
+                "",
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5"),
+                null,
+                array("Attrib1", "Attrib4", "Attrib5"),
+                new HUGnetEContainerTestClass2(),
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5", "Attrib7"),
+                null,
+                array("Attrib1", "Attrib4", "Attrib5", "Attrib7"),
+                new HUGnetEContainerTestClass2(),
+                "_extraNext"
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5", "Attrib7"),
+                null,
+                array("Attrib1", "Attrib4"),
+                new HUGnetEContainerTestClass2(),
+                "_extraPrev"
             ),
             array(
                 array("Attrib1", "Attrib4", "Attrib5"),
                 null,
                 array("Attrib1", "Attrib4"),
+                "",
+            ),
+            array(
+                array("Attrib1", "Attrib4", "Attrib5"),
+                null,
+                array("Attrib1", "Attrib4"),
+                "",
             ),
         );
     }
@@ -586,6 +852,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     * @param array  $lock   The stuff to lock
     * @param string $check  The stuff to unlock
     * @param bool   $expect The expected return
+    * @param object $obj    The class for extra
+    * @param string $var    The variable to pass to lock
     *
     * @return null
     *
@@ -594,370 +862,14 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     public function testLocked(
         $lock,
         $check,
-        $expect
+        $expect,
+        $obj = null,
+        $var = null
     ) {
-        $o = new HUGnetContainerTestClass("");
+        $o = new HUGnetEContainerTestClass("", $obj);
         $o->lock($lock);
-        $ret = $o->locked($check);
+        $ret = $o->locked($check, $var);
         $this->assertSame($expect, $ret);
-    }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataToArray()
-    {
-        return array(
-            array(
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "Default",
-                    "Attrib3" => new HUGnetContainerTestClass2(),
-                    "Attrib4" => array("Hello"),
-                    "Attrib5" => "Blank String",
-                    "Attrib6" => array("One Element"),
-                    "Attrib7" => 1.0,
-                    "Attrib8" => 4,
-                ),
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "Default",
-                    "Attrib3" => array(
-                        "Attrib5" => "Blank String",
-                        "Attrib6" => array("One Element"),
-                        "Attrib7" => 1.0,
-                        "Attrib8" => 4,
-                    ),
-                    "Attrib4" => array("Hello"),
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "Default",
-                    "Attrib3" => new HUGnetContainerTestClass2(),
-                    "Attrib4" => array("Hello"),
-                    "Attrib5" => "Blank String",
-                    "Attrib6" => array("One Element"),
-                    "Attrib7" => 1.0,
-                    "Attrib8" => 4,
-                ),
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "Default",
-                    "Attrib3" => array(
-                        "Attrib5" => "Blank String",
-                        "Attrib6" => array("One Element"),
-                        "Attrib7" => 1.0,
-                        "Attrib8" => 4,
-                    ),
-                    "Attrib4" => array("Hello"),
-                ),
-                "_extraNext",
-            ),
-            array(
-                "",
-                array(
-                    "Attrib1" => 0,
-                    "Attrib2" => "Default",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hello"),
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload What to preload the object with
-    * @param array  $expect  The expected return
-    * @param string $var     The variable to pass to 'toArray'
-    *
-    * @return null
-    *
-    * @dataProvider dataToArray
-    */
-    public function testToArray($preload, $expect, $var = null)
-    {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->toArray($var);
-        $this->assertSame(
-            $expect,
-            $ret
-        );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromArray()
-    {
-        return array(
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib4" => array("Hi"),
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib8" => 4.321,
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-                array(
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib7" => 1.0,
-                    "Attrib8" => 4.321,
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                    "Attrib5" => "NonBlank String",
-                    "Attrib6" => array("Three Element"),
-                    "Attrib7" => 1.15,
-                    "Attrib8" => 9.95,
-                ),
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                ),
-                null,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $array       The array to use to build it
-    * @param array  $expect      The expected return
-    * @param array  $expectExtra The expected return from extra
-    *
-    * @return null
-    *
-    * @dataProvider dataFromArray
-    */
-    public function testFromArray($array, $expect, $expectExtra)
-    {
-        $o = new HUGnetContainerTestClass();
-        $o->fromArray($array);
-        $this->assertSame(
-            $expect,
-            $this->readAttribute($o, "data")
-        );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function data2String()
-    {
-        return array(
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib4" => array("Hi"),
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib8" => 4.321,
-                ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib4" => array("Hi"),
-                    "Attrib5" => "Another string",
-                    "Attrib6" => array("Two Element"),
-                    "Attrib8" => 4.321,
-                ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib3" => "Data",
-                            "Attrib4" => array("Hi"),
-                        )
-                    )
-                ),
-            ),
-            array(
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                    "Attrib5" => "NonBlank String",
-                    "Attrib6" => array("Three Element"),
-                    "Attrib7" => 1.15,
-                    "Attrib8" => 9.95,
-                ),
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 100,
-                            "Attrib2" => "Hello There",
-                            "Attrib3" => "Some Data",
-                            "Attrib4" => array("Hello Everyone"),
-                        )
-                    )
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload Data to preload
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider data2String
-    */
-    public function testToString($preload, $expect)
-    {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->toString();
-        $this->assertSame(
-            $expect,
-            $ret
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload Data to preload
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider data2String
-    */
-    public function testOverloadToString($preload, $expect)
-    {
-        $o = new HUGnetContainerTestClass($preload);
-        $this->assertSame(
-            $expect,
-            (string)$o
-        );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromString()
-    {
-        return array(
-            array(
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib4" => array("Hi"),
-                            "Attrib5" => "Another string",
-                            "Attrib6" => array("Two Element"),
-                            "Attrib8" => 4.321,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-            ),
-            array(
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 10,
-                            "Attrib2" => "Hello",
-                            "Attrib4" => array("Hi"),
-                            "Attrib5" => "Another string",
-                            "Attrib6" => array("Two Element"),
-                            "Attrib8" => 4.321,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 10,
-                    "Attrib2" => "Hello",
-                    "Attrib3" => "Data",
-                    "Attrib4" => array("Hi"),
-                ),
-            ),
-            array(
-                base64_encode(
-                    serialize(
-                        array(
-                            "Attrib1" => 100,
-                            "Attrib2" => "Hello There",
-                            "Attrib3" => "Some Data",
-                            "Attrib4" => array("Hello Everyone"),
-                            "Attrib5" => "NonBlank String",
-                            "Attrib6" => array("Three Element"),
-                            "Attrib7" => 1.15,
-                            "Attrib8" => 9.95,
-                        )
-                    )
-                ),
-                array(
-                    "Attrib1" => 100,
-                    "Attrib2" => "Hello There",
-                    "Attrib3" => "Some Data",
-                    "Attrib4" => array("Hello Everyone"),
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $string The array to use to build it
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromString
-    */
-    public function testFromString($string, $expect)
-    {
-        $o = new HUGnetContainerTestClass();
-        $o->fromString($string, $next);
-        $this->assertSame(
-            $expect,
-            $o->toArray()
-        );
     }
     /**
     * data provider for testDeviceID
@@ -976,11 +888,16 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib6" => array("Two Element"),
                     "Attrib8" => 4.321,
                 ),
+                new HUGnetEContainerTestClass2(),
                 array(
                     "Attrib1" => 10,
                     "Attrib2" => "Hello",
                     "Attrib3" => "Data",
                     "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
                 ),
             ),
             array(
@@ -994,6 +911,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib7" => 1.15,
                     "Attrib8" => 9.95,
                 ),
+                "",
                 array(
                     "Attrib1" => 100,
                     "Attrib2" => "Hello There",
@@ -1014,11 +932,16 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                         )
                     )
                 ),
+                new HUGnetEContainerTestClass2(),
                 array(
                     "Attrib1" => 10,
                     "Attrib2" => "Hello",
                     "Attrib3" => "Data",
                     "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4.321,
                 ),
             ),
             array(
@@ -1036,6 +959,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                         )
                     )
                 ),
+                "",
                 array(
                     "Attrib1" => 100,
                     "Attrib2" => "Hello There",
@@ -1045,19 +969,21 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
+
     /**
     * test the set routine when an extra class exists
     *
     * @param array  $data   The data used to build the stuff
+    * @param string $class  The class for extra
     * @param array  $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructorData
     */
-    public function testConstructorData($data, $expect)
+    public function testConstructorData($data, $class, $expect)
     {
-        $o = new HUGnetContainerTestClass($data);
+        $o = new HUGnetEContainerTestClass($data, $class);
         $this->assertSame(
             $expect,
             $o->toArray()
@@ -1078,7 +1004,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetContainerTestClass extends HUGnetContainer
+class HUGnetEContainerTestClass extends HUGnetExtensibleContainer
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -1122,7 +1048,7 @@ class HUGnetContainerTestClass extends HUGnetContainer
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HUGnetContainerTestClass2 extends HUGnetContainer
+class HUGnetEContainerTestClass2 extends HUGnetExtensibleContainer
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */

@@ -37,7 +37,10 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
-require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
+require_once dirname(__FILE__)
+    ."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)
+    ."/../interfaces/HUGnetExtensibleContainerInterface.php";
 
 /**
  * This is a generic, extensible container class
@@ -55,8 +58,8 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class HUGnetContainer extends HUGnetClass
-    implements HUGnetContainerInterface
+abstract class HUGnetExtensibleContainer extends HUGnetContainer
+    implements HUGnetExtensibleContainerInterface
 {
     /** @var object The extra stuff class */
     private $_extra = null;
@@ -70,11 +73,14 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * This is the constructor
     *
-    * @param mixed  $data This is an array or string to create the object from
-    * @param object &$obj The object to register
+    * @param mixed  $data  This is an array or string to create the object from
+    * @param object &$next The next object in the list
+    * @param object &$prev The previous object in the list
     */
-    function __construct($data="")
+    function __construct($data="", &$next=null, &$prev=null)
     {
+        $this->registerPrev($prev);
+        $this->registerNext($next);
         $this->clearData();
         if (is_string($data)) {
             $this->fromString($data);
@@ -91,18 +97,68 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @return null
     */
-    public function register(&$obj, $var)
+    final public function register(&$obj, $var, $recurse = true)
     {
+        if (strtolower($var) == "next") {
+            $var   = "_extraNext";
+            $name  = "next";
+            $other = "prev";
+        } else if (strtolower($var) == "prev") {
+            $var   = "_extraPrev";
+            $name  = "prev";
+            $other = "next";
+        } else {
+            $name  = null;
+            // This sets up the other object
+            $other = "prev";
+        }
         if (!is_object($obj) || is_object($this->$var) || empty($var)) {
             return false;
         }
         // Set up the object
         $this->$var =& $obj;
+        if (!is_null($name)) {
+            // Get the properties
+            $this->_extra["Properties"][$name] = $this->$var->getProperties($var);
+            // Get the methods
+            $this->_extra["Methods"][$name] = $this->$var->getMethods($var);
+            // Set as registered
+            $this->_extra["Registered"][$var] = $var;
+        }
         // Register the class
         $this->_extra["Classes"][$var] = get_class($obj);
+        // Set up the other object.
+        if ($recurse) {
+            $this->$var->register($this, $other, false);
+        }
         return true;
     }
-        /**
+    /**
+    * Registers extra vars
+    *
+    * @param object &$obj    The class or object to use
+    * @param bool   $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    final public function registerNext(&$obj, $recurse = true)
+    {
+        return $this->register($obj, "next", $recurse);
+    }
+    /**
+    * Registers extra vars
+    *
+    * @param object &$obj    The class or object to use
+    * @param bool   $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    final public function registerPrev(&$obj, $recurse = true)
+    {
+        return $this->register($obj, "prev", $recurse);
+    }
+
+    /**
     * Overload the set attribute
     *
     * @param string $name  This is the attribute to set
@@ -112,13 +168,10 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __set($name, $value)
     {
-        if ($this->locked($name)) {
-            self::vprint("'set' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
-            $this->data[$name] = $value;
-            if (method_exists($this, $name)) {
-                $this->$name();
-            }
+        if (array_key_exists($name, $this->default)) {
+            parent::__set($name, $value);
+        } else if ($var = $this->_findExtra($name)) {
+            $this->$var->$name = $value;
         }
     }
     /**
@@ -132,6 +185,8 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
+        } else if ($var = $this->_findExtra($name)) {
+            return $this->$var->$name;
         }
         return null;
     }
@@ -144,10 +199,10 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __unset($name)
     {
-        if ($this->locked($name)) {
-            self::vprint("'unset' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
-            unset($this->data[$name]);
+        if (array_key_exists($name, $this->default)) {
+            parent::__unset($name);
+        } else if ($var = $this->_findExtra($name)) {
+            unset($this->$var->$name);
         }
     }
     /**
@@ -161,18 +216,46 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             return (bool)isset($this->data[$name]);
+        } else if ($var = $this->_findExtra($name)) {
+            return (bool)isset($this->$var->$name);
         }
         return false;
     }
+    /**
+    * Tries to run a function defined by what is called..
+    *
+    * @param string $name The name of the function to call
+    * @param array  $args The array of arguments
+    *
+    * @return mixed
+    */
+    public function __call($name, $args)
+    {
+        if ($var = $this->_findExtra($name, false)) {
+            return call_user_func_array(array($this->$var, $name), $args);
+        }
+        return null;
+    }
 
     /**
-    * Converts the object to a string
+    * Finds the variable to use to find a property or method
     *
-    * @return mixed The value of the attribute
+    * @param string $find     The name of the thing to find
+    * @param bool   $property Find a property if true
+    *
+    * @return string the variable to reference
     */
-    private function __toString()
+    private function _findExtra($find, $property = true)
     {
-        return $this->toString();
+        $index = ($property) ? "Properties" : "Methods";
+        $haystack = &$this->_extra[$index];
+        if (!is_bool(array_search($find, (array)$haystack["next"]))) {
+            return "_extraNext";
+        }
+        if (!is_bool(array_search($find, (array)$haystack["prev"]))) {
+            return "_extraPrev";
+        }
+        return false;
     }
     /**
     * Sets the extra attributes field
@@ -183,20 +266,38 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function getProperties($var = null)
     {
-        return array_keys((array)$this->default);
+        if (is_object($this->$var)) {
+            $extra = $this->$var->getProperties($var);
+        } else if (is_null($var)) {
+            foreach ((array)$this->_extra["Properties"] as $vars) {
+                $extra = array_merge((array)$extra, $vars);
+            }
+        }
+        return array_merge(array_keys((array)$this->default), (array)$extra);
     }
 
     /**
     * Sets the extra attributes field
     *
+    * @param string $var The variable to check
+    *
     * @return mixed The value of the attribute
     */
-    public function clearData()
+    public function getMethods($var = null)
     {
-        foreach ($this->getProperties() as $name) {
-            $this->setDefault($name);
+        if (is_object($this->$var)) {
+            $extra = $this->$var->getMethods($var);
+        } else if (is_null($var)) {
+            foreach ((array)$this->_extra["Methods"] as $vars) {
+                $extra = array_merge((array)$extra, $vars);
+            }
         }
+        $myMethods = get_class_methods(__CLASS__);
+        $methods = array_diff(get_class_methods(get_class($this)), $myMethods);
+        $methods = array_merge($methods, (array)$extra);
+        return $methods;
     }
+
     /**
     * resets a value to its default
     *
@@ -206,10 +307,10 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function setDefault($name)
     {
-        if ($this->locked($name)) {
-            self::vprint("'unset' tried to access a locked property\n", 1);
-        } else if (array_key_exists($name, $this->default)) {
-            $this->data[$name] = $this->default[$name];
+        if (array_key_exists($name, (array)$this->default)) {
+            parent::setDefault($name);
+        } else if ($var = $this->_findExtra($name)) {
+            $this->$var->setDefault($name);
         }
     }
     /**
@@ -260,6 +361,8 @@ abstract class HUGnetContainer extends HUGnetClass
                 } else {
                     unset($this->_lock[$name]);
                 }
+            } else if ($var = $this->_findExtra($name)) {
+                $this->$var->$method($name);
             }
         }
     }
@@ -277,65 +380,23 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             return isset($this->_lock[$name]);
+        } else if ($useVar = $this->_findExtra($name)) {
+            return $this->$useVar->locked($name);
         } else if (is_null($name)) {
-            return array_keys((array)$this->_lock);
+            if (is_object($this->$var)) {
+                $extra = $this->$var->locked(null, $var);
+            } else if (empty($var)) {
+                foreach ((array)$this->_extra["Registered"] as $var) {
+                    $extra = array_merge(
+                        (array)$extra,
+                        $this->$var->locked(null, $var)
+                    );
+                }
+            }
+            return array_merge(array_keys($this->_lock), (array) $extra);
         }
         return false;
     }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $devInfo This is an array of this class's attributes
-    *
-    * @return null
-    */
-    public function fromArray($devInfo)
-    {
-        foreach ($this->getProperties() as $attrib) {
-            if (isset($devInfo[$attrib])) {
-                $this->$attrib = $devInfo[$attrib];
-            }
-        }
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @return null
-    */
-    public function toArray()
-    {
-        foreach ($this->getProperties() as $key) {
-            if (is_object($this->$key) && method_exists($this->$key, "toArray")) {
-                $data[$key] = $this->$key->toArray();
-            } else {
-                $data[$key] = $this->$key;
-            }
-        }
-        return (array)$data;
-    }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $stuff = unserialize(base64_decode($string));
-        $this->fromArray($stuff);
-    }
-    /**
-    * Returns the object as a string
-    *
-    * @return string
-    */
-    public function toString()
-    {
-        return base64_encode(serialize($this->toArray()));
-    }
-
 
 }
 ?>

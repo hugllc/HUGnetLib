@@ -48,7 +48,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface HUGnetContainerInterface
+interface HUGnetExtensibleContainerInterface
 {
     /**
     * Registers extra vars
@@ -60,11 +60,39 @@ interface HUGnetContainerInterface
     */
     function register(&$obj, $var);
     /**
+    * Registers extra vars
+    *
+    * @param object &$obj    The class or object to use
+    * @param bool   $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    function registerNext(&$obj, $recurse = true);
+    /**
+    * Registers extra vars
+    *
+    * @param object &$obj    The class or object to use
+    * @param bool   $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    function registerPrev(&$obj, $recurse = true);
+    /**
     * Sets the extra attributes field
+    *
+    * @param string $var The variable to check
     *
     * @return mixed The value of the attribute
     */
-    public function clearData();
+    public function getProperties($var = null);
+    /**
+    * Sets the extra attributes field
+    *
+    * @param string $var The variable to check
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getMethods($var = null);
     /**
     * resets a value to its default
     *
@@ -76,22 +104,6 @@ interface HUGnetContainerInterface
     /**
     * resets a value to its default
     *
-    * @param mixed $names Array of names to lock
-    *
-    * @return mixed The value of the attribute
-    */
-    public function lock($names);
-    /**
-    * resets a value to its default
-    *
-    * @param mixed $names Array of names to lock
-    *
-    * @return mixed The value of the attribute
-    */
-    public function unlock($names);
-    /**
-    * resets a value to its default
-    *
     * @param string $name Array of names to lock
     * @param string $var  The name of the variable to traverse
     *                     *** For internal use only ***
@@ -99,34 +111,5 @@ interface HUGnetContainerInterface
     * @return mixed The value of the attribute
     */
     public function locked($name = null, $var = null);
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $array This is an array of this class's attributes
-    *
-    * @return null
-    */
-    public function fromArray($array);
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @return null
-    */
-    public function toArray();
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string);
-    /**
-    * Returns the object as a string
-    *
-    * @return string
-    */
-    public function toString();
-
 }
 ?>
