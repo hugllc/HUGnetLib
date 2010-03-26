@@ -580,33 +580,6 @@ class HUGnetContainerLinkedListTestClass extends HUGnetContainerLinkedList
     {
         $this->Attrib1 = (int) $this->Attrib1;
     }
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $devInfo = (array) unserialize($string);
-        foreach ($this->getAttributes() as $attrib) {
-            if (isset($devInfo[$attrib])) {
-                $this->$attrib = $devInfo[$attrib];
-            }
-        }
-        parent::fromString($string);
-    }
-    /**
-    * Returns the object as a string
-    *
-    * @return string
-    */
-    public function toString()
-    {
-        $string = $this->Attrib2;
-        return $string.parent::toString();
-    }
 
 }
 
