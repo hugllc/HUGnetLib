@@ -146,7 +146,6 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect) {
         $o = new ConfigContainer($preload);
         $ret = $o->toArray();
-        var_dump($ret);
         $this->assertSame($expect, $ret);
     }
 
