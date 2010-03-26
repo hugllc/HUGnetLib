@@ -58,6 +58,7 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
 abstract class HUGnetContainer extends HUGnetClass
     implements HUGnetContainerInterface
 {
+    const DIRECTORY = "/../containers/";
     /** @var object The extra stuff class */
     private $_extra = null;
     /** @var object The extra stuff class */
@@ -66,6 +67,8 @@ abstract class HUGnetContainer extends HUGnetClass
     private $_extraNext = null;
     /** @var object The locked values */
     private $_lock = array();
+    /** @var object The locked values */
+    private $_includePath = "";
 
     /**
     * This is the constructor
@@ -100,7 +103,27 @@ abstract class HUGnetContainer extends HUGnetClass
         $this->_extra["Classes"][$var] = get_class($obj);
         return true;
     }
-        /**
+    /**
+    * Registers extra vars
+    *
+    * @param string $class The class or object to use
+    *
+    * @return null
+    */
+    public function &factory($data, $class)
+    {
+        if (empty($class)) {
+            return null;
+        }
+        if (!class_exists($class)) {
+            @include_once dirname(__FILE__).self::DIRECTORY.$class.".php";
+        }
+        if (class_exists($class)) {
+            return new $class($data);
+        }
+        return null;
+    }
+    /**
     * Overload the set attribute
     *
     * @param string $name  This is the attribute to set
@@ -303,15 +326,31 @@ abstract class HUGnetContainer extends HUGnetClass
     public function toArray()
     {
         foreach ($this->getProperties() as $key) {
-            if (is_object($this->$key) && method_exists($this->$key, "toArray")) {
-                $data[$key] = $this->$key->toArray();
-            } else {
-                $data[$key] = $this->$key;
-            }
+            $data[$key] = $this->toArrayIterator($this->$key);
         }
         return (array)$data;
     }
-
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array The array to traverse
+    *
+    * @return null
+    */
+    protected function toArrayIterator($array)
+    {
+        if (is_object($array) && method_exists($array, "toArray")) {
+            return $array->toArray();
+        } else if (is_array($array)) {
+            $ret = array();
+            foreach ($array as $key => $value) {
+                $ret[$key] = $this->toArrayIterator($value);
+            }
+            return $ret;
+        } else {
+            return $array;
+        }
+    }
     /**
     * Creates the object from a string
     *

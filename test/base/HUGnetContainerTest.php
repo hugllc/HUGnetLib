@@ -190,6 +190,82 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                "HUGnetContainerTestClass2",
+                array(),
+                array(
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("One Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
+                ),
+            ),
+            array(
+                "HUGnetContainerTestClass2",
+                array(
+                    "Attrib5" => "String",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 2.0,
+                    "Attrib8" => 4.5,
+                ),
+                array(
+                    "Attrib5" => "String",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib7" => 2.0,
+                    "Attrib8" => 4.5,
+                ),
+            ),
+            array(
+                "BadClass",
+                array(
+                ),
+                array(
+                ),
+            ),
+            array(
+                "",
+                array(
+                ),
+                array(
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param mixed  $class      The class to use
+    * @param string $data       The data to send to the object
+    * @param mixed  $expect     The return expected
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($class, $data, $expect)
+    {
+        $ret = &HUGnetContainerTestClass::factory($data, $class);
+        if (is_object($ret)) {
+            $this->assertSame($class, get_class($ret));
+            $this->assertSame(
+                $expect,
+                $ret->toArray()
+            );
+        } else {
+            $this->assertNull(
+                $ret
+            );
+        }
+    }
 
     /**
     * data provider for testDeviceID
@@ -650,6 +726,34 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                         "Attrib6" => array("One Element"),
                         "Attrib7" => 1.0,
                         "Attrib8" => 4,
+                    ),
+                    "Attrib4" => array("Hello"),
+                ),
+                "_extraNext",
+            ),
+            array(
+                array(
+                    "Attrib1" => 0,
+                    "Attrib2" => "Default",
+                    "Attrib3" => array(
+                        new HUGnetContainerTestClass2()
+                    ),
+                    "Attrib4" => array("Hello"),
+                    "Attrib5" => "Blank String",
+                    "Attrib6" => array("One Element"),
+                    "Attrib7" => 1.0,
+                    "Attrib8" => 4,
+                ),
+                array(
+                    "Attrib1" => 0,
+                    "Attrib2" => "Default",
+                    "Attrib3" => array(
+                        array(
+                            "Attrib5" => "Blank String",
+                            "Attrib6" => array("One Element"),
+                            "Attrib7" => 1.0,
+                            "Attrib8" => 4,
+                        ),
                     ),
                     "Attrib4" => array("Hello"),
                 ),

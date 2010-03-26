@@ -224,6 +224,13 @@ class HUGnetExtensibleContainerTest extends PHPUnit_Framework_TestCase
                 null,
                 array(1,2,3,4),
             ),
+            array(
+                "args",
+                array(1,2,3,4),
+                null,
+                new HUGnetEContainerTestClass2(),
+                array(1,2,3,4),
+            ),
         );
     }
 
