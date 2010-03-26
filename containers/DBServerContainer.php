@@ -104,7 +104,7 @@ class DBServerContainer extends HUGnetContainerLinkedList
             $dsn .= "dbname=".$this->db;
         } else {
             if (empty($this->file)) {
-                $this->reset("file");
+                $this->setDefault("file");
             }
             $dsn = "sqlite:".$this->file;
         }
