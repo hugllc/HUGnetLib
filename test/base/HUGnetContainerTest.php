@@ -243,9 +243,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the register function
     *
-    * @param mixed  $class      The class to use
-    * @param string $data       The data to send to the object
-    * @param mixed  $expect     The return expected
+    * @param mixed  $class  The class to use
+    * @param string $data   The data to send to the object
+    * @param mixed  $expect The return expected
     *
     * @return null
     *
