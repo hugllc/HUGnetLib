@@ -372,6 +372,15 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         return base64_encode(serialize($this->toArray()));
     }
+    /**
+    * Returns the md5 hash of the object
+    *
+    * @return string
+    */
+    public function hash()
+    {
+        return md5((string)$this);
+    }
 
 
 }

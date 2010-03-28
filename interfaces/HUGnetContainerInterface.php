@@ -127,6 +127,11 @@ interface HUGnetContainerInterface
     * @return string
     */
     public function toString();
-
+    /**
+    * Returns the md5 hash of the object
+    *
+    * @return string
+    */
+    public function hash();
 }
 ?>

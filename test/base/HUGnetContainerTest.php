@@ -953,6 +953,70 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataHash()
+    {
+        return array(
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                "a04a8ebc79e7c01d0e5cf18aa1673102"
+            ),
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                "a04a8ebc79e7c01d0e5cf18aa1673102",
+            ),
+            array(
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                    "Attrib5" => "NonBlank String",
+                    "Attrib6" => array("Three Element"),
+                    "Attrib7" => 1.15,
+                    "Attrib8" => 9.95,
+                ),
+                "fbcaed74fc7dd6ad1c9994fe098758a9",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHash
+    */
+    public function testHash($preload, $expect)
+    {
+        $o = new HUGnetContainerTestClass($preload);
+        $ret = $o->hash();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
     * test the set routine when an extra class exists
     *
     * @param array  $preload Data to preload
