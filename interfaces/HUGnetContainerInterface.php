@@ -110,9 +110,11 @@ interface HUGnetContainerInterface
     /**
     * Sets all of the endpoint attributes from an array
     *
+    * @param bool $default Return items set to their default?
+    *
     * @return null
     */
-    public function toArray();
+    public function toArray($default = true);
     /**
     * Creates the object from a string
     *
@@ -124,9 +126,11 @@ interface HUGnetContainerInterface
     /**
     * Returns the object as a string
     *
+    * @param bool $default Return items set to their default?
+    *
     * @return string
     */
-    public function toString();
+    public function toString($default = true);
     /**
     * Returns the md5 hash of the object
     *

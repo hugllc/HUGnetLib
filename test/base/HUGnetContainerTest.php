@@ -729,7 +729,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "Attrib4" => array("Hello"),
                 ),
-                "_extraNext",
             ),
             array(
                 array(
@@ -757,7 +756,6 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "Attrib4" => array("Hello"),
                 ),
-                "_extraNext",
             ),
             array(
                 "",
@@ -768,23 +766,37 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib4" => array("Hello"),
                 ),
             ),
+            array(
+                "",
+                array(),
+                false,
+            ),
+            array(
+                array(
+                    "Attrib4" => array("There"),
+                ),
+                array(
+                    "Attrib4" => array("There"),
+                ),
+                false,
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload What to preload the object with
-    * @param array  $expect  The expected return
-    * @param string $var     The variable to pass to 'toArray'
+    * @param array $preload What to preload the object with
+    * @param array $expect  The expected return
+    * @param bool  $default Whether to return the default items or not
     *
     * @return null
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($preload, $expect, $var = null)
+    public function testToArray($preload, $expect, $default = true)
     {
         $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->toArray($var);
+        $ret = $o->toArray($default);
         $this->assertSame(
             $expect,
             $ret

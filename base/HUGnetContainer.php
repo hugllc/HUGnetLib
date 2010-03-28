@@ -322,30 +322,46 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * Sets all of the endpoint attributes from an array
     *
+    * @param bool $default Return items set to their default?
+    *
     * @return null
     */
-    public function toArray()
+    public function toArray($default = true)
     {
         foreach ($this->getProperties() as $key) {
-            $data[$key] = $this->toArrayIterator($this->$key);
+            if (($this->$key != $this->default[$key]) || $default) {
+                $data[$key] = $this->toArrayIterator(
+                    $this->$key,
+                    $this->default[$key],
+                    $default
+                );
+            }
         }
         return (array)$data;
     }
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param array $array The array to traverse
+    * @param mixed &$array     The array to traverse
+    * @param mixed $default    Pointer to the defaults for this item
+    * @param bool  $retDefault Return items set to their default?
     *
     * @return null
     */
-    protected function toArrayIterator($array)
+    protected function toArrayIterator(&$array, $default, $retDefault = true)
     {
         if (is_object($array) && method_exists($array, "toArray")) {
-            return $array->toArray();
+            return $array->toArray($retDefault);
         } else if (is_array($array)) {
             $ret = array();
-            foreach ($array as $key => $value) {
-                $ret[$key] = $this->toArrayIterator($value);
+            foreach (array_keys($array) as $key) {
+                if (($array[$key] != $default[$key]) || $retDefault) {
+                    $ret[$key] = $this->toArrayIterator(
+                        $array[$key],
+                        $default[$key],
+                        $retDefault
+                    );
+                }
             }
             return $ret;
         } else {
@@ -367,11 +383,13 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * Returns the object as a string
     *
+    * @param bool $default Return items set to their default?
+    *
     * @return string
     */
-    public function toString()
+    public function toString($default = true)
     {
-        return base64_encode(serialize($this->toArray()));
+        return base64_encode(serialize($this->toArray($default)));
     }
     /**
     * Returns the md5 hash of the object
