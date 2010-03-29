@@ -94,6 +94,9 @@ class DataPointContainer extends HUGnetClass
     */
     public static function &factory(&$row, $value = null)
     {
+        if (is_null($value)) {
+            return null;
+        }
         $class = __CLASS__;
         $data = new $class($row, $value);
         return $data;

@@ -57,11 +57,11 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "HistoryKey" => 0,               // The key for this record
         "DeviceKey"  => 0,               // The device that made this record
         "Date"       => "",              // The date for this record
-        "data"       => array(),         // The data
-        "DeltaT"     => 0,               // The time difference
+        "elements"   => array(),         // The data
+        "deltaT"     => 0,               // The time difference
+        "UTCOffset"  => 0,               // The time offset from UTC
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -71,22 +71,35 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /** The database table to use */
     protected $table = "history";
     /** This is the Field name for the key of the record */
-    protected $id = "HistoryKey";
+    protected $id = null;
     /** The type of data */
     protected $dataType = "float";
 
     /** The number of data elements */
-    private $_elements = 16;
+    private $_elements = 19;
     /** The number of columns */
     private $_columns = 3;
 
+    /** @var int The delta time between this element and the next */
+    public $DeltaT = null;
+    /** @var string The date of this record */
+    public $Date = null;
     /**
-    * Disconnects from the database
+    * Builds the class
+    *
+    * @param array $row     The database row to import
+    * @param obj   &$device The device to attach to this record
     *
     * @return null
     */
-    public function __construct()
+    public function __construct($row, &$device)
     {
+        $this->DeltaT =& $this->data["deltaT"];
+        $this->Date =& $this->data["Date"];
+        $this->device =& $device;
+        if (is_array($row)) {
+            $this->fromArray($row);
+        }
     }
 
     /**
@@ -96,6 +109,66 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     public function __destruct()
     {
+    }
+    /**
+    * Builds the class
+    *
+    * @param array $row The database row to import
+    * @param obj   &$device The device to attach to this record
+    *
+    * @return null
+    */
+    public function &factory($row, &$device)
+    {
+        $class = __CLASS__;
+        return new $class($row, $device);
+    }
+
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        $fields = array(
+            "DeviceKey", "Date", "deltaT", "UTCOffset"
+        );
+        foreach ($fields as $field) {
+            if (isset($array[$field])) {
+                $this->$field = $array[$field];
+            }
+        }
+        $this->data["elements"] = array();
+        for ($i = 0; $i < $this->_elements; $i++) {
+            $field = "Data".$i;
+            $sensor = &$this->createSensor($i, $array[$field]);
+            if (!is_null($sensor)) {
+                $this->data["elements"][$i] = $sensor;
+            }
+        }
+    }
+
+    /**
+    * Returns an array of all of the data
+    *
+    * @param bool $default Not used here
+    *
+    * @return null
+    */
+    public function toArray($default = false)
+    {
+
+        $array["DeviceKey"] = $this->DeviceKey;
+        $array["Date"]      = $this->Date;
+        $array["deltaT"]    = $this->deltaT;
+        foreach (array_keys((array)$this->data["elements"]) as $key) {
+            $array["Data".$key] = $this->data["elements"][$key]->value;
+        }
+        $array["UTCOffset"]    = $this->UTCOffset;
+        return $array;
     }
 
     /**
@@ -108,15 +181,11 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     protected function &createSensor($sensor, $value = null)
     {
-        if (!empty($this->data->data[$sensor])) {
-            return null;
+        if (self::findClass("DataPointContainer")) {
+            $data = &DataPointContainer::factory(
+                $this, $value
+            );
         }
-        $data = &$this->data->data[$sensor];
-        $data = new HUGnetClass();
-        $data->sensor =& $this->device->sensor[$sensor];
-        $data->value = $value;
-        $data->DeltaT = &$this->data["DeltaT"];
-        $data->Date = &$this->data["Date"];
         return $data;
     }
 

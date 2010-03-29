@@ -90,7 +90,7 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new HistoryContainer(),
+                new HistoryContainer($row, $obj),
                 5,
                 "5",
             ),
@@ -115,6 +115,47 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, (string)$o);
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                new HistoryContainer($row, $obj),
+                5,
+                "5",
+            ),
+            array(
+                new HistoryContainer($row, $obj),
+                null,
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $attrib      This is the attribute to set
+    * @param mixed  $value       The value to set it to
+    * @param int    $expect      The expected return
+    * @param bool   $expectExtra Expect the output to be saved in _extra
+    * @param string $class       The extra class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($obj, $value, $expect) {
+        $o = DataPointContainer::factory($obj, $value);
+        if (is_null($expect)) {
+            $this->assertNull($o);
+        } else {
+            $this->assertSame($expect, (string)$o);
+        }
+    }
 
 }
 

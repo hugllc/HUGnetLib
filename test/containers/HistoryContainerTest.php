@@ -65,7 +65,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new HistoryContainer($preload);
+        $this->o = new HistoryContainer($preload, $obj);
     }
 
     /**
@@ -90,26 +90,103 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            array(
+                array(
+                    "DeviceKey" => 23,
+                    "Date" => "2007-05-21 03:35:13",
+                    "deltaT" => 21,
+                    "Data0" => 25,
+                    "Data1" => 21,
+                    "UTCOffset" => -5,
+                ),
+                array(0, 1),
+                "DataPointContainer",
+                $obj,
+                array(
+                    "DeviceKey" => 23,
+                    "Date" => "2007-05-21 03:35:13",
+                    "deltaT" => 21,
+                    "Data0" => 25,
+                    "Data1" => 21,
+                    "UTCOffset" => -5,
+                ),
+            ),
         );
     }
 
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param array  $preload The value to preload into the constructor
+    * @param array  $check   The elements to check for the right class
+    * @param string $class   The class to check for
+    * @param object $obj     The device object to send
+    * @param array  $array   The array to expect back
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect) {
-        $o = new ConfigContainer($preload);
+    public function testConstructor($preload, $check, $class, $obj, $expect) {
+        $o = new HistoryContainer($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
+        foreach ((array)$check as $key) {
+            $this->assertSame($class, get_class($o->elements[$key]));
+        }
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                array(
+                    "DeviceKey" => 23,
+                    "Date" => "2007-05-21 03:35:13",
+                    "deltaT" => 21,
+                    "Data0" => 25,
+                    "Data1" => 21,
+                    "UTCOffset" => -5,
+                ),
+                array(0, 1),
+                "DataPointContainer",
+                $obj,
+                array(
+                    "DeviceKey" => 23,
+                    "Date" => "2007-05-21 03:35:13",
+                    "deltaT" => 21,
+                    "Data0" => 25,
+                    "Data1" => 21,
+                    "UTCOffset" => -5,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload into the constructor
+    * @param array  $check   The elements to check for the right class
+    * @param string $class   The class to check for
+    * @param object $obj     The device object to send
+    * @param array  $array   The array to expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($preload, $check, $class, $obj, $expect) {
+        $o = &HistoryContainer::factory($preload, $obj);
+        $ret = $o->toArray();
+        $this->assertSame($expect, $ret);
+        foreach ((array)$check as $key) {
+            $this->assertSame($class, get_class($o->elements[$key]));
+        }
     }
 
     /**
@@ -127,18 +204,19 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array  $preload Values to preload in
-    * @param mixed  $sensor   The value to set it to
+    * @param mixed  $sensor  The value to set it to
     * @param mixed  $value   The value to set it to
     * @param int    $expect  The expected return
+    * @param string $class   The class of the returned object
     *
     * @return null
     *
     * @dataProvider dataCreateSensor
     */
-    public function testCreateSensor($preload, $sensor, $value, $expect) {
+    public function testCreateSensor($preload, $sensor, $value, $expect, $class) {
         $this->o->fromArray($preload);
         $ret = $this->o->createSensor($sensor, $value);
-        $this->assertSame($expect, $ret);
+        $this->assertSame($class, get_class($ret));
     }
 
 
