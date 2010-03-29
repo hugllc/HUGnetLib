@@ -207,6 +207,140 @@ class HUGnetExtensibleContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataUnregister()
+    {
+        return array(
+            array(
+                new HUGnetEContainerTestClass2(),
+                "test",
+                true,
+            ),
+            array(
+                null,
+                "test",
+                true,
+            ),
+            array(
+                null,
+                "",
+                false,
+            ),
+            array(
+                new HUGnetEContainerTestClass2(),
+                "atest",
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param mixed  $obj    The class or object to use
+    * @param string $var    The variable to register the object on
+    * @param bool   $expect The return expected
+    *
+    * @return null
+    *
+    * @dataProvider dataUnregister
+    */
+    public function testUnregister($obj, $var, $expect)
+    {
+        $o = new HUGnetEContainerTestClass();
+        $o->register($obj, $var);
+        $ret = $o->unregister($var);
+        $this->assertSame($expect, $ret);
+        if ($expect) {
+            $this->assertNull(
+                $this->readAttribute($o, $var)
+            );
+        }
+    }
+
+    /**
+    * data provider for testUnregisterNext
+    *
+    * @return array
+    */
+    public static function dataUnregisterNext()
+    {
+        return array(
+            array(
+                new HUGnetEContainerTestClass2(),
+                true,
+            ),
+            array(
+                null,
+                true,
+            ),
+            array(
+                new HUGnetEContainerTestClass2(),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param mixed $obj    The class or object to use
+    * @param bool  $expect The return expected
+    *
+    * @return null
+    *
+    * @dataProvider dataUnregisterNext
+    */
+    public function testUnregisterNext($obj, $expect)
+    {
+        $o = new HUGnetEContainerTestClass("", $obj);
+        $ret = $o->unregisterNext();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testUnregisterPrev
+    *
+    * @return array
+    */
+    public static function dataUnregisterPrev()
+    {
+        return array(
+            array(
+                new HUGnetEContainerTestClass2(),
+                true,
+            ),
+            array(
+                null,
+                true,
+            ),
+            array(
+                new HUGnetEContainerTestClass2(),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param mixed $obj    The class or object to use
+    * @param bool  $expect The return expected
+    *
+    * @return null
+    *
+    * @dataProvider dataUnregisterPrev
+    */
+    public function testUnregisterPrev($obj, $expect)
+    {
+        $o = new HUGnetEContainerTestClass("", $obj2, $obj);
+        $ret = $o->unregisterPrev();
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataCall()
     {
         return array(

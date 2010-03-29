@@ -58,7 +58,7 @@ interface HUGnetExtensibleContainerInterface
     *
     * @return null
     */
-    function register(&$obj, $var);
+    public function register(&$obj, $var);
     /**
     * Registers extra vars
     *
@@ -67,7 +67,7 @@ interface HUGnetExtensibleContainerInterface
     *
     * @return null
     */
-    function registerNext(&$obj, $recurse = true);
+    public function registerNext(&$obj, $recurse = true);
     /**
     * Registers extra vars
     *
@@ -76,7 +76,32 @@ interface HUGnetExtensibleContainerInterface
     *
     * @return null
     */
-    function registerPrev(&$obj, $recurse = true);
+    public function registerPrev(&$obj, $recurse = true);
+    /**
+    * Registers extra vars
+    *
+    * @param string $var     The variable to register the object on
+    * @param bool   $recurse Whether to modify the old object
+    *
+    * @return null
+    */
+    public function unregister($var, $recurse = true);
+    /**
+    * Registers extra vars
+    *
+    * @param bool $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    public function unregisterNext($recurse = true);
+    /**
+    * Registers extra vars
+    *
+    * @param bool $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    public function unregisterPrev($recurse = true);
     /**
     * Sets the extra attributes field
     *

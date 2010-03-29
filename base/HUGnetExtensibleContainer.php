@@ -157,6 +157,75 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
     {
         return $this->register($obj, "prev", $recurse);
     }
+    /**
+    * Registers extra vars
+    *
+    * @param string $var     The variable to register the object on
+    * @param bool   $recurse Whether to modify the old object
+    *
+    * @return null
+    */
+    final public function unregister($var, $recurse = true)
+    {
+        if (strtolower($var) == "next") {
+            $var   = "_extraNext";
+            $name  = "next";
+            $other = "prev";
+        } else if (strtolower($var) == "prev") {
+            $var   = "_extraPrev";
+            $name  = "prev";
+            $other = "next";
+        } else {
+            $name  = null;
+            // This sets up the other object
+            $other = "prev";
+        }
+        if (empty($var)) {
+            return false;
+        }
+        if (!is_object($this->$var)) {
+            return true;
+        }
+        // Set up the other object.
+        if ($recurse) {
+            $this->$var->unregister($other, false);
+        }
+        if (!is_null($name)) {
+            // Get the properties
+            unset($this->_extra["Properties"][$name]);
+            // Get the methods
+            unset($this->_extra["Methods"][$name]);
+            // Set as registered
+            unset($this->_extra["Registered"][$var]);
+        }
+        // Register the class
+        unset($this->_extra["Classes"][$var]);
+        // Set up the object
+        $this->$var =& $obj;
+        return true;
+    }
+    /**
+    * Registers extra vars
+    *
+    * @param bool $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    final public function unregisterNext($recurse = true)
+    {
+        return $this->unregister("next", $recurse);
+    }
+    /**
+    * Registers extra vars
+    *
+    * @param bool $recurse Whether to modify this new object
+    *
+    * @return null
+    */
+    final public function unregisterPrev($recurse = true)
+    {
+        return $this->unregister("prev", $recurse);
+    }
 
     /**
     * Overload the set attribute
