@@ -203,7 +203,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "Attrib5" => "Blank String",
-                    "Attrib6" => array("One Element"),
+                    "Attrib6" => array("One Element"=>array("Two Element")),
                     "Attrib7" => 1.0,
                     "Attrib8" => 4,
                 ),
@@ -698,12 +698,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib7" => 1.0,
                     "Attrib8" => 4,
                 ),
+                "HUGnetContainerTestClass",
                 array(
                     "Attrib1" => 0,
                     "Attrib2" => "Default",
                     "Attrib3" => array(
                         "Attrib5" => "Blank String",
-                        "Attrib6" => array("One Element"),
+                        "Attrib6" => array("One Element"=>array("Two Element")),
                         "Attrib7" => 1.0,
                         "Attrib8" => 4,
                     ),
@@ -721,12 +722,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib7" => 1.0,
                     "Attrib8" => 4,
                 ),
+                "HUGnetContainerTestClass",
                 array(
                     "Attrib1" => 0,
                     "Attrib2" => "Default",
                     "Attrib3" => array(
                         "Attrib5" => "Blank String",
-                        "Attrib6" => array("One Element"),
+                        "Attrib6" => array("One Element"=>array("Two Element")),
                         "Attrib7" => 1.0,
                         "Attrib8" => 4,
                     ),
@@ -746,13 +748,14 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                     "Attrib7" => 1.0,
                     "Attrib8" => 4,
                 ),
+                "HUGnetContainerTestClass",
                 array(
                     "Attrib1" => 0,
                     "Attrib2" => "Default",
                     "Attrib3" => array(
                         array(
                             "Attrib5" => "Blank String",
-                            "Attrib6" => array("One Element"),
+                            "Attrib6" => array("One Element"=>array("Two Element")),
                             "Attrib7" => 1.0,
                             "Attrib8" => 4,
                         ),
@@ -762,6 +765,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 "",
+                "HUGnetContainerTestClass",
                 array(
                     "Attrib1" => 0,
                     "Attrib2" => "Default",
@@ -771,6 +775,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 "",
+                "HUGnetContainerTestClass",
                 array(),
                 false,
             ),
@@ -778,6 +783,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "Attrib4" => array("There"),
                 ),
+                "HUGnetContainerTestClass",
                 array(
                     "Attrib4" => array("There"),
                 ),
@@ -788,17 +794,18 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload What to preload the object with
-    * @param array $expect  The expected return
-    * @param bool  $default Whether to return the default items or not
+    * @param array  $preload What to preload the object with
+    * @param string $class   The test class to use
+    * @param array  $expect  The expected return
+    * @param bool   $default Whether to return the default items or not
     *
     * @return null
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($preload, $expect, $default = true)
+    public function testToArray($preload, $class, $expect, $default = true)
     {
-        $o = new HUGnetContainerTestClass($preload);
+        $o = new $class($preload);
         $ret = $o->toArray($default);
         $this->assertSame(
             $expect,
@@ -1280,7 +1287,7 @@ class HUGnetContainerTestClass extends HUGnetContainer
     /**
     * function to check Attrib1
     *
-    * @param mixed  $value The value to set it to
+    * @param mixed $value The value to set it to
     *
     * @return null
     */
@@ -1311,7 +1318,7 @@ class HUGnetContainerTestClass2 extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "Attrib5" => "Blank String",
-        "Attrib6" => array("One Element"),
+        "Attrib6" => array("One Element" => array("Two Element")),
         "Attrib7" => 1.0,
         "Attrib8" => 4,
     );
@@ -1321,7 +1328,7 @@ class HUGnetContainerTestClass2 extends HUGnetContainer
     /**
     * function to check Attrib5
     *
-    * @param mixed  $value The value to set it to
+    * @param mixed $value The value to set it to
     *
     * @return null
     */
