@@ -119,9 +119,8 @@ abstract class HUGnetContainer extends HUGnetClass
         return null;
     }
     /**
-    * Registers extra vars
+    * Load a class file if possible
     *
-    * @param mixed  $data  The data to import into the class
     * @param string $class The class or object to use
     *
     * @return null
