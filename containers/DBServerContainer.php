@@ -114,8 +114,6 @@ class DBServerContainer extends HUGnetContainerLinkedList
     /**
     * Creates a database object
     *
-    * @param int    $verbose The verbosity number
-    *
     * @return object PDO object, null on failure
     */
     public function connected()
@@ -126,11 +124,21 @@ class DBServerContainer extends HUGnetContainerLinkedList
     /**
     * Creates a database object
     *
-    * @param int    $verbose The verbosity number
+    * @return object PDO object, null on failure
+    */
+    public function &getPDO()
+    {
+        if (!$this->connected()) {
+            $this->connect();
+        }
+        return $this->pdo;
+    }
+    /**
+    * Creates a database object
     *
     * @return object PDO object, null on failure
     */
-    public function &getPDO($verbose = 0)
+    public function connect()
     {
 
         if (!$this->connected()) {
@@ -148,10 +156,13 @@ class DBServerContainer extends HUGnetContainerLinkedList
                     1,
                     $verbose
                 );
-                return null;
+                // Just to be sure
+                $this->disconnect();
+                // Return failure
+                return false;
             }
         }
-        return $this->pdo;
+        return true;
     }
 
     /**

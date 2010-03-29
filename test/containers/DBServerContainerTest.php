@@ -131,17 +131,15 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param array  $preload This is the attribute to set
+    * @param string $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataSet
     */
-    public function testCreateDSN($preload, $expect) {
+    public function testCreateDSN($preload, $expect)
+    {
         $o = new DBServerContainer($preload);
         $ret = $o->getDSN();
         $this->assertSame($expect, $ret);
@@ -207,6 +205,52 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
                 $pdo->getAttribute(PDO::ATTR_DRIVER_NAME)
             );
         }
+    }
+    /**
+    * Data provider for testCreatePDO
+    *
+    * @return array
+    */
+    public static function dataConnect()
+    {
+        return array(
+            array(array(), true),
+            array(
+                array("driver" => "sqlite", "file" => ":memory:"),
+                true,
+            ),
+            array(
+                array("driver" => "badPDODriver", "file" => ":memory:"),
+                true
+            ),
+            array(
+                array(
+                    "driver" => "mysql",
+                    "user" => "NotAGoodUserNameToUse",
+                    "password" => "Secret Password",
+                    "db" => "MyNewDb",
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload The configuration to use
+    * @param bool   $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConnect()
+    */
+    public function testConnect($preload, $expect)
+    {
+        $o = new DBServerContainer($preload);
+        $ret = $o->connect();
+        $this->assertSame($expect, $ret);
     }
 
 }
