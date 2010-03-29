@@ -65,7 +65,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new GatewayContainer();
+        $this->o = new GatewayContainer(array());
     }
 
     /**
@@ -90,26 +90,215 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 3,
+                ),
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 3,
+                ),
+            ),
         );
     }
 
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect) {
+    public function testConstructor($preload, $expect)
+    {
         $o = new GatewayContainer($preload);
-        $ret = $o->toArray();
+        $this->assertAttributeSame($expect, "data", $o);
+    }
+    /**
+    * data provider for testConnect
+    *
+    * @return array
+    */
+    public static function dataConnect()
+    {
+        return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 0.5,
+                ),
+                false,
+                false,
+            ),
+            array(
+                array(
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "80",
+                ),
+                true,
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    * @param bool  $socket  If true we expect a resource
+    *
+    * @return null
+    *
+    * @dataProvider dataConnect
+    */
+    public function testConnect($preload, $expect, $socket)
+    {
+        $this->o->fromArray($preload);
+        $ret = $this->o->connect();
         $this->assertSame($expect, $ret);
+        $this->assertSame(
+            $socket,
+            is_resource($this->readAttribute($this->o, "socket"))
+        );
+    }
+
+    /**
+    * data provider for testConnect
+    *
+    * @return array
+    */
+    public static function dataDisconnect()
+    {
+        return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 0.5,
+                ),
+                false,
+                null,
+            ),
+            array(
+                array(
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "80",
+                ),
+                true,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    * @param mixed $socket  What to expect in the socket
+    *
+    * @return null
+    *
+    * @dataProvider dataDisconnect
+    */
+    public function testDisconnect($preload, $expect, $socket)
+    {
+        $this->o->fromArray($preload);
+        $ret = $this->o->connect();
+        $this->o->disconnect();
+        $this->assertSame($expect, $ret);
+        $this->assertAttributeSame($socket, "socket", $this->o);
+    }
+
+    /**
+    * data provider for testConnect
+    *
+    * @return array
+    */
+    public static function dataRead()
+    {
+        return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 0.5,
+                ),
+                "",
+                false,
+            ),
+            // This test will fail without a local web server
+            array(
+                array(
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "80",
+                ),
+                devInfo::hexifyStr("GET\r\n"),
+                devInfo::hexifyStr("DOCTYPE HTML PUBLIC"),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param string $write   The string to write
+    * @param mixed  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRead
+    */
+    public function testRead($preload, $write, $expect)
+    {
+        $this->o->fromArray($preload);
+        $ret = $this->o->connect();
+        $this->o->write($write);
+        $read = $this->o->read();
+        if (is_string($expect)) {
+            $this->assertFalse(is_bool(stristr($read, $expect)));
+        } else {
+            $this->assertSame($expect, $read);
+        }
     }
 
     /**
