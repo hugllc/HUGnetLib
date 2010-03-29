@@ -42,6 +42,24 @@ require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
+ *<?php
+define("HUGNET_DATABASE", "HUGNet");
+$hugnet_config["hugnet_database"] = "HUGNet";
+$hugnet_config["script_gatewaykey"] = 2;
+$hugnet_config["servers"][0]["driver"] = "mysql";
+$hugnet_config["servers"][0]["host"] = "192.168.42.1";
+$hugnet_config["servers"][0]["user"] = "PortalW";
+$hugnet_config["servers"][0]["password"] = 'Por*tal';
+$hugnet_config["poll_enable"] = true;
+$hugnet_config["config_enable"] = true;
+$hugnet_config["control_enable"] = false;
+$hugnet_config["check_enable"] = true;
+$hugnet_config["check_send_daily"] = true;
+$hugnet_config["analysis_enable"] = true;
+$hugnet_config["admin_email"] = "prices@hugllc.com";
+$hugnet_config["gatewayIP"] = "127.0.0.1";
+$hugnet_config["gatewayPort"] = 2000;
+?>
  *
  * @category   Containers
  * @package    HUGnetLib
@@ -79,12 +97,13 @@ class ConfigContainer extends HUGnetContainer
         "admin_email"     => "",           // Administrator Email
         "gatewayIP"       => "127.0.0.1",  // The gateway IP Address
         "gatewayPort"     => "2000",       // The port on the gateway to use
-        // The following are deprectated.  These are moved into the arrays above
     );
     /** @var array This is where the data is stored */
     protected $data = array();
     /** @var object This is where we store our database connection */
-    private $_servers = null;
+    protected $servers = null;
+    /** @var object This is where we store our database connection */
+    public $gateway = null;
 
     /**
     * Build everything
@@ -93,8 +112,14 @@ class ConfigContainer extends HUGnetContainer
     */
     public function __construct($config = array())
     {
+        if (is_string($config)) {
+            $config = $this->_readConfigFile($config);
+        }
         parent::__construct($config);
         $this->_setServers();
+        if ($this->findClass("GatewayContainer")) {
+            $this->gateway = new GatewayContainer($config);
+        }
     }
 
     /**
@@ -111,14 +136,30 @@ class ConfigContainer extends HUGnetContainer
     */
     private function _setServers()
     {
-        if (count($this->data["servers"]) < 1) {
-            $this->data["servers"][] = array();
+        // The import set $this->servers instead of $this->data["servers"].
+        $this->data["servers"] = $this->servers;
+        // Load the container
+        if ($this->findClass("DBServerContainer")) {
+            foreach ((array)$this->data["servers"] as $key => $serv) {
+                $this->servers[$key] =& self::factory($serv, "DBServerContainer");
+            }
         }
-        foreach ((array)$this->data["servers"] as $key => $serv) {
-            $this->_servers[$key] =& self::factory($serv, "DBServerContainer");
+    }
+    /**
+    * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
+    *
+    * @param string $file The file to load
+    *
+    * @return null
+    */
+    private function _readConfigFile($file)
+    {
+        @include $file;
+        if (isset($config)) {
+            return (array)$config;
+        } else {
+            return (array)$hugnet_config;
         }
-        $this->data["servers.old"] = $this->data["servers"];
-        $this->data["servers"] = &$this->_servers;
     }
 
 }

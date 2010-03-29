@@ -85,18 +85,58 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataSet()
+    public static function dataConstructor()
     {
         return array(
             array(
                 array(),
+                array(),
+                "GatewayContainer"
+            ),
+            array(
+                dirname(__FILE__)."/../files/config1.inc.php",
                 array(
                     "servers" => array(
                         array(
-                            "driver" => "sqlite",
-                            "host" => "localhost",
+                            "driver" => "mysql",
+                            "host" => "10.2.5.23",
+                            "user" => "user",
+                            "password" => "password",
+                        ),
+                    ),
+                    "hugnet_database" => "MyDatabase",
+                    "admin_email" => "you@yourdomain.com",
+                    "gatewayIP" => "10.2.3.5",
+                    "gatewayPort" => 2001,
+                ),
+                "GatewayContainer"
+            ),
+            array(
+                dirname(__FILE__)."/../files/config2.inc.php",
+                array(
+                    "servers" => array(
+                        array(
+                            "driver" => "mysql",
+                            "host" => "10.2.5.23",
+                            "user" => "user",
+                            "password" => "password",
+                        ),
+                    ),
+                    "hugnet_database" => "MyDatabase",
+                    "admin_email" => "you@yourdomain.com",
+                    "gatewayIP" => "10.2.3.5",
+                    "gatewayPort" => 2001,
+                ),
+                "GatewayContainer"
+            ),
+            array(
+                array(
+                    "servers" => array(
+                        array(
+                            "driver" => "mysql",
+                            "host" => "10.5.12.2",
                             "port" => 3306,
-                            "db" => "HUGnet",
+                            "db" => "HUGNet",
                             "socket" => "",
                             "user" => "",
                             "password" => "",
@@ -104,28 +144,56 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                             "file" => ":memory:",
                         ),
                     ),
-                    "hugnet_database" => "HUGnet",
-                    "script_gateway" => 0,
+                    "hugnet_database" => "HUGNet",
+                    "script_gateway" => 4,
                     "poll" => array(
-                        "enable" => false,
+                        "enable" => true,
                     ),
                     "config"          => array(
-                        "enable" => false,
+                        "enable" => true,
                     ),
                     "control" => array(
-                        "enable" => false,
+                        "enable" => true,
                     ),
                     "check" => array(
-                        "enable" => false,
-                        "send_daily" => false,
+                        "enable" => true,
+                        "send_daily" => true,
                     ),
                     "analysis" => array(
                         "enable" => false,
                     ),
-                    "admin_email" => "",
-                    "gatewayIP" => "127.0.0.1",
-                    "gatewayPort" => "2000",
+                    "admin_email" => "example@yourdomain.com",
+                    "gatewayIP" => "10.5.12.8",
+                    "gatewayPort" => "2001",
                 ),
+                array(
+                    "servers" => array(
+                        array(
+                            "driver" => "mysql",
+                            "host" => "10.5.12.2",
+                            "db" => "HUGNet",
+                        ),
+                    ),
+                    "hugnet_database" => "HUGNet",
+                    "script_gateway" => 4,
+                    "poll" => array(
+                        "enable" => true,
+                    ),
+                    "config"          => array(
+                        "enable" => true,
+                    ),
+                    "control" => array(
+                        "enable" => true,
+                    ),
+                    "check" => array(
+                        "enable" => true,
+                        "send_daily" => true,
+                    ),
+                    "admin_email" => "example@yourdomain.com",
+                    "gatewayIP" => "10.5.12.8",
+                    "gatewayPort" => "2001",
+                ),
+                "GatewayContainer",
             ),
         );
     }
@@ -133,20 +201,20 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param array $preload The values to preload into the constructor
+    * @param array $expect  The expected return
+    * @param array $gateway The return from the gateway
     *
     * @return null
     *
-    * @dataProvider dataSet
+    * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect) {
+    public function testConstructor($preload, $expect, $gateway)
+    {
         $o = new ConfigContainer($preload);
-        $ret = $o->toArray();
+        $ret = $o->toArray(false);
         $this->assertSame($expect, $ret);
+        $this->assertSame($gateway, get_class($o->gateway));
     }
 
 }
