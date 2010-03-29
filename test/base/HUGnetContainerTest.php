@@ -276,13 +276,15 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                "HUGnetContainerTestClass",
                 array(
-                    "Attrib1", "Attrib2", "Attrib3", "Attrib4",
+                    "Attrib1", "Attrib2", "Attrib3", "Attrib4"
                 ),
             ),
             array(
+                "HUGnetContainerTestClass2",
                 array(
-                    "Attrib1", "Attrib2", "Attrib3", "Attrib4",
+                    "Attrib5", "Attrib6", "Attrib7", "Attrib8",
                 ),
             ),
         );
@@ -291,15 +293,16 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int $expect The expected return
+    * @param string $class  The class to build
+    * @param int    $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataGetProperties
     */
-    public function testGetProperties($expect)
+    public function testGetProperties($class, $expect)
     {
-        $o = new HUGnetContainerTestClass();
+        $o = new $class();
         $ret = $o->getProperties();
         $this->assertSame(
             $expect,
