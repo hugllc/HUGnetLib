@@ -51,6 +51,23 @@
 interface HUGnetContainerInterface
 {
     /**
+    * Overload the set attribute
+    *
+    * @param string $name  This is the attribute to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return mixed The value of the attribute
+    */
+    public function set($name, $value);
+    /**
+    * Overload the get attribute
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function get($name);
+    /**
     * Registers extra vars
     *
     * @param mixed  &$obj The class or object to use

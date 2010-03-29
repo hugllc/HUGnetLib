@@ -134,6 +134,18 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function __set($name, $value)
     {
+        $this->set($name, $value);
+    }
+    /**
+    * Overload the set attribute
+    *
+    * @param string $name  This is the attribute to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return mixed The value of the attribute
+    */
+    public function set($name, $value)
+    {
         if ($this->locked($name)) {
             self::vprint("'set' tried to access a locked property\n", 1);
         } else if (array_key_exists($name, $this->default)) {
@@ -151,6 +163,17 @@ abstract class HUGnetContainer extends HUGnetClass
     * @return mixed The value of the attribute
     */
     public function __get($name)
+    {
+        return $this->get($name);
+    }
+    /**
+    * Overload the get attribute
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function get($name)
     {
         if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
