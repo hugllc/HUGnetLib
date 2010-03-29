@@ -113,16 +113,28 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function &factory($data, $class)
     {
+        if (self::findClass($class)) {
+            return new $class($data);
+        }
+        return null;
+    }
+    /**
+    * Registers extra vars
+    *
+    * @param mixed  $data  The data to import into the class
+    * @param string $class The class or object to use
+    *
+    * @return null
+    */
+    protected function findClass($class)
+    {
         if (empty($class)) {
-            return null;
+            return false;
         }
         if (!class_exists($class)) {
             @include_once dirname(__FILE__).self::DIRECTORY.$class.".php";
         }
-        if (class_exists($class)) {
-            return new $class($data);
-        }
-        return null;
+        return class_exists($class);
     }
     /**
     * Overload the set attribute
@@ -332,15 +344,15 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param array $devInfo This is an array of this class's attributes
+    * @param array $array This is an array of this class's attributes
     *
     * @return null
     */
-    public function fromArray($devInfo)
+    public function fromArray($array)
     {
         foreach ($this->getProperties() as $attrib) {
-            if (isset($devInfo[$attrib])) {
-                $this->$attrib = $devInfo[$attrib];
+            if (isset($array[$attrib])) {
+                $this->$attrib = $array[$attrib];
             }
         }
     }
