@@ -92,6 +92,21 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                ),
+                array(
+                    "GatewayKey" => 0,
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "2000",
+                    "GatewayName" => "Localhost",
+                    "GatewayLocation" => "",
+                    "database" => "",
+                    "FirmwareStatus" => "RELEASE",
+                    "isVisible" => 0,
+                    "Timeout" => 2,
+                ),
+            ),
+            array(
+                array(
                     "GatewayKey" => 1,
                     "GatewayIP" => "10.2.0.5",
                     "GatewayPort" => "43",
