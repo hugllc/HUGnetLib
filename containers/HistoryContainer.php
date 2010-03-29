@@ -113,7 +113,7 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /**
     * Builds the class
     *
-    * @param array $row The database row to import
+    * @param array $row     The database row to import
     * @param obj   &$device The device to attach to this record
     *
     * @return null

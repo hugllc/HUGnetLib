@@ -58,13 +58,13 @@ class DataPointContainer extends HUGnetClass
     /** @var The sensor we are attached to */
     private $_sensor = null;
     /** @var The sensor we are attached to */
-    public $_row = null;
+    public $row = null;
 
     /**
     * Disconnects from the database
     *
-    * @param int   $row     A reference to the object that is creating us
-    * @param mixed $value  The current value of the data
+    * @param object &$row  A reference to the object that is creating us
+    * @param mixed  $value The current value of the data
     *
     * @return null
     */
@@ -87,8 +87,8 @@ class DataPointContainer extends HUGnetClass
     /**
     * Creates a sensor from data given
     *
-    * @param int   $row     A reference to the object that is creating us
-    * @param mixed $value  The current value of the data
+    * @param object &$row  A reference to the object that is creating us
+    * @param mixed  $value The current value of the data
     *
     * @return Reference to the sensor on success, null on failure
     */

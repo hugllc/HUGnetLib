@@ -121,13 +121,14 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     * @param array  $check   The elements to check for the right class
     * @param string $class   The class to check for
     * @param object $obj     The device object to send
-    * @param array  $array   The array to expect back
+    * @param array  $expect  The array to expect back
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $check, $class, $obj, $expect) {
+    public function testConstructor($preload, $check, $class, $obj, $expect)
+    {
         $o = new HistoryContainer($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
@@ -174,13 +175,14 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     * @param array  $check   The elements to check for the right class
     * @param string $class   The class to check for
     * @param object $obj     The device object to send
-    * @param array  $array   The array to expect back
+    * @param array  $expect  The array to expect back
     *
     * @return null
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($preload, $check, $class, $obj, $expect) {
+    public function testFactory($preload, $check, $class, $obj, $expect)
+    {
         $o = &HistoryContainer::factory($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
@@ -213,7 +215,8 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataCreateSensor
     */
-    public function testCreateSensor($preload, $sensor, $value, $expect, $class) {
+    public function testCreateSensor($preload, $sensor, $value, $expect, $class)
+    {
         $this->o->fromArray($preload);
         $ret = $this->o->createSensor($sensor, $value);
         $this->assertSame($class, get_class($ret));

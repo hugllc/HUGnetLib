@@ -100,17 +100,16 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param string $obj    The history Container object
+    * @param mixed  $value  The value to set it to
+    * @param int    $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($obj, $value, $expect) {
+    public function testConstructor($obj, $value, $expect)
+    {
         $o = new DataPointContainer($obj, $value);
         $this->assertSame($expect, (string)$o);
     }
@@ -138,17 +137,16 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $attrib      This is the attribute to set
-    * @param mixed  $value       The value to set it to
-    * @param int    $expect      The expected return
-    * @param bool   $expectExtra Expect the output to be saved in _extra
-    * @param string $class       The extra class to use
+    * @param string $obj    The history Container object
+    * @param mixed  $value  The value to set it to
+    * @param int    $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($obj, $value, $expect) {
+    public function testFactory($obj, $value, $expect)
+    {
         $o = DataPointContainer::factory($obj, $value);
         if (is_null($expect)) {
             $this->assertNull($o);
