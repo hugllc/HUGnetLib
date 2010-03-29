@@ -317,20 +317,20 @@ class HUGnetExtensibleContainerTest extends PHPUnit_Framework_TestCase
             array(
                 new HUGnetEContainerTestClass2(),
                 array(
-                    "attrib1", "attrib5", "args"
+                    "setAttrib1", "setAttrib5", "args"
                 ),
             ),
             array(
                 new HUGnetEContainerTestClass2(),
                 array(
-                    "attrib1", "attrib5", "args"
+                    "setAttrib1", "setAttrib5", "args"
                 ),
                 "_extraNext",
             ),
             array(
                 "",
                 array(
-                    "attrib1",
+                    "setAttrib1",
                 ),
             ),
         );
@@ -1032,11 +1032,13 @@ class HUGnetEContainerTestClass extends HUGnetExtensibleContainer
     /**
     * function to check Attrib1
     *
+    * @param mixed $value The value to set this to
+    *
     * @return null
     */
-    protected function attrib1()
+    protected function setAttrib1($value)
     {
-        $this->data["Attrib1"] = (int) $this->data["Attrib1"];
+        $this->data["Attrib1"] = (int) $value;
     }
 
 
@@ -1071,11 +1073,13 @@ class HUGnetEContainerTestClass2 extends HUGnetExtensibleContainer
     /**
     * function to check Attrib5
     *
+    * @param mixed $value The value to set this to
+    *
     * @return null
     */
-    protected function attrib5()
+    protected function setAttrib5($value)
     {
-        $this->data["Attrib5"] = (string) $this->data["Attrib5"];
+        $this->data["Attrib5"] = (string) $value;
     }
 
     /**

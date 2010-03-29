@@ -1277,11 +1277,13 @@ class HUGnetContainerTestClass extends HUGnetContainer
     /**
     * function to check Attrib1
     *
+    * @param mixed  $value The value to set it to
+    *
     * @return null
     */
-    protected function attrib1()
+    protected function setAttrib1($value)
     {
-        $this->data["Attrib1"] = (int) $this->data["Attrib1"];
+        $this->data["Attrib1"] = (int) $value;
     }
 
 
@@ -1316,11 +1318,13 @@ class HUGnetContainerTestClass2 extends HUGnetContainer
     /**
     * function to check Attrib5
     *
+    * @param mixed  $value The value to set it to
+    *
     * @return null
     */
-    protected function attrib5()
+    protected function setAttrib5($value)
     {
-        $this->data["Attrib5"] = (string) $this->data["Attrib5"];
+        $this->data["Attrib5"] = (string) $value;
     }
 
     /**

@@ -149,9 +149,11 @@ abstract class HUGnetContainer extends HUGnetClass
         if ($this->locked($name)) {
             self::vprint("'set' tried to access a locked property\n", 1);
         } else if (array_key_exists($name, $this->default)) {
-            $this->data[$name] = $value;
-            if (method_exists($this, $name)) {
-                $this->$name();
+            $fct = "set".ucfirst($name);
+            if (method_exists($this, $fct)) {
+                $this->$fct($value);
+            } else {
+                $this->data[$name] = $value;
             }
         }
     }

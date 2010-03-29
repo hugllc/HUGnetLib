@@ -166,10 +166,10 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
     *
     * @return mixed The value of the attribute
     */
-    public function __set($name, $value)
+    public function set($name, $value)
     {
         if (array_key_exists($name, $this->default)) {
-            parent::__set($name, $value);
+            parent::set($name, $value);
         } else if ($var = $this->_findExtra($name)) {
             $this->$var->$name = $value;
         }
@@ -181,7 +181,7 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
     *
     * @return mixed The value of the attribute
     */
-    public function __get($name)
+    public function get($name)
     {
         if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
