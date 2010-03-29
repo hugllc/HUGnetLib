@@ -272,7 +272,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                     "GatewayPort" => "80",
                 ),
                 devInfo::hexifyStr("GET\r\n"),
-                devInfo::hexifyStr("DOCTYPE HTML PUBLIC"),
+                "DOCTYPE HTML PUBLIC",
             ),
         );
     }
@@ -295,6 +295,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
         $this->o->write($write);
         $read = $this->o->read();
         if (is_string($expect)) {
+            $read = devInfo::dehexify($read);
             $this->assertFalse(is_bool(stristr($read, $expect)));
         } else {
             $this->assertSame($expect, $read);
