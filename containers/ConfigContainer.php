@@ -162,5 +162,22 @@ class ConfigContainer extends HUGnetContainer
         }
     }
 
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $config The configuration array.
+    *
+    * @return object of type ConfigContainer
+    */
+    public function &singleton($config = array())
+    {
+        static $instance;
+
+        if (!is_object($instance)) {
+            $class = __CLASS__;
+            $instance = new $class($config);
+        }
+        return $instance;
+    }
 }
 ?>
