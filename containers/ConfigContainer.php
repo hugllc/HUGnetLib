@@ -105,15 +105,18 @@ class ConfigContainer extends HUGnetContainer
         "PluginExtension" => "php",
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
+        "useSocket"       => "gateway",    // What kind of socket to use
     );
     /** @var array This is where the data is stored */
     protected $data = array();
     /** @var object This is where we store our database connection */
     protected $servers = null;
-    /** @var object This is where we store our database connection */
+    /** @var object This is where we store our gateway */
     public $gateway = null;
-    /** @var object This is where we store our database connection */
+    /** @var object This is where we store our plugins */
     public $plugins = null;
+    /** @var object This is where we store our socket connection */
+    public $socket = null;
 
     /**
     * Build everything
@@ -148,7 +151,28 @@ class ConfigContainer extends HUGnetContainer
             $this->PluginSkipDir,
             $this->verbose
         );
+        $this->_setSocket();
+    }
 
+
+    /**
+    * Build everything
+    *
+    * @param array $config The configuration array.
+    */
+    private function _setSocket()
+    {
+        $this->socket = null;
+        if ($this->useSocket == "gateway") {
+            $this->socket = &$this->gateway;
+        } else if ($this->useSocket == "dummy") {
+            // This is a dummy item for testing.  It is only
+            // available when we are testing.  It just echos
+            // stuff back that is written to it.
+            if (class_exists("HUGnetDummySocket")) {
+                $this->socket = new HUGnetDummySocket();
+            }
+        }
     }
 
     /**
