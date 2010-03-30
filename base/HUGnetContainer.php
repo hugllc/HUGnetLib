@@ -69,6 +69,8 @@ abstract class HUGnetContainer extends HUGnetClass
     private $_lock = array();
     /** @var object The locked values */
     private $_includePath = "";
+    /** @var int The verbosity level */
+    protected $config = null;
 
     /**
     * This is the constructor
@@ -436,6 +438,21 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         return md5((string)$this);
     }
+    /**
+    * loads the configuration
+    *
+    * @param mixed $config The configuration to load
+    *
+    * @return null
+    */
+    protected function setConfig($config=array())
+    {
+        if ($this->findClass("ConfigContainer")) {
+            $this->config = &ConfigContainer::singleton($config);
+        }
+
+    }
+
 
 
 }

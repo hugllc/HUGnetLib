@@ -1250,6 +1250,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             $expect,
             $o->toArray()
         );
+        $this->assertSame(
+            "ConfigContainer",
+            get_class($this->readAttribute($o, "config"))
+        );
     }
 
 }
@@ -1284,6 +1288,16 @@ class HUGnetContainerTestClass extends HUGnetContainer
     /** @var object We are going to put an object here */
     protected $atest = null;
 
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+        $this->setConfig();
+    }
     /**
     * function to check Attrib1
     *
