@@ -37,7 +37,8 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetExtensibleContainer.php";
+require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
@@ -53,8 +54,21 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceContainer extends HUGnetExtensibleContainer
+class DeviceContainer extends HUGnetContainer
 {
+    /** Where in the config string the hardware part number starts  */
+    const HW_START = 10;
+    /** Where in the config string the firmware part number starts  */
+    const FW_START = 20;
+    /** Where in the config string the firmware version starts  */
+    const FWV_START = 30;
+    /** Where in the config string the group starts  */
+    const GROUP = 36;
+    /** Where in the config string the boredom constant starts  */
+    const BOREDOM = 42;
+    /** Where in the config string the configuration ends  */
+    const CONFIGEND = 44;
+
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -77,7 +91,7 @@ class DeviceContainer extends HUGnetExtensibleContainer
         "PollInterval"      => 0,               // The poll interval in minutes
         "ActiveSensors"     => 0,               // How many active sensors
         "DeviceGroup"       => "FFFFFF",        // What group the device is in
-        "BoredomThreshold"  => 50,              // Not currently used
+        "BoredomThreshold"  => 0x50,            // Not currently used
         "LastConfig"        => "2000-01-01 00:00:00",  // Last configuration check
         "LastPoll"          => "2000-01-01 00:00:00",  // Last poll
         "LastHistory"       => "2000-01-01 00:00:00",  // Last history record
@@ -94,6 +108,10 @@ class DeviceContainer extends HUGnetExtensibleContainer
     /** This is the Field name for the key of the record */
     protected $id = "DeviceKey";
 
+    /** @var object This is the endpoint driver */
+    protected $epDriver = null;
+    /** @var object These are the registered devices */
+    protected $myDev = array();
     /**
     * Builds the class
     *
@@ -101,10 +119,11 @@ class DeviceContainer extends HUGnetExtensibleContainer
     *
     * @return null
     */
-    public function __construct($data)
+    public function __construct($data = array())
     {
-        $this->data = $this->default;
-        $this->fromArray($data);
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->_registerDriverPlugins();
+        parent::__construct($data);
     }
 
     /**
@@ -116,12 +135,39 @@ class DeviceContainer extends HUGnetExtensibleContainer
     {
     }
     /**
-     *  Encodes the parameter array and returns it as a string
-     *
-     * @param array &$params the parameter array to encode
-     *
-     * @return string
-     */
+    * Disconnects from the gateway
+    *
+    * @return null
+    */
+    private function _registerDriverPlugins()
+    {
+        $myDev = $this->myConfig->plugins->getClass("device");
+        $this->myDev = array();
+        foreach ((array)$myDev as $device) {
+            foreach ($device["Devices"] as $fw => $Firm) {
+                foreach ($Firm as $hw => $ver) {
+                    $dev = explode(",", $ver);
+                    foreach ($dev as $d) {
+                        if (!isset($this->dev[$hw][$fw][$d])) {
+                            if (empty($this->myDev["drivers"][$device["Name"]])) {
+                                $this->myDev["drivers"][$device["Name"]] = $device;
+                            }
+                            $this->myDev[$hw][$fw][$d]
+                                = &$this->myDev["drivers"][$device["Name"]];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+    *  Encodes the parameter array and returns it as a string
+    *
+    * @param array &$params the parameter array to encode
+    *
+    * @return string
+    */
     function encodeParams(&$params)
     {
         if (is_array($params)) {
@@ -152,26 +198,104 @@ class DeviceContainer extends HUGnetExtensibleContainer
         }
         return $params;
     }
+
     /**
-    * Runs a function using the correct driver for the endpoint
+    * Creates the object from a string
+    *
+    * @return null
+    */
+    private function _registerDriver()
+    {
+        $hwLoc = &$this->myDev[$this->HWPartNum];
+        $driver = array("Name" => "eDEFAULT", "Class" => "eDEFAULTDriver");
+        if (is_array($hwLoc[$this->FWPartNum][$this->FWVersion])) {
+            $driver = $hwLoc[$this->FWPartNum][$this->FWVersion];
+        } else if (is_array($hwLoc[$this->FWPartNum]["BAD"])) {
+            // Use the default driver here
+        } else if (is_array($hwLoc[$this->FWPartNum]["DEFAULT"])) {
+            $driver = $hwLoc[$this->FWPartNum]["DEFAULT"];
+        } else if (is_array($hwLoc["DEFAULT"]["DEFAULT"])) {
+            $driver = $hwLoc["DEFAULT"]["DEFAULT"];
+        }
+
+        if ($driver["Name"] !== $this->Driver) {
+            $this->Driver = $driver["Name"];
+        }
+        if (get_class($this->epDriver) !== $driver["Class"]) {
+            $class = $driver["Class"];
+            if (class_exists($class)) {
+                $this->epDriver = new $class($this);
+            }
+        }
+    }
+
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        $this->SerialNum = hexdec(substr($string, 0, 10));
+        $this->DeviceID  = devInfo::sn2DeviceID($this->SerialNum);
+        $this->HWPartNum = devInfo::dehexifyPartNum(
+            substr($string, self::HW_START, 10)
+        );
+        $this->FWPartNum        = devInfo::dehexifyPartNum(
+            substr($string, self::FW_START, 10)
+        );
+        $this->FWVersion        = devInfo::dehexifyVersion(
+            substr($string, self::FWV_START, 6)
+        );
+        $this->DeviceGroup      = trim(strtoupper(substr($string, self::GROUP, 6)));
+        $this->BoredomThreshold = hexdec(trim(substr($string, self::BOREDOM, 2)));
+        $this->RawSetup         = $string;
+        $this->_registerDriver();
+        if (is_object($this->epDriver)) {
+            $this->epDriver->fromString(substr($string, self::CONFIGEND));
+        }
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
     *
     * @return string
     */
-    function getDriver()
+    public function toString($default = true)
     {
-        $HWPart = &$this->data["HWPartNum"];
-        $FWPart = &$this->data["FWPartNum"];
-        $FWVer  = &$this->data["FWVersion"];
-        if (isset($this->dev[$HWPart][$FWPart][$FWVer])) {
-            return $this->dev[$HWPart][$FWPart][$FWVer];
-        } else if (isset($this->dev[$HWPart][$FWPart]["BAD"])) {
-            return "eDEFAULT";
-        } else if (isset($this->dev[$HWPart][$FWPart]["DEFAULT"])) {
-            return $this->dev[$HWPart][$FWPart]["DEFAULT"];
-        } else if (isset($this->dev[$HWPart]["DEFAULT"]["DEFAULT"])) {
-            return $this->dev[$HWPart]["DEFAULT"]["DEFAULT"];
+        $string  = devInfo::hexify($this->SerialNum, 10);
+        $string .= devInfo::hexifyPartNum($this->HWPartNum);
+        $string .= devInfo::hexifyPartNum($this->FWPartNum);
+        $string .= devInfo::hexifyVersion($this->FWVersion);
+        $string .= $this->DeviceGroup;
+        $string .= devInfo::hexify($this->BoredomThreshold, 2);
+        if (is_object($this->epDriver)) {
+            $string .= $this->epDriver->toString($default);
         }
-        return "eDEFAULT";
+        return $string;
+
+    }
+
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        parent::fromArray($array);
+        $this->_registerDriver();
+        if (is_object($this->epDriver)) {
+            $this->epDriver->fromString(substr($string, self::CONFIGEND));
+        }
+        if (empty($this->RawSetup)) {
+            $this->RawSetup = substr($this->toString(), 0, self::CONFIGEND);
+        }
     }
 
 }

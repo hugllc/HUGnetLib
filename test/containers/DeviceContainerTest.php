@@ -65,7 +65,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new DeviceContainer(array());
+        $config = array(
+            "PluginDir" => realpath(
+                dirname(__FILE__)."/../files/plugins/devices/"
+            ),
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
+        $this->o = new DeviceContainer();
     }
 
     /**
@@ -80,8 +87,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
     }
-
-
     /**
     * data provider for testDeviceID
     *
@@ -90,6 +95,226 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            array(
+                "00000000E8ABCFEF01410124456743000302FFFFFF",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.3.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCFEF01410124456743000102FFFFFF",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCEEF01410124456743000005FFFFFF",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCE-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCDEF01410123456743000005FFFFFF",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCD-EF-01-A",
+                    "FWPartNum" => "0123-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCCEF01410125456743000005FFFFFF",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCC-EF-01-A",
+                    "FWPartNum" => "0125-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 0,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
             array(
                 array(),
                 array(
@@ -100,7 +325,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "HWPartNum"         => "",
                     "FWPartNum"         => "",
                     "FWVersion"         => "",
-                    "RawSetup"          => "",
+                    "RawSetup"     => "000000000000000000000000000000000000FFFFFF50",
                     "RawCalibration"    => "",
                     "Active"            => 0,
                     "GatewayKey"        => 0,
@@ -112,7 +337,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval"      => 0,
                     "ActiveSensors"     => 0,
                     "DeviceGroup"       => "FFFFFF",
-                    "BoredomThreshold"  => 50,
+                    "BoredomThreshold"  => 80,
                     "LastConfig"        => "2000-01-01 00:00:00",
                     "LastPoll"          => "2000-01-01 00:00:00",
                     "LastHistory"       => "2000-01-01 00:00:00",
@@ -168,7 +393,184 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "ControllerIndex"   => 1,
                     "DeviceLocation"    => "Location",
                     "DeviceJob"         => "Job",
+                    "Driver"            => "eDEFAULT",
+                    "PollInterval"      => 52,
+                    "ActiveSensors"     => 3,
+                    "DeviceGroup"       => "123456",
+                    "BoredomThreshold"  => 20,
+                    "LastConfig"        => "2002-01-01 00:00:00",
+                    "LastPoll"          => "2003-01-01 00:00:00",
+                    "LastHistory"       => "2005-01-01 00:00:00",
+                    "LastAnalysis"      => "2006-01-01 00:00:00",
+                    "MinAverage"        => "HOURLY",
+                    "CurrentGatewayKey" => 2,
+                    "params"            => array(),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor
+    */
+    public function testConstructor($preload, $expect)
+    {
+        $o = new DeviceContainer($preload);
+        $this->assertAttributeSame($expect, "data", $o);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromArray()
+    {
+        return array(
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 30,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF1E",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 30,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                array(),
+                array(
+                    "DeviceKey"         => 0,
+                    "DeviceID"          => "000000",
+                    "DeviceName"        => "",
+                    "SerialNum"         => 0,
+                    "HWPartNum"         => "",
+                    "FWPartNum"         => "",
+                    "FWVersion"         => "",
+                    "RawSetup"     => "000000000000000000000000000000000000FFFFFF50",
+                    "RawCalibration"    => "",
+                    "Active"            => 0,
+                    "GatewayKey"        => 0,
+                    "ControllerKey"     => 0,
+                    "ControllerIndex"   => 0,
+                    "DeviceLocation"    => "",
+                    "DeviceJob"         => "",
+                    "Driver"            => "eDEFAULT",
+                    "PollInterval"      => 0,
+                    "ActiveSensors"     => 0,
+                    "DeviceGroup"       => "FFFFFF",
+                    "BoredomThreshold"  => 80,
+                    "LastConfig"        => "2000-01-01 00:00:00",
+                    "LastPoll"          => "2000-01-01 00:00:00",
+                    "LastHistory"       => "2000-01-01 00:00:00",
+                    "LastAnalysis"      => "2000-01-01 00:00:00",
+                    "MinAverage"        => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params"            => null,
+                ),
+            ),
+            array(
+                array(
+                    "DeviceKey"         => 1,
+                    "DeviceID"          => "004738",
+                    "DeviceName"        => "Name",
+                    "SerialNum"         => 1234,
+                    "HWPartNum"         => "0039-21-02-A",
+                    "FWPartNum"         => "0039-22-95-C",
+                    "FWVersion"         => "02.1.3",
+                    "RawSetup"          => "",
+                    "RawCalibration"    => "fdsa",
+                    "Active"            => 1,
+                    "GatewayKey"        => 234,
+                    "ControllerKey"     => 28,
+                    "ControllerIndex"   => 1,
+                    "DeviceLocation"    => "Location",
+                    "DeviceJob"         => "Job",
                     "Driver"            => "e00392100",
+                    "PollInterval"      => 52,
+                    "ActiveSensors"     => 3,
+                    "DeviceGroup"       => "123456",
+                    "BoredomThreshold"  => 20,
+                    "LastConfig"        => "2002-01-01 00:00:00",
+                    "LastPoll"          => "2003-01-01 00:00:00",
+                    "LastHistory"       => "2005-01-01 00:00:00",
+                    "LastAnalysis"      => "2006-01-01 00:00:00",
+                    "MinAverage"        => "HOURLY",
+                    "CurrentGatewayKey" => 2,
+                    "params"            => array(),
+                ),
+                array(
+                    "DeviceKey"         => 1,
+                    "DeviceID"          => "004738",
+                    "DeviceName"        => "Name",
+                    "SerialNum"         => 1234,
+                    "HWPartNum"         => "0039-21-02-A",
+                    "FWPartNum"         => "0039-22-95-C",
+                    "FWVersion"         => "02.1.3",
+                    "RawSetup"    => "00000004D20039210241003922954302010312345614",
+                    "RawCalibration"    => "fdsa",
+                    "Active"            => 1,
+                    "GatewayKey"        => 234,
+                    "ControllerKey"     => 28,
+                    "ControllerIndex"   => 1,
+                    "DeviceLocation"    => "Location",
+                    "DeviceJob"         => "Job",
+                    "Driver"            => "eDEFAULT",
                     "PollInterval"      => 52,
                     "ActiveSensors"     => 3,
                     "DeviceGroup"       => "123456",
@@ -193,18 +595,390 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataConstructor
+    * @dataProvider dataFromArray
     */
-    public function testConstructor($preload, $expect)
+    public function testFromArray($preload, $expect)
     {
-        $o = new DeviceContainer($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $this->o->fromArray($preload);
+        $this->assertAttributeSame($expect, "data", $this->o);
     }
     /**
-     * data provider
-     *
-     * @return array
-     */
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromString()
+    {
+        return array(
+            array(
+                "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.3.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 80,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCFEF01410124456743000102FFFFFF50",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF50",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 80,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCEEF01410124456743000005FFFFFF1E",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCE-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF1E",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 30,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCDEF01410123456743000005FFFFFF530123456789",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCD-EF-01-A",
+                    "FWPartNum" => "0123-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53".
+                        "0123456789",
+                    "RawCalibration" => "0123456789",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 83,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+            array(
+                "00000000E8ABCCEF01410125456743000005FFFFFF2101",
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCC-EF-01-A",
+                    "FWPartNum" => "0125-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF2101",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 33,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+               ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromString
+    */
+    public function testFromString($preload, $expect)
+    {
+        $this->o->fromString($preload);
+        $this->assertAttributeSame($expect, "data", $this->o);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function data2String()
+    {
+        return array(
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.3.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 80,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+                ),
+                "00000000E8ABCFEF01410124456743000302FFFFFF50",
+            ),
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCF-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF21",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 80,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+                ),
+                "00000000E8ABCFEF01410124456743000102FFFFFF5001234567",
+            ),
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCE-EF-01-A",
+                    "FWPartNum" => "0124-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF31",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 32,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+                ),
+                "00000000E8ABCEEF01410124456743000005FFFFFF2001234567",
+            ),
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCD-EF-01-A",
+                    "FWPartNum" => "0123-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "testDriver",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 48,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+                ),
+                "00000000E8ABCDEF01410123456743000005FFFFFF3001234567",
+            ),
+            array(
+                array(
+                    "DeviceKey" => 0,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "SerialNum" => 232,
+                    "HWPartNum" => "ABCC-EF-01-A",
+                    "FWPartNum" => "0125-45-67-C",
+                    "FWVersion" => "0.0.5",
+                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF23",
+                    "RawCalibration" => "",
+                    "Active" => 0,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "BoredomThreshold" => 64,
+                    "LastConfig" => "2000-01-01 00:00:00",
+                    "LastPoll" => "2000-01-01 00:00:00",
+                    "LastHistory" => "2000-01-01 00:00:00",
+                    "LastAnalysis" => "2000-01-01 00:00:00",
+                    "MinAverage" => "15MIN",
+                    "CurrentGatewayKey" => 0,
+                    "params" => null,
+                ),
+                "00000000E8ABCCEF01410125456743000005FFFFFF40",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider data2String
+    */
+    public function testToString($preload, $expect)
+    {
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, $this->o->toString());
+    }
+
+    /**
+    * data provider
+    *
+    * @return array
+    */
     public static function dataEncodeParams()
     {
         return array(
@@ -307,79 +1081,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->o->encodeParams($params);
         $this->o->decodeParams($params);
         $this->assertSame($expect, $params);
-    }
-    /**
-    * data provider for testGetDriver
-    *
-    * @return array
-    */
-    public static function dataGetDriver()
-    {
-        return array(
-            array(
-                array(
-                    "HWPartNum" => 1,
-                    "FWPartNum" => 2,
-                    "FWVersion" =>3
-                ),
-                "eDEFAULT",
-                1
-            ),
-            /*
-            array(
-                array(
-                    "HWPartNum" => "testHW2",
-                    "FWPartNum" => "testFW",
-                    "FWVersion" => "0.2.3"
-                ),
-                "testDriver",
-                2
-            ),
-            array(
-                array(
-                    "HWPartNum" => "testHW1",
-                    "FWPartNum" => "testFW",
-                    "FWVersion" => "otherVersion"
-                ),
-                "testDriver",
-                3
-            ),
-            array(
-                array(
-                    "HWPartNum" => "testHW3",
-                    "FWPartNum" => "otherFW",
-                    "FWVersion" => "otherVersion"
-                ),
-                "testDriver",
-                4
-            ),
-            */
-            array(
-                array(
-                    "HWPartNum" => "testHW4",
-                    "FWPartNum" => "testFW2",
-                    "FWVersion" => "otherVersion"
-                ),
-                "eDEFAULT",
-                5
-            ),
-        );
-    }
-    /**
-    * tests findDriver()
-    *
-    * @param array  $preload The devInfo array
-    * @param string $expect  The return to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetDriver().
-    */
-    public function testGetDriver($preload, $expect)
-    {
-        $this->o->fromArray($preload);
-        $ret = $this->o->getDriver();
-        $this->assertSame($expect, $ret);
     }
 
 }
