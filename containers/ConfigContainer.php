@@ -38,6 +38,10 @@
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../lib/plugins.inc.php";
+
+define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
+
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -97,6 +101,10 @@ class ConfigContainer extends HUGnetContainer
         "admin_email"     => "",           // Administrator Email
         "gatewayIP"       => "127.0.0.1",  // The gateway IP Address
         "gatewayPort"     => "2000",       // The port on the gateway to use
+        "PluginDir"       => HUGNET_PLUGIN_BASE_PATH, // This is the plugin path
+        "PluginExtension" => "php",
+        "PluginWebDir"    => "",
+        "PluginSkipDir"   => array(),
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -104,6 +112,8 @@ class ConfigContainer extends HUGnetContainer
     protected $servers = null;
     /** @var object This is where we store our database connection */
     public $gateway = null;
+    /** @var object This is where we store our database connection */
+    public $plugins = null;
 
     /**
     * Build everything
@@ -112,14 +122,33 @@ class ConfigContainer extends HUGnetContainer
     */
     public function __construct($config = array())
     {
+        $this->forceConfig($config);
+    }
+
+    /**
+    * Build everything
+    *
+    * @param array $config The configuration array.
+    */
+    public function forceConfig($config = array())
+    {
+        $this->clearData();
         if (is_string($config)) {
             $config = $this->_readConfigFile($config);
         }
-        parent::__construct($config);
+        $this->fromArray($config);
         $this->_setServers();
         if ($this->findClass("GatewayContainer")) {
             $this->gateway = new GatewayContainer($config);
         }
+        $this->plugins = new plugins(
+            $this->PluginDir."/",
+            $this->PluginExtension,
+            $this->PluginWebDir,
+            $this->PluginSkipDir,
+            $this->verbose
+        );
+
     }
 
     /**
