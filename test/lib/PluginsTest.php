@@ -470,6 +470,92 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     *
     * @static
     */
+    public static function dataGetClass()
+    {
+        $plugins = array(
+            "Class" => array(
+                "type1" => array(
+                    array(
+                        "Name" => "name",
+                        "HTML" => "HTML",
+                        "Type" => "type1",
+                    ),
+                ),
+                "type" => array(
+                    array(
+                        "Name"  => "zpluginTestFunction1",
+                        "Type"  => "type",
+                        "Title" => "title",
+                    ),
+                    array(
+                        "Name" => "aname",
+                        "HTML" => "HTML",
+                        "Type" => "type",
+                    ),
+                ),
+            ),
+        );
+
+        return array(
+            array(
+                "type",
+                array("Class" => array()),
+                array(),
+            ),
+            array(
+                "type1",
+                $plugins,
+                array(
+                    array(
+                        "Name" => "name",
+                        "HTML" => "HTML",
+                        "Type" => "type1",
+                    ),
+                ),
+            ),
+            array(
+                "type",
+                $plugins,
+                array(
+                    array(
+                        "Name" => "zpluginTestFunction1",
+                        "Type" => "type",
+                        "Title" => "title",
+                    ),
+                    array(
+                        "Name" => "aname",
+                        "HTML" => "HTML",
+                        "Type" => "type",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $Type    The type to test
+    * @param array  $preload The array to preload into $o->plugins
+    * @param array  $expect  The expected value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetClass
+    */
+    public function testGetClass($Type, $preload, $expect)
+    {
+        $preload          = (array)$preload;
+        $this->o->plugins = $preload;
+        $stuff            = $this->o->getClass($Type);
+        $this->assertSame($expect, $stuff);
+    }
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
     public static function dataGetFunction()
     {
         $plugins = array(
@@ -1006,6 +1092,20 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 0,
                 true,
                 array(
+                    "Class" => array(
+                        "testClass" => array(
+                            array(
+                                "Name" => "AutoClassPlugin",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin",
+                            ),
+                            array(
+                                "Name" => "AutoClassPlugin2",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin2",
+                            ),
+                        ),
+                    ),
                     "Generic" => array(
                         "testClass" => array(
                             array(
@@ -1045,6 +1145,20 @@ class PluginsTest extends PHPUnit_Framework_TestCase
                 0,
                 false,
                 array(
+                    "Class" => array(
+                        "testClass" => array(
+                            array(
+                                "Name" => "AutoClassPlugin",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin",
+                            ),
+                            array(
+                                "Name" => "AutoClassPlugin2",
+                                "Type" => "testClass",
+                                "Class" => "AutoClassPlugin2",
+                            ),
+                        ),
+                    ),
                     "Generic" => array(
                         "testClass" => array(
                             array(

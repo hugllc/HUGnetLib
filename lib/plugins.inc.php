@@ -427,6 +427,23 @@ class Plugins extends HUGnetClass
         return $this->_getRaw($Type, "Generic");
     }
 
+    /**
+    * Gets all of the generic of one type.
+    *
+    * This returns an array of information on all of the generic Plugins of a
+    * certain type, plus all generic Plugins of type "ALL_TYPES".
+    *
+    * @param string $Type The type of generic Plugins to return
+    *
+    * @return array An array of Plugins of whatever type was sent to it, plus
+    *         all Plugins of type "ALL_TYPES".
+    */
+    function getClass($Type)
+    {
+        $return = $this->plugins["Class"][$Type];
+        $return = $this->sortPlugins((array)$return);
+        return $return;
+    }
 
     /**
     * Gets all of the functions of one type.
@@ -715,7 +732,7 @@ class Plugins extends HUGnetClass
         if (!empty($reg) && empty($reg["Class"])) {
             $reg["Class"] = ucfirst($name);
         }
-        return $this->addGenericRaw($reg);
+        return $this->_addClassRaw($reg);
     }
     /**
     *  Deals with the plugin files.
@@ -829,6 +846,39 @@ class Plugins extends HUGnetClass
             $plugins["Generic"][$info["Type"]][] = $info;
             $this->_setPluginVar($plugins);
             $this->generic_count++;
+            $this->plugin_count++;
+        } else {
+            $this->vprint("  Failed", 4);
+        }
+        $this->vprint("\n", 4);
+    }
+
+    /**
+    * Adds a generic plugin to the list of valid plugins.
+    *
+    * Copys the info parameter into its array of generic plugins.
+    *
+    * @param array $info this is all of the information about the plugin.  Only
+    *     info["Name"] is required.  Everything else is application dependent.
+    *     These Plugins allow for doing almost anything.
+    *
+    * @return null
+    */
+    private function _addClassRaw($info)
+    {
+        $info["Name"] = trim($info["Name"]);
+        if (!isset($info["Type"])) {
+            return;
+        }
+        $this->vprint("\tRegistering Class:  ".$info["Name"], 4);
+        $this->vprint("\t\tType:  ".$info["Type"], 4);
+        if ($info["Name"] != "") {
+            $this->vprint("  Done", 4);
+            $plugins["Class"][$info["Type"]][] = $info;
+            // This is for backward compatibility
+            $plugins["Generic"][$info["Type"]][] = $info;
+            $this->_setPluginVar($plugins);
+            $this->class_count++;
             $this->plugin_count++;
         } else {
             $this->vprint("  Failed", 4);
