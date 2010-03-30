@@ -1252,7 +1252,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             "ConfigContainer",
-            get_class($this->readAttribute($o, "config"))
+            get_class($this->readAttribute($o, "myConfig"))
         );
     }
 
@@ -1296,7 +1296,7 @@ class HUGnetContainerTestClass extends HUGnetContainer
     function __construct($data="")
     {
         parent::__construct($data);
-        $this->setConfig();
+        $this->getConfig();
     }
     /**
     * function to check Attrib1
