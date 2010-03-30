@@ -169,6 +169,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 false,
                 false,
+                false,
             ),
             array(
                 array(
@@ -177,6 +178,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
                 true,
+                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
             ),
         );
     }
@@ -187,13 +189,17 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     * @param array $preload The value to preload
     * @param array $expect  The expected return
     * @param bool  $socket  If true we expect a resource
+    * @param bool  $skip    Skip the test (resources not available)
     *
     * @return null
     *
     * @dataProvider dataConnect
     */
-    public function testConnect($preload, $expect, $socket)
+    public function testConnect($preload, $expect, $socket, $skip)
     {
+        if ($skip) {
+            $this->markTestSkipped("HTTP Server not available");
+        }
         $this->o->fromArray($preload);
         $ret = $this->o->connect();
         $this->assertSame($expect, $ret);
@@ -225,6 +231,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 false,
                 null,
+                false,
             ),
             array(
                 array(
@@ -233,6 +240,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
                 null,
+                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
             ),
         );
     }
@@ -243,13 +251,17 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     * @param array $preload The value to preload
     * @param array $expect  The expected return
     * @param mixed $socket  What to expect in the socket
+    * @param bool  $skip    Skip the test (resources not available)
     *
     * @return null
     *
     * @dataProvider dataDisconnect
     */
-    public function testDisconnect($preload, $expect, $socket)
+    public function testDisconnect($preload, $expect, $socket, $skip)
     {
+        if ($skip) {
+            $this->markTestSkipped("HTTP Server not available");
+        }
         $this->o->fromArray($preload);
         $ret = $this->o->connect();
         $this->o->disconnect();
@@ -287,7 +299,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                     "GatewayPort" => "80",
                 ),
                 devInfo::hexifyStr("GET\r\n"),
-                "DOCTYPE HTML PUBLIC",
+                @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
             ),
         );
     }
@@ -311,7 +323,8 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
         $read = $this->o->read();
         if (is_string($expect)) {
             $read = devInfo::dehexify($read);
-            $this->assertFalse(is_bool(stristr($read, $expect)));
+            //$this->assertFalse(is_bool(stristr($read, $expect)));
+            $this->assertSame($expect, $read);
         } else {
             $this->assertSame($expect, $read);
         }

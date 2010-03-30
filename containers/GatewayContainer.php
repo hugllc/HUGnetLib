@@ -38,6 +38,7 @@
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../interfaces/HUGnetSocketInterface.php";
 require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
@@ -53,7 +54,7 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayContainer extends HUGnetContainer
+class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -162,7 +163,7 @@ class GatewayContainer extends HUGnetContainer
         $this->socket = null;
     }
     /**
-     * Try to automatically find out which gateway to use
+     * This makes multiple gateways able to register on the same SQL row
      *
      * @param string $IP The string to decode
      *
@@ -189,7 +190,7 @@ class GatewayContainer extends HUGnetContainer
     }
 
     /**
-     * Try to automatically find out which gateway to use
+     * This makes multiple gateways able to register on the same SQL row
      *
      * @param string $array The array to encode
      *
