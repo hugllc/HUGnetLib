@@ -85,7 +85,7 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataSet()
+    public static function dataGetDSN()
     {
         return array(
             array(
@@ -136,120 +136,12 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataSet
+    * @dataProvider dataGetDSN
     */
-    public function testCreateDSN($preload, $expect)
+    public function testGetDSN($preload, $expect)
     {
         $o = new DBServerContainer($preload);
         $ret = $o->getDSN();
-        $this->assertSame($expect, $ret);
-    }
-
-    /**
-    * Data provider for testCreatePDO
-    *
-    * @return array
-    */
-    public static function dataCreatePDO()
-    {
-        return array(
-            array(array(), "PDO", "sqlite"),
-            array(
-                array("driver" => "sqlite", "file" => ":memory:"),
-                "PDO",
-                "sqlite",
-            ),
-            array(
-                array("driver" => "badPDODriver", "file" => ":memory:"),
-                "PDO",
-                "sqlite"
-            ),
-            array(
-                array(
-                    "driver" => "mysql",
-                    "user" => "NotAGoodUserNameToUse",
-                    "password" => "Secret Password",
-                    "db" => "MyNewDb",
-                ),
-                null,
-                "sqlite"
-            ),
-        );
-    }
-    /**
-    * Tests to make sure this function fails if
-    * someone tries to make a cache from a memory
-    * sqlite instance.
-    *
-    * @param string $preload      The configuration to use
-    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
-    * @param mixed  $expectDriver The expected driver
-    *
-    * @return null
-    *
-    * @dataProvider dataCreatePDO()
-    */
-    public function testGetPDO($preload, $expect, $expectDriver)
-    {
-        $o = new DBServerContainer($preload);
-        $pdo = $o->getPDO();
-        if ($expect === false) {
-            $this->assertFalse($pdo);
-        } else if (is_null($expect)) {
-            $this->assertNull($pdo);
-        } else {
-            $this->assertType("object", $pdo);
-            $this->assertSame($expect, get_class($pdo));
-            $this->assertSame(
-                $expectDriver,
-                $pdo->getAttribute(PDO::ATTR_DRIVER_NAME)
-            );
-        }
-    }
-    /**
-    * Data provider for testCreatePDO
-    *
-    * @return array
-    */
-    public static function dataConnect()
-    {
-        return array(
-            array(array(), true),
-            array(
-                array("driver" => "sqlite", "file" => ":memory:"),
-                true,
-            ),
-            array(
-                array("driver" => "badPDODriver", "file" => ":memory:"),
-                true
-            ),
-            array(
-                array(
-                    "driver" => "mysql",
-                    "user" => "NotAGoodUserNameToUse",
-                    "password" => "Secret Password",
-                    "db" => "MyNewDb",
-                ),
-                false,
-            ),
-        );
-    }
-    /**
-    * Tests to make sure this function fails if
-    * someone tries to make a cache from a memory
-    * sqlite instance.
-    *
-    * @param string $preload The configuration to use
-    * @param bool   $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataConnect()
-    */
-    public function testConnect($preload, $expect)
-    {
-        $o = new DBServerContainer($preload);
-        $ret = $o->connect();
         $this->assertSame($expect, $ret);
     }
 

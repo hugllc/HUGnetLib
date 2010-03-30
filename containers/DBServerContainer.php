@@ -37,7 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetContainerLinkedList.php";
+require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../base/HUGnetContainerLinkedList.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DBServerContainer extends HUGnetContainerLinkedList
+class DBServerContainer extends HUGnetContainer
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -70,20 +70,6 @@ class DBServerContainer extends HUGnetContainerLinkedList
     /** @var array This is where the data is stored */
     protected $data = array();
 
-    /** @var object This is where we store our database connection */
-    protected $pdo = null;
-    /** @var object This is where we store our database connection information */
-    protected $pdodata = null;
-
-    /**
-    * Disconnects from the database
-    *
-    * @return object PDO object, null on failure
-    */
-    public function __destruct()
-    {
-        $this->disconnect();
-    }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
     *
@@ -110,72 +96,6 @@ class DBServerContainer extends HUGnetContainerLinkedList
         }
         return (string)$dsn;
     }
-
-    /**
-    * Creates a database object
-    *
-    * @return object PDO object, null on failure
-    */
-    public function connected()
-    {
-        return is_object($this->pdo) && (get_class($this->pdo) == "PDO");
-    }
-
-    /**
-    * Creates a database object
-    *
-    * @return object PDO object, null on failure
-    */
-    public function &getPDO()
-    {
-        if (!$this->connected()) {
-            $this->connect();
-        }
-        return $this->pdo;
-    }
-    /**
-    * Creates a database object
-    *
-    * @return object PDO object, null on failure
-    */
-    public function connect()
-    {
-
-        if (!$this->connected()) {
-            $this->lock(array_keys($this->default));
-            try {
-                $this->pdo = new PDO(
-                    $this->getDSN(),
-                    (string)$this->user,
-                    (string)$this->password,
-                    (array)$this->options
-                );
-            } catch (PDOException $e) {
-                self::vprint(
-                    "Error (".$e->getCode()."): ".$e->getMessage()."\n",
-                    1,
-                    $verbose
-                );
-                // Just to be sure
-                $this->disconnect();
-                // Return failure
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-    * Disconnects from the database
-    *
-    * @return object PDO object, null on failure
-    */
-    public function disconnect()
-    {
-        $this->pdo = null;
-        $this->unlock(array_keys($this->default));
-    }
-
 
 }
 ?>

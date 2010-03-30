@@ -136,14 +136,12 @@ class ConfigContainer extends HUGnetContainer
     */
     private function _setServers()
     {
-        // The import set $this->servers instead of $this->data["servers"].
-        $this->data["servers"] = $this->servers;
         // Load the container
-        if ($this->findClass("DBServerContainer")) {
-            foreach ((array)$this->data["servers"] as $key => $serv) {
-                $this->servers[$key] =& self::factory($serv, "DBServerContainer");
-            }
+        if ($this->findClass("DBServersContainer")) {
+            $this->data["servers"] = new DBServersContainer($this->servers);
         }
+        // The import set $this->servers instead of $this->data["servers"].
+        $this->servers = &$this->data["servers"];
     }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
@@ -179,5 +177,16 @@ class ConfigContainer extends HUGnetContainer
         }
         return $instance;
     }
+
+    /**
+    * This returns the servers
+    *
+    * @return Array of DBServerContainers
+    */
+    public function &dbServers()
+    {
+        return $this->data["servers"];
+    }
+
 }
 ?>

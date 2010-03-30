@@ -69,7 +69,7 @@ abstract class HUGnetContainer extends HUGnetClass
     private $_lock = array();
     /** @var object The locked values */
     private $_includePath = "";
-    /** @var int The verbosity level */
+    /** @var int The configuration */
     protected $myConfig = null;
 
     /**
@@ -368,11 +368,14 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         foreach ($this->getProperties() as $key) {
             if (($this->$key != $this->default[$key]) || $default) {
-                $data[$key] = $this->toArrayIterator(
+                $value = $this->toArrayIterator(
                     $this->$key,
                     $this->default[$key],
                     $default
                 );
+                if (($value != $default[$key]) || $default) {
+                    $data[$key] = $value;
+                }
             }
         }
         return (array)$data;
@@ -394,11 +397,14 @@ abstract class HUGnetContainer extends HUGnetClass
             $ret = array();
             foreach (array_keys($array) as $key) {
                 if (($array[$key] != $default[$key]) || $retDefault) {
-                    $ret[$key] = $this->toArrayIterator(
+                    $value = $this->toArrayIterator(
                         $array[$key],
                         $default[$key],
                         $retDefault
                     );
+                    if (($value != $default[$key]) || $retDefault) {
+                        $ret[$key] = $value;
+                    }
                 }
             }
             return $ret;
