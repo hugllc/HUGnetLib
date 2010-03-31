@@ -36,7 +36,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /**
- * This is the interface for a socket connection.
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
  *
  * @category   Containers
  * @package    HUGnetLib
@@ -47,63 +48,38 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface HUGnetSocketInterface
+interface HUGnetPacketInterface
 {
     /**
-    * Creates a database object
+    * Looks for a packet in a string.
+    *
+    * This is meant to be call with every byte received.  The incoming byte should
+    * be appended onto the string.  This routine will take care of removing
+    * the portion of string that it turns into packets.
+    *
+    * @param string &$string The raw packet string to check
     *
     * @return bool true on success, false on failure
     */
-    public function connected();
+    public function recv(&$string);
     /**
-    * Creates a socket connection to the gateway
+    * Sends a packet out
     *
-    * @return bool true on success, false on failure
+    * This function will wait for a reply if "GetReply" is true.  It will also
+    * try to send the packet out the number of times in "Retries" in the case
+    * of failure.
+    *
+    * @param array $data The data to build the class with if called statically
+    *
+    * @return PacketContainer object on success, null
     */
-    public function connect();
+    public function send($data = array());
     /**
-    * Disconnects from the database
+    * Checks to see if the contained packet is an unsolicited
     *
-    * @return object PDO object, null on failure
+    * @return bool true if it is unsolicited, false otherwise
     */
-    public function disconnect();
-    /**
-    * Write data out a socket
-    *
-    * @param string $string The string to send out
-    *
-    * @return int The number of bytes written on success, false on failure
-    */
-    public function write($string);
-    /**
-    * Read data from the server
-    *
-    * @param int $maxChars The number of characters to read
-    *
-    * @return int Read bytes on success, false on failure
-    */
-    public function read($maxChars = 50);
+    public function unsolicited();
 
-
-/*
-If I enable these phpunit crashes.  I am not sure why as it gives no error
-messages.  For now I am going to just leave the as they are.
-*/
-    /**
-    * Sends out a packet
-    *
-    * @param PacketContainer &$pkt The packet to send out
-    *
-    * @return bool true on success, false on failure
-    */
-//    function sendPkt(PacketContainer &$pkt);
-    /**
-    * Waits for a reply packet for the packet given
-    *
-    * @param PacketContainer &$pkt The packet to send out
-    *
-    * @return bool true on success, false on failure
-    */
-//    public function recvPkt(PacketContainer &$pkt);
 }
 ?>

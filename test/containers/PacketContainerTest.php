@@ -95,6 +95,126 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                ),
+            ),
+            array(
+                "This is not a packet",
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                ),
+            ),
+            array(
+                "",
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                ),
+            ),
+            array(
+                array(),
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                ),
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Timeout"  => 3,
+                    "Retries"  => 5,
+                    "GetReply" => false,
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 3,
+                    "Retries"  => 5,
+                    "GetReply" => false,
+                ),
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "Timeout"  => 3,
+                    "Retries"  => 5,
+                    "GetReply" => false,
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 3,
+                    "Retries"  => 5,
+                    "GetReply" => false,
+                ),
+            ),
         );
     }
     /**
@@ -110,7 +230,16 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new PacketContainer($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $ret = $this->readAttribute($o, "data");
+        $this->checkDateTime($ret, false);
+        // Check to make sure the data var is set correctly
+        $this->assertSame($expect, $ret);
+        // Check the configuration is set correctly
+        $config = $this->readAttribute($o, "myConfig");
+        $this->assertSame("ConfigContainer", get_class($config));
+        // Check the socket is set correctly
+        $socket = $this->readAttribute($o, "mySocket");
+        $this->assertSame(get_class($config->socket), get_class($socket));
     }
     /**
     * data provider for testDeviceID
@@ -224,14 +353,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o->fromArray($preload);
         $ret = $this->o->toArray();
-        unset($ret["Date"]);
-        $this->assertType("float", $ret["Time"]);
-        unset($ret["Time"]);
-        if (!is_null($expect["Reply"])) {
-            unset($ret["Reply"]["Date"]);
-            $this->assertType("float", $ret["Reply"]["Time"]);
-            unset($ret["Reply"]["Time"]);
-        }
+        $this->checkDateTime($ret, false);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -258,7 +380,9 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $ret = $this->readAttribute($this->o, "data");
+        $this->checkDateTime($ret, false);
+        $this->assertAttributeSame($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -281,7 +405,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                     "Timeout"  => 5,
-                    "Retries"  => 3
+                    "Retries"  => 3,
+                    "GetReply" => true,
                 ),
             ),
             array(
@@ -297,7 +422,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "CA",
                     "CalcChecksum" => "CA",
                     "Timeout"  => 5,
-                    "Retries"  => 3
+                    "Retries"  => 3,
+                    "GetReply" => true,
                 ),
             ),
             array(
@@ -313,7 +439,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "F5",
                     "CalcChecksum" => "F5",
                     "Timeout"  => 5,
-                    "Retries"  => 3
+                    "Retries"  => 3,
+                    "GetReply" => true,
                 ),
             ),
             array(
@@ -329,7 +456,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "00",
                     "CalcChecksum" => "00",
                     "Timeout"  => 5,
-                    "Retries"  => 3
+                    "Retries"  => 3,
+                    "GetReply" => true,
                 ),
             ),
         );
@@ -348,10 +476,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o->fromString($preload);
         $ret = $this->readAttribute($this->o, "data");
-        // Date can't really be tested.
-        unset($ret["Date"]);
-        $this->assertTrue(is_numeric($ret["Time"]));
-        unset($ret["Time"]);
+        $this->checkDateTime($ret, false);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -359,45 +484,393 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataCheck()
+    public static function dataRecv()
     {
         return array(
+            // packet timeout
             array(
                 "5A5A5A55000ABC0000200401020304C3",
-                "55000ABC0000200401020304C3"
+                "5A5A5A01000020000ABC0401020304",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                false,
             ),
+            // Good Reply
             array(
-                "5A5A5A5C000ABC00002000CA",
-                "5C000ABC00002000CA"
+                "5A5A5A55000ABC0000200401020304C3",
+                "0ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                true,
             ),
+            // No reply expected
             array(
-                "5A5A5A5CABCDEF00002000F5",
-                "5CABCDEF00002000F5"
-            ),
-            array(
-                "5A5A5A55000ABC00002004",
-                false
-            ),
-            array(
-                "This is not a packet",
-                false
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                "5A5A5A5E000000000ABC040102030497",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                ),
+                false,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
+    * @param array  $preload What to preload into the object
+    * @param string $string  The string to feed recv
+    * @param string $data    The expected return from toArray();
+    * @param array  $expect  The expected return
     *
     * @return null
     *
-    * @dataProvider dataCheck
+    * @dataProvider dataRecv
     */
-    public function testCheck($preload, $expect)
+    public function testRecv($preload, $string, $data, $expect)
     {
-        $ret = $this->o->check($preload);
+        $o = new PacketContainer($preload);
+        $ret = $o->recv($string);
         $this->assertSame($expect, $ret);
+        $array = $o->toArray();
+        $this->checkDateTime($array, false);
+        $this->assertSame($data, $array);
+    }
+    /**
+    * data provider for testUnsolicited
+    *
+    * @return array
+    */
+    public static function dataUnsolicited()
+    {
+        return array(
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                false,
+            ),
+            array(
+                array(),
+                false,
+            ),
+            array(
+                array(
+                    "To" => "000000",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "To" => "000000",
+                    "From" => "000020",
+                    "Command" => "01",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload What to preload into the object
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataUnsolicited
+    */
+    public function testUnsolicited($preload, $expect)
+    {
+        $o = new PacketContainer($preload);
+        $ret = $o->unsolicited();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataSend()
+    {
+        return array(
+            // packet timeout
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Timeout"  => 1,
+                ),
+                "",
+                "5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "00",
+                ),
+            ),
+            // Good Reply
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                "5A5A5A55000ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            // No reply expected
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "GetReply" => false,
+                ),
+                "",
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "00",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSend
+    */
+    public function testSendStatic($preload, $readString, $writeString, $expect)
+    {
+        $this->config->socket->readString = $readString;
+        $o = PacketContainer::send($preload);
+        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSend
+    */
+    public function testSend($preload, $readString, $writeString, $expect)
+    {
+        $this->config->socket->readString = $readString;
+        $o = new PacketContainer($preload);
+        $o->send();
+        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSend
+    */
+    public function testSendBadSocket($preload, $readString, $writeString, $expect)
+    {
+        $this->config->socket = null;
+        $o = new PacketContainer($preload);
+        $ret = $o->send();
+        $this->assertFalse($ret);
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param object &$o          The object to check
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSend
+    */
+    public function checkTestSend(&$o, $preload, $readString, $writeString, $expect)
+    {
+        if (is_array($expect)) {
+            // First make sure we got an object back.
+            $this->assertType("object", $o);
+            $ret = $o->toArray();
+            $this->checkDateTime($ret);
+            $this->assertSame($expect, $ret);
+            $this->assertSame($writeString, $this->config->socket->writeString);
+        } else {
+            $this->assertFalse($o);
+        }
+    }
+    /**
+    * Checks the 'Date' and 'Time' fields, unsetting them afterwards
+    *
+    * @param object &$ret      The output of toArray()
+    * @param bool   $checkTime Check to see if the time is > 0
+    *
+    * @return null
+    *
+    * @dataProvider dataSend
+    */
+    public function checkDateTime(&$ret, $checkTime = true)
+    {
+        // Test the date separately
+        $this->assertRegExp(
+            "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+            $ret["Date"]
+        );
+        unset($ret["Date"]);
+        // Test the time separately
+        $this->assertType("float", $ret["Time"], "Time must be a float");
+        if ($checkTime) {
+            $this->assertThat(
+                $ret["Time"],
+                $this->greaterThan(0),
+                "Time must be greater than zero"
+            );
+        }
+        unset($ret["Time"]);
+        // Now check the reply, if there is one
+        if (is_array($ret["Reply"])) {
+            // Test the date separately
+            $this->assertRegExp(
+                "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] "
+                ."[0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
+                $ret["Reply"]["Date"]
+            );
+            unset($ret["Reply"]["Date"]);
+            // Test the time separately
+            $this->assertType(
+                "float",
+                $ret["Reply"]["Time"],
+                "Reply Time must be a float"
+            );
+            if ($checkTime) {
+                $this->assertThat(
+                    $ret["Reply"]["Time"],
+                    $this->greaterThan(0),
+                    "Reply time must be greater than 0"
+                );
+            }
+            unset($ret["Reply"]["Time"]);
+        }
     }
     /**
     * data provider for testDeviceID
@@ -437,7 +910,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "5A5A5A5CABCDEF00002000F5",
             ),
             array(
-                "This is not an array",
+                array(),
                 "5A5A5A000000000000000000",
             ),
         );

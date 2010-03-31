@@ -35,6 +35,8 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../../base/HUGnetContainer.php";
@@ -58,7 +60,9 @@ class DummySocketContainer implements HUGnetSocketInterface
     /** @var bool This says if we are connected or not */
     protected $connected = false;
     /** @var bool This says if we are connected or not */
-    protected $string = "";
+    public $readString = "";
+    /** @var bool This says if we are connected or not */
+    public $writeString = "";
 
     /**
     * Creates a database object
@@ -97,9 +101,9 @@ class DummySocketContainer implements HUGnetSocketInterface
     *
     * @return int The number of bytes written on success, false on failure
     */
-    function write($string)
+    public function write($string)
     {
-        $this->string .= (string)$string;
+        $this->writeString .= (string)$string;
         return strlen($string)/2;
     }
 
@@ -110,11 +114,38 @@ class DummySocketContainer implements HUGnetSocketInterface
     *
     * @return string Of hexified characters
     */
-    function read($maxChars = 50)
+    public function read($maxChars = 50)
     {
-        $string = substr($this->string, 0, ($maxChars*2));
-        $this->string = substr($this->string, ($maxChars*2));
+        $string = substr($this->readString, 0, ($maxChars*2));
+        $this->readString = substr($this->readString, ($maxChars*2));
         return $string;
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param PacketContainer &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function sendPkt(PacketContainer &$pkt)
+    {
+        return (bool)$this->write((string)$pkt);
+    }
+    /**
+    * Waits for a reply packet for the packet given
+    *
+    * @param PacketContainer &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function recvPkt(PacketContainer &$pkt)
+    {
+        $timeout = time() + $pkt->Timeout;
+        $string = "";
+        do {
+            $string .= $this->read(1);
+        } while ((($ret = $pkt->recv($string)) === false) && ($timeout > time()));
+        return $ret;
     }
 }
 ?>

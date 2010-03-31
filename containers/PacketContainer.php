@@ -39,6 +39,7 @@
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../interfaces/HUGnetPacketInterface.php";
 require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
@@ -54,7 +55,7 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketContainer extends HUGnetContainer
+class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
 {
     /** The placeholder for the Acknoledge command */
     const COMMAND_ACK = "01";
@@ -153,6 +154,7 @@ class PacketContainer extends HUGnetContainer
         "CalcChecksum"  => "00",  // The checksum we calculated
         "Timeout"  => 5,          // Timeout for the packet in seconds
         "Retries"  => 3,          // Number of times to retry the packet
+        "GetReply" => true,       // Should we wait for a reply
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -186,7 +188,7 @@ class PacketContainer extends HUGnetContainer
     */
     public function fromString($string)
     {
-        if (!($string = $this->check($string))) {
+        if (!($string = self::_checkStr($string))) {
             return;
         }
         $string             = strtoupper($string);
@@ -197,7 +199,7 @@ class PacketContainer extends HUGnetContainer
         $this->Data         = substr($string, 16, ($this->Length*2));
         $this->Checksum     = substr($string, (16 + ($this->Length*2)), 2);
         $pktdata            = substr($string, 0, strlen($data)-2);
-        $this->CalcChecksum = $this->checksum($pktdata);
+        $this->CalcChecksum = $this->_checksum($pktdata);
         $this->setType("UNKNOWN");
     }
     /**
@@ -219,25 +221,10 @@ class PacketContainer extends HUGnetContainer
         $string .= sprintf("%02X", (strlen($this->Data)/2));
         // Data ('Length' chars)
         $string .= $this->Data;
-        $this->Checksum = self::checksum($string);
+        $this->Checksum = self::_checksum($string);
         // Add this and the checksum (2 chars) to the return
         return self::FULL_PREAMBLE.$string.$this->Checksum;
 
-    }
-
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $array This is an array of this class's attributes
-    *
-    * @return null
-    */
-    public function fromArray($array)
-    {
-        if (!is_array($array)) {
-            return;
-        }
-        parent::fromArray($array);
     }
 
     /**
@@ -272,13 +259,102 @@ class PacketContainer extends HUGnetContainer
         );
     }
     /**
+    * Looks for a packet in a string.
+    *
+    * This is meant to be call with every byte received.  The incoming byte should
+    * be appended onto the string.  This routine will take care of removing
+    * the portion of string that it turns into packets.
+    *
+    * @param string &$string The raw packet string to check
+    *
+    * @return bool true on success, false on failure
+    */
+    public function recv(&$string)
+    {
+        // Check the string.  If it doesn't look like a packet return.
+        $pktStr = self::_checkStr($string);
+        if (!is_string($pktStr)) {
+            return false;
+        }
+        // We got something that looks like a packet, so remove the buffer
+        $string = "";
+        // Create a new packet object
+        // checkStr strips the preamble but this expects it so we re-add it.
+        $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
+        // Set the time on the packet
+        $pkt->_packetTime();
+        // Check the packet to see what we got
+        if (self::_reply($pkt)) {
+            // This is our reply.  Set it and return
+            $this->data["Reply"] =& $pkt;
+            return true;
+        } else  if (self::_unsolicited($pkt)) {
+            // This is an unsolicited packet
+            return false;
+        }
+        return false;
+    }
+    /**
+    * Sends a packet out
+    *
+    * This function will wait for a reply if "GetReply" is true.  It will also
+    * try to send the packet out the number of times in "Retries" in the case
+    * of failure.
+    *
+    * @param array $data The data to build the class with if called statically
+    *
+    * @return PacketContainer object on success, null
+    */
+    public function send($data = array())
+    {
+        // This deals with us being called statically
+        if (!self::_me()) {
+            $pkt = self::_new($data);
+            $pkt->send();
+            return $pkt;
+        }
+        // Send the packet out
+        if (is_object($this->mySocket)) {
+            // Set the time on the packet
+            $this->_packetTime();
+            do {
+                // Decrement the retries left
+                $this->Retries--;
+                // Send the packet
+                $ret = $this->mySocket->sendPkt($this);
+                // Get a reply if we want one
+                if ($ret && $this->GetReply) {
+                    $ret = $this->mySocket->recvPkt($this);
+                }
+                // Loop while:
+                // * We still have retries  ($this->Retries > 0)
+                // * We haven't gotten a positive return  (!$ret)
+                // If we don't want a return packet we will retry if the send fails
+            } while (($this->Retries > 0) && !$ret);
+
+            return $ret;
+        }
+        return false;
+    }
+
+    /**
+    * Checks to see if the contained packet is an unsolicited
+    *
+    * @return bool true if it is unsolicited, false otherwise
+    */
+    public function unsolicited()
+    {
+        return $this->_unsolicited($this);
+    }
+
+    /**
     * Computes the checksum of a packet
     *
     * @param string $string The raw packet string
     *
     * @return string The checksum
     */
-    protected function checksum($string)
+    private function _checksum($string)
     {
         $chksum = 0;
         for ($i = 0; $i < strlen($string); $i+=2) {
@@ -295,70 +371,84 @@ class PacketContainer extends HUGnetContainer
     *
     * @return string On success, false on failure
     */
-    public function check($string)
+    private function _checkStr($string)
     {
+        // This strips everything before the preamble (extra stuff)
         if (($pkt = stristr($string, self::PREAMBLE.self::PREAMBLE)) === false) {
             return false;
         }
-        $this->removePreamble($pkt);
+        // This removes the preamble
+        $this->_removePreamble($pkt);
+        // Don't even try until we get to the length (chars 14 & 15)
+        if (strlen($pkt) < 15) {
+            return false;
+        }
+        // Get the length and calculate the size of the packet
         $len = hexdec(substr($pkt, 14, 2));
-        if (strlen($string) >= ((9 + $len)*2)) {
-            return substr($pkt, 0, (9+$len)*2);
+        // Get the size the packet needs to be
+        $size = (9 + $len)*2;
+        // If the packet is the right size return it.
+        if (strlen($pkt) >= $size) {
+            return substr($pkt, 0, $size);
+        }
+        // If we got here we didn't see a valid packet.
+        return false;
+    }
+    /**
+    * Checks to see if the given packet is a reply to this packet
+    *
+    * @param PacketContainer &$pkt The packet to check
+    *
+    * @return bool true if it is a reply, false otherwise
+    */
+    private function _unsolicited(PacketContainer &$pkt)
+    {
+        if (($pkt->To == self::UNSOLICITED_TO)
+            && ($pkt->Command !== self::COMMAND_REPLY)
+            && ($pkt->Command !== "00")
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+    * Checks to see if the given packet is a reply to this packet
+    *
+    * @param PacketContainer &$pkt The packet to check
+    *
+    * @return bool true if it is a reply, false otherwise
+    */
+    private function _reply(PacketContainer &$pkt)
+    {
+        if (($pkt->To == $this->From)
+            && ($pkt->From == $this->To)
+            && ($pkt->Command == self::COMMAND_REPLY)
+        ) {
+            return true;
         }
         return false;
     }
     /**
-    * Looks for a packet in a string.
+    * Builds the class
     *
-    * @param string $string The raw packet string to check
+    * @param array $data The data to build the class with
     *
-    * @return PacketContainer object on success, null
+    * @return object of type PacketContainer
     */
-    public function &recv($string)
+    private function &_new($data)
     {
-        if ((($pkt = self::check($string)) === false)
-            || (self::_unsolicited($string))
-        ) {
-            return null;
-        }
-        if (is_object($this)) {
-            if ($this->_getTo($pkt) == $this->PacketFrom) {
-                // Not for us
-                return null;
-            }
-            $this->fromString($pkt);
-            return $this;
-        }
         $class = __CLASS__;
-        $ret = new $class();
-        $ret->fromString($pkt);
-        return $ret;
+        return new $class($data);
     }
-
-    /**
-    * Looks for a packet in a string.
-    *
-    * @param string $string The raw packet string to check
-    *
-    * @return PacketContainer object on success, null
-    */
-    private function _unsolicited($string)
-    {
-        if (self::_getTo($pkt) != self::UNSOLICITED_TO) {
-            return false;
-        }
-        // Do something here!
-        return true;
-    }
-
     /**
     * Removes the preamble from a packet string
     *
-    * @param string &$data The preamble will be removed from this packet string
+    * @param string &$string The preamble will be removed from this packet string
     *
     * @return null
     */
-    protected function removePreamble(&$data)
+    private function _removePreamble(&$data)
     {
         while (strtoupper(substr($data, 0, 2)) == self::PREAMBLE) {
             $data = substr($data, 2);
@@ -374,7 +464,18 @@ class PacketContainer extends HUGnetContainer
         list($usec, $sec) = explode(" ", microtime());
         $this->Time = ((float)$usec + (float)$sec);
     }
-
+    /**
+    * Looks for a packet in a string.
+    *
+    * @param string $string The raw packet string to check
+    *
+    * @return PacketContainer object on success, null
+    */
+    private function _me()
+    {
+        $class = __CLASS__;
+        return (get_class($this) === $class);
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
@@ -414,6 +515,25 @@ class PacketContainer extends HUGnetContainer
     {
         $this->data["Command"] = devInfo::setStringSize($value, 2);
         $this->setType($value);
+    }
+    /**
+    * function to set the Command
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setData($value)
+    {
+        if (is_array($value)) {
+            $data = "";
+            foreach ($value as $d) {
+                $data .= sprintf("%02X", $d);
+            }
+            $this->data["Data"] = $data;
+        } else if (is_string($value)) {
+            $this->data["Data"] = $value;
+        }
     }
     /**
     * function to check sentTo
