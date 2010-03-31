@@ -83,12 +83,6 @@ interface HUGnetSocketInterface
     * @return int Read bytes on success, false on failure
     */
     public function read($maxChars = 50);
-
-
-/*
-If I enable these phpunit crashes.  I am not sure why as it gives no error
-messages.  For now I am going to just leave the as they are.
-*/
     /**
     * Sends out a packet
     *
@@ -96,7 +90,7 @@ messages.  For now I am going to just leave the as they are.
     *
     * @return bool true on success, false on failure
     */
-//    function sendPkt(PacketContainer &$pkt);
+    function sendPkt(PacketContainer &$pkt);
     /**
     * Waits for a reply packet for the packet given
     *
@@ -104,6 +98,6 @@ messages.  For now I am going to just leave the as they are.
     *
     * @return bool true on success, false on failure
     */
-//    public function recvPkt(PacketContainer &$pkt);
+    public function recvPkt(PacketContainer &$pkt);
 }
 ?>

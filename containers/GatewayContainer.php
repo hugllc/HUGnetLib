@@ -78,6 +78,8 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
     protected $Errno = 0;
     /** @var string The error string */
     protected $Error = "";
+    /** @var string The character buffer */
+    protected $buffer = "";
 
     /**
     * Builds the class
@@ -121,6 +123,9 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
     */
     public function connect()
     {
+        if ($this->connected()) {
+            return true;
+        }
         $this->vprint("Opening socket to ".$this->GatewayIP.":".$this->Port, 1);
         $this->socket = @fsockopen(
             $this->data["GatewayIP"],
@@ -217,7 +222,7 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
     */
     function write($string)
     {
-        if (!$this->connected()) {
+        if (!$this->connect()) {
             return false;
         }
         usleep(mt_rand(500, 10000));
@@ -236,7 +241,7 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
     */
     function read($maxChars = 50)
     {
-        if (!$this->connected()) {
+        if (!$this->connect()) {
             return false;
         }
         $read = array($this->socket);
@@ -259,5 +264,34 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
         $this->vprint("read: ".strlen($string)." chars on ".$this->socket, 5);
         return devInfo::hexifyStr($string);
     }
+
+    /**
+    * Sends out a packet
+    *
+    * @param PacketContainer &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    function sendPkt(PacketContainer &$pkt)
+    {
+        return (bool)$this->write((string)$pkt);
+    }
+    /**
+    * Waits for a reply packet for the packet given
+    *
+    * @param PacketContainer &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function recvPkt(PacketContainer &$pkt)
+    {
+        $timeout = time() + $pkt->Timeout;
+        do {
+            $this->buffer .= $this->read(1);
+            $ret = $pkt->recv($this->buffer);
+        } while (($ret === false) && ($timeout > time()));
+        return $ret;
+    }
+
 }
 ?>

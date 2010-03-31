@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/GatewayContainer.php';
+require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 
 /**
  * Test class for filter.
@@ -318,7 +319,6 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     public function testRead($preload, $write, $expect)
     {
         $this->o->fromArray($preload);
-        $ret = $this->o->connect();
         $this->o->write($write);
         $read = $this->o->read();
         if (is_string($expect)) {
@@ -330,6 +330,135 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+    * data provider for testConnect
+    *
+    * @return array
+    */
+    public static function dataSendPkt()
+    {
+        return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 0.5,
+                ),
+                new PacketContainer(),
+                false,
+                false,
+            ),
+            // This test will fail without a local web server
+            array(
+                array(
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "80",
+                ),
+                new PacketContainer(),
+                true,
+                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param string $write   The string to write
+    * @param mixed  $expect  The expected return
+    * @param bool   $skip    Skip the test (resources not available)
+    *
+    * @return null
+    *
+    * @dataProvider dataSendPkt
+    */
+    public function testSendPkt($preload, $write, $expect, $skip)
+    {
+        if ($skip) {
+            $this->markTestSkipped("HTTP Server not available");
+        }
+        $this->o->fromArray($preload);
+        $ret = $this->o->sendPkt($write);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * data provider for testConnect
+    *
+    * @return array
+    */
+    public static function dataRecvPkt()
+    {
+        return array(
+            array(
+                array(
+                    "GatewayKey" => 1,
+                    "GatewayIP" => "10.2.0.5",
+                    "GatewayPort" => "43",
+                    "GatewayName" => "Put Name Here",
+                    "GatewayLocation" => "Somewhere",
+                    "database" => "HUGnet",
+                    "FirmwareStatus" => "BETA",
+                    "isVisible" => 1,
+                    "Timeout" => 0.5,
+                ),
+                "",
+                false,
+                new PacketContainer(array("Timeout" => 1)),
+                false,
+            ),
+            // This test will fail without a local web server
+            array(
+                array(
+                    "GatewayIP" => "127.0.0.1",
+                    "GatewayPort" => "80",
+                ),
+                devInfo::hexifyStr("GET\r\n"),
+                false,
+                new PacketContainer(array("Timeout" => 1)),
+                @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param string $write   The string to write
+    * @param mixed  $expect  The expected return
+    * @param object $pkt     The packet to use
+    * @param string $buffer  What the buffer should look like
+    *
+    * @return null
+    *
+    * @dataProvider dataRecvPkt
+    */
+    public function testRecvPkt($preload, $write, $expect, $pkt, $buffer)
+    {
+        $this->o->fromArray($preload);
+        $this->o->write($write);
+        $ret = $this->o->recvPkt($pkt);
+        $this->assertSame($expect, $ret);
+        // We are going to test the buffer here.  That is about the best we can
+        // do without building a custom network server.
+        if (strlen($buffer) > 0) {
+            $read = $this->readAttribute($this->o, "buffer");
+            // Since we can't control the read length, we will make the strings
+            // The same size.
+            $read = devInfo::dehexify($read);
+            $read = substr($read, 0, strlen($buffer));
+            $buffer = substr($buffer, 0, strlen($read));
+            $this->assertSame($buffer, $read);
+        }
+    }
     /**
      * Data provider for testEncodeIP
      *
