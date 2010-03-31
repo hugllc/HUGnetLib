@@ -36,9 +36,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
-require_once dirname(__FILE__)."/../interfaces/HUGnetSocketInterface.php";
+require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
+require_once dirname(__FILE__)."/../../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../../interfaces/HUGnetSocketInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,7 +53,7 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetSocketInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DummySocketContainer extends HUGnetSocketInterface
+class DummySocketContainer implements HUGnetSocketInterface
 {
     /** @var bool This says if we are connected or not */
     protected $connected = false;

@@ -132,6 +132,8 @@ class ConfigContainer extends HUGnetContainer
     * Build everything
     *
     * @param array $config The configuration array.
+    *
+    * @return null
     */
     public function forceConfig($config = array())
     {
@@ -158,7 +160,7 @@ class ConfigContainer extends HUGnetContainer
     /**
     * Build everything
     *
-    * @param array $config The configuration array.
+    * @return null
     */
     private function _setSocket()
     {
@@ -169,8 +171,8 @@ class ConfigContainer extends HUGnetContainer
             // This is a dummy item for testing.  It is only
             // available when we are testing.  It just echos
             // stuff back that is written to it.
-            if (class_exists("HUGnetDummySocket")) {
-                $this->socket = new HUGnetDummySocket();
+            if (class_exists("DummySocketContainer")) {
+                $this->socket = new DummySocketContainer();
             }
         }
     }

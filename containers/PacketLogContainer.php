@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketContainer extends HUGnetContainer
+class PacketLogContainer extends HUGnetContainer
 {
     /** The placeholder for the Acknoledge command */
     const COMMAND_ACK = "01";
@@ -114,48 +114,39 @@ class PacketContainer extends HUGnetContainer
 
     /** This is a preamble byte */
     const PREAMBLE = "5A";
-    /** This is a preamble byte */
-    const FULL_PREAMBLE = "5A5A5A";
     /** This is the 'to' field for an unsolicited packet */
     const UNSOLICITED_TO = "000000";
 
-    static private $_Types = array(
-        self::COMMAND_ACK                 => "REPLY",
-        self::COMMAND_ECHOREQUEST         => "PING",
-        self::COMMAND_FINDECHOREQUEST     => "FINDPING",
-        self::COMMAND_GETCALIBRATION      => "CALIBRATION",
-        self::COMMAND_GETCALIBRATION_NEXT => "CAL_NEXT",
-        self::COMMAND_SETCONFIG           => "SETCONFIG",
-        self::COMMAND_GETSETUP            => "CONFIG",
-        self::COMMAND_GETDATA             => "SENSORREAD",
-        self::COMMAND_BADC                => "BAD COMMAND",
-        self::COMMAND_READE2              => "READ_E2",
-        self::COMMAND_READRAM             => "READ_RAM",
-        self::SETRTC_COMMAND              => "SET_RTC",
-        self::READRTC_COMMAND             => "READ_RTC",
-        self::COMMAND_POWERUP             => "POWERUP",
-        self::COMMAND_RECONFIG            => "RECONFIG",
-        self::COMMAND_REPLY               => "REPLY",
-    );
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "To"       => "000000",   // Who the packet is to
-        "From"     => "000000",   // Who the packet is from
-        "Date"     => "",         // The date we created this object
-        "Command"  => "00",       // The command we used
-        "Length"   => 0,          // The length of the data section
-        "Time"     => 0.0,        // The time we sent the packet out
-        "Data"     => "",         // The data to send out
-        "Type"     => "UNKNOWN",  // The type of packet
-        "Reply"    => null,       // Reference to the reply packet
-        "Checksum" => "00",       // The checksum we received
-        "CalcChecksum"  => "00",  // The checksum we calculated
-        "Timeout"  => 5,          // Timeout for the packet in seconds
-        "Retries"  => 3,          // Number of times to retry the packet
+        // Packet Log definition
+        "DeviceKey"     => 0,               // Database key
+        "GatewayKey"    => 0,               // The gateway for this
+        "Date"          => "2000-01-01 00:00:00",  // The date we got the packet
+        "Command"       => "00",            // The command we got in the packet
+        "sendCommand"   => "00",            // The command we sent out
+        "PacketFrom"    => "000000",        // Who the packet was from
+        "RawData"       => "",              // The raw data from the packet
+        "sentRawData"   => "",              // The raw data we sent
+        "Type"          => "UNSOLICITED",   // The type of packet
+        "ReplyTime"     => 0,               // The reply time
+        // Other stuff we need
+        "PacketTo"      => "000020",        // Who the packet is to
+        "From"          => "000020",        // Who we should send from
+        "Checksum"      => 0,               // The checksum we received
+        "CalcChecksum"  => 0,               // The checksum we received
+        // The following are dummies just for ease of use
+        "To"            => "",              // Goes into sentTo
+
     );
     /** @var array This is where the data is stored */
     protected $data = array();
+
+    /** The database table to use */
+    protected $table = "PacketLog";
+    /** This is the Field name for the key of the record */
+    protected $id = null;
 
     /** @var object This is our socket */
     protected $mySocket = null;
@@ -172,8 +163,8 @@ class PacketContainer extends HUGnetContainer
     {
         $this->myConfig = &ConfigContainer::singleton();
         $this->mySocket = &$this->myConfig->socket;
-        parent::__construct($data);
-        $this->Date = date("Y-m-d H:i:s");
+        $this->clearData();
+        $this->fromArray($data);
     }
 
 
@@ -186,19 +177,46 @@ class PacketContainer extends HUGnetContainer
     */
     public function fromString($string)
     {
-        if (!($string = $this->check($string))) {
-            return;
-        }
-        $string             = strtoupper($string);
-        $this->Command      = substr($string, 0, 2);
-        $this->To           = substr($string, 2, 6);
-        $this->From         = substr($string, 8, 6);
-        $this->Length       = (int) hexdec(substr($string, 14, 2));
-        $this->Data         = substr($string, 16, ($this->Length*2));
-        $this->Checksum     = substr($string, (16 + ($this->Length*2)), 2);
-        $pktdata            = substr($string, 0, strlen($data)-2);
-        $this->CalcChecksum = $this->checksum($pktdata);
-        $this->setType("UNKNOWN");
+
+        $string = strtoupper($string);
+        $pkt = array();
+        $this->Command  = substr($data, 0, 2);
+        devInfo::setStringSize($pkt["To"], 6);
+        $pkt["From"] = substr($data, 8, 6);
+        devInfo::setStringSize($pkt["From"], 6);
+
+        $length              = hexdec(substr($data, 14, 2));
+        $pkt["Length"]       = (int)$length;
+        $pkt["RawData"]      = substr($data, 16, ($length*2));
+        $pkt["Data"]         = self::splitDataString($pkt["RawData"]);
+        $pkt["Checksum"]     = substr($data, (16 + ($length*2)), 2);
+        $pktdata             = substr($data, 0, strlen($data)-2);
+        $pkt["CalcChecksum"] = self::PacketGetChecksum($pktdata);
+        $pkt['RawPacket']    = $data;
+        return $pkt;
+
+    }
+    /**
+    * Gets the 'To' field of a packet string
+    *
+    * @param string $string The raw packet string to use
+    *
+    * @return string
+    */
+    private function _getTo($string)
+    {
+        return substr($string, 2, 6);
+    }
+    /**
+    * Gets the 'To' field of a packet string
+    *
+    * @param string $string The raw packet string to use
+    *
+    * @return string
+    */
+    private function _getFrom($string)
+    {
+        return substr($string, 8, 6);
     }
     /**
     * Returns the object as a string
@@ -210,18 +228,20 @@ class PacketContainer extends HUGnetContainer
     public function toString($default = true)
     {
         // Command (2 chars)
-        $string  = devInfo::setStringSize($this->Command, 2);
-        // To (6 chars)
-        $string .= devInfo::setStringSize($this->To, 6);
-        // From (6 chars)
-        $string .= devInfo::setStringSize($this->From, 6);
+        $string  = $this->Command;
+        // To (2 chars)
+        $string .= $this->PacketTo;
+        // From (2 chars)
+        $string .= $this->From;
         // Length (2 chars)
-        $string .= sprintf("%02X", (strlen($this->Data)/2));
+        $string .= sprintf("%02X", (strlen($this->sentRawData)/2));
         // Data ('Length' chars)
-        $string .= $this->Data;
-        $this->Checksum = self::checksum($string);
-        // Add this and the checksum (2 chars) to the return
-        return self::FULL_PREAMBLE.$string.$this->Checksum;
+        $string .= $this->sentRawData;
+        // Add the preamble to the return
+        $return  = self::PREAMBLE.self::PREAMBLE.self::PREAMBLE;
+        // Add this and the checksum to the return
+        $return .= $string.self::checksum($string);
+        return $return;
 
     }
 
@@ -238,38 +258,6 @@ class PacketContainer extends HUGnetContainer
             return;
         }
         parent::fromArray($array);
-    }
-
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toArray($default = true)
-    {
-        if (is_object($this->data["Reply"])) {
-            $Reply = $this->data["Reply"]->toArray();
-        }
-        for ($i = 0; $i < (strlen($this->Data)/2); $i++) {
-            $Data[] = hexdec(substr($this->Data, ($i*2), 2));
-        }
-
-        return array(
-            "To"           => devInfo::setStringSize($this->To, 6),
-            "From"         => devInfo::setStringSize($this->From, 6),
-            "Date"         => $this->Date,
-            "Command"      => devInfo::setStringSize($this->Command, 2),
-            "Length"       => (int) $this->Length,
-            "Time"         => (float) $this->Time,
-            "Data"         => (array)$Data,
-            "RawData"      => $this->Data,
-            "Type"         => $this->Type,
-            "Reply"        => $Reply,
-            "Checksum"     => $this->Checksum,
-            "CalcChecksum" => $this->CalcChecksum,
-        );
     }
     /**
     * Computes the checksum of a packet
@@ -300,12 +288,14 @@ class PacketContainer extends HUGnetContainer
         if (($pkt = stristr($string, self::PREAMBLE.self::PREAMBLE)) === false) {
             return false;
         }
-        $this->removePreamble($pkt);
+        self::removePreamble($pkt);
         $len = hexdec(substr($pkt, 14, 2));
-        if (strlen($string) >= ((9 + $len)*2)) {
-            return substr($pkt, 0, (9+$len)*2);
+        if (strlen($pkt) >= ((9 + $len)*2)) {
+            $ret = substr($pkt, 0, (9+$len)*2);
+            return $ret;
+        } else {
+            return false;
         }
-        return false;
     }
     /**
     * Looks for a packet in a string.
@@ -364,16 +354,6 @@ class PacketContainer extends HUGnetContainer
             $data = substr($data, 2);
         }
     }
-    /**
-    * Gets the current time
-    *
-    * @return float The current time in seconds
-    */
-    private function _packetTime()
-    {
-        list($usec, $sec) = explode(" ", microtime());
-        $this->Time = ((float)$usec + (float)$sec);
-    }
 
     /******************************************************************
      ******************************************************************
@@ -382,53 +362,86 @@ class PacketContainer extends HUGnetContainer
      ******************************************************************/
 
     /**
-    * function to set To
+    * function to check sentTo
     *
-    * @param string $value The value to set
+    * @param string $value This is just for convience.
     *
     * @return null
     */
     protected function setTo($value)
     {
-        $this->data["To"] = devInfo::setStringSize($value, 6);
+        $this->data["PacketTo"] = devInfo::setStringSize($value, 6);
     }
     /**
-    * function to set From
+    * function to check sentTo
     *
-    * @param string $value The value to set
+    * @param string $value This is just for convience.
     *
     * @return null
     */
-    protected function setFrom($value)
+    protected function setSentTo($value)
     {
-        $this->data["From"] = devInfo::setStringSize($value, 6);
+        $this->data["sentTo"] = devInfo::setStringSize($value, 6);
     }
     /**
-    * function to set the Command
+    * function to check sentTo
     *
-    * @param string $value The value to set
+    * @param string $value This is just for convience.
+    *
+    * @return null
+    */
+    protected function setPacketTo($value)
+    {
+        $this->data["PacketTo"] = devInfo::setStringSize($value, 6);
+    }
+
+    /**
+    * function to check sentTo
+    *
+    * @param string $value This is just for convience.
+    *
+    * @return null
+    */
+    protected function setPacketFrom($value)
+    {
+        $this->data["PacketFrom"] = devInfo::setStringSize($value, 6);
+    }
+    /**
+    * function to check sentTo
+    *
+    * @param string $value This is just for convience.
     *
     * @return null
     */
     protected function setCommand($value)
     {
         $this->data["Command"] = devInfo::setStringSize($value, 2);
-        $this->setType($value);
     }
     /**
     * function to check sentTo
     *
-    * @param string $value This is not used here
+    * @param string $value This is just for convience.
     *
     * @return null
     */
-    protected function setType($value = null)
+    protected function setSendCommand($value)
     {
-        if (is_string(self::$_Types[$this->Command])) {
-            $this->data["Type"] = self::$_Types[$this->Command];
-        } else {
-            $this->data["Type"] = "UNKNOWN";
+        $this->data["sendCommand"] = devInfo::setStringSize($value, 2);
+    }
+
+    /**
+    * function to check sentTo
+    *
+    * @param string $value This is just for convience.
+    *
+    * @return null
+    */
+    protected function setSentRawData($value)
+    {
+        if (!is_string($value)) {
+            $value = "";
         }
+        $this->data["sentRawData"] = $value;
     }
 
 }

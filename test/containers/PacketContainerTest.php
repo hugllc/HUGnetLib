@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
+require_once dirname(__FILE__).'/../stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.
@@ -116,6 +117,128 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "EF",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "EF",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "UNKNOWN",
+                    "Reply" => new PacketContainer("5A5A5A5CABCDEF00002000F5"),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "ABCDEF",
+                        "From" => "000020",
+                        "Command" => "5C",
+                        "Length"  => 0,
+                        "Data" => array(),
+                        "RawData" => "",
+                        "Type" => "CONFIG",
+                        "Reply" => null,
+                        "Checksum" => "F5",
+                        "CalcChecksum" => "F5",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($preload, $expect)
+    {
+        $this->o->fromArray($preload);
+        $ret = $this->o->toArray();
+        unset($ret["Date"]);
+        $this->assertType("float", $ret["Time"]);
+        unset($ret["Time"]);
+        if (!is_null($expect["Reply"])) {
+            unset($ret["Reply"]["Date"]);
+            $this->assertType("float", $ret["Reply"]["Time"]);
+            unset($ret["Reply"]["Time"]);
+        }
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataFromArray()
     {
         return array(
@@ -145,6 +268,70 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public static function dataFromString()
     {
         return array(
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                    "Timeout"  => 5,
+                    "Retries"  => 3
+                ),
+            ),
+            array(
+                "5A5A5A5C000ABC00002000CA",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "5C",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "CONFIG",
+                    "Reply" => null,
+                    "Checksum" => "CA",
+                    "CalcChecksum" => "CA",
+                    "Timeout"  => 5,
+                    "Retries"  => 3
+                ),
+            ),
+            array(
+                "5A5A5A5CABCDEF00002000F5",
+                array(
+                    "To" => "ABCDEF",
+                    "From" => "000020",
+                    "Command" => "5C",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "CONFIG",
+                    "Reply" => null,
+                    "Checksum" => "F5",
+                    "CalcChecksum" => "F5",
+                    "Timeout"  => 5,
+                    "Retries"  => 3
+                ),
+            ),
+            array(
+                "This is not a packet",
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                    "Timeout"  => 5,
+                    "Retries"  => 3
+                ),
+            ),
         );
     }
     /**
@@ -160,7 +347,57 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testFromString($preload, $expect)
     {
         $this->o->fromString($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $ret = $this->readAttribute($this->o, "data");
+        // Date can't really be tested.
+        unset($ret["Date"]);
+        $this->assertTrue(is_numeric($ret["Time"]));
+        unset($ret["Time"]);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataCheck()
+    {
+        return array(
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                "55000ABC0000200401020304C3"
+            ),
+            array(
+                "5A5A5A5C000ABC00002000CA",
+                "5C000ABC00002000CA"
+            ),
+            array(
+                "5A5A5A5CABCDEF00002000F5",
+                "5CABCDEF00002000F5"
+            ),
+            array(
+                "5A5A5A55000ABC00002004",
+                false
+            ),
+            array(
+                "This is not a packet",
+                false
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheck
+    */
+    public function testCheck($preload, $expect)
+    {
+        $ret = $this->o->check($preload);
+        $this->assertSame($expect, $ret);
     }
     /**
     * data provider for testDeviceID
@@ -175,7 +412,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Command" => "55",
                     "To" => "ABC",
                     "From" => "000020",
-                    "sentRawData" => "01020304",
+                    "Data" => "01020304",
                 ),
                 "5A5A5A55000ABC0000200401020304C3",
             ),
@@ -184,7 +421,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Command" => "5C",
                     "To" => "000ABC",
                     "From" => "000020",
-                    "RawData" => "",
+                    "Data" => "",
                 ),
                 "5A5A5A5C000ABC00002000CA",
             ),
@@ -193,7 +430,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Command" => "5C",
                     "To" => "12345ABCDEF",
                     "From" => "000020",
-                    "RawData" => "",
+                    "Data" => "",
                     "Length" => 0,
                     "Checksum" => "F5",
                 ),
@@ -201,7 +438,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 "This is not an array",
-                "5A5A5A000000200000200000",
+                "5A5A5A000000000000000000",
             ),
         );
     }
