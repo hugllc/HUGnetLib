@@ -1,4 +1,7 @@
 <?php
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 $hugnet_config["hugnet_database"] = "MyDatabase";
 $hugnet_config["script_gatewaykey"] = 2;
 $hugnet_config["servers"][0]["driver"] = "mysql";
