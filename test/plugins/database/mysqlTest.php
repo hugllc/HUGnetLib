@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../plugins/database/mysql.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class mysqlDriverTest
+class mysqlDriverTest extends PHPUnit_Framework_TestCase
 {
     var $class = "mysqlDriver";
 
