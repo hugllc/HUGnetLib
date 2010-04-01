@@ -86,17 +86,19 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataCreatePDO()
+    public static function dataGetPDO()
     {
         return array(
-            array(array(), "PDO", "sqlite"),
+            array(array(), null, "PDO", "sqlite"),
             array(
                 array(array("driver" => "sqlite", "file" => ":memory:")),
+                null,
                 "PDO",
                 "sqlite",
             ),
             array(
                 array(array("driver" => "badPDODriver", "file" => ":memory:")),
+                null,
                 "PDO",
                 "sqlite"
             ),
@@ -110,11 +112,14 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 null,
+                null,
                 "sqlite"
             ),
+            // Non default group name with group in call unset
             array(
                 array(
                     array(
+                        "group" => "somegroup",
                         "driver" => "mysql",
                         "user" => "NotAGoodUserNameToUse",
                         "password" => "Secret Password",
@@ -122,7 +127,47 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     array("driver" => "sqlite", "file" => ":memory:"),
                 ),
+                null,
                 "PDO",
+                "sqlite"
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                "somegroup",
+                "PDO",
+                "sqlite"
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                "somegroup",
+                null,
                 "sqlite"
             ),
         );
@@ -133,17 +178,22 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * sqlite instance.
     *
     * @param string $preload      The configuration to use
+    * @param string $group        The group to check
     * @param mixed  $expect       The expected value.  Set to FALSE or the class name
     * @param mixed  $expectDriver The expected driver
     *
     * @return null
     *
-    * @dataProvider dataCreatePDO()
+    * @dataProvider dataGetPDO()
     */
-    public function testGetPDO($preload, $expect, $expectDriver)
+    public function testGetPDO($preload, $group, $expect, $expectDriver)
     {
         $o = new DBServersContainer($preload);
-        $pdo = $o->getPDO();
+        if (is_null($group)) {
+            $pdo = $o->getPDO();
+        } else {
+            $pdo = $o->getPDO($group);
+        }
         if ($expect === false) {
             $this->assertFalse($pdo);
         } else if (is_null($expect)) {
@@ -157,21 +207,148 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
             );
         }
     }
+
     /**
     * Data provider for testCreatePDO
+    *
+    * @return array
+    */
+    public static function dataGetDriver()
+    {
+        return array(
+            array(array(), null, "sqliteDriver"),
+            array(
+                array(array("driver" => "sqlite", "file" => ":memory:")),
+                null,
+                "sqliteDriver",
+            ),
+            array(
+                array(array("driver" => "badPDODriver", "file" => ":memory:")),
+                null,
+                "sqliteDriver",
+            ),
+            array(
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                ),
+                null,
+                null,
+            ),
+            // Non default group name with group in call unset
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array("driver" => "sqlite", "file" => ":memory:"),
+                ),
+                null,
+                "sqliteDriver",
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                "somegroup",
+                "sqliteDriver",
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                "somegroup",
+                null,
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload      The configuration to use
+    * @param string $group        The group to check
+    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDriver()
+    */
+    public function testGetDriver($preload, $group, $expect)
+    {
+        $o = new DBServersContainer($preload);
+        if (is_null($group)) {
+            $pdo = $o->getDriver();
+        } else {
+            $pdo = $o->getDriver($group);
+        }
+        if ($expect === false) {
+            $this->assertFalse($pdo);
+        } else if (is_null($expect)) {
+            $this->assertNull($pdo);
+        } else {
+            $this->assertType("object", $pdo);
+            $this->assertSame($expect, get_class($pdo));
+        }
+    }
+
+    /**
+    * Data provider for testConnect
     *
     * @return array
     */
     public static function dataConnect()
     {
         return array(
-            array(array(), true),
+            array(array(), null, "default", true),
             array(
                 array(array("driver" => "sqlite", "file" => ":memory:")),
+                null,
+                false,
                 true,
             ),
             array(
+                array(array("driver" => "sqlite", "file" => ":memory:")),
+                "somegroup",
+                "group",
+                false,
+            ),
+            array(
                 array(array("driver" => "badPDODriver", "file" => ":memory:")),
+                null,
+                false,
                 true
             ),
             array(
@@ -183,6 +360,8 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "db" => "MyNewDb",
                     ),
                 ),
+                "default",
+                false,
                 false,
             ),
             array(
@@ -195,6 +374,8 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     array("driver" => "sqlite", "file" => ":memory:"),
                 ),
+                "default",
+                "default",
                 true,
             ),
         );
@@ -204,17 +385,248 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload The configuration to use
-    * @param bool   $expect  The expected return
+    * @param string $preload    The configuration to use
+    * @param string $group      The group to check
+    * @param mixed  $preconnect Connect before the test connect
+    * @param bool   $expect     The expected return
     *
     * @return null
     *
     * @dataProvider dataConnect()
     */
-    public function testConnect($preload, $expect)
+    public function testConnect($preload, $group, $preconnect, $expect)
     {
         $o = new DBServersContainer($preload);
-        $ret = $o->connect();
+        if (!is_bool($preconnect)) {
+            $o->connect($preconnect);
+        }
+        if (is_null($group)) {
+            $ret = $o->connect();
+        } else {
+            $ret = $o->connect($group);
+        }
+        if (empty($group)) {
+            $group = "default";
+        }
+        $this->assertSame($expect, $ret);
+        foreach (array("server", "driver", "pdo") as $var) {
+            $check = $this->readAttribute($o, $var);
+            if ($ret) {
+                $this->assertTrue(is_object($check[$group]), "$var not found");
+            } else {
+                $this->assertNull($check[$group], "$var should be null");
+            }
+        }
+    }
+
+    /**
+    * Data provider for testDisconnect
+    *
+    * @return array
+    */
+    public static function dataDisconnect()
+    {
+        return array(
+            array(
+                array(),
+                "default",
+                "default",
+                false,
+                false,
+            ),
+            array(
+                array(),
+                "Nondefault",
+                "default",
+                false,
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload   The configuration to use
+    * @param string $groupDis  The group for disconnect
+    * @param string $groupCon  The group for connect
+    * @param bool   $expectDis The expected return
+    * @param bool   $expectCon The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDisconnect()
+    */
+    public function testDisconnect(
+        $preload,
+        $groupDis,
+        $groupCon,
+        $expectDis,
+        $expectCon
+    ) {
+        $o = new DBServersContainer($preload);
+        $ret = $o->connect($groupCon);
+        $o->disconnect($groupDis);
+        foreach (array("server", "driver", "pdo") as $var) {
+            $check = $this->readAttribute($o, $var);
+            $pdo = $this->readAttribute($o, $var);
+            $this->assertSame(
+                $expectDis,
+                is_object($check[$groupDis]),
+                "$var is not correct on $groupDis"
+            );
+            $this->assertSame(
+                $expectCon,
+                is_object($check[$groupCon]),
+                "$var is not correct on $groupCon"
+            );
+        }
+    }
+
+    /**
+    * Data provider for testDisconnect
+    *
+    * @return array
+    */
+    public static function dataConnected()
+    {
+        return array(
+            array(
+                array(),
+                "default",
+                "default",
+                true,
+            ),
+            array(
+                array(),
+                "Nondefault",
+                "default",
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload   The configuration to use
+    * @param string $groupDis  The group for disconnect
+    * @param string $groupCon  The group for connect
+    * @param bool   $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConnected()
+    */
+    public function testConnected(
+        $preload,
+        $groupDis,
+        $groupCon,
+        $expect
+    ) {
+        $o = new DBServersContainer($preload);
+        $o->connect($groupCon);
+        $ret = $o->connected($groupDis);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testDisconnect
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "group" => "local",
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "db" => "MyNewDb",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                    ),
+                    array(
+                        "group" => "local",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "db" => "MyNewDb",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                ),
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "db" => "MyNewDb",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload   The configuration to use
+    * @param bool   $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray()
+    */
+    public function testToArray($preload, $expect) {
+        $o = new DBServersContainer($preload);
+        $ret = $o->toArray();
         $this->assertSame($expect, $ret);
     }
 

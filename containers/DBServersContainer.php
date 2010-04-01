@@ -37,7 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetContainerLinkedList.php";
+require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../base/HUGnetContainerLinkedList.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DBServersContainer extends HUGnetContainerLinkedList
+class DBServersContainer extends HUGnetContainer
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -66,6 +66,10 @@ class DBServersContainer extends HUGnetContainerLinkedList
     protected $pdo = null;
     /** @var object This is a link to the connected server */
     protected $server = null;
+    /** @var object These are the server groups we know */
+    protected $groups = null;
+    /** @var object These are the server groups we know */
+    protected $driver = null;
 
     /**
     * Disconnects from the database
@@ -83,6 +87,13 @@ class DBServersContainer extends HUGnetContainerLinkedList
                     $serv,
                     "DBServerContainer"
                 );
+                // Set the default group if it has not been set.
+                if (!isset($this->groups["default"])) {
+                    $this->groups["default"] = $this->data["servers"][$key]->group;
+                }
+                // Define this group;
+                $this->groups[$this->data["servers"][$key]->group]
+                    = $this->data["servers"][$key]->group;
             }
         }
     }
@@ -92,62 +103,76 @@ class DBServersContainer extends HUGnetContainerLinkedList
     */
     public function __destruct()
     {
-        $this->disconnect();
+        foreach ((array)$this->groups as $group) {
+            $this->disconnect($group);
+        }
     }
 
     /**
-    * Creates a database object
+    * Checks to see if we are connected to a database
+    *
+    * @param string $group The group to check
     *
     * @return object PDO object, null on failure
     */
-    public function connected()
+    public function connected($group = "default")
     {
-        return is_object($this->pdo) && (get_class($this->pdo) == "PDO");
+        return is_object($this->pdo[$group])
+            && (get_class($this->pdo[$group]) == "PDO");
     }
 
     /**
-    * Creates a database object
+    * Connects to a database group
     *
-    * @return object PDO object, null on failure
+    * @param string $group The group to check
+    *
+    * @return bool True on success, false on failure
     */
-    public function connect()
+    public function connect($group = "default")
     {
-        if (!$this->connected()) {
-            foreach (array_keys((array)$this->data["servers"]) as $key) {
-                $this->server =& $this->data["servers"][$key];
-                if ($this->_connect()) {
-                    $this->lock(array_keys($this->default));
-                    return true;
-                }
+        if ($this->connected()) {
+            return true;
+        }
+        foreach (array_keys((array)$this->data["servers"]) as $key) {
+            if ($this->data["servers"][$key]->group !== $group) {
+                continue;
             }
+            $this->server[$group] =& $this->data["servers"][$key];
+            if ($this->_connect($group)) {
+                $this->lock(array_keys($this->default));
+                return true;
+            }
+
         }
         return false;
     }
     /**
-    * Creates a database object
+    * Tries to connect to a database servers
     *
-    * @return object PDO object, null on failure
+    * @param string $group The group to check
+    *
+    * @return bool True on success, false on failure
     */
-    private function _connect()
+    private function _connect($group = "default")
     {
 
         $this->lock(array_keys($this->default));
-        $this->vprint("Trying ".$this->server->getDSN(), 3);
+        $this->vprint("Trying ".$this->server[$group]->getDSN(), 3);
         try {
-            $this->pdo = new PDO(
-                $this->server->getDSN(),
-                (string)$this->server->user,
-                (string)$this->server->password,
-                (array)$this->server->options
+            $this->pdo[$group] = new PDO(
+                $this->server[$group]->getDSN(),
+                (string)$this->server[$group]->user,
+                (string)$this->server[$group]->password,
+                (array)$this->server[$group]->options
             );
+            $this->_driver($group);
         } catch (PDOException $e) {
             self::vprint(
                 "Error (".$e->getCode()."): ".$e->getMessage()."\n",
-                1,
-                $verbose
+                1
             );
             // Just to be sure
-            $this->disconnect();
+            $this->disconnect($group);
             // Return failure
             return false;
         }
@@ -155,27 +180,56 @@ class DBServersContainer extends HUGnetContainerLinkedList
     }
 
     /**
-    * Creates a database object
+    * Returns a PDO object
+    *
+    * @param string $group The group to check
     *
     * @return object PDO object, null on failure
     */
-    public function &getPDO()
+    public function &getPDO($group = "default")
     {
-        if (!$this->connected()) {
-            $this->connect();
+        $this->connect($group);
+        return $this->pdo[$group];
+    }
+    /**
+    * Creates a database object
+    *
+    * @param string $group The group to check
+    *
+    * @return object HUGnetDBDriver object
+    */
+    public function &getDriver($group = "default")
+    {
+        $this->connect($group);
+        return $this->driver[$group];
+    }
+    /**
+    * Creates a driver object
+    *
+    * @param string $group The group to check
+    *
+    * @return object HUGnetDBDriver object
+    */
+    private function _driver($group = "default")
+    {
+        $driver = $this->server[$group]->driver."Driver";
+        if (self::findClass($driver, "/plugins/database/")) {
+            $this->driver[$group] = new $driver();
         }
-        return $this->pdo;
     }
 
     /**
     * Disconnects from the database
     *
-    * @return object PDO object, null on failure
+    * @param string $group The group to check
+    *
+    * @return null
     */
-    public function disconnect()
+    public function disconnect($group = "default")
     {
-        $this->server = null;
-        $this->pdo = null;
+        $this->driver[$group] = null;
+        $this->server[$group] = null;
+        $this->pdo[$group] = null;
         $this->unlock(array_keys($this->default));
     }
 

@@ -57,6 +57,7 @@ class DBServerContainer extends HUGnetContainer
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
+        "group"  => "default",       // This is the name of the database group
         "driver" => "sqlite",        // The driver to use
         "host"   => "localhost",     // The server to contact
         "port"   => 3306,            // The port to use
@@ -89,6 +90,7 @@ class DBServerContainer extends HUGnetContainer
             }
             $dsn .= "dbname=".$this->db;
         } else {
+            $this->driver = "sqlite";
             if (empty($this->file)) {
                 $this->setDefault("file");
             }

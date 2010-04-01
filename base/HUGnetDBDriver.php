@@ -64,20 +64,35 @@ abstract class HUGnetDBDriver extends HUGnetClass
 
     /** @var string This is where we store the query */
     protected $query = "";
+    /** @var string The name of this driver */
+    protected $driver = "";
 
     /**
     * Register this database object
+    */
+    public function __construct()
+    {
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->pdo = &$this->myConfig->dbServers()->getPDO($this->driver);
+        $this->columns();
+    }
+
+    /**
+    * Gets the instance of the class and
     *
     * @param object $table The table to attach myself to
     *
-    * @return object of type mysqlDriver
+    * @return null
     */
-    public function __construct(&$table)
+    public function &singleton(&$table)
     {
-        $this->myConfig = &ConfigContainer::singleton();
-        $this->pdo = &$this->myConfig->dbServers()->getPDO();
-        $this->myTable = &$table;
-        $this->columns();
+        static $instance;
+        if (empty($instance)) {
+            $class = __CLASS__;
+            $instance = new $class();
+        }
+        $instance->myTable = &$table;
+        return $instance;
     }
 
     /**
@@ -91,6 +106,29 @@ abstract class HUGnetDBDriver extends HUGnetClass
     * @return null
     */
     public function addField($name, $type="TEXT", $default=null, $null=false)
+    {
+        if (isset($this->fields[$name])) {
+            return true;
+        }
+        $this->query  = "ALTER TABLE `".$this->table."` ADD `$name` $type ";
+        if (!$null) {
+            $this->query .= "NOT NULL ";
+        }
+        if (!is_null($default)) {
+            $this->query .= " DEFAULT '$default'";
+        }
+    }
+    /**
+    *  Adds a field to the devices table for cache information
+    *
+    * @param string $name    The name of the field
+    * @param string $type    The type of field to add
+    * @param mixed  $default The default value for the field
+    * @param bool   $null    Whether null is a valid value for the field
+    *
+    * @return null
+    */
+    public function addKey($name, $type="TEXT", $default=null, $null=false)
     {
         if (isset($this->fields[$name])) {
             return true;

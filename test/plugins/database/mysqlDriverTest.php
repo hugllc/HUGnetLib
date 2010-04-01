@@ -36,7 +36,7 @@
  *
  */
 
-require_once dirname(__FILE__).'/../../../plugins/database/mysql.php';
+require_once dirname(__FILE__).'/../../../plugins/database/mysqlDriver.php';
 
 /**
  * Test class for sensor.
@@ -51,9 +51,9 @@ require_once dirname(__FILE__).'/../../../plugins/database/mysql.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class sqliteDriverTest extends PHPUnit_Framework_TestCase
+class mysqlDriverTest extends PHPUnit_Framework_TestCase
 {
-    var $class = "sqliteDriver";
+    var $class = "mysqlDriver";
 
     /**
      * Sets up the fixture, for example, open a network connection.
