@@ -36,7 +36,7 @@
  *
  */
 require_once dirname(__FILE__)."/HUGnetClass.php";
-//require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriver.php";
+require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriverInterface.php";
 /**
  * Base class for all database work
  *
@@ -51,7 +51,7 @@ require_once dirname(__FILE__)."/HUGnetClass.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class HUGnetDBDriver extends HUGnetClass
+abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInterface
 {
     /** @var int This is where we store the limit */
     public $limit = 0;
