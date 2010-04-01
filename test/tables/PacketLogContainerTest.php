@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../containers/PacketLogContainer.php';
+require_once dirname(__FILE__).'/../../tables/PacketLogContainer.php';
 
 /**
  * Test class for filter.
