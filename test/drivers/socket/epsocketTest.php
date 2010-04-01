@@ -55,133 +55,42 @@ require_once dirname(__FILE__).'/../../../drivers/socket/epsocket.php';
  */
 class EpsocketTest extends PHPUnit_Framework_TestCase
 {
-    /** @var int The TCP port number for the test */
-    protected $port = 35000;
-    /** @var string the host running the tcp server */
-    protected $host = "127.0.0.1";
-    /** @var array the descriptor stack */
-    protected $descriptorspec = array(
-        0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-        1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-    );
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Sets up the fixture, for example, open a network connection.
+    * This method is called before a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
     protected function setUp()
     {
-        $this->proc = proc_open(
-            "php ".dirname(__FILE__)."/epsocketTestScript.php",
-            $this->descriptorspec,
-            $this->pipes
-        );
-        $config = array(
-            "GatewayIP"   => $this->host,
-            "GatewayPort" => $this->port,
-        );
         $this->s    = new epsocket($config);
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Tears down the fixture, for example, close a network connection.
+    * This method is called after a test is executed.
+    *
+    * @return null
+    *
+    * @access protected
+    */
     protected function tearDown()
     {
-        fwrite($this->pipes[0], "quit\r\n");
-        fflush($this->pipes[0]);
-        fclose($this->pipes[0]);
-        fclose($this->pipes[1]);
-        proc_terminate($this->proc);
-        proc_close($this->proc);
-        $this->s->Close();
-        unset($this->s);
     }
 
     /**
-     * gets a TCP string
-     *
-     * @return string
-     */
-    private function _getstring()
+    * gets a TCP string
+    *
+    * @return string
+    */
+    public function testNothing()
     {
-
+        $this->assertTrue(true);
     }
 
-    /**
-     * Test the write function
-     *
-     * @return null
-     *
-     * @todo Implement testWrite().
-     */
-    public function testWrite()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-     * Test the epsocket::readChar function
-     *
-     * @return null
-     *
-     * @todo Implement testReadChar().
-     */
-    public function testReadChar()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-
-    /**
-     * Test the write function
-     *
-     * @return null
-     *
-     * @todo Implement testClose().
-     */
-    public function testClose()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-     * Test the write function
-     *
-     * @return null
-     *
-     * @todo Implement testCheckConnect().
-     */
-    public function testCheckConnect()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-     * Test the write function
-     *
-     * @return null
-     *
-     * @todo Implement testConnect().
-     */
-    public function testConnect()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
 
 }
 

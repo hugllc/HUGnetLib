@@ -579,28 +579,6 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * Test
-    *
-    * @return null
-    */
-    function testsaveSensorData()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-    * Test
-    *
-    * @return null
-    */
-    function testupdateConfig()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
     * data provider
     *
     * @return array
@@ -677,28 +655,6 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
 
 
     /**
-    * Test
-    *
-    * @return null
-    */
-    function testReadMem()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
-    * Test
-    *
-    * @return null
-    */
-    function testGetConfigVars()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
-
-    /**
     * data provider for test readConfig
     *
     * @return array
@@ -731,16 +687,6 @@ abstract class EndpointTestBase extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
 
-    /**
-    * Test
-    *
-    * @return null
-    */
-    function testUnsolicited()
-    {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete("This test has not been implemented yet.");
-    }
     /**
     * Test
     *
