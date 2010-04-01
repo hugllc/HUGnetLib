@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
+require_once dirname(__FILE__).'/../stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.
@@ -165,6 +166,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "admin_email" => "example@yourdomain.com",
                     "gatewayIP" => "10.5.12.8",
                     "gatewayPort" => "2001",
+                    "useSocket" => "dummy",
                 ),
                 array(
                     "servers" => array(
@@ -192,6 +194,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "admin_email" => "example@yourdomain.com",
                     "gatewayIP" => "10.5.12.8",
                     "gatewayPort" => "2001",
+                    "useSocket" => "dummy",
                 ),
                 "GatewayContainer",
             ),
@@ -215,6 +218,57 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
         $ret = $o->toArray(false);
         $this->assertSame($expect, $ret);
         $this->assertSame($gateway, get_class($o->gateway));
+    }
+
+    /**
+    * Check to see if the license is here
+    *
+    * @return null
+    */
+    public function testLicense()
+    {
+        $path = realpath(dirname(__FILE__)."/../../LICENSE.TXT");
+        $this->assertSame(file_get_contents($path), ConfigContainer::license());
+    }
+    /**
+    * Check to see if the license is here
+    *
+    * @return null
+    */
+    public function testVersion()
+    {
+        $path = realpath(dirname(__FILE__)."/../../VERSION.TXT");
+        $this->assertSame(file_get_contents($path), ConfigContainer::version());
+    }
+
+    /**
+    * Check to make sure that two instances of the class from singleton are
+    * identical
+    *
+    * @return null
+    */
+    public function testSingleton()
+    {
+        $this->assertSame(
+            ConfigContainer::singleton(),
+            ConfigContainer::singleton()
+        );
+    }
+    /**
+    * Checks to make sure we get the correct object returned
+    *
+    * @return null
+    */
+    public function testServers()
+    {
+        $o = new ConfigContainer();
+        $servers = &$o->dbServers();
+        $this->assertAttributeSame(
+            $servers,
+            "servers",
+            $o
+        );
+        $this->assertSame("DBServersContainer", get_class($servers));
     }
 
 }

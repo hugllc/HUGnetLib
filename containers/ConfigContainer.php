@@ -118,6 +118,9 @@ class ConfigContainer extends HUGnetContainer
     /** @var object This is where we store our socket connection */
     public $socket = null;
 
+    /** @var string The version of HUGnetLib */
+    private $_version = null;
+
     /**
     * Build everything
     *
@@ -243,5 +246,26 @@ class ConfigContainer extends HUGnetContainer
         return $this->data["servers"];
     }
 
+    /**
+    * This returns the license text
+    *
+    * @return string
+    */
+    public function license()
+    {
+        $path = realpath(dirname(__FILE__)."/../");
+        return file_get_contents($path."/LICENSE.TXT");
+    }
+
+    /**
+    * This returns the version
+    *
+    * @return string
+    */
+    public function version()
+    {
+        $path = realpath(dirname(__FILE__)."/../");
+        return file_get_contents($path."/VERSION.TXT");
+    }
 }
 ?>
