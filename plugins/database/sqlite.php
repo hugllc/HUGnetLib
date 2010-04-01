@@ -53,22 +53,23 @@ class sqliteDriver
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name"  => "mysql",
+        "Name"  => "sqlite",
         "Type"  => "database",
-        "Class" => "mysqlDriver",
+        "Class" => "sqliteDriver",
     );
+
     /**
+    * Gets columns from a SQLite server
     *
-    *
-    * @param object $database The database container class to register
-    *
-    * @return object of type mysqlDriver
+    * @return null
     */
-    public function register(&$database)
+    protected function getColumns()
     {
-
+        $columns = $this->query("PRAGMA table_info(".$this->table.")");
+        foreach ($columns as $col) {
+            $this->db->fields[$col['name']] = $col['type'];
+        }
     }
-
 
 }
 

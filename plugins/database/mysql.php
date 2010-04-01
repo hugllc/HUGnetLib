@@ -58,14 +58,19 @@ class mysqlDriver
         "Class" => "mysqlDriver",
     );
     /**
+    * Gets columns from a mysql server
     *
-    *
-    * @param object $database The database container class to register
-    *
-    * @return object of type mysqlDriver
+    * @return null
     */
-    public function register(&$database)
+    protected function getColumns()
     {
+        $columns = $this->query("SHOW COLUMNS FROM ".$this->table);
+        foreach ($columns as $col) {
+            // @codeCoverageIgnoreStart
+            // This is impossible to test without a mysql server
+            $this->db->fields[$col['Field']] = $col['Type'];
+            // @codeCoverageIgnoreEnd
+        }
 
     }
 
