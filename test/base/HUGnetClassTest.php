@@ -36,7 +36,7 @@
  */
 
 if (!defined("HUGNET_INCLUDE_PATH")) {
-    define("HUGNET_INCLUDE_PATH", dirname(__FILE__)."/../..");
+    define("HUGNET_INCLUDE_PATH", realpath(dirname(__FILE__)."/../.."));
 }
 
 require_once dirname(__FILE__).'/../../base/HUGnetClass.php';
@@ -150,9 +150,35 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertSame($expect, $ret);
     }
-
-
-
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataFindClass()
+    {
+        return array(
+            array("HUGnetClass", "/base/", true),
+            array("asdf", "containers", false),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $class  The class or object to use
+    * @param stirng $dir    The directory to search
+    * @param int    $expect The expected stuff printed
+    *
+    * @return null
+    *
+    * @dataProvider dataFindClass
+    */
+    public function testFindClass($class, $dir, $expect)
+    {
+        $this->assertSame($expect, HUGnetClassTestStub::findClassTest($class, $dir));
+    }
 }
 
 /**
@@ -170,5 +196,17 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
  */
 class HUGnetClassTestStub extends HUGnetClass
 {
+    /**
+    * Load a class file if possible
+    *
+    * @param string $class The class or object to use
+    * @param stirng $dir   The directory to search
+    *
+    * @return null
+    */
+    public function findClassTest($class, $dir = "")
+    {
+        return parent::findClass($class, $dir);
+    }
 }
 ?>

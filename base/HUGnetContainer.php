@@ -58,7 +58,6 @@ require_once dirname(__FILE__)."/../interfaces/HUGnetContainerInterface.php";
 abstract class HUGnetContainer extends HUGnetClass
     implements HUGnetContainerInterface
 {
-    const DIRECTORY = "/../containers/";
     /** @var object The extra stuff class */
     private $_extra = null;
     /** @var object The extra stuff class */
@@ -124,18 +123,13 @@ abstract class HUGnetContainer extends HUGnetClass
     * Load a class file if possible
     *
     * @param string $class The class or object to use
+    * @param stirng $dir   The directory to search
     *
     * @return null
     */
-    protected function findClass($class)
+    protected function findClass($class, $dir = "containers/")
     {
-        if (empty($class)) {
-            return false;
-        }
-        if (!class_exists($class)) {
-            @include_once dirname(__FILE__).self::DIRECTORY.$class.".php";
-        }
-        return class_exists($class);
+        return parent::findClass($class, $dir);
     }
     /**
     * Overload the set attribute

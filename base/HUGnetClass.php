@@ -103,6 +103,27 @@ abstract class HUGnetClass
         }
         print $str."\n";
     }
+    /**
+    * Load a class file if possible
+    *
+    * This starts out at the base HUGnetLib directory.  $dir should be relative to
+    * that.
+    *
+    * @param string $class The class or object to use
+    * @param stirng $dir   The directory to search
+    *
+    * @return null
+    */
+    protected function findClass($class, $dir = "")
+    {
+        $file = realpath(dirname(__FILE__)."/../".$dir."/".$class.".php");
+        // realpath retuns false if the file doesn't exist.
+        if (!empty($file)) {
+            include_once $file;
+        }
+        return class_exists($class);
+    }
+
 }
 
 
