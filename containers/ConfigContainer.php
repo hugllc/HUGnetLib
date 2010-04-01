@@ -253,8 +253,13 @@ class ConfigContainer extends HUGnetContainer
     */
     public function license()
     {
-        $path = realpath(dirname(__FILE__)."/../");
-        return file_get_contents($path."/LICENSE.TXT");
+        // Cache this so that if it is called more than once it is fast.
+        static $license;
+        if (empty($license)) {
+            $path = realpath(dirname(__FILE__)."/../");
+            $license = file_get_contents($path."/LICENSE.TXT");
+        }
+        return $license;
     }
 
     /**
@@ -264,8 +269,13 @@ class ConfigContainer extends HUGnetContainer
     */
     public function version()
     {
-        $path = realpath(dirname(__FILE__)."/../");
-        return file_get_contents($path."/VERSION.TXT");
+        // Cache this so that if it is called more than once it is fast.
+        static $version;
+        if (empty($version)) {
+            $path = realpath(dirname(__FILE__)."/../");
+            $version = file_get_contents($path."/VERSION.TXT");
+        }
+        return $version;
     }
 }
 ?>
