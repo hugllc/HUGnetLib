@@ -36,7 +36,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../lib/plugins.inc.php";
 
@@ -44,26 +43,11 @@ define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
 
 
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
- *<?php
-define("HUGNET_DATABASE", "HUGNet");
-$hugnet_config["hugnet_database"] = "HUGNet";
-$hugnet_config["script_gatewaykey"] = 2;
-$hugnet_config["servers"][0]["driver"] = "mysql";
-$hugnet_config["servers"][0]["host"] = "192.168.42.1";
-$hugnet_config["servers"][0]["user"] = "PortalW";
-$hugnet_config["servers"][0]["password"] = 'Por*tal';
-$hugnet_config["poll_enable"] = true;
-$hugnet_config["config_enable"] = true;
-$hugnet_config["control_enable"] = false;
-$hugnet_config["check_enable"] = true;
-$hugnet_config["check_send_daily"] = true;
-$hugnet_config["analysis_enable"] = true;
-$hugnet_config["admin_email"] = "prices@hugllc.com";
-$hugnet_config["gatewayIP"] = "127.0.0.1";
-$hugnet_config["gatewayPort"] = 2000;
-?>
+ * This class contains the configuration control.
+ *
+ * This class is meant to be the center of the HUGnetLib code.  It ties most
+ * of the stuff together.  It has the database and socket connections.  Things
+ * should be gotten from here for the most part for the basic stuff.
  *
  * @category   Containers
  * @package    HUGnetLib
@@ -79,7 +63,8 @@ class ConfigContainer extends HUGnetContainer
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "servers"         => array(),      // The servers to use
+        "servers"         => array(),      // The database servers to use
+        "sockets"        => array(),       // The gateways sockets to use
         "hugnet_database" => "HUGnet",     // The database to use
         "script_gateway"  => 0,            // The gateway for the scripts
         "poll"            => array(        // Configuration for the poll script
