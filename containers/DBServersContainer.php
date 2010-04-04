@@ -87,10 +87,6 @@ class DBServersContainer extends HUGnetContainer
                     $serv,
                     "DBServerContainer"
                 );
-                // Set the default group if it has not been set.
-                if (!isset($this->groups["default"])) {
-                    $this->groups["default"] = $this->data["servers"][$key]->group;
-                }
                 // Define this group;
                 $this->groups[$this->data["servers"][$key]->group]
                     = $this->data["servers"][$key]->group;
