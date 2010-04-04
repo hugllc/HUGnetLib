@@ -298,9 +298,9 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload      The configuration to use
-    * @param string $group        The group to check
-    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+    * @param string $preload The configuration to use
+    * @param string $group   The group to check
+    * @param mixed  $expect  The expected value.  Set to FALSE or the class name
     *
     * @return null
     *
@@ -526,10 +526,10 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload   The configuration to use
-    * @param string $groupDis  The group for disconnect
-    * @param string $groupCon  The group for connect
-    * @param bool   $expect The expected return
+    * @param string $preload  The configuration to use
+    * @param string $groupDis The group for disconnect
+    * @param string $groupCon The group for connect
+    * @param bool   $expect   The expected return
     *
     * @return null
     *
@@ -632,14 +632,15 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload   The configuration to use
-    * @param bool   $expect The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataToArray()
     */
-    public function testToArray($preload, $expect) {
+    public function testToArray($preload, $expect)
+    {
         $o = new DBServersContainer($preload);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);

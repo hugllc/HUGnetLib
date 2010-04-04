@@ -63,6 +63,29 @@ class DummySocketContainer implements HUGnetSocketInterface
     public $readString = "";
     /** @var bool This says if we are connected or not */
     public $writeString = "";
+    /** @var string The group we are in */
+    protected $data = array(
+        "group" => "default"
+    );
+
+    /**
+    * Creates a database object
+    *
+    * @return bool true on success, false on failure
+    */
+    public function __construct($config = array())
+    {
+        $this->group =& $this->data["group"];
+        if (!empty($config["group"])) {
+            $this->data["group"] = $config["group"];
+        }
+        if (!empty($config["readString"])) {
+            $this->readString = $config["readString"];
+        }
+        if (!empty($config["writeString"])) {
+            $this->writeString = $config["writeString"];
+        }
+    }
 
     /**
     * Creates a database object
@@ -147,5 +170,21 @@ class DummySocketContainer implements HUGnetSocketInterface
         } while ((($ret = $pkt->recv($string)) === false) && ($timeout > time()));
         return $ret;
     }
+        /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = false)
+    {
+        return array(
+            "readString" => $this->readString,
+            "writeString" => $this->writeString,
+            "group" => $this->data["group"],
+        );
+    }
+
 }
 ?>

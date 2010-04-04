@@ -59,15 +59,16 @@ class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "GatewayKey" => 0,
-        "GatewayIP" => "127.0.0.1",
-        "GatewayPort" => "2000",
-        "GatewayName" => "Localhost",
-        "GatewayLocation" => "",
-        "database" => "",
-        "FirmwareStatus" => "RELEASE",
-        "isVisible" => 0,
-        "Timeout" => 2,
+        "GatewayKey" => 0,                  // Database key for gateways
+        "GatewayIP" => "127.0.0.1",         // IP address for the gateway
+        "GatewayPort" => "2000",            // TCP Port for the gateway
+        "GatewayName" => "Localhost",       // The name of the gateway
+        "GatewayLocation" => "",            // The location of the gateway
+        "database" => "",                   // Different database to use
+        "FirmwareStatus" => "RELEASE",      // The type of firmware to use with this
+        "isVisible" => 0,                   // Whether this gateway is visible
+        "Timeout" => 2,                     // Timeout when talking on this gateway
+        "group" => "default",               // The group this gateway is in
     );
     /** @var array This is where the data is stored */
     protected $data = array();

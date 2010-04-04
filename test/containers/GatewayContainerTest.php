@@ -104,6 +104,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                     "FirmwareStatus" => "RELEASE",
                     "isVisible" => 0,
                     "Timeout" => 2,
+                    "group" => "default",
                 ),
             ),
             array(
@@ -117,6 +118,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                     "FirmwareStatus" => "BETA",
                     "isVisible" => 1,
                     "Timeout" => 3,
+                    "group" => "myGroup",
                 ),
                 array(
                     "GatewayKey" => 1,
@@ -128,6 +130,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                     "FirmwareStatus" => "BETA",
                     "isVisible" => 1,
                     "Timeout" => 3,
+                    "group" => "myGroup",
                 ),
             ),
         );

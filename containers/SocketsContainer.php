@@ -57,44 +57,62 @@ class SocketsContainer extends HUGnetContainer
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "servers" => array(),               // The array of server information
+        "sockets" => array(),               // The array of server information
     );
     /** @var array This is where the data is stored */
     protected $data = array();
 
-    /** @var object This is where we store our database connection */
-    protected $pdo = null;
     /** @var object This is a link to the connected server */
-    protected $server = null;
+    protected $socket = null;
     /** @var object These are the server groups we know */
     protected $groups = null;
     /** @var object These are the server groups we know */
     protected $driver = null;
 
     /**
-    * Disconnects from the database
+    * Creates the socket class
     *
-    * @param array $servers The servers to use
+    * @param array $sockets The sockets to use
     */
-    public function __construct($servers = array())
+    public function __construct($sockets = array())
     {
-        if ($this->findClass("DBServerContainer")) {
-            if (empty($servers)) {
-                $servers = array(array());
-            }
-            foreach ((array)$servers as $key => $serv) {
-                $this->data["servers"][$key] =& self::factory(
-                    $serv,
-                    "DBServerContainer"
-                );
-                // Set the default group if it has not been set.
-                if (!isset($this->groups["default"])) {
-                    $this->groups["default"] = $this->data["servers"][$key]->group;
+        if (empty($sockets)) {
+            $sockets = array(array());
+        }
+        foreach ((array)$sockets as $key => $sock) {
+            if (isset($sock["GatewayIP"])
+                || isset($sock["GatewayPort"])
+                || isset($sock["GatewayKey"])
+            ) {
+                if ($this->findClass("GatewayContainer")) {
+                    $this->data["sockets"][$key] =& self::factory(
+                        $sock,
+                        "GatewayContainer"
+                    );
                 }
-                // Define this group;
-                $this->groups[$this->data["servers"][$key]->group]
-                    = $this->data["servers"][$key]->group;
+            } else if (isset($sock["dummy"])) {
+                if ($this->findClass("DummySocketContainer", "test/stubs")) {
+                    $this->data["sockets"][$key] =& self::factory(
+                        $sock,
+                        "DummySocketContainer"
+                    );
+                }
+            /*
+            } else
+                if ($this->findClass("PacketLogContainer")) {
+                    $this->data["sockets"][$key] =& self::factory(
+                        $sock,
+                        "PacketLogContainer"
+                    );
+                }
+                */
             }
+            if (!isset($this->data["sockets"][$key])) {
+                continue;
+            }
+            // Define this group;
+            $this->groups[$this->data["sockets"][$key]->group]
+                = $this->data["sockets"][$key]->group;
         }
     }
     /**
@@ -117,8 +135,10 @@ class SocketsContainer extends HUGnetContainer
     */
     public function connected($group = "default")
     {
-        return is_object($this->pdo[$group])
-            && (get_class($this->pdo[$group]) == "PDO");
+        if (!is_object($this->socket[$group])) {
+            return false;
+        }
+        return $this->socket[$group]->connected();
     }
 
     /**
@@ -130,15 +150,15 @@ class SocketsContainer extends HUGnetContainer
     */
     public function connect($group = "default")
     {
-        if ($this->connected()) {
+        if ($this->connected($group)) {
             return true;
         }
-        foreach (array_keys((array)$this->data["servers"]) as $key) {
-            if ($this->data["servers"][$key]->group !== $group) {
+        foreach (array_keys((array)$this->data["sockets"]) as $key) {
+            if ($this->data["sockets"][$key]->group !== $group) {
                 continue;
             }
-            $this->server[$group] =& $this->data["servers"][$key];
-            if ($this->_connect($group)) {
+            $this->socket[$group] =& $this->data["sockets"][$key];
+            if ($this->socket[$group]->connect()) {
                 $this->lock(array_keys($this->default));
                 return true;
             }
@@ -146,51 +166,7 @@ class SocketsContainer extends HUGnetContainer
         }
         return false;
     }
-    /**
-    * Tries to connect to a database servers
-    *
-    * @param string $group The group to check
-    *
-    * @return bool True on success, false on failure
-    */
-    private function _connect($group = "default")
-    {
 
-        $this->lock(array_keys($this->default));
-        $this->vprint("Trying ".$this->server[$group]->getDSN(), 3);
-        try {
-            $this->pdo[$group] = new PDO(
-                $this->server[$group]->getDSN(),
-                (string)$this->server[$group]->user,
-                (string)$this->server[$group]->password,
-                (array)$this->server[$group]->options
-            );
-            $this->_driver($group);
-        } catch (PDOException $e) {
-            self::vprint(
-                "Error (".$e->getCode()."): ".$e->getMessage()."\n",
-                1
-            );
-            // Just to be sure
-            $this->disconnect($group);
-            // Return failure
-            return false;
-        }
-        return true;
-    }
-
-    /**
-    * Returns a PDO object
-    *
-    * @param string $group The group to check
-    *
-    * @return object PDO object, null on failure
-    */
-    public function &getPDO($group = "default")
-    {
-        $this->connect($group);
-        return $this->pdo[$group];
-    }
     /**
     * Creates a database object
     *
@@ -201,20 +177,10 @@ class SocketsContainer extends HUGnetContainer
     public function &getDriver($group = "default")
     {
         $this->connect($group);
-        return $this->driver[$group];
-    }
-    /**
-    * Creates a driver object
-    *
-    * @param string $group The group to check
-    *
-    * @return object HUGnetDBDriver object
-    */
-    private function _driver($group = "default")
-    {
-        $driver = $this->server[$group]->driver."Driver";
-        if (self::findClass($driver, "/plugins/database/")) {
-            $this->driver[$group] = new $driver();
+        if ($this->connected($group)) {
+            return $this->socket[$group];
+        } else {
+            return null;
         }
     }
 
@@ -227,26 +193,28 @@ class SocketsContainer extends HUGnetContainer
     */
     public function disconnect($group = "default")
     {
-        $this->driver[$group] = null;
-        $this->server[$group] = null;
-        $this->pdo[$group] = null;
+        if (!$this->connected($group)) {
+            return;
+        }
+        $this->socket[$group]->disconnect();
+        $this->socket[$group] = null;
         $this->unlock(array_keys($this->default));
     }
 
     /**
     * There should only be a single instance of this class
     *
-    * @param array $servers The servers to use
+    * @param array $sockets The sockets to use
     *
     * @return object of type DBServersContainer()
     */
-    public function &singleton($servers = array())
+    public function &singleton($sockets = array())
     {
         static $instance;
 
         if (!is_object($instance)) {
             $class = __CLASS__;
-            $instance = new $class($servers);
+            $instance = new $class($sockets);
         }
         return $instance;
     }
@@ -259,8 +227,8 @@ class SocketsContainer extends HUGnetContainer
     */
     public function toArray($default = false)
     {
-        foreach (array_keys($this->servers) as $key) {
-            $data[$key] = $this->servers[$key]->toArray($default);
+        foreach (array_keys((array)$this->sockets) as $key) {
+            $data[$key] = $this->sockets[$key]->toArray($default);
             if (empty($data[$key])) {
                 unset($data[$key]);
             }
