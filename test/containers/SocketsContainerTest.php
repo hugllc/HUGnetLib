@@ -80,134 +80,6 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     }
 
 
-
-    /**
-    * Data provider for testCreatePDO
-    *
-    * @return array
-    */
-    public static function dataGetPDO()
-    {
-        return array(
-            array(array(), null, "PDO", "sqlite"),
-            array(
-                array(array("driver" => "sqlite", "file" => ":memory:")),
-                null,
-                "PDO",
-                "sqlite",
-            ),
-            array(
-                array(array("driver" => "badPDODriver", "file" => ":memory:")),
-                null,
-                "PDO",
-                "sqlite"
-            ),
-            array(
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                ),
-                null,
-                null,
-                "sqlite"
-            ),
-            // Non default group name with group in call unset
-            array(
-                array(
-                    array(
-                        "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array("driver" => "sqlite", "file" => ":memory:"),
-                ),
-                null,
-                "PDO",
-                "sqlite"
-            ),
-            // Non default group name with group in call
-            array(
-                array(
-                    array(
-                        "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array(
-                        "group" => "somegroup",
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
-                    ),
-                ),
-                "somegroup",
-                "PDO",
-                "sqlite"
-            ),
-            // Non default group name with group in call
-            array(
-                array(
-                    array(
-                        "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array(
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
-                    ),
-                ),
-                "somegroup",
-                null,
-                "sqlite"
-            ),
-        );
-    }
-    /**
-    * Tests to make sure this function fails if
-    * someone tries to make a cache from a memory
-    * sqlite instance.
-    *
-    * @param string $preload      The configuration to use
-    * @param string $group        The group to check
-    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
-    * @param mixed  $expectDriver The expected driver
-    *
-    * @return null
-    *
-    * @dataProvider dataGetPDO()
-    */
-    public function testGetPDO($preload, $group, $expect, $expectDriver)
-    {
-        $o = new SocketsContainer($preload);
-        if (is_null($group)) {
-            $pdo = $o->getPDO();
-        } else {
-            $pdo = $o->getPDO($group);
-        }
-        if ($expect === false) {
-            $this->assertFalse($pdo);
-        } else if (is_null($expect)) {
-            $this->assertNull($pdo);
-        } else {
-            $this->assertType("object", $pdo);
-            $this->assertSame($expect, get_class($pdo));
-            $this->assertSame(
-                $expectDriver,
-                $pdo->getAttribute(PDO::ATTR_DRIVER_NAME)
-            );
-        }
-    }
-
     /**
     * Data provider for testCreatePDO
     *
@@ -216,76 +88,33 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     public static function dataGetDriver()
     {
         return array(
-            array(array(), null, "sqliteDriver"),
-            array(
-                array(array("driver" => "sqlite", "file" => ":memory:")),
-                null,
-                "sqliteDriver",
-            ),
-            array(
-                array(array("driver" => "badPDODriver", "file" => ":memory:")),
-                null,
-                "sqliteDriver",
-            ),
-            array(
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                ),
-                null,
-                null,
-            ),
-            // Non default group name with group in call unset
-            array(
-                array(
-                    array(
-                        "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array("driver" => "sqlite", "file" => ":memory:"),
-                ),
-                null,
-                "sqliteDriver",
-            ),
+            array(array(array("dummy" => true)), null, "DummySocketContainer"),
             // Non default group name with group in call
             array(
                 array(
                     array(
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 6574,
                         "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
                     ),
                     array(
+                        "dummy" => true,
                         "group" => "somegroup",
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
                     ),
                 ),
                 "somegroup",
-                "sqliteDriver",
+                "DummySocketContainer",
             ),
             // Non default group name with group in call
             array(
                 array(
                     array(
-                        "group" => "somegroup",
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
+                        "dummy" => true,
                     ),
                     array(
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 6574,
+                        "group" => "somegroup",
                     ),
                 ),
                 "somegroup",
@@ -298,9 +127,9 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload      The configuration to use
-    * @param string $group        The group to check
-    * @param mixed  $expect       The expected value.  Set to FALSE or the class name
+    * @param string $preload The configuration to use
+    * @param string $group   The group to check
+    * @param mixed  $expect  The expected value.  Set to FALSE or the class name
     *
     * @return null
     *
@@ -332,51 +161,58 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConnect()
     {
         return array(
-            array(array(), null, "default", true),
+            array(array(), null, "default", false),
             array(
-                array(array("driver" => "sqlite", "file" => ":memory:")),
+                array(
+                    array(
+                        "dummy" => true,
+                    ),
+                ),
                 null,
                 false,
                 true,
             ),
             array(
-                array(array("driver" => "sqlite", "file" => ":memory:")),
-                "somegroup",
-                "group",
-                false,
-            ),
-            array(
-                array(array("driver" => "badPDODriver", "file" => ":memory:")),
-                null,
-                false,
-                true
-            ),
-            array(
                 array(
                     array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
+                        "dummy" => true,
+                        "group" => "SomeOtherGroup",
+                    ),
+                    array(
+                        "dummy" => true,
                     ),
                 ),
-                "default",
+                null,
                 false,
-                false,
+                true,
             ),
             array(
                 array(
                     array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
+                        "dummy" => true,
+                        "group" => "SomeOtherGroup",
                     ),
-                    array("driver" => "sqlite", "file" => ":memory:"),
+                    array(
+                        "dummy" => true,
+                    ),
                 ),
                 "default",
                 "default",
                 true,
+            ),
+            array(
+                array(
+                    array(
+                        "dummy" => true,
+                        "group" => "SomeOtherGroup",
+                    ),
+                    array(
+                        "dummy" => true,
+                    ),
+                ),
+                "badGroup",
+                "default",
+                false,
             ),
         );
     }
@@ -409,7 +245,7 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
             $group = "default";
         }
         $this->assertSame($expect, $ret);
-        foreach (array("server", "driver", "pdo") as $var) {
+        foreach (array("socket") as $var) {
             $check = $this->readAttribute($o, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
@@ -428,14 +264,22 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array(),
+                array(
+                    array(
+                        "dummy" => true,
+                    ),
+                ),
                 "default",
                 "default",
                 false,
                 false,
             ),
             array(
-                array(),
+                array(
+                    array(
+                        "dummy" => true,
+                    ),
+                ),
                 "Nondefault",
                 "default",
                 false,
@@ -468,9 +312,8 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
         $o = new SocketsContainer($preload);
         $ret = $o->connect($groupCon);
         $o->disconnect($groupDis);
-        foreach (array("server", "driver", "pdo") as $var) {
+        foreach (array("socket") as $var) {
             $check = $this->readAttribute($o, $var);
-            $pdo = $this->readAttribute($o, $var);
             $this->assertSame(
                 $expectDis,
                 is_object($check[$groupDis]),
@@ -493,16 +336,14 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array(),
+                array(
+                    array(
+                        "dummy" => true,
+                    ),
+                ),
                 "default",
                 "default",
                 true,
-            ),
-            array(
-                array(),
-                "Nondefault",
-                "default",
-                false,
             ),
         );
     }
@@ -511,10 +352,10 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload   The configuration to use
-    * @param string $groupDis  The group for disconnect
-    * @param string $groupCon  The group for connect
-    * @param bool   $expect The expected return
+    * @param string $preload  The configuration to use
+    * @param string $groupDis The group for disconnect
+    * @param string $groupCon The group for connect
+    * @param bool   $expect   The expected return
     *
     * @return null
     *
@@ -540,73 +381,27 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array(),
+                array(
+                    array(
+                        "GatewayIP" => "127.0.0.1",
+                    ),
+                ),
                 array(
                 ),
             ),
             array(
                 array(
                     array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array(
-                        "group" => "local",
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
+                        "GatewayKey" => 1,
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 201,
                     ),
                 ),
                 array(
                     array(
-                        "driver" => "mysql",
-                        "db" => "MyNewDb",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                    ),
-                    array(
-                        "group" => "local",
-                    ),
-                ),
-            ),
-            array(
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                    array(
-                        "driver" => "sqlite",
-                        "file" => ":memory:"
-                    ),
-                ),
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "db" => "MyNewDb",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                    ),
-                ),
-            ),
-            array(
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
-                        "db" => "MyNewDb",
-                    ),
-                ),
-                array(
-                    array(
-                        "driver" => "mysql",
-                        "db" => "MyNewDb",
-                        "user" => "NotAGoodUserNameToUse",
-                        "password" => "Secret Password",
+                        "GatewayKey" => 1,
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 201,
                     ),
                 ),
             ),
@@ -617,14 +412,15 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     * someone tries to make a cache from a memory
     * sqlite instance.
     *
-    * @param string $preload   The configuration to use
-    * @param bool   $expect The expected return
+    * @param string $preload The configuration to use
+    * @param bool   $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataToArray()
     */
-    public function testToArray($preload, $expect) {
+    public function testToArray($preload, $expect)
+    {
         $o = new SocketsContainer($preload);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
