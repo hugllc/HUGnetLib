@@ -130,7 +130,7 @@ class DBServersContainer extends HUGnetContainer
     */
     public function connect($group = "default")
     {
-        if ($this->connected()) {
+        if ($this->connected($group)) {
             return true;
         }
         foreach (array_keys((array)$this->data["servers"]) as $key) {

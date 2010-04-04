@@ -378,6 +378,21 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                 "default",
                 true,
             ),
+            // Test preconnect
+            array(
+                array(
+                    array(
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array("driver" => "sqlite", "file" => ":memory:"),
+                ),
+                "nondefault",
+                "default",
+                false,
+            ),
         );
     }
     /**
