@@ -425,7 +425,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 devInfo::hexifyStr("GET\r\n"),
                 false,
-                new PacketContainer(array("Timeout" => 1)),
+                new PacketContainer(array("Timeout" => 5)),
                 @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
             ),
         );
