@@ -85,7 +85,7 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataGetDriver()
+    public static function dataGetSocket()
     {
         return array(
             array(array(array("dummy" => true)), null, "DummySocketContainer"),
@@ -133,15 +133,15 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataGetDriver()
+    * @dataProvider dataGetSocket()
     */
-    public function testGetDriver($preload, $group, $expect)
+    public function testGetSocket($preload, $group, $expect)
     {
         $o = new SocketsContainer($preload);
         if (is_null($group)) {
-            $pdo = $o->getDriver();
+            $pdo = $o->getSocket();
         } else {
-            $pdo = $o->getDriver($group);
+            $pdo = $o->getSocket($group);
         }
         if ($expect === false) {
             $this->assertFalse($pdo);

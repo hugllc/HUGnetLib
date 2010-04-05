@@ -90,18 +90,16 @@ class ConfigContainer extends HUGnetContainer
         "PluginExtension" => "php",
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
-        "useSocket"       => "gateway",    // What kind of socket to use
+        "useSocket"       => "default",    // What kind of socket to use
     );
     /** @var array This is where the data is stored */
     protected $data = array();
     /** @var object This is where we store our database connection */
     protected $servers = null;
-    /** @var object This is where we store our gateway */
-    public $gateway = null;
+    /** @var object This is where we store our plugins */
+    protected $sockets = null;
     /** @var object This is where we store our plugins */
     public $plugins = null;
-    /** @var object This is where we store our socket connection */
-    public $socket = null;
 
     /** @var string The version of HUGnetLib */
     private $_version = null;
@@ -152,17 +150,12 @@ class ConfigContainer extends HUGnetContainer
     */
     private function _setSocket()
     {
-        $this->socket = null;
-        if ($this->useSocket == "gateway") {
-            $this->socket = &$this->gateway;
-        } else if ($this->useSocket == "dummy") {
-            // This is a dummy item for testing.  It is only
-            // available when we are testing.  It just echos
-            // stuff back that is written to it.
-            if (class_exists("DummySocketContainer")) {
-                $this->socket = new DummySocketContainer();
-            }
+        // Load the container
+        if ($this->findClass("SocketsContainer")) {
+            $this->data["sockets"] = new SocketsContainer($this->sockets);
         }
+        // The import set $this->servers instead of $this->data["servers"].
+        $this->sockets = &$this->data["sockets"];
     }
 
     /**

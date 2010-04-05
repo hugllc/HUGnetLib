@@ -76,9 +76,7 @@ class SocketsContainer extends HUGnetContainer
     */
     public function __construct($sockets = array())
     {
-        if (empty($sockets)) {
-            $sockets = array(array());
-        }
+        $this->clearData();
         foreach ((array)$sockets as $key => $sock) {
             if (isset($sock["GatewayIP"])
                 || isset($sock["GatewayPort"])
@@ -172,9 +170,9 @@ class SocketsContainer extends HUGnetContainer
     *
     * @param string $group The group to check
     *
-    * @return object HUGnetDBDriver object
+    * @return object SocketInterface object
     */
-    public function &getDriver($group = "default")
+    public function &getSocket($group = "default")
     {
         $this->connect($group);
         if ($this->connected($group)) {

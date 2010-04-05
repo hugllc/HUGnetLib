@@ -91,28 +91,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /** The placeholder for the reply command */
     const COMMAND_REPLY = self::COMMAND_ACK;
 
-    /** This is the smallest config data can be */
-    const CONFIG_MINSIZE = "36";
-
-    /** Error number for not getting a packet back */
-    const ERROR_NOREPLY_NO = -1;
-    /** Error message for not getting a packet back */
-    const ERROR_NOREPLY = "Board failed to respond";
-    /** Error number for not getting a packet back */
-    const ERROR_BADC_NO = -2;
-    /** Error message for not getting a packet back */
-    const ERROR_BADC = "Board responded: Bad Command";
-    /** Error number for not getting a packet back */
-    const ERROR_TIMEOUT_NO = -3;
-    /** Error message for not getting a packet back */
-    const ERROR_TIMEOUT = "Timeout waiting for reply";
-
-
-    /** Error Code */
-    const DRIVER_NOT_FOUND = 1;
-    /** Error Code */
-    const DRIVER_NOT_COMPLETE = 2;
-
     /** This is a preamble byte */
     const PREAMBLE = "5A";
     /** This is a preamble byte */
@@ -163,19 +141,39 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     protected $mySocket = null;
     /** @var object This is our config */
     protected $myConfig = null;
+    /** @var string This is the socket group we are using */
+    private $_group = "default";
     /**
     * Builds the class
     *
-    * @param array $data The data to build the class with
+    * @param array  $data        The data to build the class with
+    * @param string $socketGroup The socket group to use
     *
     * @return null
     */
-    public function __construct($data = array())
+    public function __construct($data = array(), $socketGroup="")
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->mySocket = &$this->myConfig->socket;
+        $this->socket($socketGroup);
         parent::__construct($data);
         $this->Date = date("Y-m-d H:i:s");
+    }
+
+    /**
+    * Sets the socket to use
+    *
+    * @param string $group The socket group to use
+    *
+    * @return null
+    */
+    public function socket($group="")
+    {
+        if (!empty($group)) {
+            $this->_group = $group;
+        } else if (!empty($this->myConfig->useSocket)) {
+            $this->_group = $this->myConfig->useSocket;
+        }
+        $this->mySocket = &$this->myConfig->sockets->getSocket($this->_group);
     }
 
 
@@ -288,7 +286,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             // This is our reply.  Set it and return
             $this->data["Reply"] =& $pkt;
             return true;
-        } else  if (self::_unsolicited($pkt)) {
+        } else if (self::_unsolicited($pkt)) {
             // This is an unsolicited packet
             return false;
         }
@@ -439,12 +437,12 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     private function &_new($data)
     {
         $class = __CLASS__;
-        return new $class($data);
+        return new $class($data, $this->_group);
     }
     /**
     * Removes the preamble from a packet string
     *
-    * @param string &$string The preamble will be removed from this packet string
+    * @param string &$data The preamble will be removed from this packet string
     *
     * @return null
     */
@@ -466,8 +464,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     }
     /**
     * Looks for a packet in a string.
-    *
-    * @param string $string The raw packet string to check
     *
     * @return PacketContainer object on success, null
     */

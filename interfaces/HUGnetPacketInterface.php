@@ -51,6 +51,14 @@
 interface HUGnetPacketInterface
 {
     /**
+    * Sets the socket to use
+    *
+    * @param string $group The socket group to use
+    *
+    * @return null
+    */
+    public function socket($group="default");
+    /**
     * Looks for a packet in a string.
     *
     * This is meant to be call with every byte received.  The incoming byte should

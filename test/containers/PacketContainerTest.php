@@ -67,10 +67,15 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
-            "useSocket" => "dummy",
+            "sockets" => array(
+                array(
+                    "dummy" => true,
+                ),
+            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->socket = &$this->config->sockets->getSocket();
         $this->o = new PacketContainer();
     }
 
@@ -239,7 +244,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the socket is set correctly
         $socket = $this->readAttribute($o, "mySocket");
-        $this->assertSame(get_class($config->socket), get_class($socket));
+        $this->assertTrue(is_object($socket));
     }
     /**
     * data provider for testDeviceID
@@ -623,8 +628,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload What to preload into the object
-    * @param array  $expect  The expected return
+    * @param array $preload What to preload into the object
+    * @param array $expect  The expected return
     *
     * @return null
     *
@@ -744,7 +749,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSendStatic($preload, $readString, $writeString, $expect)
     {
-        $this->config->socket->readString = $readString;
+        $this->socket->readString = $readString;
         $o = PacketContainer::send($preload);
         $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
     }
@@ -764,7 +769,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSend($preload, $readString, $writeString, $expect)
     {
-        $this->config->socket->readString = $readString;
+        $this->socket->readString = $readString;
         $o = new PacketContainer($preload);
         $o->send();
         $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
@@ -785,7 +790,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSendBadSocket($preload, $readString, $writeString, $expect)
     {
-        $this->config->socket = null;
+        $this->socket = null;
         $o = new PacketContainer($preload);
         $ret = $o->send();
         $this->assertFalse($ret);
@@ -814,7 +819,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             $ret = $o->toArray();
             $this->checkDateTime($ret);
             $this->assertSame($expect, $ret);
-            $this->assertSame($writeString, $this->config->socket->writeString);
+            $this->assertSame($writeString, $this->socket->writeString);
         } else {
             $this->assertFalse($o);
         }

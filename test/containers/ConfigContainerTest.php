@@ -92,7 +92,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(),
                 array(),
-                "GatewayContainer"
+                "DBServersContainer",
+                "SocketsContainer"
             ),
             array(
                 dirname(__FILE__)."/../files/config1.inc.php",
@@ -110,7 +111,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "gatewayIP" => "10.2.3.5",
                     "gatewayPort" => 2001,
                 ),
-                "GatewayContainer"
+                "DBServersContainer",
+                "SocketsContainer"
             ),
             array(
                 dirname(__FILE__)."/../files/config2.inc.php",
@@ -128,7 +130,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "gatewayIP" => "10.2.3.5",
                     "gatewayPort" => 2001,
                 ),
-                "GatewayContainer"
+                "DBServersContainer",
+                "SocketsContainer"
             ),
             array(
                 array(
@@ -143,6 +146,12 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                             "password" => "",
                             "options" => array(),
                             "file" => ":memory:",
+                        ),
+                    ),
+                    "sockets" => array(
+                        array(
+                            "GatewayIP" => "10.5.12.8",
+                            "GatewayPort" => "2001",
                         ),
                     ),
                     "hugnet_database" => "HUGNet",
@@ -164,8 +173,6 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                         "enable" => false,
                     ),
                     "admin_email" => "example@yourdomain.com",
-                    "gatewayIP" => "10.5.12.8",
-                    "gatewayPort" => "2001",
                     "useSocket" => "dummy",
                 ),
                 array(
@@ -174,6 +181,12 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                             "driver" => "mysql",
                             "host" => "10.5.12.2",
                             "db" => "HUGNet",
+                        ),
+                    ),
+                    "sockets" => array(
+                        array(
+                            "GatewayIP" => "10.5.12.8",
+                            "GatewayPort" => "2001",
                         ),
                     ),
                     "hugnet_database" => "HUGNet",
@@ -192,11 +205,10 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                         "send_daily" => true,
                     ),
                     "admin_email" => "example@yourdomain.com",
-                    "gatewayIP" => "10.5.12.8",
-                    "gatewayPort" => "2001",
                     "useSocket" => "dummy",
                 ),
-                "GatewayContainer",
+                "DBServersContainer",
+                "SocketsContainer"
             ),
         );
     }
@@ -206,18 +218,20 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param array $preload The values to preload into the constructor
     * @param array $expect  The expected return
-    * @param array $gateway The return from the gateway
+    * @param array $servers The expected class under 'servers'
+    * @param array $sockets The expected class under 'sockets'
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect, $gateway)
+    public function testConstructor($preload, $expect, $servers, $sockets)
     {
         $o = new ConfigContainer($preload);
         $ret = $o->toArray(false);
         $this->assertSame($expect, $ret);
-        $this->assertSame($gateway, get_class($o->gateway));
+        $this->assertSame($servers, get_class($o->servers));
+        $this->assertSame($sockets, get_class($o->sockets));
     }
 
     /**
