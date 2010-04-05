@@ -65,17 +65,22 @@ class DummySocketContainer implements HUGnetSocketInterface
     public $writeString = "";
     /** @var string The group we are in */
     protected $data = array(
-        "group" => "default"
+        "group" => "default",
+        "DeviceID" => "000020",
     );
+
 
     /**
     * Creates a database object
+    *
+    * @param array $config The configuration array to use.
     *
     * @return bool true on success, false on failure
     */
     public function __construct($config = array())
     {
         $this->group =& $this->data["group"];
+        $this->DeviceID =& $this->data["DeviceID"];
         if (!empty($config["group"])) {
             $this->data["group"] = $config["group"];
         }

@@ -115,6 +115,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -132,6 +133,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -149,6 +151,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -166,6 +169,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -178,6 +182,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
+                    "group"    => "myGroup",
                 ),
                 array(
                     "To" => "000ABC",
@@ -192,6 +197,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
+                    "group"    => "myGroup",
                 ),
             ),
             array(
@@ -218,6 +224,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
+                    "group"    => "default",
                 ),
             ),
         );
@@ -412,6 +419,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -429,6 +437,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -446,6 +455,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
             array(
@@ -463,6 +473,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
+                    "group"    => "default",
                 ),
             ),
         );
@@ -564,6 +575,30 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
+            // No reply expected
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                "5A5A5A010000200ABC000401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                ),
+                false,
+            ),
         );
     }
     /**
@@ -639,6 +674,60 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $o = new PacketContainer($preload);
         $ret = $o->unsolicited();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testToMe
+    *
+    * @return array
+    */
+    public static function dataToMe()
+    {
+        return array(
+            array(
+                "5A5A5A55000020000ABC0401020304C3",
+                true,
+            ),
+            array(
+                array(),
+                false,
+            ),
+            array(
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "To" => "000000",
+                    "From" => "000020",
+                    "Command" => "01",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload What to preload into the object
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToMe
+    */
+    public function testToMe($preload, $expect)
+    {
+        $o = new PacketContainer($preload);
+        $ret = $o->toMe();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -774,6 +863,96 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $o->send();
         $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
     }
+
+    /**
+    * data provider for testReply
+    *
+    * @return array
+    */
+    public static function dataReply()
+    {
+        return array(
+            array(
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Timeout"  => 1,
+                ),
+                "",
+                "5A5A5A01000ABC0000200097",
+                true,
+            ),
+            array(
+                "5A5A5A55000020000ABC0401020304C3",
+                "01020304",
+                "5A5A5A01000ABC000020040102030497",
+                true,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $replyString This is the string of data for our packet
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReply
+    */
+    public function testReply($preload, $replyString, $writeString, $expect)
+    {
+        $o = new PacketContainer($preload);
+        $ret = $o->reply($replyString);
+        $this->assertSame($expect, $ret);
+        $this->assertSame($writeString, $this->socket->writeString);
+    }
+    /**
+    * data provider for testReply
+    *
+    * @return array
+    */
+    public static function dataPowerup()
+    {
+        return array(
+            array(
+                "",
+                "5A5A5A5E000000000020007E",
+                true,
+            ),
+            array(
+                "01020304",
+                "5A5A5A5E00000000002004010203047E",
+                true,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $replyString This is the string of data for our packet
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPowerup
+    */
+    public function testPowerup($replyString, $writeString, $expect)
+    {
+        $ret = PacketContainer::powerup($replyString);
+        $this->assertSame($expect, $ret);
+        $this->assertSame($writeString, $this->socket->writeString);
+    }
+
+
     /**
     * test the set routine when an extra class exists
     *
@@ -795,6 +974,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $ret = $o->send();
         $this->assertFalse($ret);
     }
+
 
     /**
     * test the set routine when an extra class exists
@@ -934,6 +1114,20 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o->fromArray($preload);
         $this->assertSame($expect, $this->o->toString());
+
+    }
+
+    /**
+    * This tests to make sure we are setting the group correctly with a default
+    * if an empty string is given.
+    *
+    * @return null
+    */
+    public function testSetGroup()
+    {
+        unset($this->config->useSocket);
+        $this->o->group = "";
+        $this->assertSame("default", $this->o->group);
 
     }
 

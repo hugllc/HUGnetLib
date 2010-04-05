@@ -133,6 +133,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         "Timeout"  => 5,          // Timeout for the packet in seconds
         "Retries"  => 3,          // Number of times to retry the packet
         "GetReply" => true,       // Should we wait for a reply
+        "group"    => "default",  // This is the socket group we belong to
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -141,20 +142,19 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     protected $mySocket = null;
     /** @var object This is our config */
     protected $myConfig = null;
-    /** @var string This is the socket group we are using */
-    private $_group = "default";
+
     /**
     * Builds the class
     *
-    * @param array  $data        The data to build the class with
-    * @param string $socketGroup The socket group to use
+    * @param array $data The data to build the class with
     *
     * @return null
     */
-    public function __construct($data = array(), $socketGroup="")
+    public function __construct($data = array())
     {
+        $this->clearData();
         $this->myConfig = &ConfigContainer::singleton();
-        $this->socket($socketGroup);
+        $this->socket("");
         parent::__construct($data);
         $this->Date = date("Y-m-d H:i:s");
     }
@@ -168,12 +168,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function socket($group="")
     {
-        if (!empty($group)) {
-            $this->_group = $group;
-        } else if (!empty($this->myConfig->useSocket)) {
-            $this->_group = $this->myConfig->useSocket;
-        }
-        $this->mySocket = &$this->myConfig->sockets->getSocket($this->_group);
+        $this->group = $group;
+        $this->mySocket = &$this->myConfig->sockets->getSocket($this->group);
     }
 
 
@@ -281,6 +277,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
         // Set the time on the packet
         $pkt->_packetTime();
+        // Set the socket on the packet
+        $pkt->socket();
         // Check the packet to see what we got
         if (self::_reply($pkt)) {
             // This is our reply.  Set it and return
@@ -300,6 +298,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * of failure.
     *
     * @param array $data The data to build the class with if called statically
+    *                    This is ignored if not called statically.
     *
     * @return PacketContainer object on success, null
     */
@@ -313,6 +312,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         // Send the packet out
         if (is_object($this->mySocket)) {
+            if ($this->From == "000000") {
+                // Get our device ID.
+                $this->From = $this->mySocket->DeviceID;
+            }
             // Set the time on the packet
             $this->_packetTime();
             do {
@@ -334,7 +337,52 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         return false;
     }
-
+    /**
+    * Sends a packet out
+    *
+    * This function will wait for a reply if "GetReply" is true.  It will also
+    * try to send the packet out the number of times in "Retries" in the case
+    * of failure.
+    *
+    * @param array $data This is ONLY the data field.
+    *
+    * @return bool true on success, false on failure
+    */
+    public function &reply($data = "")
+    {
+        $pktArray = array(
+            "To" => $this->From,
+            "Data" => $data,
+            "Command" => self::COMMAND_REPLY,
+            "GetReply" => false,
+            "group" => $this->group,
+        );
+        $pkt = self::_new($pktArray);
+        return (bool)$pkt->send();
+    }
+    /**
+    * Sends a packet out
+    *
+    * This function will wait for a reply if "GetReply" is true.  It will also
+    * try to send the packet out the number of times in "Retries" in the case
+    * of failure.
+    *
+    * @param array  $data        This is ONLY the data field.
+    * @param string $socketGroup The socket group to use
+    *
+    * @return bool true on success, false on failure
+    */
+    public function &powerup($data = "", $socketGroup = "")
+    {
+        $pktArray = array(
+            "Data" => $data,
+            "Command" => self::COMMAND_POWERUP,
+            "GetReply" => false,
+            "group" => $socketGroup,
+        );
+        $pkt = self::_new($pktArray);
+        return (bool)$pkt->send();
+    }
     /**
     * Checks to see if the contained packet is an unsolicited
     *
@@ -344,7 +392,15 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     {
         return $this->_unsolicited($this);
     }
-
+    /**
+    * Checks to see if the contained packet is an to me
+    *
+    * @return bool true if it is to me, false otherwise
+    */
+    public function toMe()
+    {
+        return $this->_toMe($this);
+    }
     /**
     * Computes the checksum of a packet
     *
@@ -409,7 +465,22 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         return false;
     }
-
+    /**
+    * Checks to see if the given packet is a reply to this packet
+    *
+    * @param PacketContainer &$pkt The packet to check
+    *
+    * @return bool true if it is a reply, false otherwise
+    */
+    private function _toMe(PacketContainer &$pkt)
+    {
+        if ((($pkt->To == $this->From)&&($this->From != "000000")&&($this != $pkt))
+            || ($pkt->To == $this->mySocket->DeviceID)
+        ) {
+            return true;
+        }
+        return false;
+    }
     /**
     * Checks to see if the given packet is a reply to this packet
     *
@@ -419,9 +490,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     private function _reply(PacketContainer &$pkt)
     {
-        if (($pkt->To == $this->From)
-            && ($pkt->From == $this->To)
+        if ($this->_toMe($pkt)
             && ($pkt->Command == self::COMMAND_REPLY)
+            && ($this->To == $pkt->From)
         ) {
             return true;
         }
@@ -437,7 +508,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     private function &_new($data)
     {
         $class = __CLASS__;
-        return new $class($data, $this->_group);
+        return new $class($data);
     }
     /**
     * Removes the preamble from a packet string
@@ -544,6 +615,25 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $this->data["Type"] = self::$_Types[$this->Command];
         } else {
             $this->data["Type"] = "UNKNOWN";
+        }
+    }
+    /**
+    * function to check sentTo
+    *
+    * @param string $value This is not used here
+    *
+    * @return null
+    */
+    protected function setGroup($value = null)
+    {
+        if (empty($value)) {
+            if (!empty($this->myConfig->useSocket)) {
+                $this->data["group"] = $this->myConfig->useSocket;
+            } else {
+                $this->data["group"] = "default";
+            }
+        } else {
+            $this->data["group"] = $value;
         }
     }
 
