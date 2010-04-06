@@ -210,6 +210,18 @@ class ConfigContainer extends HUGnetContainer
     }
 
     /**
+    * This is an alias for singleton()
+    *
+    * @param array $config The configuration array.
+    *
+    * @return object of type ConfigContainer
+    */
+    public function &config($config = array())
+    {
+        return self::singleton($config);
+    }
+
+    /**
     * This returns the servers
     *
     * @return Array of DBServerContainers

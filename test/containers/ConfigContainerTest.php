@@ -277,6 +277,19 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    * Check to make sure that two instances of the class from singleton are
+    * identical
+    *
+    * @return null
+    */
+    public function testConfig()
+    {
+        $this->assertSame(
+            ConfigContainer::config(),
+            ConfigContainer::config()
+        );
+    }
+    /**
     * Checks to make sure we get the correct object returned
     *
     * @return null
