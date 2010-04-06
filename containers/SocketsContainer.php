@@ -105,12 +105,11 @@ class SocketsContainer extends HUGnetContainer
                 }
                 */
             }
-            if (!isset($this->data["sockets"][$key])) {
-                continue;
+            if (isset($this->data["sockets"][$key])) {
+                // Define this group;
+                $this->groups[$this->data["sockets"][$key]->group]
+                    = $this->data["sockets"][$key]->group;
             }
-            // Define this group;
-            $this->groups[$this->data["sockets"][$key]->group]
-                = $this->data["sockets"][$key]->group;
         }
     }
     /**

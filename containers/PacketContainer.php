@@ -97,6 +97,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     const FULL_PREAMBLE = "5A5A5A";
     /** This is the 'to' field for an unsolicited packet */
     const UNSOLICITED_TO = "000000";
+    /** This is the maximum our SN can be */
+    const MAX_SN = 0x1F;
 
     static private $_Types = array(
         self::COMMAND_ACK                 => "REPLY",
@@ -154,7 +156,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     {
         $this->clearData();
         $this->myConfig = &ConfigContainer::singleton();
-        $this->socket("");
+        $this->socket();
         parent::__construct($data);
         $this->Date = date("Y-m-d H:i:s");
     }
@@ -263,7 +265,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return bool true on success, false on failure
     */
-    public function recv(&$string)
+    public function &recv(&$string)
     {
         // Check the string.  If it doesn't look like a packet return.
         $pktStr = self::_checkStr($string);
@@ -274,19 +276,35 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $string = "";
         // Create a new packet object
         // checkStr strips the preamble but this expects it so we re-add it.
-        $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
+        if ($this->GetReply) {
+            $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
+        } else {
+            $pkt = &$this;
+            $this->fromString(self::FULL_PREAMBLE.$pktStr);
+        }
+        // Check the checksum  If it is bad return a false
+        if ($pkt->Checksum !== $pkt->CalcChecksum) {
+            self::vprint(
+                "Bad Checksum ".$pkt->Checksum." != ".$pkt->CalcChecksum,
+                1
+            );
+            return false;
+        }
         // Set the time on the packet
         $pkt->_packetTime();
         // Set the socket on the packet
         $pkt->socket();
         // Check the packet to see what we got
-        if (self::_reply($pkt)) {
-            // This is our reply.  Set it and return
-            $this->data["Reply"] =& $pkt;
+        if ($this->GetReply) {
+            if (self::_reply($pkt)) {
+                // This is our reply.  Set it and return
+                $this->data["Reply"] =& $pkt;
+                return true;
+            } else if (self::_unsolicited($pkt)) {
+                // This is an unsolicited packet
+            }
+        } else {
             return true;
-        } else if (self::_unsolicited($pkt)) {
-            // This is an unsolicited packet
-            return false;
         }
         return false;
     }
@@ -331,18 +349,35 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 // * We still have retries  ($this->Retries > 0)
                 // * We haven't gotten a positive return  (!$ret)
                 // If we don't want a return packet we will retry if the send fails
-            } while (($this->Retries > 0) && !$ret);
+            } while (($this->Retries > 0) && ($ret !== true));
 
             return $ret;
         }
         return false;
     }
     /**
-    * Sends a packet out
+    * Looks for any packet and returns it
     *
-    * This function will wait for a reply if "GetReply" is true.  It will also
-    * try to send the packet out the number of times in "Retries" in the case
-    * of failure.
+    * @param array $data The data to build the class with if called statically
+    *                    This is ignored if not called statically.
+    *
+    * @return mixed PacketContainer on success, false on failure
+    */
+    public function &monitor($data = array())
+    {
+        // This is overridden to make sure we are in monitor mode
+        $data["GetReply"] = false;
+        // Make a new packet
+        $pkt = self::_new($data);
+        // If we get a packet return it
+        if ($pkt->mySocket->recvPkt($pkt)) {
+            return $pkt;
+        }
+        // If we don't get a packet return false
+        return false;
+    }
+    /**
+    * Sends a reply to this packet.
     *
     * @param array $data This is ONLY the data field.
     *
@@ -363,16 +398,12 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * Sends a packet out
     *
-    * This function will wait for a reply if "GetReply" is true.  It will also
-    * try to send the packet out the number of times in "Retries" in the case
-    * of failure.
-    *
     * @param array  $data        This is ONLY the data field.
     * @param string $socketGroup The socket group to use
     *
     * @return bool true on success, false on failure
     */
-    public function &powerup($data = "", $socketGroup = "")
+    public function powerup($data = "", $socketGroup = "")
     {
         $pktArray = array(
             "Data" => $data,
@@ -382,6 +413,33 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         );
         $pkt = self::_new($pktArray);
         return (bool)$pkt->send();
+    }
+    /**
+    * Sends a ping packet out and waits for the reply
+    *
+    * @param array $data This is ONLY the data field.
+    * @param bool  $find If true a findping is used
+    *
+    * @return bool true on success, false on failure
+    */
+    public function ping($data = "", $find = false)
+    {
+        // This deals with us being called statically
+        if (!self::_me()) {
+            $pkt = self::_new("");
+            $pkt->ping($data, $find);
+            return $pkt;
+        }
+        // Get any new stuff from the command
+        $this->fromAny($data);
+        // Set our command
+        if ($find) {
+            $this->Command = self::COMMAND_FINDECHOREQUEST;
+        } else {
+            $this->Command = self::COMMAND_ECHOREQUEST;
+        }
+        // Send the packet
+        return (bool)$this->send();
     }
     /**
     * Checks to see if the contained packet is an unsolicited
@@ -415,8 +473,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $val     = hexdec(substr($string, $i, 2));
             $chksum ^= $val;
         }
-        $return = sprintf("%02X", $chksum);
-        return $return;
+        return sprintf("%02X", $chksum);
     }
     /**
     * Looks for a packet in a string.

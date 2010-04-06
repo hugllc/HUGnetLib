@@ -101,6 +101,10 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
                         "dummy" => true,
                         "group" => "somegroup",
                     ),
+                    array(
+                        "stuff" => "Unknown gateway type",
+                        "group" => "somegroup",
+                    ),
                 ),
                 "somegroup",
                 "DummySocketContainer",

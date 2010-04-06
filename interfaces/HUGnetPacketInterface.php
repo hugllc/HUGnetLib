@@ -69,7 +69,7 @@ interface HUGnetPacketInterface
     *
     * @return bool true on success, false on failure
     */
-    public function recv(&$string);
+    public function &recv(&$string);
     /**
     * Sends a packet out
     *

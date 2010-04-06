@@ -60,10 +60,6 @@ abstract class HUGnetContainer extends HUGnetClass
 {
     /** @var object The extra stuff class */
     private $_extra = null;
-    /** @var object The extra stuff class */
-    private $_extraPrev = null;
-    /** @var object The extra stuff class */
-    private $_extraNext = null;
     /** @var object The locked values */
     private $_lock = array();
     /** @var object The locked values */
@@ -79,11 +75,7 @@ abstract class HUGnetContainer extends HUGnetClass
     function __construct($data="")
     {
         $this->clearData();
-        if (is_string($data)) {
-            $this->fromString($data);
-        } else if (is_array($data)) {
-            $this->fromArray($data);
-        }
+        $this->fromAny($data);
     }
     /**
     * Registers extra vars
@@ -417,6 +409,21 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         $stuff = unserialize(base64_decode($string));
         $this->fromArray($stuff);
+    }
+    /**
+    * Creates the object from a string or array
+    *
+    * @param mixed $data This is whatever you want to give the class
+    *
+    * @return null
+    */
+    public function fromAny($data)
+    {
+        if (is_string($data)) {
+            $this->fromString($data);
+        } else if (is_array($data)) {
+            $this->fromArray($data);
+        }
     }
     /**
     * Returns the object as a string

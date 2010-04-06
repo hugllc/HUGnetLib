@@ -106,10 +106,14 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                             "password" => "password",
                         ),
                     ),
+                    "sockets" => array(
+                        array(
+                            "GatewayIP" => "10.2.3.5",
+                            "GatewayPort" => 2001,
+                        ),
+                    ),
                     "hugnet_database" => "MyDatabase",
                     "admin_email" => "you@yourdomain.com",
-                    "gatewayIP" => "10.2.3.5",
-                    "gatewayPort" => 2001,
                 ),
                 "DBServersContainer",
                 "SocketsContainer"
@@ -125,10 +129,14 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                             "password" => "password",
                         ),
                     ),
+                    "sockets" => array(
+                        array(
+                            "GatewayIP" => "10.2.3.5",
+                            "GatewayPort" => 2001,
+                        ),
+                    ),
                     "hugnet_database" => "MyDatabase",
                     "admin_email" => "you@yourdomain.com",
-                    "gatewayIP" => "10.2.3.5",
-                    "gatewayPort" => 2001,
                 ),
                 "DBServersContainer",
                 "SocketsContainer"

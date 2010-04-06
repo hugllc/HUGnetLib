@@ -560,7 +560,31 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Length"  => 4,
                     "Data" => "01020304",
                 ),
-                "5A5A5A5E000000000ABC040102030497",
+                "5A5A5A5E000000000ABC0401020304E8",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                ),
+                false,
+            ),
+            // Bad Checksum
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                "5A5A5A5E000000000ABC0401020304E9",
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -584,7 +608,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Length"  => 4,
                     "Data" => "01020304",
                 ),
-                "5A5A5A010000200ABC000401020304C3",
+                "5A5A5A010000200ABC00040102030497",
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -598,6 +622,26 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "CalcChecksum" => "00",
                 ),
                 false,
+            ),
+            // No reply expected
+            array(
+                array(
+                    "GetReply" => false,
+                ),
+                "5A5A5A010000200ABC00040102030497",
+                array(
+                    "To" => "000020",
+                    "From" => "0ABC00",
+                    "Command" => "01",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "REPLY",
+                    "Reply" => null,
+                    "Checksum" => "97",
+                    "CalcChecksum" => "97",
+                ),
+                true,
             ),
         );
     }
@@ -862,6 +906,266 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $o = new PacketContainer($preload);
         $o->send();
         $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataPing()
+    {
+        return array(
+            // packet timeout
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Timeout"  => 1,
+                ),
+                "",
+                "5A5A5A02000ABC000020040102030494"
+                ."5A5A5A02000ABC000020040102030494"
+                ."5A5A5A02000ABC000020040102030494",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "02",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "PING",
+                    "Reply" => null,
+                    "Checksum" => "94",
+                    "CalcChecksum" => "00",
+                ),
+            ),
+            // Good Reply
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                "5A5A5A55000ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A02000ABC000020040102030494",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "02",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "PING",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "94",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            // Good Reply, findping
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                "5A5A5A55000ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A03000ABC000020040102030495",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "03",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "FINDPING",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "95",
+                    "CalcChecksum" => "C3",
+                ),
+                true
+            ),
+            // No reply expected
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "GetReply" => false,
+                ),
+                "",
+                "5A5A5A02000ABC000020040102030494",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "02",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "PING",
+                    "Reply" => null,
+                    "Checksum" => "94",
+                    "CalcChecksum" => "00",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    * @param bool   $find        If true a findping is used
+    *
+    * @return null
+    *
+    * @dataProvider dataPing
+    */
+    public function testPingStatic(
+        $preload,
+        $readString,
+        $writeString,
+        $expect,
+        $find = false
+    ) {
+        $this->socket->readString = $readString;
+        $o = PacketContainer::ping($preload, $find);
+        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param string $writeString This is what the socket write string should
+    *                            look like
+    * @param array  $expect      The expected return
+    * @param bool   $find        If true a findping is used
+    *
+    * @return null
+    *
+    * @dataProvider dataPing
+    */
+    public function testPing(
+        $preload,
+        $readString,
+        $writeString,
+        $expect,
+        $find = false
+    ) {
+        $this->socket->readString = $readString;
+        $o = new PacketContainer($preload);
+        $o->ping("", $find);
+        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataMonitor()
+    {
+        return array(
+            // multiple packets in queue (should return the first)
+            array(
+                array(
+                ),
+                "5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            // One packet
+            array(
+                array(
+                    "GetReply" => false,
+                ),
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
+            // Nothing
+            array(
+                array(
+                    "GetReply" => false,
+                    "Timeout"  => 1,
+                ),
+                "",
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload     The value to preload
+    * @param string $readString  This is the string that will be returned from
+    *                            the socket
+    * @param array  $expect      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataMonitor
+    */
+    public function testMonitor($preload, $readString, $expect)
+    {
+        $this->socket->readString = $readString;
+        $o = PacketContainer::monitor($preload);
+        if (is_object($o)) {
+            $ret = $o->toArray();
+            $this->checkDateTime($ret);
+        } else {
+            $ret = $o;
+        }
+        $this->assertSame($expect, $ret);
     }
 
     /**

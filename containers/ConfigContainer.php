@@ -84,8 +84,6 @@ class ConfigContainer extends HUGnetContainer
             "enable"  => false,       // Enable this script
         ),
         "admin_email"     => "",           // Administrator Email
-        "gatewayIP"       => "127.0.0.1",  // The gateway IP Address
-        "gatewayPort"     => "2000",       // The port on the gateway to use
         "PluginDir"       => HUGNET_PLUGIN_BASE_PATH, // This is the plugin path
         "PluginExtension" => "php",
         "PluginWebDir"    => "",
@@ -129,9 +127,7 @@ class ConfigContainer extends HUGnetContainer
         }
         $this->fromArray($config);
         $this->_setServers();
-        if ($this->findClass("GatewayContainer")) {
-            $this->gateway = new GatewayContainer($config);
-        }
+        $this->_setSocket();
         $this->plugins = new plugins(
             $this->PluginDir."/",
             $this->PluginExtension,
@@ -139,7 +135,6 @@ class ConfigContainer extends HUGnetContainer
             $this->PluginSkipDir,
             $this->verbose
         );
-        $this->_setSocket();
     }
 
 
