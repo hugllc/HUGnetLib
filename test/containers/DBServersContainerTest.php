@@ -216,14 +216,16 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     public static function dataGetDriver()
     {
         return array(
-            array(array(), null, "sqliteDriver"),
+            array(array(), null, null, "sqliteDriver"),
             array(
                 array(array("driver" => "sqlite", "file" => ":memory:")),
+                null,
                 null,
                 "sqliteDriver",
             ),
             array(
                 array(array("driver" => "badPDODriver", "file" => ":memory:")),
+                null,
                 null,
                 "sqliteDriver",
             ),
@@ -236,6 +238,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "db" => "MyNewDb",
                     ),
                 ),
+                null,
                 null,
                 null,
             ),
@@ -252,6 +255,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                     array("driver" => "sqlite", "file" => ":memory:"),
                 ),
                 null,
+                null,
                 "sqliteDriver",
             ),
             // Non default group name with group in call
@@ -270,6 +274,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     ),
                 ),
+                null,
                 "somegroup",
                 "sqliteDriver",
             ),
@@ -288,6 +293,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     ),
                 ),
+                null,
                 "somegroup",
                 null,
             ),
@@ -299,6 +305,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     * sqlite instance.
     *
     * @param string $preload The configuration to use
+    * @param object $table   The table object to use
     * @param string $group   The group to check
     * @param mixed  $expect  The expected value.  Set to FALSE or the class name
     *
@@ -306,13 +313,13 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataGetDriver()
     */
-    public function testGetDriver($preload, $group, $expect)
+    public function testGetDriver($preload, $table, $group, $expect)
     {
         $o = new DBServersContainer($preload);
         if (is_null($group)) {
-            $pdo = $o->getDriver();
+            $pdo = $o->getDriver($table);
         } else {
-            $pdo = $o->getDriver($group);
+            $pdo = $o->getDriver($table, $group);
         }
         if ($expect === false) {
             $this->assertFalse($pdo);
@@ -424,7 +431,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
             $group = "default";
         }
         $this->assertSame($expect, $ret);
-        foreach (array("server", "driver", "pdo") as $var) {
+        foreach (array("server", "pdo") as $var) {
             $check = $this->readAttribute($o, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
@@ -483,7 +490,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
         $o = new DBServersContainer($preload);
         $ret = $o->connect($groupCon);
         $o->disconnect($groupDis);
-        foreach (array("server", "driver", "pdo") as $var) {
+        foreach (array("server", "pdo") as $var) {
             $check = $this->readAttribute($o, $var);
             $pdo = $this->readAttribute($o, $var);
             $this->assertSame(

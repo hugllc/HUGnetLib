@@ -36,7 +36,7 @@
  *
  */
 /** Get the required base class */
-require_once dirname(__FILE__)."/../../base/UnitBase.php";
+require_once dirname(__FILE__)."/../../base/HUGnetDBDriver.php";
 /**
 * This class implements photo sensors.
 *
@@ -49,8 +49,10 @@ require_once dirname(__FILE__)."/../../base/UnitBase.php";
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class sqliteDriver
+class sqliteDriver extends HUGnetDBDriver
 {
+    /** @var bool Does this driver support auto_increment? */
+    protected $autoIncrement = false;
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name"  => "sqlite",
@@ -59,15 +61,39 @@ class sqliteDriver
     );
 
     /**
+    * Gets the instance of the class and
+    *
+    * @param object $table The table to attach myself to
+    * @param object $pdo   The database object
+    *
+    * @return null
+    */
+    static public function &singleton(&$table, PDO &$pdo)
+    {
+        static $instance;
+        if (empty($instance)) {
+            $class = __CLASS__;
+            $instance = new $class();
+        }
+        $instance->myTable = &$table;
+        $instance->pdo = &$pdo;
+        return $instance;
+    }
+    /**
     * Gets columns from a SQLite server
     *
     * @return null
     */
-    protected function getColumns()
+    protected function columns()
     {
-        $columns = $this->query("PRAGMA table_info(".$this->table.")");
-        foreach ($columns as $col) {
-            $this->db->fields[$col['name']] = $col['type'];
+        $columns = $this->query("PRAGMA table_info(".$this->table().")");
+        foreach ((array)$columns as $col) {
+            $this->columns[$col["name"]] = array(
+                "Name" => $col["name"],
+                "Type" => $col["type"],
+                "Default" => $col["dflt_value"],
+                "Null" => !(bool)$col["notnull"],
+            );
         }
     }
 

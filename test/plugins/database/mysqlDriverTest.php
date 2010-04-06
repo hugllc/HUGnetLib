@@ -37,6 +37,7 @@
  */
 
 require_once dirname(__FILE__).'/../../../plugins/database/mysqlDriver.php';
+require_once dirname(__FILE__).'/../../stubs/DummyTableContainer.php';
 
 /**
  * Test class for sensor.
@@ -51,58 +52,177 @@ require_once dirname(__FILE__).'/../../../plugins/database/mysqlDriver.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class mysqlDriverTest extends PHPUnit_Framework_TestCase
+class MysqlDriverTest extends PHPUnit_Framework_TestCase
 {
-    var $class = "mysqlDriver";
-
+    /** @var object This is our database object */
+    protected $pdo;
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function setUp()
     {
-        $this->o = new mysqlDriver();
+        $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->pdo->query(
+            "CREATE TABLE IF NOT EXISTS `myTable` ("
+            ." `id` int(11) NOT NULL,"
+            ." `name` varchar(32) NOT NULL,"
+            ." `value` float NOT NULL"
+            ." )"
+        );
+        parent::setUp();
+        $this->table = new DummyTableContainer();
+        $this->o = MysqlDriverTestStub::singleton($this->table, $this->pdo);
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function tearDown()
     {
+        unset($this->o);
+        unset($this->pdo);
     }
+
     /**
-     * Data provider for testFindUnit
-     *
-     * @return array
-     */
-    public static function dataWM2()
+    * Data provider for testAddColumnQuery
+    *
+    * @return array
+    */
+    public static function dataAddColumnQuery()
     {
         return array(
+            array(
+                array(
+                    "Name" => "ColumnName",
+                    "Type" => "int(12)",
+                    "Default" => 0,
+                    "Null" => false,
+                    "AutoIncrement" => true,
+                    "CharSet" => "",
+                    "Collate" => "",
+                    "Unsigned" => true,
+                    "Key" => "UNIQUE",
+                ),
+                "ALTER TABLE `myTable` ADD `ColumnName` int(12)  UNSIGNED  "
+                ."AUTO_INCREMENT PRIMARY KEY NOT NULL  DEFAULT '0'"
+            ),
+            array(
+                array(
+                    "Name" => "ColumnName",
+                    "Type" => "numeric(12)",
+                    "Default" => null,
+                    "Null" => true,
+                    "AutoIncrement" => false,
+                    "CharSet" => "",
+                    "Collate" => "",
+                    "Unsigned" => false,
+                    "Key" => "UNIQUE",
+                ),
+                "ALTER TABLE `myTable` ADD `ColumnName` numeric(12)  "
+                ."UNIQUE KEY  NULL "
+            ),
+            array(
+                array(
+                    "Name" => "ColumnName",
+                    "Type" => "set('a', 'b', 'c')",
+                    "Default" => "a",
+                    "Null" => false,
+                    "AutoIncrement" => false,
+                    "CharSet" => "asdf",
+                    "Collate" => "fdsa",
+                    "Unsigned" => false,
+                    "Key" => "",
+                ),
+                "ALTER TABLE `myTable` ADD `ColumnName` set('a', 'b', 'c') "
+                ." CHARACTER SET asdf  COLLATE fdsa   KEY  NOT NULL  DEFAULT 'a'"
+            ),
         );
     }
     /**
-     * Tests galtol
-     *
-     * @param float  $expect The RPM expected
-     * @param int    $val    The number of counts
-     * @param int    $time   The time in seconds between this record and the last.
-     * @param string $type   The type of data (diff, raw, etc)
-     * @param int    $extra  the number of counts per revolution
-     *
-     * @return null
-     *
-     * @dataProvider dataWM2
-     */
-    public function testWM2($expect, $val, $time, $type, $extra)
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect  The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataAddColumnQuery
+    */
+    public function testAddColumnQuery($column, $expect)
+    {
+        $this->o->addColumn($column);
+        $this->assertAttributeSame($expect, "query", $this->o);
+    }
+}
+/**
+ * Test class for HUGnetDB.
+ * Generated by PHPUnit on 2007-12-13 at 10:28:11.
+ *
+ * @category   Test
+ * @package    HUGnetLibTest
+ * @subpackage Database
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class MysqlDriverTestStub extends MysqlDriver
+{
+    public $defColumns = array();
+    /**
+    * Gets the instance of the class and
+    *
+    * @param object $table The table to attach myself to
+    * @param object $pdo   The database object
+    *
+    * @return null
+    */
+    static public function &singleton(&$table, PDO &$pdo)
+    {
+        $class    = __CLASS__;
+        $instance = new $class();
+        $instance->myTable = &$table;
+        $instance->pdo     = &$pdo;
+        return $instance;
+    }
+    /**
+    * Gets columns from a SQLite server
+    *
+    * @return null
+    */
+    protected function columns()
+    {
+        foreach ((array)$this->columns as $col) {
+            $this->columns[$col['name']] = $col['type'];
+        }
+    }
+    /**
+    * Prepares a query to be put into the database
+    *
+    * @return mixed
+    */
+    public function prepare()
+    {
+    }
+    /**
+    * Removes a row from the database.
+    *
+    * @param array $data Data to use for the query.  Associate Array
+    *
+    * @return mixed
+    */
+    public function execute($data = array())
     {
     }
 }

@@ -37,6 +37,7 @@
  */
 require_once dirname(__FILE__)."/HUGnetClass.php";
 //require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriver.php";
+require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 /**
  * Base class for all database work
  *
@@ -66,6 +67,8 @@ abstract class HUGnetDBDriver extends HUGnetClass
     protected $query = "";
     /** @var string The name of this driver */
     protected $driver = "";
+    /** @var bool Does this driver support auto_increment? */
+    protected $autoIncrement = true;
 
     /**
     * Register this database object
@@ -73,31 +76,73 @@ abstract class HUGnetDBDriver extends HUGnetClass
     public function __construct()
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->pdo = &$this->myConfig->dbServers()->getPDO($this->driver);
         $this->columns();
+    }
+    /**
+    * Register this database object
+    */
+    public function __destruct()
+    {
+        $this->reset();
     }
 
     /**
     * Gets the instance of the class and
     *
     * @param object $table The table to attach myself to
+    * @param object $pdo   The database object
     *
     * @return null
     */
-    public function &singleton(&$table)
-    {
-        static $instance;
-        if (empty($instance)) {
-            $class = __CLASS__;
-            $instance = new $class();
-        }
-        $instance->myTable = &$table;
-        return $instance;
-    }
+    abstract static public function &singleton(&$table, PDO &$pdo);
 
     /**
     *  Adds a field to the devices table for cache information
     *
+    * @param array $column @See columnDef for format
+    *
+    * @return null
+    */
+    public function addColumn($column)
+    {
+        $this->query  = "ALTER TABLE ".$this->table()." ADD ";
+        $this->columnDef($column);
+        $this->prepare();
+        $this->execute();
+        $this->reset();
+    }
+    /**
+    *  Adds a field to the devices table for cache information
+    *
+    * @param array $columns array of $column entries @See columnDef for
+    *                       $column format
+    *
+    * @return null
+    */
+    public function createTable($columns)
+    {
+        $this->query  = "CREATE TABLE IF NOT EXISTS ".$this->table();
+        $this->query .= " (\n";
+        $sep = "";
+        foreach ((array)$columns as $column) {
+            $this->query .= $sep."     ";
+            $this->columnDef($column);
+            $sep = ",\n";
+        }
+        $this->query .= "\n)";
+        $this->prepare();
+        $this->execute();
+        $this->reset();
+    }
+    /**
+    *  Adds a field to the devices table for cache information
+    *
+    *  The column parameter is defined as follows:
+    *  $column["Name"] => string The name of the column
+    *  $column["Type"] => string The type of the column
+    *  $column["Default"] => mixed The default value for the column
+    *  $column["Null"] => bool true if null is allowed, false otherwise
+    *
     * @param string $name    The name of the field
     * @param string $type    The type of field to add
     * @param mixed  $default The default value for the field
@@ -105,41 +150,38 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return null
     */
-    public function addField($name, $type="TEXT", $default=null, $null=false)
+    protected function columnDef($column)
     {
-        if (isset($this->fields[$name])) {
-            return true;
+        $this->query .= "`".$column["Name"]."` ".$column["Type"]." ";
+        if ($column["Null"] == true) {
+            $this->query .= " NULL ";
+        } else {
+            $this->query .= " NOT NULL ";
         }
-        $this->query  = "ALTER TABLE `".$this->table."` ADD `$name` $type ";
-        if (!$null) {
-            $this->query .= "NOT NULL ";
-        }
-        if (!is_null($default)) {
-            $this->query .= " DEFAULT '$default'";
+        if (!is_null($column["Default"])) {
+            $this->query .= " DEFAULT '".$column["Default"]."'";
         }
     }
     /**
     *  Adds a field to the devices table for cache information
     *
-    * @param string $name    The name of the field
-    * @param string $type    The type of field to add
-    * @param mixed  $default The default value for the field
-    * @param bool   $null    Whether null is a valid value for the field
+    *  The $index parameter should be defined as follows:
+    *  $index["Name"] => string The name of the index
+    *  $index["Type"] => string The type of the field
+    *  $index["Columns"] => array Array of column names
+    *
+    * @param array $index Index array defined above.
     *
     * @return null
     */
-    public function addKey($name, $type="TEXT", $default=null, $null=false)
+    public function addIndex($index)
     {
-        if (isset($this->fields[$name])) {
-            return true;
-        }
-        $this->query  = "ALTER TABLE `".$this->table."` ADD `$name` $type ";
-        if (!$null) {
-            $this->query .= "NOT NULL ";
-        }
-        if (!is_null($default)) {
-            $this->query .= " DEFAULT '$default'";
-        }
+        // Build the query
+        $this->query  = "CREATE  ".strtoupper($index["Type"]);
+        $this->query .= " INDEX `".$index["Name"]."` ON ";
+        $this->query .= $this->table();
+        $this->query .= " (`".implode((array)$index["Columns"], "`, `")."`)";
+        $this->query();
     }
 
     /**
@@ -148,14 +190,6 @@ abstract class HUGnetDBDriver extends HUGnetClass
     * @return null
     */
     abstract protected function columns();
-    /**
-    * Creates the database table.
-    *
-    * Must be defined in child classes
-    *
-    * @return bool
-    */
-    abstract public function createTable();
 
     /**
     * Gets an attribute from the PDO object
@@ -219,18 +253,20 @@ abstract class HUGnetDBDriver extends HUGnetClass
     }
 
     /**
-    * Adds an row to the database
+    * Sets the columns to use
     *
-    * @return bool Always False
+    * @param $columns array An array of columns to use
+    *
+    * @return null
     */
-    public function dataFields($fields = array())
+    protected function dataColumns($columns = array())
     {
-        if (empty($fields)) {
-            $this->dataFields = $this->fields;
+        if (empty($columns)) {
+            $this->columns = array_keys((array)$this->myTable->columns);
         } else {
-            foreach (array_keys((array)$this->fields) as $field) {
-                if (!is_bool(array_search($field, (array)$fields))) {
-                    $this->dataFields[$field] = $field;
+            foreach (array_keys((array)$this->myTable->columns) as $column) {
+                if (!is_bool(array_search($column, (array)$columns))) {
+                    $this->columns[$column] = $column;
                 }
             }
         }
@@ -266,7 +302,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return null
     */
-    public function selectWhere($where, $data) {
+    public function selectWhere($where) {
         $this->query = " SELECT * FROM ".$this->table();
         $this->where($where);
         $this->orderby();
@@ -293,7 +329,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     protected function table()
     {
-        $this->query .= "`".$this->myTable->sqlTable."`";
+        return "`".$this->myTable->sqlTable."`";
     }
 
     /**
@@ -371,23 +407,75 @@ abstract class HUGnetDBDriver extends HUGnetClass
     {
         $this->query  = " DELETE FROM ".$this->table();
         $this->where($where);
+        $this->execute($data);
+    }
+    /**
+    * Prepares a query to be put into the database
+    *
+    * @return mixed
+    */
+    public function prepare()
+    {
+        if (!is_object($this->pdo) || empty($this->query)) {
+            return false;
+        }
+        if (($this->pdoStatement = $this->pdo->prepare($this->query)) === false) {
+            return false;
+        }
+        return true;
     }
     /**
     * Removes a row from the database.
     *
-    * @param string $where Where clause
-    * @param array  $data  Data for query
+    * @param array $data Data to use for the query.  Associate Array
     *
     * @return mixed
     */
-    public function delete()
+    public function execute($data = array())
     {
-        $id = $this->myTable->id;
-        $this->deleteWhere($id." = ? ");
-        $data = array($this->myTable->$id);
-        return $this->query($query, $data, false);
+        // Make sure everything is set up for us
+        if (!is_object($this->pdoStatement)) {
+            if (!$this->prepare()) {
+                return false;
+            }
+        }
+        return $this->pdoStatement->execute($data);
     }
-
+    /**
+    * Removes a row from the database.
+    *
+    * @param array $data Data to use for the query.  Associate Array
+    *
+    * @return mixed
+    */
+    public function reset()
+    {
+        if (is_object($this->pdoStatement)) {
+            // close the cursor
+            $this->pdoStatement->closeCursor();
+            // Remove the statuemt
+            $this->pdoStatement = null;
+        }
+    }
+    /**
+    * Removes a row from the database.
+    *
+    * @param array $query The query string
+    * @param array $data  Data to use for the query
+    *
+    * @return mixed
+    */
+    protected function query($query = "", $data = array())
+    {
+        if (!is_object($this->pdo) || empty($query)) {
+            return false;
+        }
+        $pdo = $this->pdo->prepare($query);
+        $pdo->execute($data);
+        $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
+        $pdo->closeCursor();
+        return $res;
+    }
 }
 
 

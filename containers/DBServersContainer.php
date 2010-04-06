@@ -161,7 +161,6 @@ class DBServersContainer extends HUGnetContainer
                 (string)$this->server[$group]->password,
                 (array)$this->server[$group]->options
             );
-            $this->_driver($group);
         } catch (PDOException $e) {
             self::vprint(
                 "Error (".$e->getCode()."): ".$e->getMessage()."\n",
@@ -190,28 +189,23 @@ class DBServersContainer extends HUGnetContainer
     /**
     * Creates a database object
     *
+    * @param string $table Table object to attach to it
     * @param string $group The group to check
     *
     * @return object HUGnetDBDriver object
     */
-    public function &getDriver($group = "default")
+    public function &getDriver(&$table, $group = "default")
     {
-        $this->connect($group);
-        return $this->driver[$group];
-    }
-    /**
-    * Creates a driver object
-    *
-    * @param string $group The group to check
-    *
-    * @return object HUGnetDBDriver object
-    */
-    private function _driver($group = "default")
-    {
-        $driver = $this->server[$group]->driver."Driver";
-        if (self::findClass($driver, "/plugins/database/")) {
-            $this->driver[$group] = new $driver();
+        if (!$this->connect($group)) {
+            return null;
         }
+        $driverName = $this->server[$group]->driver."Driver";
+        if (self::findClass($driverName, "/plugins/database/")) {
+            $code = "return $driverName::singleton(\$table, \$this->pdo[\$group]);";
+            $driver = eval($code);
+        }
+
+        return $driver;
     }
 
     /**
