@@ -362,6 +362,12 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertAttributeSame($expect, "query", $this->o);
         $stmt = $this->pdo->query("PRAGMA table_info(".$this->table->sqlTable.")");
         $cols = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Different versions of sqlite return different notnull values.
+        foreach ($cols as $key => $col) {
+            if ($col["notnull"]) {
+                $cols[$key]["notnull"] = "1";
+            }
+        }
         $this->assertSame($table, $cols);
     }
     /**
