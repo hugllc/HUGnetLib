@@ -5,9 +5,24 @@
         <column>name</column>
         <column>value</column>
         <row>
+            <value>-5</value>
+            <value>Something Negative</value>
+            <value>-25</value>
+        </row>
+        <row>
             <value>1</value>
             <value>Something Here</value>
             <value>25</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>Another THing</value>
+            <value>22</value>
+        </row>
+        <row>
+            <value>32</value>
+            <value>A way up here thing</value>
+            <value>23</value>
         </row>
     </table>
 </dataset>

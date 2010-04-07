@@ -68,15 +68,36 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /** @var string The name of this driver */
     protected $driver = "";
     /** @var bool Does this driver support auto_increment? */
-    protected $autoIncrement = true;
+    protected $AutoIncrement = "AUTOINCREMENT";
+    /** @var bool Does this driver support auto_increment? */
+    protected $whereData = array();
 
     /**
     * Register this database object
+    *
+    * @param object &$table The table object
+    * @param PDO    &$pdo   The PDO object
     */
-    public function __construct()
+    public function __construct(&$table, PDO &$pdo)
     {
+        if (!is_object($table)) {
+            $this->throwException("No table given", -2);
+            // @codeCoverageIgnoreStart
+            // It thinks this line won't run.  The above function never returns.
+        }
+        // @codeCoverageIgnoreEnd
+
+        $this->myTable = &$table;
+        $this->pdo     = &$pdo;
         $this->myConfig = &ConfigContainer::singleton();
-        $this->columns();
+        $this->dataColumns();
+        if ($this->myConfig->verbose > 5) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } else if ($this->myConfig->verbose > 0) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+        } else {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+        }
     }
     /**
     * Register this database object
@@ -89,8 +110,8 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets the instance of the class and
     *
-    * @param object $table The table to attach myself to
-    * @param object $pdo   The database object
+    * @param object &$table The table to attach myself to
+    * @param PDO    &$pdo   The database object
     *
     * @return null
     */
@@ -105,11 +126,11 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function addColumn($column)
     {
+        $this->reset();
         $this->query  = "ALTER TABLE ".$this->table()." ADD ";
         $this->columnDef($column);
         $this->prepare();
         $this->execute();
-        $this->reset();
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -121,6 +142,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function createTable($columns)
     {
+        $this->reset();
         $this->query  = "CREATE TABLE IF NOT EXISTS ".$this->table();
         $this->query .= " (\n";
         $sep = "";
@@ -132,7 +154,6 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->query .= "\n)";
         $this->prepare();
         $this->execute();
-        $this->reset();
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -142,24 +163,35 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *  $column["Type"] => string The type of the column
     *  $column["Default"] => mixed The default value for the column
     *  $column["Null"] => bool true if null is allowed, false otherwise
+    *  $column["AutoIncrement"] => bool true if the column is auto_increment
+    *  $column["Collate"] => string colation if the table is text or char
+    *  $column["Primary"] => bool If we are a primary Key.
+    *  $column["Unique"] => boll If we are a unique column.
     *
-    * @param string $name    The name of the field
-    * @param string $type    The type of field to add
-    * @param mixed  $default The default value for the field
-    * @param bool   $null    Whether null is a valid value for the field
+    * @param array $column The array of column information
     *
     * @return null
     */
     protected function columnDef($column)
     {
-        $this->query .= "`".$column["Name"]."` ".$column["Type"]." ";
+        $this->query .= "`".$column["Name"]."` ".strtoupper($column["Type"]);
+        if ($column["AutoIncrement"]) {
+            $this->query .= " PRIMARY KEY ".$this->AutoIncrement;
+        } else if ($column["Primary"]) {
+            $this->query .= " PRIMARY KEY";
+        } else if ($column["Unique"]) {
+            $this->query .= " UNIQUE";
+        }
+        if (!empty($column["Collate"])) {
+            $this->query .= " COLLATE ".strtoupper($column["Collate"]);
+        }
         if ($column["Null"] == true) {
-            $this->query .= " NULL ";
+            $this->query .= " NULL";
         } else {
-            $this->query .= " NOT NULL ";
+            $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT '".$column["Default"]."'";
+            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
         }
     }
     /**
@@ -176,12 +208,14 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function addIndex($index)
     {
+        $this->reset();
         // Build the query
-        $this->query  = "CREATE  ".strtoupper($index["Type"]);
-        $this->query .= " INDEX `".$index["Name"]."` ON ";
+        $this->query  = "CREATE ".strtoupper($index["Type"]);
+        $this->query .= " INDEX IF NOT EXISTS `".$index["Name"]."` ON ";
         $this->query .= $this->table();
         $this->query .= " (`".implode((array)$index["Columns"], "`, `")."`)";
-        $this->query();
+        $this->prepare();
+        $this->execute();
     }
 
     /**
@@ -200,62 +234,34 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function getAttribute($attrib)
     {
-        return $this->myTable->getAttribute($attrib);
+        if (is_object($this->pdo)) {
+            $ret = $this->pdo->getAttribute($attrib);
+        }
+        return $ret;
     }
 
     /**
     * Returns an array made for the execute query
     *
     * @param array $data The data to prepare
-    * @param array $keys The keys to use
     *
     * @return array
     */
-    protected function prepareData($data, $keys)
+    public function prepareData($data)
     {
-        if (!is_array($keys)) {
-            return array();
-        }
         $ret = array();
-        if (!isset($data[$this->id]) && $this->autoIncrement) {
-            $data[$this->id] = $this->getNextID();
+        if (!empty($data)) {
+            foreach ((array)$this->columns as $k) {
+                $ret[] = $data[$k];
+            }
         }
-
-        foreach ($keys as $k) {
-            $ret[] = $data[$k];
-        }
+        $ret = array_merge($ret, (array)$this->whereData);
         return $ret;
     }
-
-    /**
-    * Creates an add query
-    *
-    * @param bool  $replace If true it replaces the "INSERT"
-    *                       keyword with "REPLACE".  Not all
-    *                       databases support "REPLACE".
-    *
-    * @return string
-    */
-    protected function insert($replace = false)
-    {
-        // Do we replace or insert?
-        if ($replace) {
-            $query = "REPLACE";
-        } else {
-            $query = "INSERT";
-        }
-        //
-        $fields = implode(", ", $this->fields);
-        $values = implode(", ", "?");
-        // Build the rest of the query.
-        $query .= " INTO ".$this->table()." (".$fields.") VALUES (".$values.")";
-        return $query;
-    }
-
     /**
     * Sets the columns to use
     *
-    * @param $columns array An array of columns to use
+    * @param array $columns An array of columns to use
     *
     * @return null
     */
@@ -264,45 +270,165 @@ abstract class HUGnetDBDriver extends HUGnetClass
         if (empty($columns)) {
             $this->columns = array_keys((array)$this->myTable->columns);
         } else {
+            $this->columns = array();
             foreach (array_keys((array)$this->myTable->columns) as $column) {
                 if (!is_bool(array_search($column, (array)$columns))) {
                     $this->columns[$column] = $column;
                 }
             }
+            if (empty($this->columns)) {
+                $this->dataColumns();
+            }
         }
     }
     /**
-    * Adds an row to the database
+    * This can be called over and over with new data to insert many rows.
     *
-    * @param array $info The row in array form
+    * reset() must be called before this is called.  Otherwise it could try to
+    * use the wrong insert query.  @see insertOne if you just want to insert
+    * one record.
     *
-    * @return bool Always False
+    * This is designed to be called in a loop.  $columns and $replace should
+    * not change between records.  It should be called like:
+    *
+    * <pre>
+    * $obj->reset();
+    * loop {
+    *    $obj->insert(stuff, here, asdf);
+    * }
+    * $obj->reset();
+    * </pre>
+    *
+    * @param array $data    The data to use.  It just sets up the query if this is
+    *                       empty.
+    * @param array $columns The columns to insert.  Uses all of this is blank.
+    * @param bool  $replace If true it replaces the "INSERT"
+    *                       keyword with "REPLACE".  Not all
+    *                       databases support "REPLACE".
+    *
+    * @return bool True on success, False on failure
     */
-    public function replace($info)
+    public function insert($data = array(), $columns = array(), $replace = false)
     {
-        return $this->insert($info, true);
+        // If there already is a query don't build another one.
+        if (empty($this->query)) {
+            $this->reset();
+            // Do we replace or insert?
+            if ($replace) {
+                $this->query = "REPLACE";
+            } else {
+                $this->query = "INSERT";
+            }
+            $this->dataColumns($columns);
+            // get the stuff to put in the query
+            $fields = "`".implode("`, `", $this->columns)."`";
+            $values = implode(", ", array_fill(0, count($this->columns), "?"));
+            // Build the rest of the query.
+            $this->query .= " INTO ".$this->table()." (".$fields.")";
+            $this->query .= " VALUES (".$values.")";
+        }
+        if (!empty($data)) {
+            // Insert it
+            return $this->execute($data);
+        }
+        return true;
+    }
+    /**
+    * Inserts a record into the database.  This one cleans up after itsef and
+    * doesn't need any other things called around it.
+    *
+    * @param array $data    The data to use.  It just sets up the query if this is
+    *                       empty.
+    * @param array $columns The columns to insert.  Uses all of this is blank.
+    * @param bool  $replace If true it replaces the "INSERT"
+    *                       keyword with "REPLACE".  Not all
+    *                       databases support "REPLACE".
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertOnce($data = array(), $columns = array(), $replace = false)
+    {
+        $this->reset();
+        $ret = $this->insert($data, $columns, $replace);
+        $this->reset();
+        return $ret;
+    }
+
+    /**
+    * This is an alias for insert
+    *
+    * This must be called in a certain way.  @see insert for information on this
+    * one.  It has the same caveats
+    *
+    * @param array $data    The data to use.  It just sets up the query if this is
+    *                       empty.
+    * @param array $columns The columns to insert.  Uses all of this is blank.
+    *
+    * @return null
+    */
+    public function replace($data, $columns)
+    {
+        return $this->insert($data, $columns, true);
+    }
+    /**
+    * Inserts a record into the database.  This one cleans up after itsef and
+    * doesn't need any other things called around it.
+    *
+    * @param array $data    The data to use.  It just sets up the query if this is
+    *                       empty.
+    * @param array $columns The columns to insert.  Uses all of this is blank.
+    *
+    * @return string
+    */
+    public function replaceOnce($data, $columns)
+    {
+        $this->reset();
+        $ret = $this->insert($data, $columns, true);
+        $this->reset();
+        return $ret;
     }
 
     /**
     * Updates a row in the database.
     *
+    * @param array  $data      The data to update
+    * @param string $where     Where clause
+    * @param array  $whereData Data for query
+    * @param array  $columns   The columns to select
+    *
     * @return mixed
     */
-    public function update()
-    {
-        $values = implode(" = ?, ", $this->fields)." = ?";
-        $this->query  = " UPDATE ".$this->table()." SET ".$fields;
+    public function update(
+        $data,
+        $where = "",
+        $whereData = array(),
+        $columns = array()
+    ) {
+        // If there already is a query don't build another one.
+        if (empty($this->query)) {
+            $this->reset();
+            $values = implode(" = ?, ", $this->fields)." = ?";
+            $this->query  = " UPDATE ".$this->table()." SET ".$fields;
+            $this->where($where, $whereData);
+        }
+        if (!empty($data)) {
+            // Insert it
+            return $this->execute($data);
+        }
+        return true;
     }
 
     /**
     * Gets all rows from the database
     *
-    * @param string $where   Where clause
-    * @param array  $data    Data for query
+    * @param string $where     Where clause
+    * @param array  $whereData Data for query
+    * @param array  $columns   The columns to select
     *
     * @return null
     */
-    public function selectWhere($where) {
+    public function selectWhere($where, $whereData = array(), $columns=array())
+    {
         $this->query = " SELECT * FROM ".$this->table();
         $this->where($where);
         $this->orderby();
@@ -312,14 +438,18 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets all rows from the database
     *
+    * @param string $where     The where string to use
+    * @param array  $whereData The data to use for the string
+    *
     * @return array
     */
-    protected function where($where)
+    protected function where($where, $whereData=array())
     {
         if (empty($where)) {
             return;
         }
         $this->query .= " WHERE ".$where;
+        $this->whereData = $whereData;
     }
 
     /**
@@ -396,18 +526,31 @@ abstract class HUGnetDBDriver extends HUGnetClass
         return $newID - 1;
     }
     /**
-    * Removes a row from the database.
+    * Removes rows from the database
     *
-    * @param string $where Where clause
-    * @param array  $data  Data for query
+    * This routine won't remove everything with an empty where clause.  You must
+    * feed it a "1" in the where clause to delete everything.
     *
-    * @return mixed
+    * @param string $where     Where clause
+    * @param array  $whereData Data for query
+    *
+    * @return bool True on success, False on failure
     */
-    public function deleteWhere($where, $data)
+    public function deleteWhere($where, $whereData = array())
     {
-        $this->query  = " DELETE FROM ".$this->table();
-        $this->where($where);
-        $this->execute($data);
+        if ($where == "") {
+            return false;
+        }
+        $this->reset();
+        // This clears out the columns, as we don't want them to add to our
+        // data array
+        $this->columns = array();
+        // Build the query
+        $this->query  = "DELETE FROM ".$this->table();
+        $this->where($where, $whereData);
+        $ret = $this->execute();
+        $this->reset();
+        return $ret;
     }
     /**
     * Prepares a query to be put into the database
@@ -416,7 +559,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function prepare()
     {
-        if (!is_object($this->pdo) || empty($this->query)) {
+        if (empty($this->query)) {
             return false;
         }
         if (($this->pdoStatement = $this->pdo->prepare($this->query)) === false) {
@@ -439,12 +582,11 @@ abstract class HUGnetDBDriver extends HUGnetClass
                 return false;
             }
         }
+        $data = $this->prepareData($data);
         return $this->pdoStatement->execute($data);
     }
     /**
     * Removes a row from the database.
-    *
-    * @param array $data Data to use for the query.  Associate Array
     *
     * @return mixed
     */
@@ -456,6 +598,8 @@ abstract class HUGnetDBDriver extends HUGnetClass
             // Remove the statuemt
             $this->pdoStatement = null;
         }
+        $this->query = "";
+        $this->whereData = array();
     }
     /**
     * Removes a row from the database.
@@ -467,7 +611,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     protected function query($query = "", $data = array())
     {
-        if (!is_object($this->pdo) || empty($query)) {
+        if (empty($query)) {
             return false;
         }
         $pdo = $this->pdo->prepare($query);

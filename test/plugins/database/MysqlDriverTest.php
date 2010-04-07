@@ -36,7 +36,7 @@
  *
  */
 
-require_once dirname(__FILE__).'/../../../plugins/database/mysqlDriver.php';
+require_once dirname(__FILE__).'/../../../plugins/database/MysqlDriver.php';
 require_once dirname(__FILE__).'/../../stubs/DummyTableContainer.php';
 
 /**
@@ -111,10 +111,10 @@ class MysqlDriverTest extends PHPUnit_Framework_TestCase
                     "CharSet" => "",
                     "Collate" => "",
                     "Unsigned" => true,
-                    "Key" => "UNIQUE",
+                    "Unique" => true,
                 ),
-                "ALTER TABLE `myTable` ADD `ColumnName` int(12)  UNSIGNED  "
-                ."AUTO_INCREMENT PRIMARY KEY NOT NULL  DEFAULT '0'"
+                "ALTER TABLE `myTable` ADD `ColumnName` int(12) UNSIGNED"
+                ." AUTO_INCREMENT PRIMARY KEY NOT NULL DEFAULT '0'"
             ),
             array(
                 array(
@@ -126,10 +126,10 @@ class MysqlDriverTest extends PHPUnit_Framework_TestCase
                     "CharSet" => "",
                     "Collate" => "",
                     "Unsigned" => false,
-                    "Key" => "UNIQUE",
+                    "Unique" => true,
                 ),
-                "ALTER TABLE `myTable` ADD `ColumnName` numeric(12)  "
-                ."UNIQUE KEY  NULL "
+                "ALTER TABLE `myTable` ADD `ColumnName` numeric(12)"
+                ." UNIQUE NULL"
             ),
             array(
                 array(
@@ -141,10 +141,10 @@ class MysqlDriverTest extends PHPUnit_Framework_TestCase
                     "CharSet" => "asdf",
                     "Collate" => "fdsa",
                     "Unsigned" => false,
-                    "Key" => "",
+                    "Primary" => true,
                 ),
-                "ALTER TABLE `myTable` ADD `ColumnName` set('a', 'b', 'c') "
-                ." CHARACTER SET asdf  COLLATE fdsa   KEY  NOT NULL  DEFAULT 'a'"
+                "ALTER TABLE `myTable` ADD `ColumnName` set('a', 'b', 'c')"
+                ." CHARACTER SET asdf COLLATE fdsa PRIMARY KEY NOT NULL DEFAULT 'a'"
             ),
         );
     }
@@ -152,7 +152,7 @@ class MysqlDriverTest extends PHPUnit_Framework_TestCase
     * test
     *
     * @param array  $column The database key to get the record from
-    * @param string $expect  The query created
+    * @param string $expect The query created
     *
     * @return null
     *
@@ -183,17 +183,15 @@ class MysqlDriverTestStub extends MysqlDriver
     /**
     * Gets the instance of the class and
     *
-    * @param object $table The table to attach myself to
-    * @param object $pdo   The database object
+    * @param object &$table The table to attach myself to
+    * @param PDO    &$pdo   The database object
     *
     * @return null
     */
     static public function &singleton(&$table, PDO &$pdo)
     {
         $class    = __CLASS__;
-        $instance = new $class();
-        $instance->myTable = &$table;
-        $instance->pdo     = &$pdo;
+        $instance = new $class($table, $pdo);
         return $instance;
     }
     /**

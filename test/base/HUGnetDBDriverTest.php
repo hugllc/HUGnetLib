@@ -69,9 +69,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
         $this->pdo->query(
             "CREATE TABLE IF NOT EXISTS `myTable` ("
-            ." `id` int(11) NOT NULL,"
+            ." `id` int(11) PRIMARY KEY NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
-            ." `value` float NOT NULL"
+            ." `value` float NULL"
             ." )"
         );
         parent::setUp();
@@ -116,6 +116,60 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             dirname(__FILE__).'/../files/HUGnetDBDriverTest.xml'
         );
     }
+
+    /**
+    * Tests for exceptions
+    *
+    * @expectedException Exception
+    *
+    * @return null
+    */
+    public function testConstructTableExec()
+    {
+        $o = new HUGnetDBDriverTestStub($empty, $this->pdo);
+    }
+    /**
+    * Tests for exceptions
+    *
+    * @expectedException Exception
+    *
+    * @return null
+    */
+    public function testConstructPDOExec()
+    {
+        $o = new HUGnetDBDriverTestStub($this->table, $empty);
+    }
+    /**
+    * Data provider for testAddColumnQuery
+    *
+    * @return array
+    */
+    public static function dataConstructVerbose()
+    {
+        return array(
+            array(6, PDO::ERRMODE_EXCEPTION),
+            array(1, PDO::ERRMODE_WARNING),
+            array(0, PDO::ERRMODE_SILENT),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param int $verbose the verbosity level to use
+    * @param int $expect  The expected return
+    *
+    * @dataProvider dataConstructVerbose
+    *
+    * @return null
+    */
+    public function testConstructVerbose($verbose, $expect)
+    {
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->myConfig->verbose = $verbose;
+        $o = new HUGnetDBDriverTestStub($this->table, $this->pdo);
+        $ret = $this->o->pdo->getAttribute(PDO::ATTR_ERRMODE);
+        $this->assertSame($expect, $ret);
+    }
     /**
     * Data provider for testAddColumnQuery
     *
@@ -127,21 +181,21 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             array(
                 array(
                     "Name" => "ColumnName",
-                    "Type" => "int(12)",
+                    "Type" => "INT(12)",
                     "Default" => "0",
                     "Null" => false,
                 ),
                 "ALTER TABLE `myTable` ADD "
-                ."`ColumnName` int(12)  NOT NULL  DEFAULT '0'"
+                ."`ColumnName` INT(12) NOT NULL DEFAULT '0'"
             ),
             array(
                 array(
                     "Name" => "ColumnName",
-                    "Type" => "numeric(12)",
+                    "Type" => "NUMERIC(12)",
                     "Default" => null,
                     "Null" => true,
                 ),
-                "ALTER TABLE `myTable` ADD `ColumnName` numeric(12)  NULL "
+                "ALTER TABLE `myTable` ADD `ColumnName` NUMERIC(12) NULL"
             ),
         );
     }
@@ -149,7 +203,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * test
     *
     * @param array  $column The database key to get the record from
-    * @param string $expect  The query created
+    * @param string $expect The query created
     *
     * @return null
     *
@@ -191,9 +245,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                     array(
                         "Name" => "ColumnName",
-                        "Type" => "int(12)",
+                        "Type" => "INTEGER",
                         "Default" => 0,
                         "Null" => false,
+                        "AutoIncrement" => true,
                     ),
                     array(
                         "Name" => "Column2",
@@ -203,9 +258,28 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                     ),
                 ),
                 "CREATE TABLE IF NOT EXISTS `myTable` (\n"
-                ."     `ColumnName` int(12)  NOT NULL  DEFAULT '0',\n"
-                ."     `Column2` bigint(12)  NOT NULL  DEFAULT '1'\n"
+                ."     `ColumnName` INTEGER PRIMARY KEY AUTOINCREMENT "
+                ."NOT NULL DEFAULT '0',\n"
+                ."     `Column2` BIGINT(12) NOT NULL DEFAULT '1'\n"
                 .")",
+                array(
+                    array(
+                        "cid" => "0",
+                        "name" => "ColumnName",
+                        "type" => "INTEGER",
+                        "notnull" => "1",
+                        "dflt_value" => "'0'",
+                        "pk" => "1",
+                    ),
+                    array(
+                        "cid" => "1",
+                        "name" => "Column2",
+                        "type" => "BIGINT(12)",
+                        "notnull" => "1",
+                        "dflt_value" => "'1'",
+                        "pk" => "0",
+                    ),
+                ),
             ),
             array(
                 array(
@@ -213,17 +287,38 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "Name" => "Column1",
                         "Type" => "float",
                         "Default" => 1.0,
+                        "Primary" => true,
                     ),
                     array(
                         "Name" => "Column2",
                         "Type" => "double",
                         "Default" => 0.0,
+                        "Unique" => true,
+                        "Collate" => "BINARY",
                     ),
                 ),
                 "CREATE TABLE IF NOT EXISTS `myTable` (\n"
-                ."     `Column1` float  NOT NULL  DEFAULT '1',\n"
-                ."     `Column2` double  NOT NULL  DEFAULT '0'\n"
+                ."     `Column1` FLOAT PRIMARY KEY NOT NULL DEFAULT '1',\n"
+                ."     `Column2` DOUBLE UNIQUE COLLATE BINARY NOT NULL DEFAULT '0'\n"
                 .")",
+                array(
+                    array(
+                        "cid" => "0",
+                        "name" => "Column1",
+                        "type" => "FLOAT",
+                        "notnull" => "1",
+                        "dflt_value" => "'1'",
+                        "pk" => "1",
+                    ),
+                    array(
+                        "cid" => "1",
+                        "name" => "Column2",
+                        "type" => "DOUBLE",
+                        "notnull" => "1",
+                        "dflt_value" => "'0'",
+                        "pk" => "0",
+                    ),
+                ),
             ),
             array(
                 array(
@@ -235,7 +330,17 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                     ),
                 ),
                 "CREATE TABLE IF NOT EXISTS `myTable` (\n"
-                ."     `ColumnName` varchar(32)  NOT NULL  DEFAULT 'a'\n)"
+                ."     `ColumnName` VARCHAR(32) NOT NULL DEFAULT 'a'\n)",
+                array(
+                    array(
+                        "cid" => "0",
+                        "name" => "ColumnName",
+                        "type" => "VARCHAR(32)",
+                        "notnull" => "1",
+                        "dflt_value" => "'a'",
+                        "pk" => "0",
+                    ),
+                ),
             ),
         );
     }
@@ -244,16 +349,20 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @param array  $columns The columns to put in the table
     * @param string $expect  The query created
+    * @param array  $table   The expected table
     *
     * @return null
     *
     * @dataProvider dataCreateTable
     */
-    public function testCreateTable($columns, $expect)
+    public function testCreateTable($columns, $expect, $table)
     {
         $this->pdo->query("DROP TABLE `myTable`");
         $this->o->CreateTable($columns);
         $this->assertAttributeSame($expect, "query", $this->o);
+        $stmt = $this->pdo->query("PRAGMA table_info(".$this->table->sqlTable.")");
+        $cols = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($table, $cols);
     }
     /**
     * test
@@ -282,20 +391,20 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             array(
                 array(
                     "Name" => "IndexName",
-                    "Type" => "UNIQUE",
-                    "Columns" => array("asdf","fdas", "fdsafds"),
+                    "Type" => "",
+                    "Columns" => array("id", "name"),
                 ),
-                "CREATE  UNIQUE INDEX `IndexName` ON `myTable` "
-                ."(`asdf`, `fdas`, `fdsafds`)",
+                "CREATE  INDEX IF NOT EXISTS `IndexName` ON `myTable` "
+                ."(`id`, `name`)",
             ),
             array(
                 array(
                     "Name" => "IndexName",
-                    "Type" => "PRIMARY",
-                    "Columns" => array("asdf","fdas", "fdsafds"),
+                    "Type" => "UNIQUE",
+                    "Columns" => array("id", "value"),
                 ),
-                "CREATE  PRIMARY INDEX `IndexName` ON `myTable` "
-                ."(`asdf`, `fdas`, `fdsafds`)",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `IndexName` ON `myTable` "
+                ."(`id`, `value`)",
             ),
         );
     }
@@ -303,7 +412,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * test
     *
     * @param array  $column The database key to get the record from
-    * @param string $expect  The query created
+    * @param string $expect The query created
     *
     * @return null
     *
@@ -313,6 +422,467 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->o->addIndex($column);
         $this->assertAttributeSame($expect, "query", $this->o);
+    }
+
+    /**
+    * Data provider for testAddColumn
+    *
+    * @return array
+    */
+    public static function dataGetAttribute()
+    {
+        return array(
+            array(
+                constant("PDO::ATTR_DRIVER_NAME"),
+                "sqlite"
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $attrib The attribute to get
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAttribute
+    */
+    public function testGetAttribute($attrib, $expect)
+    {
+        $ret = $this->o->getAttribute($attrib);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for testAddColumn
+    *
+    * @return array
+    */
+    public static function dataGetNextID()
+    {
+        return array(
+            array(
+                'INSERT into `myTable` (`id`, `name`, `value`) VALUES (532, "", 32)',
+                533
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $preload SQL query preload
+    * @param string $expect  The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataGetNextID
+    */
+    public function testGetNextID($preload, $expect)
+    {
+        $this->pdo->query($preload);
+        $ret = $this->o->getNextID();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testAddColumn
+    *
+    * @return array
+    */
+    public static function dataGetPrevID()
+    {
+        return array(
+            array(
+                'INSERT into `myTable` (`id`, `name`, `value`) VALUES (-10, "", 32)',
+                -11
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $preload SQL query preload
+    * @param string $expect  The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPrevID
+    */
+    public function testGetPrevID($preload, $expect)
+    {
+        $this->pdo->query($preload);
+        $ret = $this->o->getPrevID();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testAddColumn
+    *
+    * @return array
+    */
+    public static function dataDeleteWhere()
+    {
+        return array(
+            array(
+                "",
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                false,
+            ),
+            array(
+                "1",
+                array(),
+                array(),
+                true,
+            ),
+            array(
+                "id = ?",
+                array(2),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            array(
+                "id > 0",
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $where  The where clause
+    * @param array  $data   The data to use.  It just sets up the query if this is
+    *                       empty.
+    * @param string $expect The query created
+    * @param bool   $ret    The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataDeleteWhere
+    */
+    public function testDeleteWhere($where, $data, $expect, $ret)
+    {
+        $r = $this->o->deleteWhere($where, $data);
+        $this->assertSame($ret, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * Data provider for testInsert
+    *
+    * @return array
+    */
+    public static function dataInsert()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+                true,
+            ),
+            array(
+                array("id" => 3, "name" => "a name", "value" => 10),
+                array(),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "3",
+                        "name" => "a name",
+                        "value" => "10.0",
+                    ),
+                ),
+                true,
+                true,
+            ),
+            array(
+                array("id" => 3, "name" => "a name", "value" => 10),
+                array("id", "name"),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "3",
+                        "name" => "a name",
+                        "value" => null,
+                    ),
+                ),
+                true,
+                true,
+            ),
+            array(
+                array("id" => 2, "name" => "a name", "value" => 10),
+                array("id", "name"),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                false,
+                true,
+            ),
+            array(
+                array("id" => 2, "name" => "a name", "value" => 10),
+                array("ex", "not a column"),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "a name",
+                        "value" => "10.0",
+                    ),
+                ),
+                true,
+                true,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $data    The data to use.  It just sets up the query if this is
+    *                        empty.
+    * @param array  $keys    The columns to insert.  Uses all of this is blank.
+    * @param bool   $replace If true it replaces the "INSERT"
+    *                        keyword with "REPLACE".  Not all
+    *                        databases support "REPLACE".
+    * @param string $expect  The query created
+    * @param bool   $ret     The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataInsert
+    */
+    public function testInsertOnce($data, $keys, $replace, $expect, $ret)
+    {
+        $r = $this->o->insertOnce($data, $keys, $replace);
+        $this->assertSame($ret, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * test
+    *
+    * @param array  $data    The data to use.  It just sets up the query if this is
+    *                        empty.
+    * @param array  $keys    The columns to insert.  Uses all of this is blank.
+    * @param bool   $replace If true it replaces the "INSERT"
+    *                        keyword with "REPLACE".  Not all
+    *                        databases support "REPLACE".
+    * @param string $expect  The query created
+    * @param bool   $ret2    The expected return value
+    * @param bool   $ret     The second expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataInsert
+    */
+    public function testInsert($data, $keys, $replace, $expect, $ret2, $ret)
+    {
+        $r = $this->o->insert(array(), $keys, $replace);
+        $this->assertSame($ret, $r);
+        $r = $this->o->insert($data, $keys, $replace);
+        $this->assertSame($ret2, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+
+    /**
+    * test
+    *
+    * @param array  $data    The data to use.  It just sets up the query if this is
+    *                        empty.
+    * @param array  $keys    The columns to insert.  Uses all of this is blank.
+    * @param bool   $replace If true it replaces the "INSERT"
+    *                        keyword with "REPLACE".  Not all
+    *                        databases support "REPLACE".
+    * @param string $expect  The query created
+    * @param bool   $ret2    The expected return value
+    * @param bool   $ret     The second expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataInsert
+    */
+    public function testReplace($data, $keys, $replace, $expect, $ret2, $ret)
+    {
+        if ($replace) {
+            $r = $this->o->replace(array(), $keys);
+            $this->assertSame($ret, $r);
+            $r = $this->o->replace($data, $keys);
+            $this->assertSame($ret, $r);
+            $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->assertSame($expect, $rows);
+        }
+    }
+    /**
+    * test
+    *
+    * @param array  $data    The data to use.  It just sets up the query if this is
+    *                        empty.
+    * @param array  $keys    The columns to insert.  Uses all of this is blank.
+    * @param bool   $replace If true it replaces the "INSERT"
+    *                        keyword with "REPLACE".  Not all
+    *                        databases support "REPLACE".
+    * @param string $expect  The query created
+    * @param bool   $ret     The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataInsert
+    */
+    public function testReplaceOnce($data, $keys, $replace, $expect, $ret)
+    {
+        if ($replace) {
+            $r = $this->o->replaceOnce($data, $keys);
+            $this->assertSame($ret, $r);
+            $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->assertSame($expect, $rows);
+        }
     }
 
 }
@@ -336,17 +906,15 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     /**
     * Gets the instance of the class and
     *
-    * @param object $table The table to attach myself to
-    * @param object $pdo   The database object
+    * @param object &$table The table to attach myself to
+    * @param PDO    &$pdo   The database object
     *
     * @return null
     */
     static public function &singleton(&$table, PDO &$pdo)
     {
         $class    = __CLASS__;
-        $instance = new $class();
-        $instance->myTable = &$table;
-        $instance->pdo     = &$pdo;
+        $instance = new $class($table, $pdo);
         return $instance;
     }
     /**

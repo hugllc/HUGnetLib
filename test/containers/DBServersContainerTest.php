@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/DBServersContainer.php';
+require_once dirname(__FILE__).'/../stubs/DummyTableContainer.php';
 
 /**
  * Test class for filter.
@@ -216,18 +217,18 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     public static function dataGetDriver()
     {
         return array(
-            array(array(), null, null, "sqliteDriver"),
+            array(array(), new DummyTableContainer(), null, "SqliteDriver"),
             array(
                 array(array("driver" => "sqlite", "file" => ":memory:")),
+                new DummyTableContainer(),
                 null,
-                null,
-                "sqliteDriver",
+                "SqliteDriver",
             ),
             array(
                 array(array("driver" => "badPDODriver", "file" => ":memory:")),
+                new DummyTableContainer(),
                 null,
-                null,
-                "sqliteDriver",
+                "SqliteDriver",
             ),
             array(
                 array(
@@ -238,7 +239,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "db" => "MyNewDb",
                     ),
                 ),
-                null,
+                new DummyTableContainer(),
                 null,
                 null,
             ),
@@ -254,9 +255,9 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     array("driver" => "sqlite", "file" => ":memory:"),
                 ),
+                new DummyTableContainer(),
                 null,
-                null,
-                "sqliteDriver",
+                "SqliteDriver",
             ),
             // Non default group name with group in call
             array(
@@ -274,9 +275,9 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     ),
                 ),
-                null,
+                new DummyTableContainer(),
                 "somegroup",
-                "sqliteDriver",
+                "SqliteDriver",
             ),
             // Non default group name with group in call
             array(
@@ -293,7 +294,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                         "file" => ":memory:"
                     ),
                 ),
-                null,
+                new DummyTableContainer(),
                 "somegroup",
                 null,
             ),

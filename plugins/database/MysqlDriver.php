@@ -49,7 +49,7 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBDriver.php";
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class mysqlDriver extends HUGnetDBDriver
+class MysqlDriver extends HUGnetDBDriver
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
@@ -57,11 +57,13 @@ class mysqlDriver extends HUGnetDBDriver
         "Type"  => "database",
         "Class" => "mysqlDriver",
     );
+    /** @var bool Does this driver support auto_increment? */
+    protected $AutoIncrement = "AUTO_INCREMENT";
     /**
     * Gets the instance of the class and
     *
-    * @param object $table The table to attach myself to
-    * @param object $pdo   The database object
+    * @param object &$table The table to attach myself to
+    * @param PDI    &$pdo   The database object
     *
     * @return null
     */
@@ -70,10 +72,8 @@ class mysqlDriver extends HUGnetDBDriver
         static $instance;
         if (empty($instance)) {
             $class = __CLASS__;
-            $instance = new $class();
+            $instance = new $class($table, $pdo);
         }
-        $instance->myTable = &$table;
-        $instance->pdo = &$pdo;
         return $instance;
     }
 
@@ -125,55 +125,39 @@ class mysqlDriver extends HUGnetDBDriver
     *  $column["CharSet"] => string the character set if the column is text or char
     *  $column["Collate"] => string colation if the table is text or char
     *  $column["Unsigned"] => bool For int and float types.
-    *  $column["Key"] => string If defined it is the key type: UNIQUE or PRIMARY
+    *  $column["Primary"] => bool If we are a primary Key.
+    *  $column["Unique"] => boll If we are a unique column.
     *
-    * @param string $name    The name of the field
-    * @param string $type    The type of field to add
-    * @param mixed  $default The default value for the field
-    * @param bool   $null    Whether null is a valid value for the field
+    * @param string $column array documented above
     *
     * @return null
     */
     protected function columnDef($column)
     {
-        $this->query .= "`".$column["Name"]."` ".$column["Type"]." ";
-        if ((stripos($column["Type"], "TEXT") !== false)
-            || (stripos($column["Type"], "CHAR") !== false)
-            || (stripos($column["Type"], "ENUM") !== false)
-            || (stripos($column["Type"], "SET") !== false)
-        ) {
-            if (!empty($column["CharSet"])) {
-                $this->query .= " CHARACTER SET ".$column["CharSet"]." ";
-            }
-            if (!empty($column["Collate"])) {
-                $this->query .= " COLLATE ".$column["Collate"]." ";
-            }
-            if (is_string($column["Key"])) {
-                $this->query .= " ".strtoupper($column["Key"])." KEY ";
-            }
-        } else if ((stripos($column["Type"], "INT") !== false)
-            || (stripos($column["Type"], "REAL") !== false)
-            || (stripos($column["Type"], "DOUBLE") !== false)
-            || (stripos($column["Type"], "FLOAT") !== false)
-            || (stripos($column["Type"], "DECIMAL") !== false)
-            || (stripos($column["Type"], "NUMERIC") !== false)
-        ) {
-            if ($column["Unsigned"] === true) {
-                $this->query .= " UNSIGNED ";
-            }
-            if (($column["AutoIncrement"] === true) && $this->autoIncrement) {
-                $this->query .= " AUTO_INCREMENT PRIMARY KEY";
-            } else if (is_string($column["Key"])) {
-                $this->query .= " ".strtoupper($column["Key"])." KEY ";
-            }
+        $this->query .= "`".$column["Name"]."` ".$column["Type"];
+        if (!empty($column["CharSet"])) {
+            $this->query .= " CHARACTER SET ".$column["CharSet"];
+        }
+        if (!empty($column["Collate"])) {
+            $this->query .= " COLLATE ".$column["Collate"];
+        }
+        if ($column["Unsigned"] === true) {
+            $this->query .= " UNSIGNED";
+        }
+        if ($column["AutoIncrement"] === true) {
+            $this->query .= " AUTO_INCREMENT PRIMARY KEY";
+        } else if ($column["Primary"]) {
+            $this->query .= " PRIMARY KEY";
+        } else if ($column["Unique"]) {
+            $this->query .= " UNIQUE";
         }
         if ($column["Null"] == true) {
-            $this->query .= " NULL ";
+            $this->query .= " NULL";
         } else {
-            $this->query .= " NOT NULL ";
+            $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT '".$column["Default"]."'";
+            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
         }
     }
 

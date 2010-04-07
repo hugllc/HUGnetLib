@@ -59,6 +59,8 @@ class DummyTableContainer
 {
     /** @var string this is our table */
     public $sqlTable = "myTable";
+    /** @var string this is our table */
+    public $id = "id";
     /** @var This is our columns */
     public $columns = array(
         "id" => array("Name" => "id", "Type" => "int", "Default" => 0),

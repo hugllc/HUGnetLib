@@ -49,7 +49,7 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBDriver.php";
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class sqliteDriver extends HUGnetDBDriver
+class SqliteDriver extends HUGnetDBDriver
 {
     /** @var bool Does this driver support auto_increment? */
     protected $autoIncrement = false;
@@ -63,8 +63,8 @@ class sqliteDriver extends HUGnetDBDriver
     /**
     * Gets the instance of the class and
     *
-    * @param object $table The table to attach myself to
-    * @param object $pdo   The database object
+    * @param object &$table The table to attach myself to
+    * @param PDO    &$pdo   The database object
     *
     * @return null
     */
@@ -73,10 +73,8 @@ class sqliteDriver extends HUGnetDBDriver
         static $instance;
         if (empty($instance)) {
             $class = __CLASS__;
-            $instance = new $class();
+            $instance = new $class($table, $pdo);
         }
-        $instance->myTable = &$table;
-        $instance->pdo = &$pdo;
         return $instance;
     }
     /**

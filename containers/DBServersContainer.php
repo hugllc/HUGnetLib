@@ -199,7 +199,7 @@ class DBServersContainer extends HUGnetContainer
         if (!$this->connect($group)) {
             return null;
         }
-        $driverName = $this->server[$group]->driver."Driver";
+        $driverName = ucfirst($this->server[$group]->driver."Driver");
         if (self::findClass($driverName, "/plugins/database/")) {
             $code = "return $driverName::singleton(\$table, \$this->pdo[\$group]);";
             $driver = eval($code);

@@ -36,7 +36,7 @@
  *
  */
 
-require_once dirname(__FILE__).'/../../../plugins/database/sqliteDriver.php';
+require_once dirname(__FILE__).'/../../../plugins/database/SqliteDriver.php';
 
 /**
  * Test class for sensor.
@@ -51,7 +51,7 @@ require_once dirname(__FILE__).'/../../../plugins/database/sqliteDriver.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class sqliteDriverTest extends PHPUnit_Framework_TestCase
+class SqliteDriverTest extends PHPUnit_Framework_TestCase
 {
     var $class = "sqliteDriver";
 

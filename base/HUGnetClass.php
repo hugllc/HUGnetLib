@@ -123,6 +123,25 @@ abstract class HUGnetClass
         }
         return class_exists($class);
     }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg  The message
+    * @param int    $code The error code
+    *
+    * @return null
+    */
+    protected function throwException($msg, $code)
+    {
+        // @codeCoverageIgnoreStart
+        // No way to test this as it will kill the test. ;)
+        if (is_object($this) && ($this->config["silent"])) {
+            return;
+        }
+
+        throw new Exception($msg, $code);
+        // @codeCoverageIgnoreEnd
+    }
 
 }
 
