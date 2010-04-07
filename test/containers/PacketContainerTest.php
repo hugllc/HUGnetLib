@@ -795,6 +795,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "",
                 "5A5A5A55000ABC0000200401020304C3"
                 ."5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A03000ABC000020040102030495"
                 ."5A5A5A55000ABC0000200401020304C3",
                 array(
                     "To" => "000ABC",
@@ -880,26 +881,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataSend
     */
-    public function testSendStatic($preload, $readString, $writeString, $expect)
-    {
-        $this->socket->readString = $readString;
-        $o = PacketContainer::send($preload);
-        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload     The value to preload
-    * @param string $readString  This is the string that will be returned from
-    *                            the socket
-    * @param string $writeString This is what the socket write string should
-    *                            look like
-    * @param array  $expect      The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataSend
-    */
     public function testSend($preload, $readString, $writeString, $expect)
     {
         $this->socket->readString = $readString;
@@ -929,6 +910,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "",
                 "5A5A5A02000ABC000020040102030494"
                 ."5A5A5A02000ABC000020040102030494"
+                ."5A5A5A03000ABC000020040102030495"
                 ."5A5A5A02000ABC000020040102030494",
                 array(
                     "To" => "000ABC",
@@ -1046,32 +1028,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataPing
     */
-    public function testPingStatic(
-        $preload,
-        $readString,
-        $writeString,
-        $expect,
-        $find = false
-    ) {
-        $this->socket->readString = $readString;
-        $o = PacketContainer::ping($preload, $find);
-        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload     The value to preload
-    * @param string $readString  This is the string that will be returned from
-    *                            the socket
-    * @param string $writeString This is what the socket write string should
-    *                            look like
-    * @param array  $expect      The expected return
-    * @param bool   $find        If true a findping is used
-    *
-    * @return null
-    *
-    * @dataProvider dataPing
-    */
     public function testPing(
         $preload,
         $readString,
@@ -1146,10 +1102,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload     The value to preload
-    * @param string $readString  This is the string that will be returned from
-    *                            the socket
-    * @param array  $expect      The expected return
+    * @param array  $preload    The value to preload
+    * @param string $readString This is the string that will be returned from
+    *                           the socket
+    * @param array  $expect     The expected return
     *
     * @return null
     *

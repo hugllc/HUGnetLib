@@ -322,12 +322,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function send($data = array())
     {
-        // This deals with us being called statically
-        if (!self::_me()) {
-            $pkt = self::_new($data);
-            $pkt->send();
-            return $pkt;
-        }
         // Send the packet out
         if (is_object($this->mySocket)) {
             if ($this->From == "000000") {
@@ -344,6 +338,16 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 // Get a reply if we want one
                 if ($ret && $this->GetReply) {
                     $ret = $this->mySocket->recvPkt($this);
+                }
+                // This sends out a single 'findping' if we have tried and failed
+                // twice to get a reply to this packet.  It can't run if we are
+                // trying to send out a findping, otherwise it is a infinite loop.
+                if (($this->Command !== self::COMMAND_FINDECHOREQUEST)
+                    && (($this->Retries == 1) && $this->GetReply)
+                ) {
+                    // Most of the stuff stays the same, so we are just cloning this
+                    $ping = clone $this;
+                    $ping->ping(array("Retries" => 1,), true);
                 }
                 // Loop while:
                 // * We still have retries  ($this->Retries > 0)
@@ -392,8 +396,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             "GetReply" => false,
             "group" => $this->group,
         );
-        $pkt = self::_new($pktArray);
-        return (bool)$pkt->send();
+        $this->Reply = self::_new($pktArray);
+        return (bool)$this->Reply->send();
     }
     /**
     * Sends a packet out
@@ -424,12 +428,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function ping($data = "", $find = false)
     {
-        // This deals with us being called statically
-        if (!self::_me()) {
-            $pkt = self::_new("");
-            $pkt->ping($data, $find);
-            return $pkt;
-        }
         // Get any new stuff from the command
         $this->fromAny($data);
         // Set our command
@@ -589,16 +587,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     {
         list($usec, $sec) = explode(" ", microtime());
         $this->Time = ((float)$usec + (float)$sec);
-    }
-    /**
-    * Looks for a packet in a string.
-    *
-    * @return PacketContainer object on success, null
-    */
-    private function _me()
-    {
-        $class = __CLASS__;
-        return (get_class($this) === $class);
     }
     /******************************************************************
      ******************************************************************
