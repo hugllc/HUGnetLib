@@ -397,16 +397,15 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             array(
                 array(
                     "Name" => "IndexName",
-                    "Type" => "",
                     "Columns" => array("id", "name"),
                 ),
-                "CREATE  INDEX IF NOT EXISTS `IndexName` ON `myTable` "
+                "CREATE INDEX IF NOT EXISTS `IndexName` ON `myTable` "
                 ."(`id`, `name`)",
             ),
             array(
                 array(
                     "Name" => "IndexName",
-                    "Type" => "UNIQUE",
+                    "Unique" => true,
                     "Columns" => array("id", "value"),
                 ),
                 "CREATE UNIQUE INDEX IF NOT EXISTS `IndexName` ON `myTable` "
@@ -890,7 +889,614 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             $this->assertSame($expect, $rows);
         }
     }
+    /**
+    * Data provider for testUpdate
+    *
+    * @return array
+    */
+    public static function dataUpdate()
+    {
+        return array(
+            // This one would just set the query up
+            array(
+                array(),
+                "",
+                array(),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            // Normal update
+            array(
+                array("id" => 2, "name" => "a name", "value" => 10),
+                "",
+                array(),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "a name",
+                        "value" => "10.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            // Normal update
+            array(
+                array("id" => 2, "name" => "a name", "value" => 10),
+                "id = ?",
+                array(2),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "a name",
+                        "value" => "10.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            // Update on a nonexistant record
+            array(
+                array("id" => 3, "name" => "a name", "value" => 10),
+                "",
+                array(),
+                array("id", "name"),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+                true,
+            ),
+            // Update using the index columns instead of the id
+            array(
+                array("id" => 2, "name" => "a name", "value" => 22.0),
+                "",
+                array(),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "a name",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+                true,
+                "",
+                array(
+                    "things" => array(
+                        "Name" => "things",
+                        "Columns" => array("name", "value"),
+                    ),
+                    "stuff" => array(
+                        "Name" => "stuff",
+                        "Unique" => true,
+                        "Columns" => array("id", "value"),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $data      The data to use.  It just sets up the query if this is
+    *                          empty.
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    * @param bool   $ret2      The expected return value of the second call
+    * @param string $id        The id column to use
+    * @param array  $indexes   The indexes array to use
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdate
+    */
+    public function testUpdateOnce(
+        $data,
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $ret,
+        $ret2 = true,
+        $id = "id",
+        $indexes = array()
+    ) {
+        $this->table->sqlId = $id;
+        $this->table->sqlIndexes = $indexes;
+        $r = $this->o->updateOnce($data, $where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * test
+    *
+    * @param array  $data      The data to use.  It just sets up the query if this is
+    *                          empty.
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    * @param bool   $ret2      The expected return value of the second call
+    * @param string $id        The id column to use
+    * @param array  $indexes   The indexes array to use
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdate
+    */
+    public function testUpdate(
+        $data,
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $ret,
+        $ret2 = true,
+        $id = "id",
+        $indexes = array()
+    ) {
+        $this->table->sqlId = $id;
+        $this->table->sqlIndexes = $indexes;
+        $r = $this->o->update(array(), $where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $r = $this->o->update($data);
+        $this->assertSame($ret2, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * Data provider for testSelectWhere
+    *
+    * @return array
+    */
+    public static function dataSelectWhere()
+    {
+        return array(
+            // Selects everything
+            array(
+                "",  // where
+                array(), // data
+                array("id", "name", "value"), // keys
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                ), // expect
+                "value ASC", // Orderby
+                0, // limit
+                0, // start
+                true,
+            ),
+            // Selects everything, returns 1 value
+            array(
+                "",  // where
+                array(), // data
+                array("id", "name", "value"), // keys
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                ), // expect
+                "", // Orderby
+                1, // limit
+                0, // start
+                true,
+            ),
+            // Selects only one
+            array(
+                "id = ?",  // where
+                array(32), // data
+                array("id", "name", "value"), // keys
+                array(
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ), // expect
+                "value DESC", // Orderby
+                0, // limit
+                0, // start
+                true,
+            ),
+            // Selects only one
+            array(
+                "id = 32",  // where
+                array(), // data
+                array("id", "value"), // keys
+                array(
+                    array(
+                        "id" => "32",
+                        "value" => "23.0",
+                    ),
+                ), // expect
+                "value DESC", // Orderby
+                0, // limit
+                0, // start
+                true,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataSelectWhere
+    */
+    public function testSelectWhere(
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $orderby,
+        $limit,
+        $start,
+        $ret
+    ) {
+        $this->table->sqlOrderBy = $orderby;
+        $this->table->sqlStart = $start;
+        $this->table->sqlLimit = $limit;
+        $r = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $rows = $this->o->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * test
+    *
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataSelectWhere
+    */
+    public function testSelectWhereObj(
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $orderby,
+        $limit,
+        $start,
+        $ret
+    ) {
+        $this->table->sqlOrderBy = $orderby;
+        $this->table->sqlStart = $start;
+        $this->table->sqlLimit = $limit;
+        $r = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $ret = array();
+        $res = $this->o->fetchAll();
+        $index = 0;
+        foreach ((array)$res as $row) {
+            $this->assertType("object", $row);
+            $this->assertSame(get_class($this->table), get_class($row));
+            foreach ($keys as $k) {
+                if (!is_null($row->$k)) {
+                    $rows[$index][$k] = $row->$k;
+                }
+            }
+            $index++;
+        }
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * test
+    *
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataSelectWhere
+    */
+    public function testSelectWhereInto(
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $orderby,
+        $limit,
+        $start,
+        $ret
+    ) {
+        $this->table->sqlOrderBy = $orderby;
+        $this->table->sqlStart = $start;
+        $this->table->sqlLimit = $limit;
+        $r = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $rows = array();
+        $this->o->fetchInto();
+        foreach ($keys as $k) {
+            if (!is_null($this->table->$k)) {
+                $rows[$k] = $this->table->$k;
+            }
+        }
+        $this->assertSame($expect[0], $rows);
+    }
+    /**
+    * Data provider for testPrepareExecute
+    *
+    * @return array
+    */
+    public static function dataPrepareExecute()
+    {
+        return array(
+            array(
+                "",
+                array(),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                "SELECT * FROM `myTable` WHERE id = ?",
+                array(-5),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataPrepareExecute
+    */
+    public function testPrepareExecuteReset($query, $data, $ret, $expect)
+    {
+        $this->o->reset();
+        $this->o->prepare($query);
+        $this->o->execute($data);
+        $rows = $this->o->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($ret, $rows);
 
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+        $this->o->reset();
+        $this->assertAttributeSame("", "query", $this->o);
+    }
+    /**
+    * Data provider for testQuery
+    *
+    * @return array
+    */
+    public static function dataQuery()
+    {
+        return array(
+            array(
+                "SELECT * FROM `myTable` WHERE id = ?",
+                array(-5),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $column The database key to get the record from
+    * @param string $expect The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataQuery
+    */
+    public function testQuery($query, $data, $ret, $expect)
+    {
+        $res = $this->o->query($query, $data);
+        $this->assertSame($ret, $res);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
 }
 
 /**
@@ -920,7 +1526,7 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     static public function &singleton(&$table, PDO &$pdo)
     {
         $class    = __CLASS__;
-        $instance = new $class($table, $pdo);
+        $instance = &new $class($table, $pdo);
         return $instance;
     }
     /**

@@ -59,13 +59,23 @@ class DummyTableContainer
 {
     /** @var string this is our table */
     public $sqlTable = "myTable";
-    /** @var string this is our table */
-    public $id = "id";
+    /** @var string This is the index of our table */
+    public $sqlId = "id";
     /** @var This is our columns */
-    public $columns = array(
+    public $sqlColumns = array(
         "id" => array("Name" => "id", "Type" => "int", "Default" => 0),
         "name" => array("Name" => "id", "Type" => "varchar(32)", "Default" => ""),
         "value" => array("Name" => "id", "Type" => "float", "Default" => 0.0),
     );
+    public $sqlIndxes = array(
+        "stuff" => array(
+            "Name" => "stuff",
+            "Unique" => true,
+            "Columns" => array("id", "value"),
+        ),
+    );
+    public $id;
+    public $name;
+    public $value;
 }
 ?>

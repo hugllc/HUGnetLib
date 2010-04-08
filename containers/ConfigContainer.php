@@ -198,7 +198,7 @@ class ConfigContainer extends HUGnetContainer
     *
     * @return object of type ConfigContainer
     */
-    public function &singleton($config = array())
+    static public function &singleton($config = array())
     {
         static $instance;
 
@@ -216,7 +216,7 @@ class ConfigContainer extends HUGnetContainer
     *
     * @return object of type ConfigContainer
     */
-    public function &config($config = array())
+    static public function &config($config = array())
     {
         return self::singleton($config);
     }

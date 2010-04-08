@@ -2187,7 +2187,7 @@ class HUGnetDBTest extends databaseTest
     */
     public function testPrintError()
     {
-        $this->o->verbose(6);
+        $this->o->verbose(10);
         $this->o->errorState = "ABCDE";
         $this->o->error      = -1;
         $this->o->errorMsg   = "This is an error";

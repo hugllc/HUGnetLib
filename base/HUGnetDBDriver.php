@@ -71,6 +71,9 @@ abstract class HUGnetDBDriver extends HUGnetClass
     protected $AutoIncrement = "AUTOINCREMENT";
     /** @var bool Does this driver support auto_increment? */
     protected $whereData = array();
+    /** @var bool This is where we store the ID columns we are currently using in
+                   our where cause */
+    protected $idWhere = array();
 
     /**
     * Register this database object
@@ -98,6 +101,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         } else {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
         }
+        $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
     }
     /**
     * Register this database object
@@ -130,7 +134,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->query  = "ALTER TABLE ".$this->table()." ADD ";
         $this->columnDef($column);
         $this->prepare();
-        $this->execute();
+        $this->executeData();
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -153,7 +157,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         }
         $this->query .= "\n)";
         $this->prepare();
-        $this->execute();
+        $this->executeData();
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -199,7 +203,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     *  The $index parameter should be defined as follows:
     *  $index["Name"] => string The name of the index
-    *  $index["Type"] => string The type of the field
+    *  $index["Unique"] => bool Create a Unique index
     *  $index["Columns"] => array Array of column names
     *
     * @param array $index Index array defined above.
@@ -210,12 +214,15 @@ abstract class HUGnetDBDriver extends HUGnetClass
     {
         $this->reset();
         // Build the query
-        $this->query  = "CREATE ".strtoupper($index["Type"]);
+        $this->query  = "CREATE";
+        if ($index["Unique"]) {
+            $this->query .= " UNIQUE";
+        }
         $this->query .= " INDEX IF NOT EXISTS `".$index["Name"]."` ON ";
         $this->query .= $this->table();
         $this->query .= " (`".implode((array)$index["Columns"], "`, `")."`)";
         $this->prepare();
-        $this->execute();
+        $this->executeData();
     }
 
     /**
@@ -251,8 +258,14 @@ abstract class HUGnetDBDriver extends HUGnetClass
     {
         $ret = array();
         if (!empty($data)) {
-            foreach ((array)$this->columns as $k) {
+            foreach ($this->columns as $k) {
                 $ret[] = $data[$k];
+            }
+        }
+        if (!empty($this->idWhere)) {
+            $this->whereData = array();
+            foreach ($this->idWhere as $col) {
+                $this->whereData[] = $data[$col];
             }
         }
         $ret = array_merge($ret, (array)$this->whereData);
@@ -268,10 +281,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
     protected function dataColumns($columns = array())
     {
         if (empty($columns)) {
-            $this->columns = array_keys((array)$this->myTable->columns);
+            $this->columns = array_keys((array)$this->myTable->sqlColumns);
         } else {
             $this->columns = array();
-            foreach (array_keys((array)$this->myTable->columns) as $column) {
+            foreach (array_keys((array)$this->myTable->sqlColumns) as $column) {
                 if (!is_bool(array_search($column, (array)$columns))) {
                     $this->columns[$column] = $column;
                 }
@@ -329,7 +342,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         }
         if (!empty($data)) {
             // Insert it
-            return $this->execute($data);
+            return $this->executeData($data);
         }
         return true;
     }
@@ -387,6 +400,34 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->reset();
         return $ret;
     }
+    /**
+    * This gets either a key or a unique index and returns it as a where.
+    *
+    * This sets $this->idWhere, which is used by prepareData() to add the stuff
+    * from here into the data array.  That way multiple records can be updated
+    * with the same query.
+    *
+    * @return null
+    */
+    protected function idWhere()
+    {
+        if (!empty($this->myTable->sqlId)) {
+            // Use the table id field
+            $this->idWhere[] = $this->myTable->sqlId;
+            $where .= "`".$this->myTable->sqlId."` = ?";
+        } else {
+            // Check for a unique index to use
+            $indexes = &$this->myTable->sqlIndexes;
+            foreach ((array)$indexes as $ind) {
+                if (!$ind["Unique"]) {
+                    continue;
+                }
+                $where .= " (`".implode("` = ? AND `", $ind["Columns"])."` = ?)";
+                $this->idWhere = $ind["Columns"];
+            }
+        }
+        $this->where($where);
+    }
 
     /**
     * Updates a row in the database.
@@ -407,17 +448,43 @@ abstract class HUGnetDBDriver extends HUGnetClass
         // If there already is a query don't build another one.
         if (empty($this->query)) {
             $this->reset();
-            $values = implode(" = ?, ", $this->fields)." = ?";
-            $this->query  = " UPDATE ".$this->table()." SET ".$fields;
-            $this->where($where, $whereData);
+            $this->dataColumns($columns);
+            $values = "`".implode("` = ?, `", $this->columns)."` = ?";
+            $this->query  = " UPDATE ".$this->table()." SET ".$values;
+            if (!empty($where)) {
+                $this->where($where, $whereData);
+            } else {
+                $this->idWhere();
+            }
         }
         if (!empty($data)) {
             // Insert it
-            return $this->execute($data);
+            return $this->executeData($data);
         }
         return true;
     }
+    /**
+    * Updates a row in the database.
+    *
+    * @param array  $data      The data to update
+    * @param string $where     Where clause
+    * @param array  $whereData Data for query
+    * @param array  $columns   The columns to select
+    *
+    * @return mixed
+    */
+    public function updateOnce(
+        $data,
+        $where = "",
+        $whereData = array(),
+        $columns = array()
+    ) {
+        $this->reset();
+        $ret = $this->update($data, $where, $whereData, $columns);
+        $this->reset();
+        return $ret;
 
+    }
     /**
     * Gets all rows from the database
     *
@@ -427,13 +494,69 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return null
     */
-    public function selectWhere($where, $whereData = array(), $columns=array())
-    {
-        $this->query = " SELECT * FROM ".$this->table();
-        $this->where($where);
+    public function selectWhere(
+        $where,
+        $whereData = array(),
+        $columns = array(),
+        $fetch = false
+    ) {
+        $this->reset();
+        $this->dataColumns($columns);
+        $this->query  = "SELECT";
+        $this->query .= "`".implode("`, `", $this->columns)."`";
+        $this->query .= " FROM ".$this->table();
+        $this->where($where, $whereData);
         $this->orderby();
         $this->limit();
+        $ret = $this->executeData();
+        return $ret;
     }
+
+    /**
+    * Gets all rows from the database
+    *
+    * @param int $style The PDO ftech style.
+    *                   -> @see http://us.php.net/manual/en/pdostatement.fetch.php
+    *
+    * @return null
+    */
+    public function fetchAll($style = PDO::FETCH_CLASS)
+    {
+        if (!is_object($this->pdoStatement)) {
+            return array();
+        }
+        if ($style == PDO::FETCH_CLASS) {
+            $this->pdoStatement->setFetchMode(
+                PDO::FETCH_CLASS,
+                get_class($this->myTable)
+            );
+        } else {
+            $this->pdoStatement->setFetchMode($style);
+        }
+        $ret = $this->pdoStatement->fetchAll();
+        $this->reset();
+        return $ret;
+    }
+
+    /**
+    * Gets all rows from the database
+    *
+    * @param int $style The PDO ftech style.
+    *                   -> @see http://us.php.net/manual/en/pdostatement.fetch.php
+    *
+    * @return null
+    */
+    public function fetchInto()
+    {
+        $this->pdoStatement->setFetchMode(
+            PDO::FETCH_INTO,
+            $this->myTable
+        );
+        $ret = $this->pdoStatement->fetch();
+        $this->reset();
+        return $ret;
+    }
+
 
     /**
     * Gets all rows from the database
@@ -503,7 +626,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     function getNextID()
     {
-        $query = "SELECT MAX(".$this->myTable->id.") as id "
+        $query = "SELECT MAX(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();
         $ret   = $this->query($query);
         $newID = (isset($ret[0]['id'])) ? (int) $ret[0]['id'] : 0 ;
@@ -519,7 +642,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     function getPrevID()
     {
-        $query = "SELECT MIN(".$this->myTable->id.") as id "
+        $query = "SELECT MIN(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();
         $ret   = $this->query($query);
         $newID = ($ret[0]['id'] < 0) ? (int) $ret[0]['id'] : 0 ;
@@ -548,29 +671,32 @@ abstract class HUGnetDBDriver extends HUGnetClass
         // Build the query
         $this->query  = "DELETE FROM ".$this->table();
         $this->where($where, $whereData);
-        $ret = $this->execute();
+        $ret = $this->executeData();
         $this->reset();
         return $ret;
     }
     /**
     * Prepares a query to be put into the database
     *
+    * @param string $query The query to use.  If empty $this->query is used
+    *
     * @return mixed
     */
-    public function prepare()
+    public function prepare($query = null)
     {
+        if (empty($this->query)) {
+            $this->query = $query;
+        }
         if (empty($this->query)) {
             return false;
         }
-        if (($this->pdoStatement = $this->pdo->prepare($this->query)) === false) {
-            return false;
-        }
-        return true;
+        $this->pdoStatement = $this->pdo->prepare($this->query);
+        return (bool) $this->pdoStatement;
     }
     /**
-    * Removes a row from the database.
+    * Executes a query.
     *
-    * @param array $data Data to use for the query.  Associate Array
+    * @param array $data Data to use for the query.
     *
     * @return mixed
     */
@@ -582,13 +708,28 @@ abstract class HUGnetDBDriver extends HUGnetClass
                 return false;
             }
         }
-        $data = $this->prepareData($data);
-        return $this->pdoStatement->execute($data);
+        $ret = $this->pdoStatement->execute($data);
+        //$this->pdoStatement->debugDumpParams();
+        return $ret;
     }
     /**
-    * Removes a row from the database.
+    * This function prepares the data before calling execute.
+    *
+    * It is for internal purposes only.  Call 'execute' instead
+    *
+    * @param array $data Data to use for the query.  Associate Array
     *
     * @return mixed
+    */
+    protected function executeData($data = array())
+    {
+        $data = $this->prepareData($data);
+        return $this->execute($data);
+    }
+    /**
+    * Resets all internal variables to be ready for the next query
+    *
+    * @return null
     */
     public function reset()
     {
@@ -600,20 +741,22 @@ abstract class HUGnetDBDriver extends HUGnetClass
         }
         $this->query = "";
         $this->whereData = array();
+        $this->idWhere = array();
     }
     /**
-    * Removes a row from the database.
+    * .Queries the database
+    *
+    * This function is meant for very small sql statements, like those from
+    * nextID and prevID.  It is also meant to be used where it needs to not mess
+    * up a query in progress.
     *
     * @param array $query The query string
     * @param array $data  Data to use for the query
     *
-    * @return mixed
+    * @return array
     */
-    protected function query($query = "", $data = array())
+    public function query($query = "", $data = array())
     {
-        if (empty($query)) {
-            return false;
-        }
         $pdo = $this->pdo->prepare($query);
         $pdo->execute($data);
         $res = $pdo->fetchAll(PDO::FETCH_ASSOC);

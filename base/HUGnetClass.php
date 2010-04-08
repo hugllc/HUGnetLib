@@ -51,6 +51,18 @@
  */
 abstract class HUGnetClass
 {
+    /** These are error constants to be used with vprint */
+    /** @var no messages */
+    const VPRINT_NONE = 0;
+    /** @var error messages */
+    const VPRINT_ERROR = 1;
+    /** @var verbose messages */
+    const VPRINT_VERBOSE = 2;
+    /** @var warning messages */
+    const VPRINT_WARNING = 4;
+    /** @var debug messages */
+    const VPRINT_DEBUG = 8;
+
     /** @var int The verbosity level */
     public $verbose = 0;
 
@@ -89,8 +101,11 @@ abstract class HUGnetClass
     *
     * @return null
     */
-    public function vprint($str, $val = 6, $verbose = 0)
-    {
+    public function vprint(
+        $str,
+        $val = self::VPRINT_DEBUG,
+        $verbose = self::VPRINT_NONE
+    ) {
         if (is_object($this) && empty($verbose)) {
             $verbose = $this->verbose;
         }
