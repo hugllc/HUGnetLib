@@ -70,6 +70,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo = PHPUnit_Util_PDO::factory("mysql://test:test@localhost/test");
         if (!is_object($this->pdo)) {
             $this->skipPDOTests = true;
+            $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
         } else {
             $this->skipPDOTests = false;
         }
@@ -79,7 +80,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
             ." `id` int(11) PRIMARY KEY NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
             ." `value` float NULL"
-            ." )"
+            ." ) TABLESPACE MEMORY;"
         );
         parent::setUp();
         $this->table = new DummyTableContainer();
