@@ -167,6 +167,18 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
         $cols = $this->o->columns();
         $this->assertSame($expect, $cols);
     }
+    /**
+     * Tests singleton
+     *
+     * @return null
+     */
+    public function testSingleton()
+    {
+        $a = &SqliteDriver::singleton($this->table, $this->pdo);
+        $b = &SqliteDriver::singleton($this->table, $this->pdo);
+        $this->assertSame($a, $b);
+        $this->assertSame("SqliteDriver", get_class($a));
+    }
 }
 
 ?>

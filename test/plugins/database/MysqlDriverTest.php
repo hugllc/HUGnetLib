@@ -136,6 +136,18 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         );
     }
     /**
+     * Tests singleton
+     *
+     * @return null
+     */
+    public function testSingleton()
+    {
+        $a = &MysqlDriver::singleton($this->table, $this->pdo);
+        $b = &MysqlDriver::singleton($this->table, $this->pdo);
+        $this->assertSame($a, $b);
+        $this->assertSame("MysqlDriver", get_class($a));
+    }
+    /**
     * Data provider for testFindUnit
     *
     * @return array
