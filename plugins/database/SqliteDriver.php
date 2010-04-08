@@ -82,17 +82,18 @@ class SqliteDriver extends HUGnetDBDriver
     *
     * @return null
     */
-    protected function columns()
+    public function columns()
     {
         $columns = $this->query("PRAGMA table_info(".$this->table().")");
         foreach ((array)$columns as $col) {
-            $this->columns[$col["name"]] = array(
+            $cols[$col["name"]] = array(
                 "Name" => $col["name"],
                 "Type" => $col["type"],
                 "Default" => $col["dflt_value"],
                 "Null" => !(bool)$col["notnull"],
             );
         }
+        return $cols;
     }
 
 }

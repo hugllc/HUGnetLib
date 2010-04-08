@@ -1,6 +1,6 @@
 <?php
 /**
- * Classes for dealing with devices
+ * Abstract class for building SQL queries
  *
  * PHP Version 5
  *
@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Database
+ * @category   Base
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,13 +35,15 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+/** require our base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
-//require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriver.php";
-require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 /**
  * Base class for all database work
  *
- * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
+ * This class uses the {@link http://www.php.net/pdo PDO} extension to php.  This
+ * is a query building class.  That is just about all that it does.  It is abstract
+ * because a class should be built for each pdo driver.  These are generally very
+ * small.  This class will be used by the table classes to query the database.
  *
  * @category   Base
  * @package    HUGnetLib
@@ -67,8 +69,6 @@ abstract class HUGnetDBDriver extends HUGnetClass
     protected $query = "";
     /** @var string The name of this driver */
     protected $driver = "";
-    /** @var bool Does this driver support auto_increment? */
-    protected $AutoIncrement = "AUTOINCREMENT";
     /** @var bool Does this driver support auto_increment? */
     protected $whereData = array();
     /** @var bool This is where we store the ID columns we are currently using in
@@ -180,7 +180,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     {
         $this->query .= "`".$column["Name"]."` ".strtoupper($column["Type"]);
         if ($column["AutoIncrement"]) {
-            $this->query .= " PRIMARY KEY ".$this->AutoIncrement;
+            $this->query .= " PRIMARY KEY AUTOINCREMENT";
         } else if ($column["Primary"]) {
             $this->query .= " PRIMARY KEY";
         } else if ($column["Unique"]) {
@@ -230,7 +230,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return null
     */
-    abstract protected function columns();
+    abstract public function columns();
 
     /**
     * Gets an attribute from the PDO object
@@ -497,8 +497,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     public function selectWhere(
         $where,
         $whereData = array(),
-        $columns = array(),
-        $fetch = false
+        $columns = array()
     ) {
         $this->reset();
         $this->dataColumns($columns);
@@ -515,8 +514,9 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets all rows from the database
     *
-    * @param int $style The PDO ftech style.
-    *                   -> @see http://us.php.net/manual/en/pdostatement.fetch.php
+    * @param int $style The PDO ftech style.  See
+    *           {@link http://us.php.net/manual/en/pdostatement.fetch.php PDO Fetch}
+    *           for more information
     *
     * @return null
     */
@@ -539,10 +539,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     }
 
     /**
-    * Gets all rows from the database
-    *
-    * @param int $style The PDO ftech style.
-    *                   -> @see http://us.php.net/manual/en/pdostatement.fetch.php
+    * Gets one row from the database and puts it into $this->myTable
     *
     * @return null
     */
@@ -758,9 +755,11 @@ abstract class HUGnetDBDriver extends HUGnetClass
     public function query($query = "", $data = array())
     {
         $pdo = $this->pdo->prepare($query);
-        $pdo->execute($data);
-        $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
-        $pdo->closeCursor();
+        if (is_object($pdo)) {
+            $pdo->execute($data);
+            $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
+            $pdo->closeCursor();
+        }
         return $res;
     }
 }

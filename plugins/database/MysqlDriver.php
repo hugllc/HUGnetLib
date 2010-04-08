@@ -82,35 +82,26 @@ class MysqlDriver extends HUGnetDBDriver
     *
     * @return null
     */
-    protected function columns()
+    public function columns()
     {
-        $this->query = "SHOW COLUMNS FROM ".$this->table();
-        $columns = $this->query();
+        $columns = $this->query("SHOW COLUMNS FROM ".$this->table());
         foreach ((array)$columns as $col) {
             // @codeCoverageIgnoreStart
             // This is impossible to test without a mysql server
-            if (stripos($col["Extra"], "auto_increment") !== false) {
-                $AutoIncrement = true;
-            } else {
-                $AutoIncrement = false;
-            }
-            if ($col["Key"] == "PRI") {
-                $Key = "PRIMARY";
-            } else if ($col["Key"] == "UNI") {
-                $Key = "UNIQUE";
-            } else {
-                unset($Key);
-            }
-
-            $this->fields[$col['Field']] = array(
+            $cols[$col['Field']] = array(
+                "Name" => $col['Field'],
                 "Type" => $col['Type'],
                 "Null" => ($col["Null"] == "NO") ? false : true,
                 "Default" => ($col["Default"] == "NULL") ? null : $col["Default"],
-                "Key" => $Key,
-                "AutoIncrement" => "AutoIncrement"
+                "Primary" => ($col["Key"] == "PRI"),
+                "Unique" => ($col["Key"] == "UNI"),
+                "AutoIncrement" => !is_bool(
+                    stripos($col["Extra"], "auto_increment")
+                ),
             );
             // @codeCoverageIgnoreEnd
         }
+        return (array)$cols;
 
     }
     /**

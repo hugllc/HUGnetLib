@@ -37,6 +37,7 @@
  */
 
 require_once dirname(__FILE__).'/../../../plugins/database/SqliteDriver.php';
+require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
  * Test class for sensor.
@@ -51,59 +52,118 @@ require_once dirname(__FILE__).'/../../../plugins/database/SqliteDriver.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SqliteDriverTest extends PHPUnit_Framework_TestCase
+class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
 {
-    var $class = "sqliteDriver";
-
+    /** @var object This is our database object */
+    protected $pdo;
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function setUp()
     {
-        $this->o = new mysqlDriver();
+        $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->pdo->query(
+            "CREATE TABLE IF NOT EXISTS `myTable` ("
+            ." `id` int(11) PRIMARY KEY NOT NULL,"
+            ." `name` varchar(32) NOT NULL,"
+            ." `value` float NULL"
+            ." )"
+        );
+        parent::setUp();
+        $this->table = new DummyTableContainer();
+        $this->o = SqliteDriver::singleton($this->table, $this->pdo);
     }
 
     /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
-     * @return null
-     *
-     * @access protected
-     */
+    * Tears down the fixture, for example, closes a network connection.
+    * This method is called after a test is executed.
+    *
+    * @access protected
+    *
+    * @return null
+    */
     protected function tearDown()
     {
+        unset($this->o);
+        unset($this->pdo);
+    }
+
+    /**
+    * This sets up our database connection
+    *
+    * @return null
+    */
+    protected function getConnection()
+    {
+        return $this->createDefaultDBConnection($this->pdo, "sqlite");
+    }
+
+    /**
+    * This gets us our database preload
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function getDataSet()
+    {
+        return $this->createXMLDataSet(
+            dirname(__FILE__).'/../../files/HUGnetDBDriverTest.xml'
+        );
     }
     /**
-     * Data provider for testFindUnit
-     *
-     * @return array
-     */
-    public static function dataWM2()
+    * Data provider for testFindUnit
+    *
+    * @return array
+    */
+    public static function dataColumns()
     {
         return array(
+            array(
+                "",
+                array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "int(11)",
+                        "Default" => null,
+                        "Null" => false,
+                    ),
+                    "name" => array(
+                        "Name" => "name",
+                        "Type" => "varchar(32)",
+                        "Default" => null,
+                        "Null" => false,
+                    ),
+                    "value" => array(
+                        "Name" => "value",
+                        "Type" => "float",
+                        "Default" => null,
+                        "Null" => true,
+                    ),
+                ),
+            ),
         );
     }
     /**
      * Tests galtol
      *
-     * @param float  $expect The RPM expected
-     * @param int    $val    The number of counts
-     * @param int    $time   The time in seconds between this record and the last.
-     * @param string $type   The type of data (diff, raw, etc)
-     * @param int    $extra  the number of counts per revolution
+     * @param string $preload The query to preload the database with
+     * @param array  $expect  The expeced return array
      *
      * @return null
      *
-     * @dataProvider dataWM2
+     * @dataProvider dataColumns
      */
-    public function testWM2($expect, $val, $time, $type, $extra)
+    public function testColumns($preload, $expect)
     {
+        $this->pdo->query($preload);
+        $cols = $this->o->columns();
+        $this->assertSame($expect, $cols);
     }
 }
 

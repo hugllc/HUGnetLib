@@ -1238,6 +1238,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
+    * @param string $orderby   The orderby clause
+    * @param int    $limit     The max number of records to return
+    * @param int    $start     The record to start on
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1269,6 +1272,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
+    * @param string $orderby   The orderby clause
+    * @param int    $limit     The max number of records to return
+    * @param int    $start     The record to start on
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1312,6 +1318,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
+    * @param string $orderby   The orderby clause
+    * @param int    $limit     The max number of records to return
+    * @param int    $start     The record to start on
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1415,8 +1424,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     /**
     * test
     *
-    * @param array  $column The database key to get the record from
-    * @param string $expect The query created
+    * @param string $query  The query to use
+    * @param array  $data   The data that goes with the query
+    * @param mixed  $ret    The expected return value
+    * @param string $expect What the database looks like when we are done
     *
     * @return null
     *
@@ -1482,8 +1493,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     /**
     * test
     *
-    * @param array  $column The database key to get the record from
-    * @param string $expect The query created
+    * @param string $query  The query to use
+    * @param array  $data   The data that goes with the query
+    * @param mixed  $ret    The expected return value
+    * @param string $expect What the database looks like when we are done
     *
     * @return null
     *
@@ -1534,7 +1547,7 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     *
     * @return null
     */
-    protected function columns()
+    public function columns()
     {
         foreach ((array)$this->columns as $col) {
             $this->columns[$col['name']] = $col['type'];
