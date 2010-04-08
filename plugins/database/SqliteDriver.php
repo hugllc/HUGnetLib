@@ -85,6 +85,7 @@ class SqliteDriver extends HUGnetDBDriver
     public function columns()
     {
         $columns = $this->query("PRAGMA table_info(".$this->table().")");
+	$pdo = $this->pdo->query("PRAGMA table_info(".$this->table().")");
         foreach ((array)$columns as $col) {
             $cols[$col["name"]] = array(
                 "Name" => $col["name"],

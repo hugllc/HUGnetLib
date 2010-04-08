@@ -66,6 +66,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /** @var array This is where we store the fields in the query */
     protected $dataFields = array();
 
+    /** @var object This is where we store our PDO */
+    protected $pdo = null;
+    /** @var object This is where we store our table object */
+    protected $myTable = null;
     /** @var string This is where we store the query */
     protected $query = "";
     /** @var string The name of this driver */

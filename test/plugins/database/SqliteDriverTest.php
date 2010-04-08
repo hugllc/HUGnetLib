@@ -67,8 +67,9 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
     protected function setUp()
     {
         $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
-            "CREATE TABLE IF NOT EXISTS `myTable` ("
+            "CREATE TABLE `myTable` ("
             ." `id` int(11) PRIMARY KEY NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
             ." `value` float NULL"
@@ -76,7 +77,7 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
         );
         parent::setUp();
         $this->table = new DummyTableContainer();
-        $this->o = SqliteDriver::singleton($this->table, $this->pdo);
+        $this->o = new SqliteDriver($this->table, $this->pdo);
     }
 
     /**
@@ -89,6 +90,7 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         unset($this->o);
         unset($this->pdo);
     }

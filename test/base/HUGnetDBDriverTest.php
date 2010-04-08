@@ -67,8 +67,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     protected function setUp()
     {
         $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
-            "CREATE TABLE IF NOT EXISTS `myTable` ("
+            "CREATE TABLE `myTable` ("
             ." `id` int(11) PRIMARY KEY NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
             ." `value` float NULL"
@@ -89,6 +90,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         unset($this->o);
         unset($this->pdo);
     }
@@ -167,7 +169,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->myConfig = &ConfigContainer::singleton();
         $this->myConfig->verbose = $verbose;
         $o = new HUGnetDBDriverTestStub($this->table, $this->pdo);
-        $ret = $this->o->pdo->getAttribute(PDO::ATTR_ERRMODE);
+        $ret = $this->o->qpdo->getAttribute(PDO::ATTR_ERRMODE);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -1528,6 +1530,12 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
 class HUGnetDBDriverTestStub extends HUGnetDBDriver
 {
     public $defColumns = array();
+
+    public function __construct(&$table, PDO &$pdo)
+    {
+        parent::__construct($table, $pdo);
+        $this->qpdo =& $this->pdo;
+    }
     /**
     * Gets the instance of the class and
     *
