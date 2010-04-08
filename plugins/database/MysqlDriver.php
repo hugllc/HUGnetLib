@@ -91,8 +91,8 @@ class MysqlDriver extends HUGnetDBDriver
             $cols[$col['Field']] = array(
                 "Name" => $col['Field'],
                 "Type" => $col['Type'],
-                "Null" => ($col["Null"] == "NO") ? false : true,
                 "Default" => ($col["Default"] == "NULL") ? null : $col["Default"],
+                "Null" => ($col["Null"] == "NO") ? false : true,
                 "Primary" => ($col["Key"] == "PRI"),
                 "Unique" => ($col["Key"] == "UNI"),
                 "AutoIncrement" => !is_bool(

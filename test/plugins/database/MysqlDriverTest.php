@@ -67,7 +67,13 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function setUp()
     {
-        $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->pdo = PHPUnit_Util_PDO::factory("mysql://test:test@localhost/test");
+        if (!is_object($this->pdo)) {
+            $this->skipPDOTests = true;
+        } else {
+            $this->skipPDOTests = false;
+        }
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
             "CREATE TABLE IF NOT EXISTS `myTable` ("
             ." `id` int(11) PRIMARY KEY NOT NULL,"
@@ -90,6 +96,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         unset($this->o);
         unset($this->pdo);
     }
@@ -128,6 +135,33 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
             array(
                 "",
                 array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "int(11)",
+                        "Default" => null,
+                        "Null" => false,
+                        "Primary" => true,
+                        "Unique" => false,
+                        "AutoIncrement" => false
+                    ),
+                    "name" => array(
+                        "Name" => "name",
+                        "Type" => "varchar(32)",
+                        "Default" => null,
+                        "Null" => false,
+                        "Primary" => false,
+                        "Unique" => false,
+                        "AutoIncrement" => false
+                    ),
+                    "value" => array(
+                        "Name" => "value",
+                        "Type" => "float",
+                        "Default" => null,
+                        "Null" => true,
+                        "Primary" => false,
+                        "Unique" => false,
+                        "AutoIncrement" => false
+                    ),
                 ),
             ),
         );
@@ -146,7 +180,11 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->pdo->query($preload);
         $cols = $this->o->columns();
-        $this->assertSame($expect, $cols);
+        if ($this->SkipPDOTests) {
+            $this->markTestSkipped("No MySQL server available");
+        } else {
+            $this->assertSame($expect, $cols);
+        }
     }
 
     /**

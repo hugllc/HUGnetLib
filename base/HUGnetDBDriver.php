@@ -37,6 +37,7 @@
  */
 /** require our base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
+require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 /**
  * Base class for all database work
  *
