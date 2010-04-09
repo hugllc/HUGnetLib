@@ -37,7 +37,8 @@
  */
 
 
-require_once dirname(__FILE__).'/../../tables/PacketLogContainer.php';
+require_once dirname(__FILE__).'/../../tables/PacketLogTable.php';
+require_once dirname(__FILE__)."/HUGnetDBTableTestBase.php";
 
 /**
  * Test class for filter.
@@ -52,7 +53,7 @@ require_once dirname(__FILE__).'/../../tables/PacketLogContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketLogContainerTest extends PHPUnit_Framework_TestCase
+class PacketLogTableTest extends HUGnetDBTableTestBase
 {
 
     /**
@@ -70,7 +71,7 @@ class PacketLogContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new PacketLogContainer();
+        $this->o = new PacketLogTable();
     }
 
     /**
@@ -86,6 +87,38 @@ class PacketLogContainerTest extends PHPUnit_Framework_TestCase
         $this->o = null;
         $this->config = null;
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataColumns()
+    {
+        $o = new PacketLogTable();
+        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataIndexes()
+    {
+        $o = new PacketLogTable();
+        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataVars()
+    {
+        return array(
+            array(new PacketLogTable()),
+        );
+    }
+
     /**
     * data provider for testDeviceID
     *
@@ -108,7 +141,7 @@ class PacketLogContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketLogContainer($preload);
+        $o = new PacketLogTable($preload);
         $this->assertAttributeSame($expect, "data", $o);
     }
     /**
@@ -137,92 +170,6 @@ class PacketLogContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $this->assertAttributeSame($expect, "data", $this->o);
     }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromString()
-    {
-        return array(
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromString
-    */
-    public function testFromString($preload, $expect)
-    {
-        $this->o->fromString($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function data2String()
-    {
-        return array(
-            array(
-                array(
-                    "Command" => "55",
-                    "To" => "ABC",
-                    "From" => "000020",
-                    "sentRawData" => "01020304",
-                ),
-                "5A5A5A55000ABC0000200401020304C3",
-            ),
-            array(
-                array(
-                    "Command" => "5C",
-                    "To" => "000ABC",
-                    "From" => "000020",
-                    "RawData" => "",
-                ),
-                "5A5A5A5C000ABC00002000CA",
-            ),
-            array(
-                array(
-                    "Command" => "5C",
-                    "To" => "12345ABCDEF",
-                    "From" => "000020",
-                    "RawData" => "",
-                    "Length" => 0,
-                    "Checksum" => "F5",
-                ),
-                "5A5A5A5CABCDEF00002000F5",
-            ),
-            array(
-                "This is not an array",
-                "5A5A5A000000200000200000",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider data2String
-    */
-    public function testToString($preload, $expect)
-    {
-        $this->o->fromArray($preload);
-        $this->assertSame($expect, $this->o->toString());
-
-    }
-
-
 }
 
 ?>
