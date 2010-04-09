@@ -70,7 +70,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
             "CREATE TABLE `myTable` ("
-            ." `id` int(11) PRIMARY KEY NOT NULL,"
+            ." `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
             ." `value` float NULL"
             ." )"
@@ -585,6 +585,28 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 true,
             ),
             array(
+                array("id" => 2),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            array(
                 "id > 0",
                 array(),
                 array(
@@ -657,9 +679,13 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 true,
             ),
             array(
-                array("id" => 3, "name" => "a name", "value" => 10),
-                array(),
-                true,
+                array(
+                    "id" => 42,
+                    "name" => "hello",
+                    "value" => 2.3,
+                ),
+                null,
+                false,
                 array(
                     array(
                         "id" => "-5",
@@ -682,9 +708,43 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "23.0",
                     ),
                     array(
+                        "id" => "33",
+                        "name" => "hello",
+                        "value" => "2.3",
+                    ),
+                ),
+                true,
+                true,
+            ),
+            array(
+                array("id" => 3, "name" => "a name", "value" => 10),
+                array(),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
                         "id" => "3",
                         "name" => "a name",
                         "value" => "10.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
                     ),
                 ),
                 true,
@@ -711,14 +771,14 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "22.0",
                     ),
                     array(
-                        "id" => "32",
-                        "name" => "A way up here thing",
-                        "value" => "23.0",
-                    ),
-                    array(
                         "id" => "3",
                         "name" => "a name",
                         "value" => null,
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
                     ),
                 ),
                 true,
@@ -769,14 +829,14 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "25.0",
                     ),
                     array(
-                        "id" => "32",
-                        "name" => "A way up here thing",
-                        "value" => "23.0",
-                    ),
-                    array(
                         "id" => "2",
                         "name" => "a name",
                         "value" => "10.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
                     ),
                 ),
                 true,
@@ -802,6 +862,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testInsertOnce($data, $keys, $replace, $expect, $ret)
     {
+        if (is_null($keys)) {
+            $keys = $this->o->autoIncrement();
+        }
         $r = $this->o->insertOnce($data, $keys, $replace);
         $this->assertSame($ret, $r);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
@@ -827,6 +890,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testInsert($data, $keys, $replace, $expect, $ret2, $ret)
     {
+        if (is_null($keys)) {
+            $keys = $this->o->autoIncrement();
+        }
         $r = $this->o->insert(array(), $keys, $replace);
         $this->assertSame($ret, $r);
         $r = $this->o->insert($data, $keys, $replace);
@@ -1552,7 +1618,6 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
 class HUGnetDBDriverTestStub extends HUGnetDBDriver
 {
     public $defColumns = array();
-
 
     /**
     * Register this database object

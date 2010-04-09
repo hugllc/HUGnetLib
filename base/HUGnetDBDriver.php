@@ -288,17 +288,16 @@ abstract class HUGnetDBDriver extends HUGnetClass
     protected function dataColumns($columns = array())
     {
         if (empty($columns)) {
-            $this->columns = array_keys((array)$this->myTable->sqlColumns);
-        } else {
-            $this->columns = array();
-            foreach (array_keys((array)$this->myTable->sqlColumns) as $column) {
-                if (!is_bool(array_search($column, (array)$columns))) {
-                    $this->columns[$column] = $column;
-                }
+            $columns = array_keys((array)$this->myTable->sqlColumns);
+        }
+        $this->columns = array();
+        foreach (array_keys((array)$this->myTable->sqlColumns) as $column) {
+            if (!is_bool(array_search($column, (array)$columns))) {
+                $this->columns[$column] = $column;
             }
-            if (empty($this->columns)) {
-                $this->dataColumns();
-            }
+        }
+        if (empty($this->columns)) {
+            $this->dataColumns();
         }
     }
     /**
@@ -352,6 +351,21 @@ abstract class HUGnetDBDriver extends HUGnetClass
             return $this->executeData($data);
         }
         return true;
+    }
+
+    /**
+    * Returns the column list required to make autoincrement happen.
+    *
+    * @return array
+    */
+    public function autoIncrement()
+    {
+        foreach ((array)$this->myTable->sqlColumns as $col) {
+            if (!$col["AutoIncrement"]) {
+                $cols[$col["Name"]] = $col["Name"];
+            }
+        }
+        return (array)$cols;
     }
     /**
     * Inserts a record into the database.  This one cleans up after itsef and
@@ -669,8 +683,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
     * This routine won't remove everything with an empty where clause.  You must
     * feed it a "1" in the where clause to delete everything.
     *
-    * @param string $where     Where clause
-    * @param array  $whereData Data for query
+    * @param mixed $where     (string) Where clause
+    *                         (array)  An associative indexed array with key or
+    *                                  index values in it.
+    * @param array $whereData Data for query
     *
     * @return bool True on success, False on failure
     */
@@ -685,8 +701,16 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->columns = array();
         // Build the query
         $this->query  = "DELETE FROM ".$this->table();
-        $this->where($where, $whereData);
-        $ret = $this->executeData();
+        if (is_array($where)) {
+            // This selects by id.  If we are here, we are only getting one record
+            // as it searches for unique values.  That is why we are not adding
+            // orderby or limit.  Both are meaningless when getting only one value.
+            $this->idWhere($where);
+            $ret = $this->execute($this->prepareIdData($where));
+        } else {
+            $this->where($where, $whereData);
+            $ret = $this->executeData();
+        }
         $this->reset();
         return $ret;
     }
@@ -723,6 +747,14 @@ abstract class HUGnetDBDriver extends HUGnetClass
                 return false;
             }
         }
+        $this->vprint(
+            "Executing: ".print_r($this->query, true),
+            HUGnetClass::VPRINT_VERBOSE
+        );
+        $this->vprint(
+            "With Data: ".print_r($data, true),
+            HUGnetClass::VPRINT_VERBOSE
+        );
         $ret = $this->pdoStatement->execute($data);
         //$this->pdoStatement->debugDumpParams();
         return $ret;

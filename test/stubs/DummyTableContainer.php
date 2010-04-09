@@ -63,9 +63,14 @@ class DummyTableContainer
     public $sqlId = "id";
     /** @var This is our columns */
     public $sqlColumns = array(
-        "id" => array("Name" => "id", "Type" => "int", "Default" => 0),
-        "name" => array("Name" => "id", "Type" => "varchar(32)", "Default" => ""),
-        "value" => array("Name" => "id", "Type" => "float", "Default" => 0.0),
+        "id" => array(
+            "Name" => "id",
+            "Type" => "INTEGER",
+            "Default" => 0,
+            "AutoIncrement" => true,
+        ),
+        "name" => array("Name" => "name", "Type" => "varchar(32)", "Default" => ""),
+        "value" => array("Name" => "value", "Type" => "float", "Default" => 0.0),
     );
     public $sqlIndxes = array(
         "stuff" => array(
@@ -74,6 +79,7 @@ class DummyTableContainer
             "Columns" => array("id", "value"),
         ),
     );
+
     public $id;
     public $name;
     public $value;

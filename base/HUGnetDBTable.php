@@ -141,28 +141,16 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $this->myConfig = &ConfigContainer::singleton();
         $this->myDriver = &$this->myConfig->servers->getDriver($this);
         if (!is_object($this->myDriver)) {
-            $this->throwException("No database driver available", -2);
+            $this->throwException(
+                "No available database driver specified.  Available drivers: "
+                .implode(", ", PDO::getAvailableDrivers()), -2
+            );
             // @codeCoverageIgnoreStart
             // It thinks this line won't run.  The above function never returns.
         }
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-    * This function gets a record with the given key
-    *
-    * @param mixed $key This is either an array or a straight value
-    *
-    * @return &object Returns an object of type
-    */
-    public function getRow($key)
-    {
-        if (!is_array($key)) {
-            $key = array($this->sqlId => $key);
-        }
-        $this->myDriver->selectWhere($key);
-        $this->myDriver->fetchInto();
-    }
     /**
     * Sets all of the endpoint attributes from an array
     *
@@ -177,7 +165,64 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         return (array)$array;
     }
+    /**
+    * This function gets a record with the given key
+    *
+    * @param mixed $key This is either an array or a straight value
+    *
+    * @return bool True on success, False on failure
+    */
+    public function getRow($key)
+    {
+        if (!is_array($key)) {
+            $key = array($this->sqlId => $key);
+        }
+        $ret = $this->myDriver->selectWhere($key);
+        $this->myDriver->fetchInto();
+        return $ret;
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @return bool True on success, False on failure
+    */
+    public function updateRow()
+    {
+        if ($this->default == $this->data) {
+            return false;
+        }
+        return $this->myDriver->updateOnce($this->toDB());
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @param bool $replace Replace any records found that collide with this one.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertRow($replace = false)
+    {
+        if ($this->default == $this->data) {
+            return false;
+        }
+        if ($this->default[$this->sqlId] === $this->data[$this->sqlId]) {
+            $cols = $this->myDriver->autoIncrement();
+        }
+        return $this->myDriver->insertOnce($this->toDB(), (array)$cols, $replace);
+    }
 
+    /**
+    * This function updates the record currently in this table
+    *
+    * @return bool True on success, False on failure
+    */
+    public function deleteRow()
+    {
+        if ($this->default == $this->data) {
+            return false;
+        }
+        return $this->myDriver->deleteWhere($this->toDB());
+    }
 
 }
 

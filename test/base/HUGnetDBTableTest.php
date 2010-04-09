@@ -71,7 +71,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
             "CREATE TABLE `myTable` ("
-            ." `id` int(11) PRIMARY KEY NOT NULL,"
+            ." `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
             ." `name` varchar(32) NOT NULL,"
             ." `value` float NULL"
             ." )"
@@ -184,6 +184,265 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         }
     }
     /**
+    * Data provider for testGetRow
+    *
+    * @return array
+    */
+    public static function dataUpdateRow()
+    {
+        return array(
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => "2",
+                    "name" => "Update Test",
+                    "value" => "100.0",
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Update Test",
+                        "value" => "100.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataUpdateRow
+    *
+    * @return null
+    */
+    public function testUpdateRow($preload, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $o->updateRow();
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataInsertRow()
+    {
+        return array(
+            // Auto increment
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "33",
+                        "name" => "Insert Test",
+                        "value" => "101.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                true,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param bool  $replace Replace any records that collide with this one.
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataInsertRow
+    *
+    * @return null
+    */
+    public function testInsertRow($preload, $replace, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $o->insertRow($replace);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * Data provider for testDeleteRow
+    *
+    * @return array
+    */
+    public static function dataDeleteRow()
+    {
+        return array(
+            // Auto increment
+            array(
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 2,
+                    "name" => "Insert Test",
+                    "value" => "101.0",
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataDeleteRow
+    *
+    * @return null
+    */
+    public function testDeleteRow($preload, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $o->deleteRow();
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
+    /**
     * data provider for testToDB
     *
     * @return array
@@ -281,7 +540,12 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "id" => array("Name" => "id", "Type" => "int", "Default" => 0),
+        "id" => array(
+            "Name" => "id",
+            "Type" => "int",
+            "Default" => 0,
+            "AutoIncrement" => true,
+        ),
         "name" => array("Name" => "name", "Type" => "varchar", "Default" => "Name"),
         "value" => array("Name" => "value", "Type" => "float", "Default" => 12.0),
     );
