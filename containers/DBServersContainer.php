@@ -189,8 +189,8 @@ class DBServersContainer extends HUGnetContainer
     /**
     * Creates a database object
     *
-    * @param string $table Table object to attach to it
-    * @param string $group The group to check
+    * @param string &$table Table object to attach to it
+    * @param string $group  The group to check
     *
     * @return object HUGnetDBDriver object
     */
@@ -201,11 +201,10 @@ class DBServersContainer extends HUGnetContainer
         }
         $driverName = ucfirst($this->server[$group]->driver."Driver");
         if (self::findClass($driverName, "/plugins/database/")) {
-            $code = "return $driverName::singleton(\$table, \$this->pdo[\$group]);";
-            $driver = eval($code);
+            return new $driverName($table, $this->pdo[$group]);
         }
 
-        return $driver;
+        return null;
     }
 
     /**

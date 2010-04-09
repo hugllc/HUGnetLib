@@ -66,6 +66,10 @@ abstract class HUGnetContainer extends HUGnetClass
     private $_includePath = "";
     /** @var int The configuration */
     protected $myConfig = null;
+    /** @var array This is the default values for the data */
+    protected $default = array();
+    /** @var array This is where the data is stored */
+    protected $data = array();
 
     /**
     * This is the constructor

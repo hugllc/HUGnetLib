@@ -117,16 +117,6 @@ abstract class HUGnetDBDriver extends HUGnetClass
     }
 
     /**
-    * Gets the instance of the class and
-    *
-    * @param object &$table The table to attach myself to
-    * @param PDO    &$pdo   The database object
-    *
-    * @return null
-    */
-    abstract static public function &singleton(&$table, PDO &$pdo);
-
-    /**
     *  Adds a field to the devices table for cache information
     *
     * @param array $column @See columnDef for format
@@ -267,14 +257,26 @@ abstract class HUGnetDBDriver extends HUGnetClass
                 $ret[] = $data[$k];
             }
         }
+        $this->prepareIdData($data);
+        $ret = array_merge($ret, (array)$this->whereData);
+        return $ret;
+    }
+    /**
+    * Returns an array made for the execute query
+    *
+    * @param array $data The data to prepare
+    *
+    * @return array
+    */
+    protected function prepareIdData($data)
+    {
         if (!empty($this->idWhere)) {
             $this->whereData = array();
             foreach ($this->idWhere as $col) {
                 $this->whereData[] = $data[$col];
             }
         }
-        $ret = array_merge($ret, (array)$this->whereData);
-        return $ret;
+        return (array)$this->whereData;
     }
     /**
     * Sets the columns to use
@@ -493,9 +495,9 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets all rows from the database
     *
-    * @param string $where     Where clause
-    * @param array  $whereData Data for query
-    * @param array  $columns   The columns to select
+    * @param mixed $where     Where clause or array if using ID where
+    * @param array $whereData Data for query
+    * @param array $columns   The columns to select
     *
     * @return null
     */
@@ -509,10 +511,18 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->query  = "SELECT";
         $this->query .= "`".implode("`, `", $this->columns)."`";
         $this->query .= " FROM ".$this->table();
-        $this->where($where, $whereData);
-        $this->orderby();
-        $this->limit();
-        $ret = $this->executeData();
+        if (is_array($where)) {
+            // This selects by id.  If we are here, we are only getting one record
+            // as it searches for unique values.  That is why we are not adding
+            // orderby or limit.  Both are meaningless when getting only one value.
+            $this->idWhere($where);
+            $ret = $this->execute($this->prepareIdData($where));
+        } else {
+            $this->where($where, $whereData);
+            $this->orderby();
+            $this->limit();
+            $ret = $this->executeData();
+        }
         return $ret;
     }
 
@@ -523,7 +533,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *           {@link http://us.php.net/manual/en/pdostatement.fetch.php PDO Fetch}
     *           for more information
     *
-    * @return null
+    * @return array of objects of the same class as myTable
     */
     public function fetchAll($style = PDO::FETCH_CLASS)
     {
@@ -546,17 +556,20 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets one row from the database and puts it into $this->myTable
     *
-    * @return null
+    * @return true on success, false on failure
     */
     public function fetchInto()
     {
+        if (!is_object($this->pdoStatement)) {
+            return false;
+        }
         $this->pdoStatement->setFetchMode(
             PDO::FETCH_INTO,
             $this->myTable
         );
         $ret = $this->pdoStatement->fetch();
         $this->reset();
-        return $ret;
+        return true;
     }
 
 

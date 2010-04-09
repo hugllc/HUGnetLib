@@ -77,5 +77,49 @@ class DummyTableContainer
     public $id;
     public $name;
     public $value;
+
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data=array())
+    {
+        $this->fromArray($data);
+    }
+
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        if (empty($array)) {
+            return;
+        }
+        $this->id = $array["id"];
+        $this->name = $array["name"];
+        $this->value = $array["value"];
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        foreach (array("id", "name", "value") as $k) {
+            if (!is_null($this->$k)) {
+                $row[$k] = $this->$k;
+            }
+        }
+        return $row;
+    }
+
 }
 ?>

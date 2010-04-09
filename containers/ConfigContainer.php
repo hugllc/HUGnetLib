@@ -64,7 +64,7 @@ class ConfigContainer extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "servers"         => array(),      // The database servers to use
-        "sockets"        => array(),       // The gateways sockets to use
+        "sockets"         => array(),      // The gateways sockets to use
         "hugnet_database" => "HUGnet",     // The database to use
         "script_gateway"  => 0,            // The gateway for the scripts
         "poll"            => array(        // Configuration for the poll script

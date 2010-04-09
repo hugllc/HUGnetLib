@@ -69,7 +69,9 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->skipPDOTests = false;
         try {
-            $this->pdo = PHPUnit_Util_PDO::factory("mysql://test:test@localhost/test");
+            $this->pdo = PHPUnit_Util_PDO::factory(
+                "mysql://test:test@localhost/test"
+            );
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
                 "CREATE TABLE `myTable` ("
@@ -105,7 +107,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
-	if (is_object($this->pdo)) {
+        if (is_object($this->pdo)) {
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         }
         unset($this->o);
@@ -134,18 +136,6 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         return $this->createXMLDataSet(
             dirname(__FILE__).'/../../files/HUGnetDBDriverTest.xml'
         );
-    }
-    /**
-     * Tests singleton
-     *
-     * @return null
-     */
-    public function testSingleton()
-    {
-        $a = &MysqlDriver::singleton($this->table, $this->pdo);
-        $b = &MysqlDriver::singleton($this->table, $this->pdo);
-        $this->assertSame($a, $b);
-        $this->assertSame("MysqlDriver", get_class($a));
     }
     /**
     * Data provider for testFindUnit

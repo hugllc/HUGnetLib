@@ -51,8 +51,6 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBDriver.php";
 */
 class SqliteDriver extends HUGnetDBDriver
 {
-    /** @var bool Does this driver support auto_increment? */
-    protected $autoIncrement = false;
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name"  => "sqlite",
@@ -61,23 +59,6 @@ class SqliteDriver extends HUGnetDBDriver
     );
 
     /**
-    * Gets the instance of the class and
-    *
-    * @param object &$table The table to attach myself to
-    * @param PDO    &$pdo   The database object
-    *
-    * @return null
-    */
-    static public function &singleton(&$table, PDO &$pdo)
-    {
-        static $instance;
-        if (empty($instance)) {
-            $class = __CLASS__;
-            $instance = new $class($table, $pdo);
-        }
-        return $instance;
-    }
-    /**
     * Gets columns from a SQLite server
     *
     * @return null
@@ -85,7 +66,6 @@ class SqliteDriver extends HUGnetDBDriver
     public function columns()
     {
         $columns = $this->query("PRAGMA table_info(".$this->table().")");
-	$pdo = $this->pdo->query("PRAGMA table_info(".$this->table().")");
         foreach ((array)$columns as $col) {
             $cols[$col["name"]] = array(
                 "Name" => $col["name"],

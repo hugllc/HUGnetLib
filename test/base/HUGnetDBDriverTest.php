@@ -77,7 +77,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         );
         parent::setUp();
         $this->table = new DummyTableContainer();
-        $this->o = HUGnetDBDriverTestStub::singleton($this->table, $this->pdo);
+        $this->o = new HUGnetDBDriverTestStub($this->table, $this->pdo);
     }
 
     /**
@@ -1231,6 +1231,34 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 0, // start
                 true,
             ),
+            // Selects only one that is not there
+            array(
+                "idasd = 6472",  // where
+                array(), // data
+                array("id", "value"), // keys
+                null, // expect
+                "value DESC", // Orderby
+                0, // limit
+                0, // start
+                false,
+            ),
+            // Selects only one using the 'idwhere'
+            array(
+                array("id" => 32),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ), // expect
+                "value DESC", // Orderby
+                0, // limit
+                0, // start
+                true,
+            ),
         );
     }
     /**
@@ -1264,6 +1292,11 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->table->sqlLimit = $limit;
         $r = $this->o->selectWhere($where, $whereData, $keys);
         $this->assertSame($ret, $r);
+        // This is necessary because the other methods return null, while FETCH_ASSOC
+        // returns an array
+        if (is_null($expect)) {
+            $expect = array();
+        }
         $rows = $this->o->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
     }
@@ -1300,16 +1333,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($ret, $r);
         $ret = array();
         $res = $this->o->fetchAll();
-        $index = 0;
         foreach ((array)$res as $row) {
             $this->assertType("object", $row);
             $this->assertSame(get_class($this->table), get_class($row));
-            foreach ($keys as $k) {
-                if (!is_null($row->$k)) {
-                    $rows[$index][$k] = $row->$k;
-                }
-            }
-            $index++;
+            $rows[] = $row->toArray();
         }
         $this->assertSame($expect, $rows);
     }
@@ -1346,12 +1373,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($ret, $r);
         $rows = array();
         $this->o->fetchInto();
-        foreach ($keys as $k) {
-            if (!is_null($this->table->$k)) {
-                $rows[$k] = $this->table->$k;
-            }
-        }
-        $this->assertSame($expect[0], $rows);
+        $this->assertSame($expect[0], $this->table->toArray());
     }
     /**
     * Data provider for testPrepareExecute
@@ -1531,24 +1553,17 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
 {
     public $defColumns = array();
 
+
+    /**
+    * Register this database object
+    *
+    * @param object &$table The table object
+    * @param PDO    &$pdo   The PDO object
+    */
     public function __construct(&$table, PDO &$pdo)
     {
         parent::__construct($table, $pdo);
         $this->qpdo =& $this->pdo;
-    }
-    /**
-    * Gets the instance of the class and
-    *
-    * @param object &$table The table to attach myself to
-    * @param PDO    &$pdo   The database object
-    *
-    * @return null
-    */
-    static public function &singleton(&$table, PDO &$pdo)
-    {
-        $class    = __CLASS__;
-        $instance = &new $class($table, $pdo);
-        return $instance;
     }
     /**
     * Gets columns from a SQLite server

@@ -59,23 +59,6 @@ class MysqlDriver extends HUGnetDBDriver
     );
     /** @var bool Does this driver support auto_increment? */
     protected $AutoIncrement = "AUTO_INCREMENT";
-    /**
-    * Gets the instance of the class and
-    *
-    * @param object &$table The table to attach myself to
-    * @param PDI    &$pdo   The database object
-    *
-    * @return null
-    */
-    static public function &singleton(&$table, PDO &$pdo)
-    {
-        static $instance;
-        if (empty($instance)) {
-            $class = __CLASS__;
-            $instance = new $class($table, $pdo);
-        }
-        return $instance;
-    }
 
     /**
     * Gets columns from a mysql server
