@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../containers/GatewayContainer.php';
+require_once dirname(__FILE__).'/../../sockets/GatewaySocket.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 
 /**
@@ -53,7 +53,7 @@ require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayContainerTest extends PHPUnit_Framework_TestCase
+class GatewaySocketTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -66,7 +66,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new GatewayContainer(array());
+        $this->o = new GatewaySocket(array());
     }
 
     /**
@@ -148,7 +148,7 @@ class GatewayContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new GatewayContainer($preload);
+        $o = new GatewaySocket($preload);
         $this->assertAttributeSame($expect, "data", $o);
     }
     /**

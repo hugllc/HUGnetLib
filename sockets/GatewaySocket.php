@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayContainer extends HUGnetContainer implements HUGnetSocketInterface
+class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */

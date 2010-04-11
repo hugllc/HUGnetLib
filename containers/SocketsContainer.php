@@ -82,10 +82,10 @@ class SocketsContainer extends HUGnetContainer
                 || isset($sock["GatewayPort"])
                 || isset($sock["GatewayKey"])
             ) {
-                if ($this->findClass("GatewayContainer")) {
+                if ($this->findClass("GatewaySocket", "/sockets/")) {
                     $this->data["sockets"][$key] =& self::factory(
                         $sock,
-                        "GatewayContainer"
+                        "GatewaySocket"
                     );
                 }
             } else if (isset($sock["dummy"])) {
@@ -95,15 +95,13 @@ class SocketsContainer extends HUGnetContainer
                         "DummySocketContainer"
                     );
                 }
-            /*
-            } else
-                if ($this->findClass("PacketLogContainer")) {
+            } else {
+                if ($this->findClass("PacketLogSocket", "sockets")) {
                     $this->data["sockets"][$key] =& self::factory(
                         $sock,
-                        "PacketLogContainer"
+                        "PacketLogSocket"
                     );
                 }
-                */
             }
             if (isset($this->data["sockets"][$key])) {
                 // Define this group;
