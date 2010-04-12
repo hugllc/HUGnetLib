@@ -131,7 +131,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         "Type"     => "UNKNOWN",  // The type of packet
         "Reply"    => null,       // Reference to the reply packet
         "Checksum" => "00",       // The checksum we received
-        "CalcChecksum"  => "00",  // The checksum we calculated
         "Timeout"  => 5,          // Timeout for the packet in seconds
         "Retries"  => 3,          // Number of times to retry the packet
         "GetReply" => true,       // Should we wait for a reply
@@ -195,7 +194,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->Data         = substr($string, 16, ($this->Length*2));
         $this->Checksum     = substr($string, (16 + ($this->Length*2)), 2);
         $pktdata            = substr($string, 0, strlen($data)-2);
-        $this->CalcChecksum = $this->_checksum($pktdata);
         $this->setType("UNKNOWN");
     }
     /**
@@ -251,7 +249,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             "Type"         => $this->Type,
             "Reply"        => $Reply,
             "Checksum"     => $this->Checksum,
-            "CalcChecksum" => $this->CalcChecksum,
+            "CalcChecksum" => $this->checksum(),
         );
     }
     /**
@@ -283,9 +281,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $this->fromString(self::FULL_PREAMBLE.$pktStr);
         }
         // Check the checksum  If it is bad return a false
-        if ($pkt->Checksum !== $pkt->CalcChecksum) {
+        if ($pkt->Checksum !== $pkt->checksum()) {
             self::vprint(
-                "Bad Checksum ".$pkt->Checksum." != ".$pkt->CalcChecksum,
+                "Bad Checksum ".$pkt->Checksum." != ".$pkt->checksum(),
                 1
             );
             return false;
@@ -379,6 +377,27 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         // If we don't get a packet return false
         return false;
+    }
+    /**
+    * returns the calculated checksum of this packet
+    *
+    * @return string the calculated checksum of this packet
+    */
+    public function checksum()
+    {
+        return substr((string)$this, -2);
+    }
+    /**
+    * returns the calculated checksum of this packet
+    *
+    * @return string the calculated checksum of this packet
+    */
+    public function replyTime()
+    {
+        if (!is_object($this->Reply)) {
+            return 0.0;
+        }
+        return (float)($this->Reply->Time - $this->Time);
     }
     /**
     * Sends a reply to this packet.

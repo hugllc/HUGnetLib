@@ -111,7 +111,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "C3",
-                    "CalcChecksum" => "C3",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -129,7 +128,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "UNKNOWN",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -147,7 +145,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "UNKNOWN",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -165,7 +162,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "UNKNOWN",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -193,7 +189,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
@@ -220,7 +215,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
@@ -308,7 +302,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "UNKNOWN",
                     "Reply" => null,
                     "Checksum" => "C3",
-                    "CalcChecksum" => "C3",
+                    "CalcChecksum" => "79",
                 ),
             ),
             array(
@@ -415,7 +409,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "C3",
-                    "CalcChecksum" => "C3",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -433,7 +426,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "CONFIG",
                     "Reply" => null,
                     "Checksum" => "CA",
-                    "CalcChecksum" => "CA",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -451,7 +443,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "CONFIG",
                     "Reply" => null,
                     "Checksum" => "F5",
-                    "CalcChecksum" => "F5",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -469,7 +460,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "UNKNOWN",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
                     "Timeout"  => 5,
                     "Retries"  => 3,
                     "GetReply" => true,
@@ -571,7 +561,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "C3",
                 ),
                 false,
             ),
@@ -595,7 +585,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "C3",
                 ),
                 false,
             ),
@@ -619,7 +609,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "00",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "C3",
                 ),
                 false,
             ),
@@ -721,6 +711,52 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
+    * data provider for testUnsolicited
+    *
+    * @return array
+    */
+    public static function dataReplyTime()
+    {
+        return array(
+            array(
+                array(
+                    "Time" => 1.0,
+                ),
+                array(
+                    "Time" => 2.0,
+                ),
+                1.0,
+            ),
+            array(
+                array(
+                    "Time" => 1.0,
+                ),
+                null,
+                0.0,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload What to preload into the object
+    * @param array $reply   What to preload into the reply object
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReplyTime
+    */
+    public function testReplyTime($preload, $reply, $expect)
+    {
+        $o = new PacketContainer($preload);
+        if (!is_null($reply)) {
+            $o->Reply = new PacketContainer($reply);
+        }
+        $ret = $o->replyTime();
+        $this->assertSame($expect, $ret);
+    }
+    /**
     * data provider for testToMe
     *
     * @return array
@@ -807,7 +843,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "C3",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "C3",
                 ),
             ),
             // Good Reply
@@ -862,7 +898,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "SENSORREAD",
                     "Reply" => null,
                     "Checksum" => "C3",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "C3",
                 ),
             ),
         );
@@ -922,7 +958,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "PING",
                     "Reply" => null,
                     "Checksum" => "94",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "94",
                 ),
             ),
             // Good Reply
@@ -952,7 +988,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                         "CalcChecksum" => "97",
                     ),
                     "Checksum" => "94",
-                    "CalcChecksum" => "C3",
+                    "CalcChecksum" => "94",
                 ),
             ),
             // Good Reply, findping
@@ -982,7 +1018,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                         "CalcChecksum" => "97",
                     ),
                     "Checksum" => "95",
-                    "CalcChecksum" => "C3",
+                    "CalcChecksum" => "95",
                 ),
                 true
             ),
@@ -1008,7 +1044,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Type" => "PING",
                     "Reply" => null,
                     "Checksum" => "94",
-                    "CalcChecksum" => "00",
+                    "CalcChecksum" => "94",
                 ),
             ),
         );
