@@ -711,7 +711,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
-    * data provider for testUnsolicited
+    * data provider for testReplyTime
     *
     * @return array
     */
