@@ -1227,6 +1227,11 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "-25.0",
                     ),
                     array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
                         "id" => "2",
                         "name" => "Another THing",
                         "value" => "22.0",
@@ -1235,11 +1240,6 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "id" => "32",
                         "name" => "A way up here thing",
                         "value" => "23.0",
-                    ),
-                    array(
-                        "id" => "1",
-                        "name" => "Something Here",
-                        "value" => "25.0",
                     ),
                 ), // expect
                 "value ASC", // Orderby
@@ -1439,6 +1439,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($ret, $r);
         $rows = array();
         $this->o->fetchInto();
+        if (is_null($expect)) {
+            // This is a blank class, which this will turn out to be.
+            $expect[0] = array("id" => 0, "name" => "", "value" => 0.0);
+        }
         $this->assertSame($expect[0], $this->table->toArray());
     }
     /**

@@ -463,6 +463,15 @@ abstract class HUGnetContainer extends HUGnetClass
         }
 
     }
+    /**
+    * returns true if the container is empty.  False otherwise
+    *
+    * @return bool Whether this container is empty or not
+    */
+    public function isEmpty()
+    {
+        return (bool)(($this->default === $this->data) || empty($this->data));
+    }
 
 
 

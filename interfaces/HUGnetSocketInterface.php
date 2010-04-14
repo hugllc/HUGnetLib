@@ -74,7 +74,7 @@ interface HUGnetSocketInterface
     *
     * @return int The number of bytes written on success, false on failure
     */
-    public function write($string);
+    //public function write($string);
     /**
     * Read data from the server
     *
@@ -82,7 +82,7 @@ interface HUGnetSocketInterface
     *
     * @return int Read bytes on success, false on failure
     */
-    public function read($maxChars = 50);
+    //public function read($maxChars = 50);
     /**
     * Sends out a packet
     *

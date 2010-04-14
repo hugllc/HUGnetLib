@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
+require_once dirname(__FILE__).'/../../tables/PacketSocketTable.php';
 require_once dirname(__FILE__).'/../stubs/DummySocketContainer.php';
 
 /**
@@ -169,6 +170,23 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                new PacketSocketTable(),
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                    "group"    => "default",
+                ),
+            ),
+            array(
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -221,7 +239,37 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "group"    => "default",
                 ),
             ),
-        );
+            array(
+                new PacketSocketTable(
+                    array(
+                        "group" => "default",
+                        "id" => null,
+                        "Date" => "2003-03-24 02:21:24",
+                        "Command" => "5C",
+                        "PacketFrom" => "654321",
+                        "PacketTo" => "123456",
+                        "RawData" => "0102",
+                        "Type" => "CONFIG",
+                        "ReplyTime" => 0.0,
+                        "Checked" => 0,
+                    )
+                ),
+                array(
+                    "To" => "123456",
+                    "From" => "654321",
+                    "Command" => "5C",
+                    "Length"  => 2,
+                    "Data" => "0102",
+                    "Type" => "CONFIG",
+                    "Reply" => null,
+                    "Checksum" => "2A",
+                    "Timeout"  => 5,
+                    "Retries"  => 3,
+                    "GetReply" => true,
+                    "group"    => "default",
+                ),
+            ),
+       );
     }
     /**
     * test the set routine when an extra class exists
@@ -541,6 +589,35 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
+            // Good Reply
+            array(
+                "5A5A5A55000ABC0000200401020304C3",
+                new PacketContainer("5A5A5A01000020000ABC040102030497"),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                true,
+            ),
             // No reply expected
             array(
                 array(
@@ -551,6 +628,54 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                 ),
                 "5A5A5A5E000000000ABC0401020304E8",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "C3",
+                ),
+                false,
+            ),
+            // No reply expected
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                new PacketContainer(),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "C3",
+                ),
+                false,
+            ),
+            // No reply expected
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                null,
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -923,6 +1048,47 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $o = new PacketContainer($preload);
         $o->send();
         $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+    }
+    /**
+    * data provider for testIsEmpty
+    *
+    * @return array
+    */
+    public static function dataIsEmpty()
+    {
+        return array(
+            array(
+                array(
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the isEmpty method
+    *
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataIsEmpty
+    */
+    public function testIsEmpty($preload, $expect)
+    {
+        $o = new PacketContainer($preload);
+        $ret = $o->isEmpty();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
     }
 
     /**

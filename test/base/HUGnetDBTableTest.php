@@ -66,7 +66,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     protected function setUp()
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->myConfig->forceConfig();
+        $config = array(
+        );
+        $this->myConfig->forceConfig($config);
         $this->pdo = &$this->myConfig->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
@@ -182,6 +184,126 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         } else {
             $this->assertNull($ret);
         }
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataCreate()
+    {
+        return array(
+            array(
+                array(),
+                2,
+                array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "INTEGER",
+                        "Default" => "'0'",
+                        "Null" => false,
+                    ),
+                    "name" => array(
+                        "Name" => "name",
+                        "Type" => "VARCHAR",
+                        "Default" => "'Name'",
+                        "Null" => false,
+                    ),
+                    "value" => array(
+                        "Name" => "value",
+                        "Type" => "FLOAT",
+                        "Default" => "'12'",
+                        "Null" => false,
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataCreate
+    *
+    * @return null
+    */
+    public function testCreate($preload, $key, $expect)
+    {
+        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
+        $o = new HUGnetDBTableTestStub($preload);
+        $o->create();
+        $myDriver = $this->readAttribute($o, "myDriver");
+        $ret = $myDriver->columns();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testSelect
+    *
+    * @return array
+    */
+    public static function dataSelect()
+    {
+        return array(
+            array(
+                array(),
+                "",
+                array(),
+                array(
+                    array(
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSelect
+    *
+    * @return null
+    */
+    public function testSelect($preload, $where, $data, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $res = $o->select($where, $data);
+        foreach ($res as $val) {
+            $ret[] = $val->toArray();
+        }
+        $this->assertSame($expect, $ret);
     }
     /**
     * Data provider for testGetRow
@@ -542,7 +664,7 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
     public $sqlColumns = array(
         "id" => array(
             "Name" => "id",
-            "Type" => "int",
+            "Type" => "INTEGER",
             "Default" => 0,
             "AutoIncrement" => true,
         ),

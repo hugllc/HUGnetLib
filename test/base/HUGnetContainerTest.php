@@ -1039,6 +1039,53 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    * data provider for testIsEmpty
+    *
+    * @return array
+    */
+    public static function dataIsEmpty()
+    {
+        return array(
+            array(
+                array(
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                    "Attrib5" => "NonBlank String",
+                    "Attrib6" => array("Three Element"),
+                    "Attrib7" => 1.15,
+                    "Attrib8" => 9.95,
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the isEmpty method
+    *
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataIsEmpty
+    */
+    public function testIsEmpty($preload, $expect)
+    {
+        $o = new HUGnetContainerTestClass($preload);
+        $ret = $o->isEmpty();
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
     * test the set routine when an extra class exists
     *
     * @param array  $preload Data to preload

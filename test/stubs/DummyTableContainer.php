@@ -40,6 +40,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../../base/HUGnetDBTable.php";
 //require_once dirname(__FILE__)."/../../interfaces/HUGnetSocketInterface.php";
 
 /**
@@ -55,7 +56,7 @@ require_once dirname(__FILE__)."/../../base/HUGnetContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DummyTableContainer
+class DummyTableContainer extends HUGnetDBTable
 {
     /** @var string this is our table */
     public $sqlTable = "myTable";
@@ -80,19 +81,6 @@ class DummyTableContainer
         ),
     );
 
-    public $id;
-    public $name;
-    public $value;
-
-    /**
-    * This is the constructor
-    *
-    * @param mixed $data This is an array or string to create the object from
-    */
-    function __construct($data=array())
-    {
-        $this->fromArray($data);
-    }
 
     /**
     * Sets all of the endpoint attributes from an array

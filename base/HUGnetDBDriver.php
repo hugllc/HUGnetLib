@@ -98,6 +98,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         $this->myTable = &$table;
         $this->pdo     = &$pdo;
         $this->myConfig = &ConfigContainer::singleton();
+        $this->verbose($this->myConfig->verbose);
         $this->dataColumns();
         if ($this->myConfig->verbose > 5) {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -139,8 +140,11 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return null
     */
-    public function createTable($columns)
+    public function createTable($columns = null)
     {
+        if (empty($columns)) {
+            $columns = $this->myTable->sqlColumns;
+        }
         $this->reset();
         $this->query  = "CREATE TABLE IF NOT EXISTS ".$this->table();
         $this->query .= " (\n";
@@ -555,14 +559,16 @@ abstract class HUGnetDBDriver extends HUGnetClass
             return array();
         }
         if ($style == PDO::FETCH_CLASS) {
-            $this->pdoStatement->setFetchMode(
-                PDO::FETCH_CLASS,
-                get_class($this->myTable)
-            );
+            do {
+                $res = &$this->pdoStatement->fetch(PDO::FETCH_ASSOC);
+                if (is_array($res)) {
+                    $ret[] = &$this->myTable->factory($res);
+                }
+            } while ($res !== false);
         } else {
             $this->pdoStatement->setFetchMode($style);
+            $ret = $this->pdoStatement->fetchAll();
         }
-        $ret = $this->pdoStatement->fetchAll();
         $this->reset();
         return $ret;
     }
@@ -577,11 +583,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
         if (!is_object($this->pdoStatement)) {
             return false;
         }
-        $this->pdoStatement->setFetchMode(
-            PDO::FETCH_INTO,
-            $this->myTable
-        );
-        $ret = $this->pdoStatement->fetch();
+        $res = &$this->pdoStatement->fetch(PDO::FETCH_ASSOC);
+        if (is_array($res)) {
+            $ret[] = &$this->myTable->fromArray($res);
+        }
         $this->reset();
         return true;
     }
@@ -756,6 +761,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
             HUGnetClass::VPRINT_VERBOSE
         );
         $ret = $this->pdoStatement->execute($data);
+        $this->vprint(
+            "With Result: ".print_r($ret, true),
+            HUGnetClass::VPRINT_VERBOSE
+        );
         //$this->pdoStatement->debugDumpParams();
         return $ret;
     }

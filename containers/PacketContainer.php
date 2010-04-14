@@ -175,7 +175,26 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->mySocket = &$this->myConfig->sockets->getSocket($this->group);
     }
 
-
+    /**
+    * Creates the object from a string
+    *
+    * @param object &$pkt PacketSocketTable object
+    *
+    * @return null
+    */
+    public function fromPacketSocket(&$pkt)
+    {
+        if (get_class($pkt) !== "PacketSocketTable") {
+            return;
+        }
+        $this->Command  = $pkt->Command;
+        $this->To       = $pkt->PacketTo;
+        $this->From     = $pkt->PacketFrom;
+        $this->Length   = strlen($pkt->RawData)/2;
+        $this->Data     = $pkt->RawData;
+        $this->Checksum = $this->checksum();
+        $this->setType("UNKNOWN");
+    }
     /**
     * Creates the object from a string
     *
@@ -255,32 +274,38 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         );
     }
     /**
+    * Creates the object from a string or array
+    *
+    * @param mixed &$data This is whatever you want to give the class
+    *
+    * @return null
+    */
+    public function fromAny(&$data)
+    {
+        if (get_class($data) == "PacketSocketTable") {
+            $this->fromPacketSocket($data);
+        } else {
+            parent::fromAny($data);
+        }
+    }
+
+    /**
     * Looks for a packet in a string.
     *
     * This is meant to be call with every byte received.  The incoming byte should
     * be appended onto the string.  This routine will take care of removing
     * the portion of string that it turns into packets.
     *
-    * @param string &$string The raw packet string to check
+    * @param mixed &$packet The raw packet string to check.  Could be a string, or
+    *                       it could be a PacketContainer object
     *
     * @return bool true on success, false on failure
     */
-    public function &recv(&$string)
+    public function &recv(&$packet)
     {
-        // Check the string.  If it doesn't look like a packet return.
-        $pktStr = self::_checkStr($string);
-        if (!is_string($pktStr)) {
+        $pkt = &$this->_recvGetPkt($packet);
+        if (get_class($pkt) !== get_class($this)) {
             return false;
-        }
-        // We got something that looks like a packet, so remove the buffer
-        $string = "";
-        // Create a new packet object
-        // checkStr strips the preamble but this expects it so we re-add it.
-        if ($this->GetReply) {
-            $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
-        } else {
-            $pkt = &$this;
-            $this->fromString(self::FULL_PREAMBLE.$pktStr);
         }
         // Check the checksum  If it is bad return a false
         if ($pkt->Checksum !== $pkt->checksum()) {
@@ -477,6 +502,58 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function toMe()
     {
         return $this->_toMe($this);
+    }
+    /**
+    * returns true if the container is empty.  False otherwise
+    *
+    * @return bool Whether this container is empty or not
+    */
+    public function isEmpty()
+    {
+        return (bool)(
+            (($this->default["Command"] === $this->data["Command"])
+            && ($this->default["To"] === $this->data["To"])
+            && ($this->default["From"] === $this->data["From"]))
+            || empty($this->data));
+    }
+    /**
+    * Looks for a packet in a string.
+    *
+    * This is meant to be call with every byte received.  The incoming byte should
+    * be appended onto the string.  This routine will take care of removing
+    * the portion of string that it turns into packets.
+    *
+    * @param mixed &$packet The raw packet string to check.  Could be a string, or
+    *                       it could be a PacketContainer object
+    *
+    * @return bool true on success, false on failure
+    */
+    private function &_recvGetPkt(&$packet)
+    {
+        $pkt = false;
+        if (is_string($packet)) {
+            // Check the string.  If it doesn't look like a packet return.
+            $pktStr = self::_checkStr($packet);
+            if (!is_string($pktStr)) {
+                return false;
+            }
+            // We got something that looks like a packet, so remove the buffer
+            $packet = "";
+            // Create a new packet object
+            // checkStr strips the preamble but this expects it so we re-add it.
+            if ($this->GetReply) {
+                $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
+            } else {
+                $pkt = &$this;
+                $this->fromString(self::FULL_PREAMBLE.$pktStr);
+            }
+        } else if (get_class($packet) == "PacketContainer") {
+            $pkt =& $packet;
+            if ($pkt->isEmpty()) {
+                return false;
+            }
+        }
+        return $pkt;
     }
     /**
     * Computes the checksum of a packet
@@ -702,6 +779,5 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $this->data["group"] = $value;
         }
     }
-
 }
 ?>

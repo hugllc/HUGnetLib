@@ -154,5 +154,11 @@ interface HUGnetContainerInterface
     * @return string
     */
     public function hash();
+    /**
+    * returns the calculated checksum of this packet
+    *
+    * @return string the calculated checksum of this packet
+    */
+    public function isEmpty();
 }
 ?>

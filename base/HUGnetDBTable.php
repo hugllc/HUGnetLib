@@ -139,6 +139,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
+        $this->verbose($this->myConfig->verbose);
         $this->myDriver = &$this->myConfig->servers->getDriver($this);
         if (!is_object($this->myDriver)) {
             $this->throwException(
@@ -224,6 +225,43 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $this->myDriver->deleteWhere($this->toDB());
     }
 
+    /**
+    * This function updates the record currently in this table
+    *
+    * @return bool True on success, False on failure
+    */
+    public function create()
+    {
+        return $this->myDriver->createTable();
+    }
+    /**
+    * This function gets a record with the given key
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return array Array of objects
+    */
+    public function select($where, $data = array())
+    {
+        $this->myDriver->selectWhere($where, $data);
+        return $this->myDriver->fetchAll();
+    }
+    /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param array &$data The data to populate in the new class.
+    *
+    * @return object A reference to a table object
+    */
+    public function &factory(&$data = array())
+    {
+        $class = get_class($this);
+        $ret = new $class($this->toArray());
+        $ret->fromAny($data);
+        return $ret;
+    }
 }
 
 

@@ -138,18 +138,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                 "Time" => 23.0,
             )
         );
-        $pkt2 = clone $pkt1;
-        $pkt2->Reply = new PacketContainer(
-            array(
-                "To" => "654321",
-                "From" => "123456",
-                "Date" => "2003-03-24 02:21:26",
-                "Command" => PacketContainer::COMMAND_REPLY,
-                "Length" => 6,
-                "Data" => "010203040506",
-                "Time" => 25.0,
-            )
-        );
         return array(
             array(
                 array(),
@@ -158,15 +146,27 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "id" => null,
                     "Date" => "0000-00-00 00:00:00",
                     "Command" => null,
-                    "sentCommand" => null,
-                    "PacketFrom" => null,
+                    "PacketFrom" => "000000",
                     "PacketTo" => null,
                     "RawData" => "",
-                    "sentRawData" => "",
                     "Type" => "UNSOLICITED",
                     "ReplyTime" => 0,
                     "Checked" => 0,
-                    "ReplyTo" => 0,
+                ),
+            ),
+            array(
+                new PacketContainer(),
+                array(
+                    "group" => "default",
+                    "id" => null,
+                    "Date" => "0000-00-00 00:00:00",
+                    "Command" => null,
+                    "PacketFrom" => "000000",
+                    "PacketTo" => null,
+                    "RawData" => "",
+                    "Type" => "UNSOLICITED",
+                    "ReplyTime" => 0,
+                    "Checked" => 0,
                 ),
             ),
             array(
@@ -176,33 +176,12 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "id" => null,
                     "Date" => "2003-03-24 02:21:24",
                     "Command" => "5C",
-                    "sentCommand" => null,
                     "PacketFrom" => "654321",
-                    "PacketTo" => null,
+                    "PacketTo" => "123456",
                     "RawData" => "0102",
-                    "sentRawData" => "",
                     "Type" => "CONFIG",
-                    "ReplyTime" => 0,
+                    "ReplyTime" => 0.0,
                     "Checked" => 0,
-                    "ReplyTo" => 0,
-                ),
-            ),
-            array(
-                $pkt2,
-                array(
-                    "group" => "default",
-                    "id" => null,
-                    "Date" => "2003-03-24 02:21:26",
-                    "Command" => "01",
-                    "sentCommand" => "5C",
-                    "PacketFrom" => "123456",
-                    "PacketTo" => "654321",
-                    "RawData" => "010203040506",
-                    "sentRawData" => "0102",
-                    "Type" => "CONFIG",
-                    "ReplyTime" => 2.0,
-                    "Checked" => 0,
-                    "ReplyTo" => 0,
                 ),
             ),
         );
@@ -248,6 +227,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $this->o->fromArray($preload);
         $this->assertAttributeSame($expect, "data", $this->o);
     }
+
+
 }
 
 ?>

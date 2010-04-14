@@ -99,13 +99,10 @@ class PacketSocketTable extends HUGnetDBTable
             "Name" => "Command",
             "Type" => "varchar(2)",
         ),
-        "sentCommand" => array(
-            "Name" => "sentCommand",
-            "Type" => "varchar(2)",
-        ),
         "PacketFrom" => array(
             "Name" => "PacketFrom",
             "Type" => "varchar(6)",
+            "Default" => "000000",
         ),
         "PacketTo" => array(
             "Name" => "PacketTo",
@@ -113,11 +110,6 @@ class PacketSocketTable extends HUGnetDBTable
         ),
         "RawData" => array(
             "Name" => "RawData",
-            "Type" => "text",
-            "Default" => "",
-        ),
-        "sentRawData" => array(
-            "Name" => "sentRawData",
             "Type" => "text",
             "Default" => "",
         ),
@@ -133,11 +125,6 @@ class PacketSocketTable extends HUGnetDBTable
         ),
         "Checked" => array(
             "Name" => "Checked",
-            "Type" => "int(11)",
-            "Default" => 0,
-        ),
-        "ReplyTo" => array(
-            "Name" => "ReplyTo",
             "Type" => "int(11)",
             "Default" => 0,
         ),
@@ -161,7 +148,7 @@ class PacketSocketTable extends HUGnetDBTable
             "Name" => "PRIMARY",
             "Unique" => true,
             "Columns" => array(
-                "PacketFrom", "Date", "Command", "sentCommand", "PacketTo", "id"
+                "PacketFrom", "Date", "Command", "PacketTo", "id"
             ),
         ),
     );
@@ -185,40 +172,19 @@ class PacketSocketTable extends HUGnetDBTable
     *
     * @return null
     */
-    public function fromReply(&$pkt)
+    public function fromPacket(PacketContainer &$pkt)
     {
-        if (!is_object($pkt->Reply)) {
-            $this->fromPacket($pkt);
+        if ($pkt->isEmpty()) {
             return;
         }
-        $this->Date = $pkt->Reply->Date;
-        $this->Command = $pkt->Reply->Command;
-        $this->sentCommand = $pkt->Command;
-        $this->PacketFrom = $pkt->Reply->From;
-        $this->PacketTo = $pkt->Reply->To;
-        $this->RawData = $pkt->Reply->Data;
-        $this->sentRawData = $pkt->Data;
-        $this->Type = $pkt->Type;
-        $this->ReplyTime = $pkt->replyTime();
-        $this->ReplyTo = (int)$this->id;
-        $this->id = null;
-    }
-    /**
-    * Creates the object from a string
-    *
-    * @See PacketContainer::default for documentaion on the packet structure
-    *
-    * @param string &$pkt This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromPacket(&$pkt)
-    {
         $this->Date = $pkt->Date;
         $this->Command = $pkt->Command;
         $this->PacketFrom = $pkt->From;
+        $this->PacketTo = $pkt->To;
         $this->RawData = $pkt->Data;
         $this->Type = $pkt->Type;
+        $this->ReplyTime = $pkt->replyTime();
+        $this->id = null;
     }
     /**
     * Creates the object from a string or array
@@ -230,7 +196,7 @@ class PacketSocketTable extends HUGnetDBTable
     public function fromAny(&$data)
     {
         if (is_object($data) && (get_class($data) == "PacketContainer")) {
-            $this->fromReply($data);
+            $this->fromPacket($data);
         } else {
             parent::fromAny($data);
         }

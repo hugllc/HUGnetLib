@@ -96,10 +96,10 @@ class SocketsContainer extends HUGnetContainer
                     );
                 }
             } else {
-                if ($this->findClass("PacketLogSocket", "sockets")) {
+                if ($this->findClass("PacketSocket", "sockets")) {
                     $this->data["sockets"][$key] =& self::factory(
                         $sock,
-                        "PacketLogSocket"
+                        "PacketSocket"
                     );
                 }
             }
