@@ -89,6 +89,7 @@ class ConfigContainer extends HUGnetContainer
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
         "useSocket"       => "default",    // What kind of socket to use
+        "verbose"         => 0,            // The verbosity level
     );
     /** @var array This is where the data is stored */
     protected $data = array();

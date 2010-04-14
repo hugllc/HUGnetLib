@@ -157,7 +157,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->myConfig = &ConfigContainer::singleton();
         $this->socket();
         parent::__construct($data);
-        $this->Date = date("Y-m-d H:i:s");
+        if (empty($this->Date)) {
+            $this->Date = date("Y-m-d H:i:s");
+        }
     }
 
     /**

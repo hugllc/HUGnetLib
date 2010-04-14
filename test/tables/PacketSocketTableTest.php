@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../tables/PacketLogTable.php';
+require_once dirname(__FILE__).'/../../tables/PacketSocketTable.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 require_once dirname(__FILE__)."/HUGnetDBTableTestBase.php";
 
@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/HUGnetDBTableTestBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketLogTableTest extends HUGnetDBTableTestBase
+class PacketSocketTableTest extends HUGnetDBTableTestBase
 {
 
     /**
@@ -72,7 +72,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new PacketLogTable();
+        $this->o = new PacketSocketTable();
     }
 
     /**
@@ -95,7 +95,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new PacketLogTable();
+        $o = new PacketSocketTable();
         return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
     }
     /**
@@ -105,7 +105,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new PacketLogTable();
+        $o = new PacketSocketTable();
         return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
     }
     /**
@@ -116,7 +116,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     public static function dataVars()
     {
         return array(
-            array(new PacketLogTable()),
+            array(new PacketSocketTable()),
         );
     }
 
@@ -155,48 +155,54 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
                 array(),
                 array(
                     "group" => "default",
-                    "DeviceKey" => 0,
-                    "GatewayKey" => 0,
+                    "id" => null,
                     "Date" => "0000-00-00 00:00:00",
                     "Command" => null,
                     "sentCommand" => null,
                     "PacketFrom" => null,
+                    "PacketTo" => null,
                     "RawData" => "",
                     "sentRawData" => "",
                     "Type" => "UNSOLICITED",
                     "ReplyTime" => 0,
+                    "Checked" => 0,
+                    "ReplyTo" => 0,
                 ),
             ),
             array(
                 $pkt1,
                 array(
                     "group" => "default",
-                    "DeviceKey" => 0,
-                    "GatewayKey" => 0,
+                    "id" => null,
                     "Date" => "2003-03-24 02:21:24",
                     "Command" => "5C",
                     "sentCommand" => null,
                     "PacketFrom" => "654321",
+                    "PacketTo" => null,
                     "RawData" => "0102",
                     "sentRawData" => "",
                     "Type" => "CONFIG",
                     "ReplyTime" => 0,
+                    "Checked" => 0,
+                    "ReplyTo" => 0,
                 ),
             ),
             array(
                 $pkt2,
                 array(
                     "group" => "default",
-                    "DeviceKey" => 0,
-                    "GatewayKey" => 0,
+                    "id" => null,
                     "Date" => "2003-03-24 02:21:26",
                     "Command" => "01",
                     "sentCommand" => "5C",
                     "PacketFrom" => "123456",
+                    "PacketTo" => "654321",
                     "RawData" => "010203040506",
                     "sentRawData" => "0102",
                     "Type" => "CONFIG",
                     "ReplyTime" => 2.0,
+                    "Checked" => 0,
+                    "ReplyTo" => 0,
                 ),
             ),
         );
@@ -213,7 +219,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketLogTable($preload);
+        $o = new PacketSocketTable($preload);
         $this->assertAttributeSame($expect, "data", $o);
     }
     /**

@@ -53,12 +53,12 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketLogTable extends HUGnetDBTable
+class PacketSocketTable extends HUGnetDBTable
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "PacketLog";
+    public $sqlTable = "PacketSocket";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "";
+    public $sqlId = "id";
     /**
     * @var array This is the definition of the columns
     *
@@ -85,15 +85,10 @@ class PacketLogTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "DeviceKey" => array(
-            "Name" => "DeviceKey",
-            "Type" => "int(11)",
-            "Default" => 0,
-        ),
-        "GatewayKey" => array(
-            "Name" => "GatewayKey",
-            "Type" => "int(11)",
-            "Default" => 0,
+        "id" => array(
+            "Name" => "id",
+            "Type" => "INTEGER",
+            "AutoIncrement" => true,
         ),
         "Date" => array(
             "Name" => "Date",
@@ -110,6 +105,10 @@ class PacketLogTable extends HUGnetDBTable
         ),
         "PacketFrom" => array(
             "Name" => "PacketFrom",
+            "Type" => "varchar(6)",
+        ),
+        "PacketTo" => array(
+            "Name" => "PacketTo",
             "Type" => "varchar(6)",
         ),
         "RawData" => array(
@@ -132,6 +131,16 @@ class PacketLogTable extends HUGnetDBTable
             "Type" => "float",
             "Default" => 0,
         ),
+        "Checked" => array(
+            "Name" => "Checked",
+            "Type" => "int(11)",
+            "Default" => 0,
+        ),
+        "ReplyTo" => array(
+            "Name" => "ReplyTo",
+            "Type" => "int(11)",
+            "Default" => 0,
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -152,13 +161,8 @@ class PacketLogTable extends HUGnetDBTable
             "Name" => "PRIMARY",
             "Unique" => true,
             "Columns" => array(
-                "PacketFrom", "GatewayKey", "Date", "Command", "sentCommand"
+                "PacketFrom", "Date", "Command", "sentCommand", "PacketTo", "id"
             ),
-        ),
-        "DeviceKey" => array(
-            "Name" => "DeviceKey",
-            "Unique" => false,
-            "Columns" => array("DeviceKey", "Date"),
         ),
     );
 
@@ -191,15 +195,18 @@ class PacketLogTable extends HUGnetDBTable
         $this->Command = $pkt->Reply->Command;
         $this->sentCommand = $pkt->Command;
         $this->PacketFrom = $pkt->Reply->From;
+        $this->PacketTo = $pkt->Reply->To;
         $this->RawData = $pkt->Reply->Data;
         $this->sentRawData = $pkt->Data;
         $this->Type = $pkt->Type;
         $this->ReplyTime = $pkt->replyTime();
+        $this->ReplyTo = (int)$this->id;
+        $this->id = null;
     }
     /**
     * Creates the object from a string
     *
-    * @See PacketLog::default for documentaion on the packet structure
+    * @See PacketContainer::default for documentaion on the packet structure
     *
     * @param string &$pkt This is the raw string for the device
     *
