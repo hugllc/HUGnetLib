@@ -72,8 +72,8 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo = &$this->myConfig->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `PacketSocket`");
         $this->myTable = new PacketSocketTable();
+        $this->myTable->create();
         $this->o = new PacketSocket();
-        $this->o->connect();
         parent::setUp();
     }
 
@@ -169,6 +169,43 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertAttributeSame($expect, "data", $o);
     }
     /**
+    * data provider for testConnectExc
+    *
+    * @return array
+    */
+    public static function dataConnectExc()
+    {
+        return array(
+            array(
+                array(
+                    "dbGroup" => "nondefault",
+                    "group" => "alsonondefault",
+                    "Timeout" => 5,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * This is for testing what happens when there is no database connection
+    * available.  It should cause an exception.
+    *
+    * @param array $preload The value to preload
+    *
+    * @return null
+    *
+    * @expectedException Exception
+    *
+    * @dataProvider dataConnectExc
+    */
+    public function testConnectExc($preload)
+    {
+        $this->o->fromArray($preload);
+        $ret = $this->o->connect();
+    }
+    /**
     * data provider for testConnect
     *
     * @return array
@@ -210,7 +247,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         return array(
             array(
                 array(),
-                true,
+                null,
             ),
         );
     }
@@ -229,28 +266,15 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     public function testDisconnect($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $ret = $this->o->connect();
+        $this->o->connect();
         $this->o->disconnect();
-        $this->assertSame($expect, $ret);
+        $ret = $this->readAttribute($this->o, "myTable");
+        if (is_null($expect)) {
+            $this->assertNull($ret);
+        } else {
+            $this->assertSame($expect, get_class($ret));
+        }
     }
-
-    /**
-    * data provider for testConnect
-    *
-    * @return array
-    */
-    public static function dataRead()
-    {
-        return array(
-            array(
-                array(
-                ),
-                "",
-                false,
-            ),
-        );
-    }
-
 
     /**
     * data provider for testConnect
@@ -265,6 +289,33 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                 ),
                 new PacketContainer(),
                 false,
+                array(
+                ),
+            ),
+            array(
+                array(
+                ),
+                new PacketContainer(array(
+                    "To" => "123456",
+                    "From" => "654321",
+                    "Command" => "01",
+                    "Data" => "010203040506",
+                    "Date" => "2003-02-28 01:59:00",
+                )),
+                true,
+                array(
+                    array(
+                        "id" => "1",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "01",
+                        "PacketFrom" => "654321",
+                        "PacketTo" => "123456",
+                        "RawData" => "010203040506",
+                        "Type" => "REPLY",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                ),
             ),
         );
     }
@@ -275,16 +326,20 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $preload The value to preload
     * @param string $write   The string to write
     * @param mixed  $expect  The expected return
+    * @param array  $packet  The packet as it is in
     *
     * @return null
     *
     * @dataProvider dataSendPkt
     */
-    public function testSendPkt($preload, $write, $expect)
+    public function testSendPkt($preload, $write, $expect, $packet)
     {
         $this->o->fromArray($preload);
+        $this->o->connect();
         $ret = $this->o->sendPkt($write);
         $this->assertSame($expect, $ret);
+        $ret = $this->pdo->query("select * from `PacketSocket`");
+        $this->assertSame($packet, $ret->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /**
@@ -347,17 +402,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $this->myTable->insertRow();
         $ret = $this->o->recvPkt($pkt);
         $this->assertSame($expect, $ret);
-        // We are going to test the buffer here.  That is about the best we can
-        // do without building a custom network server.
-        if (strlen($buffer) > 0) {
-            $read = $this->readAttribute($this->o, "buffer");
-            // Since we can't control the read length, we will make the strings
-            // The same size.
-            $read = devInfo::dehexify($read);
-            $read = substr($read, 0, strlen($buffer));
-            $buffer = substr($buffer, 0, strlen($read));
-            $this->assertSame($buffer, $read);
-        }
     }
 
 }

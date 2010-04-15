@@ -155,6 +155,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(),
                 2,
                 array(
+                    "group" => "default",
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => "2",
@@ -253,6 +254,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(),
                 array(
                     array(
+                        "group" => "default",
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "-5",
@@ -260,6 +262,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "-25.0",
                     ),
                     array(
+                        "group" => "default",
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "1",
@@ -267,6 +270,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "25.0",
                     ),
                     array(
+                        "group" => "default",
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "2",
@@ -274,6 +278,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "22.0",
                     ),
                     array(
+                        "group" => "default",
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "32",
@@ -695,6 +700,7 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
 
     /** @var array This is the default values for the data */
     protected $default = array(
+        "group" => "default",
         "fluff" => "nStuff",
         "other" => "things",
         "id" => 5,

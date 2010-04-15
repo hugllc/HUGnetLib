@@ -285,6 +285,42 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
             ),
             array(
                 array(
+                ),
+                "CREATE TABLE IF NOT EXISTS `myTable` (\n"
+                ."     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT "
+                ."'0',\n"
+                ."     `name` VARCHAR(32) NOT NULL DEFAULT '',\n"
+                ."     `value` FLOAT NOT NULL DEFAULT '0'\n"
+                .")",
+                array(
+                    array(
+                        "cid" => "0",
+                        "name" => "id",
+                        "type" => "INTEGER",
+                        "notnull" => "1",
+                        "dflt_value" => "'0'",
+                        "pk" => "1",
+                    ),
+                    array(
+                        "cid" => "1",
+                        "name" => "name",
+                        "type" => "VARCHAR(32)",
+                        "notnull" => "1",
+                        "dflt_value" => "''",
+                        "pk" => "0",
+                    ),
+                    array(
+                        "cid" => "2",
+                        "name" => "value",
+                        "type" => "FLOAT",
+                        "notnull" => "1",
+                        "dflt_value" => "'0'",
+                        "pk" => "0",
+                    ),
+                ),
+            ),
+            array(
+                array(
                     array(
                         "Name" => "Column1",
                         "Type" => "float",
@@ -1227,11 +1263,6 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "-25.0",
                     ),
                     array(
-                        "id" => "1",
-                        "name" => "Something Here",
-                        "value" => "25.0",
-                    ),
-                    array(
                         "id" => "2",
                         "name" => "Another THing",
                         "value" => "22.0",
@@ -1240,6 +1271,11 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "id" => "32",
                         "name" => "A way up here thing",
                         "value" => "23.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
                     ),
                 ), // expect
                 "value ASC", // Orderby

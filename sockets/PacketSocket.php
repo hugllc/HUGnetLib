@@ -109,7 +109,8 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     public function connect()
     {
         if (!$this->connected()) {
-            $this->myTable = new PacketSocketTable($empty, $this->dbGroup);
+            $config = array("group" => $this->dbGroup);
+            $this->myTable = new PacketSocketTable($config, $this->dbGroup);
             $this->myTable->create();
         }
         return $this->connected();
@@ -158,6 +159,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     function sendPkt(PacketContainer &$pkt)
     {
+        $this->connect();
         $packet = $this->myTable->factory($pkt);
         return (bool)$packet->insertRow(true);
     }

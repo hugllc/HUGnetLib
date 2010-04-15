@@ -63,7 +63,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /** @var int This is where we store the start */
     public $sqlStart = 0;
     /** @var string The orderby clause for this table */
-    public $sqOrderby = 0;
+    public $sqlOrderBy = "";
 
     /** @var string This is the table we should use */
     public $sqlTable = "";
@@ -137,13 +137,18 @@ abstract class HUGnetDBTable extends HUGnetContainer
                 $this->default[$col["Name"]] = $col["Default"];
             }
         }
+        $this->clearData();
         parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
         $this->verbose($this->myConfig->verbose);
-        $this->myDriver = &$this->myConfig->servers->getDriver($this);
+        $this->myDriver = &$this->myConfig->servers->getDriver(
+            $this,
+            $this->group
+        );
         if (!is_object($this->myDriver)) {
             $this->throwException(
-                "No available database driver specified.  Available drivers: "
+                "No available database connection available in group '".$this->group
+                ."'.  Check your database configuration.  Available php drivers: "
                 .implode(", ", PDO::getAvailableDrivers()), -2
             );
             // @codeCoverageIgnoreStart

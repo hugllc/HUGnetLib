@@ -196,14 +196,15 @@ class DBServersContainer extends HUGnetContainer
     */
     public function &getDriver(&$table, $group = "default")
     {
-        if (!$this->connect($group)) {
-            return null;
+        if ($this->connect($group)) {
+            $driverName = ucfirst($this->server[$group]->driver."Driver");
+            if (self::findClass($driverName, "/plugins/database/")) {
+                return new $driverName($table, $this->pdo[$group]);
+            }
+            // @codeCoverageIgnoreStart
+            // It thinks this line won't run.  I don't know why.
         }
-        $driverName = ucfirst($this->server[$group]->driver."Driver");
-        if (self::findClass($driverName, "/plugins/database/")) {
-            return new $driverName($table, $this->pdo[$group]);
-        }
-
+        // @codeCoverageIgnoreEnd
         return null;
     }
 

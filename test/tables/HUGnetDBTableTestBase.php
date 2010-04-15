@@ -36,6 +36,8 @@
  *
  */
 
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once dirname(__FILE__).'/../../tables/PacketLogTable.php';
 
@@ -245,6 +247,24 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Framework_TestCase
         $this->assertFalse(
             empty($obj->sqlTable),
             "sqlTable can not be empty"
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $obj The object to work with
+    *
+    * @return null
+    *
+    * @dataProvider dataVars
+    */
+    public function testGroupVar($obj)
+    {
+        $default = $this->readAttribute($obj, "default");
+        $this->assertSame(
+            "default",
+            $default["group"],
+            '$obj->default["group"] must be set to "default"'
         );
     }
 }
