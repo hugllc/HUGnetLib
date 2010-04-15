@@ -51,14 +51,6 @@
 interface HUGnetPacketInterface
 {
     /**
-    * Sets the socket to use
-    *
-    * @param string $group The socket group to use
-    *
-    * @return null
-    */
-    public function socket($group="default");
-    /**
     * Looks for a packet in a string.
     *
     * This is meant to be call with every byte received.  The incoming byte should
@@ -88,6 +80,59 @@ interface HUGnetPacketInterface
     * @return bool true if it is unsolicited, false otherwise
     */
     public function unsolicited();
+    /**
+    * Checks to see if the contained packet is an to me
+    *
+    * @return bool true if it is to me, false otherwise
+    */
+    public function toMe();
+    /**
+    * returns the calculated checksum of this packet
+    *
+    * @return string the calculated checksum of this packet
+    */
+    public function checksum();
+    /**
+    * returns the calculated checksum of this packet
+    *
+    * @return string the calculated checksum of this packet
+    */
+    public function replyTime();
+    /**
+    * Looks for any packet and returns it
+    *
+    * @param array $data The data to build the class with if called statically
+    *                    This is ignored if not called statically.
+    *
+    * @return mixed PacketContainer on success, false on failure
+    */
+    public function &monitor($data = array());
+    /**
+    * Sends a reply to this packet.
+    *
+    * @param array $data This is ONLY the data field.
+    *
+    * @return bool true on success, false on failure
+    */
+    public function &reply($data = "");
+    /**
+    * Sends a packet out
+    *
+    * @param array  $data        This is ONLY the data field.
+    * @param string $socketGroup The socket group to use
+    *
+    * @return bool true on success, false on failure
+    */
+    public function powerup($data = "", $socketGroup = "");
+    /**
+    * Sends a ping packet out and waits for the reply
+    *
+    * @param array $data This is ONLY the data field.
+    * @param bool  $find If true a findping is used
+    *
+    * @return bool true on success, false on failure
+    */
+    public function ping($data = "", $find = false);
 
 }
 ?>

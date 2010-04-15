@@ -59,9 +59,9 @@ class DummySocketContainer implements HUGnetSocketInterface
 {
     /** @var bool This says if we are connected or not */
     protected $connected = false;
-    /** @var bool This says if we are connected or not */
+    /** @var bool The string to read from the socket */
     public $readString = "";
-    /** @var bool This says if we are connected or not */
+    /** @var bool The string written to the socket */
     public $writeString = "";
     /** @var string The group we are in */
     protected $data = array(

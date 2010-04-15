@@ -620,6 +620,96 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testFactory
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                ),
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => 5,
+                    "name" => "Name",
+                    "value" => 12.0,
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                array(
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 6,
+                    "name" => "Obi-wan",
+                    "value" => 325.0,
+                ),
+                array(
+                    "group" => "default",
+                    "fluff" => "things",
+                    "other" => "nStuff",
+                    "id" => 6,
+                    "name" => "Obi-wan",
+                    "value" => 325.0,
+                ),
+            ),
+            array(
+                array(
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "here",
+                    "value" => 35.0,
+                ),
+                array(
+                    "name" => "Obi-wan",
+                    "value" => 325.0,
+                ),
+                array(
+                    "group" => "default",
+                    "fluff" => "more",
+                    "other" => "thing",
+                    "id" => 7,
+                    "name" => "Obi-wan",
+                    "value" => 325.0,
+                ),
+            ),
+        );
+    }
+    /**
+    * tests the factory
+    *
+    * @param array $preload What to preload the object with
+    * @param array $load    What to load in the second object
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($preload, $load, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $ret = &$o->factory($load);
+        $this->assertAttributeSame(
+            $expect,
+            "data",
+            $ret
+        );
+    }
 }
 
 /**

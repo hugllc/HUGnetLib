@@ -72,11 +72,16 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "dummy" => true,
                 ),
+                array(
+                    "dummy" => true,
+                    "group" => "other",
+                ),
             ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->socket = &$this->config->sockets->getSocket();
+        $this->socket["default"] = &$this->config->sockets->getSocket("default");
+        $this->socket["other"] = &$this->config->sockets->getSocket("other");
         $this->o = new PacketContainer();
     }
 
@@ -117,6 +122,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 "This is not a packet",
@@ -134,6 +140,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 "",
@@ -151,6 +158,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 array(),
@@ -168,6 +176,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 new PacketSocketTable(),
@@ -185,6 +194,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 array(
@@ -206,12 +216,13 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
                     "group"    => "myGroup",
                 ),
+                false,
             ),
             array(
                 array(
@@ -232,12 +243,13 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "Timeout"  => 3,
                     "Retries"  => 5,
                     "GetReply" => false,
                     "group"    => "default",
                 ),
+                true,
             ),
             array(
                 new PacketSocketTable(
@@ -268,6 +280,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "GetReply" => true,
                     "group"    => "default",
                 ),
+                true,
             ),
        );
     }
@@ -276,12 +289,13 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param array $preload The value to preload
     * @param array $expect  The expected return
+    * @param array $sock    If we expect a socket connection
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect)
+    public function testConstructor($preload, $expect, $sock)
     {
         $o = new PacketContainer($preload);
         $ret = $this->readAttribute($o, "data");
@@ -293,7 +307,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the socket is set correctly
         $socket = $this->readAttribute($o, "mySocket");
-        $this->assertTrue(is_object($socket));
+        $this->assertSame($sock, is_object($socket));
     }
     /**
     * data provider for testDeviceID
@@ -349,7 +363,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "UNKNOWN",
                     "Reply" => null,
-                    "Checksum" => "C3",
+                    "Checksum" => "79",
                     "CalcChecksum" => "79",
                 ),
             ),
@@ -637,7 +651,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
                 false,
@@ -661,7 +675,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
                 false,
@@ -685,7 +699,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
                 false,
@@ -709,7 +723,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
                 false,
@@ -733,7 +747,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "RawData" => "01020304",
                     "Type" => "SENSORREAD",
                     "Reply" => null,
-                    "Checksum" => "00",
+                    "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
                 false,
@@ -970,6 +984,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
+                "default",
             ),
             // Good Reply
             array(
@@ -1000,6 +1015,46 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
+                "default",
+            ),
+            // Good Reply alt socket
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                    "group" => "other",
+                    "Timeout" => 1,
+                ),
+                "5A5A5A55000ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                "other",
             ),
             // No reply expected
             array(
@@ -1025,6 +1080,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "C3",
                     "CalcChecksum" => "C3",
                 ),
+                "default",
             ),
         );
     }
@@ -1037,17 +1093,25 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     * @param string $writeString This is what the socket write string should
     *                            look like
     * @param array  $expect      The expected return
+    * @param string $group       The group to expect
     *
     * @return null
     *
     * @dataProvider dataSend
     */
-    public function testSend($preload, $readString, $writeString, $expect)
+    public function testSend($preload, $readString, $writeString, $expect, $group)
     {
-        $this->socket->readString = $readString;
+        $this->socket[$group]->readString = $readString;
         $o = new PacketContainer($preload);
         $o->send();
-        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+        $this->checkTestSend(
+            $o,
+            $preload,
+            $readString,
+            $writeString,
+            $expect,
+            $group
+        );
     }
     /**
     * data provider for testIsEmpty
@@ -1126,6 +1190,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "94",
                     "CalcChecksum" => "94",
                 ),
+                false,
+                "default",
             ),
             // Good Reply
             array(
@@ -1156,6 +1222,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "94",
                     "CalcChecksum" => "94",
                 ),
+                false,
+                "default",
             ),
             // Good Reply, findping
             array(
@@ -1186,7 +1254,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "95",
                     "CalcChecksum" => "95",
                 ),
-                true
+                true,
+                "default",
             ),
             // No reply expected
             array(
@@ -1212,6 +1281,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Checksum" => "94",
                     "CalcChecksum" => "94",
                 ),
+                false,
+                "default",
             ),
         );
     }
@@ -1235,12 +1306,15 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $readString,
         $writeString,
         $expect,
-        $find = false
+        $find,
+        $group
     ) {
-        $this->socket->readString = $readString;
+        $this->socket["default"]->readString = $readString;
         $o = new PacketContainer($preload);
         $o->ping("", $find);
-        $this->checkTestSend($o, $preload, $readString, $writeString, $expect);
+        $this->checkTestSend(
+            $o, $preload, $readString, $writeString, $expect, $group
+        );
     }
 
     /**
@@ -1315,7 +1389,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testMonitor($preload, $readString, $expect)
     {
-        $this->socket->readString = $readString;
+        $this->socket["default"]->readString = $readString;
         $o = PacketContainer::monitor($preload);
         if (is_object($o)) {
             $ret = $o->toArray();
@@ -1373,7 +1447,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $o = new PacketContainer($preload);
         $ret = $o->reply($replyString);
         $this->assertSame($expect, $ret);
-        $this->assertSame($writeString, $this->socket->writeString);
+        $this->assertSame($writeString, $this->socket["default"]->writeString);
     }
     /**
     * data provider for testReply
@@ -1411,7 +1485,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $ret = PacketContainer::powerup($replyString);
         $this->assertSame($expect, $ret);
-        $this->assertSame($writeString, $this->socket->writeString);
+        $this->assertSame($writeString, $this->socket["default"]->writeString);
     }
 
 
@@ -1431,7 +1505,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSendBadSocket($preload, $readString, $writeString, $expect)
     {
-        $this->socket = null;
+        $this->socket["default"] = null;
         $o = new PacketContainer($preload);
         $ret = $o->send();
         $this->assertFalse($ret);
@@ -1453,15 +1527,21 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataSend
     */
-    public function checkTestSend(&$o, $preload, $readString, $writeString, $expect)
-    {
+    public function checkTestSend(
+        &$o,
+        $preload,
+        $readString,
+        $writeString,
+        $expect,
+        $group = "default"
+    ) {
         if (is_array($expect)) {
             // First make sure we got an object back.
             $this->assertType("object", $o);
             $ret = $o->toArray();
             $this->checkDateTime($ret);
             $this->assertSame($expect, $ret);
-            $this->assertSame($writeString, $this->socket->writeString);
+            $this->assertSame($writeString, $this->socket[$group]->writeString);
         } else {
             $this->assertFalse($o);
         }
@@ -1592,8 +1672,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame("default", $this->o->group);
 
     }
-
-
 }
 
 ?>
