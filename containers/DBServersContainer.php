@@ -257,6 +257,14 @@ class DBServersContainer extends HUGnetContainer
         }
         return (array)$data;
     }
-
+    /**
+    * Return an array of the groups currently registered
+    *
+    * @return null
+    */
+    public function groups()
+    {
+        return (array)$this->groups;
+    }
 }
 ?>

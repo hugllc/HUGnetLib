@@ -208,6 +208,73 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
             );
         }
     }
+    /**
+    * Data provider for testGroup
+    *
+    * @return array
+    */
+    public static function dataGroup()
+    {
+        return array(
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "group" => "someothergroup",
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                array(
+                    "somegroup" => "somegroup",
+                    "someothergroup" => "someothergroup"
+                ),
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "group" => "somegroup",
+                        "driver" => "mysql",
+                        "user" => "NotAGoodUserNameToUse",
+                        "password" => "Secret Password",
+                        "db" => "MyNewDb",
+                    ),
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:"
+                    ),
+                ),
+                array(
+                    "somegroup" => "somegroup",
+                    "default" => "default"
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the return of what groups are available.
+    *
+    * @param string $preload The configuration to use
+    * @param mixed  $expect  The expected value.
+    *
+    * @return null
+    *
+    * @dataProvider dataGroup()
+    */
+    public function testGroup($preload, $expect)
+    {
+        $o = new DBServersContainer($preload);
+        $ret = $o->groups();
+        $this->assertSame($expect, $ret);
+    }
 
     /**
     * Data provider for testCreatePDO
