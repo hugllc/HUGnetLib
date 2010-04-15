@@ -156,6 +156,70 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
             $this->assertSame($expect, get_class($pdo));
         }
     }
+    /**
+    * Data provider for testGroup
+    *
+    * @return array
+    */
+    public static function dataGroup()
+    {
+        return array(
+            array(array(array("dummy" => true)), array("default" => "default")),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 6574,
+                        "group" => "somegroup",
+                    ),
+                    array(
+                        "dummy" => true,
+                        "group" => "somethirdgroup",
+                    ),
+                    array(
+                        "stuff" => "Unknown gateway type",
+                        "group" => "someothergroup",
+                    ),
+                ),
+                array(
+                    "somegroup" => "somegroup",
+                    "somethirdgroup" => "somethirdgroup",
+                    "someothergroup" => "someothergroup"
+                )
+            ),
+            // Non default group name with group in call
+            array(
+                array(
+                    array(
+                        "dummy" => true,
+                    ),
+                    array(
+                        "GatewayIP" => "127.0.0.2",
+                        "GatewayPort" => 6574,
+                        "group" => "somegroup",
+                    ),
+                ),
+                array("default" => "default", "somegroup" => "somegroup"),
+            ),
+        );
+    }
+    /**
+    * Tests the return of what groups are available.
+    *
+    * @param string $preload The configuration to use
+    * @param mixed  $expect  The expected value.
+    *
+    * @return null
+    *
+    * @dataProvider dataGroup()
+    */
+    public function testGroup($preload, $expect)
+    {
+        $o = new SocketsContainer($preload);
+        $ret = $o->groups();
+        $this->assertSame($expect, $ret);
+    }
 
     /**
     * Data provider for testConnect
