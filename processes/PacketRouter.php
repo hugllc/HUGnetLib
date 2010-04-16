@@ -72,7 +72,9 @@ class PacketRouter extends HUGnetContainer
     /** @var object This is our config */
     protected $myConfig = null;
     /** @var array This is our packet buffer */
-    protected $PacketBuffer = null;
+    protected $PacketBuffer = array();
+    /** @var array We queue up packets here before sending them out */
+    protected $PacketQueue = array();
 
     /**
     * Builds the class
@@ -100,6 +102,7 @@ class PacketRouter extends HUGnetContainer
                 array(
                     "group" => $group,
                     "GetReply" => false,
+                    "Timeout" => 1,
                 )
             );
         }
@@ -108,23 +111,97 @@ class PacketRouter extends HUGnetContainer
     /**
     * This function routes a packet
     *
-    * @param array $data The data to build the class with
+    * @param PacketContainer &$pkt   The packet to route
+    * @param array           $groups The groups to send it out to
     *
     * @return null
     */
-    public function route(PacketContainer &$pkt)
+    public function send(PacketContainer &$pkt, $groups)
     {
-        foreach ($this->groups as $group) {
-            if ($group !== $pkt->group) {
-                $newpkt = new PacketContainer($pkt->toArray());
-                $newpkt->group = $group;
-                $newpkt->GetReply = false;
-                $newpkt->Retries = $this->Retries;
-                $newpkt->Timeout = time() + $this->Timeout;
-                $newpkt->send();
-                $this->PacketBuffer[$group][] = &$newpkt;
+        $oldgroup = $pkt->group;
+        $retries  = $pkt->Retries;
+        foreach ($groups as $group) {
+            if ($group !== $oldgroup) {
+                // This makes sure the retries are decremented the correct number
+                // of times.
+                $pkt->Retries = $retries;
+                // Sets the group to send the packet out on
+                $pkt->group = $group;
+                // We don't want to wait for a reply
+                $pkt->GetReply = false;
+                //
+                $pkt->send();
             }
         }
+        // Set a new timeout
+        $pkt->Timeout         = $this->_timeout();
+        // Return the old group
+        $pkt->group           = $oldgroup;
+    }
+    /**
+    * This function checks all of the interfaces for packets
+    *
+    * This function should be called periodically as often as possible.  It will
+    * only return the first packet it finds on each interface.
+    *
+    * @param mixed &$pkt If it is a PacketContainer we queue it.  Otherwise ignore
+    *
+    * @return null
+    */
+    public function queue(&$pkt)
+    {
+        if (get_class($pkt) == "PacketContainer") {
+            $pkt->Timeout = $this->_timeout();
+            $this->PacketQueue[] = &$pkt;
+        }
+    }
+    /**
+    * This function checks all of the interfaces for packets
+    *
+    * This function should be called periodically as often as possible.  It will
+    * only return the first packet it finds on each interface.
+    *
+    * @return null
+    */
+    public function read()
+    {
+        foreach ($this->groups as $group) {
+            // Make sure of our timeout
+            $data = array(
+                "Timeout" => 1,
+                "group" => $group,
+            );
+            $pkt = &PacketContainer::monitor($data);
+            $this->queue($pkt);
+        }
+    }
+    /**
+    * This function checks the queue and sends out packets from it, putting them
+    * into the packet buffer.
+    *
+    * This function should be called periodically as often as possible.
+    *
+    * @return null
+    */
+    public function route()
+    {
+        foreach (array_keys((array)$this->PacketQueue) as $key) {
+            if (count($this->PacketBuffer) >= $this->MaxPackets) {
+                break;
+            }
+            $this->send($this->PacketQueue[$key], $this->groups);
+            $this->PacketBuffer[] = &$this->PacketQueue[$key];
+            unset($this->PacketQueue[$key]);
+        }
+    }
+    /**
+    * Calculates the packet timeout and retuns it.
+    *
+    * @return int
+    */
+    private function _timeout()
+    {
+        return time() + $this->Timeout;
     }
 }
 ?>

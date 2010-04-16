@@ -84,7 +84,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        foreach($this->config->sockets->groups() as $group) {
+        foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
         $this->o = new PacketRouter();
@@ -172,14 +172,14 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         }
     }
     /**
-    * data provider for testConstructor
+    * data provider for testSend
     *
     * @return array
     */
-    public static function dataRoute()
+    public static function dataSend()
     {
         return array(
-           array(
+            array(
                 array(),
                 new PacketContainer(
                     array(
@@ -196,6 +196,23 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 ),
                 "5A5A5A5C1234566543210501020304052F",
             ),
+            array(
+                array(),
+                new PacketContainer(
+                    array(
+                        "To" => "000456",
+                        "From" => "654000",
+                        "Command" => "55",
+                        "Data" => "0102030405",
+                        "group" => "default",
+                    )
+                ),
+                array(
+                    "other" => "other",
+                    "third" => "third",
+                ),
+                "5A5A5A5500045665400005010203040526",
+            ),
         );
     }
     /**
@@ -208,22 +225,278 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataRoute
+    * @dataProvider dataSend
     */
-    public function testRoute($preload, $pkt, $groups, $expect)
+    public function testSend($preload, $pkt, $groups, $expect)
     {
-        $o = new PacketRouter($preload);
-        $o->route($pkt);
-        $p = $this->readAttribute($o, "PacketBuffer");
+        $retries = $pkt->Retries;
+        $this->o->fromAny($preload);
+        $oldGroup = $pkt->group;
+        $this->o->send($pkt, $groups);
         foreach ($groups as $group) {
             $this->assertSame($expect, $this->socket[$group]->writeString);
-            foreach ($p[$group] as $g) {
-                $this->assertThat(
-                    $g->Timeout,
-                    $this->greaterThan(time()-100),
-                    "Timeout is not being set correctly"
-                );
-            }
+        }
+        $this->assertThat(
+            $pkt->Timeout,
+            $this->greaterThan(time()-100),
+            "Timeout is not being set correctly"
+        );
+        // This makes sure that the group has not changed.
+        $this->assertSame(
+            $pkt->group,
+            $oldGroup,
+            "The group on the packet has changed!"
+        );
+        // This makes sure that the group has not changed.
+        $this->assertSame(
+            $retries - 1,
+            $pkt->Retries,
+            "The retries are wrong"
+        );
+    }
+
+    /**
+    * data provider for testRead
+    *
+    * @return array
+    */
+    public static function dataRead()
+    {
+        return array(
+            // Two packets, one each interface
+            array(
+                array(),
+                array(
+                    "other" => "5A5A5A5C1234566543210501020304052F"
+                    ."5A5A5A5500045665400005010203040526",
+                    "third" => "5A5A5A5500045665400005010203040526",
+                ),
+                array(
+                    "other" => "other",
+                    "third" => "third",
+                ),
+                array(
+                    array(
+                        "To" => "123456",
+                        "From" => "654321",
+                        "Command" => "5C",
+                        "Length" => 5,
+                        "Data" => "0102030405",
+                        "Type" => "CONFIG",
+                        "Reply" => null,
+                        "Checksum" => "2F",
+                        "Retries" => 3,
+                        "GetReply" => false,
+                        "group" => "other",
+                    ),
+                    array(
+                        "To" => "000456",
+                        "From" => "654000",
+                        "Command" => "55",
+                        "Length" => 5,
+                        "Data" => "0102030405",
+                        "Type" => "SENSORREAD",
+                        "Reply" => null,
+                        "Checksum" => "26",
+                        "Retries" => 3,
+                        "GetReply" => false,
+                        "group" => "third",
+                    ),
+                ),
+            ),
+            // Nothing
+            array(
+                array(),
+                array(),
+                array(),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param array  $pkts    The packet strings for the function to read
+    * @param array  $groups  The groups to check
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRead
+    */
+    public function testRead($preload, $pkts, $groups, $expect)
+    {
+        foreach ($groups as $group) {
+            $this->socket[$group]->readString .= $pkts[$group];
+        }
+        $this->o->fromAny($preload);
+        $this->o->read();
+        $p = &$this->readAttribute($this->o, "PacketQueue");
+        $this->assertType("array", $p);
+        $ret = array();
+        foreach (array_keys((array)$p) as $k) {
+            $data = $this->readAttribute($p[$k], "data");
+            unset($data["Date"]);
+            unset($data["Time"]);
+            $this->assertThat(
+                $data["Timeout"],
+                $this->greaterThan(time()-100),
+                "Timeout is not being set correctly"
+            );
+            unset($data["Timeout"]);
+            $ret[] = $data;
+        }
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * data provider for testRoute
+    *
+    * @return array
+    */
+    public static function dataRoute()
+    {
+        return array(
+            // Overrun the buffer
+            array(
+                array(),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "other",
+                    "third" => "third",
+                ),
+                "5A5A5A5C1234566543210501020304052F"
+                ."5A5A5A5C1234566543210501020304052F"
+                ."5A5A5A5C1234566543210501020304052F"
+                ."5A5A5A5C1234566543210501020304052F"
+                ."5A5A5A5C1234566543210501020304052F",
+            ),
+            array(
+                array(),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "55",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "other",
+                    "third" => "third",
+                ),
+                "5A5A5A5500045665400005010203040526",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param object $pkts    The packet to send out
+    * @param array  $groups  The groups to check
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRoute
+    */
+    public function testRoute($preload, $pkts, $groups, $expect)
+    {
+        $this->o->fromAny($preload);
+        foreach ($pkts as $pkt) {
+            $this->o->queue($pkt);
+        }
+        $this->o->route();
+        foreach ($groups as $group) {
+            $this->assertSame($expect, $this->socket[$group]->writeString);
+        }
+        $p = &$this->readAttribute($this->o, "PacketBuffer");
+        $q = &$this->readAttribute($this->o, "PacketQueue");
+        $this->assertSame($pkt, $p[0]);
+        $this->assertThat(
+            $pkt->Timeout,
+            $this->greaterThan(time()-100),
+            "Timeout is not being set correctly"
+        );
+        if (count($pkts) > $this->o->MaxPackets) {
+            $this->assertSame(
+                $this->o->MaxPackets,
+                count($p),
+                "There should be ".$this->o->MaxPackets." packet in the buffer"
+            );
+            $cq = count($pkts) - $this->o->MaxPackets;
+            $this->assertSame(
+                $cq,
+                count($q),
+                "There should be ".$cq." packet in the queue"
+            );
+        } else {
+            $this->assertSame(
+                count($pkts),
+                count($p),
+                "There should be ".count($pkts)." packet in the buffer"
+            );
+
         }
     }
 
