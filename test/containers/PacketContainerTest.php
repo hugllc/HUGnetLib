@@ -282,7 +282,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-       );
+        );
     }
     /**
     * test the set routine when an extra class exists
@@ -1082,6 +1082,33 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
+            // No reply expected (find ping sent)
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "GetReply" => false,
+                    "Retries" => 2,  // This causes the findping
+                ),
+                "",
+                "5A5A5A55000ABC0000200401020304C35A5A5A03000ABC000020040102030495",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                "default",
+            ),
         );
     }
     /**
@@ -1296,6 +1323,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *                            look like
     * @param array  $expect      The expected return
     * @param bool   $find        If true a findping is used
+    * @param string $group       The group to send the data out on
     *
     * @return null
     *
@@ -1522,6 +1550,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     * @param string $writeString This is what the socket write string should
     *                            look like
     * @param array  $expect      The expected return
+    * @param string $group       The group to send the data out on
     *
     * @return null
     *

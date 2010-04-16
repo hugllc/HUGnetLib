@@ -373,8 +373,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     new PacketContainer(
                         array(
-                            "To" => "123456",
-                            "From" => "654321",
+                            "To" => "023456",
+                            "From" => "054321",
                             "Command" => "5C",
                             "Data" => "0102030405",
                             "group" => "default",
@@ -382,8 +382,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     new PacketContainer(
                         array(
-                            "To" => "123456",
-                            "From" => "654321",
+                            "To" => "103456",
+                            "From" => "604321",
                             "Command" => "5C",
                             "Data" => "0102030405",
                             "group" => "default",
@@ -391,8 +391,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     new PacketContainer(
                         array(
-                            "To" => "123456",
-                            "From" => "654321",
+                            "To" => "120456",
+                            "From" => "650321",
                             "Command" => "5C",
                             "Data" => "0102030405",
                             "group" => "default",
@@ -400,8 +400,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     new PacketContainer(
                         array(
-                            "To" => "123456",
-                            "From" => "654321",
+                            "To" => "123056",
+                            "From" => "654021",
                             "Command" => "5C",
                             "Data" => "0102030405",
                             "group" => "default",
@@ -409,8 +409,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     new PacketContainer(
                         array(
-                            "To" => "123456",
-                            "From" => "654321",
+                            "To" => "123406",
+                            "From" => "654301",
                             "Command" => "5C",
                             "Data" => "0102030405",
                             "group" => "default",
@@ -422,10 +422,10 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     "third" => "third",
                 ),
                 "5A5A5A5C1234566543210501020304052F"
-                ."5A5A5A5C1234566543210501020304052F"
-                ."5A5A5A5C1234566543210501020304052F"
-                ."5A5A5A5C1234566543210501020304052F"
-                ."5A5A5A5C1234566543210501020304052F",
+                ."5A5A5A5C0234560543210501020304055F"
+                ."5A5A5A5C10345660432105010203040528"
+                ."5A5A5A5C1204566503210501020304055F"
+                ."5A5A5A5C12305665402105010203040528",
             ),
             array(
                 array(),
@@ -463,8 +463,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public function testRoute($preload, $pkts, $groups, $expect)
     {
         $this->o->fromAny($preload);
-        foreach ($pkts as $pkt) {
-            $this->o->queue($pkt);
+        foreach (array_keys((array)$pkts) as $key) {
+            $this->o->queue($pkts[$key]);
         }
         $this->o->route();
         foreach ($groups as $group) {
@@ -472,12 +472,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         }
         $p = &$this->readAttribute($this->o, "PacketBuffer");
         $q = &$this->readAttribute($this->o, "PacketQueue");
-        $this->assertSame($pkt, $p[0]);
-        $this->assertThat(
-            $pkt->Timeout,
-            $this->greaterThan(time()-100),
-            "Timeout is not being set correctly"
-        );
         if (count($pkts) > $this->o->MaxPackets) {
             $this->assertSame(
                 $this->o->MaxPackets,

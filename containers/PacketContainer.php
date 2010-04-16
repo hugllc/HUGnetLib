@@ -367,11 +367,11 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 // twice to get a reply to this packet.  It can't run if we are
                 // trying to send out a findping, otherwise it is a infinite loop.
                 if (($this->Command !== self::COMMAND_FINDECHOREQUEST)
-                    && (($this->Retries == 1) && $this->GetReply)
+                    && (($this->Retries == 1))
                 ) {
                     // Most of the stuff stays the same, so we are just cloning this
                     $ping = clone $this;
-                    $ping->ping(array("Retries" => 1,), true);
+                    $ping->ping(array("Retries" => 1), true);
                 }
                 // Loop while:
                 // * We still have retries  ($this->Retries > 0)
@@ -522,7 +522,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return bool true if it is a reply, false otherwise
     */
-    private function myReply(PacketContainer &$pkt)
+    public function myReply(PacketContainer &$pkt)
     {
         if ($this->_toMe($pkt)
             && ($pkt->Command == self::COMMAND_REPLY)
