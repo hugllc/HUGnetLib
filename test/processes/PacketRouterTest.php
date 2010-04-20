@@ -303,9 +303,14 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                         "group" => "third",
                     ),
                 ),
+                array(
+                    "654321" => "other",
+                    "654000" => "third",
+                ),
             ),
             // Nothing
             array(
+                array(),
                 array(),
                 array(),
                 array(),
@@ -320,12 +325,13 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     * @param array  $pkts    The packet strings for the function to read
     * @param array  $groups  The groups to check
     * @param string $expect  The expected return
+    * @param array  $routes  The routes to expect
     *
     * @return null
     *
     * @dataProvider dataRead
     */
-    public function testRead($preload, $pkts, $groups, $expect)
+    public function testRead($preload, $pkts, $groups, $expect, $routes)
     {
         foreach ($groups as $group) {
             $this->socket[$group]->readString .= $pkts[$group];
@@ -348,6 +354,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             $ret[] = $data;
         }
         $this->assertSame($expect, $ret);
+        $this->assertAttributeSame($routes, "Routes", $this->o);
     }
 
     /**

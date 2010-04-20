@@ -281,7 +281,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function fromAny(&$data)
     {
-        if (get_class($data) == "PacketSocketTable") {
+        if ($this->isMine($data, "PacketSocketTable")) {
             $this->fromPacketSocket($data);
         } else {
             parent::fromAny($data);
@@ -303,7 +303,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function &recv(&$packet)
     {
         $pkt = &$this->_recvGetPkt($packet);
-        if (get_class($pkt) !== get_class($this)) {
+        if (!$this->isMine($pkt, "HUGnetPacketInterface")) {
             return false;
         }
         // Check the checksum  If it is bad return a false
@@ -563,7 +563,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 $pkt = &$this;
                 $this->fromString(self::FULL_PREAMBLE.$pktStr);
             }
-        } else if (get_class($packet) == "PacketContainer") {
+        } else if ($this->isMine($packet, "HUGnetPacketInterface")) {
             $pkt =& $packet;
             if ($pkt->isEmpty()) {
                 return false;

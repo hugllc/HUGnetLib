@@ -220,7 +220,7 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @return mixed The value of the attribute
     */
-    private function __toString()
+    public function __toString()
     {
         return $this->toString();
     }
@@ -359,7 +359,7 @@ abstract class HUGnetContainer extends HUGnetClass
         foreach ($this->getProperties() as $key) {
             if (($this->$key != $this->default[$key]) || $default) {
                 $value = $this->toArrayIterator(
-                    $this->$key,
+                    $this->data[$key],
                     $this->default[$key],
                     $default
                 );
@@ -472,8 +472,6 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         return (bool)(($this->default === $this->data) || empty($this->data));
     }
-
-
 
 }
 ?>

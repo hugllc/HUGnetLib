@@ -221,7 +221,10 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
     ) {
         $ret = $this->$var->breakNext();
         $this->assertSame($expect, $ret);
-        $this->assertSame($class, get_class($this->$var->next));
+        $this->assertSame(
+            $class,
+            is_object($this->$var->next) && get_class($this->$var->next)
+        );
         $this->assertNull($this->$var->next);
     }
     /**
@@ -263,7 +266,10 @@ class HUGnetContainerLinkedListTest extends PHPUnit_Framework_TestCase
     ) {
         $ret = $this->$var->breakPrev();
         $this->assertSame($expect, $ret);
-        $this->assertSame($class, get_class($this->$var->prev));
+        $this->assertSame(
+            $class,
+            is_object($this->$var->prev) && get_class($this->$var->prev)
+        );
         $this->assertNull($this->$var->prev);
     }
     /**

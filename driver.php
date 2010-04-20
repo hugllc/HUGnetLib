@@ -163,7 +163,6 @@ class HUGnetDriver extends HUGnetClass
         }
         $return   = array();
         $function = trim($function);
-
         $use_class = $this->_methodExists($Info, $function);
         if ($use_class === false) {
             return false;
@@ -173,7 +172,6 @@ class HUGnetDriver extends HUGnetClass
         unset($args[1]);
         $class  = &$this->drivers[$use_class];
         $return = call_user_func_array(array(&$class, $function), $args);
-
         if (is_array($return)) {
             if (isset($return["Errno"]) || isset($return["Error"])) {
                 $this->Error = $return["Error"];
@@ -225,27 +223,60 @@ class HUGnetDriver extends HUGnetClass
     * @param array  $a The array of arguments
     *
     * @return mixed
-     */
+    */
+
     function __call($m, $a)
     {
         if (is_array($a[0])) {
-            $args = array($a[0]);
+            $Info = &$a[0];
             unset($a[0]);
         } else {
-            $args = array(array());
+            $Info = array();
         }
-        $args[] = $m;
+        $args = array(&$Info, $m);
         if (is_array($a)) {
             $args = array_merge($args, $a);
         }
-
         $ret = call_user_func_array(array($this, "RunFunction"), $args);
-
         // Only one of these can run at any one time.
         $ret = $this->_callRead($args[0], $ret, $m);
         $ret = $this->_callLoad($args[0], $ret, $m);
         return $ret;
 
+    }
+
+    /**
+    * Gets the name of the history table for a particular device
+    *
+    * @param array &$Info Infomation about the device to use
+    *
+    * @return mixed The name of the table as a string on success, false on failure
+    */
+    public function getHistoryTable(&$Info)
+    {
+        return $this->RunFunction($Info, "getHistoryTable");
+    }
+    /**
+    * Gets the name of the average table for a particular device
+    *
+    * @param array &$Info Infomation about the device to use
+    *
+    * @return mixed The name of the table as a string on success, false on failure
+    */
+    public function getAverageTable(&$Info)
+    {
+        return $this->RunFunction($Info, "getAverageTable");
+    }
+    /**
+    * Gets the name of the location table for a particular device
+    *
+    * @param array &$Info Infomation about the device to use
+    *
+    * @return mixed The name of the table as a string on success, false on failure
+    */
+    public function getLocationTable(&$Info)
+    {
+        return $this->RunFunction($Info, "getLocationTable");
     }
 
     /**

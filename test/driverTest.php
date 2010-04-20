@@ -404,7 +404,7 @@ class DriverTest extends PHPUnit_Framework_TestCase
                 $this->equalTo("1"),
                 $this->equalTo("2")
             );
-        $ret = $this->o->Test($Info, "1", "2");
+        $ret = $this->o->test($Info, "1", "2");
     }
 
     /**

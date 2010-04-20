@@ -312,7 +312,7 @@ class Plugins extends HUGnetClass
         $this->vprint("Running command:\n".$command."\n", 4);
         $this->vprint("[PLUGIN OUTPUT]\n", 4);
         $output = $this->_runFunction($fct["Name"], $args);
-        if (trim($output) != "") {
+        if (trim((string)$output) != "") {
             $return = $output;
         }
         $this->vprint($output, 4);

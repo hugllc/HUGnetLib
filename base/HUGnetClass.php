@@ -158,6 +158,22 @@ abstract class HUGnetClass
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+    * returns true if passed an object of the same type as me
+    *
+    * @param mixed &$object The object to check
+    *
+    * @return bool Whether this container is empty or not
+    */
+    public function isMine(&$obj, $class = "")
+    {
+        if (empty($class)) {
+            $class = get_class($this);
+        }
+        return (bool)(is_object($obj) && ($obj instanceof $class));
+    }
+
+
 }
 
 

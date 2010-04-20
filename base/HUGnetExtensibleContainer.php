@@ -335,6 +335,7 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
     */
     public function getProperties($var = null)
     {
+        $extra = array();
         if (is_object($this->$var)) {
             $extra = $this->$var->getProperties($var);
         } else if (is_null($var)) {
@@ -466,6 +467,28 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
         }
         return false;
     }
-
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        foreach ($this->getProperties() as $key) {
+            if (($this->$key != $this->default[$key]) || $default) {
+                $value = $this->toArrayIterator(
+                    $this->$key,
+                    $this->default[$key],
+                    $default
+                );
+                if (($value != $default[$key]) || $default) {
+                    $data[$key] = $value;
+                }
+            }
+        }
+        return (array)$data;
+    }
 }
 ?>

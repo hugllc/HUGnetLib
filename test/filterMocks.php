@@ -83,7 +83,7 @@ class TestFilter extends FilterBase
      *
      * @return null
      */
-    public function test1(&$history, $index, $filter, $extra, $deltaT = null)
+    public function test1($history, $index, $filter, $extra, $deltaT = null)
     {
         $history = array_reverse($history);
         // This must stay the same.
@@ -100,7 +100,7 @@ class TestFilter extends FilterBase
      *
      * @return null
      */
-    public function test2(&$history, $index, $filter, $extra, $deltaT = null)
+    public function test2($history, $index, $filter, $extra, $deltaT = null)
     {
     }
 }

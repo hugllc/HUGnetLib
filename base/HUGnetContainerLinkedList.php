@@ -216,7 +216,7 @@ abstract class HUGnetContainerLinkedList extends HUGnetContainer
     private function _link($var, $otherVar, $data, $extra=null, $insert=false)
     {
         $class = get_class($this);
-        $obj = &new $class($data, $extra);
+        $obj = new $class($data, $extra);
         if ($this->_linked($var) && $insert) {
             $obj->$var = &$this->$var;
             $obj->$var->$otherVar = &$obj;

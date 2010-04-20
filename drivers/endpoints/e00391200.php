@@ -240,9 +240,9 @@ class e00391200 extends eDEFAULT implements endpointDriverInterface
             for ($i = 0; $i < $data["NumSensors"]; $i++) {
                 $key = $this->getOrder($Info, $i, true);
                 if ($Info["Types"][$key] == 1) {
-                    $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 2);
+                    $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], $index, 2);
                 } else {
-                    $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], &$index, 3);
+                    $data["raw"][$key] = $this->interpSensorsGetData($data["Data"], $index, 3);
                 }
 
             }

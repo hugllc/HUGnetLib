@@ -174,7 +174,7 @@ class DevInfo extends HUGnetClass
         } else {
             $dateStr = "Y-m-d";
         }
-        if ((strtolower(trim($date)) == "now")
+        if ((strtolower(trim((string)$date)) == "now")
             || (!is_int($date) && !is_string($date))
             || empty($date)
         ) {

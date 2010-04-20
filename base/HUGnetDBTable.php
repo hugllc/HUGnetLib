@@ -141,10 +141,12 @@ abstract class HUGnetDBTable extends HUGnetContainer
         parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
         $this->verbose($this->myConfig->verbose);
-        $this->myDriver = &$this->myConfig->servers->getDriver(
-            $this,
-            $this->group
-        );
+        if (is_object($this->myConfig->servers)) {
+            $this->myDriver = &$this->myConfig->servers->getDriver(
+                $this,
+                $this->group
+            );
+        }
         if (!is_object($this->myDriver)) {
             $this->throwException(
                 "No available database connection available in group '".$this->group

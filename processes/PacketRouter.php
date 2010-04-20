@@ -75,6 +75,8 @@ class PacketRouter extends HUGnetContainer
     protected $PacketBuffer = array();
     /** @var array We queue up packets here before sending them out */
     protected $PacketQueue = array();
+    /** @var array We store our routes here */
+    protected $Routes = array();
 
     /**
     * Builds the class
@@ -150,7 +152,8 @@ class PacketRouter extends HUGnetContainer
     */
     public function queue(&$pkt)
     {
-        if (get_class($pkt) == "PacketContainer") {
+        if ($this->isMine($pkt, "PacketContainer")) {
+            $this->Routes[$pkt->From] = $pkt->group;
             $pkt->Timeout = $this->_timeout();
             $this->PacketQueue[] = &$pkt;
         }

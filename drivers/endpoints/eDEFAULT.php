@@ -675,7 +675,7 @@ class eDEFAULT
             if (isset($data['RawData'])) {
                 $index = 3;
                 $this->interpSensorsSetData($Info, $data);
-                $this->interpSensorsGetData($data["Data"], &$index, 3);
+                $this->interpSensorsGetData($data["Data"], $index, 3);
 
                 $return = $this->checkRecord($Info, $data);
                 $ret[]  = $data;

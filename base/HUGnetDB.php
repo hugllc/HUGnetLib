@@ -1186,7 +1186,7 @@ class HUGnetDB extends HUGnetClass implements HUGnetDBInterface
     */
     function sqlDate($date)
     {
-        if (trim(strtoupper($date)) == "NOW") {
+        if (trim(strtoupper((string)$date)) == "NOW") {
             return date($this->dateFormat);
         }
         if (is_numeric($date)) {

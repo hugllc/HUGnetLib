@@ -168,7 +168,7 @@ class History extends HUGnetDB implements HUGnetDBInterface
     private function _createFunction($DeviceKey, $input, $math)
     {
         // This cleans off everything but characters we want
-        $mathCode = ereg_replace("[^0-9\{\}+-/*()]", "", $math);
+        $mathCode = preg_replace("/[^0-9\{\}+-\/\*()]/", "", $math);
         // This inserts the variable code
         for ($i = 1; $i < 20; $i++) {
             $index = $i - 1;
