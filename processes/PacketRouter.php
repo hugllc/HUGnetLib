@@ -67,8 +67,6 @@ class PacketRouter extends HUGnetContainer
     /** @var array This is where the data is stored */
     protected $data = array();
 
-    /** @var array This is Packet Setup */
-    protected $myPackets = null;
     /** @var object This is our config */
     protected $myConfig = null;
     /** @var array This is our packet buffer */
@@ -93,7 +91,8 @@ class PacketRouter extends HUGnetContainer
         $this->myConfig = &ConfigContainer::singleton();
         // Run the parent stuff
         parent::__construct($data);
-
+        // Set the verbosity
+        $this->verbose($this->myConfig->verbose);
         // This defaults us to all groups present in the config
         if (empty($this->groups)) {
             $this->groups = $this->myConfig->sockets->groups();
@@ -118,26 +117,30 @@ class PacketRouter extends HUGnetContainer
     *
     * @return null
     */
-    public function send(PacketContainer &$pkt, $groups)
+    public function send(PacketContainer &$pkt, $groups = array())
     {
         // save the group to restore later
         $oldgroup = $pkt->group;
         // Save the retries, so we can make sure it only decrements once
         $retries  = $pkt->Retries;
-        $this->_checkGroups($pkt, $groups);
-        foreach ($groups as $group) {
-            // Don't send back the way we came
-            if ($group !== $oldgroup) {
-                // This makes sure the retries are decremented the correct number
-                // of times.
-                $pkt->Retries = $retries;
-                // Sets the group to send the packet out on
-                $pkt->group = $group;
-                // We don't want to wait for a reply
-                $pkt->GetReply = false;
-                // Send the packet
-                $pkt->send();
-            }
+        if (empty($groups)) {
+            // This takes care to not send back to the original interface
+            $groups = $this->_getGroups($pkt);
+        }
+        foreach ((array)$groups as $group) {
+            // This makes sure the retries are decremented the correct number
+            // of times.
+            $pkt->Retries = $retries;
+            // Sets the group to send the packet out on
+            $pkt->group = $group;
+            // We don't want to wait for a reply
+            $pkt->GetReply = false;
+            // Print it out if we are verbose
+            self::vprint(
+                "Sending ".$this->_output($pkt), HUGnetClass::VPRINT_VERBOSE
+            );
+            // Send the packet
+            $ret = $pkt->send();
         }
         // Set a new timeout
         $pkt->TimeoutAt = $this->Timeout;
@@ -157,17 +160,17 @@ class PacketRouter extends HUGnetContainer
     public function queue(&$pkt)
     {
         if ($this->isMine($pkt, "PacketContainer")) {
-            if ($this->_check($pkt)) {
-                $output  = $pkt->group.": ";
-                $output .= "From: ".$pkt->From." -> To: ".$pkt->To;
-                $output .= "  Command: ".$pkt->Command."  Type: ".$pkt->Type;
-                if (!empty($pkt->Data)) {
-                    $output .= "\r\nData: ".$pkt->Data;
+            self::vprint(
+                "Queueing ".$this->_output($pkt),
+                HUGnetClass::VPRINT_NORMAL
+            );
+            if (!$this->_reply($pkt)) {
+                if (!$pkt->unsolicited()) {
+                    $this->Routes[$pkt->From] = $pkt->group;
                 }
-                $this->Routes[$pkt->From] = $pkt->group;
+                $pkt->Retries = $this->Retries;
                 $pkt->Timeout = $this->Timeout;
                 $this->PacketQueue[] = &$pkt;
-                self::vprint($output, HUGnetClass::VPRINT_NORMAL);
             }
         }
     }
@@ -182,13 +185,15 @@ class PacketRouter extends HUGnetContainer
     public function read()
     {
         foreach ($this->groups as $group) {
+            self::vprint("Reading $group", HUGnetClass::VPRINT_VERBOSE);
+
             // Make sure of our timeout
             $data = array(
                 "Timeout" => 1,
                 "group" => $group,
+                "verbose" => $this->verbose,
             );
             $pkt = &PacketContainer::monitor($data);
-
             $this->queue($pkt);
         }
     }
@@ -206,7 +211,8 @@ class PacketRouter extends HUGnetContainer
             if (count($this->PacketBuffer) >= $this->MaxPackets) {
                 break;
             }
-            $this->send($this->PacketQueue[$key], $this->groups);
+            self::vprint("Routing", HUGnetClass::VPRINT_VERBOSE);
+            $this->send($this->PacketQueue[$key]);
             $this->PacketBuffer[] = &$this->PacketQueue[$key];
             unset($this->PacketQueue[$key]);
         }
@@ -222,15 +228,20 @@ class PacketRouter extends HUGnetContainer
     */
     public function gc()
     {
+        self::vprint("Garbage Collecting", HUGnetClass::VPRINT_VERBOSE);
         // Go though the packet buffer and check all the packets
         foreach (array_keys((array)$this->PacketBuffer) as $key) {
             // Check the timeout
             if ($this->PacketBuffer[$key]->Timeout()) {
                 if ($this->PacketBuffer[$key]->Retries > 0) {
                     // This needs to be sent again.
-                    $this->send($this->PacketBuffer[$key], $this->groups);
+                    $this->send($this->PacketBuffer[$key]);
                 } else {
                     // This packet is done.  Remove it.
+                    self::vprint(
+                        "Removing ".$this->_output($this->PacketBuffer[$key]),
+                        HUGnetClass::VPRINT_VERBOSE
+                    );
                     unset($this->PacketBuffer[$key]);
                 }
             }
@@ -239,49 +250,62 @@ class PacketRouter extends HUGnetContainer
     /**
     * This function checks all of the interfaces for packets
     *
-    * This function should be called periodically as often as possible.  It will
-    * only return the first packet it finds on each interface.
+    * @param mixed &$pkt The packet to check if it is a reply
+    *
+    * @return null
+    */
+    private function _output(&$pkt)
+    {
+        $output  = $pkt->group.": ";
+        $output .= "From: ".$pkt->From." -> To: ".$pkt->To;
+        $output .= "  Command: ".$pkt->Command."  Type: ".$pkt->Type;
+        if (!empty($pkt->Data)) {
+            $output .= "\r\nData: ".$pkt->Data;
+        }
+        return $output;
+    }
+    /**
+    * This function checks all of the interfaces for packets
     *
     * @param mixed &$pkt The packet to check if it is a reply
     *
     * @return null
     */
-    private function _check(&$pkt)
+    private function _reply(&$pkt)
     {
-        $return = true;
         foreach (array_keys((array)$this->PacketBuffer) as $key) {
-            // Check if this is one we sent out echo'd back
-            if ($this->PacketBuffer[$key]->same($pkt)) {
-                $return = false;
-            }
             // Check if this is a reply to one we have.
             if ($this->PacketBuffer[$key]->myReply($pkt)) {
                 $this->send($pkt, array($this->PacketBuffer[$key]->group));
                 unset($this->PacketBuffer[$key]);
-                $return = false;
+                return true;
             }
         }
-        return $return;
+        return false;
     }
     /**
     * This function sets the groups correctly to route the packets.  It doesn't
     * route findping packets.  It broadcasts them.
     *
-    * @param PacketContainer &$pkt    The packet to route
-    * @param array           &$groups The groups to send it out to
+    * @param PacketContainer &$pkt   The packet to route
+    * @param array           $groups The groups to send it out to
     *
     * @return null
     */
-    private function _checkGroups(&$pkt, &$groups)
+    private function _getGroups(&$pkt)
     {
         // Don't route if it is a find ping
         if ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST) {
-            return;
+            $groups = $this->groups;
+            unset($groups[$pkt->group]);
+        } else if (isset($this->Routes[$pkt->To])) {
+            // If we know where to put this, set the groups to where it needs to go.
+            $groups = array($this->Routes[$pkt->To] => $this->Routes[$pkt->To]);
+        } else {
+            $groups = $this->groups;
+            unset($groups[$pkt->group]);
         }
-        // If we know where to put this, set the groups to where it needs to go.
-        if (isset($this->Routes[$pkt->To])) {
-            $groups = array($this->Routes[$pkt->To]);
-        }
+        return (array)$groups;
     }
 }
 ?>

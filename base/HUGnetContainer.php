@@ -80,6 +80,7 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         $this->clearData();
         $this->fromAny($data);
+        parent::__construct($data);
     }
     /**
     * Registers extra vars

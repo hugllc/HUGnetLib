@@ -69,11 +69,9 @@ interface HUGnetPacketInterface
     * try to send the packet out the number of times in "Retries" in the case
     * of failure.
     *
-    * @param array $data The data to build the class with if called statically
-    *
     * @return PacketContainer object on success, null
     */
-    public function send($data = array());
+    public function send();
     /**
     * Checks to see if the contained packet is an unsolicited
     *

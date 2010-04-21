@@ -161,6 +161,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if (empty($this->Date)) {
             $this->Date = date("Y-m-d H:i:s");
         }
+        $this->verbose($this->myConfig->verbose);
     }
 
     /**
@@ -314,6 +315,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             );
             return false;
         }
+        self::vprint("Packet From ".$pkt->From, HUGnetClass::VPRINT_VERBOSE);
         // Set the time on the packet
         $pkt->_packetTime();
         // Set the socket on the packet
@@ -339,12 +341,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * try to send the packet out the number of times in "Retries" in the case
     * of failure.
     *
-    * @param array $data The data to build the class with if called statically
-    *                    This is ignored if not called statically.
-    *
     * @return PacketContainer object on success, null
     */
-    public function send($data = array())
+    public function send()
     {
         // Send the packet out
         if (is_object($this->mySocket)) {
@@ -399,6 +398,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $pkt = self::_new($data);
         // If we get a packet return it
         if ($pkt->mySocket->recvPkt($pkt)) {
+            self::vprint(
+                "Monitor: Packet from ".$pkt->From,
+                HUGnetClass::VPRINT_VERBOSE
+            );
             return $pkt;
         }
         // If we don't get a packet return false
@@ -520,9 +523,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return bool If this packet has timed out or not
     */
-    public function timeout()
+    public function timeout($timeout=0)
     {
-        return (bool)((strtotime($this->Date) + $this->Timeout) < time());
+        $timeout = empty($timeout) ? $this->Timeout : $timeout;
+        return (bool)((strtotime($this->Date) + $timeout) < time());
     }
     /**
     * returns true if this packet is the same as the given one.
@@ -534,7 +538,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function same(PacketContainer &$pkt)
     {
         return (bool) (($pkt->Command === $this->Command) && ($pkt->To === $this->To)
-            && ($pkt->From === $this->From) && ($pkt->Data === $this->Data));
+            && ($pkt->From === $this->From) && ($pkt->Data === $this->Data)
+            && ($pkt->Date === $this->Date));
     }
     /**
     * Checks to see if the given packet is a reply to this packet

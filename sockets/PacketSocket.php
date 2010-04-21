@@ -64,6 +64,8 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
         "group" => "default",               // The gateway group this is in
         "Timeout" => 10,                    // This is the timeout value
         "readIndex" => 0,                   // The index to start reading at
+        "DeviceID" => "000020",             // This is our device ID
+        "senderID" => 0,                    // Our ID as a sender
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -86,10 +88,9 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     public function __construct($data = array())
     {
-        $this->clearData();
-        $this->fromArray($data);
+        parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
-
+        $this->senderID = mt_rand(1, 24777216);
     }
     /**
     * Creates a database object
@@ -109,8 +110,11 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     public function connect()
     {
         if (!$this->connected()) {
+            // Set the verbosity
+            $this->verbose($this->myConfig->verbose);
             $config = array("group" => $this->dbGroup);
             $this->myTable = new PacketSocketTable($config, $this->dbGroup);
+            $this->myTable->verbose($this->verbose);
             $this->myTable->create();
         }
         return $this->connected();
@@ -136,21 +140,21 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     function &read($maxPackets = 1)
     {
         static $lastRead;
+        if (empty($lastRead)) {
+            $lastRead = (float)time();
+        }
         $this->connect();
-        $this->myTable->deleteOld();
-        $this->myTable->sqlOrderby = "Date asc";
+        $this->myTable->sqlOrderby = "PacketTime asc";
         $this->myTable->sqlLimit = (int)$maxPackets;
         $ret = $this->myTable->select(
-            "`Date` > ?",
-            array(date("Y-m-d H:i:s", $lastRead))
+            "`PacketTime` > ? AND `senderID` <> ?",
+            array($lastRead, $this->senderID)
         );
         if (is_object($ret[0])) {
-            $lastRead = strtotime($ret[0]->Date);
-            $id = $this->myTable->sqlId;
-            $this->readIndex = $ret[0]->$id;
-            //$ret[0]->deleteRow();
+            $lastRead = $ret[0]->PacketTime;
             return $ret[0];
         }
+        usleep(100000);
         return false;
     }
 
@@ -164,8 +168,10 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     function sendPkt(PacketContainer &$pkt)
     {
         $this->connect();
-        $packet = $this->myTable->factory($pkt);
-        return (bool)$packet->insertRow(true);
+        $this->myTable->deleteOld();
+        $this->myTable->fromPacket($pkt);
+        $this->myTable->senderID = $this->senderID;
+        return (bool)$this->myTable->insertRow(true);
     }
     /**
     * Waits for a reply packet for the packet given
@@ -176,6 +182,8 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     public function recvPkt(PacketContainer &$pkt)
     {
+        $this->connect();
+        $this->myTable->deleteOld();
         $timeout = time() + $pkt->Timeout;
         $newPkt = new PacketContainer();
         do {
@@ -187,7 +195,9 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             } else {
                 $buffer = $newPkt->toString();
             }
-            $ret = $pkt->recv($buffer);
+            if (!$pkt->same($newPkt)) {
+                $ret = $pkt->recv($buffer);
+            }
         } while (($ret === false) && ($timeout > time()));
         return $ret;
     }

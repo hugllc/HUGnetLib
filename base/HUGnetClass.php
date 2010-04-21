@@ -78,7 +78,9 @@ abstract class HUGnetClass
     */
     public function __construct($config = array())
     {
-        $this->verbose($config["verbose"]);
+        if (is_array($config) && isset($config["verbose"])) {
+            $this->verbose($config["verbose"]);
+        }
     }
 
     /**
@@ -90,8 +92,7 @@ abstract class HUGnetClass
     */
     public function verbose($level=0)
     {
-        $level = (int) $level;
-        $this->verbose = $level;
+        $this->verbose = (int)$level;
     }
     /**
     * Prints out a string

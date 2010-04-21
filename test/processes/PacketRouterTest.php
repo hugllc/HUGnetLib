@@ -386,16 +386,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                             "group" => "default",
                         )
                     ),
-                    // This is a duplicate.  This should get rejected silently
-                    new PacketContainer(
-                        array(
-                            "To" => "023456",
-                            "From" => "054321",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
                     new PacketContainer(
                         array(
                             "To" => "103456",

@@ -155,8 +155,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
             // @codeCoverageIgnoreStart
             // It thinks this line won't run.  The above function never returns.
         }
-        $this->verbose($this->myConfig->verbose);
         // @codeCoverageIgnoreEnd
+        $this->verbose($this->myConfig->verbose);
     }
 
     /**
@@ -280,7 +280,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function verbose($verbose)
     {
         parent::verbose($verbose);
-        $this->myDriver->verbose($verbose);
+        if (is_object($this->myDriver)) {
+            $this->myDriver->verbose($verbose);
+        }
     }
 }
 

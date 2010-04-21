@@ -134,6 +134,8 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                     "group" => "default",
                     "Timeout" => 10,
                     "readIndex" => 0,
+                    "DeviceID" => "000020",
+                    "senderID" => 0,
                 ),
             ),
             array(
@@ -142,12 +144,16 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                     "group" => "myGroup",
                     "Timeout" => 15,
                     "readIndex" => 5,
+                    "DeviceID" => "000021",
+                    "senderID" => "12345",
                 ),
                 array(
                     "dbGroup" => "myDBGroup",
                     "group" => "myGroup",
                     "Timeout" => 15,
                     "readIndex" => 5,
+                    "DeviceID" => "000021",
+                    "senderID" => 0,
                 ),
             ),
         );
@@ -166,6 +172,8 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new PacketSocket($preload);
+        $this->assertThat($o->senderID, $this->greaterThan(0));
+        $o->senderID = 0;
         $this->assertAttributeSame($expect, "data", $o);
     }
     /**
@@ -334,6 +342,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testSendPkt($preload, $write, $expect, $packet)
     {
+        $start = time();
         $this->o->fromArray($preload);
         $this->o->connect();
         $ret = $this->o->sendPkt($write);
@@ -341,7 +350,16 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $ret = $this->pdo->query("select * from `PacketSocket`");
         $res = $ret->fetchAll(PDO::FETCH_ASSOC);
         foreach (array_keys((array)$res) as $key) {
+            $this->assertThat(
+                $res[$key]["Timeout"], $this->greaterThan($start)
+            );
+            $this->assertThat(
+                $res[$key]["PacketTime"], $this->greaterThan($start)
+            );
+            $this->assertThat($res[$key]["senderID"], $this->greaterThan(0));
+            unset($res[$key]["senderID"]);
             unset($res[$key]["Timeout"]);
+            unset($res[$key]["PacketTime"]);
         }
         $this->assertSame($packet, $res);
     }

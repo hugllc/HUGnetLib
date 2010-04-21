@@ -133,6 +133,16 @@ class PacketSocketTable extends HUGnetDBTable
             "Type" => "int(11)",
             "Default" => 0,
         ),
+        "PacketTime" => array(
+            "Name" => "PacketTime",
+            "Type" => "float",
+            "Default" => 0.0,
+        ),
+        "senderID" => array(
+            "Name" => "senderID",
+            "Type" => "int(11)",
+            "Default" => 0,
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -169,6 +179,8 @@ class PacketSocketTable extends HUGnetDBTable
     );
     /** @var array This is where the data is stored */
     protected $data = array();
+    /** @var array This is our standard order by clause */
+    protected $sqlOrderby = "PacketTime ASC";
 
 
     /**
@@ -225,6 +237,7 @@ class PacketSocketTable extends HUGnetDBTable
         if (empty($this->Timeout)) {
             $this->Timeout = time()+$this->TimeoutPeriod;
         }
+        $this->_packetTime();
         return parent::insertRow($replace);
     }
     /**
@@ -235,6 +248,16 @@ class PacketSocketTable extends HUGnetDBTable
     public function deleteOld()
     {
         return $this->myDriver->deleteWhere("`Timeout` < ?", time());
+    }
+    /**
+    * Gets the current time
+    *
+    * @return float The current time in seconds
+    */
+    private function _packetTime()
+    {
+        list($usec, $sec) = explode(" ", microtime());
+        $this->PacketTime = ((float)$usec + (float)$sec);
     }
 
 }

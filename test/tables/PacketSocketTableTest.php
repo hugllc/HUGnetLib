@@ -156,6 +156,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "ReplyTime" => 0,
                     "Checked" => 0,
                     "Timeout" => 0,
+                    "PacketTime" => 0.0,
+                    "senderID" => 0,
                 ),
             ),
             array(
@@ -173,6 +175,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "ReplyTime" => 0,
                     "Checked" => 0,
                     "Timeout" => 0,
+                    "PacketTime" => 0.0,
+                    "senderID" => 0,
                 ),
             ),
             array(
@@ -190,6 +194,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "ReplyTime" => 0.0,
                     "Checked" => 0,
                     "Timeout" => 0,
+                    "PacketTime" => 0.0,
+                    "senderID" => 0,
                 ),
             ),
         );
@@ -272,6 +278,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                         "Type" => "CONFIG",
                         "ReplyTime" => "0.0",
                         "Checked" => "0",
+                        "senderID" => "0",
                     ),
                 ),
             ),
@@ -297,13 +304,16 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     */
     public function testInsertRow($preload, $replace, $expect)
     {
+        $start = time();
         $this->o->fromAny($preload);
         $this->o->insertRow($replace);
         $stmt = $this->pdo->query("SELECT * FROM `PacketSocket`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach (array_keys((array)$rows) as $key) {
-            $this->assertThat((int)$rows[$key]["Timeout"], $this->greaterThan(time()));
+            $this->assertThat($rows[$key]["Timeout"], $this->greaterThan($start));
+            $this->assertThat($rows[$key]["PacketTime"], $this->greaterThan($start));
             unset($rows[$key]["Timeout"]);
+            unset($rows[$key]["PacketTime"]);
         }
         $this->assertSame($expect, $rows);
     }
@@ -359,6 +369,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                         "ReplyTime" => "0.0",
                         "Checked" => "0",
                         "Timeout" => "2234234234",
+                        "senderID" => "0",
                     ),
                 ),
             ),
@@ -389,6 +400,9 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $this->o->deleteOld();
         $stmt = $this->pdo->query("SELECT * FROM `PacketSocket`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach (array_keys((array)$rows) as $key) {
+            unset($rows[$key]["PacketTime"]);
+        }
         $this->assertSame($expect, $rows);
     }
 

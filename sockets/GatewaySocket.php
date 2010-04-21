@@ -69,6 +69,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         "isVisible" => 0,                   // Whether this gateway is visible
         "Timeout" => 2,                     // Timeout when talking on this gateway
         "group" => "default",               // The group this gateway is in
+        "DeviceID" => "000020",             // This is our device ID
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -127,7 +128,10 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         if ($this->connected()) {
             return true;
         }
-        $this->vprint("Opening socket to ".$this->GatewayIP.":".$this->Port, 1);
+        $this->vprint(
+            "Opening socket to ".$this->GatewayIP.":".$this->Port,
+            HUGnetClass::VPRINT_VERBOSE
+        );
         $this->socket = @fsockopen(
             $this->data["GatewayIP"],
             $this->data["GatewayPort"],
@@ -140,7 +144,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
             $this->vprint(
                 "Opened the Socket ".$this->socket." to "
                 .$this->GatewayIP.":".$this->Port,
-                2
+                HUGnetClass::VPRINT_VERBOSE
             );
             return true;
         }
@@ -148,7 +152,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         $this->vprint(
             "Connection to ".$this->GatewayIP." Failed."
             ." Error ".$this->Errno.": ".$this->Error,
-            2
+            HUGnetClass::VPRINT_ERROR
         );
         return false;
     }
@@ -163,7 +167,10 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         if (!$this->connected()) {
             return;
         }
-        $this->vprint("Closing Connection ".$this->socket, 1);
+        $this->vprint(
+            "Closing Connection ".$this->socket,
+            HUGnetClass::VPRINT_VERBOSE
+        );
         // Close the socket
         fclose($this->socket);
         $this->socket = null;
@@ -254,7 +261,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
             // This bit of code I am not sure how to get to.  It is unlikely it will
             // ever get hit, but it will stop a fatal error if it is hit.
             // @codeCoverageIgnoreStart
-            $this->vprint("Bad Connection", 1);
+            $this->vprint("Bad Connection", HUGnetClass::VPRINT_VERBOSE);
             return false;
             // @codeCoverageIgnoreEnd
         } else if (count($read) > 0) {
@@ -262,7 +269,11 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
                 $string .= @fread($tsock, $maxChars);
             }
         }
-        $this->vprint("read: ".strlen($string)." chars on ".$this->socket, 5);
+        $this->vprint(
+            "read: ".strlen($string)." chars on ".$this->socket
+            ." (".devInfo::hexifyStr($string).")",
+            HUGnetClass::VPRINT_DEBUG
+        );
         return devInfo::hexifyStr($string);
     }
 

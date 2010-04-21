@@ -105,6 +105,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "isVisible" => 0,
                     "Timeout" => 2,
                     "group" => "default",
+                    "DeviceID" => "000020",
                 ),
             ),
             array(
@@ -119,6 +120,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "isVisible" => 1,
                     "Timeout" => 3,
                     "group" => "myGroup",
+                    "DeviceID" => "000021",
                 ),
                 array(
                     "GatewayKey" => 1,
@@ -131,6 +133,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "isVisible" => 1,
                     "Timeout" => 3,
                     "group" => "myGroup",
+                    "DeviceID" => "000021",
                 ),
             ),
         );
