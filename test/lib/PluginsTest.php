@@ -803,7 +803,8 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testRunFunction($name, $args, $preload, $expect)
     {
-        unset($_SESSION["pluginTestFunction"]);
+
+        $_SESSION["pluginTestFunction"] = array();
         $preload          = (array)$preload;
         $args             = (array)$args;
         $this->o->plugins = $preload;
@@ -908,7 +909,7 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testRunFunctions($type, $args, $preload, $expect)
     {
-        unset($_SESSION["pluginTestFunction"]); // Clear previous runs
+        $_SESSION["pluginTestFunction"] = null; // Clear previous runs
         $preload          = (array)$preload;
         $args             = (array)$args;
         $this->o->plugins = $preload;
@@ -1010,14 +1011,17 @@ class PluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testRunFilter($argument, $type, $args, $preload, $expect)
     {
-        unset($_SESSION["pluginTestFilter"]); // Clear previous runs
+        $_SESSION["pluginTestFilter"] = null; // Clear previous runs
         $preload          = (array)$preload;
         $args             = (array)$args;
         $this->o->plugins = $preload;
         $function         = array($this->o, "runFilter");
-        array_unshift($args, $type);  // Put the name as the first element
-        array_unshift($args, $argument);  // Put the name as the first element
-        call_user_func_array($function, $args);
+        //array_unshift($args, $type);  // Put the name as the first element
+        //array_unshift($args, $argument);  // Put the name as the first element
+        //call_user_func_array($function, $args);
+        $this->o->runFilter(
+            $argument, $type, $args[0], $args[1], $args[2], $args[3]
+        );
         $this->assertEquals($expect, $_SESSION["pluginTestFilter"]);
     }
 
@@ -1411,7 +1415,7 @@ function pluginTestFilter1($argument)
 *
 * @return mixed Returns $stuff.
 */
-function pluginTestFilter2($argument)
+function pluginTestFilter2(&$argument)
 {
     $args = func_get_args();
     if (is_array($args)) {

@@ -255,31 +255,32 @@ class Plugins extends HUGnetClass
     * Any other parameters sent to this function will be sent to the filter
     *     in the order they are received.
     *
-    * @param mixed  $Argument This is the argument to be sent to the filter
-    * @param string $Type     This is the type of Plugins to run.
+    * @param mixed  &$Argument This is the argument to be sent to the filter
+    * @param string $Type      This is the type of Plugins to run.
     *
     * @return mixed Modified version of Argument
     */
-    function runFilter($Argument, $Type)
-    {
-        $return = $Argument;
+    function runFilter(&$Argument, $Type) {
+        //$return = &$Argument;
         $this->vprint("Running Plugin Filters of Type: ".$Type."\n", 4);
         if (!is_array($this->plugins["Functions"][$Type])) {
             return $Argument;
         }
-        $fArgs = func_get_args();
-        array_shift($fArgs); // Shift off the argument
-        array_shift($fArgs); // Shift off the name of the function
+        $args = func_get_args();
+        //array_shift($fArgs); // Shift off the argument
+        //array_shift($fArgs); // Shift off the name of the function
+        unset($args[1]); // Remove the Type.
         foreach ($this->plugins["Functions"][$Type] as $fct) {
             $this->vprint("Running Plugin ".$fct["Name"]."\n", 4);
-            $args = $fArgs;
-            array_unshift($args, $return);
+            //$args = $fArgs;
+            //array_unshift($args, $return);
+            //$args = array_merge(array(&$return), $fArgs);
             $this->vprint("Running Plugin '".$fct["Name"]."'", 3);
             $this->vprint(" of Type: '".$fct["Types"]."'\n", 3);
             $this->vprint("[PLUGIN OUTPUT]\n", 4);
             $ret = $this->_runFunction($fct["Name"], $args);
             if (!is_null($ret)) {
-                $return = $ret;
+                //$return = &$ret;
             }
             $this->vprint($output, 4);
             $this->vprint("[END PLUGIN OUTPUT]\n", 4);
@@ -300,7 +301,6 @@ class Plugins extends HUGnetClass
     */
     function runFunction($Name)
     {
-
         $fct = $this->getFunction($Name);
         if (($fct === false) || !function_exists($fct["Name"])) {
             $this->vprint("Function ".$Name." Not Found!\n", 4);
@@ -332,7 +332,6 @@ class Plugins extends HUGnetClass
     */
     function getFunction($Name)
     {
-
         if (!is_array($this->plugins["Functions"])) {
             return false;
         }
@@ -388,20 +387,24 @@ class Plugins extends HUGnetClass
     * This function is the mainstay of running plugins.  It is used to run Plugins
     * in batches based on their type.
     *
-    * @param string $name The name of the function to call
-    * @param array  $args The arguments to call the function with
+    * @param string $name  The name of the function to call
+    * @param array  &$args The arguments to call the function with
     *
     * @return int The number of functions run
     */
-    private function _runFunction($name, $args)
+    private function &_runFunction($name, &$args)
     {
         if (!function_exists($name)) {
             $this->vprint("Function $name does not exist\n", 3);
             return false;
         }
-
         try {
-            $output = call_user_func_array($name, $args);
+            $call  = "return ".$name."(";
+            if (!empty($args)) {
+                $call .= '$args['.implode('], $args[', array_keys($args)).']';
+            }
+            $call .= ");";
+            $output = eval($call);
         } catch (ErrorException $e) {
             $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
             return null;
