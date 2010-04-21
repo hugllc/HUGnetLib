@@ -72,7 +72,9 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->pdo = &$this->config->servers->getPDO();
         $this->o = new PacketSocketTable();
+        $this->o->create();
     }
 
     /**
@@ -142,6 +144,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
             array(
                 array(),
                 array(
+                    "TimeoutPeriod" => 5,
                     "group" => "default",
                     "id" => null,
                     "Date" => "0000-00-00 00:00:00",
@@ -152,11 +155,13 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Type" => "UNSOLICITED",
                     "ReplyTime" => 0,
                     "Checked" => 0,
+                    "Timeout" => 0,
                 ),
             ),
             array(
                 new PacketContainer(),
                 array(
+                    "TimeoutPeriod" => 5,
                     "group" => "default",
                     "id" => null,
                     "Date" => "0000-00-00 00:00:00",
@@ -167,11 +172,13 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Type" => "UNSOLICITED",
                     "ReplyTime" => 0,
                     "Checked" => 0,
+                    "Timeout" => 0,
                 ),
             ),
             array(
                 $pkt1,
                 array(
+                    "TimeoutPeriod" => 5,
                     "group" => "default",
                     "id" => null,
                     "Date" => "2003-03-24 02:21:24",
@@ -182,6 +189,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Type" => "CONFIG",
                     "ReplyTime" => 0.0,
                     "Checked" => 0,
+                    "Timeout" => 0,
                 ),
             ),
         );
@@ -228,6 +236,161 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $this->assertAttributeSame($expect, "data", $this->o);
     }
 
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataInsertRow()
+    {
+        return array(
+            // Auto increment
+            array(
+                array(
+                    "TimeoutPeriod" => 5,
+                    "group" => "default",
+                    "id" => null,
+                    "Date" => "2003-03-24 02:21:24",
+                    "Command" => "5C",
+                    "PacketFrom" => "654321",
+                    "PacketTo" => "123456",
+                    "RawData" => "0102",
+                    "Type" => "CONFIG",
+                    "ReplyTime" => 0.0,
+                    "Checked" => 0,
+                    "Timeout" => 0,
+                ),
+                false,
+                array(
+                    array(
+                        "id" => "1",
+                        "Date" => "2003-03-24 02:21:24",
+                        "Command" => "5C",
+                        "PacketFrom" => "654321",
+                        "PacketTo" => "123456",
+                        "RawData" => "0102",
+                        "Type" => "CONFIG",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                true,
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param bool  $replace Replace any records that collide with this one.
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataInsertRow
+    *
+    * @return null
+    */
+    public function testInsertRow($preload, $replace, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->o->insertRow($replace);
+        $stmt = $this->pdo->query("SELECT * FROM `PacketSocket`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach (array_keys((array)$rows) as $key) {
+            $this->assertThat((int)$rows[$key]["Timeout"], $this->greaterThan(time()));
+            unset($rows[$key]["Timeout"]);
+        }
+        $this->assertSame($expect, $rows);
+    }
+    /**
+    * Data provider for testDeleteOld
+    *
+    * @return array
+    */
+    public static function dataDeleteOld()
+    {
+        return array(
+            // Auto increment
+            array(
+                array(
+                    array(
+                        "TimeoutPeriod" => 5,
+                        "group" => "default",
+                        "id" => null,
+                        "Date" => "2003-03-24 02:21:24",
+                        "Command" => "5C",
+                        "PacketFrom" => "654321",
+                        "PacketTo" => "123456",
+                        "RawData" => "0102",
+                        "Type" => "CONFIG",
+                        "ReplyTime" => 0.0,
+                        "Checked" => 0,
+                        "Timeout" => 2234234234,
+                    ),
+                    array(
+                        "TimeoutPeriod" => 5,
+                        "group" => "default",
+                        "id" => null,
+                        "Date" => "2003-03-24 02:21:24",
+                        "Command" => "5C",
+                        "PacketFrom" => "654000",
+                        "PacketTo" => "123000",
+                        "RawData" => "0102030405",
+                        "Type" => "CONFIG",
+                        "ReplyTime" => 0.0,
+                        "Checked" => 0,
+                        "Timeout" => (time() - 100),
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => "1",
+                        "Date" => "2003-03-24 02:21:24",
+                        "Command" => "5C",
+                        "PacketFrom" => "654321",
+                        "PacketTo" => "123456",
+                        "RawData" => "0102",
+                        "Type" => "CONFIG",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                        "Timeout" => "2234234234",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataDeleteOld
+    *
+    * @return null
+    */
+    public function testDeleteOld($preload, $expect)
+    {
+        foreach ((array)$preload as $load) {
+            $this->o->fromAny($load);
+            $this->o->insertRow();
+        }
+        $this->o->deleteOld();
+        $stmt = $this->pdo->query("SELECT * FROM `PacketSocket`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+    }
 
 }
 

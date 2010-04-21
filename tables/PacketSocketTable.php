@@ -128,6 +128,11 @@ class PacketSocketTable extends HUGnetDBTable
             "Type" => "int(11)",
             "Default" => 0,
         ),
+        "Timeout" => array(
+            "Name" => "Timeout",
+            "Type" => "int(11)",
+            "Default" => 0,
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -159,6 +164,7 @@ class PacketSocketTable extends HUGnetDBTable
     protected $myConfig = null;
     /** @var array This is the default values for the data */
     protected $default = array(
+        "TimeoutPeriod" => 5,    // The timeout period of this packet
         "group" => "default",    // Server group to use
     );
     /** @var array This is where the data is stored */
@@ -184,6 +190,7 @@ class PacketSocketTable extends HUGnetDBTable
         $this->RawData = $pkt->Data;
         $this->Type = $pkt->Type;
         $this->ReplyTime = $pkt->replyTime();
+        $this->TimeoutPeriod = $pkt->Timeout;
         $this->id = null;
     }
     /**
@@ -200,6 +207,34 @@ class PacketSocketTable extends HUGnetDBTable
         } else {
             parent::fromAny($data);
         }
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @param bool $replace Replace any records found that collide with this one.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertRow($replace = false)
+    {
+        // exit if we are empty
+        if ($this->isEmpty()) {
+            return false;
+        }
+        // Set the timeout
+        if (empty($this->Timeout)) {
+            $this->Timeout = time()+$this->TimeoutPeriod;
+        }
+        return parent::insertRow($replace);
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @return bool True on success, False on failure
+    */
+    public function deleteOld()
+    {
+        return $this->myDriver->deleteWhere("`Timeout` < ?", time());
     }
 
 }

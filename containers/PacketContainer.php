@@ -516,6 +516,27 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             || empty($this->data));
     }
     /**
+    * returns true if this packet has timed out
+    *
+    * @return bool If this packet has timed out or not
+    */
+    public function timeout()
+    {
+        return (bool)((strtotime($this->Date) + $this->Timeout) < time());
+    }
+    /**
+    * returns true if this packet is the same as the given one.
+    *
+    * @param object &$pkt The packet to check
+    *
+    * @return bool If this packet has timed out or not
+    */
+    public function same(PacketContainer &$pkt)
+    {
+        return (bool) (($pkt->Command === $this->Command) && ($pkt->To === $this->To)
+            && ($pkt->From === $this->From) && ($pkt->Data === $this->Data));
+    }
+    /**
     * Checks to see if the given packet is a reply to this packet
     *
     * @param PacketContainer &$pkt The packet to check

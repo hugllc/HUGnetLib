@@ -1181,6 +1181,123 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testSame
+    *
+    * @return array
+    */
+    public static function dataSame()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "010203",
+                ),
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "010203",
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "010203",
+                ),
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "0102",
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the isEmpty method
+    *
+    * @param array  $preload  Data to preload
+    * @param array  $preload2 Data to preload
+    * @param string $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSame
+    */
+    public function testSame($preload, $preload2, $expect)
+    {
+        $this->o->fromAny($preload);
+        $pkt = new PacketContainer($preload2);
+        $ret = $this->o->Same($pkt);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testTimeout
+    *
+    * @return array
+    */
+    public static function dataTimeout()
+    {
+        return array(
+            array(
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "010203",
+                    "Date" => date("Y-m-d H:i:s"),
+                    "Timeout" => 100,
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "To" => "123456",
+                    "From" => "123456",
+                    "Command" => "5B",
+                    "Data" => "010203",
+                    "Date" => "2003-02-25 00:00:00",
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * test the timeout method
+    *
+    * @param array  $preload  Data to preload
+    * @param string $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataTimeout
+    */
+    public function testTimeout($preload, $expect)
+    {
+        $pkt = new PacketContainer($preload);
+        $ret = $pkt->Timeout();
+        $this->assertSame($expect, $ret);
+    }
 
     /**
     * data provider for testDeviceID

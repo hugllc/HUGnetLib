@@ -140,7 +140,6 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $this->clearData();
         parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
-        $this->verbose($this->myConfig->verbose);
         if (is_object($this->myConfig->servers)) {
             $this->myDriver = &$this->myConfig->servers->getDriver(
                 $this,
@@ -156,6 +155,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
             // @codeCoverageIgnoreStart
             // It thinks this line won't run.  The above function never returns.
         }
+        $this->verbose($this->myConfig->verbose);
         // @codeCoverageIgnoreEnd
     }
 
@@ -210,7 +210,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function insertRow($replace = false)
     {
-        if ($this->default == $this->data) {
+        if ($this->isEmpty()) {
             return false;
         }
         if ($this->default[$this->sqlId] === $this->data[$this->sqlId]) {
@@ -268,6 +268,19 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $ret = new $class($this->toArray());
         $ret->fromAny($data);
         return $ret;
+    }
+    /**
+    * This function creates other tables that are identical to this one, except
+    * for the data given.
+    *
+    * @param int $verbose The verbose number to use
+    *
+    * @return object A reference to a table object
+    */
+    public function verbose($verbose)
+    {
+        parent::verbose($verbose);
+        $this->myDriver->verbose($verbose);
     }
 }
 

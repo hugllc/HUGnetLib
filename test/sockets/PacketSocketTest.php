@@ -339,7 +339,11 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $ret = $this->o->sendPkt($write);
         $this->assertSame($expect, $ret);
         $ret = $this->pdo->query("select * from `PacketSocket`");
-        $this->assertSame($packet, $ret->fetchAll(PDO::FETCH_ASSOC));
+        $res = $ret->fetchAll(PDO::FETCH_ASSOC);
+        foreach (array_keys((array)$res) as $key) {
+            unset($res[$key]["Timeout"]);
+        }
+        $this->assertSame($packet, $res);
     }
 
     /**

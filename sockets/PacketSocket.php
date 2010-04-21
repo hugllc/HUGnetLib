@@ -135,16 +135,20 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     function &read($maxPackets = 1)
     {
+        static $lastRead;
         $this->connect();
+        $this->myTable->deleteOld();
+        $this->myTable->sqlOrderby = "Date asc";
         $this->myTable->sqlLimit = (int)$maxPackets;
         $ret = $this->myTable->select(
-            $this->myTable->sqlId." > ?",
-            array($this->readIndex)
+            "`Date` > ?",
+            array(date("Y-m-d H:i:s", $lastRead))
         );
         if (is_object($ret[0])) {
+            $lastRead = strtotime($ret[0]->Date);
             $id = $this->myTable->sqlId;
             $this->readIndex = $ret[0]->$id;
-            $ret[0]->deleteRow();
+            //$ret[0]->deleteRow();
             return $ret[0];
         }
         return false;
@@ -178,7 +182,12 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             $packet = $this->read(1);
             $newPkt->clearData();
             $newPkt->fromAny($packet);
-            $ret = $pkt->recv($newPkt);
+            if ($newPkt->isEmpty()) {
+                $buffer = "";
+            } else {
+                $buffer = $newPkt->toString();
+            }
+            $ret = $pkt->recv($buffer);
         } while (($ret === false) && ($timeout > time()));
         return $ret;
     }

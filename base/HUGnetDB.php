@@ -986,22 +986,28 @@ class HUGnetDB extends HUGnetClass implements HUGnetDBInterface
     */
     public function printError()
     {
-        if ($this->verbose) {
-            if (!empty($this->errorState) && ($this->errorState != "00000")) {
-                self::vprint("Error State: ".$this->errorState);
-            }
-            if (!empty($this->error)) {
-                self::vprint("Error: ".$this->error);
-            }
-            if (!empty($this->errorMsg)) {
-                self::vprint("Error Message: ".$this->errorMsg);
-            }
-            if (!empty($this->metaError)) {
-                self::vprint("Meta Error: ".$this->metaError);
-            }
-            if (!empty($this->metaErrorMsg)) {
-                self::vprint("Meta Error Message: ".$this->metaErrorMsg);
-            }
+        if (!empty($this->errorState) && ($this->errorState != "00000")) {
+            self::vprint(
+                "Error State: ".$this->errorState, HUGnetClass::VPRINT_ERROR
+            );
+        }
+        if (!empty($this->error)) {
+            self::vprint("Error: ".$this->error, HUGnetClass::VPRINT_ERROR);
+        }
+        if (!empty($this->errorMsg)) {
+            self::vprint(
+                "Error Message: ".$this->errorMsg, HUGnetClass::VPRINT_ERROR
+            );
+        }
+        if (!empty($this->metaError)) {
+            self::vprint(
+                "Meta Error: ".$this->metaError, HUGnetClass::VPRINT_ERROR
+            );
+        }
+        if (!empty($this->metaErrorMsg)) {
+            self::vprint(
+                "Meta Error Message: ".$this->metaErrorMsg, HUGnetClass::VPRINT_ERROR
+            );
         }
     }
     /**

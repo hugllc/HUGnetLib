@@ -54,14 +54,16 @@ abstract class HUGnetClass
     /** These are error constants to be used with vprint */
     /** @var no messages */
     const VPRINT_NONE = 0;
+    /** @var no messages */
+    const VPRINT_NORMAL = 1;
     /** @var error messages */
-    const VPRINT_ERROR = 1;
+    const VPRINT_ERROR = 2;
     /** @var verbose messages */
-    const VPRINT_VERBOSE = 2;
+    const VPRINT_VERBOSE = 4;
     /** @var warning messages */
-    const VPRINT_WARNING = 4;
+    const VPRINT_WARNING = 8;
     /** @var debug messages */
-    const VPRINT_DEBUG = 8;
+    const VPRINT_DEBUG = 16;
 
     /** @var int The verbosity level */
     public $verbose = 0;

@@ -104,6 +104,21 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         $this->config = null;
     }
     /**
+    * Tests for exceptions
+    *
+    * @expectedException Exception
+    *
+    * @return null
+    */
+    public function testConstructTableExec()
+    {
+        $config = array(
+
+        );
+        $this->config->forceConfig($config);
+        $o = new PacketRouter();
+    }
+    /**
     * data provider for testConstructor
     *
     * @return array
@@ -164,12 +179,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         // Check the configuration is set correctly
         $config = $this->readAttribute($o, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
-        $packets = $this->readAttribute($o, "myPackets");
-        foreach ($expect["groups"] as $group) {
-            $this->assertSame("PacketContainer", get_class($packets[$group]));
-            $this->assertSame($group, $packets[$group]->group);
-            $this->assertFalse($packets[$group]->GetReply);
-        }
     }
     /**
     * data provider for testSend
@@ -236,11 +245,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         foreach ($groups as $group) {
             $this->assertSame($expect, $this->socket[$group]->writeString);
         }
-        $this->assertThat(
-            $pkt->Timeout,
-            $this->greaterThan(time()-100),
-            "Timeout is not being set correctly"
-        );
         // This makes sure that the group has not changed.
         $this->assertSame(
             $pkt->group,
@@ -345,11 +349,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             $data = $this->readAttribute($p[$k], "data");
             unset($data["Date"]);
             unset($data["Time"]);
-            $this->assertThat(
-                $data["Timeout"],
-                $this->greaterThan(time()-100),
-                "Timeout is not being set correctly"
-            );
             unset($data["Timeout"]);
             $ret[] = $data;
         }
@@ -378,6 +377,16 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                             "group" => "default",
                         )
                     ),
+                    new PacketContainer(
+                        array(
+                            "To" => "023456",
+                            "From" => "054321",
+                            "Command" => "5C",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    // This is a duplicate.  This should get rejected silently
                     new PacketContainer(
                         array(
                             "To" => "023456",
@@ -425,14 +434,20 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "other" => "other",
-                    "third" => "third",
+                    "other" => "5A5A5A5C1234566543210501020304052F"
+                        ."5A5A5A5C0234560543210501020304055F"
+                        ."5A5A5A5C10345660432105010203040528"
+                        ."5A5A5A5C1204566503210501020304055F"
+                        ."5A5A5A5C12305665402105010203040528",
+                    "third" => "5A5A5A5C1234566543210501020304052F"
+                        ."5A5A5A5C0234560543210501020304055F"
+                        ."5A5A5A5C10345660432105010203040528"
+                        ."5A5A5A5C1204566503210501020304055F"
+                        ."5A5A5A5C12305665402105010203040528",
+                    "default" => "",
                 ),
-                "5A5A5A5C1234566543210501020304052F"
-                ."5A5A5A5C0234560543210501020304055F"
-                ."5A5A5A5C10345660432105010203040528"
-                ."5A5A5A5C1204566503210501020304055F"
-                ."5A5A5A5C12305665402105010203040528",
+                5,
+                1,
             ),
             array(
                 array(),
@@ -448,10 +463,74 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "other" => "other",
-                    "third" => "third",
+                    "other" => "5A5A5A5500045665400005010203040526",
+                    "third" => "5A5A5A5500045665400005010203040526",
+                    "default" => "",
                 ),
-                "5A5A5A5500045665400005010203040526",
+                1,
+                0,
+            ),
+            // Routed.  It knows where to put it in
+            array(
+                array(),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "55",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "654000",
+                            "From" => "000456",
+                            "Command" => "01",
+                            "Data" => "0102030405",
+                            "group" => "other",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A5500045665400005010203040526",
+                    "third" => "5A5A5A5500045665400005010203040526",
+                    "default" => "5A5A5A0165400000045605010203040572",
+                ),
+                0,
+                0,
+            ),
+            // Routed.  It knows where to put it in
+            array(
+                array(),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "03",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "654000",
+                            "From" => "000456",
+                            "Command" => "01",
+                            "Data" => "0102030405",
+                            "group" => "other",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A0300045665400005010203040570",
+                    "third" => "5A5A5A0300045665400005010203040570",
+                    "default" => "5A5A5A0165400000045605010203040572",
+                ),
+                0,
+                0,
             ),
         );
     }
@@ -460,45 +539,200 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     *
     * @param array  $preload The value to preload
     * @param object $pkts    The packet to send out
-    * @param array  $groups  The groups to check
     * @param string $expect  The expected return
+    * @param int    $buffer  The number of packets in the buffer
+    * @param int    $queue   The number of packets in the queue
     *
     * @return null
     *
     * @dataProvider dataRoute
     */
-    public function testRoute($preload, $pkts, $groups, $expect)
+    public function testRoute($preload, $pkts, $expect, $buffer, $queue)
     {
         $this->o->fromAny($preload);
         foreach (array_keys((array)$pkts) as $key) {
             $this->o->queue($pkts[$key]);
+            $this->o->route();
         }
-        $this->o->route();
-        foreach ($groups as $group) {
-            $this->assertSame($expect, $this->socket[$group]->writeString);
+        foreach ($expect as $group => $data) {
+            $this->assertSame(
+                $data,
+                $this->socket[$group]->writeString,
+                "Failed on group $group"
+            );
         }
         $p = &$this->readAttribute($this->o, "PacketBuffer");
         $q = &$this->readAttribute($this->o, "PacketQueue");
-        if (count($pkts) > $this->o->MaxPackets) {
-            $this->assertSame(
-                $this->o->MaxPackets,
-                count($p),
-                "There should be ".$this->o->MaxPackets." packet in the buffer"
-            );
-            $cq = count($pkts) - $this->o->MaxPackets;
-            $this->assertSame(
-                $cq,
-                count($q),
-                "There should be ".$cq." packet in the queue"
-            );
-        } else {
-            $this->assertSame(
-                count($pkts),
-                count($p),
-                "There should be ".count($pkts)." packet in the buffer"
-            );
+        $this->assertSame(
+            $buffer,
+            count($p),
+            "There should be ".$buffer." packet in the buffer, not ".count($p)
+        );
+        $this->assertSame(
+            $queue,
+            count($q),
+            "There should be ".$queue." packet in the queue, not ".count($q)
+        );
+    }
 
+    /**
+    * data provider for testGC
+    *
+    * @return array
+    */
+    public static function dataGC()
+    {
+        return array(
+            // Routed.  It knows where to put it in
+            array(
+                array("Timeout" => 1),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "55",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "654000",
+                            "From" => "000456",
+                            "Command" => "01",
+                            "Data" => "0102030405",
+                            "group" => "other",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A5500045665400005010203040526",
+                    "third" => "5A5A5A5500045665400005010203040526",
+                    "default" => "5A5A5A0165400000045605010203040572",
+                ),
+            ),
+            // Routed.  It knows where to put it in.
+            array(
+                array("Timeout" => 1),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "03",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "654000",
+                            "From" => "000456",
+                            "Command" => "01",
+                            "Data" => "0102030405",
+                            "group" => "other",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A0300045665400005010203040570",
+                    "third" => "5A5A5A0300045665400005010203040570",
+                    "default" => "5A5A5A0165400000045605010203040572",
+                ),
+            ),
+            // No reply
+            array(
+                array("Timeout" => 1),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "55",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A5500045665400005010203040526"
+                        ."5A5A5A5500045665400005010203040526"
+                        ."5A5A5A0300045665400005010203040570"
+                        ."5A5A5A5500045665400005010203040526",
+                    "third" => "5A5A5A5500045665400005010203040526"
+                        ."5A5A5A5500045665400005010203040526"
+                        ."5A5A5A0300045665400005010203040570"
+                        ."5A5A5A5500045665400005010203040526",
+                    "default" => "",
+                ),
+            ),
+            // Routed.  It knows where to put it in.
+            array(
+                array("Timeout" => 1),
+                array(
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "03",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
+                ),
+                array(
+                    "other" => "5A5A5A0300045665400005010203040570"
+                        ."5A5A5A0300045665400005010203040570"
+                        ."5A5A5A0300045665400005010203040570",
+                    "third" => "5A5A5A0300045665400005010203040570"
+                        ."5A5A5A0300045665400005010203040570"
+                        ."5A5A5A0300045665400005010203040570",
+                    "default" => "",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param object $pkts    The packet to send out
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGC
+    */
+    public function testGC($preload, $pkts, $expect)
+    {
+        $this->o->fromAny($preload);
+        foreach (array_keys((array)$pkts) as $key) {
+            $this->o->queue($pkts[$key]);
+            $this->o->route();
         }
+        // Set the end time longer than we have timeouts
+        $end = time() + ($this->o->Timeout * ($this->o->Retries + 5));
+        // Run the routine
+        do {
+            $this->o->gc();
+            $p = &$this->readAttribute($this->o, "PacketBuffer");
+            usleep(100);
+        } while (($end > time()) && (count($p) > 0));
+
+        foreach ($expect as $group => $data) {
+            $this->assertSame(
+                $data,
+                $this->socket[$group]->writeString,
+                "Failed on group $group"
+            );
+        }
+        $p = &$this->readAttribute($this->o, "PacketBuffer");
+        $this->assertSame(
+            0,
+            count($p),
+            "There should be 0 packet in the buffer"
+        );
     }
 
 }
