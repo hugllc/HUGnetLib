@@ -366,7 +366,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "GatewayIP" => "127.0.0.1",
                     "GatewayPort" => "80",
                 ),
-                new PacketContainer(),
+                new PacketContainer(array("To" => "123456", "Command" => "03")),
                 true,
                 !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
             ),
