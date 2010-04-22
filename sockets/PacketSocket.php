@@ -186,12 +186,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             $packet = &$this->read();
             $newPkt->clearData();
             $newPkt->fromAny($packet);
-            if ($newPkt->isEmpty()) {
-                $buffer = "";
-            } else {
-                $buffer = $newPkt->toString();
-            }
-            $ret = $pkt->recv($buffer);
+            $ret = $pkt->recv($newPkt->toString());
         } while (($ret === false) && ($timeout > time()));
         return $ret;
     }

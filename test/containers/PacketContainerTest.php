@@ -1784,7 +1784,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(),
-                "5A5A5A000000000000000000",
+                "",
             ),
         );
     }

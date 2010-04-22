@@ -212,6 +212,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function toString($default = true)
     {
+        // Return an empty string if the packet is empty
+        if ($this->isEmpty()) {
+            return "";
+        }
         // Command (2 chars)
         $string  = devInfo::setStringSize($this->Command, 2);
         // To (6 chars)
@@ -414,7 +418,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function checksum()
     {
-        return substr((string)$this, -2);
+        return str_pad(substr((string)$this, -2), 2, "0", STR_PAD_LEFT);
     }
     /**
     * returns the calculated checksum of this packet
