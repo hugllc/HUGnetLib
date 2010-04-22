@@ -643,6 +643,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Date" => "2010-04-21 18:24:56",
                         "Data" => "010203040506",
                         "Command" => "03",
+                        "Timeout" => 1,
                     ),
                 ),
                 array(
@@ -653,9 +654,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Data" => "010203040506",
                         "Command" => "01",
                     ),
-                ),
-                array(
-                    true,
                 ),
             ),
         );
@@ -672,19 +670,27 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @dataProvider dataPacketSend
     */
-    public function testPacketSend($preload, $preload2, $expect)
+    public function testPacketSend($preload, $preload2)
     {
-        $ret = array();
-        foreach ($preload as $key => $load) {
-            $pkt = new PacketContainer($preload[$key]);
-            $pkt2 = new PacketContainer($preload2[$key]);
-            $this->mySocket->sendPkt($pkt);
-            $this->myTable->fromAny($pkt2);
-            $this->myTable->insertRow();
-            $this->mySocket->recvPkt($pkt);
-            $ret[$key] = is_object($pkt->Reply);
+        $count = 10;
+        for ($i = 0; $i < $count; $i++) {
+            foreach ($preload as $key => $load) {
+                $pkt = new PacketContainer($preload[$key]);
+                $pkt2 = new PacketContainer($preload2[$key]);
+                $this->mySocket->sendPkt($pkt);
+                $this->myTable->fromAny($pkt2);
+                $this->myTable->insertRow();
+                $this->mySocket->recvPkt($pkt);
+                if (!is_object($pkt->Reply)) {
+                    $failures++;
+                    $this->assertThat(
+                        $failures,
+                        $this->lessThan($count*0.01),
+                        ($count*0.01)." failures in $i attempts ($count total tries)"
+                    );
+                }
+            }
         }
-        $this->assertSame($expect, $ret);
     }
 
 }

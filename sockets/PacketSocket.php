@@ -144,6 +144,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             $lastRead = (float)time();
         }
         $this->connect();
+        $this->myTable->clearData();
         $this->myTable->sqlOrderby = "PacketTime asc";
         $this->myTable->sqlLimit = (int)$maxPackets;
         $ret = $this->myTable->select(
@@ -169,6 +170,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     {
         $this->connect();
         $this->myTable->deleteOld();
+        $this->myTable->clearData();
         $this->myTable->fromPacket($pkt);
         $this->myTable->senderID = $this->senderID;
         return (bool)$this->myTable->insertRow(true);
