@@ -67,10 +67,24 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function setUp()
     {
+        $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                ),
+            ),
+            "sockets" => array(
+                array(
+                    "dbGroup" => "default",
+                ),
+            ),
+        );
         $this->myConfig = &ConfigContainer::singleton();
-        $this->myConfig->forceConfig();
+        $this->myConfig->forceConfig($config);
         $this->pdo = &$this->myConfig->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `PacketSocket`");
+        $this->mySocket = &$this->myConfig->sockets->getSocket();
         $this->myTable = new PacketSocketTable();
         $this->myTable->create();
         $this->o = new PacketSocket();
@@ -88,7 +102,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     protected function tearDown()
     {
          if (is_object($this->pdo)) {
-            $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
+            $this->pdo->query("DROP TABLE IF EXISTS `PacketSocket`");
         }
         $this->o   = null;
         $this->pdo = null;
@@ -292,24 +306,30 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     public static function dataSendPkt()
     {
         return array(
+            // No packets
             array(
                 array(
                 ),
-                new PacketContainer(),
+                array(
+                    new PacketContainer(),
+                ),
                 false,
                 array(
                 ),
             ),
+            // One packet
             array(
                 array(
                 ),
-                new PacketContainer(array(
-                    "To" => "123456",
-                    "From" => "654321",
-                    "Command" => "01",
-                    "Data" => "010203040506",
-                    "Date" => "2003-02-28 01:59:00",
-                )),
+                array(
+                    new PacketContainer(array(
+                        "To" => "123456",
+                        "From" => "654321",
+                        "Command" => "01",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                ),
                 true,
                 array(
                     array(
@@ -320,6 +340,186 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "PacketTo" => "123456",
                         "RawData" => "010203040506",
                         "Type" => "REPLY",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                ),
+            ),
+            // Many packets
+            array(
+                array(
+                ),
+                array(
+                    new PacketContainer(array(
+                        "To" => "000001",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000002",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000003",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000004",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000005",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000006",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000007",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000008",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "000009",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                    new PacketContainer(array(
+                        "To" => "00000A",
+                        "Command" => "55",
+                        "Data" => "010203040506",
+                        "Date" => "2003-02-28 01:59:00",
+                    )),
+                ),
+                true,
+                array(
+                    array(
+                        "id" => "1",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000001",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000002",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "3",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000003",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "4",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000004",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "5",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000005",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "6",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000006",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "7",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000007",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "8",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000008",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "9",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "000009",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
+                        "ReplyTime" => "0.0",
+                        "Checked" => "0",
+                    ),
+                    array(
+                        "id" => "10",
+                        "Date" => "2003-02-28 01:59:00",
+                        "Command" => "55",
+                        "PacketFrom" => "000000",
+                        "PacketTo" => "00000A",
+                        "RawData" => "010203040506",
+                        "Type" => "SENSORREAD",
                         "ReplyTime" => "0.0",
                         "Checked" => "0",
                     ),
@@ -345,7 +545,9 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $start = time();
         $this->o->fromArray($preload);
         $this->o->connect();
-        $ret = $this->o->sendPkt($write);
+        foreach ($write as $pkt) {
+            $ret = $this->o->sendPkt($pkt);
+        }
         $this->assertSame($expect, $ret);
         $ret = $this->pdo->query("select * from `PacketSocket`");
         $res = $ret->fetchAll(PDO::FETCH_ASSOC);
@@ -423,6 +625,65 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $this->myTable->fromArray($write);
         $this->myTable->insertRow();
         $ret = $this->o->recvPkt($pkt);
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testPacketSend
+    *
+    * @return array
+    */
+    public static function dataPacketSend()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "To" => "654321",
+                        "From" => "123456",
+                        "Date" => "2010-04-21 18:24:56",
+                        "Data" => "010203040506",
+                        "Command" => "03",
+                    ),
+                ),
+                array(
+                    array(
+                        "To" => "123456",
+                        "From" => "654321",
+                        "Date" => "2010-04-21 18:24:52",
+                        "Data" => "010203040506",
+                        "Command" => "01",
+                    ),
+                ),
+                array(
+                    true,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload  The value to preload
+    * @param array $preload2 The value to preload
+    * @param mixed $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketSend
+    */
+    public function testPacketSend($preload, $preload2, $expect)
+    {
+        $ret = array();
+        foreach ($preload as $key => $load) {
+            $pkt = new PacketContainer($preload[$key]);
+            $pkt2 = new PacketContainer($preload2[$key]);
+            $this->mySocket->sendPkt($pkt);
+            $this->myTable->fromAny($pkt2);
+            $this->myTable->insertRow();
+            $this->mySocket->recvPkt($pkt);
+            $ret[$key] = is_object($pkt->Reply);
+        }
         $this->assertSame($expect, $ret);
     }
 

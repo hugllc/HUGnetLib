@@ -195,9 +195,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             } else {
                 $buffer = $newPkt->toString();
             }
-            if (!$pkt->same($newPkt)) {
-                $ret = $pkt->recv($buffer);
-            }
+            $ret = $pkt->recv($buffer);
         } while (($ret === false) && ($timeout > time()));
         return $ret;
     }
