@@ -115,6 +115,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             $config = array("group" => $this->dbGroup);
             $this->myTable = new PacketSocketTable($config, $this->dbGroup);
             $this->myTable->verbose($this->verbose);
+            $this->myTable->senderID = $this->senderID;
             $this->myTable->create();
         }
         return $this->connected();
@@ -144,19 +145,12 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
             $lastRead = (float)time();
         }
         $this->connect();
-        $this->myTable->clearData();
-        $this->myTable->sqlOrderby = "PacketTime asc";
-        $this->myTable->sqlLimit = (int)$maxPackets;
-        $ret = $this->myTable->select(
-            "`PacketTime` > ? AND `senderID` <> ?",
-            array($lastRead, $this->senderID)
-        );
-        if (is_object($ret[0])) {
-            $lastRead = $ret[0]->PacketTime;
-            return $ret[0];
+        $this->myTable->sqlOrderBy = "PacketTime ASC";
+        $ret = &$this->myTable->getNextPacket();
+        if ($ret === false) {
+            usleep(100000);
         }
-        usleep(100000);
-        return false;
+        return $ret;
     }
 
     /**
@@ -172,8 +166,8 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
         $this->myTable->deleteOld();
         $this->myTable->clearData();
         $this->myTable->fromPacket($pkt);
-        $this->myTable->senderID = $this->senderID;
         return (bool)$this->myTable->insertRow(true);
+
     }
     /**
     * Waits for a reply packet for the packet given
@@ -189,7 +183,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
         $timeout = time() + $pkt->Timeout;
         $newPkt = new PacketContainer();
         do {
-            $packet = $this->read(1);
+            $packet = &$this->read();
             $newPkt->clearData();
             $newPkt->fromAny($packet);
             if ($newPkt->isEmpty()) {

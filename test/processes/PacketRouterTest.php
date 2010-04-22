@@ -491,7 +491,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 0,
                 0,
             ),
-            // Routed.  It knows where to put it in
+            // Routed.  It knows where to put the third packet in
             array(
                 array(),
                 array(
@@ -513,13 +513,23 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                             "group" => "other",
                         )
                     ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000456",
+                            "From" => "654000",
+                            "Command" => "55",
+                            "Data" => "0102030405",
+                            "group" => "default",
+                        )
+                    ),
                 ),
                 array(
-                    "other" => "5A5A5A0300045665400005010203040570",
+                    "other" => "5A5A5A0300045665400005010203040570"
+                        ."5A5A5A5500045665400005010203040526",
                     "third" => "5A5A5A0300045665400005010203040570",
                     "default" => "5A5A5A0165400000045605010203040572",
                 ),
-                0,
+                1,
                 0,
             ),
         );

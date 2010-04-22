@@ -164,10 +164,10 @@ class PacketRouter extends HUGnetContainer
                 "Queueing ".$this->_output($pkt),
                 HUGnetClass::VPRINT_NORMAL
             );
+            if (!$pkt->unsolicited()) {
+                $this->Routes[$pkt->From] = $pkt->group;
+            }
             if (!$this->_reply($pkt)) {
-                if (!$pkt->unsolicited()) {
-                    $this->Routes[$pkt->From] = $pkt->group;
-                }
                 $pkt->Retries = $this->Retries;
                 $pkt->Timeout = $this->Timeout;
                 $this->PacketQueue[] = &$pkt;
@@ -287,8 +287,7 @@ class PacketRouter extends HUGnetContainer
     * This function sets the groups correctly to route the packets.  It doesn't
     * route findping packets.  It broadcasts them.
     *
-    * @param PacketContainer &$pkt   The packet to route
-    * @param array           $groups The groups to send it out to
+    * @param PacketContainer &$pkt The packet to route
     *
     * @return null
     */

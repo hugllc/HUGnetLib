@@ -1266,7 +1266,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Command" => "5B",
                     "Data" => "010203",
                     "Date" => date("Y-m-d H:i:s"),
-                    "Timeout" => 100,
+                    "Timeout" => 1000000,
                 ),
                 false,
             ),
@@ -1285,8 +1285,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the timeout method
     *
-    * @param array  $preload  Data to preload
-    * @param string $expect   The expected return
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
     *
     * @return null
     *

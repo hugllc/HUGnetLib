@@ -151,20 +151,18 @@ abstract class HUGnetClass
     */
     protected function throwException($msg, $code)
     {
-        // @codeCoverageIgnoreStart
-        // No way to test this as it will kill the test. ;)
         if (is_object($this) && ($this->config["silent"])) {
             return;
         }
 
         throw new Exception($msg, $code);
-        // @codeCoverageIgnoreEnd
     }
 
     /**
     * returns true if passed an object of the same type as me
     *
-    * @param mixed &$object The object to check
+    * @param mixed  &$obj  The object to check
+    * @param string $class The class to use.  Defaults to the current class
     *
     * @return bool Whether this container is empty or not
     */

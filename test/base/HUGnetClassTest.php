@@ -83,6 +83,35 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     {
         unset($this->o);
     }
+    /**
+    * Data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(array("verbose" => 12), array("verbose" => 12)),
+            array(array(), array("verbose" => 0)),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $config The configuration to use
+    * @param array $expect Associative array of properties to check
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor
+    */
+    public function testConstructor($config, $expect)
+    {
+        $o = new HUGnetClassTestStub($config);
+        foreach ($expect as $key => $value) {
+            $this->assertAttributeSame($value, $key, $o);
+        }
+    }
 
     /**
     * Data provider for testRemove
@@ -179,6 +208,57 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, HUGnetClassTestStub::findClassTest($class, $dir));
     }
+    /**
+    * data provider for testIsMine
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataIsMine()
+    {
+        return array(
+            array(new HUGnetClassTestStub(), null, true),
+            array("asdf", "containers", false),
+        );
+    }
+    /**
+    * test
+    *
+    * @param stirng $obj    The object to use
+    * @param object $class  The class to use
+    * @param bool   $expect The expected stuff printed
+    *
+    * @return null
+    *
+    * @dataProvider dataIsMine
+    */
+    public function testIsMine($obj, $class, $expect)
+    {
+        $this->assertSame($expect, $this->o->isMine($obj, $class));
+    }
+    /**
+    * test
+    *
+    * @return null
+    *
+    * @expectedException Exception
+    */
+    public function testThrowException()
+    {
+        $this->o->throwExceptionTest("Hello", -5);
+    }
+    /**
+    * test
+    *
+    * @return null
+    *
+    */
+    public function testThrowExceptionNot()
+    {
+        $this->o->config["silent"] = true;
+        $this->o->throwExceptionTest("Not Happening", -5);
+    }
 }
 
 /**
@@ -208,5 +288,18 @@ class HUGnetClassTestStub extends HUGnetClass
     {
         return parent::findClass($class, $dir);
     }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg  The message
+    * @param int    $code The error code
+    *
+    * @return null
+    */
+    public function throwExceptionTest($msg, $code)
+    {
+        $this->throwException($msg, $code);
+    }
+
 }
 ?>

@@ -255,6 +255,20 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $this->myDriver->fetchAll();
     }
     /**
+    * This function gets a record with the given key
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return array Array of objects
+    */
+    public function selectInto($where, $data = array())
+    {
+        $this->sqlLimit = 1;
+        $this->myDriver->selectWhere($where, $data);
+        return $this->myDriver->fetchInto();
+    }
+    /**
     * This function creates other tables that are identical to this one, except
     * for the data given.
     *

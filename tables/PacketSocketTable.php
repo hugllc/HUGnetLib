@@ -88,7 +88,6 @@ class PacketSocketTable extends HUGnetDBTable
         "id" => array(
             "Name" => "id",
             "Type" => "INTEGER",
-            "AutoIncrement" => true,
         ),
         "Date" => array(
             "Name" => "Date",
@@ -138,11 +137,6 @@ class PacketSocketTable extends HUGnetDBTable
             "Type" => "float",
             "Default" => 0.0,
         ),
-        "senderID" => array(
-            "Name" => "senderID",
-            "Type" => "int(11)",
-            "Default" => 0,
-        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -163,7 +157,7 @@ class PacketSocketTable extends HUGnetDBTable
             "Name" => "PRIMARY",
             "Unique" => true,
             "Columns" => array(
-                "PacketFrom", "Date", "Command", "PacketTo", "id"
+                "PacketFrom", "Date", "Command", "PacketTo", "id", "PacketTime"
             ),
         ),
     );
@@ -180,7 +174,9 @@ class PacketSocketTable extends HUGnetDBTable
     /** @var array This is where the data is stored */
     protected $data = array();
     /** @var array This is our standard order by clause */
-    protected $sqlOrderby = "PacketTime ASC";
+    public $sqlOrderBy = "PacketTime ASC";
+    /** @var array This is our standard order by clause */
+    public $senderID = 0;
 
 
     /**
@@ -229,15 +225,17 @@ class PacketSocketTable extends HUGnetDBTable
     */
     public function insertRow($replace = false)
     {
-        // exit if we are empty
+        // exit if we are empty or timed out
         if ($this->isEmpty()) {
             return false;
         }
         // Set the timeout
-        if (empty($this->Timeout)) {
-            $this->Timeout = time()+$this->TimeoutPeriod;
-        }
+        $this->Timeout = time() + $this->TimeoutPeriod;
+        // Set the packettime
         $this->_packetTime();
+        // Set our ID here
+        $this->id = $this->senderID;
+        // Insert the row and return
         return parent::insertRow($replace);
     }
     /**
@@ -254,11 +252,36 @@ class PacketSocketTable extends HUGnetDBTable
     *
     * @return float The current time in seconds
     */
+    public function &getNextPacket()
+    {
+        static $lastRead;
+        if (empty($lastRead)) {
+            $lastRead = (float)time();
+        }
+        $this->clearData();
+        $this->myTable->sqlOrderby = "PacketTime ASC";
+        $this->selectInto(
+            "`PacketTime` > ? AND `id` <> ?",
+            array($lastRead, $this->senderID)
+        );
+        if (!$this->isEmpty()) {
+            $lastRead = $this->PacketTime;
+        }
+        if ($this->isEmpty()) {
+            $lastRead = 1;
+            return false;
+        }
+        return $this;
+    }
+    /**
+    * Gets the current time
+    *
+    * @return float The current time in seconds
+    */
     private function _packetTime()
     {
         list($usec, $sec) = explode(" ", microtime());
         $this->PacketTime = ((float)$usec + (float)$sec);
     }
-
 }
 ?>

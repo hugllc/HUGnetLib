@@ -521,6 +521,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * returns true if this packet has timed out
     *
+    * @param int $timeout The timeout to use.  Default to $this->Timeout
+    *
     * @return bool If this packet has timed out or not
     */
     public function timeout($timeout=0)

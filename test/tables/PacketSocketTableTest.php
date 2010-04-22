@@ -70,11 +70,14 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $config = array(
             "useSocket" => "dummy",
         );
+        $this->senderID = mt_rand(1, 16777216);
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->pdo = &$this->config->servers->getPDO();
         $this->o = new PacketSocketTable();
+        $this->o->senderID = $this->senderID;
         $this->o->create();
+        $this->myDriver = &$this->config->servers->getDriver($this->o);
     }
 
     /**
@@ -157,7 +160,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Checked" => 0,
                     "Timeout" => 0,
                     "PacketTime" => 0.0,
-                    "senderID" => 0,
                 ),
             ),
             array(
@@ -176,7 +178,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Checked" => 0,
                     "Timeout" => 0,
                     "PacketTime" => 0.0,
-                    "senderID" => 0,
                 ),
             ),
             array(
@@ -195,7 +196,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                     "Checked" => 0,
                     "Timeout" => 0,
                     "PacketTime" => 0.0,
-                    "senderID" => 0,
                 ),
             ),
         );
@@ -269,7 +269,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                 false,
                 array(
                     array(
-                        "id" => "1",
                         "Date" => "2003-03-24 02:21:24",
                         "Command" => "5C",
                         "PacketFrom" => "654321",
@@ -278,7 +277,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                         "Type" => "CONFIG",
                         "ReplyTime" => "0.0",
                         "Checked" => "0",
-                        "senderID" => "0",
                     ),
                 ),
             ),
@@ -312,8 +310,10 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         foreach (array_keys((array)$rows) as $key) {
             $this->assertThat($rows[$key]["Timeout"], $this->greaterThan($start));
             $this->assertThat($rows[$key]["PacketTime"], $this->greaterThan($start));
+            $this->assertEquals($rows[$key]["id"], $this->senderID);
             unset($rows[$key]["Timeout"]);
             unset($rows[$key]["PacketTime"]);
+            unset($rows[$key]["id"]);
         }
         $this->assertSame($expect, $rows);
     }
@@ -329,9 +329,9 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
             array(
                 array(
                     array(
+                        "id" => 2,
                         "TimeoutPeriod" => 5,
                         "group" => "default",
-                        "id" => null,
                         "Date" => "2003-03-24 02:21:24",
                         "Command" => "5C",
                         "PacketFrom" => "654321",
@@ -343,9 +343,9 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                         "Timeout" => 2234234234,
                     ),
                     array(
+                        "id" => 2,
                         "TimeoutPeriod" => 5,
                         "group" => "default",
-                        "id" => null,
                         "Date" => "2003-03-24 02:21:24",
                         "Command" => "5C",
                         "PacketFrom" => "654000",
@@ -359,7 +359,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
-                        "id" => "1",
                         "Date" => "2003-03-24 02:21:24",
                         "Command" => "5C",
                         "PacketFrom" => "654321",
@@ -368,8 +367,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
                         "Type" => "CONFIG",
                         "ReplyTime" => "0.0",
                         "Checked" => "0",
-                        "Timeout" => "2234234234",
-                        "senderID" => "0",
                     ),
                 ),
             ),
@@ -395,13 +392,18 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     {
         foreach ((array)$preload as $load) {
             $this->o->fromAny($load);
-            $this->o->insertRow();
+            // This gets around the automatic timeout setting
+            $this->myDriver->insertOnce($this->o->toDB(), (array)$cols, true);
         }
+        $start = time();
         $this->o->deleteOld();
         $stmt = $this->pdo->query("SELECT * FROM `PacketSocket`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach (array_keys((array)$rows) as $key) {
+            $this->assertThat($rows[$key]["Timeout"], $this->greaterThan($start));
             unset($rows[$key]["PacketTime"]);
+            unset($rows[$key]["id"]);
+            unset($rows[$key]["Timeout"]);
         }
         $this->assertSame($expect, $rows);
     }

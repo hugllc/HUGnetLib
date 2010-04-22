@@ -84,7 +84,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $this->myConfig->forceConfig($config);
         $this->pdo = &$this->myConfig->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `PacketSocket`");
-        $this->mySocket = &$this->myConfig->sockets->getSocket();
+        //$this->mySocket = &$this->myConfig->sockets->getSocket();
         $this->myTable = new PacketSocketTable();
         $this->myTable->create();
         $this->o = new PacketSocket();
@@ -101,7 +101,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
-         if (is_object($this->pdo)) {
+        if (is_object($this->pdo)) {
             $this->pdo->query("DROP TABLE IF EXISTS `PacketSocket`");
         }
         $this->o   = null;
@@ -279,7 +279,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @param array $preload The value to preload
     * @param array $expect  The expected return
-    * @param mixed $socket  What to expect in the socket
     *
     * @return null
     *
@@ -333,7 +332,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                 true,
                 array(
                     array(
-                        "id" => "1",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "01",
                         "PacketFrom" => "654321",
@@ -414,7 +412,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                 true,
                 array(
                     array(
-                        "id" => "1",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -425,7 +422,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "2",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -436,7 +432,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "3",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -447,7 +442,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "4",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -458,7 +452,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "5",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -469,7 +462,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "6",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -480,7 +472,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "7",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -491,7 +482,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "8",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -502,7 +492,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "9",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -513,7 +502,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                         "Checked" => "0",
                     ),
                     array(
-                        "id" => "10",
                         "Date" => "2003-02-28 01:59:00",
                         "Command" => "55",
                         "PacketFrom" => "000000",
@@ -558,8 +546,8 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
             $this->assertThat(
                 $res[$key]["PacketTime"], $this->greaterThan($start)
             );
-            $this->assertThat($res[$key]["senderID"], $this->greaterThan(0));
-            unset($res[$key]["senderID"]);
+            $this->assertThat($res[$key]["id"], $this->greaterThan(0));
+            unset($res[$key]["id"]);
             unset($res[$key]["Timeout"]);
             unset($res[$key]["PacketTime"]);
         }
@@ -637,24 +625,20 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         return array(
             array(
                 array(
-                    array(
-                        "To" => "654321",
-                        "From" => "123456",
-                        "Date" => "2010-04-21 18:24:56",
-                        "Data" => "010203040506",
-                        "Command" => "03",
-                        "Timeout" => 1,
-                    ),
+                    "To" => "654321",
+                    "From" => "123456",
+                    "Data" => "010203040506",
+                    "Command" => "03",
+                    "Timeout" => 1,
                 ),
                 array(
-                    array(
-                        "To" => "123456",
-                        "From" => "654321",
-                        "Date" => "2010-04-21 18:24:52",
-                        "Data" => "010203040506",
-                        "Command" => "01",
-                    ),
+                    "To" => "123456",
+                    "From" => "654321",
+                    "Data" => "010203040506",
+                    "Command" => "01",
                 ),
+                400,
+                4
             ),
         );
     }
@@ -664,31 +648,37 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @param array $preload  The value to preload
     * @param array $preload2 The value to preload
-    * @param mixed $expect   The expected return
+    * @param int   $count    The number of iterations
+    * @param int   $allowed  The allowed number of failures
     *
     * @return null
     *
     * @dataProvider dataPacketSend
     */
-    public function testPacketSend($preload, $preload2)
+    public function testPacketSend($preload, $preload2, $count, $allowed)
     {
-        $count = 10;
+        $pkt = new PacketContainer();
+        $pkt2 = new PacketContainer();
         for ($i = 0; $i < $count; $i++) {
-            foreach ($preload as $key => $load) {
-                $pkt = new PacketContainer($preload[$key]);
-                $pkt2 = new PacketContainer($preload2[$key]);
-                $this->mySocket->sendPkt($pkt);
-                $this->myTable->fromAny($pkt2);
-                $this->myTable->insertRow();
-                $this->mySocket->recvPkt($pkt);
-                if (!is_object($pkt->Reply)) {
-                    $failures++;
-                    $this->assertThat(
-                        $failures,
-                        $this->lessThan($count*0.01),
-                        ($count*0.01)." failures in $i attempts ($count total tries)"
-                    );
-                }
+            $pkt->clearData();
+            $pkt->fromAny($preload);
+            $pkt->Date = date("Y-m-d H:i:s", time());
+            $pkt2->clearData();
+            $pkt2->fromAny($preload2);
+            $pkt2->Date = date("Y-m-d H:i:s", time()+1);
+            $ret = $this->o->sendPkt($pkt);
+            $this->assertTrue($ret, "Packet Sending Failed");
+            $this->myTable->fromAny($pkt2);
+            $ret = $this->myTable->insertRow();
+            $this->assertTrue($ret, "Packet Insertion Failed");
+            $this->o->recvPkt($pkt);
+            if (!is_object($pkt->Reply)) {
+                $failures++;
+                $this->assertThat(
+                    $failures,
+                    $this->lessThan($allowed),
+                    $failures." failures in $i attempts (wanted $count total tries)"
+                );
             }
         }
     }
