@@ -75,6 +75,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "dummy" => true,
+                    "group" => "default",
                 ),
                 array(
                     "dummy" => true,
@@ -129,34 +130,25 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
            array(
                 array(),
                 array(
-                    "MaxPackets" => 5,
                     "groups" => array(
                         "other" => "other",
                         "default" => "default",
                         "third" => "third",
                     ),
-                    "Timeout" => 5,
-                    "Retries" => 3,
                 ),
             ),
            array(
                 array(
-                    "MaxPackets" => 3,
                     "groups" => array(
                         "other" => "other",
                         "third" => "third",
                     ),
-                    "Timeout" => 3,
-                    "Retries" => 5,
                 ),
                 array(
-                    "MaxPackets" => 3,
                     "groups" => array(
                         "other" => "other",
                         "third" => "third",
                     ),
-                    "Timeout" => 3,
-                    "Retries" => 5,
                 ),
             ),
         );
@@ -245,18 +237,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         foreach ($groups as $group) {
             $this->assertSame($expect, $this->socket[$group]->writeString);
         }
-        // This makes sure that the group has not changed.
-        $this->assertSame(
-            $pkt->group,
-            $oldGroup,
-            "The group on the packet has changed!"
-        );
-        // This makes sure that the group has not changed.
-        $this->assertSame(
-            $retries - 1,
-            $pkt->Retries,
-            "The retries are wrong"
-        );
     }
 
     /**
@@ -264,52 +244,60 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataRead()
+    public static function dataRoute()
     {
         return array(
             // Two packets, one each interface
             array(
                 array(),
                 array(
-                    "other" => "5A5A5A5C1234566543210501020304052F"
-                    ."5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A5500045665400005010203040526",
+                    0 => array(
+                        "other" => "5A5A5A5C1234566543210501020304052F",
+                        "third" => "5A5A5A5500045665400005010203040526",
+                    )
                 ),
                 array(
-                    "other" => "other",
-                    "third" => "third",
-                ),
-                array(
-                    array(
-                        "To" => "123456",
-                        "From" => "654321",
-                        "Command" => "5C",
-                        "Length" => 5,
-                        "Data" => "0102030405",
-                        "Type" => "CONFIG",
-                        "Reply" => null,
-                        "Checksum" => "2F",
-                        "Retries" => 3,
-                        "GetReply" => false,
-                        "group" => "other",
-                    ),
-                    array(
-                        "To" => "000456",
-                        "From" => "654000",
-                        "Command" => "55",
-                        "Length" => 5,
-                        "Data" => "0102030405",
-                        "Type" => "SENSORREAD",
-                        "Reply" => null,
-                        "Checksum" => "26",
-                        "Retries" => 3,
-                        "GetReply" => false,
-                        "group" => "third",
-                    ),
+                    "other"   => "5A5A5A5500045665400005010203040526",
+                    "third"   => "5A5A5A5C1234566543210501020304052F",
+                    "default" => "5A5A5A5C1234566543210501020304052F"
+                        ."5A5A5A5500045665400005010203040526",
                 ),
                 array(
                     "654321" => "other",
                     "654000" => "third",
+                ),
+            ),
+            // Many Packets
+            array(
+                array(),
+                array(
+                    0 => array(
+                        "other" => "5A5A5A5C1234566543210501020304052F", // P 1
+                        "third" => "5A5A5A5500045665400005010203040526", // P 2
+                    ),
+                    1 => array(
+                        "default" => "5A5A5A016543211234560601020304050677", // P 3
+                        "other" => "5A5A5A016540000004560606050403020177", // P 4
+                    ),
+                    2 => array(
+                        "other" => "5A5A5A036540000004560074",  // P 5
+                    ),
+                ),
+                array(
+                    "other"   => "5A5A5A5500045665400005010203040526" // P 2
+                        ."5A5A5A016543211234560601020304050677",      // P 3
+                    "third"   => "5A5A5A5C1234566543210501020304052F" // P 1
+                        ."5A5A5A016540000004560606050403020177"       // P 4
+                        ."5A5A5A036540000004560074",                  // P 5
+                    "default" => "5A5A5A5C1234566543210501020304052F" // P 1
+                        ."5A5A5A5500045665400005010203040526"         // P 2
+                        ."5A5A5A036540000004560074",                  // P 5
+                ),
+                array(
+                    "654321" => "other",
+                    "654000" => "third",
+                    "000456" => "other",
+                    "123456" => "default",
                 ),
             ),
             // Nothing
@@ -318,422 +306,41 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(),
                 array(),
-                array(),
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload The value to preload
-    * @param array  $pkts    The packet strings for the function to read
-    * @param array  $groups  The groups to check
-    * @param string $expect  The expected return
-    * @param array  $routes  The routes to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataRead
-    */
-    public function testRead($preload, $pkts, $groups, $expect, $routes)
-    {
-        foreach ($groups as $group) {
-            $this->socket[$group]->readString .= $pkts[$group];
-        }
-        $this->o->fromAny($preload);
-        $this->o->read();
-        $p = &$this->readAttribute($this->o, "PacketQueue");
-        $this->assertType("array", $p);
-        $ret = array();
-        foreach (array_keys((array)$p) as $k) {
-            $data = $this->readAttribute($p[$k], "data");
-            unset($data["Date"]);
-            unset($data["Time"]);
-            unset($data["Timeout"]);
-            $ret[] = $data;
-        }
-        $this->assertSame($expect, $ret);
-        $this->assertAttributeSame($routes, "Routes", $this->o);
-    }
-
-    /**
-    * data provider for testRoute
-    *
-    * @return array
-    */
-    public static function dataRoute()
-    {
-        return array(
-            // Overrun the buffer
-            array(
-                array(),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "123456",
-                            "From" => "654321",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "023456",
-                            "From" => "054321",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "103456",
-                            "From" => "604321",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "120456",
-                            "From" => "650321",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "123056",
-                            "From" => "654021",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "123406",
-                            "From" => "654301",
-                            "Command" => "5C",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A5C1234566543210501020304052F"
-                        ."5A5A5A5C0234560543210501020304055F"
-                        ."5A5A5A5C10345660432105010203040528"
-                        ."5A5A5A5C1204566503210501020304055F"
-                        ."5A5A5A5C12305665402105010203040528",
-                    "third" => "5A5A5A5C1234566543210501020304052F"
-                        ."5A5A5A5C0234560543210501020304055F"
-                        ."5A5A5A5C10345660432105010203040528"
-                        ."5A5A5A5C1204566503210501020304055F"
-                        ."5A5A5A5C12305665402105010203040528",
-                    "default" => "",
-                ),
-                5,
-                1,
-            ),
-            array(
-                array(),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "55",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A5500045665400005010203040526",
-                    "default" => "",
-                ),
-                1,
-                0,
-            ),
-            // Routed.  It knows where to put it in
-            array(
-                array(),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "55",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "654000",
-                            "From" => "000456",
-                            "Command" => "01",
-                            "Data" => "0102030405",
-                            "group" => "other",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A5500045665400005010203040526",
-                    "default" => "5A5A5A0165400000045605010203040572",
-                ),
-                0,
-                0,
-            ),
-            // Routed.  It knows where to put the third packet in
-            array(
-                array(),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "03",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "654000",
-                            "From" => "000456",
-                            "Command" => "01",
-                            "Data" => "0102030405",
-                            "group" => "other",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "55",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A0300045665400005010203040570"
-                        ."5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A0300045665400005010203040570",
-                    "default" => "5A5A5A0165400000045605010203040572",
-                ),
-                1,
-                0,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload The value to preload
-    * @param object $pkts    The packet to send out
-    * @param string $expect  The expected return
-    * @param int    $buffer  The number of packets in the buffer
-    * @param int    $queue   The number of packets in the queue
+    * @param array $preload The value to preload
+    * @param array $read    The packet strings for the function to read
+    * @param array $write   The packet strings that the function will write
+    * @param array $routes  The routes to expect
+    * @param int   $calls   The number of times to call route
     *
     * @return null
     *
     * @dataProvider dataRoute
     */
-    public function testRoute($preload, $pkts, $expect, $buffer, $queue)
+    public function testRoute($preload, $read, $write, $routes)
     {
         $this->o->fromAny($preload);
-        foreach (array_keys((array)$pkts) as $key) {
-            $this->o->queue($pkts[$key]);
-            $this->o->route();
-        }
-        foreach ($expect as $group => $data) {
-            $this->assertSame(
-                $data,
-                $this->socket[$group]->writeString,
-                "Failed on group $group"
-            );
-        }
-        $p = &$this->readAttribute($this->o, "PacketBuffer");
-        $q = &$this->readAttribute($this->o, "PacketQueue");
-        $this->assertSame(
-            $buffer,
-            count($p),
-            "There should be ".$buffer." packet in the buffer, not ".count($p)
-        );
-        $this->assertSame(
-            $queue,
-            count($q),
-            "There should be ".$queue." packet in the queue, not ".count($q)
-        );
-    }
-
-    /**
-    * data provider for testGC
-    *
-    * @return array
-    */
-    public static function dataGC()
-    {
-        return array(
-            // Routed.  It knows where to put it in
-            array(
-                array("Timeout" => 1),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "55",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "654000",
-                            "From" => "000456",
-                            "Command" => "01",
-                            "Data" => "0102030405",
-                            "group" => "other",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A5500045665400005010203040526",
-                    "default" => "5A5A5A0165400000045605010203040572",
-                ),
-            ),
-            // Routed.  It knows where to put it in.
-            array(
-                array("Timeout" => 1),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "03",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                    new PacketContainer(
-                        array(
-                            "To" => "654000",
-                            "From" => "000456",
-                            "Command" => "01",
-                            "Data" => "0102030405",
-                            "group" => "other",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A0300045665400005010203040570",
-                    "third" => "5A5A5A0300045665400005010203040570",
-                    "default" => "5A5A5A0165400000045605010203040572",
-                ),
-            ),
-            // No reply
-            array(
-                array("Timeout" => 1),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "55",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A5500045665400005010203040526"
-                        ."5A5A5A5500045665400005010203040526"
-                        ."5A5A5A0300045665400005010203040570"
-                        ."5A5A5A5500045665400005010203040526",
-                    "third" => "5A5A5A5500045665400005010203040526"
-                        ."5A5A5A5500045665400005010203040526"
-                        ."5A5A5A0300045665400005010203040570"
-                        ."5A5A5A5500045665400005010203040526",
-                    "default" => "",
-                ),
-            ),
-            // Routed.  It knows where to put it in.
-            array(
-                array("Timeout" => 1),
-                array(
-                    new PacketContainer(
-                        array(
-                            "To" => "000456",
-                            "From" => "654000",
-                            "Command" => "03",
-                            "Data" => "0102030405",
-                            "group" => "default",
-                        )
-                    ),
-                ),
-                array(
-                    "other" => "5A5A5A0300045665400005010203040570"
-                        ."5A5A5A0300045665400005010203040570"
-                        ."5A5A5A0300045665400005010203040570",
-                    "third" => "5A5A5A0300045665400005010203040570"
-                        ."5A5A5A0300045665400005010203040570"
-                        ."5A5A5A0300045665400005010203040570",
-                    "default" => "",
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload The value to preload
-    * @param object $pkts    The packet to send out
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGC
-    */
-    public function testGC($preload, $pkts, $expect)
-    {
-        $this->o->fromAny($preload);
-        foreach (array_keys((array)$pkts) as $key) {
-            $this->o->queue($pkts[$key]);
-            $this->o->route();
-        }
-        // Set the end time longer than we have timeouts
-        $end = time() + ($this->o->Timeout * ($this->o->Retries + 5));
-        // Run the routine
+        $i = 0;
         do {
-            $this->o->gc();
-            $p = &$this->readAttribute($this->o, "PacketBuffer");
-            usleep(100);
-        } while (($end > time()) && (count($p) > 0));
-
-        foreach ($expect as $group => $data) {
+            foreach ((array)$read[$i] as $group => $string) {
+                $this->socket[$group]->readString = $string;
+            }
+            $i++;
+        } while ($this->o->route() > 0);
+        foreach ($write as $group => $string) {
             $this->assertSame(
-                $data,
-                $this->socket[$group]->writeString,
-                "Failed on group $group"
+                $string, $this->socket[$group]->writeString,
+                "$group has the wrong string"
             );
         }
-        $p = &$this->readAttribute($this->o, "PacketBuffer");
-        $this->assertSame(
-            0,
-            count($p),
-            "There should be 0 packet in the buffer"
-        );
+        $this->assertAttributeSame($routes, "Routes", $this->o);
     }
+
 
 }
 

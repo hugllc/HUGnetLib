@@ -259,17 +259,15 @@ class PacketSocketTable extends HUGnetDBTable
             $lastRead = (float)time();
         }
         $this->clearData();
-        $this->myTable->sqlOrderby = "PacketTime ASC";
         $this->selectInto(
             "`PacketTime` > ? AND `id` <> ?",
             array($lastRead, $this->senderID)
         );
-        if (!$this->isEmpty()) {
-            $lastRead = $this->PacketTime;
-        }
         if ($this->isEmpty()) {
-            $lastRead = 1;
             return false;
+        } else {
+            // Set the last read
+            $lastRead = $this->PacketTime;
         }
         return $this;
     }

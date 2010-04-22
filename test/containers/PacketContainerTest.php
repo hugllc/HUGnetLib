@@ -603,35 +603,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
-            // Good Reply
-            array(
-                "5A5A5A55000ABC0000200401020304C3",
-                new PacketContainer("5A5A5A01000020000ABC040102030497"),
-                array(
-                    "To" => "000ABC",
-                    "From" => "000020",
-                    "Command" => "55",
-                    "Length"  => 4,
-                    "Data" => array(1,2,3,4),
-                    "RawData" => "01020304",
-                    "Type" => "SENSORREAD",
-                    "Reply" => array(
-                        "To" => "000020",
-                        "From" => "000ABC",
-                        "Command" => "01",
-                        "Length"  => 4,
-                        "Data" => array(1,2,3,4),
-                        "RawData" => "01020304",
-                        "Type" => "REPLY",
-                        "Reply" => null,
-                        "Checksum" => "97",
-                        "CalcChecksum" => "97",
-                    ),
-                    "Checksum" => "C3",
-                    "CalcChecksum" => "C3",
-                ),
-                true,
-            ),
             // No reply expected
             array(
                 array(
@@ -642,30 +613,6 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                 ),
                 "5A5A5A5E000000000ABC0401020304E8",
-                array(
-                    "To" => "000ABC",
-                    "From" => "000020",
-                    "Command" => "55",
-                    "Length"  => 4,
-                    "Data" => array(1,2,3,4),
-                    "RawData" => "01020304",
-                    "Type" => "SENSORREAD",
-                    "Reply" => null,
-                    "Checksum" => "C3",
-                    "CalcChecksum" => "C3",
-                ),
-                false,
-            ),
-            // No reply expected
-            array(
-                array(
-                    "To" => "000ABC",
-                    "From" => "000020",
-                    "Command" => "55",
-                    "Length"  => 4,
-                    "Data" => "01020304",
-                ),
-                new PacketContainer(),
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -790,10 +737,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $o = new PacketContainer($preload);
         $ret = $o->recv($string);
-        $this->assertSame($expect, $ret);
+        $this->assertSame($expect, $ret, "recv returned the wrong value");
         $array = $o->toArray();
         $this->checkDateTime($array, false);
-        $this->assertSame($data, $array);
+        $this->assertSame($data, $array, "The data returned is wrong");
     }
     /**
     * data provider for testUnsolicited
@@ -1463,7 +1410,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * data provider for testDeviceID
+    * data provider for testMonitor
     *
     * @return array
     */
@@ -1521,7 +1468,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-    * test the set routine when an extra class exists
+    * Tests the packet monitor
     *
     * @param array  $preload    The value to preload
     * @param string $readString This is the string that will be returned from
@@ -1543,6 +1490,103 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             $ret = $o;
         }
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testMyReply
+    *
+    * @return array
+    */
+    public static function dataMyReply()
+    {
+        return array(
+            // Good reply
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Date" => "2010-04-22 14:18:28",
+                    "Data" => "01020304",
+                ),
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "01",
+                    "Date" => "2010-04-22 14:18:28",
+                    "Data" => "01020304",
+                ),
+                true
+            ),
+            // Bad reply.  Reply dated before packet
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Date" => "2010-04-22 14:18:28",
+                    "Data" => "01020304",
+                ),
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "01",
+                    "Date" => "2010-04-22 14:18:27",
+                    "Data" => "01020304",
+                ),
+                false
+            ),
+            // No original packet
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "01",
+                    "Date" => "2010-04-22 14:18:27",
+                    "Data" => "01020304",
+                ),
+                false
+            ),
+            // No Reply
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Date" => "2010-04-22 14:18:28",
+                    "Data" => "01020304",
+                ),
+                array(
+                ),
+                false
+            ),
+            // Nothing
+            array(
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $reply   The reply packet
+    * @param bool  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataMyReply
+    */
+    public function testMyReply($preload, $reply, $expect)
+    {
+        $this->o->fromAny($preload);
+        $o = new PacketContainer($reply);
+        $this->assertSame($expect, $this->o->myReply($o));
     }
 
     /**

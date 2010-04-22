@@ -132,20 +132,12 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     }
 
     /**
-    * Read data from the server
-    *
-    * @param int $maxPackets The maximum number of packets to retrieve
+    * Read a packet from the database
     *
     * @return int Read bytes on success, false on failure
     */
-    function &read($maxPackets = 1)
+    private function &_read()
     {
-        static $lastRead;
-        if (empty($lastRead)) {
-            $lastRead = (float)time();
-        }
-        $this->connect();
-        $this->myTable->sqlOrderBy = "PacketTime ASC";
         $ret = &$this->myTable->getNextPacket();
         if ($ret === false) {
             usleep(100000);
@@ -163,7 +155,6 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     function sendPkt(PacketContainer &$pkt)
     {
         $this->connect();
-        $this->myTable->deleteOld();
         $this->myTable->clearData();
         $this->myTable->fromPacket($pkt);
         return (bool)$this->myTable->insertRow(true);
@@ -183,13 +174,12 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
         $timeout = time() + $pkt->Timeout;
         $newPkt = new PacketContainer();
         do {
-            $packet = &$this->read();
+            $packet = &$this->_read();
             $newPkt->clearData();
             $newPkt->fromAny($packet);
             $ret = $pkt->recv($newPkt->toString());
         } while (($ret === false) && ($timeout > time()));
-        return $ret;
+        return (bool)$ret;
     }
-
 }
 ?>

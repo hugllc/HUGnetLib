@@ -559,6 +559,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if ($this->_toMe($pkt)
             && ($pkt->Command == self::COMMAND_REPLY)
             && ($this->To == $pkt->From)
+            && (strtotime($this->Date) <= strtotime($pkt->Date))
         ) {
             return true;
         }
