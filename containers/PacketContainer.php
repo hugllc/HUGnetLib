@@ -705,6 +705,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     protected function setTo($value)
     {
+        if (is_int($value)) {
+            $value = dechex($value);
+        }
         $this->data["To"] = devInfo::setStringSize($value, 6);
     }
     /**
@@ -716,6 +719,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     protected function setFrom($value)
     {
+        if (is_int($value)) {
+            $value = dechex($value);
+        }
         $this->data["From"] = devInfo::setStringSize($value, 6);
     }
     /**
