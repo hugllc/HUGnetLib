@@ -307,9 +307,20 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function &recv(&$packet)
     {
-        $pkt = &$this->_recvGetPkt($packet);
-        if (!$this->isMine($pkt, "HUGnetPacketInterface")) {
+        // Check the string.  If it doesn't look like a packet return.
+        $pktStr = self::_checkStr($packet);
+        if (!is_string($pktStr)) {
             return false;
+        }
+        // We got something that looks like a packet, so remove the buffer
+        $packet = "";
+        // Create a new packet object
+        // checkStr strips the preamble but this expects it so we re-add it.
+        if ($this->GetReply) {
+            $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
+        } else {
+            $pkt = &$this;
+            $this->fromString(self::FULL_PREAMBLE.$pktStr);
         }
         // Check the checksum  If it is bad return a false
         if ($pkt->Checksum !== $pkt->checksum()) {
@@ -564,45 +575,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             return true;
         }
         return false;
-    }
-    /**
-    * Looks for a packet in a string.
-    *
-    * This is meant to be call with every byte received.  The incoming byte should
-    * be appended onto the string.  This routine will take care of removing
-    * the portion of string that it turns into packets.
-    *
-    * @param mixed &$packet The raw packet string to check.  Could be a string, or
-    *                       it could be a PacketContainer object
-    *
-    * @return bool true on success, false on failure
-    */
-    private function &_recvGetPkt(&$packet)
-    {
-        $pkt = false;
-        if (is_string($packet)) {
-            // Check the string.  If it doesn't look like a packet return.
-            $pktStr = self::_checkStr($packet);
-            if (!is_string($pktStr)) {
-                return false;
-            }
-            // We got something that looks like a packet, so remove the buffer
-            $packet = "";
-            // Create a new packet object
-            // checkStr strips the preamble but this expects it so we re-add it.
-            if ($this->GetReply) {
-                $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
-            } else {
-                $pkt = &$this;
-                $this->fromString(self::FULL_PREAMBLE.$pktStr);
-            }
-        } else if ($this->isMine($packet, "HUGnetPacketInterface")) {
-            $pkt =& $packet;
-            if ($pkt->isEmpty()) {
-                return false;
-            }
-        }
-        return $pkt;
     }
     /**
     * Computes the checksum of a packet
