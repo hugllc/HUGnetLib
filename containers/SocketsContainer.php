@@ -39,6 +39,7 @@
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../interfaces/ConnectionManager.php";
+require_once dirname(__FILE__)."/PacketContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -195,6 +196,66 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         $this->socket[$group]->disconnect();
         $this->socket[$group] = null;
         $this->unlock(array_keys($this->default));
+    }
+    /**
+    * Finds a deviceID that we can use
+    *
+    * @param string $groups The group to check, or array of groups
+    *
+    * @return null
+    */
+    public function deviceID($groups = "default")
+    {
+        if (!is_array($groups)) {
+            $groups = array($groups => $groups);
+        }
+        // Make sure all of the groups are connected.
+        foreach ($groups as $key => $group) {
+            if (!$this->connect($group)) {
+                unset($groups[$key]);
+            }
+        }
+        // Find an ID to use
+        $id = false;
+        for ($i = 1; ($i < 0x20) && ($id === false); $i++) {
+            $id = $this->_checkID($i, $groups);
+        }
+        if (is_string($id)) {
+            // Set all of the IDs
+            foreach ($groups as $group) {
+                $this->socket[$group]->DeviceID = $id;
+            }
+        }
+        return $id;
+    }
+    /**
+    * Finds a deviceID that we can use
+    *
+    * @param int   $id     The ID to check
+    * @param array $groups The array of groups to check
+    *
+    * @return null
+    */
+    private function _checkID($id, $groups)
+    {
+        $pkt = new PacketContainer(array(
+            "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+            "To" => $id,
+            "From" => 0x1F,
+            "GetReply" => true,
+            "Retries" => 2,
+        ));
+        self::vprint("Checking ".$pkt->To, HUGnetClass::VPRINT_NORMAL);
+        foreach ($groups as $group) {
+            $pkt->group = $group;
+            $pkt->send();
+            if (is_object($pkt->Reply)) {
+                // We got a reply so this id exists.  return false.
+                return false;
+            }
+        }
+        // Return the good ID
+        return $pkt->To;
     }
 
     /**
