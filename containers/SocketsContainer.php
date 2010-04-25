@@ -72,14 +72,16 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     protected $driver = null;
 
     /**
-    * Creates the socket class
+    * Sets all of the endpoint attributes from an array
     *
-    * @param array $sockets The sockets to use
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
     */
-    public function __construct($sockets = array())
+    public function fromArray($array)
     {
         $this->clearData();
-        foreach ((array)$sockets as $key => $sock) {
+        foreach ((array)$array as $key => $sock) {
             if (isset($sock["GatewayIP"])
                 || isset($sock["GatewayPort"])
                 || isset($sock["GatewayKey"])
