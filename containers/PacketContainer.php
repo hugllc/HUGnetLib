@@ -40,7 +40,6 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../interfaces/HUGnetPacketInterface.php";
-require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -708,7 +707,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if (is_int($value)) {
             $value = dechex($value);
         }
-        $this->data["To"] = devInfo::setStringSize($value, 6);
+        $this->data["To"] = self::stringSize($value, 6);
     }
     /**
     * function to set From
@@ -722,7 +721,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if (is_int($value)) {
             $value = dechex($value);
         }
-        $this->data["From"] = devInfo::setStringSize($value, 6);
+         $this->data["From"] = self::stringSize($value, 6);
     }
     /**
     * function to set the Command
@@ -733,7 +732,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     protected function setCommand($value)
     {
-        $this->data["Command"] = devInfo::setStringSize($value, 2);
+        $this->data["Command"] = devInfo::stringSize($value, 2);
         $this->setType($value);
     }
     /**

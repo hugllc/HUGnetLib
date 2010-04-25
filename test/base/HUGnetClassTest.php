@@ -259,6 +259,42 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
         $this->o->config["silent"] = true;
         $this->o->throwExceptionTest("Not Happening", -5);
     }
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataSetStringSize()
+    {
+        return array(
+            array("", 6, "0", "000000"),
+            array("12345678", 5, "0", "45678"),
+            array("12", 4, null, "0012"),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param string $value  The string to play with
+    * @param int    $size   The size to cut the string to
+    * @param string $pad    The value to pad the string with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetStringSize
+    */
+    public function testSetStringSize($value, $size, $pad, $expect)
+    {
+        if (is_null($pad)) {
+            $ret = HUGnetClass::stringSize($value, $size);
+        } else {
+            $ret = HUGnetClass::stringSize($value, $size, $pad);
+        }
+        $this->assertSame($expect, $value, '$value not changed correctly');
+        $this->assertSame($expect, $ret, "Return was not correct");
+    }
 }
 
 /**

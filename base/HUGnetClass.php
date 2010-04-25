@@ -173,6 +173,28 @@ abstract class HUGnetClass
         }
         return (bool)(is_object($obj) && ($obj instanceof $class));
     }
+    /**
+    * Sets the string to a particular size. It modifies the $value
+    * parameter.  It will shorten or lengthen the string as it needs to.
+    *
+    * - It will ALWAYS left pad the string if the string is too short.
+    * - It will ALWAYS throw out the left end of the string if the string
+    *  is too long
+    *
+    * @param string &$value The string to fix the size of
+    * @param int    $size   The number of characters the string should be
+    *                     fixed to
+    * @param string $pad    The characters to pad to the LEFT end of the string
+    *
+    * @return string The modified string
+    */
+    public static function stringSize(&$value, $size, $pad="0")
+    {
+        $value = trim($value);
+        $value = str_pad($value, $size, $pad, STR_PAD_LEFT);
+        $value = substr($value, strlen($value)-$size);
+        return strtoupper($value);
+    }
 
 
 }
