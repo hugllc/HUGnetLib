@@ -83,8 +83,8 @@ class HooksContainer extends HUGnetContainer
     /**
     * Registers a hook, along with the object to use
     *
-    * @param string $group  The group to which this hook belongs
-    * @param object $object The object to use for the hook
+    * @param string $group   The group to which this hook belongs
+    * @param object &$object The object to use for the hook
     *
     * @return object PDO object, null on failure
     */
@@ -103,13 +103,35 @@ class HooksContainer extends HUGnetContainer
     /**
     * returns an object to call stuff from
     *
-    * @param string $group The group to use
+    * @param string $name      The hook to use
+    * @param string $interface The interface or class to look for.  Blank for any
     *
     * @return bool True on success, false on failure
     */
-    public function &hook($group)
+    public function &hook($name, $interface = "")
     {
-        return $this->data["hooks"][$group]["obj"];
+        if (!is_object($this->data["hooks"][$name]["obj"])) {
+            return $this;
+        }
+        if (!empty($interface)
+            && !($this->data["hooks"][$name]["obj"] instanceof $interface)
+        ) {
+            return $this;
+        }
+        return $this->data["hooks"][$name]["obj"];
     }
+    /**
+    * Tries to run a function defined by what is called..
+    *
+    * @param string $name The name of the function to call
+    * @param array  $args The array of arguments
+    *
+    * @return mixed
+    */
+    public function __call($name, $args)
+    {
+        self::vprint("No hook defined", HUGnetClass::VPRINT_VERBOSE);
+    }
+
 }
 ?>

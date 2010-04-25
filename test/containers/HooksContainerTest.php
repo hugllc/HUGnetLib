@@ -88,6 +88,19 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(array(), array("hooks" => array())),
+            array(
+                array(
+                    array("class" => "HooksContainer", "obj" => array()),
+                ),
+                array(
+                    "hooks" => array(
+                        array(
+                            "obj" => new HooksContainer(array()),
+                            "class" => "HooksContainer",
+                        )
+                    )
+                )
+            ),
         );
     }
     /**
@@ -103,7 +116,7 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray($preload, $expect)
     {
         $o = new HooksContainer($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $this->assertAttributeEquals($expect, "data", $o);
     }
     /**
     * Data provider for testGroup
@@ -125,6 +138,14 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
+            ),
+            array(
+                array(),
+                "asdf",
+                "This is not an object",
+                array("hooks" => array()),
+                false,
             ),
         );
     }
@@ -132,18 +153,19 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     * Tests the return of what groups are available.
     *
     * @param array  $preload The array to preload into the object
-    * @param string $name   The hook to register
-    * @param object $obj    The object to register
-    * @param array  $expect The expected data
+    * @param string $name    The hook to register
+    * @param object $obj     The object to register
+    * @param array  $expect  The expected data
+    * @param book   $ret     The expected return
     *
     * @return null
     *
     * @dataProvider dataRegisterHook
     */
-    public function testRegisterHook($preload, $name, $obj, $expect)
+    public function testRegisterHook($preload, $name, $obj, $expect, $ret)
     {
         $o = new HooksContainer($preload);
-        $o->registerHook($name, $obj);
+        $this->assertSame($ret, $o->registerHook($name, $obj));
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
     }
@@ -155,24 +177,106 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     public static function dataHook()
     {
         return array(
-            array(array(), "Invalid", null),
+            array(array(), "Invalid", "", array("hooks" => array())),
+            // Wrong class.  Should return the base Hooks Container
+            array(
+                array(
+                    "myHook" => array(
+                        "obj" => new HooksContainer(array()),
+                        "class" => "HooksContainer",
+                    )
+                ),
+                "myHook",
+                "PacketContainer",
+                array(
+                    "hooks" => array(
+                        "myHook" => array(
+                            "obj" => array("hooks" => array()),
+                            "class" => "HooksContainer",
+                        )
+                    )
+                ),
+            ),
+            // Right class.  Will return the myHook HooksContainer
+            array(
+                array(
+                    "myHook" => array(
+                        "obj" => new HooksContainer(array()),
+                        "class" => "HooksContainer",
+                    )
+                ),
+                "myHook",
+                "HooksContainer",
+                array(
+                    "hooks" => array(
+                    )
+                ),
+            ),
         );
     }
     /**
     * Tests the return of the object
     *
-    * @param array  $preload The array to preload into the object
-    * @param string $name    The hook to register
-    * @param array  $expect  The expected data
+    * @param array  $preload   The array to preload into the object
+    * @param string $name      The hook to register
+    * @param string $interface The interface to ask for
+    * @param array  $expect    The expected data
     *
     * @return null
     *
     * @dataProvider dataHook
     */
-    public function testHook($preload, $name, $expect)
+    public function testHook($preload, $name, $interface, $expect)
     {
         $o = new HooksContainer($preload);
-        $ret = &$o->hook($name);
+        $ret = &$o->hook($name, $interface);
+        $this->assertType("object", $ret);
+        $this->assertSame($expect, $ret->toArray());
+    }
+    /**
+    * data provider for testConstructor
+    *
+    * @return array
+    *
+    * @static
+    */
+    public static function dataCall()
+    {
+        return array(
+            array(
+                array(),
+                "DummyFct",
+                HUGnetClass::VPRINT_VERBOSE,
+                "(HooksContainer) No hook defined\n",
+            ),
+            array(
+                array(),
+                "DummyFct",
+                HUGnetClass::VPRINT_VERBOSE - 1,
+                "",
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $preload The array to preload into the object
+    * @param string $fct     The function to call
+    * @param int    $verbose The current value
+    * @param int    $expect  The expected stuff printed
+    *
+    * @return null
+    *
+    * @dataProvider dataCall
+    */
+    public function testCall($preload, $fct, $verbose, $expect)
+    {
+        $o = new HooksContainer($preload);
+        $o->verbose($verbose);
+        ob_start();
+        $o->$fct();
+        $ret = ob_get_contents();
+        ob_end_clean();
         $this->assertSame($expect, $ret);
     }
 
