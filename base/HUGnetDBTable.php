@@ -298,6 +298,25 @@ abstract class HUGnetDBTable extends HUGnetContainer
             $this->myDriver->verbose($verbose);
         }
     }
+    /**
+    * This routine takes any date and turns it into an SQL date
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function sqlDate($value)
+    {
+        if (is_numeric($value)) {
+            $date = (int) $value;
+        } else if (is_string($value)) {
+            $date = strtotime($value);
+        }
+        if ($date !== false) {
+            return date("Y-m-d H:i:s", $date);
+        }
+        return "0000-00-00 00:00:00";
+    }
 }
 
 
