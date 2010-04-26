@@ -36,14 +36,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../tables/DevicesTable.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This class does all of the work on endpoint devices.
  *
  * @category   Containers
  * @package    HUGnetLib
@@ -54,7 +51,7 @@ require_once dirname(__FILE__)."/../devInfo.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceContainer extends HUGnetContainer
+class DeviceContainer extends DevicesTable
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -72,41 +69,10 @@ class DeviceContainer extends HUGnetContainer
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "DeviceKey"         => 0,               // Database key
-        "DeviceID"          => "000000",        // Device ID
-        "DeviceName"        => "",              // Name of the device
-        "SerialNum"         => 0,               // Serial number
-        "HWPartNum"         => "",              // Hardware Part Number
-        "FWPartNum"         => "",              // Firmware Part Number
-        "FWVersion"         => "",              // Firmware Version
-        "RawSetup"          => "",              // The raw setup
-        "RawCalibration"    => "",              // The raw calibration
-        "Active"            => 0,               // Is the device active
-        "GatewayKey"        => 0,               // The gateway for this
-        "ControllerKey"     => 0,               // The controller to use
-        "ControllerIndex"   => 0,               // The index on the controller
-        "DeviceLocation"    => "",              // The location of the device
-        "DeviceJob"         => "",              // The job of the device
-        "Driver"            => "eDEFAULT",      // The driver to use
-        "PollInterval"      => 0,               // The poll interval in minutes
-        "ActiveSensors"     => 0,               // How many active sensors
-        "DeviceGroup"       => "FFFFFF",        // What group the device is in
-        "BoredomThreshold"  => 0x50,            // Not currently used
-        "LastConfig"        => "2000-01-01 00:00:00",  // Last configuration check
-        "LastPoll"          => "2000-01-01 00:00:00",  // Last poll
-        "LastHistory"       => "2000-01-01 00:00:00",  // Last history record
-        "LastAnalysis"      => "2000-01-01 00:00:00",  // Last analysis performed
-        "MinAverage"        => "15MIN",         // How often to do averages
-        "CurrentGatewayKey" => 0,               // Not used
-        "params"            => null,            // Device Parameters
+        "group" => "default",        //  The database group to use
     );
     /** @var array This is where the data is stored */
     protected $data = array();
-
-    /** The database table to use */
-    protected $table = "devices";
-    /** This is the Field name for the key of the record */
-    protected $id = "DeviceKey";
 
     /** @var object This is the endpoint driver */
     protected $epDriver = null;
@@ -239,16 +205,10 @@ class DeviceContainer extends HUGnetContainer
     public function fromString($string)
     {
         $this->SerialNum = hexdec(substr($string, 0, 10));
-        $this->DeviceID  = devInfo::sn2DeviceID($this->SerialNum);
-        $this->HWPartNum = devInfo::dehexifyPartNum(
-            substr($string, self::HW_START, 10)
-        );
-        $this->FWPartNum        = devInfo::dehexifyPartNum(
-            substr($string, self::FW_START, 10)
-        );
-        $this->FWVersion        = devInfo::dehexifyVersion(
-            substr($string, self::FWV_START, 6)
-        );
+        $this->DeviceID  = $this->SerialNum;
+        $this->HWPartNum = substr($string, self::HW_START, 10);
+        $this->FWPartNum = substr($string, self::FW_START, 10);
+        $this->FWVersion = substr($string, self::FWV_START, 6);
         $this->DeviceGroup      = trim(strtoupper(substr($string, self::GROUP, 6)));
         $this->BoredomThreshold = hexdec(trim(substr($string, self::BOREDOM, 2)));
         $this->RawSetup         = $string;
@@ -266,12 +226,12 @@ class DeviceContainer extends HUGnetContainer
     */
     public function toString($default = true)
     {
-        $string  = devInfo::hexify($this->SerialNum, 10);
-        $string .= devInfo::hexifyPartNum($this->HWPartNum);
-        $string .= devInfo::hexifyPartNum($this->FWPartNum);
-        $string .= devInfo::hexifyVersion($this->FWVersion);
+        $string  = self::hexify($this->SerialNum, 10);
+        $string .= self::hexifyPartNum($this->HWPartNum);
+        $string .= self::hexifyPartNum($this->FWPartNum);
+        $string .= self::hexifyVersion($this->FWVersion);
         $string .= $this->DeviceGroup;
-        $string .= devInfo::hexify($this->BoredomThreshold, 2);
+        $string .= self::hexify($this->BoredomThreshold, 2);
         if (is_object($this->epDriver)) {
             $string .= $this->epDriver->toString($default);
         }
@@ -296,6 +256,43 @@ class DeviceContainer extends HUGnetContainer
         if (empty($this->RawSetup)) {
             $this->RawSetup = substr($this->toString(), 0, self::CONFIGEND);
         }
+    }
+   /**
+    * Hexifies a version in x.y.z form.
+    *
+    * @param string $version The version is x.y.z form
+    *
+    * @return string Hexified version (asciihex)
+        */
+    public static function hexifyVersion($version)
+    {
+        $ver = explode(".", $version);
+        $str = "";
+        for ($i = 0; $i < 3; $i++) {
+            $str .= self::stringSize($ver[$i], 2);
+        }
+        return $str;
+    }
+
+    /**
+    * Hexifies a version in x.y.z form.
+    *
+    * @param string $PartNum The part number in XXXX-XX-XX-A form
+    *
+    * @return string Hexified version (asciihex)
+        */
+    public static function hexifyPartNum($PartNum)
+    {
+        $part = explode("-", $PartNum);
+        $str  = self::stringSize($part[0], 4);
+        $str .= self::stringSize($part[1], 2);
+        $str .= self::stringSize($part[2], 2);
+        if (!empty($part[3])) {
+            $chr  = ord($part[3]);
+            $str .= self::hexify($chr, 2);
+        }
+        self::stringSize($str, 10);
+        return $str;
     }
 
 }

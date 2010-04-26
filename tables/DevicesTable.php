@@ -179,7 +179,7 @@ class DevicesTable extends HUGnetDBTable
         "BoredomThreshold" => array(
             "Name" => "BoredomThreshold",
             "Type" => "tinyint(4)",
-            "Default" => 0,
+            "Default" => 80,
         ),
         "LastConfig" => array(
             "Name" => "LastConfig",
@@ -209,7 +209,7 @@ class DevicesTable extends HUGnetDBTable
         "CurrentGatewayKey" => array(
             "Name" => "CurrentGatewayKey",
             "Type" => "int(11)",
-            "Default" => '0',
+            "Default" => 0,
         ),
         "params" => array(
             "Name" => "params",

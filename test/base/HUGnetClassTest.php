@@ -295,6 +295,100 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $value, '$value not changed correctly');
         $this->assertSame($expect, $ret, "Return was not correct");
     }
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataDehexify()
+    {
+        return array(
+            array("4142434445", "ABCDE"),
+            array("6162636465", "abcde"),
+        );
+    }
+
+
+    /**
+    * test
+    *
+    * @param string $str    The string to play with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDehexify
+    */
+    public function testDehexify($str, $expect)
+    {
+        $bin = HUGnetClass::dehexify($str);
+        $this->assertSame($expect, $bin);
+    }
+
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexify()
+    {
+        return array(
+            array(1, null, "01"),
+            array(-1, 4, "FFFF"),
+            array(1024, 2, "00"),
+            array(1024, 4, "0400"),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $value  The number to play with
+    * @param int    $width  The width of the output string
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexify
+    */
+    public function testHexify($value, $width, $expect)
+    {
+        if (is_null($width)) {
+            $ret = HUGnetClass::hexify($value);
+        } else {
+            $ret = HUGnetClass::hexify($value, $width);
+        }
+        $this->assertEquals($expect, $ret);
+    }
+
+
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataHexifyStr()
+    {
+        return array(
+            array("\0\r\n", "000D0A"),
+            array("123", "313233"),
+            array("ABC", "414243"),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $str    The string to play with
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHexifyStr
+    */
+    public function testHexifyStr($str, $expect)
+    {
+        $ret = HUGnetClass::hexifyStr($str);
+        $this->assertEquals($expect, $ret);
+    }
 }
 
 /**
