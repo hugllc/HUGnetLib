@@ -645,6 +645,21 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "value" => 1235.932,
                 ),
             ),
+            array(
+                array(
+                    "id" => 10,
+                    "name" => "This is a name",
+                    "value" => new HUGnetDBTableTestStub(),
+                ),
+                array(
+                    "id" => 10,
+                    "name" => "This is a name",
+                    "value" => "YTo3OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToiZ"
+                        ."mx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5n"
+                        ."cyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjA6IiI7czo0OiJu"
+                        ."YW1lIjtzOjQ6Ik5hbWUiO3M6NToidmFsdWUiO2Q6MTI7fQ==",
+                ),
+            ),
         );
     }
     /**

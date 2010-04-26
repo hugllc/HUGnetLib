@@ -139,7 +139,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         $this->clearData();
         parent::__construct($data);
-        $this->myConfig = &ConfigContainer::singleton();
+        if (!$this->isMine($this->myConfig, "ConfigContainer")) {
+            $this->myConfig = &ConfigContainer::singleton();
+        }
         if (is_object($this->myConfig->servers)) {
             $this->myDriver = &$this->myConfig->servers->getDriver(
                 $this,
@@ -169,7 +171,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function toDB($default = true)
     {
         foreach ((array)$this->sqlColumns as $col) {
-            $array[$col["Name"]] = $this->data[$col["Name"]];
+            if (is_object($this->data[$col["Name"]])) {
+                $array[$col["Name"]] = $this->data[$col["Name"]]->toString();
+            } else {
+                $array[$col["Name"]] = $this->data[$col["Name"]];
+            }
         }
         return (array)$array;
     }

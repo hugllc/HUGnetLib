@@ -67,7 +67,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "PluginDir" => realpath(
-                dirname(__FILE__)."/../files/plugins/devices/"
+                dirname(__FILE__)."/../files/plugins/"
             ),
         );
         $this->config = &ConfigContainer::singleton();
@@ -124,7 +124,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -156,7 +156,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -188,7 +188,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -220,8 +220,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
-               ),
+                    "params" => array(),
+                ),
             ),
             array(
                 "00000000E8ABCCEF01410125456743000005FFFFFF",
@@ -252,8 +252,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
-               ),
+                    "params" => array(),
+                ),
             ),
             array(
                 array(
@@ -284,7 +284,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
                     "params" => "",
-               ),
+                ),
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
@@ -312,7 +312,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -344,7 +344,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "0000-00-00 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params"            => "",
+                    "params"            => array(),
                 ),
             ),
             array(
@@ -422,7 +422,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new DeviceContainer($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $data = $this->readAttribute($o, "data");
+        $this->assertType("object", $data["params"]);
+        $data["params"] = $data["params"]->toArray();
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -489,7 +492,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -521,7 +524,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "0000-00-00 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params"            => "",
+                    "params"            => array(),
                 ),
             ),
             array(
@@ -552,7 +555,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
                     "CurrentGatewayKey" => 2,
-                    "params"            => array(),
+                    "params"            => "",
                 ),
                 array(
                     "group"             => "default",
@@ -600,7 +603,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertType("object", $data["params"]);
+        $data["params"] = $data["params"]->toArray();
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -639,7 +645,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -671,7 +677,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -703,7 +709,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -736,7 +742,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
             array(
@@ -768,7 +774,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "0000-00-00 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "params" => "",
+                    "params" => array(),
                ),
             ),
         );
@@ -786,7 +792,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testFromString($preload, $expect)
     {
         $this->o->fromString($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertType("object", $data["params"]);
+        $data["params"] = $data["params"]->toArray();
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -974,114 +983,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->toString());
     }
 
-    /**
-    * data provider
-    *
-    * @return array
-    */
-    public static function dataEncodeParams()
-    {
-        return array(
-            array(
-                array("this"=>"is","a"=>"test"),
-                "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9"
-            ),
-            array("test String", "test String"),
-            array(1234, ""),
-            array(array(), "YTowOnt9"),
-        );
-    }
-    /**
-     * test
-     *
-     * @param array  $params Parameters to encode
-     * @param string $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataEncodeParams
-     */
-    public function testEncodeParams($params, $expect)
-    {
-        $ret = $this->o->encodeParams($params);
-        $this->assertSame(
-            $expect,
-            $params,
-            "Input array passed by reference was not modified correctly"
-        );
-        $this->assertSame($expect, $ret, "return array incorrect");
-    }
 
-    /**
-     * data provider
-     *
-     * @return array
-     */
-    public static function dataDecodeParams()
-    {
-        return array(
-            array(
-                "YToyOntzOjQ6InRoaXMiO3M6MjoiaXMiO3M6MToiYSI7czo0OiJ0ZXN0Ijt9",
-                array("this"=>"is","a"=>"test")
-            ),
-            array(
-                array("this"=>"is","an"=>"array"),
-                array("this"=>"is","an"=>"array")
-            ),
-            array(1234, array()),
-            array("", array()),
-        );
-    }
-    /**
-     * test
-     *
-     * @param string $params Parameters to decode
-     * @param array  $expect The expected return value
-     *
-     * @return null
-     *
-     * @dataProvider dataDecodeParams
-     */
-    public function testDecodeParams($params, $expect)
-    {
-        $ret = $this->o->decodeParams($params);
-        $this->assertSame(
-            $expect,
-            $params,
-            "Input array passed by reference was not modified correctly"
-        );
-        $this->assertSame($expect, $ret, "return array incorrect");
-    }
-
-    /**
-     * data provider
-     *
-     * @return array
-     */
-    public static function dataEncodeDecodeParams()
-    {
-        return array(
-            array(array()),
-            array(array(1,2,3,4,5)),
-            array(array("Hello" => "This", "is" => "an", "associative" => "array")),
-        );
-    }
-    /**
-     * test
-     *
-     * @param string $params Parameters to decode
-     *
-     * @return null
-     *
-     * @dataProvider dataEncodeDecodeParams
-     */
-    public function testEncodeDecodeParams($params)
-    {
-        $expect = $params;
-        $this->o->encodeParams($params);
-        $this->o->decodeParams($params);
-        $this->assertSame($expect, $params);
-    }
     /**
     * data provider for testGetBytes
     *

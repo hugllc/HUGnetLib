@@ -97,14 +97,6 @@ class DeviceContainer extends DevicesTable
     *
     * @return null
     */
-    public function __destruct()
-    {
-    }
-    /**
-    * Disconnects from the gateway
-    *
-    * @return null
-    */
     private function _registerDriverPlugins()
     {
         $myDev = $this->myConfig->plugins->getClass("device");
@@ -126,45 +118,6 @@ class DeviceContainer extends DevicesTable
             }
         }
     }
-
-    /**
-    *  Encodes the parameter array and returns it as a string
-    *
-    * @param array &$params the parameter array to encode
-    *
-    * @return string
-    */
-    function encodeParams(&$params)
-    {
-        if (is_array($params)) {
-            $params = serialize($params);
-            $params = base64_encode($params);
-        }
-        if (!is_string($params)) {
-            $params = "";
-        }
-        return $params;
-    }
-
-    /**
-     *  Decodes the parameter string and returns it as a array
-     *
-     * @param string &$params the parameter array to decode
-     *
-     * @return array
-     */
-    function decodeParams(&$params)
-    {
-        if (is_string($params)) {
-            $params = base64_decode($params);
-            $params = unserialize($params);
-        }
-        if (!is_array($params)) {
-            $params = array();
-        }
-        return $params;
-    }
-
     /**
     * Creates the object from a string
     *
@@ -216,6 +169,7 @@ class DeviceContainer extends DevicesTable
         if (is_object($this->epDriver)) {
             $this->epDriver->fromString(substr($string, self::CONFIGEND));
         }
+        $this->params = $this->data["params"];
     }
     /**
     * Returns the object as a string
@@ -256,8 +210,11 @@ class DeviceContainer extends DevicesTable
         if (empty($this->RawSetup)) {
             $this->RawSetup = substr($this->toString(), 0, self::CONFIGEND);
         }
+        if (!is_object($this->data["params"])) {
+            $this->params = $this->data["params"];
+        }
     }
-   /**
+    /**
     * Hexifies a version in x.y.z form.
     *
     * @param string $version The version is x.y.z form

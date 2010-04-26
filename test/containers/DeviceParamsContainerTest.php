@@ -110,6 +110,60 @@ class DeviceParamsContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
+    /**
+    * data provider for testToString
+    *
+    * @return array
+    */
+    public static function data2String()
+    {
+        return array(
+            array(array(), "YTowOnt9"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The data to preload into the class
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider data2String
+    */
+    public function testToString($preload, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->toString());
+    }
+    /**
+    * data provider for testToString
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(array(), array()),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload The data to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($preload, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->toArray());
+    }
 
 
 }

@@ -39,6 +39,7 @@
 require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../containers/DeviceParamsContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -255,6 +256,26 @@ class DevicesTable extends HUGnetDBTable
     /** @var array This is where the data is stored */
     protected $data = array();
 
+    /**
+    * Changes the part number into XXXX-XX-XX-X form.
+    *
+    * @param mixed $value The value to set
+    *
+    * @return string PartNumber in ASCII hex
+    */
+    protected static function formatPartNum($value)
+    {
+        if (stripos($value, "-") === false) {
+            $PartNum = strtoupper($value);
+            $str     = array();
+            $str[]   = substr($PartNum, 0, 4);
+            $str[]   = substr($PartNum, 4, 2);
+            $str[]   = substr($PartNum, 6, 2);
+            $str[]   = chr(hexdec(substr($PartNum, 8, 2)));
+            $value = implode("-", $str);
+        }
+        return $value;
+    }
 
     /******************************************************************
      ******************************************************************
@@ -376,24 +397,15 @@ class DevicesTable extends HUGnetDBTable
         $this->data["HWPartNum"] = $this->formatPartNum($value);
     }
     /**
-    * Changes the part number into XXXX-XX-XX-X form.
+    * Sets the params
     *
     * @param mixed $value The value to set
     *
-    * @return string PartNumber in ASCII hex
+    * @return null
     */
-    protected static function formatPartNum($value)
+    protected function setParams($value)
     {
-        if (stripos($value, "-") === false) {
-            $PartNum = strtoupper($value);
-            $str     = array();
-            $str[]   = substr($PartNum, 0, 4);
-            $str[]   = substr($PartNum, 4, 2);
-            $str[]   = substr($PartNum, 6, 2);
-            $str[]   = chr(hexdec(substr($PartNum, 8, 2)));
-            $value = implode("-", $str);
-        }
-        return $value;
+        $this->data["params"] = new DeviceParamsContainer($value);
     }
 
 }

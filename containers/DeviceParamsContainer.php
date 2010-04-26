@@ -66,5 +66,28 @@ class DeviceParamsContainer extends HUGnetContainer
     /** @var array This is where the data is stored */
     protected $data = array();
 
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toString($default = false)
+    {
+        return parent::toString($default);
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = false)
+    {
+        return parent::toArray($default);
+    }
+
 }
 ?>
