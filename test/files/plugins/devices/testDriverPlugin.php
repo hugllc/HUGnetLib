@@ -99,5 +99,15 @@ class TestDriverPlugin extends DeviceDriverBase
         $this->Info =& $this->myDriver->DriverInfo;
         return $this->Info["RawDriverInfo"];
     }
-
+    /**
+    * This takes the numeric job and replaces it with a name
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        $GLOBALS["packetConsumer"] = &$pkt;
+    }
 }

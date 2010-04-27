@@ -682,6 +682,35 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
             }
         }
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array("DeviceID", 5, "000005"),
+            array("DeviceID", "000005", "000005"),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($var, $value, $expect)
+    {
+        $this->o->$var = $value;
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame($expect, $data[$var]);
+    }
 
 }
 

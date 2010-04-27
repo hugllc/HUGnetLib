@@ -268,6 +268,5 @@ class DeviceContainer extends DevicesTable
             $this->epDriver->packetConsumer($pkt);
         }
     }
-
 }
 ?>

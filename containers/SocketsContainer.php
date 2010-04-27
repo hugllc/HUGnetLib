@@ -70,6 +70,8 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     protected $groups = null;
     /** @var object These are the server groups we know */
     protected $driver = null;
+    /** @var string This is the last deviceID that we found */
+    protected $lastDeviceID = array();
 
     /**
     * Sets all of the endpoint attributes from an array
@@ -202,20 +204,15 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     /**
     * Finds a deviceID that we can use
     *
-    * @param string $groups The group to check, or array of groups
+    * @param array $groups array of groups to check
     *
     * @return null
     */
-    public function deviceID($groups = "default")
+    public function deviceID($groups = array())
     {
-        if (!is_array($groups)) {
-            $groups = array($groups => $groups);
-        }
-        // Make sure all of the groups are connected.
-        foreach ($groups as $key => $group) {
-            if (!$this->connect($group)) {
-                unset($groups[$key]);
-            }
+        if (empty($groups)) {
+            // If we get no groups, do all
+            $groups = $this->groups();
         }
         // Find an ID to use
         $id = false;
@@ -235,15 +232,14 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     */
     public function forceDeviceID($id, $groups = array())
     {
-        if (is_string($id)) {
-            if (empty($groups) || !is_array($groups)) {
-                $groups = (array)$this->groups;
-            }
-            // Set all of the IDs
-            foreach ($groups as $group) {
-                if ($this->connect($group)) {
-                    $this->socket[$group]->DeviceID = $id;
-                }
+        if (empty($groups) || !is_array($groups)) {
+            $groups = (array)$this->groups;
+        }
+        // Set all of the IDs
+        foreach ($groups as $group) {
+            $this->lastDeviceID[$group] = $id;
+            if ($this->connect($group)) {
+                $this->socket[$group]->DeviceID = $id;
             }
         }
     }
@@ -266,6 +262,9 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         ));
         self::vprint("Checking ".$pkt->To, HUGnetClass::VPRINT_NORMAL);
         foreach ($groups as $group) {
+            if (!$this->connect($group)) {
+                continue;
+            }
             $pkt->group = $group;
             $pkt->send();
             if (is_object($pkt->Reply)) {

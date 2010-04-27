@@ -57,7 +57,11 @@ class DummyDeviceContainer extends HUGnetClass
 {
     /** @var This is where the driver info goes */
     public $DriverInfo = array();
+    /** @var The gateway key */
     public $GatewayKey = 5;
+    /** @var The string to return */
+    public $string = "000000000100392601500039260150010203FFFFFF10";
+
     /**
     * Builds the class
     *
@@ -65,6 +69,16 @@ class DummyDeviceContainer extends HUGnetClass
     */
     public function __construct()
     {
+    }
+
+    /**
+    * Builds the class
+    *
+    * @return null
+    */
+    public function __toString()
+    {
+        return $this->string;
     }
 }
 ?>

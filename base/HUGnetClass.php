@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Database
+ * @category   Base
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -42,7 +42,7 @@
  *
  * @category   Base
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

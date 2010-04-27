@@ -152,12 +152,13 @@ class PacketRouter extends HUGnetContainer
         foreach ($this->groups as $group) {
             self::vprint("Reading $group", HUGnetClass::VPRINT_VERBOSE);
 
-            // Make sure of our timeout
+            // Make sure of our timeout is low.  We set it to 0.5
             $data = array(
-                "Timeout" => 1,
+                "Timeout" => 0.5,
                 "group" => $group,
                 "verbose" => $this->verbose,
             );
+            // Check for packets coming in.
             $pkt = &PacketContainer::monitor($data);
             if (is_object($pkt)) {
                 if ($pkt->toMe()) {

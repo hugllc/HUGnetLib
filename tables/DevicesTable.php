@@ -371,6 +371,15 @@ class DevicesTable extends HUGnetDBTable
                 $str[] .= (int)substr($version, ($i*2), 2);
             }
             $value = implode(".", $str);
+        } else {
+            $ret = preg_match(
+                "/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/",
+                $value,
+                $match
+            );
+            if ($ret > 0) {
+                $value = $match[0];
+            }
         }
         $this->data["FWVersion"] = $value;
     }

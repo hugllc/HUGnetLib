@@ -1066,6 +1066,54 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $value = DeviceContainer::hexifyPartNum($partNum);
         $this->assertSame($expect, $value);
     }
+    /**
+    * test
+    *
+    * @return null
+    */
+    public function testPacketConsumer()
+    {
+        unset($GLOBALS["packetConsumer"]);
+        // create the container.
+        $o = new DeviceContainer(array(
+            "FWPartNum" => "0124-45-67-C",
+            "HWPartNum" => "ABCE-EF-01-A",
+            "FWVersion" => "01.02.03",
+        ));
+        $pkt = new PacketContainer();
+        $o->packetConsumer($pkt);
+        $this->assertSame($pkt, $GLOBALS["packetConsumer"]);
+    }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array("FWVersion", "5.3.1", "5.3.1"),
+            array("FWVersion", "2.4.1+git", "2.4.1"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($var, $value, $expect)
+    {
+        $this->o->$var = $value;
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame($expect, $data[$var]);
+    }
 
 }
 

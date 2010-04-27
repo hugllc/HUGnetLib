@@ -543,7 +543,7 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "default" => "5A5A5A0100001F000001001F5A5A5A0100001F000002001C",
                 ),
-                "default",
+                "",
                 "000003",
             ),
         );
@@ -583,6 +583,73 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
                         $id, $sock->DeviceID, "DeviceID wrong on group $group"
                     );
                 }
+            }
+        }
+    }
+
+    /**
+    * Data provider for testForceDeviceID
+    *
+    * @return array
+    */
+    public static function dataForceDeviceID()
+    {
+        return array(
+            array(
+                array(
+                    "sockets" => array(
+                        array(
+                            "dummy" => true,
+                        ),
+                        array(
+                            "dummy" => true,
+                            "group" => "other",
+                        ),
+                    ),
+                ),
+                "000005",
+                array("default", "other", "another"),
+                "000005",
+            ),
+            array(
+                array(
+                    "sockets" => array(
+                        array(
+                            "dummy" => true,
+                        ),
+                    ),
+                ),
+                "000003",
+                array(),
+                "000003",
+            ),
+        );
+    }
+    /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $config The configuration to use
+    * @param string $id     The ID to use
+    * @param mixed  $groups Connect before the test connect
+    * @param bool   $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataForceDeviceID()
+    */
+    public function testForceDeviceID($config, $id, $groups, $expect)
+    {
+        $conf = ConfigContainer::singleton();
+        $conf->forceConfig($config);
+        $conf->sockets->forceDeviceID($id, $groups);
+        foreach ($groups as $group) {
+            $sock =& $conf->sockets->getSocket($group);
+            if (is_object($sock)) {
+                $this->assertSame(
+                    $id, $sock->DeviceID, "DeviceID wrong on group $group"
+                );
             }
         }
     }

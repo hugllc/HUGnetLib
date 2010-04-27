@@ -304,6 +304,20 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         } while (($ret === false) && ($timeout > time()));
         return $ret;
     }
+    /**
+    * function to set DeviceID
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setDeviceID($value)
+    {
+        if (is_int($value)) {
+            $value = dechex($value);
+        }
+        $this->data["DeviceID"] = self::stringSize($value, 6);
+    }
 
 }
 ?>
