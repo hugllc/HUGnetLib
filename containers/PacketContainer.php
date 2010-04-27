@@ -216,11 +216,11 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             return "";
         }
         // Command (2 chars)
-        $string  = devInfo::setStringSize($this->Command, 2);
+        $string  = self::stringSize($this->Command, 2);
         // To (6 chars)
-        $string .= devInfo::setStringSize($this->To, 6);
+        $string .= self::stringSize($this->To, 6);
         // From (6 chars)
-        $string .= devInfo::setStringSize($this->From, 6);
+        $string .= self::stringSize($this->From, 6);
         // Length (2 chars)
         $string .= sprintf("%02X", (strlen($this->Data)/2));
         // Data ('Length' chars)
@@ -262,10 +262,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
 
         return array(
-            "To"           => devInfo::setStringSize($this->To, 6),
-            "From"         => devInfo::setStringSize($this->From, 6),
+            "To"           => self::stringSize($this->To, 6),
+            "From"         => self::stringSize($this->From, 6),
             "Date"         => $this->Date,
-            "Command"      => devInfo::setStringSize($this->Command, 2),
+            "Command"      => self::stringSize($this->Command, 2),
             "Length"       => (int) $this->Length,
             "Time"         => (float) $this->Time,
             "Data"         => (array)$Data,
@@ -342,6 +342,14 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 return true;
             } else if (self::_unsolicited($pkt)) {
                 // This is an unsolicited packet
+                $this->myConfig->hooks->hook(
+                    "UnsolicitedPacket", "PacketConsumerInterface"
+                )->packetConsumer($pkt);
+            } else if (self::_toMe($pkt)) {
+                // This is different packet to me, not a reply thi this pkt
+                $this->myConfig->hooks->hook(
+                    "myPacket", "PacketConsumerInterface"
+                )->packetConsumer($pkt);
             }
         } else {
             return true;
@@ -732,7 +740,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     protected function setCommand($value)
     {
-        $this->data["Command"] = devInfo::stringSize($value, 2);
+        $this->data["Command"] = self::stringSize($value, 2);
         $this->setType($value);
     }
     /**
