@@ -1,9 +1,9 @@
 <?php
 /**
- * Classes for dealing with devices
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
@@ -21,65 +21,50 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interface
+ * @category   Misc
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+/** This is for the base class */
+require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
+
 /**
- * Base class for all other classes
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
  *
- * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
- *
- * @category   Interface
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface HUGnetClassInterface
+class DummyDeviceContainer extends HUGnetClass
 {
+    /** @var This is where the driver info goes */
+    public $DriverInfo = array();
+    public $GatewayKey = 5;
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
-    *
-    * @param mixed $config The configuration array
+    * Builds the class
     *
     * @return null
     */
-    public function __construct($config = array());
-    /**
-    * Sets the verbosity
-    *
-    * @param int $level The verbosity level
-    *
-    * @return null
-    */
-    public function verbose($level=0);
-    /**
-    * Prints out a string
-    *
-    * @param string $str     The string to print out
-    * @param int    $val     The minimum value to print this for
-    * @param int    $verbose The verbosity level
-    *                        (This is for if we are not an object)
-    *
-    * @return null
-    */
-    public function vprint($str, $val = 6, $verbose = 0);
+    public function __construct()
+    {
+    }
 }
-
-
 ?>

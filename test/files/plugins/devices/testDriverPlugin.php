@@ -83,8 +83,9 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function fromString($string)
     {
+        $this->Info =& $this->myDriver->DriverInfo;
         // This is just so we can check for it.
-        $this->myDriver->RawCalibration = (string)$string;
+        $this->Info["RawDriverInfo"] = (string)$string;
     }
     /**
     * Creates the object from a string
@@ -95,7 +96,8 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function toString($default = true)
     {
-        return "01234567";
+        $this->Info =& $this->myDriver->DriverInfo;
+        return $this->Info["RawDriverInfo"];
     }
 
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * Classes for dealing with devices
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
@@ -21,65 +21,54 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interface
+ * @category   Misc
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/../tables/DevicesTable.php";
+require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+
 /**
- * Base class for all other classes
+ * This class does all of the work on endpoint devices.
  *
- * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
- *
- * @category   Interface
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface HUGnetClassInterface
+interface DeviceContainerInterface
 {
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
+    * Hexifies a version in x.y.z form.
     *
-    * @param mixed $config The configuration array
+    * @param string $version The version is x.y.z form
     *
-    * @return null
+    * @return string Hexified version (asciihex)
     */
-    public function __construct($config = array());
+    public static function hexifyVersion($version);
     /**
-    * Sets the verbosity
+    * Hexifies a version in x.y.z form.
     *
-    * @param int $level The verbosity level
+    * @param string $PartNum The part number in XXXX-XX-XX-A form
     *
-    * @return null
+    * @return string Hexified version (asciihex)
     */
-    public function verbose($level=0);
-    /**
-    * Prints out a string
-    *
-    * @param string $str     The string to print out
-    * @param int    $val     The minimum value to print this for
-    * @param int    $verbose The verbosity level
-    *                        (This is for if we are not an object)
-    *
-    * @return null
-    */
-    public function vprint($str, $val = 6, $verbose = 0);
+    public static function hexifyPartNum($PartNum);
+
 }
-
-
 ?>

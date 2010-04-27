@@ -63,12 +63,14 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     /**
     * Builds the class
     *
-    * @param object &$obj The object that is registering us
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
     *
     * @return null
     */
-    public function __construct(&$obj)
+    public function __construct(&$obj, $string = "")
     {
         $this->myDriver = &$obj;
+        $this->fromString($string);
     }
 }

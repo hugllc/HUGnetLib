@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -38,20 +38,21 @@
 /** This is for the base class */
 require_once dirname(__FILE__)."/../tables/DevicesTable.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../interfaces/DeviceContainerInterface.php";
 
 /**
  * This class does all of the work on endpoint devices.
  *
  * @category   Containers
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceContainer extends DevicesTable
+class DeviceContainer extends DevicesTable implements DeviceContainerInterface
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -70,6 +71,7 @@ class DeviceContainer extends DevicesTable
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",        //  The database group to use
+        "DriverInfo" => array(),     //  This is space for the driver to use
     );
     /** @var array This is where the data is stored */
     protected $data = array();
