@@ -279,6 +279,19 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Check to make sure that two instances of the class from singleton are
+    * identical
+    *
+    * @return null
+    */
+    public function testSingleton()
+    {
+        $this->assertSame(
+            HooksContainer::singleton(),
+            HooksContainer::singleton()
+        );
+    }
 
 }
 

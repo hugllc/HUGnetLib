@@ -65,6 +65,7 @@ class ConfigContainer extends HUGnetContainer
     protected $default = array(
         "servers"         => array(),      // The database servers to use
         "sockets"         => array(),      // The gateways sockets to use
+        "hooks"           => array(),      // The hooks that are available.
         "hugnet_database" => "HUGnet",     // The database to use
         "script_gateway"  => 0,            // The gateway for the scripts
         "poll"            => array(        // Configuration for the poll script
@@ -95,8 +96,10 @@ class ConfigContainer extends HUGnetContainer
     protected $data = array();
     /** @var object This is where we store our database connection */
     protected $servers = null;
-    /** @var object This is where we store our plugins */
+    /** @var object This is where we store our sockets */
     protected $sockets = null;
+    /** @var object This is where we store our hooks */
+    protected $hooks = null;
     /** @var object This is where we store our plugins */
     public $plugins = null;
 
@@ -129,6 +132,7 @@ class ConfigContainer extends HUGnetContainer
         $this->fromArray($config);
         $this->_setServers();
         $this->_setSocket();
+        $this->_setHooks();
         $this->plugins = new plugins(
             $this->PluginDir."/",
             $this->PluginExtension,
@@ -147,20 +151,11 @@ class ConfigContainer extends HUGnetContainer
     private function _setSocket()
     {
         // Load the container
-        if ($this->findClass("SocketsContainer")) {
-            $this->data["sockets"] = new SocketsContainer($this->sockets);
-        }
+        $this->data["sockets"] = &self::factory($this->sockets, "SocketsContainer");
         // The import set $this->servers instead of $this->data["servers"].
         $this->sockets = &$this->data["sockets"];
     }
 
-    /**
-    * Disconnects from the database
-    *
-    */
-    public function __destruct()
-    {
-    }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
     *
@@ -169,11 +164,23 @@ class ConfigContainer extends HUGnetContainer
     private function _setServers()
     {
         // Load the container
-        if ($this->findClass("DBServersContainer")) {
-            $this->data["servers"] = new DBServersContainer($this->servers);
-        }
+        $this->data["servers"] = &self::factory(
+            $this->servers, "DBServersContainer"
+        );
         // The import set $this->servers instead of $this->data["servers"].
         $this->servers = &$this->data["servers"];
+    }
+    /**
+    * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
+    *
+    * @return null
+    */
+    private function _setHooks()
+    {
+        // Load the container
+        $this->data["hooks"] = self::factory($this->hooks, "HooksContainer");
+        // The import set $this->servers instead of $this->data["servers"].
+        $this->hooks = &$this->data["hooks"];
     }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array

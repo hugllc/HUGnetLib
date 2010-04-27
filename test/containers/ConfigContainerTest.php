@@ -93,7 +93,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(),
                 "DBServersContainer",
-                "SocketsContainer"
+                "SocketsContainer",
+                "HooksContainer",
             ),
             array(
                 dirname(__FILE__)."/../files/config1.inc.php",
@@ -116,7 +117,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "admin_email" => "you@yourdomain.com",
                 ),
                 "DBServersContainer",
-                "SocketsContainer"
+                "SocketsContainer",
+                "HooksContainer",
             ),
             array(
                 dirname(__FILE__)."/../files/config2.inc.php",
@@ -139,7 +141,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "admin_email" => "you@yourdomain.com",
                 ),
                 "DBServersContainer",
-                "SocketsContainer"
+                "SocketsContainer",
+                "HooksContainer",
             ),
             array(
                 array(
@@ -216,7 +219,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     "useSocket" => "dummy",
                 ),
                 "DBServersContainer",
-                "SocketsContainer"
+                "SocketsContainer",
+                "HooksContainer",
             ),
         );
     }
@@ -228,18 +232,20 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     * @param array $expect  The expected return
     * @param array $servers The expected class under 'servers'
     * @param array $sockets The expected class under 'sockets'
+    * @param array $hooks   The expected class under 'hooks'
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect, $servers, $sockets)
+    public function testConstructor($preload, $expect, $servers, $sockets, $hooks)
     {
         $o = new ConfigContainer($preload);
         $ret = $o->toArray(false);
         $this->assertSame($expect, $ret);
         $this->assertSame($servers, get_class($o->servers));
         $this->assertSame($sockets, get_class($o->sockets));
+        $this->assertSame($hooks, get_class($o->hooks));
     }
 
     /**

@@ -83,15 +83,15 @@ class HooksContainer extends HUGnetContainer
     /**
     * Registers a hook, along with the object to use
     *
-    * @param string $group   The group to which this hook belongs
+    * @param string $name    The group to which this hook belongs
     * @param object &$object The object to use for the hook
     *
     * @return object PDO object, null on failure
     */
-    public function registerHook($group, &$object)
+    public function registerHook($name, &$object)
     {
         if (is_object($object)) {
-            $this->data["hooks"][$group] = array(
+            $this->data["hooks"][$name] = array(
                 "obj" => &$object,
                 "class" => get_class($object),
             );
@@ -131,6 +131,23 @@ class HooksContainer extends HUGnetContainer
     public function __call($name, $args)
     {
         self::vprint("No hook defined", HUGnetClass::VPRINT_VERBOSE);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $config The configuration array.
+    *
+    * @return object of type ConfigContainer
+    */
+    static public function &singleton($config = array())
+    {
+        static $instance;
+
+        if (!is_object($instance)) {
+            $class = __CLASS__;
+            $instance = new $class($config);
+        }
+        return $instance;
     }
 
 }
