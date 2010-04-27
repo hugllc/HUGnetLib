@@ -222,13 +222,30 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         for ($i = 1; ($i < 0x20) && ($id === false); $i++) {
             $id = $this->_checkID($i, $groups);
         }
+        $this->forceDeviceID($id, $groups);
+        return $id;
+    }
+    /**
+    * Forcably sets the DeviceID
+    *
+    * @param string $id     The DeviceID to use
+    * @param array  $groups The array of groups to set
+    *
+    * @return null
+    */
+    public function forceDeviceID($id, $groups = array())
+    {
         if (is_string($id)) {
+            if (empty($groups) || !is_array($groups)) {
+                $groups = (array)$this->groups;
+            }
             // Set all of the IDs
             foreach ($groups as $group) {
-                $this->socket[$group]->DeviceID = $id;
+                if ($this->connect($group)) {
+                    $this->socket[$group]->DeviceID = $id;
+                }
             }
         }
-        return $id;
     }
     /**
     * Finds a deviceID that we can use

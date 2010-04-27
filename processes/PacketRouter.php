@@ -120,8 +120,8 @@ class PacketRouter extends HUGnetContainer
         unset($groups[$pkt->group]);
         // Print out this packet
         self::vprint(
-            $pkt->group." -> (".implode((array)$groups,", ")
-                .") ".$this->_output($pkt),
+            $pkt->group." -> (".implode((array)$groups, ", ")
+            .") ".$this->_output($pkt),
             HUGnetClass::VPRINT_NORMAL
         );
         // Loop through the groups
@@ -132,7 +132,6 @@ class PacketRouter extends HUGnetContainer
             $pkt->group = $group;
             // We don't want to wait for a reply
             $pkt->GetReply = false;
-            // Print it out if we are verbose
             // Send the packet
             $ret = $pkt->send();
         }
@@ -143,9 +142,11 @@ class PacketRouter extends HUGnetContainer
     * This function should be called periodically as often as possible.  It will
     * only return the first packet it finds on each interface.
     *
+    * @param DeviceContainer &$device This is the class to send packets to me to.
+    *
     * @return int The number of packets routed
     */
-    public function route()
+    public function route(DeviceContainer &$device)
     {
         $packets = 0;
         foreach ($this->groups as $group) {
@@ -159,9 +160,18 @@ class PacketRouter extends HUGnetContainer
             );
             $pkt = &PacketContainer::monitor($data);
             if (is_object($pkt)) {
-                $this->_setRoute($pkt);
-                $this->send($pkt);
-                $packets++;
+                if ($pkt->toMe()) {
+                    // Print out this packet
+                    self::vprint(
+                        $pkt->group." -> Me ".$this->_output($pkt),
+                        HUGnetClass::VPRINT_NORMAL
+                    );
+                    $device->packetConsumer($pkt);
+                } else {
+                    $this->_setRoute($pkt);
+                    $this->send($pkt);
+                    $packets++;
+                }
             }
         }
         return $packets;
@@ -216,5 +226,17 @@ class PacketRouter extends HUGnetContainer
             $this->Routes[$pkt->From] = $pkt->group;
         }
     }
+    /**
+    * This function routes a packet
+    *
+    * @return null
+    */
+    public function powerup()
+    {
+        foreach ((array)$this->groups as $group) {
+            PacketContainer::powerup("", $group);
+        }
+    }
+
 }
 ?>

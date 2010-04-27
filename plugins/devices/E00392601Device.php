@@ -40,6 +40,7 @@
 require_once dirname(__FILE__).'/../../base/DeviceDriverBase.php';
 // This is the interface we are implementing
 require_once dirname(__FILE__).'/../../interfaces/DeviceDriverInterface.php';
+require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 
 /**
 * Driver for the polling script (0039-26-01-P)
@@ -53,7 +54,8 @@ require_once dirname(__FILE__).'/../../interfaces/DeviceDriverInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392601Device extends DeviceDriverBase implements DeviceDriverInterface
+class E00392601Device extends DeviceDriverBase
+    implements DeviceDriverInterface, PacketConsumerInterface
 {
     /** @var int The job number for polling */
     const JOB_POLL     = 1;
@@ -73,7 +75,7 @@ class E00392601Device extends DeviceDriverBase implements DeviceDriverInterface
     public static $registerPlugin = array(
         "Name" => "e00392601",
         "Type" => "device",
-        "Class" => "E00392601Driver",
+        "Class" => "E00392601Device",
         "Devices" => array(
             "DEFAULT" => array(
                 "0039-26-01-P" => "DEFAULT",
@@ -172,6 +174,23 @@ class E00392601Device extends DeviceDriverBase implements DeviceDriverInterface
             return $this->jobs[$job];
         }
         return "Unknown";
+    }
+    /**
+    * This takes the numeric job and replaces it with a name
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
+            $pkt->reply((string)$this->myDriver);
+        } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
+            || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
+        ) {
+            $pkt->reply($pkt->Data);
+        }
     }
 
 }

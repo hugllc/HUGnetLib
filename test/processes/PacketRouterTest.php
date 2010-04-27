@@ -85,6 +85,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->config->sockets->forceDeviceID("000019");
         foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
@@ -247,6 +248,22 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public static function dataRoute()
     {
         return array(
+            // One Packet to me
+            array(
+                array(),
+                array(
+                    0 => array(
+                        "other" => "5A5A5A03000019000000001A",
+                    )
+                ),
+                array(
+                    "other"   => "",
+                    "third"   => "",
+                    "default" => ""
+                ),
+                array(
+                ),
+            ),
             // Two packets, one each interface
             array(
                 array(),
@@ -316,13 +333,66 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     * @param array $read    The packet strings for the function to read
     * @param array $write   The packet strings that the function will write
     * @param array $routes  The routes to expect
-    * @param int   $calls   The number of times to call route
     *
     * @return null
     *
     * @dataProvider dataRoute
     */
     public function testRoute($preload, $read, $write, $routes)
+    {
+        $d = new DeviceContainer(
+            array(
+                "DeviceID"   => "000019",
+            )
+        );
+        $this->o->fromAny($preload);
+        $i = 0;
+        do {
+            foreach ((array)$read[$i] as $group => $string) {
+                $this->socket[$group]->readString = $string;
+            }
+            $i++;
+        } while ($this->o->route($d) > 0);
+        foreach ($write as $group => $string) {
+            $this->assertSame(
+                $string, $this->socket[$group]->writeString,
+                "$group has the wrong string"
+            );
+        }
+        $this->assertAttributeSame($routes, "Routes", $this->o);
+    }
+    /**
+    * data provider for testPowerup
+    *
+    * @return array
+    */
+    public static function dataPowerup()
+    {
+        return array(
+            // Nothing
+            array(
+                array(),
+                array(),
+                array(
+                    "default" => "5A5A5A5E0000000000190047",
+                    "other" => "5A5A5A5E0000000000190047",
+                    "third" => "5A5A5A5E0000000000190047",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $read    The packet strings for the function to read
+    * @param array $write   The packet strings that the function will write
+    *
+    * @return null
+    *
+    * @dataProvider dataPowerup
+    */
+    public function testPowerup($preload, $read, $write)
     {
         $this->o->fromAny($preload);
         $i = 0;
@@ -331,14 +401,13 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 $this->socket[$group]->readString = $string;
             }
             $i++;
-        } while ($this->o->route() > 0);
+        } while ($this->o->powerup() > 0);
         foreach ($write as $group => $string) {
             $this->assertSame(
                 $string, $this->socket[$group]->writeString,
                 "$group has the wrong string"
             );
         }
-        $this->assertAttributeSame($routes, "Routes", $this->o);
     }
 
 

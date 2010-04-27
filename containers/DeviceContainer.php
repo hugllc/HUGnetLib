@@ -39,6 +39,7 @@
 require_once dirname(__FILE__)."/../tables/DevicesTable.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../interfaces/DeviceContainerInterface.php";
+require_once dirname(__FILE__).'/../interfaces/PacketConsumerInterface.php';
 
 /**
  * This class does all of the work on endpoint devices.
@@ -52,7 +53,8 @@ require_once dirname(__FILE__)."/../interfaces/DeviceContainerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceContainer extends DevicesTable implements DeviceContainerInterface
+class DeviceContainer extends DevicesTable
+    implements DeviceContainerInterface, PacketConsumerInterface
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -252,6 +254,19 @@ class DeviceContainer extends DevicesTable implements DeviceContainerInterface
         }
         self::stringSize($str, 10);
         return $str;
+    }
+    /**
+    * This takes the numeric job and replaces it with a name
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        if (is_object($this->epDriver)) {
+            $this->epDriver->packetConsumer($pkt);
+        }
     }
 
 }
