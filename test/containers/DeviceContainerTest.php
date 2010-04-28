@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
+require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 
 /**
  * Test class for filter.
@@ -72,7 +73,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new DeviceContainer();
+        $this->o = new DeviceContainer(array(
+            "DeviceID"  => "000019",
+            "HWPartNum" => "ABCD-EF-01-A",
+            "FWPartNum" => "0123-45-67-C",
+            "FWVersion" => "0.0.5",
+        ));
     }
 
     /**
@@ -617,6 +623,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFromArray($preload, $expect)
     {
+        $this->o->clearData();
         $this->o->fromArray($preload);
         $data = $this->readAttribute($this->o, "data");
         $this->assertType("object", $data["params"]);
@@ -1113,6 +1120,45 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->o->$var = $value;
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
+    }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataCall()
+    {
+        $pkt = new PacketContainer();
+        return array(
+            array("testCall", "5.3.1", "5.3.1", "5.3.1"),
+            array("testCall", "2.4.1+git", "2.4.1+git", "2.4.1+git"),
+            array("bugusFunction", "here", null, false),
+            array(
+                "testCall",
+                &$pkt,
+                &$pkt,
+                &$pkt,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The function to call
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected data set
+    * @param mixed  $return The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCall
+    */
+    public function testCall($name, $value, $expect, $return)
+    {
+        $ret = $this->o->$name($value);
+        $this->assertSame($return, $ret);
+        $this->assertSame($expect, $GLOBALS[$name]);
     }
 
 }

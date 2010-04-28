@@ -94,6 +94,27 @@ class DeviceContainer extends DevicesTable
         $this->myConfig = &ConfigContainer::singleton();
         $this->_registerDriverPlugins();
         parent::__construct($data);
+        $this->create();
+    }
+    /**
+    * Tries to run a function defined by what is called..
+    *
+    * @param string $name The name of the function to call
+    * @param array  $args The array of arguments
+    *
+    * @return mixed
+    */
+    public function __call($name, $args)
+    {
+        if (method_exists($this->epDriver, $name)) {
+            $code  ='return $this->epDriver->$name(';
+            if (count($args) > 0) {
+                $code .= '$args['.implode('], $args[', array_keys($args)).']';
+            }
+            $code .= ');';
+            return eval($code);
+        }
+        return false;
     }
 
     /**
@@ -208,11 +229,14 @@ class DeviceContainer extends DevicesTable
     {
         parent::fromArray($array);
         $this->_registerDriver();
-        if (is_object($this->epDriver)) {
-            $this->epDriver->fromString(substr($string, self::CONFIGEND));
-        }
         if (empty($this->RawSetup)) {
-            $this->RawSetup = substr($this->toString(), 0, self::CONFIGEND);
+            $this->RawSetup = $this->toString();
+        } else {
+            if (is_object($this->epDriver)) {
+                $this->epDriver->fromString(
+                    substr($this->RawSetup, self::CONFIGEND)
+                );
+            }
         }
         if (!is_object($this->data["params"])) {
             $this->params = $this->data["params"];

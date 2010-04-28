@@ -245,7 +245,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function create()
     {
-        return $this->myDriver->createTable();
+        $ret = $this->myDriver->createTable();
+        foreach ((array)$this->sqlIndexes as $index) {
+            $this->myDriver->addIndex($index);
+        }
+        return $ret;
     }
     /**
     * This function gets a record with the given key

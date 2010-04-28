@@ -110,4 +110,18 @@ class TestDriverPlugin extends DeviceDriverBase
     {
         $GLOBALS["packetConsumer"] = &$pkt;
     }
+
+    /**
+    * This takes the numeric job and replaces it with a name
+    *
+    * @param mixed &$value The value to use
+    *
+    * @return string
+    */
+    public function &testCall(&$value)
+    {
+        $GLOBALS["testCall"] = &$value;
+        return $value;
+    }
+
 }
