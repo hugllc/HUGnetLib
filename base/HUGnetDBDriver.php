@@ -585,9 +585,8 @@ abstract class HUGnetDBDriver extends HUGnetClass
         }
         $res = &$this->pdoStatement->fetch(PDO::FETCH_ASSOC);
         if (is_array($res)) {
-            $ret[] = &$this->myTable->fromArray($res);
+            $this->myTable->fromArray($res);
         }
-        $this->reset();
         return true;
     }
 

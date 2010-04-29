@@ -270,12 +270,20 @@ abstract class HUGnetDBTable extends HUGnetContainer
     * @param string $where The where clause
     * @param array  $data  The data to use with the where clause
     *
-    * @return array Array of objects
+    * @return bool True on success, False on failure
     */
     public function selectInto($where, $data = array())
     {
-        $this->sqlLimit = 1;
         $this->myDriver->selectWhere($where, $data);
+        return $this->nextInto();
+    }
+    /**
+    * This puts the next result into the object
+    *
+    * @return bool True on success, False on failure
+    */
+    public function nextInto()
+    {
         return $this->myDriver->fetchInto();
     }
     /**

@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
+ * @category   Processes
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Processes
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
