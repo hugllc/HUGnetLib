@@ -175,23 +175,6 @@ class E00392601Device extends DeviceDriverBase
         }
         return "Unknown";
     }
-    /**
-    * This takes the numeric job and replaces it with a name
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    public function packetConsumer(PacketContainer &$pkt)
-    {
-        if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
-            $pkt->reply((string)$this->myDriver);
-        } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
-            || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
-        ) {
-            $pkt->reply($pkt->Data);
-        }
-    }
 
 }
 
