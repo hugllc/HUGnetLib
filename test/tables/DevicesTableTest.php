@@ -70,6 +70,8 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->pdo = &$this->config->servers->getPDO();
+        parent::Setup();
         $this->o = new DevicesTable();
         $this->o->create();
     }
@@ -184,7 +186,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                 "LastConfig", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
             ),
             array("LastAnalysis", 1234567890, "2009-02-13 17:31:30"),
-            array("LastAnalysis", "This is not a date", "0000-00-00 00:00:00"),
+            array("LastAnalysis", "This is not a date", "1970-01-01 00:00:00"),
             array("FWVersion", "1.2.3", "1.2.3"),
             array("FWVersion", "011005", "1.10.5"),
             array("FWPartNum", "0039280241", "0039-28-02-A"),
@@ -213,6 +215,69 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         $this->o->$var = $value;
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
+    }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataInsertDeviceID()
+    {
+        return array(
+            array(
+                array(
+                    "DeviceID" => 156,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                    array(
+                        "DeviceKey" => "1",
+                        "DeviceID" => "00009C",
+                        "DeviceName" => "",
+                        "SerialNum" => "0",
+                        "HWPartNum" => "",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "23",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "BoredomThreshold" => "80",
+                        "LastConfig" => "1970-01-01 00:00:00",
+                        "LastPoll" => "1970-01-01 00:00:00",
+                        "LastHistory" => "1970-01-01 00:00:00",
+                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "MinAverage" => "15MIN",
+                        "CurrentGatewayKey" => "0",
+                        "params" => "",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data   The data to use
+    * @param array $expect The expected return
+    *
+    * @dataProvider dataInsertDeviceID
+    *
+    * @return null
+    */
+    public function testInsertDeviceID($data, $expect)
+    {
+        DevicesTable::insertDeviceID($data);
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
     }
 }
 

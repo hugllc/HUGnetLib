@@ -259,7 +259,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return array Array of objects
     */
-    public function select($where, $data = array())
+    public function &select($where, $data = array())
     {
         $this->myDriver->selectWhere($where, $data);
         return $this->myDriver->fetchAll();
@@ -333,7 +333,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($date !== false) {
             return date("Y-m-d H:i:s", $date);
         }
-        return "0000-00-00 00:00:00";
+        return "1970-01-01 00:00:00";
     }
 }
 

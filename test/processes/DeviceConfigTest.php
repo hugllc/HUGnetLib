@@ -76,10 +76,14 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->config->sockets->forceDeviceID("000019");
-        foreach ($this->config->sockets->groups() as $group) {
-            $this->socket[$group] = &$this->config->sockets->getSocket($group);
-        }
-        $this->o = new DeviceConfig();
+        $this->socket = &$this->config->sockets->getSocket();
+        $this->pdo = &$this->config->servers->getPDO();
+        $this->d = new DeviceContainer(
+            array(
+                "DeviceID"   => "000019",
+            )
+        );
+        $this->o = new DeviceConfig(array(), $this->d);
     }
 
     /**
@@ -108,7 +112,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceConfig();
+        $o = new DeviceConfig(array(), $this->d);
     }
     /**
     * data provider for testConstructor
@@ -149,7 +153,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceConfig($preload);
+        $o = new DeviceConfig($preload, $this->d);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
@@ -171,10 +175,8 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             // Nothing
             array(
                 array(),
-                array(),
-                array(
-                    "default" => "5A5A5A5E0000000000190047",
-                ),
+                "",
+                "5A5A5A5E0000000000190047",
             ),
         );
     }
@@ -193,20 +195,270 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->o->fromAny($preload);
         $i = 0;
-        do {
-            foreach ((array)$read[$i] as $group => $string) {
-                $this->socket[$group]->readString = $string;
-            }
-            $i++;
-        } while ($this->o->powerup() > 0);
-        foreach ($write as $group => $string) {
-            $this->assertSame(
-                $string, $this->socket[$group]->writeString,
-                "$group has the wrong string"
-            );
-        }
+        $this->o->powerup();
+        $this->socket->readString = $read;
+        $this->assertSame(
+            $write, $this->socket->writeString,
+            "$group has the wrong string"
+        );
+    }
+    /**
+    * data provider for testPacketConsumer
+    *
+    * @return array
+    */
+    public static function dataPacketConsumer()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "DeviceName" => "Hello",
+                        "DeviceID" => "123456",
+                        "GatewayKey" => 3,
+                        "HWPartNum" => "0039-21-20-C",
+                        "FWPartNum" => "0039-08-20-C",
+                        "FWVersion" => "1.2.3",
+                    ),
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "DeviceKey"         => "1",
+                        "DeviceID"          => "123456",
+                        "DeviceName"        => "Hello",
+                        "SerialNum"         => "0",
+                        "HWPartNum" => "0039-21-20-C",
+                        "FWPartNum" => "0039-08-20-C",
+                        "FWVersion" => "1.2.3",
+                        "RawSetup"=> "000000000000000000000000000000000000FFFFFF50",
+                        "Active"            => "1",
+                        "GatewayKey"        => "1",
+                        "ControllerKey"     => "0",
+                        "ControllerIndex"   => "0",
+                        "DeviceLocation"    => "",
+                        "DeviceJob"         => "",
+                        "Driver"            => "eDEFAULT",
+                        "PollInterval"      => "0",
+                        "ActiveSensors"     => "0",
+                        "DeviceGroup"       => "FFFFFF",
+                        "BoredomThreshold"  => "80",
+                        "LastConfig" => "1970-01-01 00:00:00",
+                        "LastPoll" => "1970-01-01 00:00:00",
+                        "LastHistory" => "1970-01-01 00:00:00",
+                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "MinAverage"        => "15MIN",
+                        "CurrentGatewayKey" => "0",
+                        "params"            => "YTowOnt9",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "DeviceKey"         => "1",
+                        "DeviceID"          => "123456",
+                        "DeviceName"        => "",
+                        "SerialNum"         => "0",
+                        "HWPartNum"         => "",
+                        "FWPartNum"         => "",
+                        "FWVersion"         => "",
+                        "RawSetup"          => "",
+                        "Active"            => "1",
+                        "GatewayKey"        => "1",
+                        "ControllerKey"     => "0",
+                        "ControllerIndex"   => "0",
+                        "DeviceLocation"    => "",
+                        "DeviceJob"         => "",
+                        "Driver"            => "eDEFAULT",
+                        "PollInterval"      => "0",
+                        "ActiveSensors"     => "0",
+                        "DeviceGroup"       => "FFFFFF",
+                        "BoredomThreshold"  => "80",
+                        "LastConfig" => "1970-01-01 00:00:00",
+                        "LastPoll" => "1970-01-01 00:00:00",
+                        "LastHistory" => "1970-01-01 00:00:00",
+                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "MinAverage"        => "15MIN",
+                        "CurrentGatewayKey" => "0",
+                        "params"            => "",
+                    ),
+                ),
+            ),
+        );
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The data to preload into the devices table
+    * @param string $pkt     The packet string to use
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketConsumer
+    */
+    public function testPacketConsumer($preload, $pkt, $expect)
+    {
+        $d = new DeviceContainer();
+        foreach ((array)$preload as $load) {
+            $d->fromArray($load);
+            $d->insertRow(true);
+        }
+        $p = new PacketContainer($pkt);
+        $this->o->packetConsumer($p);
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+
+    }
+    /**
+    * data provider for testPacketConsumer
+    *
+    * @return array
+    */
+    public static function dataWait()
+    {
+        return array(
+            array(
+                2,
+                "",
+                "",
+                null,
+            ),
+            array(
+                2,
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000000",
+                    "Command" => PacketContainer::COMMAND_POWERUP,
+                    "Data" => "0102030405",
+                ))
+                .(string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "0102030405",
+                )),
+                "",
+                "123456",
+            ),
+            array(
+                2,
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "0102030405",
+                )),
+                "5A5A5A0112345600001916000000000000000000000000000000000000"
+                    ."FFFFFF50D1",
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int    $timeout     The timeout to use
+    * @param string $read        The read string for the socket
+    * @param string $expect      The expected return
+    * @param string $unsolicited The deviceID of unsolicited packet to check for
+    *
+    * @return null
+    *
+    * @dataProvider dataWait
+    */
+    public function testWait($timeout, $read, $expect, $unsolicited)
+    {
+        $this->socket->readString = $read;
+        $start = time();
+        $this->o->wait($timeout);
+        $end = time();
+        $this->assertThat(($end - $start), $this->greaterThanOrEqual($timeout));
+        $this->assertSame($expect, $this->socket->writeString);
+        if (is_string($unsolicited)) {
+            $u = $this->readAttribute($this->o, "unsolicited");
+            $this->assertSame($unsolicited, $u->DeviceID);
+        }
+    }
+    /**
+    * data provider for testConfig
+    *
+    * @return array
+    */
+    public static function dataConfig()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "DeviceID" => "123456",
+                        "GatewayKey" => 1,
+                    ),
+                    array(
+                        "DeviceID" => "654321",
+                        "GatewayKey" => 2,
+                    ),
+                    array(
+                        "DeviceID" => "000019",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "0102030405",
+                )),
+                "5A5A5A5C1234560000190035",
+            ),
+            array(
+                array(
+                ),
+                "",
+                "",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The data to preload into the devices table
+    * @param string $read    The read string for the socket
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConfig
+    */
+    public function testConfig($preload, $read, $expect)
+    {
+        $d = new DeviceContainer();
+        foreach ((array)$preload as $load) {
+            $d->fromArray($load);
+            $d->insertRow(true);
+        }
+        $this->socket->readString = $read;
+        $this->o->config();
+        $this->assertSame($expect, $this->socket->writeString);
+    }
 }
 
 

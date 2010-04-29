@@ -40,6 +40,7 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/PacketContainer.php";
+require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -54,32 +55,37 @@ require_once dirname(__FILE__)."/../containers/PacketContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceConfig extends HUGnetContainer
+class DeviceConfig extends HUGnetContainer implements PacketConsumerInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
         "group"      => "default",  // The groups to route between
-        "GatewayKey" => 0,
+        "GatewayKey" => 0,          // The gateway key we are using
     );
     /** @var array This is where the data is stored */
     protected $data = array();
 
     /** @var object This is our config */
     protected $myConfig = null;
+    /** @var object This is our device configuration */
+    protected $myDevice = null;
     /** @var object This is the devices we are going through */
     protected $device = null;
+    /** @var object This is the device we are using for unsolicited packets */
+    protected $unsolicited = null;
     /** @var array We store our routes here */
     protected $Routes = array();
 
     /**
     * Builds the class
     *
-    * @param array $data The data to build the class with
+    * @param array           $data    The data to build the class with
+    * @param DeviceContainer &$device This is the class to send packets to me to.
     *
     * @return null
     */
-    public function __construct($data = array())
+    public function __construct($data, DeviceContainer &$device)
     {
         // Clear the data
         $this->clearData();
@@ -95,6 +101,13 @@ class DeviceConfig extends HUGnetContainer
         $this->verbose($this->myConfig->verbose);
         // This is our device container
         $this->device = new DeviceContainer();
+        // This is our device container for dealying with unsolicited packets
+        $this->unsolicited = new DeviceContainer();
+        // This is the device container with our setup information in it.
+        $this->myDevice = &$device;
+        // Set up our hooks
+        $this->myConfig->hooks->registerHook("UnsolicitedPacket", $this);
+        $this->myConfig->hooks->registerHook("myPacket", $this->myDevice);
         // We need a GatewayKey
         if ($this->GatewayKey <= 0) {
             $this->throwException(
@@ -111,18 +124,66 @@ class DeviceConfig extends HUGnetContainer
     * This function should be called periodically as often as possible.  It will
     * go through the whole list of devices before returning.
     *
-    * @param DeviceContainer &$device This is the class to send packets to me to.
+    * @return int The number of packets routed
+    */
+    public function config()
+    {
+        // Get the devices
+        $devices = &$this->device->select(1);
+        // Go through the devices
+        foreach (array_keys((array)$devices) as $key) {
+            $dev = &$devices[$key];
+            // We don't want to get our own config
+            if ($dev->DeviceID == $this->myDevice->DeviceID) {
+                continue;
+            }
+            // We should only check stuff for our gateway
+            if ($this->GatewayKey == $dev->GatewayKey) {
+                $this->_check($dev);
+            }
+        }
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
     *
     * @return int The number of packets routed
     */
-    public function config(DeviceContainer &$device)
+    private function _check(DeviceContainer &$dev)
     {
-        $ret = $this->device->selectInto(1);
-        while ($ret) {
-            if ($this->GatewayKey == $this->device->GatewayKey) {
-                $this->device->readConfig();
-            }
-            $ret = $this->device->nextInto();
+        // Be verbose ;)
+        self::vprint(
+            "Checking ".$dev->DeviceID." LastConfig: ".
+            $dev->LastConfig,
+            HUGnetClass::VPRINT_NORMAL
+        );
+        // Read the setup
+        if ($dev->readSetup()) {
+            // If that succeeded update the row
+            $dev->updateRow();
+        }
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param int $Timeout The timeout period to wait
+    *
+    * @return int The number of packets routed
+    */
+    public function wait($Timeout = 60)
+    {
+        // Be verbose ;)
+        self::vprint(
+            "Pausing $Timeout s  Using ID: ".$this->myDevice->DeviceID,
+            HUGnetClass::VPRINT_NORMAL
+        );
+        // Set our end time
+        $end = time() + $Timeout;
+        // Monitor for packets.  The GetReply => true allows the hooks to
+        // take care of any packets.
+        while (time() < $end) {
+            PacketContainer::monitor(array("GetReply" => true, "Timeout" => 1));
         }
     }
     /**
@@ -132,7 +193,43 @@ class DeviceConfig extends HUGnetContainer
     */
     public function powerup()
     {
+        // Send a powerup packet
         PacketContainer::powerup("", $this->group);
+    }
+    /**
+    * This deals with Unsolicited Packets
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        // Be verbose
+        self::vprint(
+            "Got Unsolicited Packet from: ".$pkt->From." Type: ".$pkt->Type,
+            HUGnetClass::VPRINT_NORMAL
+        );
+        // Set up our DeviceContainer
+        $this->unsolicited->clearData();
+        // Find the device if it is there
+        $this->unsolicited->selectInto("DeviceID = ?", array($pkt->From));
+
+        if (!$this->unsolicited->isEmpty()) {
+            // If it is not empty, reset the LastConfig.  This causes it to actually
+            // try to get the config.
+            $this->unsolicited->setDefault("LastConfig");
+            // Set our gateway key
+            $this->unsolicited->GatewayKey = $this->GatewayKey;
+            // Update the row
+            $this->unsolicited->updateRow();
+        } else {
+            // This is a brand new device.  Set the DeviceID
+            $this->unsolicited->DeviceID = $pkt->From;
+            // Set our gateway key
+            $this->unsolicited->GatewayKey = $this->GatewayKey;
+            $this->unsolicited->insertRow();
+        }
     }
 
 }

@@ -40,6 +40,7 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/PacketContainer.php";
+require_once dirname(__FILE__)."/../tables/DevicesTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -68,15 +69,18 @@ class PacketRouter extends HUGnetContainer
     protected $myConfig = null;
     /** @var array We store our routes here */
     protected $Routes = array();
+    /** @var object The device object to use */
+    protected $myDevice = null;
 
     /**
     * Builds the class
     *
-    * @param array $data The data to build the class with
+    * @param array           $data    The data to build the class with
+    * @param DeviceContainer &$device This is the class to send packets to me to.
     *
     * @return null
     */
-    public function __construct($data = array())
+    public function __construct($data, DeviceContainer &$device)
     {
         // Clear the data
         $this->clearData();
@@ -90,6 +94,7 @@ class PacketRouter extends HUGnetContainer
         if (empty($this->groups)) {
             $this->groups = $this->myConfig->sockets->groups();
         }
+        // There must be at least 2 groups to route
         if (count($this->groups) < 2) {
             $this->throwException(
                 "There must be at least 2 interface groups defined to use the"
@@ -100,6 +105,8 @@ class PacketRouter extends HUGnetContainer
             // It thinks this line won't run.  The above function never returns.
         }
         // @codeCoverageIgnoreEnd
+        // Set up the device object
+        $this->myDevice = &$device;
     }
 
     /**
@@ -142,11 +149,9 @@ class PacketRouter extends HUGnetContainer
     * This function should be called periodically as often as possible.  It will
     * only return the first packet it finds on each interface.
     *
-    * @param DeviceContainer &$device This is the class to send packets to me to.
-    *
     * @return int The number of packets routed
     */
-    public function route(DeviceContainer &$device)
+    public function route()
     {
         $packets = 0;
         foreach ($this->groups as $group) {
@@ -167,7 +172,7 @@ class PacketRouter extends HUGnetContainer
                         $pkt->group." -> Me ".$this->_output($pkt),
                         HUGnetClass::VPRINT_NORMAL
                     );
-                    $device->packetConsumer($pkt);
+                    $this->myDevice->packetConsumer($pkt);
                 } else {
                     $this->_setRoute($pkt);
                     $this->send($pkt);
@@ -224,6 +229,15 @@ class PacketRouter extends HUGnetContainer
     private function _setRoute(PacketContainer &$pkt)
     {
         if (!$pkt->unsolicited()) {
+            if (!isset($this->Routes[$pkt->From]) && ($pkt->From !== "000020")) {
+                // If we have not seen this before try to put it in the database
+                DevicesTable::insertDeviceID(
+                    array(
+                        "DeviceID" => $pkt->From,
+                        "GatewayKey" => $this->myDevice->GatewayKey,
+                    )
+                );
+            }
             $this->Routes[$pkt->From] = $pkt->group;
         }
     }

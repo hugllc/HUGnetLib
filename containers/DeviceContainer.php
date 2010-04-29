@@ -150,8 +150,14 @@ class DeviceContainer extends DevicesTable
     */
     private function _registerDriver()
     {
-        $hwLoc = &$this->myDev[$this->HWPartNum];
-        $driver = array("Name" => "eDEFAULT", "Class" => "eDEFAULTDriver");
+        if (isset($this->myDev[$this->HWPartNum])) {
+            $hwLoc = &$this->myDev[$this->HWPartNum];
+        } else {
+            $hwLoc = &$this->myDev["DEFAULT"];
+        }
+        // Set this as the default
+        $driver = array("Name" => "eDEFAULT", "Class" => "eDEFAULTDevice");
+
         if (is_array($hwLoc[$this->FWPartNum][$this->FWVersion])) {
             $driver = $hwLoc[$this->FWPartNum][$this->FWVersion];
         } else if (is_array($hwLoc[$this->FWPartNum]["BAD"])) {
@@ -161,7 +167,6 @@ class DeviceContainer extends DevicesTable
         } else if (is_array($hwLoc["DEFAULT"]["DEFAULT"])) {
             $driver = $hwLoc["DEFAULT"]["DEFAULT"];
         }
-
         if ($driver["Name"] !== $this->Driver) {
             $this->Driver = $driver["Name"];
         }
@@ -194,7 +199,9 @@ class DeviceContainer extends DevicesTable
         if (is_object($this->epDriver)) {
             $this->epDriver->fromString(substr($string, self::CONFIGEND));
         }
-        $this->params = $this->data["params"];
+        if (!is_object($this->params)) {
+            $this->params = $this->data["params"];
+        }
     }
     /**
     * Returns the object as a string

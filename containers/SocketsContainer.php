@@ -256,7 +256,6 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         $pkt = new PacketContainer(array(
             "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
             "To" => $id,
-            "From" => 0x1F,
             "GetReply" => true,
             "Retries" => 2,
         ));

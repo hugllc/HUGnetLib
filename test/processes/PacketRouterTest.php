@@ -89,7 +89,13 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
-        $this->o = new PacketRouter();
+        $this->d = new DeviceContainer(
+            array(
+                "DeviceID"   => "000019",
+            )
+        );
+
+        $this->o = new PacketRouter(array(), $this->d);
     }
 
     /**
@@ -118,7 +124,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PacketRouter();
+        $o = new PacketRouter($array, $this->d);
     }
     /**
     * data provider for testConstructor
@@ -166,7 +172,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketRouter($preload);
+        $o = new PacketRouter($preload, $this->d);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
@@ -248,7 +254,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public static function dataRoute()
     {
         return array(
-            // One Packet to me
+            // One Packet to me.  Sending a reply
             array(
                 array(),
                 array(
@@ -257,7 +263,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     )
                 ),
                 array(
-                    "other"   => "",
+                    "other"   => "5A5A5A010000000000190018",
                     "third"   => "",
                     "default" => ""
                 ),
@@ -340,11 +346,6 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     */
     public function testRoute($preload, $read, $write, $routes)
     {
-        $d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-            )
-        );
         $this->o->fromAny($preload);
         $i = 0;
         do {
@@ -352,7 +353,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 $this->socket[$group]->readString = $string;
             }
             $i++;
-        } while ($this->o->route($d) > 0);
+        } while ($this->o->route() > 0);
         foreach ($write as $group => $string) {
             $this->assertSame(
                 $string, $this->socket[$group]->writeString,

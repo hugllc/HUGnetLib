@@ -553,7 +553,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return array of objects of the same class as myTable
     */
-    public function fetchAll($style = PDO::FETCH_CLASS)
+    public function &fetchAll($style = PDO::FETCH_CLASS)
     {
         if (!is_object($this->pdoStatement)) {
             return array();

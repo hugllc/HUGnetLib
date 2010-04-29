@@ -526,8 +526,8 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "default" => "5A5A5A0100001F000001001F5A5A5A0100001F000002001C",
-                    "other" => "5A5A5A0100001F000003001D5A5A5A0100001F000004001A",
+                    "default" => "5A5A5A0100002000000100205A5A5A010000200000020023",
+                    "other" => "5A5A5A0100002000000300225A5A5A010000200000040025",
                 ),
                 array("default", "other", "another"),
                 "000005",
@@ -541,7 +541,7 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "default" => "5A5A5A0100001F000001001F5A5A5A0100001F000002001C",
+                    "default" => "5A5A5A0100002000000100205A5A5A010000200000020023",
                 ),
                 "",
                 "000003",

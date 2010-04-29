@@ -160,7 +160,7 @@ class DevicesTable extends HUGnetDBTable
         "Driver" => array(
             "Name" => "Driver",
             "Type" => "varchar(32)",
-            "Default" => '',
+            "Default" => 'eDEFAULT',
         ),
         "PollInterval" => array(
             "Name" => "PollInterval",
@@ -185,22 +185,22 @@ class DevicesTable extends HUGnetDBTable
         "LastConfig" => array(
             "Name" => "LastConfig",
             "Type" => "datetime",
-            "Default" => '0000-00-00 00:00:00',
+            "Default" => '1970-01-01 00:00:00',
         ),
         "LastPoll" => array(
             "Name" => "LastPoll",
             "Type" => "datetime",
-            "Default" => '0000-00-00 00:00:00',
+            "Default" => '1970-01-01 00:00:00',
         ),
         "LastHistory" => array(
             "Name" => "LastHistory",
             "Type" => "datetime",
-            "Default" => '0000-00-00 00:00:00',
+            "Default" => '1970-01-01 00:00:00',
         ),
         "LastAnalysis" => array(
             "Name" => "LastAnalysis",
             "Type" => "datetime",
-            "Default" => '0000-00-00 00:00:00',
+            "Default" => '1970-01-01 00:00:00',
         ),
         "MinAverage" => array(
             "Name" => "MinAverage",
@@ -236,7 +236,7 @@ class DevicesTable extends HUGnetDBTable
         "DeviceID" => array(
             "Name" => "DeviceID",
             "Unique" => true,
-            "Columns" => array("DeviceID", "GatewayKey"),
+            "Columns" => array("DeviceID"),
         ),
     );
 
@@ -250,6 +250,18 @@ class DevicesTable extends HUGnetDBTable
     );
     /** @var array This is where the data is stored */
     protected $data = array();
+    /**
+    * Inserts a device ID into the database if it isn't there already
+    *
+    * @param mixed The string or data to use to insert this row
+    *
+    * @return null
+    */
+    static public function insertDeviceID($data)
+    {
+        $dev = new DevicesTable($data);
+        $dev->insertRow();
+    }
 
     /**
     * Changes the part number into XXXX-XX-XX-X form.

@@ -407,15 +407,17 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * Looks for any packet and returns it
     *
-    * @param array $data The data to build the class with if called statically
-    *                    This is ignored if not called statically.
+    * @param array $data   The data to build the class with if called statically
+    *                      This is ignored if not called statically.
     *
     * @return mixed PacketContainer on success, false on failure
     */
     public function &monitor($data = array())
     {
         // This is overridden to make sure we are in monitor mode
-        $data["GetReply"] = false;
+        if (empty($data["GetReply"])) {
+            $data["GetReply"] = false;
+        }
         // Make a new packet
         $pkt = self::_new($data);
         // If we get a packet return it
