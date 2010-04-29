@@ -233,11 +233,6 @@ class DevicesTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "SerialNum" => array(
-            "Name" => "SerialNum",
-            "Unique" => true,
-            "Columns" => array("SerialNum"),
-        ),
         "DeviceID" => array(
             "Name" => "DeviceID",
             "Unique" => true,
