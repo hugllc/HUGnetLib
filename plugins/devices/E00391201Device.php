@@ -54,49 +54,42 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392601Device extends DeviceDriverBase
+class E00391201Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
-    /** @var int The job number for polling */
-    const JOB_POLL     = 1;
-    /** @var int The job number for updatedb */
-    const JOB_UPDATEDB = 2;
-    /** @var int The job number for analysis */
-    const JOB_ANALYSIS = 3;
-    /** @var int The job number for endpoint */
-    const JOB_ENDPOINT = 4;
-    /** @var int The job number for control */
-    const JOB_CONTROL  = 5;
-    /** @var int The job number for config */
-    const JOB_CONFIG   = 6;
-    /** @var int The job number for check */
-    const JOB_CHECK    = 7;
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "e00392601",
+        "Name" => "e00391201",
         "Type" => "device",
-        "Class" => "E00392601Device",
+        "Class" => "E00391201Device",
         "Devices" => array(
+            "0039-11-06-A" => array(
+                "0039-12-00-A" => "BAD",
+                "0039-12-01-A" => "BAD",
+                "0039-12-02-A" => "BAD",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-11-07-A" => array(
+                "0039-12-00-A" => "BAD",
+                "0039-12-01-A" => "BAD",
+                "0039-12-02-A" => "BAD",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-11-08-A" => array(
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-04-C" => array(
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-05-C" => array(
+                "0039-12-02-B" => "DEFAULT",
+            ),
             "DEFAULT" => array(
-                "0039-26-01-P" => "DEFAULT",
-                "0039-26-02-P" => "DEFAULT",
-                "0039-26-03-P" => "DEFAULT",
-                "0039-26-04-P" => "DEFAULT",
-                "0039-26-05-P" => "DEFAULT",
-                "0039-26-06-P" => "DEFAULT",
-                "0039-26-07-P" => "DEFAULT",
             ),
         ),
-    );
-    /** @var array These define what jobs this driver might see */
-    protected $jobs = array(
-        self::JOB_POLL     => "Poll",
-        self::JOB_UPDATEDB => "Updatedb",
-        self::JOB_ANALYSIS => "Analysis",
-        self::JOB_ENDPOINT => "Endpoint",
-        self::JOB_CONTROL  => "Control",
-        self::JOB_CONFIG   => "Config",
-        self::JOB_CHECK    => "Check",
     );
     /**
     * Builds the class
@@ -110,9 +103,10 @@ class E00392601Device extends DeviceDriverBase
     {
         $this->myDriver = &$obj;
         $this->myDriver->DriverInfo = array();
-        $this->myDriver->DriverInfo["NumSensors"] = 0;
+        $this->myDriver->DriverInfo["NumSensors"] = 16;
         $this->fromString($string);
     }
+
     /**
     * Creates the object from a string
     *
@@ -122,20 +116,7 @@ class E00392601Device extends DeviceDriverBase
     */
     public function toString($default = true)
     {
-        $this->Info = &$this->myDriver->DriverInfo;
-        $string  = $this->myDriver->hexify($this->Info["Job"], 2);
-        $string .= $this->myDriver->hexify($this->myDriver->GatewayKey, 4);
-        $string .= $this->myDriver->hexifyStr(
-            $this->myDriver->DriverInfo["Name"], 60
-        );
-
-        $myIP = explode(".", $this->Info["IP"]);
-
-        for ($i = 0; $i < 4; $i++) {
-            $string .= $this->myDriver->hexify($myIP[$i], 2);
-        }
-
-        $string .= $this->myDriver->hexify($this->Info["Priority"], 2);
+        $string = "";
         return $string;
 
     }
@@ -149,46 +130,10 @@ class E00392601Device extends DeviceDriverBase
     */
     public function fromString($string)
     {
-        $this->Info = &$this->myDriver->DriverInfo;
-        $index = 0;
-        // This byte is currently not used
-        $this->Info["Job"] = hexdec(substr($string, $index, 2));
-        $this->Info["Function"] = $this->_getFunction($this->Info["Job"]);
-
-        $index += 2;
-        $this->Info["CurrentGatewayKey"] = hexdec(substr($string, $index, 4));
-
-        $index += 4;
-        $this->Info["Name"] = $this->myDriver->deHexify(
-            trim(strtoupper(substr($string, $index, 60)))
-        );
-        $this->Info["Name"] = trim($this->Info["Name"]);
-
-        $index += 60;
-        $IP     = str_split(substr($string, $index, 8), 2);
-        $index += 8;
-
-        foreach ($IP as $k => $v) {
-            $IP[$k] = hexdec($v);
-        }
-        $this->Info["IP"] = implode(".", $IP);
-
-        $this->Info["Priority"] = hexdec(substr($string, $index, 2));
+        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
+        $this->myDriver->sensors->fromTypeString(substr($string, 2));
     }
-    /**
-    * This takes the numeric job and replaces it with a name
-    *
-    * @param int $job The job
-    *
-    * @return string
-    */
-    private function _getFunction($job)
-    {
-        if (!empty($this->jobs[$job])) {
-            return $this->jobs[$job];
-        }
-        return "Unknown";
-    }
+
 
 }
 

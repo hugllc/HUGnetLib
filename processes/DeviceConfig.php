@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceConfig extends ProcessBase implements PacketConsumerInterface
+class DeviceConfig extends ProcessBase
 {
 
     /**
@@ -89,7 +89,9 @@ class DeviceConfig extends ProcessBase implements PacketConsumerInterface
             if ($this->device->DeviceID !== $this->myDevice->DeviceID) {
                 // We should only check stuff for our gateway
                 if ($this->GatewayKey == $this->device->GatewayKey) {
-                    $this->_check($this->device);
+                    if ($this->device->readSetupTime()) {
+                        $this->_check($this->device);
+                    }
                 }
             }
             $ret = $this->device->nextInto();
@@ -116,6 +118,5 @@ class DeviceConfig extends ProcessBase implements PacketConsumerInterface
             $dev->updateRow();
         }
     }
-
 }
 ?>

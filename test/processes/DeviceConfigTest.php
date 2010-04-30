@@ -191,9 +191,14 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "From" => "123456",
                     "To" => "000019",
                     "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "0102030405",
+                    "Data" => "000012345600391101410039201343000009FFFFFF50",
                 )),
-                "5A5A5A5C1234560000190035",
+                (string)new PacketContainer(array(
+                    "To" => "123456",
+                    "From" => "000019",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
             ),
             array(
                 array(

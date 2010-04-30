@@ -68,32 +68,64 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     *
     * @return null
     */
-    public function __construct(&$obj, $string = "")
-    {
-        $this->myDriver = &$obj;
-        $this->fromString($string);
-    }
+    abstract public function __construct(&$obj, $string = "");
     /**
     * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetup()
+    {
+        return $this->readConfig();
+    }
+    /**
+    * Checks the interval to see if it is ready to config.
     *
     * @param int $interval The interval to check, in hours
     *
     * @return bool True on success, False on failure
     */
-    public function readSetup($interval = 12)
+    public function readSetupTime($interval = 12)
     {
-        $interval = (int)$interval;
-        if (strtotime($this->myDriver->LastConfig) < (time() - $interval*60*60)) {
-            $pkt = new PacketContainer(array(
-                "To" => $this->myDriver->DeviceID,
-                "Command" => PacketContainer::COMMAND_GETSETUP,
-            ));
-            $pkt->send();
-            if (is_object($pkt->Reply)) {
-                $this->myDriver->fromString($pkt->Reply->Data);
-                $this->myDriver->LastConfig = $pkt->Reply->Date;
-                return true;
-            }
+        return (strtotime($this->myDriver->LastConfig) < (time() - $interval*3600));
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readconfig()
+    {
+        $pkt = new PacketContainer(array(
+            "To" => $this->myDriver->DeviceID,
+            "Command" => PacketContainer::COMMAND_GETSETUP,
+            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
+        ));
+        $pkt->send();
+        if (is_object($pkt->Reply)) {
+            $this->myDriver->fromString($pkt->Reply->Data);
+            $this->myDriver->LastConfig = $pkt->Reply->Date;
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Reads the calibration out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readCalibration()
+    {
+        $pkt = new PacketContainer(array(
+            "To" => $this->myDriver->DeviceID,
+            "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
+        ));
+        $pkt->send();
+        if (is_object($pkt->Reply)) {
+            $this->myDriver->params->Raw["Calibration"] = $pkt->Reply->Data;
+            $this->myDriver->sensors->fromCalString($pkt->Reply->Data);
+            return true;
         }
         return false;
     }
@@ -120,6 +152,28 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     */
     public function fromString($string)
     {
+    }
+    /**
+    * Runs a function using the correct driver for the endpoint
+    *
+    * @param string $ver1 The first version to use in the compare
+    * @param string $ver2 The second version to use in the compare
+    *
+    * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
+    */
+    final public function compareFWVersion($ver1, $ver2)
+    {
+        $v1 = explode(".", $ver1);
+        $v2 = explode(".", $ver2);
+        for ($i = 0; $i < 3; $i++) {
+            if ($v1[$i] > $v2[$i]) {
+                return(1);
+            } else if ($v1[$i] < $v2[$i]) {
+                return(-1);
+            }
+        }
+        return(0);
+
     }
 
 }

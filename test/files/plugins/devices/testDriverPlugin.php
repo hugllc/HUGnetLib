@@ -75,6 +75,20 @@ class TestDriverPlugin extends DeviceDriverBase
         ),
     );
     /**
+    * Builds the class
+    *
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
+    *
+    * @return null
+    */
+    public function __construct(&$obj, $string = "")
+    {
+        $this->myDriver = &$obj;
+        $this->myDriver->DriverInfo = array();
+        $this->fromString($string);
+    }
+    /**
     * Creates the object from a string
     *
     * @param string $string This is the raw string for the device

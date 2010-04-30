@@ -799,5 +799,20 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         $this->mySocket = &$this->myConfig->sockets->getSocket($this->data["group"]);
     }
+    /**
+    * function to set Timeout
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setTimeout($value)
+    {
+        $value = (int) $value;
+        // If this is empty we wait forever, or not at all.  Neither is good.
+        if (!empty($value)) {
+            $this->data["Timeout"] = $value;
+        }
+    }
 }
 ?>

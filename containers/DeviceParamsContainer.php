@@ -62,6 +62,7 @@ class DeviceParamsContainer extends HUGnetContainer
         "Units" => array(),             // The units to use on the sensors
         "dType" => array(),             // The datatype of each sensor
         "Extra" => array(),             // Extra input for crunching numbers
+        "Raw"   => array(),             // Array of raw setup stuff
     );
     /** @var array This is where the data is stored */
     protected $data = array();

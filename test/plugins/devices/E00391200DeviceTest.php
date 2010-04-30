@@ -36,7 +36,7 @@
  *
  */
 
-
+/** Get our classes */
 require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392601DeviceTest extends DevicePluginTestBase
+class E00391200DeviceTest extends DevicePluginTestBase
 {
 
     /**
@@ -78,7 +78,7 @@ class E00392601DeviceTest extends DevicePluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
          $this->d = new DummyDeviceContainer();
-        $this->o = new E00392601Device($this->d);
+        $this->o = new E00391200Device($this->d);
     }
 
     /**
@@ -102,9 +102,10 @@ class E00392601DeviceTest extends DevicePluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00392601Device"),
+            array("E00391200Device"),
         );
     }
+
     /**
     * data provider for testDeviceID
     *
@@ -115,15 +116,8 @@ class E00392601DeviceTest extends DevicePluginTestBase
         return array(
             array(
                 array(
-                    "NumSensors" => 0,
-                    "Job" => 6,
-                    "GatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 231,
                 ),
-                "06000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."01020304E7"
+                "",
             ),
         );
     }
@@ -154,29 +148,10 @@ class E00392601DeviceTest extends DevicePluginTestBase
     {
         return array(
             array(
-                "06000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."01020304E7",
+                "0102020202020202027070707070707070",
                 array(
-                    "NumSensors" => 0,
-                    "Job" => 6,
-                    "Function" => "Config",
-                    "CurrentGatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 231,
-                ),
-            ),
-            array(
-                "0A000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."0102030412",
-                array(
-                    "NumSensors" => 0,
-                    "Job" => 10,
-                    "Function" => "Unknown",
-                    "CurrentGatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 18,
+                    "NumSensors" => 16,
+                    "TimeConstant" => 1,
                 ),
             ),
         );

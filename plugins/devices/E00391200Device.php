@@ -54,17 +54,48 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class EDEFAULTDevice extends DeviceDriverBase
+class E00391200Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "eDEFAULT",
+        "Name" => "e00391200",
         "Type" => "device",
-        "Class" => "EDEFAULTDevice",
+        "Class" => "E00391200Device",
         "Devices" => array(
-            "DEFAULT" => array(
-                "DEFAULT" => "DEFAULT",
+            "0039-11-02-B" => array(
+                "0039-12-00-A" => "DEFAULT",
+                "0039-12-01-A" => "DEFAULT",
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-11-03-B" => array(
+                "0039-12-00-A" => "DEFAULT",
+                "0039-12-01-A" => "DEFAULT",
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+
+            "0039-20-02-C" => array(
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-03-C" => array(
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+            "0039-20-07-C" => array(
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
+            ),
+                        "DEFAULT" => array(
+                "0039-12-00-A" => "DEFAULT",
+                "0039-12-01-A" => "DEFAULT",
+                "0039-12-02-A" => "DEFAULT",
+                "0039-12-01-B" => "DEFAULT",
+                "0039-12-02-B" => "DEFAULT",
             ),
         ),
     );
@@ -80,8 +111,37 @@ class EDEFAULTDevice extends DeviceDriverBase
     {
         $this->myDriver = &$obj;
         $this->myDriver->DriverInfo = array();
-        $this->myDriver->DriverInfo["NumSensors"] = 0;
+        $this->myDriver->DriverInfo["NumSensors"] = 16;
+        $this->fromString($string);
     }
+
+    /**
+    * Creates the object from a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toString($default = true)
+    {
+        $string = "";
+        return $string;
+
+    }
+
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
+        $this->myDriver->sensors->fromTypeString(substr($string, 2));
+    }
+
 
 }
 

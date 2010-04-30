@@ -96,7 +96,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
 
 
     /**
-    * data provider for testPacketConsumer
+    * data provider for testReadSetup, testReadConfig
     *
     * @return array
     */
@@ -105,27 +105,27 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 "000025",
-                "1970-01-01 00:00:00",
-                "010203040506070809",
-                "5A5A5A01000020000025090102030405060708090C",
-                "5A5A5A5C0000250000200059",
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500391101410039201343000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
                 true,
             ),
             array(
                 "000025",
-                "1970-01-01 00:00:00",
                 "000000000100392601500039260150010203FFFFFF10",
                 "",
                 "5A5A5A5C00002500002000595A5A5A5C0000250000200059"
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
-                false,
-            ),
-            array(
-                "000025",
-                date("Y-m-d H:i:s"),
-                "000000000100392601500039260150010203FFFFFF10",
-                "",
-                "",
                 false,
             ),
         );
@@ -135,7 +135,6 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param string $id         The Device ID to pretend to be
-    * @param string $lastConfig The lastConfig to set
     * @param string $string     The string for the dummy device to return
     * @param string $read       The read string to put in
     * @param string $write      The write string expected
@@ -145,17 +144,95 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadSetup($id, $lastConfig, $string, $read, $write, $expect)
+    public function testReadSetup($id, $string, $read, $write, $expect)
     {
         $this->d->DeviceID = $id;
-        $this->d->LastConfig = $lastConfig;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
-        $this->assertSame($ret, $expect, "Wrong return value");
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id         The Device ID to pretend to be
+    * @param string $string     The string for the dummy device to return
+    * @param string $read       The read string to put in
+    * @param string $write      The write string expected
+    * @param string $expect     The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetup
+    */
+    public function testReadConfig($id, $string, $read, $write, $expect)
+    {
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->socket->readString = $read;
+        $ret = $this->o->readConfig();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
+    }
+    /**
+    * data provider for testReadCalibration
+    *
+    * @return array
+    */
+    public static function dataReadCalibration()
+    {
+        return array(
+            array(
+                "000025",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "06070809",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                    "Data" => "",
+                )),
+                true,
+            ),
+            array(
+                "000025",
+                "",
+                "5A5A5A4C00002500002000495A5A5A4C0000250000200049"
+                    ."5A5A5A0300002500002000065A5A5A4C0000250000200049",
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id         The Device ID to pretend to be
+    * @param string $read       The read string to put in
+    * @param string $write      The write string expected
+    * @param string $expect     The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadCalibration
+    */
+    public function testReadCalibration($id, $read, $write, $expect)
+    {
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->socket->readString = $read;
+        $ret = $this->o->readCalibration();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($expect, $ret, "Wrong return value");
+    }
 
     /**
     * test the return of toString
@@ -165,6 +242,69 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public function testToString()
     {
         $this->assertSame("", $this->o->toString());
+    }
+    /**
+    * data provider for testCompareFWVesrion
+    *
+    * @return array
+    */
+    public static function dataCompareFWVersion()
+    {
+        return array(
+            array("1.2.3", "1.2.3", 0),
+            array("1.2.4", "1.2.3", 1),
+            array("1.3.3", "1.2.3", 1),
+            array("2.2.3", "1.2.3", 1),
+            array("1.2.3", "1.2.4", -1),
+            array("1.2.3", "1.3.3", -1),
+            array("1.2.3", "2.2.3", -1),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $v1     The first version
+    * @param string $v2     The second version
+    * @param int    $expect What to expect (1, 0, -1)
+    *
+    * @return null
+    *
+    * @dataProvider dataCompareFWVersion
+    */
+    function testCompareFWVersion($v1, $v2, $expect)
+    {
+        $ret = $this->o->CompareFWVersion($v1, $v2);
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testCompareFWVesrion
+    *
+    * @return array
+    */
+    public static function dataReadSetupTime()
+    {
+        return array(
+            array(date("Y-m-d H:i:s"), 10, false),
+            array("2004-01-01 00:00:00", 12, true),
+            array(date("Y-m-d H:i:s", time()-3600), 1, true),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $lastConfig The last config date
+    * @param int    $interval   The second version
+    * @param bool   $expect     What to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetupTime
+    */
+    function testReadSetupTime($lastConfig, $interval, $expect)
+    {
+        $this->d->LastConfig = $lastConfig;
+        $ret = $this->o->readSetupTime($interval);
+        $this->assertSame($expect, $ret);
     }
 
 }
@@ -194,6 +334,38 @@ class TestDevice extends DeviceDriverBase
             ),
         ),
     );
+    /**
+    * Builds the class
+    *
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
+    *
+    * @return null
+    */
+    public function __construct(&$obj, $string = "")
+    {
+        $this->myDriver = &$obj;
+        $this->myDriver->DriverInfo = array();
+        $this->fromString($string);
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readConfig()
+    {
+        return parent::readConfig();
+    }
+    /**
+    * Reads the calibration out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readCalibration()
+    {
+        return parent::readCalibration();
+    }
 
 }
 

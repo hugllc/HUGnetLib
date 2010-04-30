@@ -36,7 +36,7 @@
  *
  */
 
-
+/** Get our classes */
 require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392601DeviceTest extends DevicePluginTestBase
+class EVIRTUALDeviceTest extends DevicePluginTestBase
 {
 
     /**
@@ -78,7 +78,7 @@ class E00392601DeviceTest extends DevicePluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
          $this->d = new DummyDeviceContainer();
-        $this->o = new E00392601Device($this->d);
+        $this->o = new EVIRTUALDevice($this->d);
     }
 
     /**
@@ -102,100 +102,8 @@ class E00392601DeviceTest extends DevicePluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00392601Device"),
+            array("EVIRTUALDevice"),
         );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function data2String()
-    {
-        return array(
-            array(
-                array(
-                    "NumSensors" => 0,
-                    "Job" => 6,
-                    "GatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 231,
-                ),
-                "06000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."01020304E7"
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider data2String
-    */
-    public function testToString($preload, $expect)
-    {
-        $this->d->DriverInfo = $preload;
-        $this->d->GatewayKey = (int)$preload["GatewayKey"];
-        $ret = $this->o->toString();
-        $this->assertSame($expect, $ret);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromString()
-    {
-        return array(
-            array(
-                "06000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."01020304E7",
-                array(
-                    "NumSensors" => 0,
-                    "Job" => 6,
-                    "Function" => "Config",
-                    "CurrentGatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 231,
-                ),
-            ),
-            array(
-                "0A000C53636F747427732044657669636520486572650000000000000000000000"
-                    ."0102030412",
-                array(
-                    "NumSensors" => 0,
-                    "Job" => 10,
-                    "Function" => "Unknown",
-                    "CurrentGatewayKey" => 12,
-                    "Name" => "Scott's Device Here",
-                    "IP" => "1.2.3.4",
-                    "Priority" => 18,
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromString
-    */
-    public function testFromString($preload, $expect)
-    {
-        $this->o->fromString($preload);
-        $this->assertSame($expect, $this->d->DriverInfo);
     }
 
 }

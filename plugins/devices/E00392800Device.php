@@ -54,17 +54,29 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class EDEFAULTDevice extends DeviceDriverBase
+class E00392800Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "eDEFAULT",
+        "Name" => "e00392800",
         "Type" => "device",
-        "Class" => "EDEFAULTDevice",
+        "Class" => "E00392800Device",
         "Devices" => array(
+            "0039-20-12-C" => array(
+                "0039-28-01-A" => "DEFAULT",
+                "0039-28-01-B" => "DEFAULT",
+                "0039-28-01-C" => "DEFAULT",
+            ),
+            "0039-20-13-C" => array(
+                "0039-28-01-A" => "DEFAULT",
+                "0039-28-01-B" => "DEFAULT",
+                "0039-28-01-C" => "DEFAULT",
+            ),
             "DEFAULT" => array(
-                "DEFAULT" => "DEFAULT",
+                "0039-28-01-A" => "DEFAULT",
+                "0039-28-01-B" => "DEFAULT",
+                "0039-28-01-C" => "DEFAULT",
             ),
         ),
     );
@@ -80,8 +92,53 @@ class EDEFAULTDevice extends DeviceDriverBase
     {
         $this->myDriver = &$obj;
         $this->myDriver->DriverInfo = array();
-        $this->myDriver->DriverInfo["NumSensors"] = 0;
+        $this->myDriver->DriverInfo["NumSensors"] = 16;
+        $this->fromString($string);
     }
+    /**
+    * Reads the setup out of the device
+    *
+    * @param int $interval The interval to check, in hours
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetup($interval = 12)
+    {
+        if ($this->readSetupTime((int)$interval)) {
+            if ($this->readConfig()) {
+                return $this->readCalibration();
+            }
+        }
+        return false;
+    }
+
+    /**
+    * Creates the object from a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toString($default = true)
+    {
+        $string = "";
+        return $string;
+
+    }
+
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
+        $this->myDriver->sensors->fromTypeString(substr($string, 2));
+    }
+
 
 }
 

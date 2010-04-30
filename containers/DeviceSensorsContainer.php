@@ -124,5 +124,38 @@ class DeviceSensorsContainer extends HUGnetContainer
         }
         return (array)$data;
     }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromTypeString($string)
+    {
+
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromCalString($string)
+    {
+
+    }
+    /**
+    * Creates the sensors from the old method of storing them.
+    *
+    * @param DeviceParamsContainer &$obj the parameters to use
+    *
+    * @return null
+    */
+    public function fromParams(DeviceParamsContainer &$obj)
+    {
+
+    }
 }
 ?>

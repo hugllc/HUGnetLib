@@ -73,7 +73,9 @@ class DeviceContainer extends DevicesTable
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",        //  The database group to use
-        "DriverInfo" => array(),     //  This is space for the driver to use
+        "DriverInfo" => array(
+            "PacketTimeout" => 0,    //  Timeout for packets. 0 == default
+        ),                           //  This is space for the driver to use
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -256,7 +258,11 @@ class DeviceContainer extends DevicesTable
             $this->params = $this->data["params"];
         }
         if (!is_object($this->sensors)) {
+            $empty = empty($this->data["sensors"]);
             $this->sensors = $this->data["sensors"];
+            if ($empty) {
+                $this->sensors->fromParams($this->data["params"]);
+            }
         }
     }
     /**

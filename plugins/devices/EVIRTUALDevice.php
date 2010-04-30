@@ -54,17 +54,17 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class EDEFAULTDevice extends DeviceDriverBase
+class EVIRTUALDevice extends DeviceDriverBase
     implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "eDEFAULT",
+        "Name" => "eVIRTUAL",
         "Type" => "device",
-        "Class" => "EDEFAULTDevice",
+        "Class" => "EVIRTUALDevice",
         "Devices" => array(
             "DEFAULT" => array(
-                "DEFAULT" => "DEFAULT",
+                "VIRTUAL" => "DEFAULT",
             ),
         ),
     );

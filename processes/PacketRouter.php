@@ -145,7 +145,7 @@ class PacketRouter extends ProcessBase
 
             // Make sure of our timeout is low.  We set it to 0.5
             $data = array(
-                "Timeout" => 0.5,
+                "Timeout" => 1,
                 "group" => $group,
                 "verbose" => $this->verbose,
             );
