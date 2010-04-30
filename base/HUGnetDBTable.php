@@ -113,6 +113,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
 
     /** @var object This is where we store our sqlDriver */
     protected $myDriver = null;
+    /** @var object This is where we store our sqlDriver */
+    protected $mySelectDriver = null;
     /** @var object This is where we store our configuration object */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -144,6 +146,10 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         if (is_object($this->myConfig->servers)) {
             $this->myDriver = &$this->myConfig->servers->getDriver(
+                $this,
+                $this->group
+            );
+            $this->mySelectDriver = &$this->myConfig->servers->getDriver(
                 $this,
                 $this->group
             );
@@ -261,8 +267,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function &select($where, $data = array())
     {
-        $this->myDriver->selectWhere($where, $data);
-        return $this->myDriver->fetchAll();
+        $this->mySelectDriver->selectWhere($where, $data);
+        return $this->mySelectDriver->fetchAll();
     }
     /**
     * This function gets a record with the given key
@@ -274,7 +280,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function selectInto($where, $data = array())
     {
-        $this->myDriver->selectWhere($where, $data);
+        $this->mySelectDriver->selectWhere($where, $data);
         return $this->nextInto();
     }
     /**
@@ -284,7 +290,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function nextInto()
     {
-        return $this->myDriver->fetchInto();
+        return $this->mySelectDriver->fetchInto();
     }
     /**
     * This function creates other tables that are identical to this one, except

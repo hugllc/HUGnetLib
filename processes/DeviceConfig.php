@@ -82,18 +82,17 @@ class DeviceConfig extends ProcessBase implements PacketConsumerInterface
     public function config()
     {
         // Get the devices
-        $devices = &$this->device->select(1);
+        $ret = $this->device->selectInto(1);
         // Go through the devices
-        foreach (array_keys((array)$devices) as $key) {
-            $dev = &$devices[$key];
+        while ($ret) {
             // We don't want to get our own config
-            if ($dev->DeviceID == $this->myDevice->DeviceID) {
-                continue;
+            if ($this->device->DeviceID !== $this->myDevice->DeviceID) {
+                // We should only check stuff for our gateway
+                if ($this->GatewayKey == $this->device->GatewayKey) {
+                    $this->_check($this->device);
+                }
             }
-            // We should only check stuff for our gateway
-            if ($this->GatewayKey == $dev->GatewayKey) {
-                $this->_check($dev);
-            }
+            $ret = $this->device->nextInto();
         }
     }
     /**
