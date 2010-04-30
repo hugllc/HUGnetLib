@@ -259,7 +259,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "-5",
-                        "myDate" => "1970-01-01 00:00:00",
+                        "myDate" => "",
                         "name" => "Something Negative",
                         "value" => "-25.0",
                     ),
@@ -268,7 +268,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "1",
-                        "myDate" => "1970-01-01 00:00:00",
+                        "myDate" => "",
                         "name" => "Something Here",
                         "value" => "25.0",
                     ),
@@ -277,7 +277,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "2",
-                        "myDate" => "1970-01-01 00:00:00",
+                        "myDate" => "",
                         "name" => "Another THing",
                         "value" => "22.0",
                     ),
@@ -286,7 +286,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "32",
-                        "myDate" => "1970-01-01 00:00:00",
+                        "myDate" => "",
                         "name" => "A way up here thing",
                         "value" => "23.0",
                     ),
@@ -316,11 +316,35 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
-    * Data provider for testSelectInto
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSelect
+    *
+    * @return null
+    */
+    public function testSelectInto($preload, $where, $data, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $ret = $o->selectInto($where, $data);
+        foreach ($expect as $e) {
+            $this->assertTrue($ret);
+            $this->assertSame($e, $o->toArray());
+            $ret = $o->nextInto();
+        }
+        $this->assertFalse($ret);
+
+    }
+    /**
+    * Data provider for testSelectOneInto
     *
     * @return array
     */
-    public static function dataSelectInto()
+    public static function dataSelectOneInto()
     {
         return array(
             array(
@@ -347,11 +371,11 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $data    The data to use with the where clause
     * @param array  $expect  The expected return
     *
-    * @dataProvider dataSelectInto
+    * @dataProvider dataSelectOneInto
     *
     * @return null
     */
-    public function testSelectInto($preload, $where, $data, $expect)
+    public function testSelectOneInto($preload, $where, $data, $expect)
     {
         $o = new HUGnetDBTableTestStub($preload);
         $res = $o->selectInto($where, $data);
@@ -700,7 +724,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => 5,
-                    "myDate" => "1970-01-01 00:00:00",
+                    "myDate" => "",
                     "name" => "Name",
                     "value" => 12.0,
                 ),
@@ -725,7 +749,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "things",
                     "other" => "nStuff",
                     "id" => 6,
-                    "myDate" => "1970-01-01 00:00:00",
+                    "myDate" => "",
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),
@@ -747,7 +771,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "more",
                     "other" => "thing",
                     "id" => 7,
-                    "myDate" => "1970-01-01 00:00:00",
+                    "myDate" => "",
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),

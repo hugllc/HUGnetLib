@@ -259,7 +259,7 @@ class PacketSocketTable extends HUGnetDBTable
             $lastRead = (float)time();
         }
         $this->clearData();
-        $this->selectInto(
+        $this->selectOneInto(
             "`PacketTime` > ? AND `id` <> ?",
             array($lastRead, $this->senderID)
         );

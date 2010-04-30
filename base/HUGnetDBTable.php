@@ -284,6 +284,20 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $this->nextInto();
     }
     /**
+    * This function gets a record with the given key
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return bool True on success, False on failure
+    */
+    public function selectOneInto($where, $data = array())
+    {
+        $ret = $this->selectInto($where, $data);
+        $this->mySelectDriver->reset();
+        return $ret;
+    }
+    /**
     * This puts the next result into the object
     *
     * @return bool True on success, False on failure
@@ -302,8 +316,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function &factory(&$data = array())
     {
-        $class = get_class($this);
-        $ret = new $class($this->toArray());
+        $ret = clone $this;
         $ret->fromAny($data);
         return $ret;
     }
