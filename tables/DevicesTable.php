@@ -260,9 +260,22 @@ class DevicesTable extends HUGnetDBTable
     static public function insertDeviceID($data)
     {
         $dev = new DevicesTable($data);
-        $dev->insertRow();
+        if (!$dev->exists()) {
+            $dev->insertRow();
+        }
     }
+    /**
+    * Checks to see if our deviceID exists in the database
+    *
+    * @return bool True if it exists, false otherwise
+    */
+    public function exists()
+    {
 
+        return (bool) $this->myDriver->countWhere(
+            "DeviceID = ?", array($this->DeviceID), "DeviceID"
+        );
+    }
     /**
     * Changes the part number into XXXX-XX-XX-X form.
     *

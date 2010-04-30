@@ -279,6 +279,73 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
     }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataExists()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "DeviceID" => 156,
+                        "GatewayKey" => 23,
+                    ),
+                ),
+                array(
+                    "DeviceID" => 156,
+                    "GatewayKey" => 23,
+                ),
+                true
+            ),
+            array(
+                array(
+                    array(
+                        "DeviceID" => 158,
+                        "GatewayKey" => 23,
+                    ),
+                ),
+                array(
+                    "DeviceID" => 156,
+                    "GatewayKey" => 23,
+                ),
+                false
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "DeviceID" => 156,
+                    "GatewayKey" => 23,
+                ),
+                false
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param array $preload The data to load into the database
+    * @param mixed $data    The data to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataExists
+    *
+    * @return null
+    */
+    public function testExists($preload, $data, $expect)
+    {
+        foreach ((array)$preload as $load) {
+            $this->o->fromAny($load);
+            $this->o->insertRow();
+        }
+        $this->o->clearData();
+        $this->o->fromAny($data);
+        $ret = $this->o->exists();
+        $this->assertSame($expect, $ret);
+    }
 }
 
 ?>
