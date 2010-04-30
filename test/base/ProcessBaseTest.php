@@ -254,6 +254,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                         "LastAnalysis" => "1970-01-01 00:00:00",
                         "MinAverage"        => "15MIN",
                         "CurrentGatewayKey" => "0",
+                        "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
+                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params"            => "YTowOnt9",
                     ),
                 ),
@@ -295,6 +297,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                         "LastAnalysis" => "1970-01-01 00:00:00",
                         "MinAverage"        => "15MIN",
                         "CurrentGatewayKey" => "0",
+                        "sensors"           => "",
                         "params"            => "",
                     ),
                 ),

@@ -173,7 +173,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         $this->assertAttributeSame($expect, "data", $this->o);
     }
     /**
-    * data provider for testDeviceID
+    * data provider for testSet
     *
     * @return array
     */
@@ -217,6 +217,36 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         $this->assertSame($expect, $data[$var]);
     }
     /**
+    * data provider for testSetClass
+    *
+    * @return array
+    */
+    public static function dataSetClass()
+    {
+        return array(
+            array("sensors", "Hello", "DeviceSensorsContainer"),
+            array("params", "Hello", "DeviceParamsContainer"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetClass
+    */
+    public function testSetClass($var, $value, $expect)
+    {
+        $this->o->$var = $value;
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame($expect, get_class($data[$var]));
+    }
+    /**
     * Data provider for testInsertRow
     *
     * @return array
@@ -256,6 +286,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                         "LastAnalysis" => "1970-01-01 00:00:00",
                         "MinAverage" => "15MIN",
                         "CurrentGatewayKey" => "0",
+                        "sensors" => "",
                         "params" => "",
                     ),
                 ),

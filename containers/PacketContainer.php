@@ -407,8 +407,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * Looks for any packet and returns it
     *
-    * @param array $data   The data to build the class with if called statically
-    *                      This is ignored if not called statically.
+    * @param array $data The data to build the class with if called statically
+    *                    This is ignored if not called statically.
     *
     * @return mixed PacketContainer on success, false on failure
     */

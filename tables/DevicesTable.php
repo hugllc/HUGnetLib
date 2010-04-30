@@ -40,6 +40,7 @@ require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/DeviceParamsContainer.php";
+require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -212,6 +213,11 @@ class DevicesTable extends HUGnetDBTable
             "Type" => "int(11)",
             "Default" => 0,
         ),
+        "sensors" => array(
+            "Name" => "sensors",
+            "Type" => "text",
+            "Default" => '',
+        ),
         "params" => array(
             "Name" => "params",
             "Type" => "text",
@@ -253,7 +259,7 @@ class DevicesTable extends HUGnetDBTable
     /**
     * Inserts a device ID into the database if it isn't there already
     *
-    * @param mixed The string or data to use to insert this row
+    * @param mixed $data The string or data to use to insert this row
     *
     * @return null
     */
@@ -435,6 +441,17 @@ class DevicesTable extends HUGnetDBTable
     protected function setParams($value)
     {
         $this->data["params"] = new DeviceParamsContainer($value);
+    }
+    /**
+    * Sets the params
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setSensors($value)
+    {
+        $this->data["sensors"] = new DeviceSensorsContainer($value, $this);
     }
 
 }

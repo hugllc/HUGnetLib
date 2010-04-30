@@ -199,9 +199,7 @@ class DeviceContainer extends DevicesTable
         if (is_object($this->epDriver)) {
             $this->epDriver->fromString(substr($string, self::CONFIGEND));
         }
-        if (!is_object($this->params)) {
-            $this->params = $this->data["params"];
-        }
+        $this->_setupClasses();
     }
     /**
     * Returns the object as a string
@@ -245,8 +243,20 @@ class DeviceContainer extends DevicesTable
                 );
             }
         }
+        $this->_setupClasses();
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    private function _setupClasses()
+    {
         if (!is_object($this->data["params"])) {
             $this->params = $this->data["params"];
+        }
+        if (!is_object($this->sensors)) {
+            $this->sensors = $this->data["sensors"];
         }
     }
     /**

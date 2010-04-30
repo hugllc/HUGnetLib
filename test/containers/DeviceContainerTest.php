@@ -131,6 +131,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -164,6 +165,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -197,6 +199,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -230,6 +233,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                 ),
             ),
@@ -263,6 +267,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                 ),
             ),
@@ -325,6 +330,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -358,6 +364,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params"            => array(),
                 ),
             ),
@@ -420,6 +427,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
                     "CurrentGatewayKey" => 2,
+                    "sensors"            => array(),
                     "params"            => array(),
                 ),
             ),
@@ -441,6 +449,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($o, "data");
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
+        $data["sensors"] = $data["sensors"]->toArray();
         $this->assertSame($expect, $data);
     }
     /**
@@ -510,6 +519,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -543,6 +553,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params"            => array(),
                 ),
             ),
@@ -605,6 +616,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
                     "CurrentGatewayKey" => 2,
+                    "sensors"            => array(),
                     "params"            => array(),
                 ),
             ),
@@ -628,6 +640,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
+        $data["sensors"] = $data["sensors"]->toArray();
         $this->assertSame($expect, $data);
     }
     /**
@@ -668,6 +681,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -701,6 +715,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -734,6 +749,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -768,6 +784,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -801,6 +818,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
                     "CurrentGatewayKey" => 0,
+                    "sensors"            => array(),
                     "params" => array(),
                ),
             ),
@@ -822,6 +840,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
+        $data["sensors"] = $data["sensors"]->toArray();
         $this->assertSame($expect, $data);
     }
     /**
