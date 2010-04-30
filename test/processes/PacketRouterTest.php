@@ -82,6 +82,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     "group" => "third",
                 ),
             ),
+            "script_gateway" => 4,
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -142,6 +143,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                         "default" => "default",
                         "third" => "third",
                     ),
+                    "GatewayKey" => 4,
                 ),
             ),
            array(
@@ -150,12 +152,14 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                         "other" => "other",
                         "third" => "third",
                     ),
+                    "GatewayKey" => 6,
                 ),
                 array(
                     "groups" => array(
                         "other" => "other",
                         "third" => "third",
                     ),
+                    "GatewayKey" => 6,
                 ),
             ),
         );

@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class E00392601Device extends DeviceDriverBase
-    implements DeviceDriverInterface, PacketConsumerInterface
+    implements DeviceDriverInterface
 {
     /** @var int The job number for polling */
     const JOB_POLL     = 1;

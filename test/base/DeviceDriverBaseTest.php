@@ -94,67 +94,6 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         unset($this->o);
     }
 
-    /**
-    * data provider for testPacketConsumer
-    *
-    * @return array
-    */
-    public static function dataPacketConsumer()
-    {
-        return array(
-            array(
-                array(
-                    "To" => "000001",
-                    "From" => "123456",
-                    "Command" => "5C",
-                    "group" => "default",
-                ),
-                "010203040506070809",
-                "5A5A5A011234560000200901020304050607080959",
-            ),
-            array(
-                array(
-                    "To" => "000001",
-                    "From" => "123456",
-                    "Command" => "03",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                "",
-                "5A5A5A01123456000020040102030451",
-            ),
-            array(
-                array(
-                    "To" => "000001",
-                    "From" => "123456",
-                    "Command" => "02",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                "",
-                "5A5A5A01123456000020040102030451",
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $pkt    The packet string to use
-    * @param string $string The string for the dummy device to return
-    * @param string $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataPacketConsumer
-    */
-    public function testPacketConsumer($pkt, $string, $expect)
-    {
-        $this->d->string = $string;
-        $p = new PacketContainer($pkt);
-        $this->o->packetConsumer($p);
-        $this->assertSame($expect, $this->socket->writeString);
-    }
 
     /**
     * data provider for testPacketConsumer
@@ -242,7 +181,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class TestDevice extends DeviceDriverBase
-    implements DeviceDriverInterface, PacketConsumerInterface
+    implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(

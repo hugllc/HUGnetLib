@@ -36,8 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/HUGnetClass.php";
-require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../base/ProcessBase.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/PacketContainer.php";
 require_once dirname(__FILE__)."/../tables/DevicesTable.php";
@@ -55,22 +54,17 @@ require_once dirname(__FILE__)."/../tables/DevicesTable.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PacketRouter extends HUGnetContainer
+class PacketRouter extends ProcessBase
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
         "groups"     => array(),  // The groups to route between
+        "GatewayKey" => 0,        // The gateway key to use
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
-    /** @var object This is our config */
-    protected $myConfig = null;
     /** @var array We store our routes here */
     protected $Routes = array();
-    /** @var object The device object to use */
-    protected $myDevice = null;
 
     /**
     * Builds the class
@@ -82,14 +76,8 @@ class PacketRouter extends HUGnetContainer
     */
     public function __construct($data, DeviceContainer &$device)
     {
-        // Clear the data
-        $this->clearData();
-        // This is our config
-        $this->myConfig = &ConfigContainer::singleton();
         // Run the parent stuff
-        parent::__construct($data);
-        // Set the verbosity
-        $this->verbose($this->myConfig->verbose);
+        parent::__construct($data, $device);
         // This defaults us to all groups present in the config
         if (empty($this->groups)) {
             $this->groups = $this->myConfig->sockets->groups();
@@ -105,8 +93,6 @@ class PacketRouter extends HUGnetContainer
             // It thinks this line won't run.  The above function never returns.
         }
         // @codeCoverageIgnoreEnd
-        // Set up the device object
-        $this->myDevice = &$device;
     }
 
     /**
@@ -172,7 +158,7 @@ class PacketRouter extends HUGnetContainer
                         $pkt->group." -> Me ".$this->_output($pkt),
                         HUGnetClass::VPRINT_NORMAL
                     );
-                    $this->myDevice->packetConsumer($pkt);
+                    $this->toMe($pkt);
                 } else {
                     $this->_setRoute($pkt);
                     $this->send($pkt);

@@ -74,25 +74,6 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
         $this->fromString($string);
     }
     /**
-    * Consumes packets and returns some stuff.
-    *
-    * This function deals with setup and ping requests
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    public function packetConsumer(PacketContainer &$pkt)
-    {
-        if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
-            $pkt->reply((string)$this->myDriver);
-        } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
-            || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
-        ) {
-            $pkt->reply($pkt->Data);
-        }
-    }
-    /**
     * Reads the setup out of the device
     *
     * @param int $interval The interval to check, in hours

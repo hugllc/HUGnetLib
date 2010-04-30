@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
 class EDEFAULTDevice extends DeviceDriverBase
-    implements DeviceDriverInterface, PacketConsumerInterface
+    implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
