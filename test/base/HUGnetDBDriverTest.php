@@ -1403,6 +1403,79 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $rows);
     }
     /**
+    * Data provider for testCountWhere
+    *
+    * @return array
+    */
+    public static function dataCountWhere()
+    {
+        return array(
+            // Selects everything
+            array(
+                "",  // where
+                array(), // data
+                "", // keys
+                4, // expect
+            ),
+            // Selects everything, key specified
+            array(
+                "",  // where
+                array(), // data
+                "id", // keys
+                4, // expect
+            ),
+            // Selects only one
+            array(
+                "id = ?",  // where
+                array(32), // data
+                "id", // keys
+                1, // expect
+            ),
+            // Selects only one
+            array(
+                "id = 32",  // where
+                array(), // data
+                "id", // keys
+                1, // expect
+            ),
+            // Selects only one that is not there
+            array(
+                "idasd = 6472",  // where
+                array(), // data
+                "id", // keys
+                false, // expect
+            ),
+            // Selects only one using the 'idwhere'
+            array(
+                array("id" => 32),  // where
+                array(), // data
+                "", // keys
+                1, // expect
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $column    The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    *
+    * @return null
+    *
+    * @dataProvider dataCountWhere
+    */
+    public function testCountWhere(
+        $where,
+        $whereData,
+        $column,
+        $expect
+    ) {
+        $r = $this->o->countWhere($where, $whereData, $column);
+        $this->assertSame($expect, $r);
+    }
+    /**
     * test
     *
     * @param string $where     The where clause to use

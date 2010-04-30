@@ -547,6 +547,43 @@ abstract class HUGnetDBDriver extends HUGnetClass
     /**
     * Gets all rows from the database
     *
+    * @param mixed $where     Where clause or array if using ID where
+    * @param array $whereData Data for query
+    * @param array $column    The column to count
+    *
+    * @return integer
+    */
+    public function countWhere(
+        $where,
+        $whereData = array(),
+        $column = ""
+    ) {
+        $this->reset();
+        if (empty($column)) {
+            $column = $this->myTable->sqlId;
+        }
+        $this->query  = "SELECT COUNT($column) AS count";
+        $this->query .= " FROM ".$this->table();
+        if (is_array($where)) {
+            // This selects by id.  If we are here, we are only getting one record
+            // as it searches for unique values.  That is why we are not adding
+            // orderby or limit.  Both are meaningless when getting only one value.
+            $this->idWhere($where);
+            $ret = $this->execute($this->prepareIdData($where));
+        } else {
+            $this->where($where, $whereData);
+            $ret = $this->executeData();
+        }
+        if ($ret) {
+            $res = $this->fetchAll(PDO::FETCH_ASSOC);
+            return (int)$res[0]["count"];
+        }
+        return false;
+    }
+
+    /**
+    * Gets all rows from the database
+    *
     * @param int $style The PDO ftech style.  See
     *           {@link http://us.php.net/manual/en/pdostatement.fetch.php PDO Fetch}
     *           for more information
