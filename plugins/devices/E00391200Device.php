@@ -109,39 +109,10 @@ class E00391200Device extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 16;
         $this->fromString($string);
     }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toString($default = true)
-    {
-        $string = "";
-        return $string;
-
-    }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
-        $this->myDriver->sensors->fromTypeString(substr($string, 2));
-    }
-
 
 }
 

@@ -344,8 +344,7 @@ class TestDevice extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct($obj, $string);
         $this->fromString($string);
     }
     /**

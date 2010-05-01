@@ -37,7 +37,7 @@
  */
 
 // This is our base class
-require_once dirname(__FILE__).'/../../base/DeviceDriverBase.php';
+require_once dirname(__FILE__).'/../../base/DeviceDriverLoadableBase.php';
 // This is the interface we are implementing
 require_once dirname(__FILE__).'/../../interfaces/DeviceDriverInterface.php';
 require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392100Device extends DeviceDriverBase
+class E00392100Device extends DeviceDriverLoadableBase
     implements DeviceDriverInterface
 {
     /** @var This is to register the class */
@@ -79,53 +79,10 @@ class E00392100Device extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 16;
         $this->myDriver->DriverInfo["PacketTimeout"] = 2;
         $this->fromString($string);
-    }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toString($default = true)
-    {
-        $string = "";
-        return $string;
-
-    }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
-        $this->myDriver->sensors->fromTypeString(substr($string, 2));
-    }
-
-    /**
-    * Reads the setup out of the device
-    *
-    * This device needs to be checked more often.  This changes the check time from
-    * hours to minutes.
-    *
-    * @param int $interval The interval to check, in hours
-    *
-    * @return bool True on success, False on failure
-    */
-    public function readSetupTime($interval = 10)
-    {
-        return (strtotime($this->myDriver->LastConfig) < (time() - $interval*60));
     }
 
 }

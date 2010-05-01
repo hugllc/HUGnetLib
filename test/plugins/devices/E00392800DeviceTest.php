@@ -40,6 +40,7 @@
 require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
+require_once dirname(__FILE__).'/../../../containers/PacketContainer.php';
 
 /**
  * Test class for filter.
@@ -77,7 +78,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
+        $this->d = new DummyDeviceContainer();
         $this->o = new E00392800Device($this->d);
     }
 
@@ -171,6 +172,140 @@ class E00392800DeviceTest extends DevicePluginTestBase
     {
         $this->o->fromString($preload);
         $this->assertSame($expect, $this->d->DriverInfo);
+    }
+    /**
+    * data provider for testReadSetup, testReadConfig
+    *
+    * @return array
+    */
+    public static function dataReadSetup()
+    {
+        return array(
+            array(
+                "000025",
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500391101410039201343000009FFFFFF50",
+                ))
+                .(string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "01020304",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                    "Data" => "",
+                )),
+                true,
+            ),
+            array(
+                "000025",
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500391101410039201343000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                    "Data" => "",
+                )),
+                false,
+            ),
+            array(
+                "000025",
+                "000000000100392601500039260150010203FFFFFF10",
+                "",
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id     The Device ID to pretend to be
+    * @param string $string The string for the dummy device to return
+    * @param string $read   The read string to put in
+    * @param string $write  The write string expected
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetup
+    */
+    public function testReadSetup($id, $string, $read, $write, $expect)
+    {
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->socket->readString = $read;
+        $ret = $this->o->readSetup();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
     }
 
 }

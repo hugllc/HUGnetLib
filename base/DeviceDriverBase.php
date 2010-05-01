@@ -68,7 +68,11 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     *
     * @return null
     */
-    abstract public function __construct(&$obj, $string = "");
+    public function __construct(&$obj, $string = "")
+    {
+        $this->myDriver = &$obj;
+        $this->myDriver->DriverInfo = array();
+    }
     /**
     * Reads the setup out of the device
     *
@@ -142,7 +146,6 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
         return "";
 
     }
-
     /**
     * Creates the object from a string
     *
@@ -152,6 +155,10 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     */
     public function fromString($string)
     {
+        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string, 0, 2));
+        if (is_object($this->myDriver->sensors)) {
+            $this->myDriver->sensors->fromTypeString(substr($string, 2));
+        }
     }
     /**
     * Runs a function using the correct driver for the endpoint

@@ -90,55 +90,22 @@ class E00392800Device extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 16;
         $this->fromString($string);
     }
     /**
     * Reads the setup out of the device
     *
-    * @param int $interval The interval to check, in hours
-    *
     * @return bool True on success, False on failure
     */
-    public function readSetup($interval = 12)
+    public function readSetup()
     {
-        if ($this->readSetupTime((int)$interval)) {
-            if ($this->readConfig()) {
-                return $this->readCalibration();
-            }
+        if ($this->readConfig()) {
+            return $this->readCalibration();
         }
         return false;
     }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toString($default = true)
-    {
-        $string = "";
-        return $string;
-
-    }
-
-    /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string,0 , 2));
-        $this->myDriver->sensors->fromTypeString(substr($string, 2));
-    }
-
 
 }
 

@@ -36,10 +36,10 @@
  *
  */
 
-/** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
-require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
-require_once dirname(__FILE__).'/DevicePluginTestBase.php';
+
+require_once dirname(__FILE__).'/../../base/DeviceDriverLoadableBase.php';
+require_once dirname(__FILE__).'/../stubs/DummyDeviceContainer.php';
+require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 
 /**
  * Test class for filter.
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392100DeviceTest extends DevicePluginTestBase
+class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -77,8 +77,8 @@ class E00392100DeviceTest extends DevicePluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
-        $this->o = new E00392100Device($this->d);
+        $this->d = new DummyDeviceContainer();
+        $this->o = new TestDeviceLoadable($this->d);
     }
 
     /**
@@ -93,85 +93,77 @@ class E00392100DeviceTest extends DevicePluginTestBase
     {
         unset($this->o);
     }
-
     /**
-    * Data provider for testRegisterPlugin
+    * data provider for testCompareFWVesrion
     *
     * @return array
     */
-    public static function dataRegisterPlugin()
+    public static function dataReadSetupTime()
     {
         return array(
-            array("E00392100Device"),
+            array(date("Y-m-d H:i:s"), 60, false),
+            array("2004-01-01 00:00:00", 12, true),
+            array(date("Y-m-d H:i:s", time()-70), 1, true),
         );
     }
-
     /**
-    * data provider for testDeviceID
+    * test
     *
-    * @return array
-    */
-    public static function data2String()
-    {
-        return array(
-            array(
-                array(
-                ),
-                "",
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
+    * @param string $lastConfig The last config date
+    * @param int    $interval   The second version
+    * @param bool   $expect     What to expect
     *
     * @return null
     *
-    * @dataProvider data2String
+    * @dataProvider dataReadSetupTime
     */
-    public function testToString($preload, $expect)
+    function testReadSetupTime($lastConfig, $interval, $expect)
     {
-        $this->d->DriverInfo = $preload;
-        $this->d->GatewayKey = (int)$preload["GatewayKey"];
-        $ret = $this->o->toString();
+        $this->d->LastConfig = $lastConfig;
+        $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
     }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromString()
-    {
-        return array(
-            array(
-                "0102020202020202027070707070707070",
-                array(
-                    "NumSensors" => 16,
-                    "PacketTimeout" => 2,
-                    "TimeConstant" => 1,
-                ),
-            ),
-        );
-    }
 
+}
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TestDeviceLoadable extends DeviceDriverLoadableBase
+    implements DeviceDriverInterface
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "testDevice",
+        "Type" => "device",
+        "Class" => "TestDevice",
+        "Devices" => array(
+            "DEFAULT" => array(
+                "DEFAULT" => "DEFAULT",
+            ),
+        ),
+    );
     /**
-    * test the set routine when an extra class exists
+    * Builds the class
     *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
     *
     * @return null
-    *
-    * @dataProvider dataFromString
     */
-    public function testFromString($preload, $expect)
+    public function __construct(&$obj, $string = "")
     {
-        $this->o->fromString($preload);
-        $this->assertSame($expect, $this->d->DriverInfo);
+        $this->myDriver = &$obj;
+        $this->myDriver->DriverInfo = array();
+        $this->fromString($string);
     }
 
 }
