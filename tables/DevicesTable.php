@@ -431,28 +431,6 @@ class DevicesTable extends HUGnetDBTable
     {
         $this->data["HWPartNum"] = $this->formatPartNum($value);
     }
-    /**
-    * Sets the params
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setParams($value)
-    {
-        $this->data["params"] = new DeviceParamsContainer($value);
-    }
-    /**
-    * Sets the params
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setSensors($value)
-    {
-        $this->data["sensors"] = new DeviceSensorsContainer($value, $this);
-    }
 
 }
 ?>

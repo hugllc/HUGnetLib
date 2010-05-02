@@ -26,7 +26,7 @@
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Endpoint
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -48,7 +48,7 @@ require_once dirname(__FILE__).'/../../../containers/PacketContainer.php';
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Endpoint
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -183,6 +183,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
         return array(
             array(
                 "000025",
+                5,
                 "000000002500391101410039201343000009FFFFFF50",
                 (string)new PacketContainer(array(
                     "From" => "000025",
@@ -212,6 +213,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
             ),
             array(
                 "000025",
+                2,
                 "000000002500391101410039201343000009FFFFFF50",
                 (string)new PacketContainer(array(
                     "From" => "000025",
@@ -253,6 +255,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
             ),
             array(
                 "000025",
+                2,
                 "000000000100392601500039260150010203FFFFFF10",
                 "",
                 (string)new PacketContainer(array(
@@ -287,20 +290,21 @@ class E00392800DeviceTest extends DevicePluginTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id     The Device ID to pretend to be
-    * @param string $string The string for the dummy device to return
-    * @param string $read   The read string to put in
-    * @param string $write  The write string expected
-    * @param string $expect The expected return
+    * @param string $id      The Device ID to pretend to be
+    * @param int    $timeout The packet timeout to use
+    * @param string $string  The string for the dummy device to return
+    * @param string $read    The read string to put in
+    * @param string $write   The write string expected
+    * @param string $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadSetup($id, $string, $read, $write, $expect)
+    public function testReadSetup($id, $timeout, $string, $read, $write, $expect)
     {
         $this->d->DeviceID = $id;
-        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");

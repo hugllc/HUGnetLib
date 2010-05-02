@@ -26,7 +26,7 @@
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

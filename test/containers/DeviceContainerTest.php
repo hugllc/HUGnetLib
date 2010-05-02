@@ -1093,24 +1093,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $value);
     }
     /**
-    * test
-    *
-    * @return null
-    */
-    public function testPacketConsumer()
-    {
-        unset($GLOBALS["packetConsumer"]);
-        // create the container.
-        $o = new DeviceContainer(array(
-            "FWPartNum" => "0124-45-67-C",
-            "HWPartNum" => "ABCE-EF-01-A",
-            "FWVersion" => "01.02.03",
-        ));
-        $pkt = new PacketContainer();
-        $o->packetConsumer($pkt);
-        $this->assertSame($pkt, $GLOBALS["packetConsumer"]);
-    }
-    /**
     * data provider for testSet
     *
     * @return array

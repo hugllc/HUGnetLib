@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/../interfaces/PacketConsumerInterface.php';
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DeviceContainer extends DevicesTable
-    implements DeviceContainerInterface, PacketConsumerInterface
+    implements DeviceContainerInterface
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -82,6 +82,10 @@ class DeviceContainer extends DevicesTable
 
     /** @var object This is the endpoint driver */
     protected $epDriver = null;
+    /** @var object This is the endpoint driver */
+    protected $params = null;
+    /** @var object This is the endpoint driver */
+    protected $sensors = null;
     /** @var object These are the registered devices */
     protected $myDev = array();
     /**
@@ -97,6 +101,7 @@ class DeviceContainer extends DevicesTable
         $this->_registerDriverPlugins();
         parent::__construct($data);
         $this->create();
+        $this->_setupClasses();
     }
     /**
     * Tries to run a function defined by what is called..
@@ -254,14 +259,21 @@ class DeviceContainer extends DevicesTable
     */
     private function _setupClasses()
     {
-        if (!is_object($this->data["params"])) {
-            $this->params = $this->data["params"];
+        if (!is_object($this->params)) {
+            // Do the sensors
+            $this->data["params"] = new DeviceParamsContainer($this->params);
+            $this->params = &$this->data["params"];
         }
         if (!is_object($this->sensors)) {
+            // Do the sensors
             $empty = empty($this->data["sensors"]);
-            $this->sensors = $this->data["sensors"];
+            $this->data["sensors"] = new DeviceSensorsContainer(
+                $this->sensors, $this
+            );
+            $this->sensors = &$this->data["sensors"];
+            // This converts from the old way to the new way.
             if ($empty) {
-                $this->sensors->fromParams($this->data["params"]);
+                $this->sensors->fromParams($this->params);
             }
         }
     }
@@ -301,19 +313,6 @@ class DeviceContainer extends DevicesTable
         }
         self::stringSize($str, 10);
         return $str;
-    }
-    /**
-    * This takes the numeric job and replaces it with a name
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    public function packetConsumer(PacketContainer &$pkt)
-    {
-        if (is_object($this->epDriver)) {
-            $this->epDriver->packetConsumer($pkt);
-        }
     }
 }
 ?>

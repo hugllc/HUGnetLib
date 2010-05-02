@@ -57,10 +57,27 @@ require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
  */
 class FirmwareTable extends HUGnetDBTable
 {
+    /** These are the constants for RelStatus */
+    /** @var int Released code */
+    const RELEASE = 0;
+    /** @var int Released code */
+    const BETA = 2;
+    /** @var int Released code */
+    const DEV = 8;
+    /** @var int Released code */
+    const BAD = 64;
+    /** @var array This is for looking up RelStatus from the old way*/
+    static protected $relStatus = array(
+        "BAD" => self::BAD,
+        "BETA" => self::BETA,
+        "DEV" => self::DEV,
+        "RELEASE" => self::RELEASE,
+    );
+
     /** @var string This is the table we should use */
     public $sqlTable = "firmware";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "FirmwareKey";
+    public $sqlId = "id";
     /**
     * @var array This is the definition of the columns
     *
@@ -87,24 +104,24 @@ class FirmwareTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "FirmwareKey" => array(
-            "Name" => "FirmwareKey",
+        "id" => array(
+            "Name" => "id",
             "Type" => "INTEGER",
             "AutoIncrement" => true,
             "Primary" => true,
         ),
-        "FirmwareVersion" => array(
-            "Name" => "FirmwareVersion",
+        "Version" => array(
+            "Name" => "Version",
             "Type" => "varchar(8)",
             "Default" => '',
         ),
-        "FirmwareCode" => array(
-            "Name" => "FirmwareCode",
+        "Code" => array(
+            "Name" => "Code",
             "Type" => "longtext",
             "Default" => '',
         ),
-        "FirmwareData" => array(
-            "Name" => "FirmwareData",
+        "Data" => array(
+            "Name" => "Data",
             "Type" => "longtext",
             "Default" => '',
         ),
@@ -123,19 +140,19 @@ class FirmwareTable extends HUGnetDBTable
             "Type" => "datetime",
             "Default" => '1970-01-01 00:00:00',
         ),
-        "FirmwareFileType" => array(
-            "Name" => "FirmwareFileType",
+        "FileType" => array(
+            "Name" => "FileType",
             "Type" => "varchar(4)",
             "Default" => 'SREC',
         ),
-        "FirmwareStatus" => array(
-            "Name" => "FirmwareStatus",
-            "Type" => "varchar(8)",
-            "Default" => 'DEV',
+        "RelStatus" => array(
+            "Name" => "RelStatus",
+            "Type" => "tinyint(4)",
+            "Default" => self::DEV,
         ),
-        "FirmwareTag" => array(
-            "Name" => "FirmwareTag",
-            "Type" => "varchar(64)",
+        "Tag" => array(
+            "Name" => "Tag",
+            "Type" => "varchar(128)",
             "Default" => '',
         ),
         "Target" => array(
@@ -143,8 +160,8 @@ class FirmwareTable extends HUGnetDBTable
             "Type" => "varchar(16)",
             "Default" => '',
         ),
-        "FirmwareActive" => array(
-            "Name" => "FirmwareActive",
+        "Active" => array(
+            "Name" => "Active",
             "Type" => "tinyint(4)",
             "Default" => 1,
         ),
@@ -164,6 +181,11 @@ class FirmwareTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
+        "Version" => array(
+            "Name" => "Version",
+            "Unique" => true,
+            "Columns" => array("Target", "FWPartNum", "Version")
+        ),
     );
 
     /** @var array This is the default values for the data */
@@ -173,13 +195,14 @@ class FirmwareTable extends HUGnetDBTable
     /** @var array This is where the data is stored */
     protected $data = array();
 
+
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
     /**
-    * function to set LastHistory
+    * function to set Date
     *
     * @param string $value The value to set
     *
@@ -188,6 +211,20 @@ class FirmwareTable extends HUGnetDBTable
     protected function setDate($value)
     {
         $this->data["Date"] = $this->sqlDate($value);
+    }
+    /**
+    * function to set RelStatus
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setRelStatus($value)
+    {
+        if (isset(self::$relStatus[$value])) {
+            $value = self::$relStatus[$value];
+        }
+        $this->data["RelStatus"] = (int)$value;
     }
 
 }

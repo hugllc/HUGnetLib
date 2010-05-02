@@ -54,19 +54,19 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392100Device extends DeviceDriverBase
+class E00392101Device extends DeviceDriverLoadableBase
     implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "e00392100",
+        "Name" => "e00392101",
         "Type" => "device",
-        "Class" => "E00392100Device",
+        "Class" => "E00392101Device",
         "Devices" => array(
-            "0039-20-01-C" => array(
-                "0039-21-01-A" => "DEFAULT",
+            "0039-20-06-C" => array(
+                "0039-21-01-A" => "DEFAULT"
             ),
-            "0039-20-14-C" => array(
+            "0039-20-15-C" => array(
                 "0039-21-02-A" => "DEFAULT",
             ),
         ),

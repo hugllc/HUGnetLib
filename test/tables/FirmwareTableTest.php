@@ -187,6 +187,11 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             ),
             array("Date", 1234567890, "2009-02-13 17:31:30"),
             array("Date", "This is not a date", "1970-01-01 00:00:00"),
+            array("RelStatus", "DEV", FirmwareTable::DEV),
+            array("RelStatus", "BAD", FirmwareTable::BAD),
+            array("RelStatus", "BETA", FirmwareTable::BETA),
+            array("RelStatus", "RELEASE", FirmwareTable::RELEASE),
+            array("RelStatus", "72", 72),
         );
     }
 
