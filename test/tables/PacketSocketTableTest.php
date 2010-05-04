@@ -78,6 +78,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $this->o->senderID = $this->senderID;
         $this->o->create();
         $this->myDriver = &$this->config->servers->getDriver($this->o);
+        parent::Setup();
     }
 
     /**
@@ -92,6 +93,19 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     {
         $this->o = null;
         $this->config = null;
+    }
+    /**
+    * This gets us our database preload
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function getDataSet()
+    {
+        return $this->createXMLDataSet(
+            dirname(__FILE__).'/../files/PacketSocketTableTest.xml'
+        );
     }
     /**
     * data provider for testDeviceID

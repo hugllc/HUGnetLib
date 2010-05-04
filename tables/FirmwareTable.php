@@ -78,6 +78,8 @@ class FirmwareTable extends HUGnetDBTable
     public $sqlTable = "firmware";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = "id";
+    /** @var string The orderby clause for this table */
+    public $sqlOrderBy = "Version DESC";
     /**
     * @var array This is the definition of the columns
     *
@@ -195,6 +197,45 @@ class FirmwareTable extends HUGnetDBTable
     /** @var array This is where the data is stored */
     protected $data = array();
 
+    /**
+    * Gets the latest firmware for the device
+    *
+    * @return bool True on success, false on failure
+    */
+    public function getLatest()
+    {
+        $data  = array($this->FWPartNum, $this->RelStatus, 0, $this->Target);
+        $where  = " FWPartNum = ? AND RelStatus <= ?";
+        $where .= " AND Active <> ? AND Target = ?";
+        if (!empty($this->HWPartNum)) {
+            $where .= " AND HWPartNum = ?";
+            $data[] = $this->HWPartNum;
+        }
+        return $this->selectOneInto($where, $data);
+    }
+    /**
+    * Runs a function using the correct driver for the endpoint
+    *
+    * @param string $ver1 The first version to use in the compare
+    * @param string $ver2 The second version to use in the compare
+    *
+    * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
+    */
+    public function compareVersion($ver1, $ver2 = null)
+    {
+        $useVer2 = (empty($ver2)) ? $this->Version : $ver2;
+        $v1 = explode(".", $ver1);
+        $v2 = explode(".", $useVer2);
+        for ($i = 0; $i < 3; $i++) {
+            if ($v1[$i] > $v2[$i]) {
+                return(1);
+            } else if ($v1[$i] < $v2[$i]) {
+                return(-1);
+            }
+        }
+        return(0);
+
+    }
 
     /******************************************************************
      ******************************************************************
@@ -226,6 +267,24 @@ class FirmwareTable extends HUGnetDBTable
         }
         $this->data["RelStatus"] = (int)$value;
     }
+    /**
+    * function to set RelStatus
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setHWPartNum($value)
+    {
 
+        $ret = preg_match(
+            "/[0-9]{4}-[0-9]{2}/",
+            $value,
+            $match
+        );
+        if ($ret > 0) {
+            $this->data["HWPartNum"] = $match[0];
+        }
+    }
 }
 ?>

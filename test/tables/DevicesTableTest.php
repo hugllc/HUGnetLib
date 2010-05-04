@@ -71,9 +71,9 @@ class DevicesTableTest extends HUGnetDBTableTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->pdo = &$this->config->servers->getPDO();
-        parent::Setup();
         $this->o = new DevicesTable();
         $this->o->create();
+        parent::Setup();
     }
 
     /**
@@ -88,6 +88,19 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     {
         $this->o = null;
         $this->config = null;
+    }
+    /**
+    * This gets us our database preload
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function getDataSet()
+    {
+        return $this->createXMLDataSet(
+            dirname(__FILE__).'/../files/DevicesTableTest.xml'
+        );
     }
     /**
     * data provider for testDeviceID

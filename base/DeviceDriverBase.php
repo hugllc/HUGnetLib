@@ -160,27 +160,5 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
             $this->myDriver->sensors->fromTypeString(substr($string, 2));
         }
     }
-    /**
-    * Runs a function using the correct driver for the endpoint
-    *
-    * @param string $ver1 The first version to use in the compare
-    * @param string $ver2 The second version to use in the compare
-    *
-    * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
-    */
-    final public function compareFWVersion($ver1, $ver2)
-    {
-        $v1 = explode(".", $ver1);
-        $v2 = explode(".", $ver2);
-        for ($i = 0; $i < 3; $i++) {
-            if ($v1[$i] > $v2[$i]) {
-                return(1);
-            } else if ($v1[$i] < $v2[$i]) {
-                return(-1);
-            }
-        }
-        return(0);
-
-    }
 
 }

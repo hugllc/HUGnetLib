@@ -248,39 +248,6 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataCompareFWVersion()
-    {
-        return array(
-            array("1.2.3", "1.2.3", 0),
-            array("1.2.4", "1.2.3", 1),
-            array("1.3.3", "1.2.3", 1),
-            array("2.2.3", "1.2.3", 1),
-            array("1.2.3", "1.2.4", -1),
-            array("1.2.3", "1.3.3", -1),
-            array("1.2.3", "2.2.3", -1),
-        );
-    }
-    /**
-    * test
-    *
-    * @param string $v1     The first version
-    * @param string $v2     The second version
-    * @param int    $expect What to expect (1, 0, -1)
-    *
-    * @return null
-    *
-    * @dataProvider dataCompareFWVersion
-    */
-    function testCompareFWVersion($v1, $v2, $expect)
-    {
-        $ret = $this->o->CompareFWVersion($v1, $v2);
-        $this->assertEquals($expect, $ret);
-    }
-    /**
-    * data provider for testCompareFWVesrion
-    *
-    * @return array
-    */
     public static function dataReadSetupTime()
     {
         return array(

@@ -73,6 +73,10 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->o = new PacketLogTable();
+        $this->pdo = &$this->config->servers->getPDO();
+
+        $this->o->create();
+        parent::Setup();
     }
 
     /**
@@ -87,6 +91,19 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     {
         $this->o = null;
         $this->config = null;
+    }
+    /**
+    * This gets us our database preload
+    *
+    * @access protected
+    *
+    * @return null
+    */
+    protected function getDataSet()
+    {
+        return $this->createXMLDataSet(
+            dirname(__FILE__).'/../files/PacketLogTableTest.xml'
+        );
     }
     /**
     * data provider for testDeviceID
