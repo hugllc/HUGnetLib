@@ -77,20 +77,24 @@ class DeviceConfig extends ProcessBase
     * This function should be called periodically as often as possible.  It will
     * go through the whole list of devices before returning.
     *
-    * @return int The number of packets routed
+    * @param bool $loadable Only do devices that have loadable firmware
+    *
+    * @return null
     */
-    public function config()
+    public function config($loadable = false)
     {
         // Get the devices
         $ret = $this->device->selectInto(1);
         // Go through the devices
         while ($ret) {
-            // We don't want to get our own config
-            if ($this->device->DeviceID !== $this->myDevice->DeviceID) {
-                // We should only check stuff for our gateway
-                if ($this->GatewayKey == $this->device->GatewayKey) {
-                    if ($this->device->readSetupTime()) {
-                        $this->_check($this->device);
+            if (!$loadable || $this->device->loadable()) {
+                // We don't want to get our own config
+                if ($this->device->DeviceID !== $this->myDevice->DeviceID) {
+                    // We should only check stuff for our gateway
+                    if ($this->GatewayKey == $this->device->GatewayKey) {
+                        if ($this->device->readSetupTime()) {
+                            $this->_check($this->device);
+                        }
                     }
                 }
             }

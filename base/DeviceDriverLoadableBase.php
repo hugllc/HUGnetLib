@@ -80,6 +80,17 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
         );
     }
     /**
+    * Devices that inherit this class have loadable firmware, so this should return
+    * true.
+    *
+    * @return bool True
+    */
+    public function loadable()
+    {
+        return true;
+    }
+
+    /**
     * Checks the interval to see if it is ready to config.
     *
     * @param int $interval The interval to check, in hours

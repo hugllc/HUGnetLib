@@ -187,6 +187,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "GatewayKey" => 1,
                     ),
                 ),
+                false,
                 (string)new PacketContainer(array(
                     "From" => "123456",
                     "To" => "000019",
@@ -203,8 +204,47 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                 ),
+                false,
                 "",
                 "",
+            ),
+            array(
+                array(
+                    array(
+                        "DeviceID" => "123456",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                    ),
+                    array(
+                        "DeviceID" => "654321",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 2,
+                    ),
+                    array(
+                        "DeviceID" => "234567",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                true,
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000012345600392101410039200143000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "123456",
+                    "From" => "000019",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
             ),
         );
     }
@@ -212,23 +252,25 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload The data to preload into the devices table
-    * @param string $read    The read string for the socket
-    * @param string $expect  The expected return
+    * @param array  $preload  The data to preload into the devices table
+    * @param bool   $loadable Do only devices with loadable firmware
+    * @param string $read     The read string for the socket
+    * @param string $expect   The expected return
     *
     * @return null
     *
     * @dataProvider dataConfig
     */
-    public function testConfig($preload, $read, $expect)
+    public function testConfig($preload, $loadable, $read, $expect)
     {
         $d = new DeviceContainer();
         foreach ((array)$preload as $load) {
+            $d->clearData();
             $d->fromArray($load);
             $d->insertRow(true);
         }
         $this->socket->readString = $read;
-        $this->o->config();
+        $this->o->config($loadable);
         $this->assertSame($expect, $this->socket->writeString);
     }
 }

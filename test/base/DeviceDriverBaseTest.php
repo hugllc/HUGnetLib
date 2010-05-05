@@ -130,15 +130,24 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testLoadable()
+    {
+        $this->assertFalse($this->o->loadable());
+    }
 
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id         The Device ID to pretend to be
-    * @param string $string     The string for the dummy device to return
-    * @param string $read       The read string to put in
-    * @param string $write      The write string expected
-    * @param string $expect     The expected return
+    * @param string $id     The Device ID to pretend to be
+    * @param string $string The string for the dummy device to return
+    * @param string $read   The read string to put in
+    * @param string $write  The write string expected
+    * @param string $expect The expected return
     *
     * @return null
     *
@@ -158,11 +167,11 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id         The Device ID to pretend to be
-    * @param string $string     The string for the dummy device to return
-    * @param string $read       The read string to put in
-    * @param string $write      The write string expected
-    * @param string $expect     The expected return
+    * @param string $id     The Device ID to pretend to be
+    * @param string $string The string for the dummy device to return
+    * @param string $read   The read string to put in
+    * @param string $write  The write string expected
+    * @param string $expect The expected return
     *
     * @return null
     *
@@ -215,10 +224,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id         The Device ID to pretend to be
-    * @param string $read       The read string to put in
-    * @param string $write      The write string expected
-    * @param string $expect     The expected return
+    * @param string $id     The Device ID to pretend to be
+    * @param string $read   The read string to put in
+    * @param string $write  The write string expected
+    * @param string $expect The expected return
     *
     * @return null
     *

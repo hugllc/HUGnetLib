@@ -94,6 +94,16 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         unset($this->o);
     }
     /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testLoadable()
+    {
+        $this->assertTrue($this->o->loadable());
+    }
+
+    /**
     * data provider for testCompareFWVesrion
     *
     * @return array
@@ -161,8 +171,7 @@ class TestDeviceLoadable extends DeviceDriverLoadableBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct($obj, $string);
         $this->fromString($string);
     }
 

@@ -74,6 +74,18 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
         $this->myDriver->DriverInfo = array();
     }
     /**
+    * Says whether this device has loadable firmware or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that use loadable firmware.
+    *
+    * @return bool False
+    */
+    public function loadable()
+    {
+        return false;
+    }
+    /**
     * Reads the setup out of the device
     *
     * @return bool True on success, False on failure
