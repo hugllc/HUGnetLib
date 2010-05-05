@@ -121,8 +121,6 @@ abstract class HUGnetDBTable extends HUGnetContainer
     protected $default = array(
         "group" => "default",    // Server group to use
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /**
     * This is the constructor
@@ -168,7 +166,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     }
 
     /**
-    * Sets all of the endpoint attributes from an array
+    * Returns an array with only the values the database cares about
     *
     * @param bool $default Return items set to their default?
     *
@@ -184,6 +182,20 @@ abstract class HUGnetDBTable extends HUGnetContainer
             }
         }
         return (array)$array;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param string $string The CSV string to import
+    *
+    * @return null
+    */
+    public function fromCSV($string)
+    {
+        $values = explode(",", $string);
+        foreach (array_keys((array)$this->sqlColumns) as $key => $col) {
+            $this->$col = trim($values[$key]);
+        }
     }
     /**
     * This function gets a record with the given key

@@ -196,7 +196,16 @@ class FirmwareTable extends HUGnetDBTable
     );
     /** @var array This is where the data is stored */
     protected $data = array();
-
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+        $this->create();
+    }
     /**
     * Gets the latest firmware for the device
     *

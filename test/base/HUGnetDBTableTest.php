@@ -834,6 +834,47 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromArray()
+    {
+        return array(
+            array(
+                "13, This is a string, -35",
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => "13",
+                    "myDate" => "",
+                    "name" =>  "This is a string",
+                    "value" =>  "-35",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $array  The array to use to build it
+    * @param array $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromArray
+    */
+    public function testFromCSV($array, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromCSV($array);
+        $this->assertSame(
+            $expect,
+            $this->readAttribute($this->o, "data")
+        );
+    }
 
 }
 
@@ -932,8 +973,6 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
     {
         $this->data["myDate"] = self::sqlDate($value);
     }
-
-
 
 }
 ?>

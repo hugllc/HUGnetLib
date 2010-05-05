@@ -40,6 +40,7 @@
 require_once dirname(__FILE__).'/../../../plugins/devices/E00392100Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
+require_once dirname(__FILE__).'/../../../containers/PacketContainer.php';
 
 /**
  * Test class for the controller baord firmware
@@ -76,8 +77,9 @@ class E00392100DeviceTest extends DevicePluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
+        $this->d = new DummyDeviceContainer();
         $this->o = new E00392100Device($this->d);
+        $this->firmware = new FirmwareTable();
     }
 
     /**
@@ -150,7 +152,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 "0102020202020202027070707070707070",
                 array(
                     "NumSensors" => 16,
-                    "PacketTimeout" => 2,
                     "TimeConstant" => 1,
                 ),
             ),
@@ -171,6 +172,138 @@ class E00392100DeviceTest extends DevicePluginTestBase
     {
         $this->o->fromString($preload);
         $this->assertSame($expect, $this->d->DriverInfo);
+    }
+    /**
+    * data provider for testReadSetup, testReadConfig
+    *
+    * @return array
+    */
+    public static function dataReadSetup()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "0.1.0",
+                        "Target" => "atmega16",
+                    ),
+                ),
+                array(
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "FWVersion" => "0.0.9",
+                ),
+                "000025",
+                "000000002500392101410039200143000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                ))
+                .(string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => E00392100Device::COMMAND_RUNBOOTLOADER,
+                    "Data" => "",
+                )),
+                false,
+            ),
+            array(
+                array(
+                    array(
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "0.0.8",
+                        "Target" => "atmega16",
+                    ),
+                ),
+                array(
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "FWVersion" => "0.0.9",
+                ),
+                "000025",
+                "000000002500392101410039200143000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
+                true,
+            ),
+            array(
+                array(),
+                array(),
+                "000025",
+                "000000000100392601500039260150010203FFFFFF10",
+                "",
+                "5A5A5A5C00002500002000595A5A5A5C0000250000200059"
+                    ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $firmware Firmware to load into the database
+    * @param array  $device   Parameters to load into the device
+    * @param string $id       The Device ID to pretend to be
+    * @param string $string   The string for the dummy device to return
+    * @param string $read     The read string to put in
+    * @param string $write    The write string expected
+    * @param string $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetup
+    */
+    public function testReadSetup(
+        $firmware, $device, $id, $string, $read, $write, $expect
+    ) {
+        foreach ((array)$firmware as $firm) {
+            $this->firmware->fromAny($firm);
+            $this->firmware->insertRow();
+        }
+        foreach ((array)$device as $key => $val) {
+            $this->d->$key = $val;
+        }
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->socket->readString = $read;
+        $ret = $this->o->readSetup();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
     }
 
 }

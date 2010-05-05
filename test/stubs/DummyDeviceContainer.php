@@ -40,6 +40,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../../containers/DeviceSensorContainer.php";
+require_once dirname(__FILE__)."/../../containers/DeviceContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements

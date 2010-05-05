@@ -54,9 +54,12 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392100Device extends DeviceDriverBase
+class E00392100Device extends DeviceDriverLoadableBase
     implements DeviceDriverInterface
 {
+    /** This command runs the boot loader, crashing the running program */
+    const COMMAND_RUNBOOTLOADER = "09";
+
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00392100",
@@ -71,6 +74,11 @@ class E00392100Device extends DeviceDriverBase
             ),
         ),
     );
+    /** @var This is what our targets are for the various hardware part numbers */
+    protected $HWTargets = array(
+        "0039-21-01-A" => "atmega16",
+        "0039-21-02-A" => "atmega324p",
+    );
     /**
     * Builds the class
     *
@@ -83,10 +91,65 @@ class E00392100Device extends DeviceDriverBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 16;
-        $this->myDriver->DriverInfo["PacketTimeout"] = 2;
+        //$this->myDriver->DriverInfo["PacketTimeout"] = 2;
         $this->fromString($string);
+        $this->_setFirmware();
     }
-
+    /**
+    * Reads the setup out of the device.
+    *
+    * If the device is using outdated firmware we have to
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetup()
+    {
+        $ret = $this->readConfig();
+        if ($ret) {
+            $this->_setFirmware();
+            if ($this->myFirmware->compareVersion($this->myDriver->FWVersion) < 0) {
+                // Crash the running program so the board can be reloaded
+                $this->runBootloader();
+                // This is because the program needs to be reloaded.  It can
+                // only be reloaded if it is using the 00392101 driver.
+                $ret = false;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function runBootloader()
+    {
+        $pkt = new PacketContainer(array(
+            "To" => $this->myDriver->DeviceID,
+            "Command" => self::COMMAND_RUNBOOTLOADER,
+            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
+            "GetReply" => false,
+        ));
+        $pkt->send();
+        return false;
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    private function _setFirmware()
+    {
+        $this->myFirmware->fromArray(
+            array(
+                "HWPartNum" => $this->myDriver->HWPartNum,
+                "FWPartNum" => $this->myDriver->FWPartNum,
+                "FirmwareVersion" => $this->myDriver->FWVersion,
+                "Target" => $this->HWTargets[$this->myDriver->HWPartNum],
+            )
+        );
+        $this->myFirmware->getLatest();
+    }
 }
 
 ?>

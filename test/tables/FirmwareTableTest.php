@@ -371,6 +371,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(array("Version" => "1.3.3"), "1.2.3", null, -1),
             array(array("Version" => "1.2.3"), "1.2.4", "", 1),
             array(array("Version" => "1.2.3"), "01.02.03", "", 0),
+            array(array(), "01.02.03", "", 1),
         );
     }
     /**
