@@ -63,6 +63,8 @@ class DummySocketContainer implements HUGnetSocketInterface
     public $readString = "";
     /** @var bool The string written to the socket */
     public $writeString = "";
+    /** @var bool The buffer for incoming stuff */
+    public $buffer = "";
     /** @var string The group we are in */
     protected $data = array(
         "group" => "default",
@@ -169,10 +171,10 @@ class DummySocketContainer implements HUGnetSocketInterface
     public function recvPkt(PacketContainer &$pkt)
     {
         $timeout = time() + $pkt->Timeout;
-        $string = "";
         do {
-            $string .= $this->read(1);
-        } while ((($ret = $pkt->recv($string)) === false) && ($timeout > time()));
+            $this->buffer .= $this->read(1);
+            $ret = $pkt->recv($this->buffer);
+        } while (($ret === false) && ($timeout > time()));
         return $ret;
     }
         /**
