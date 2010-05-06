@@ -255,7 +255,8 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function saveToFile($path = ".")
     {
-        $filename = str_replace("-", "", $this->FWPartNum)."-".$this->Version.".gz";
+        $filename  = str_replace("-", "", $this->FWPartNum)."-".$this->Target;
+        $filename .= "-".$this->Version.".gz";
         return (bool)file_put_contents(
             $path."/".$filename,
             gzencode((string)$this)

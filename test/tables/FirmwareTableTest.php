@@ -330,7 +330,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                 ),
                 sys_get_temp_dir(),
-                "00392001C-1.2.3.gz",
+                "00392001C-mega16-1.2.3.gz",
                 true,
             ),
             array(
@@ -344,7 +344,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                 ),
                 "/this/is/a/dir/that/should/never/exist",
-                "00392001C-1.2.3.gz",
+                "00392001C-mega16-1.2.3.gz",
                 false,
             ),
         );
