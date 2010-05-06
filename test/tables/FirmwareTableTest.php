@@ -311,6 +311,75 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
         }
     }
     /**
+    * data provider for testSaveToFile
+    *
+    * @return array
+    */
+    public static function dataSaveToFile()
+    {
+        return array(
+            array(
+                // Everything works
+                array(
+                    "HWPartNum" => "0039-21",
+                    "FWPartNum" => "0039-20-01-C",
+                    "Version" => "1.2.3",
+                    "Code" => "asdf",
+                    "Data" => "fsda",
+                    "RelStatus" => 8,
+                    "Target" => "mega16",
+                ),
+                sys_get_temp_dir(),
+                "00392001C-1.2.3.gz",
+                true,
+            ),
+            array(
+                // No HWPartNum Specified
+                array(
+                    "FWPartNum" => "0039-20-01-C",
+                    "Version" => "1.2.3",
+                    "Code" => "asdf",
+                    "Data" => "fsda",
+                    "RelStatus" => 8,
+                    "Target" => "mega16",
+                ),
+                "/this/is/a/dir/that/should/never/exist",
+                "00392001C-1.2.3.gz",
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload  The value to preload
+    * @param string $path     The file path to use
+    * @param string $filename The filename to check for
+    * @param bool   $expect   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSaveToFile
+    */
+    public function testSaveToFile($preload, $path, $filename, $expect)
+    {
+        @unlink($path."/".$filename);
+        $this->o->fromArray($preload);
+        $ret = @$this->o->saveToFile($path);
+        $this->assertSame($expect, $ret);
+        if ($expect) {
+            $this->assertTrue(file_exists($path."/".$filename));
+            $stuff = implode("", gzfile($path."/".$filename));
+            @unlink($path."/".$filename);
+            $this->assertSame(
+                $this->o->toString(), $stuff, "File contents wrong"
+            );
+        } else {
+            $this->assertFalse(file_exists($path."/".$filename));
+        }
+    }
+    /**
     * data provider for testSet
     *
     * @return array

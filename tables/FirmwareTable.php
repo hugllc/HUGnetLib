@@ -237,15 +237,30 @@ class FirmwareTable extends HUGnetDBTable
         $v2 = explode(".", $useVer2);
         for ($i = 0; $i < 3; $i++) {
             if ($v1[$i] > $v2[$i]) {
-                return(1);
+                return 1;
             } else if ($v1[$i] < $v2[$i]) {
-                return(-1);
+                return -1;
             }
         }
-        return(0);
+        return 0;
 
     }
-
+    /**
+    * This function outputs this firmware into a file that can be stored on
+    * a web site.
+    *
+    * @param string $path Where to store the file
+    *
+    * @return bool True on success, false on failure
+    */
+    public function saveToFile($path = ".")
+    {
+        $filename = str_replace("-", "", $this->FWPartNum)."-".$this->Version.".gz";
+        return (bool)file_put_contents(
+            $path."/".$filename,
+            gzencode((string)$this)
+        );
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
