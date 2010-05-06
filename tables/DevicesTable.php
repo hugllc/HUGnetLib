@@ -289,7 +289,7 @@ class DevicesTable extends HUGnetDBTable
     *
     * @return string PartNumber in ASCII hex
     */
-    protected static function formatPartNum($value)
+    public static function formatPartNum($value)
     {
         if (stripos($value, "-") === false) {
             $PartNum = strtoupper($value);
@@ -297,8 +297,22 @@ class DevicesTable extends HUGnetDBTable
             $str[]   = substr($PartNum, 0, 4);
             $str[]   = substr($PartNum, 4, 2);
             $str[]   = substr($PartNum, 6, 2);
-            $str[]   = chr(hexdec(substr($PartNum, 8, 2)));
-            $value = implode("-", $str);
+            $assemb  = substr($PartNum, 8, 2);
+            if (is_numeric($assemb)) {
+                $str[] = chr(hexdec($assemb));
+            } else {
+                $str[] = $assemb;
+            }
+            $value   = implode("-", $str);
+        } else {
+            $ret = preg_match(
+                "/[0-9]{4}-[0-9]{2}-[0-9]{2}-[A-Za-z]{1}/",
+                $value,
+                $match
+            );
+            if ($ret > 0) {
+                $value = $match[0];
+            }
         }
         return $value;
     }
@@ -418,7 +432,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setFWPartNum($value)
     {
-        $this->data["FWPartNum"] = $this->formatPartNum($value);
+        $this->data["FWPartNum"] = self::formatPartNum($value);
     }
     /**
     * Sets the part number
@@ -429,7 +443,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setHWPartNum($value)
     {
-        $this->data["HWPartNum"] = $this->formatPartNum($value);
+        $this->data["HWPartNum"] = self::formatPartNum($value);
     }
 
 }

@@ -41,6 +41,7 @@ require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/DeviceParamsContainer.php";
 require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
+require_once dirname(__FILE__)."/DevicesTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -186,7 +187,7 @@ class FirmwareTable extends HUGnetDBTable
         "Version" => array(
             "Name" => "Version",
             "Unique" => true,
-            "Columns" => array("Target", "FWPartNum", "Version")
+            "Columns" => array("FWPartNum", "Version")
         ),
     );
 
@@ -213,9 +214,9 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function getLatest()
     {
-        $data  = array($this->FWPartNum, $this->RelStatus, 0, $this->Target);
+        $data  = array($this->FWPartNum, $this->RelStatus, 0);
         $where  = " FWPartNum = ? AND RelStatus <= ?";
-        $where .= " AND Active <> ? AND Target = ?";
+        $where .= " AND Active <> ?";
         if (!empty($this->HWPartNum)) {
             $where .= " AND HWPartNum = ?";
             $data[] = $this->HWPartNum;
@@ -255,8 +256,7 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function saveToFile($path = ".")
     {
-        $filename  = str_replace("-", "", $this->FWPartNum)."-".$this->Target;
-        $filename .= "-".$this->Version.".gz";
+        $filename  = str_replace("-", "", $this->FWPartNum)."-".$this->Version.".gz";
         return (bool)file_put_contents(
             $path."/".$filename,
             gzencode((string)$this)
@@ -293,23 +293,26 @@ class FirmwareTable extends HUGnetDBTable
         $this->data["RelStatus"] = (int)$value;
     }
     /**
-    * function to set RelStatus
+    * Sets the part number
     *
-    * @param string $value The value to set
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setFWPartNum($value)
+    {
+        $this->data["FWPartNum"] = DevicesTable::formatPartNum($value);
+    }
+    /**
+    * Sets the part number
+    *
+    * @param mixed $value The value to set
     *
     * @return null
     */
     protected function setHWPartNum($value)
     {
-
-        $ret = preg_match(
-            "/[0-9]{4}-[0-9]{2}/",
-            $value,
-            $match
-        );
-        if ($ret > 0) {
-            $this->data["HWPartNum"] = $match[0];
-        }
+        $this->data["HWPartNum"] = substr(DevicesTable::formatPartNum($value), 0, 7);
     }
 }
 ?>

@@ -267,17 +267,6 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             ),
             array(
                 array(
-                    "FWPartNum" => "0039-20-01-C",
-                    "HWPartNum" => "0039-21",
-                    "RelStatus" => 4,
-                    "Target" => "mega32",
-                ),
-                array(
-                ),
-                false,
-            ),
-            array(
-                array(
                     "FWPartNum" => "0039-01-01-C",
                     "HWPartNum" => "0039-86",
                     "Status" => 8,
@@ -321,7 +310,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(
                 // Everything works
                 array(
-                    "HWPartNum" => "0039-21",
+                    "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "Version" => "1.2.3",
                     "Code" => "asdf",
@@ -330,12 +319,13 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                 ),
                 sys_get_temp_dir(),
-                "00392001C-mega16-1.2.3.gz",
+                "00392001C-1.2.3.gz",
                 true,
             ),
             array(
                 // No HWPartNum Specified
                 array(
+                    "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "Version" => "1.2.3",
                     "Code" => "asdf",
@@ -344,7 +334,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                 ),
                 "/this/is/a/dir/that/should/never/exist",
-                "00392001C-mega16-1.2.3.gz",
+                "00392001C-1.2.3.gz",
                 false,
             ),
         );
@@ -399,8 +389,12 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array("RelStatus", "BETA", FirmwareTable::BETA),
             array("RelStatus", "RELEASE", FirmwareTable::RELEASE),
             array("RelStatus", "72", 72),
+            array("HWPartNum", "00392104C", "0039-21"),
             array("HWPartNum", "0039-21-04-C", "0039-21"),
             array("HWPartNum", "34523442350039-21-04-C", "0039-21"),
+            array("FWPartNum", "00392104C", "0039-21-04-C"),
+            array("FWPartNum", "0039-21-04-C", "0039-21-04-C"),
+            array("FWPartNum", "34523442350039-21-04-C", "0039-21-04-C"),
         );
     }
 
