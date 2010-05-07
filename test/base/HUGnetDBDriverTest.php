@@ -437,7 +437,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                     "Name" => "IndexName",
                     "Columns" => array("id", "name"),
                 ),
-                "CREATE INDEX IF NOT EXISTS `IndexName` ON `myTable` "
+                "CREATE INDEX `IndexName` ON `myTable` "
                 ."(`id`, `name`)",
             ),
             array(
@@ -446,7 +446,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                     "Unique" => true,
                     "Columns" => array("id", "value"),
                 ),
-                "CREATE UNIQUE INDEX IF NOT EXISTS `IndexName` ON `myTable` "
+                "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
                 ."(`id`, `value`)",
             ),
         );

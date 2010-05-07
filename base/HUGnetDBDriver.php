@@ -217,7 +217,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         if ($index["Unique"]) {
             $this->query .= " UNIQUE";
         }
-        $this->query .= " INDEX IF NOT EXISTS `".$index["Name"]."` ON ";
+        $this->query .= " INDEX `".$index["Name"]."` ON ";
         $this->query .= $this->table();
         $this->query .= " (`".implode((array)$index["Columns"], "`, `")."`)";
         $this->prepare();
