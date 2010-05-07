@@ -111,6 +111,11 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
         $this->config = null;
+        // Trap the exit signal and exit gracefully
+        if (function_exists("pcntl_signal")) {
+            pcntl_signal(SIGINT, SIG_DFL);
+        }
+
     }
     /**
     * Tests for exceptions
@@ -261,6 +266,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             // One Packet to me.  Sending a reply
             array(
                 array(),
+                true,
                 array(
                     0 => array(
                         "other" => "5A5A5A03000019000000001A",
@@ -277,6 +283,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             // Two packets, one each interface
             array(
                 array(),
+                true,
                 array(
                     0 => array(
                         "other" => "5A5A5A5C1234566543210501020304052F",
@@ -297,6 +304,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             // Many Packets
             array(
                 array(),
+                true,
                 array(
                     0 => array(
                         "other" => "5A5A5A5C1234566543210501020304052F", // P 1
@@ -330,7 +338,28 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
             // Nothing
             array(
                 array(),
+                true,
                 array(),
+                array(),
+                array(),
+            ),
+            // It should exit before it does anything.
+            array(
+                array(),
+                false,
+                array(
+                    0 => array(
+                        "other" => "5A5A5A5C1234566543210501020304052F", // P 1
+                        "third" => "5A5A5A5500045665400005010203040526", // P 2
+                    ),
+                    1 => array(
+                        "default" => "5A5A5A016543211234560601020304050677", // P 3
+                        "other" => "5A5A5A016540000004560606050403020177", // P 4
+                    ),
+                    2 => array(
+                        "other" => "5A5A5A036540000004560074",  // P 5
+                    ),
+                ),
                 array(),
                 array(),
             ),
@@ -340,6 +369,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array $preload The value to preload
+    * @param bool  $loop    What to set the loop variable to
     * @param array $read    The packet strings for the function to read
     * @param array $write   The packet strings that the function will write
     * @param array $routes  The routes to expect
@@ -348,9 +378,10 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataRoute
     */
-    public function testRoute($preload, $read, $write, $routes)
+    public function testRoute($preload, $loop, $read, $write, $routes)
     {
         $this->o->fromAny($preload);
+        $this->o->loop = $loop;
         $i = 0;
         do {
             foreach ((array)$read[$i] as $group => $string) {

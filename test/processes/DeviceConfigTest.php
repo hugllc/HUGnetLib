@@ -98,6 +98,10 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
         $this->config = null;
+        // Trap the exit signal and exit gracefully
+        if (function_exists("pcntl_signal")) {
+            pcntl_signal(SIGINT, SIG_DFL);
+        }
     }
     /**
     * Tests for exceptions
@@ -187,6 +191,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "GatewayKey" => 1,
                     ),
                 ),
+                true,
                 false,
                 (string)new PacketContainer(array(
                     "From" => "123456",
@@ -204,6 +209,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                 ),
+                true,
                 false,
                 "",
                 "",
@@ -233,6 +239,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 true,
+                true,
                 (string)new PacketContainer(array(
                     "From" => "123456",
                     "To" => "000019",
@@ -246,6 +253,27 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
             ),
+            // Should exit before it does anything
+            array(
+                array(
+                    array(
+                        "DeviceID" => "123456",
+                        "GatewayKey" => 1,
+                    ),
+                    array(
+                        "DeviceID" => "654321",
+                        "GatewayKey" => 2,
+                    ),
+                    array(
+                        "DeviceID" => "000019",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                false,
+                false,
+                "",
+                "",
+            ),
         );
     }
 
@@ -253,6 +281,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array  $preload  The data to preload into the devices table
+    * @param bool   $loop     What to set the loop variable to
     * @param bool   $loadable Do only devices with loadable firmware
     * @param string $read     The read string for the socket
     * @param string $expect   The expected return
@@ -261,7 +290,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataConfig
     */
-    public function testConfig($preload, $loadable, $read, $expect)
+    public function testConfig($preload, $loop, $loadable, $read, $expect)
     {
         $d = new DeviceContainer();
         foreach ((array)$preload as $load) {
@@ -270,6 +299,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             $d->insertRow(true);
         }
         $this->socket->readString = $read;
+        $this->o->loop = $loop;
         $this->o->config($loadable);
         $this->assertSame($expect, $this->socket->writeString);
     }

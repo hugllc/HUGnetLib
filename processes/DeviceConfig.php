@@ -87,6 +87,9 @@ class DeviceConfig extends ProcessBase
         $ret = $this->device->selectInto(1);
         // Go through the devices
         while ($ret) {
+            if (!$this->loop()) {
+                return;
+            }
             if (!$loadable || $this->device->loadable()) {
                 // We don't want to get our own config
                 if ($this->device->DeviceID !== $this->myDevice->DeviceID) {

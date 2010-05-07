@@ -98,6 +98,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
         $this->config = null;
+        // Trap the exit signal and exit gracefully
+        if (function_exists("pcntl_signal")) {
+            pcntl_signal(SIGINT, SIG_DFL);
+        }
+
     }
     /**
     * Tests for exceptions
@@ -385,12 +390,21 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 2,
+                false,
                 "",
                 "",
                 null,
             ),
             array(
                 2,
+                true,
+                "",
+                "",
+                null,
+            ),
+            array(
+                2,
+                true,
                 (string)new PacketContainer(array(
                     "From" => "123456",
                     "To" => "000000",
@@ -408,6 +422,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 2,
+                true,
                 (string)new PacketContainer(array(
                     "From" => "123456",
                     "To" => "000019",
@@ -425,6 +440,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param int    $timeout     The timeout to use
+    * @param bool   $loop        What to set the loop variable to
     * @param string $read        The read string for the socket
     * @param string $expect      The expected return
     * @param string $unsolicited The deviceID of unsolicited packet to check for
@@ -433,18 +449,51 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataWait
     */
-    public function testWait($timeout, $read, $expect, $unsolicited)
+    public function testWait($timeout, $loop, $read, $expect, $unsolicited)
     {
         $this->socket->readString = $read;
+        $this->o->loop = $loop;
         $start = time();
         $this->o->wait($timeout);
         $end = time();
-        $this->assertThat(($end - $start), $this->greaterThanOrEqual($timeout));
+        if ($loop) {
+            $this->assertThat(($end - $start), $this->greaterThanOrEqual($timeout));
+        }
         $this->assertSame($expect, $this->socket->writeString);
         if (is_string($unsolicited)) {
             $u = $this->readAttribute($this->o, "unsolicited");
             $this->assertSame($unsolicited, $u->DeviceID);
         }
+    }
+    /**
+    * data provider for testLoopEnd
+    *
+    * @return array
+    */
+    public static function dataLoopEnd()
+    {
+        return array(
+            array(
+                2,
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int    $signo  The signal to simulate
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataLoopEnd
+    */
+    public function testLoopEnd($signo, $expect)
+    {
+        $this->o->loopEnd($signo);
+        $this->assertSame($expect, $this->o->loop);
     }
 
 }

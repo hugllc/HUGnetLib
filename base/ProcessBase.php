@@ -63,8 +63,6 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         "group"      => "default",  // The groups to route between
         "GatewayKey" => 0,          // The gateway key we are using
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /** @var object This is our config */
     protected $myConfig = null;
@@ -74,6 +72,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     protected $device = null;
     /** @var object This is the device we use for unsolicited packets */
     protected $unsolicited = null;
+    /** @var object This is tells stuff to keep looping */
+    public $loop = true;
 
     /**
     * Builds the class
@@ -103,6 +103,10 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->unsolicited = new DeviceContainer();
         // This is the device container with our setup information in it.
         $this->myDevice = &$device;
+        // Trap the exit signal and exit gracefully
+        if (function_exists("pcntl_signal")) {
+            pcntl_signal(SIGINT, array($this, "loopEnd"));
+        }
     }
     /**
     * Registers the packet hooks
@@ -150,7 +154,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $end = time() + $Timeout;
         // Monitor for packets.  The GetReply => true allows the hooks to
         // take care of any packets.
-        while (time() < $end) {
+        while ((time() < $end) && $this->loop()) {
             PacketContainer::monitor(array("GetReply" => true, "Timeout" => 1));
         }
     }
@@ -232,6 +236,38 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $this->unsolicited->GatewayKey = $this->GatewayKey;
             $this->unsolicited->insertRow();
         }
+    }
+    /**
+    * Handles signals
+    *
+    * @param int $signo The signal number
+    *
+    * @return none
+    */
+    public function loopEnd($signo)
+    {
+        // Be verbose
+        self::vprint(
+            "Got exit signal",
+            HUGnetClass::VPRINT_NORMAL
+        );
+        $this->loop = false;
+    }
+
+    /**
+    * Handles signals
+    *
+    * @return none
+    */
+    protected function loop()
+    {
+        // @codeCoverageIgnoreStart
+        // This doesn't exist in some versions of php that we are testing.
+        if (function_exists("pcntl_signal_dispatch")) {
+            pcntl_signal_dispatch();
+        }
+        // @codeCoverageIgnoreEnd
+        return $this->loop;
     }
 
 }

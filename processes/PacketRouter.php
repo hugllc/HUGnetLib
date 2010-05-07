@@ -141,6 +141,9 @@ class PacketRouter extends ProcessBase
     {
         $packets = 0;
         foreach ($this->groups as $group) {
+            if (!$this->loop()) {
+                return $packets;
+            }
             self::vprint("Reading $group", HUGnetClass::VPRINT_VERBOSE);
 
             // Make sure of our timeout is low.  We set it to 0.5
