@@ -83,9 +83,11 @@ class DeviceContainer extends DevicesTable
     /** @var object This is the endpoint driver */
     protected $epDriver = null;
     /** @var object This is the endpoint driver */
-    protected $params = null;
+    public $params = null;
     /** @var object This is the endpoint driver */
-    protected $sensors = null;
+    public $sensors = null;
+    /** @var object This is the endpoint driver */
+    public $DriverInfo = array();
     /** @var object These are the registered devices */
     protected $myDev = array();
     /**
@@ -181,6 +183,7 @@ class DeviceContainer extends DevicesTable
             $class = $driver["Class"];
             if (class_exists($class)) {
                 $this->epDriver = new $class($this);
+                $this->data["DriverInfo"] = &$this->DriverInfo;
             }
         }
     }
@@ -240,15 +243,15 @@ class DeviceContainer extends DevicesTable
     public function fromArray($array)
     {
         parent::fromArray($array);
+        // Get the driver
         $this->_registerDriver();
+        // Make sure RawSetup is populated
         if (empty($this->RawSetup)) {
             $this->RawSetup = $this->toString();
-        } else {
-            if (is_object($this->epDriver)) {
-                $this->epDriver->fromString(
-                    substr($this->RawSetup, self::CONFIGEND)
-                );
-            }
+        }
+        // Get the driver config
+        if (is_object($this->epDriver)) {
+            $this->epDriver->fromString(substr($this->RawSetup, self::CONFIGEND));
         }
         $this->_setupClasses();
     }

@@ -84,8 +84,7 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
+        parent::__construct(&$obj, $string);
         $this->fromString($string);
     }
     /**
@@ -97,9 +96,8 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function fromString($string)
     {
-        $this->Info =& $this->myDriver->DriverInfo;
         // This is just so we can check for it.
-        $this->Info["RawDriverInfo"] = (string)$string;
+        $this->myDriver->DriverInfo["RawDriverInfo"] = (string)$string;
     }
     /**
     * Creates the object from a string
@@ -110,8 +108,7 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function toString($default = true)
     {
-        $this->Info =& $this->myDriver->DriverInfo;
-        return $this->Info["RawDriverInfo"];
+        return $this->myDriver->DriverInfo["RawDriverInfo"];
     }
     /**
     * This takes the numeric job and replaces it with a name

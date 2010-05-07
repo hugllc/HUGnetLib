@@ -84,24 +84,24 @@ class DeviceConfig extends ProcessBase
     public function config($loadable = false)
     {
         // Get the devices
-        $ret = $this->device->selectInto(1);
+        $devs = $this->device->select(1);
         // Go through the devices
-        while ($ret) {
+        foreach (array_keys((array)$devs) as $key) {
             if (!$this->loop()) {
                 return;
             }
-            if (!$loadable || $this->device->loadable()) {
+            $device = &$devs[$key];
+            if (!$loadable || $device->loadable()) {
                 // We don't want to get our own config
-                if ($this->device->DeviceID !== $this->myDevice->DeviceID) {
+                if ($device->DeviceID !== $this->myDevice->DeviceID) {
                     // We should only check stuff for our gateway
-                    if ($this->GatewayKey == $this->device->GatewayKey) {
-                        if ($this->device->readSetupTime()) {
-                            $this->_check($this->device);
+                    if ($this->GatewayKey == $device->GatewayKey) {
+                        if ($device->readSetupTime()) {
+                            $this->_check($device);
                         }
                     }
                 }
             }
-            $ret = $this->device->nextInto();
         }
     }
     /**

@@ -328,9 +328,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function &factory(&$data = array())
     {
-        $ret = clone $this;
-        $ret->fromAny($data);
-        return $ret;
+        $class = get_class($this);
+        return new $class($data);
     }
     /**
     * This function creates other tables that are identical to this one, except

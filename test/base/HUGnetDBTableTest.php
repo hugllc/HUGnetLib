@@ -768,9 +768,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 ),
                 array(
                     "group" => "default",
-                    "fluff" => "more",
-                    "other" => "thing",
-                    "id" => 7,
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => 5,
                     "myDate" => "",
                     "name" => "Obi-wan",
                     "value" => 325.0,

@@ -101,11 +101,15 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            // #0
             array(
                 "00000000E8ABCFEF01410124456743000302FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -135,11 +139,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                ),
             ),
+            // #1
             array(
                 "00000000E8ABCFEF01410124456743000102FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo"    => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -169,11 +176,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                ),
             ),
+            // #2
             array(
                 "00000000E8ABCEEF01410124456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo"    => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -203,11 +213,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                ),
             ),
+            // #3
             array(
                 "00000000E8ABCDEF01410123456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo"    => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -237,11 +250,15 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                 ),
             ),
+            // #4
             array(
                 "00000000E8ABCCEF01410125456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -271,6 +288,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                 ),
             ),
+            // #5
             array(
                 array(
                     "group" => "default",
@@ -304,7 +322,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo"    => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -334,11 +354,15 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params" => array(),
                ),
             ),
+            // #6
             array(
                 array(),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey"         => null,
                     "DeviceID"          => "",
                     "DeviceName"        => "",
@@ -368,6 +392,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "params"            => array(),
                 ),
             ),
+            // #7
             array(
                 array(
                     "group"             => "default",
@@ -401,7 +426,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey"         => 1,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
@@ -493,7 +521,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -527,7 +557,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey"         => null,
                     "DeviceID"          => "",
                     "DeviceName"        => "",
@@ -560,7 +593,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(),
+                    "DriverInfo"        => array(
+                    ),
                     "DeviceKey"         => 1,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
@@ -590,7 +624,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                     "DeviceKey"         => 1,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
@@ -655,7 +692,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCFEF01410124456743000302FFFFFF50",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "NumSensors" => 0,
+                        "TimeConstant" => 0,
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -689,7 +729,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCFEF01410124456743000102FFFFFF50",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -723,7 +765,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCEEF01410124456743000005FFFFFF1E",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -757,7 +801,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCDEF01410123456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "0123456789",
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -792,7 +838,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCCEF01410125456743000005FFFFFF2101",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(),
+                    "DriverInfo" => array(
+                        "NumSensors" => 0,
+                        "TimeConstant" => 1,
+                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -840,6 +889,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
+        $this->assertType("object", $data["sensors"]);
         $data["sensors"] = $data["sensors"]->toArray();
         $this->assertSame($expect, $data);
     }
@@ -887,7 +937,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DriverInfo" => array("RawDriverInfo" => "01234567"),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -895,7 +944,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "HWPartNum" => "ABCF-EF-01-A",
                     "FWPartNum" => "0124-45-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF21",
+                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF21"
+                        ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -920,7 +970,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DriverInfo" => array("RawDriverInfo" => "01234567"),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -928,7 +977,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "HWPartNum" => "ABCE-EF-01-A",
                     "FWPartNum" => "0124-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF31",
+                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF31"
+                        ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -953,7 +1003,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DriverInfo" => array("RawDriverInfo" => "01234567"),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -961,7 +1010,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "HWPartNum" => "ABCD-EF-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53",
+                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53"
+                        ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
