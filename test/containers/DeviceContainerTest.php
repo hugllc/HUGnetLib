@@ -39,6 +39,10 @@
 
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
+// This removes the test plugin files that we load from the code coverage report
+PHPUnit_Util_Filter::addDirectoryToFilter(
+    dirname(__FILE__)."/../files/plugins/devices", ".php"
+);
 
 /**
  * Test class for filter.
