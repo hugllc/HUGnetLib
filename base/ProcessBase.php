@@ -269,6 +269,33 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // @codeCoverageIgnoreEnd
         return $this->loop;
     }
+    /**
+    * Gets the ip address, netmask and broadcast address
+    *
+    * The array returned has the following:
+    * - <b>inet addr</b> The internet address
+    * - <b>mask</b> The netmask
+    * - <b>bcast</b> The broadcast address
+    *
+    * @return array
+    */
+    public function getNetInfo()
+    {
+        //@codeCoverageIgnoreStart
+        // This is not testable because it doesn't work on all systems.
+        // I know this works on Linux
+        $Info = trim(`/sbin/ifconfig|grep Bcast`);
+        $Info = explode("  ", $Info);
+        foreach ($Info as $key => $val) {
+            if (!empty($val)) {
+                $t = explode(":", $val);
+                $netInfo[trim($t[0])] = trim($t[1]);
+            }
+        }
+        $netInfo = array_change_key_case($netInfo, CASE_LOWER);
+        return $netInfo;
+        //@codeCoverageIgnoreEnd
+    }
 
 }
 ?>

@@ -496,6 +496,32 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->loop);
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testGetNetInfo()
+    {
+        if (strtolower(php_uname("s")) == "linux") {
+            $ret = $this->o->getNetInfo();
+            $this->assertRegExp(
+                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+                $ret["inet addr"]
+            );
+            $this->assertRegExp(
+                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+                $ret["bcast"]
+            );
+            $this->assertRegExp(
+                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+                $ret["mask"]
+            );
+        } else {
+            $this->markTestSkipped("Function fails");
+        }
+    }
+
 }
 
 /**
