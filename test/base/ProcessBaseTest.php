@@ -501,25 +501,13 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     */
-    public function testGetNetInfo()
+    public function testGetIP()
     {
-        if (strtolower(php_uname("s")) == "linux") {
-            $ret = $this->o->getNetInfo();
-            $this->assertRegExp(
-                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
-                $ret["inet addr"]
-            );
-            $this->assertRegExp(
-                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
-                $ret["bcast"]
-            );
-            $this->assertRegExp(
-                "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
-                $ret["mask"]
-            );
-        } else {
-            $this->markTestSkipped("Function fails");
-        }
+        $ret = $this->o->getIP();
+        $this->assertRegExp(
+            "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+            $ret
+        );
     }
 
 }
