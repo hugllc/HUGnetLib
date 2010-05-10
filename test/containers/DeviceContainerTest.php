@@ -363,12 +363,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey"         => null,
-                    "DeviceID"          => "",
+                    "DeviceID"          => "000000",
                     "DeviceName"        => "",
                     "SerialNum"         => 0,
                     "HWPartNum"         => "",
@@ -392,8 +388,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params"            => array(),
+                    "sensors"            => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                 ),
             ),
             // #7
@@ -430,10 +430,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey"         => 1,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
@@ -459,8 +455,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
                     "CurrentGatewayKey" => 2,
-                    "sensors"            => array(),
                     "params"            => array(),
+                    "sensors"            => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                 ),
             ),
         );
@@ -482,7 +482,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertEquals($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -561,12 +561,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey"         => null,
-                    "DeviceID"          => "",
+                    "DeviceID"          => "000000",
                     "DeviceName"        => "",
                     "SerialNum"         => 0,
                     "HWPartNum"         => "",
@@ -590,8 +586,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
                     "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params"            => array(),
+                    "sensors"           => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                 ),
             ),
             array(
@@ -682,7 +682,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertEquals($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -895,7 +895,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data["params"] = $data["params"]->toArray();
         $this->assertType("object", $data["sensors"]);
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertEquals($expect, $data);
     }
     /**
     * data provider for testDeviceID

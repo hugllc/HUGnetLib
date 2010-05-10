@@ -128,6 +128,44 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
+    public static function dataSetArray()
+    {
+        return array(
+            array("There", 16, array("Hello", "There" => 16)),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $attrib This is the attribute to set
+    * @param mixed  $value  The value to set it to
+    * @param int    $expect The expected return
+    * @param mixed  $lock   The spot to lock
+    *
+    * @return null
+    *
+    * @dataProvider dataSetArray
+    */
+    public function testSetArray(
+        $attrib,
+        $value,
+        $expect,
+        $lock = ""
+    ) {
+        $o = new HUGnetContainerTestClass();
+        $o->lock($lock);
+        $o->clearData();
+        $o->Attrib4[$attrib] = $value;
+        $this->assertSame($expect, $o->Attrib4);
+
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataRegister()
     {
         return array(

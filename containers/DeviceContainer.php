@@ -205,11 +205,11 @@ class DeviceContainer extends DevicesTable
         $this->DeviceGroup      = trim(strtoupper(substr($string, self::GROUP, 6)));
         $this->BoredomThreshold = hexdec(trim(substr($string, self::BOREDOM, 2)));
         $this->RawSetup         = $string;
+        $this->_setupClasses();
         $this->_registerDriver();
         if (is_object($this->epDriver)) {
             $this->epDriver->fromString(substr($string, self::CONFIGEND));
         }
-        $this->_setupClasses();
     }
     /**
     * Returns the object as a string
@@ -243,6 +243,7 @@ class DeviceContainer extends DevicesTable
     public function fromArray($array)
     {
         parent::fromArray($array);
+        $this->_setupClasses();
         // Get the driver
         $this->_registerDriver();
         // Make sure RawSetup is populated
@@ -253,7 +254,6 @@ class DeviceContainer extends DevicesTable
         if (is_object($this->epDriver)) {
             $this->epDriver->fromString(substr($this->RawSetup, self::CONFIGEND));
         }
-        $this->_setupClasses();
     }
     /**
     * Sets all of the endpoint attributes from an array
@@ -317,5 +317,16 @@ class DeviceContainer extends DevicesTable
         self::stringSize($str, 10);
         return $str;
     }
+    /**
+    * returns true if the container is empty.  False otherwise
+    *
+    * @return bool Whether this container is empty or not
+    */
+    public function isEmpty()
+    {
+        return (bool)(empty($this->data["DeviceID"])
+            || ($this->data["DeviceID"] == '000000'));
+    }
+
 }
 ?>

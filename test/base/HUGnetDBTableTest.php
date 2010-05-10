@@ -159,7 +159,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => "2",
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" => "Another THing",
                     "value" => "22.0",
                 ),
@@ -259,7 +259,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "-5",
-                        "myDate" => "",
+                        "myDate" => "1970-01-01 00:00:00",
                         "name" => "Something Negative",
                         "value" => "-25.0",
                     ),
@@ -268,7 +268,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "1",
-                        "myDate" => "",
+                        "myDate" => "1970-01-01 00:00:00",
                         "name" => "Something Here",
                         "value" => "25.0",
                     ),
@@ -277,7 +277,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "2",
-                        "myDate" => "",
+                        "myDate" => "1970-01-01 00:00:00",
                         "name" => "Another THing",
                         "value" => "22.0",
                     ),
@@ -286,7 +286,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "fluff" => "nStuff",
                         "other" => "things",
                         "id" => "32",
-                        "myDate" => "",
+                        "myDate" => "1970-01-01 00:00:00",
                         "name" => "A way up here thing",
                         "value" => "23.0",
                     ),
@@ -356,7 +356,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => "-5",
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" => "Something Negative",
                     "value" => "-25.0",
                 ),
@@ -678,10 +678,11 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                     "id" => 10,
                     "name" => "This is a name",
-                    "value" => "YTo3OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToiZ"
-                        ."mx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5n"
-                        ."cyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjA6IiI7czo0OiJu"
-                        ."YW1lIjtzOjQ6Ik5hbWUiO3M6NToidmFsdWUiO2Q6MTI7fQ==",
+                    "value" => "YTo3OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToi"
+                        ."Zmx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5"
+                        ."ncyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwLT"
+                        ."AxLTAxIDAwOjAwOjAwIjtzOjQ6Im5hbWUiO3M6NDoiTmFtZSI7czo1Oi"
+                        ."J2YWx1ZSI7ZDoxMjt9",
                 ),
             ),
         );
@@ -724,7 +725,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => 5,
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" => "Name",
                     "value" => 12.0,
                 ),
@@ -749,7 +750,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "things",
                     "other" => "nStuff",
                     "id" => 6,
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),
@@ -771,7 +772,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => 5,
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),
@@ -849,7 +850,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "fluff" => "nStuff",
                     "other" => "things",
                     "id" => "13",
-                    "myDate" => "",
+                    "myDate" => "1970-01-01 00:00:00",
                     "name" =>  "This is a string",
                     "value" =>  "-35",
                 ),
@@ -960,7 +961,7 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
         "fluff" => "nStuff",
         "other" => "things",
         "id" => 5,
-        "myDate" => "",
+        "myDate" => "1970-01-01 00:00:00",
     );
     /**
     * function to set To

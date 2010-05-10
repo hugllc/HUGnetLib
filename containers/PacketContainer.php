@@ -797,6 +797,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         } else {
             $this->data["group"] = $value;
         }
+        $this->myConfigSetup();
         $this->mySocket = &$this->myConfig->sockets->getSocket($this->data["group"]);
     }
     /**

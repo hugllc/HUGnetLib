@@ -157,7 +157,12 @@ abstract class HUGnetContainer extends HUGnetClass
             if (method_exists($this, $fct)) {
                 $this->$fct($value);
             } else {
-                $this->data[$name] = $value;
+                if (is_array($value)) {
+                    $this->$name = $value;
+                    $this->data[$name] = &$this->$name;
+                } else {
+                    $this->data[$name] = $value;
+                }
             }
         }
     }
@@ -260,7 +265,7 @@ abstract class HUGnetContainer extends HUGnetClass
         if ($this->locked($name)) {
             self::vprint("'unset' tried to access a locked property\n", 1);
         } else if (array_key_exists($name, $this->default)) {
-            $this->data[$name] = $this->default[$name];
+            $this->$name = $this->default[$name];
         }
     }
     /**

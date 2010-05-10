@@ -67,6 +67,8 @@ abstract class HUGnetClass
 
     /** @var int The verbosity level */
     public $verbose = 0;
+    /** @var This is where we store our configuration */
+    protected $myConfig = null;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -264,7 +266,15 @@ abstract class HUGnetClass
         }
         return $bin;
     }
-
+    /**
+    * Changed a hex string into a binary string.
+    *
+    * @return string The binary string.
+    */
+    function myConfigSetup()
+    {
+        $this->myConfig = &ConfigContainer::singleton();
+    }
 
 }
 

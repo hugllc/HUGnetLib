@@ -142,6 +142,9 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function createTable($columns = null)
     {
+        if ($this->tableExists()) {
+            return false;
+        }
         if (empty($columns)) {
             $columns = $this->myTable->sqlColumns;
         }
@@ -156,7 +159,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
         }
         $this->query .= "\n)";
         $this->prepare();
-        $this->executeData();
+        return $this->executeData();
     }
     /**
     *  Adds a field to the devices table for cache information
@@ -230,6 +233,15 @@ abstract class HUGnetDBDriver extends HUGnetClass
     * @return null
     */
     abstract public function columns();
+    /**
+    * Checks to see if a table exists
+    *
+    * @return null
+    */
+    public function tableExists()
+    {
+        return (count($this->columns()) > 0);
+    }
 
     /**
     * Gets an attribute from the PDO object

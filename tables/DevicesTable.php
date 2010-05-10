@@ -96,7 +96,7 @@ class DevicesTable extends HUGnetDBTable
         "DeviceID" => array(
             "Name" => "DeviceID",
             "Type" => "varchar(6)",
-            "Default" => '',
+            "Default" => '000000',
         ),
         "DeviceName" => array(
             "Name" => "DeviceName",
@@ -291,7 +291,9 @@ class DevicesTable extends HUGnetDBTable
     */
     public static function formatPartNum($value)
     {
-        if (stripos($value, "-") === false) {
+        if (empty($value)) {
+            $value = "";
+        } else if (stripos($value, "-") === false) {
             $PartNum = strtoupper($value);
             $str     = array();
             $str[]   = substr($PartNum, 0, 4);
@@ -404,7 +406,9 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setFWVersion($value)
     {
-        if (stripos($value, ".") === false) {
+        if (empty($value)) {
+            $value = "";
+        } else if (stripos($value, ".") === false) {
             $version = strtoupper($value);
             $str     = array();
             for ($i = 0; $i < 3; $i++) {
