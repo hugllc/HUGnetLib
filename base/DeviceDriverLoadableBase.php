@@ -89,16 +89,27 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     {
         return true;
     }
-
     /**
     * Checks the interval to see if it is ready to config.
+    *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: return based on number of failures.  Pause longer for more failures
+    *
+    *    It waits an extra minute for each failure
     *
     * @param int $interval The interval to check, in hours
     *
     * @return bool True on success, False on failure
     */
-    public function readSetupTime($interval = 12)
+    public function readSetupTime($interval = 10)
     {
-        return (strtotime($this->myDriver->LastConfig) < (time() - $interval*60));
+        // This is what would normally be our time.  Every 10 minutes
+        $base = strtotime($this->myDriver->LastConfig) < (time() - $interval*60);
+        if ($base === false) {
+            return $base;
+        }
+        // Accounts for failures
+        return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
     }
 }

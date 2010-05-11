@@ -72,6 +72,8 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     {
         $this->myDriver = &$obj;
         $this->myDriver->DriverInfo = array();
+        $this->info = &$this->myDriver->DriverInfo;
+        $this->data = &$this->myDriver->params->DriverInfo;
     }
     /**
     * Says whether this device has loadable firmware or not
@@ -97,13 +99,41 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     /**
     * Checks the interval to see if it is ready to config.
     *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: return based on number of failures.  Pause longer for more failures
+    *
+    *    It waits an extra minute for each failure
+    *
     * @param int $interval The interval to check, in hours
     *
     * @return bool True on success, False on failure
     */
     public function readSetupTime($interval = 12)
     {
-        return (strtotime($this->myDriver->LastConfig) < (time() - $interval*3600));
+        // This is what would normally be our time.  Every 12 hours.
+        $base = strtotime($this->myDriver->LastConfig) < (time() - $interval*3600);
+        if ($base === false) {
+            return $base;
+        }
+        // Accounts for failures
+        return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
+    }
+    /**
+    * Resets all of the timers associated with reading and writing.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readTimeReset()
+    {
+        // Config
+        $this->myDriver->setDefault("LastConfig");
+        $this->data["ConfigFail"] = 0;
+        $this->data["LastConfig"] = 0;
+        // Poll
+        $this->myDriver->setDefault("LastPoll");
+        $this->data["PollFail"] = 0;
+        $this->data["LastPoll"] = 0;
     }
     /**
     * Reads the setup out of the device
@@ -112,17 +142,24 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     */
     protected function readconfig()
     {
+        // Save the time.
+        $this->data["LastConfig"] = time();
+        // Build the packet
         $pkt = new PacketContainer(array(
             "To" => $this->myDriver->DeviceID,
             "Command" => PacketContainer::COMMAND_GETSETUP,
             "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
         ));
+        // send the packet
         $pkt->send();
         if (is_object($pkt->Reply)) {
             $this->myDriver->fromString($pkt->Reply->Data);
             $this->myDriver->LastConfig = $pkt->Reply->Date;
+            $this->data["ConfigFail"] = 0;
             return true;
         }
+        // We failed.  State that.
+        $this->data["ConfigFail"]++;
         return false;
     }
     /**

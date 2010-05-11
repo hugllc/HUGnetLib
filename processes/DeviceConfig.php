@@ -120,10 +120,16 @@ class DeviceConfig extends ProcessBase
             HUGnetClass::VPRINT_NORMAL
         );
         // Read the setup
-        if ($dev->readSetup()) {
-            // If that succeeded update the row
-            $dev->updateRow();
+        if (!$dev->readSetup()) {
+            self::vprint(
+                "Failed. Failures: ".$dev->params->DriverInfo["ConfigFail"]
+                ." LastConfig try: "
+                .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
+                HUGnetClass::VPRINT_NORMAL
+            );
         }
+        // Update the row.  It changes the row even if it fails
+        $dev->updateRow();
     }
 }
 ?>

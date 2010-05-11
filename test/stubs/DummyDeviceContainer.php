@@ -70,6 +70,14 @@ class DummyDeviceContainer extends HUGnetClass
     /** @var The last poll time */
     public $PollInterval = 1;
 
+    public $default = array(
+        "DriverInfo" => array(),
+        "GatewayKey" => 5,
+        "string" => "000000000100392601500039260150010203FFFFFF10",
+        "LastConfig" => "1970-01-01 00:00:00",
+        "LastPoll" => "1970-01-01 00:00:00",
+        "PollInterval" => 1,
+    );
     /**
     * Builds the class
     *
@@ -100,6 +108,21 @@ class DummyDeviceContainer extends HUGnetClass
     {
         $this->string = $string;
     }
+    /**
+    * resets a value to its default
+    *
+    * @param string $name This is the attribute to get
+    *
+    * @return mixed The value of the attribute
+    */
+    public function setDefault($name)
+    {
+        if (array_key_exists($name, $this->default)) {
+            $this->$name = $this->default[$name];
+        }
+    }
+
+
 
 }
 ?>

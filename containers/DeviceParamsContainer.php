@@ -63,6 +63,7 @@ class DeviceParamsContainer extends HUGnetContainer
         "dType" => array(),             // The datatype of each sensor
         "Extra" => array(),             // Extra input for crunching numbers
         "Raw"   => array(),             // Array of raw setup stuff
+        "DriverInfo" => array(),        // Persistant storage for the driver
     );
     /** @var array This is where the data is stored */
     protected $data = array();

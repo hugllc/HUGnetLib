@@ -224,7 +224,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         if (!$this->unsolicited->isEmpty()) {
             // If it is not empty, reset the LastConfig.  This causes it to actually
             // try to get the config.
-            $this->unsolicited->setDefault("LastConfig");
+            $this->unsolicited->readTimeReset();
             // Set our gateway key
             $this->unsolicited->GatewayKey = $this->GatewayKey;
             // Update the row

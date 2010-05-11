@@ -260,15 +260,22 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReadSetupTime()
     {
         return array(
-            array(date("Y-m-d H:i:s"), 10, false),
-            array("2004-01-01 00:00:00", 12, true),
-            array(date("Y-m-d H:i:s", time()-3600), 1, true),
+            array(date("Y-m-d H:i:s"), array(), 10, false),
+            array("2004-01-01 00:00:00", array(), 12, true),
+            array(date("Y-m-d H:i:s", time()-3600), array(), 1, true),
+            array(
+                date("Y-m-d H:i:s", time()-86400),
+                array("ConfigFail" => 60, "LastConfig" => time()),
+                12,
+                false,
+            ),
         );
     }
     /**
     * test
     *
     * @param string $lastConfig The last config date
+    * @param array  $persist    The persistant information from the driver
     * @param int    $interval   The second version
     * @param bool   $expect     What to expect
     *
@@ -276,11 +283,47 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataReadSetupTime
     */
-    function testReadSetupTime($lastConfig, $interval, $expect)
+    function testReadSetupTime($lastConfig, $persist, $interval, $expect)
     {
+        $this->d->params->DriverInfo = $persist;
         $this->d->LastConfig = $lastConfig;
         $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testReadTimeReset
+    *
+    * @return array
+    */
+    public static function dataReadTimeReset()
+    {
+        return array(
+            array(date("Y-m-d H:i:s"), array()),
+            array("2004-01-01 00:00:00", array()),
+            array(date("Y-m-d H:i:s", time()-3600), array()),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $lastConfig The last config date
+    * @param array  $persist    The persistant information from the driver
+    *
+    * @return null
+    *
+    * @dataProvider dataReadTimeReset
+    */
+    function testReadTimeReset($lastConfig, $persist)
+    {
+        $this->d->params->DriverInfo = $persist;
+        $this->d->LastConfig = $lastConfig;
+        $this->o->readTimeReset();
+        $this->assertSame("1970-01-01 00:00:00", $this->d->LastConfig);
+        $this->assertSame(0, $this->d->params->DriverInfo["LastConfig"]);
+        $this->assertSame(0, $this->d->params->DriverInfo["ConfigFail"]);
+        $this->assertSame("1970-01-01 00:00:00", $this->d->LastPoll);
+        $this->assertSame(0, $this->d->params->DriverInfo["LastPoll"]);
+        $this->assertSame(0, $this->d->params->DriverInfo["PollFail"]);
     }
 
 }
