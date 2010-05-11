@@ -278,7 +278,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     *
     * @return string IP address
     */
-    public function getIP()
+    static public function getIP()
     {
         $line = trim(`/sbin/ifconfig`);
         preg_match(
