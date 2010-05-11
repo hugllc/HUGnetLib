@@ -106,7 +106,7 @@ class PeriodicPlugins extends ProcessBase
         $classes = $this->myPlugins->getClass("periodic");
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
-            if ($this->isMine($c, "PeriodicPluginInterface")) {
+            if (is_subclass_of($c, "PeriodicPluginInterface")) {
                 $this->active[$class["Name"]] = new $c($data, $this);
             }
         }

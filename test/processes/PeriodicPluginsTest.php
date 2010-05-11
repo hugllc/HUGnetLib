@@ -73,6 +73,11 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
             ),
             "script_gateway" => 1,
         );
+        $data = array(
+            "PluginDir" => realpath(
+                dirname(__FILE__)."/../files/plugins/"
+            ),
+        );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->config->sockets->forceDeviceID("000019");
@@ -83,7 +88,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
                 "DeviceID"   => "000019",
             )
         );
-        $this->o = new PeriodicPlugins(array(), $this->d);
+        $this->o = new PeriodicPlugins($data, $this->d);
     }
 
     /**
@@ -189,23 +194,36 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
     public static function dataMain()
     {
         return array(
+            array(
+                array(
+                ),
+                1,
+                array("TestPeriodicPlugin", "TestPeriodicPlugin2"),
+            ),
         );
     }
 
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload  The data to preload into the devices table
-    * @param bool   $loadable Do only devices with loadable firmware
-    * @param string $read     The read string for the socket
-    * @param string $expect   The expected return
+    * @param array  $preload The data to preload into the devices table
+    * @param string $expect  The expected return
+    * @param array  $plugins The plugins to expect
     *
     * @return null
     *
     * @dataProvider dataMain
     */
-    public function testMain($preload, $loadable, $read, $expect)
+    public function testMain($preload, $expect, $plugins)
     {
+        $this->o->fromArray($preload);
+        $this->o->main();
+        $this->assertSame($expect, $GLOBALS["testPeriodic"]);
+        $plug = $this->readAttribute($this->o, "active");
+        foreach (array_keys((array)$plug) as $k) {
+            // If the return type is int then array_search found the item
+            $this->assertType("int", array_search(get_class($plug[$k]), $plugins));
+        }
     }
 }
 
