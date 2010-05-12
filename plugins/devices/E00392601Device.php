@@ -60,7 +60,7 @@ class E00392601Device extends DeviceDriverBase
     /** @var int The job number for polling */
     const JOB_POLL     = 1;
     /** @var int The job number for updatedb */
-    const JOB_UPDATEDB = 2;
+    const JOB_SYNC     = 2;
     /** @var int The job number for analysis */
     const JOB_ANALYSIS = 3;
     /** @var int The job number for endpoint */
@@ -91,7 +91,7 @@ class E00392601Device extends DeviceDriverBase
     /** @var array These define what jobs this driver might see */
     protected $jobs = array(
         self::JOB_POLL     => "Poll",
-        self::JOB_UPDATEDB => "Updatedb",
+        self::JOB_SYNC => "Sync",
         self::JOB_ANALYSIS => "Analysis",
         self::JOB_ENDPOINT => "Endpoint",
         self::JOB_CONTROL  => "Control",
@@ -148,11 +148,16 @@ class E00392601Device extends DeviceDriverBase
     */
     public function fromString($string)
     {
+        if (empty($string)) {
+            return;
+        }
         $this->Info = &$this->myDriver->DriverInfo;
         $index = 0;
         // This byte is currently not used
         $this->Info["Job"] = hexdec(substr($string, $index, 2));
         $this->Info["Function"] = $this->_getFunction($this->Info["Job"]);
+        $this->myDriver->DeviceName = $this->Info["Function"]." Process";
+        $this->myDriver->DeviceJob = $this->Info["Function"];
 
         $index += 2;
         $this->Info["CurrentGatewayKey"] = hexdec(substr($string, $index, 4));
@@ -171,7 +176,7 @@ class E00392601Device extends DeviceDriverBase
             $IP[$k] = hexdec($v);
         }
         $this->Info["IP"] = implode(".", $IP);
-
+        $this->myDriver->DeviceLocation = $this->Info["IP"];
         $this->Info["Priority"] = hexdec(substr($string, $index, 2));
     }
     /**
@@ -187,6 +192,29 @@ class E00392601Device extends DeviceDriverBase
             return $this->jobs[$job];
         }
         return "Unknown";
+    }
+    /**
+    * Checks the interval to see if it is ready to config.
+    *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: return based on number of failures.  Pause longer for more failures
+    *
+    *    It waits an extra minute for each failure
+    *
+    * @param int $interval The interval to check, in hours
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetupTime($interval = 10)
+    {
+        // This is what would normally be our time.  Every 10 minutes
+        $base = strtotime($this->myDriver->LastConfig) < (time() - $interval*60);
+        if ($base === false) {
+            return $base;
+        }
+        // Accounts for failures
+        return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
     }
 
 }

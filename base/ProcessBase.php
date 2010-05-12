@@ -65,9 +65,9 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     );
 
     /** @var object This is our config */
-    protected $myConfig = null;
+    public $myConfig = null;
     /** @var object This is our device configuration */
-    protected $myDevice = null;
+    public $myDevice = null;
     /** @var object This is the device to use for whatever */
     protected $device = null;
     /** @var object This is the device we use for unsolicited packets */
@@ -211,31 +211,6 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     */
     protected function unsolicited(PacketContainer &$pkt)
     {
-        // Be verbose
-        self::vprint(
-            "Got Unsolicited Packet from: ".$pkt->From." Type: ".$pkt->Type,
-            HUGnetClass::VPRINT_NORMAL
-        );
-        // Set up our DeviceContainer
-        $this->unsolicited->clearData();
-        // Find the device if it is there
-        $this->unsolicited->selectInto("DeviceID = ?", array($pkt->From));
-
-        if (!$this->unsolicited->isEmpty()) {
-            // If it is not empty, reset the LastConfig.  This causes it to actually
-            // try to get the config.
-            $this->unsolicited->readTimeReset();
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
-            // Update the row
-            $this->unsolicited->updateRow();
-        } else {
-            // This is a brand new device.  Set the DeviceID
-            $this->unsolicited->DeviceID = $pkt->From;
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
-            $this->unsolicited->insertRow();
-        }
     }
     /**
     * Handles signals

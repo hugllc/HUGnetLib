@@ -173,6 +173,7 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
             // Return failure
             return false;
         }
+        $this->vprint("Connected to ".$this->server[$group]->getDSN(), 3);
         return true;
     }
 

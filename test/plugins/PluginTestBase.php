@@ -64,9 +64,7 @@ abstract class PluginTestBase extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $obj  The object to work with
-    * @param string $name The name of the index
-    * @param array  $col  The column array
+    * @param string $class The name of the class to test
     *
     * @return null
     *

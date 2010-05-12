@@ -205,10 +205,11 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     * Finds a deviceID that we can use
     *
     * @param array $groups array of groups to check
+    * @param int   $seed   Where to start checking
     *
     * @return null
     */
-    public function deviceID($groups = array())
+    public function deviceID($groups = array(), $seed = 1)
     {
         if (empty($groups)) {
             // If we get no groups, do all
@@ -216,7 +217,7 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         }
         // Find an ID to use
         $id = false;
-        for ($i = 1; ($i < 0x20) && ($id === false); $i++) {
+        for ($i = $seed; ($i < 0x20) && ($id === false); $i++) {
             $id = $this->_checkID($i, $groups);
         }
         $this->forceDeviceID($id, $groups);

@@ -13,6 +13,7 @@
         <column>Tag</column>
         <column>Target</column>
         <column>Active</column>
+        <column>md5</column>
         <row>
             <value>1</value>
             <value>1.2.3</value>
@@ -26,6 +27,7 @@
             <value>v1.2.3</value>
             <value>mega16</value>
             <value>1</value>
+            <value>104e9ba35ebb82e6c70a9909e375b8be</value>
         </row>
         <row>
             <value>2</value>

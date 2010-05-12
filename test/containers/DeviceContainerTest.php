@@ -110,10 +110,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCFEF01410124456743000302FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -138,9 +134,13 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                ),
             ),
             // #1
@@ -148,9 +148,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCFEF01410124456743000102FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo"    => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -175,9 +172,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                ),
             ),
             // #2
@@ -185,9 +185,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCEEF01410124456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo"    => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -212,9 +209,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                ),
             ),
             // #3
@@ -222,9 +222,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCDEF01410123456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo"    => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -249,9 +246,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                 ),
             ),
             // #4
@@ -259,10 +259,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCCEF01410125456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -287,9 +283,13 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                 ),
             ),
             // #5
@@ -321,14 +321,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "2000-01-01 00:00:00",
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo"    => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -353,9 +349,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "2000-01-01 00:00:00",
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo"    => "",
+                    ),
                ),
             ),
             // #6
@@ -387,10 +385,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
-                    "CurrentGatewayKey" => 0,
                     "params"            => array(),
                     "sensors"            => array(),
                     "DriverInfo"        => array(
+                        "PacketTimeout" => 0,
                         "NumSensors"    => 0,
                         "TimeConstant"  => 0,
                     ),
@@ -407,7 +405,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
-                    "FWVersion"         => "02.1.3",
+                    "FWVersion"         => "2.1.3",
                     "RawSetup"          => "asdf",
                     "Active"            => 1,
                     "GatewayKey"        => 234,
@@ -425,7 +423,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory"       => "2005-01-01 00:00:00",
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
-                    "CurrentGatewayKey" => 2,
                     "params"            => array(),
                 ),
                 array(
@@ -436,7 +433,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
-                    "FWVersion"         => "02.1.3",
+                    "FWVersion"         => "2.1.3",
                     "RawSetup"          => "asdf",
                     "Active"            => 1,
                     "GatewayKey"        => 234,
@@ -454,7 +451,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory"       => "2005-01-01 00:00:00",
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
-                    "CurrentGatewayKey" => 2,
                     "params"            => array(),
                     "sensors"            => array(),
                     "DriverInfo"        => array(
@@ -482,7 +478,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertEquals($expect, $data);
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -520,14 +516,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "2000-01-01 00:00:00",
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo" => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -552,9 +544,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "2000-01-01 00:00:00",
                     "LastAnalysis" => "2000-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
                ),
             ),
             array(
@@ -585,10 +579,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage"        => "15MIN",
-                    "CurrentGatewayKey" => 0,
                     "params"            => array(),
                     "sensors"           => array(),
                     "DriverInfo"        => array(
+                        "PacketTimeout" => 0,
                         "NumSensors"    => 0,
                         "TimeConstant"  => 0,
                     ),
@@ -605,7 +599,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
-                    "FWVersion"         => "02.1.3",
+                    "FWVersion"         => "2.1.3",
                     "RawSetup"          => "",
                     "Active"            => 1,
                     "GatewayKey"        => 234,
@@ -623,22 +617,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory"       => "2005-01-01 00:00:00",
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
-                    "CurrentGatewayKey" => 2,
                     "params"            => "",
                 ),
                 array(
                     "group"             => "default",
-                    "DriverInfo"        => array(
-                        "NumSensors"    => 0,
-                        "TimeConstant"  => 0,
-                    ),
                     "DeviceKey"         => 1,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
                     "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
-                    "FWVersion"         => "02.1.3",
+                    "FWVersion"         => "2.1.3",
                     "RawSetup"    => "00000004D20039210241003922954302010312345614",
                     "Active"            => 1,
                     "GatewayKey"        => 234,
@@ -656,9 +645,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory"       => "2005-01-01 00:00:00",
                     "LastAnalysis"      => "2006-01-01 00:00:00",
                     "MinAverage"        => "HOURLY",
-                    "CurrentGatewayKey" => 2,
-                    "sensors"            => array(),
                     "params"            => array(),
+                    "sensors"            => array(),
+                    "DriverInfo"        => array(
+                        "NumSensors"    => 0,
+                        "TimeConstant"  => 0,
+                    ),
                 ),
             ),
         );
@@ -682,7 +674,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertEquals($expect, $data);
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID
@@ -696,10 +688,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E8ABCFEF01410124456743000302FFFFFF50",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "NumSensors" => 0,
-                        "TimeConstant" => 0,
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -724,18 +712,20 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                        "NumSensors" => 0,
+                        "TimeConstant" => 0,
+                    ),
                ),
             ),
             array(
                 "00000000E8ABCFEF01410124456743000102FFFFFF50",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo" => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -760,18 +750,18 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                ),
             ),
             array(
                 "00000000E8ABCEEF01410124456743000005FFFFFF1E",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo" => "",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -796,18 +786,18 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                ),
             ),
             array(
                 "00000000E8ABCDEF01410123456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "RawDriverInfo" => "0123456789",
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -833,19 +823,18 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "0123456789",
+                    ),
                ),
             ),
             array(
                 "00000000E8ABCCEF01410125456743000005FFFFFF2101",
                 array(
                     "group" => "default",
-                    "DriverInfo" => array(
-                        "NumSensors" => 0,
-                        "TimeConstant" => 1,
-                    ),
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
@@ -870,9 +859,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "LastHistory" => "1970-01-01 00:00:00",
                     "LastAnalysis" => "1970-01-01 00:00:00",
                     "MinAverage" => "15MIN",
-                    "CurrentGatewayKey" => 0,
-                    "sensors"            => array(),
                     "params" => array(),
+                    "sensors"            => array(),
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                        "NumSensors" => 0,
+                        "TimeConstant" => 1,
+                    ),
                ),
             ),
         );
@@ -895,7 +889,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $data["params"] = $data["params"]->toArray();
         $this->assertType("object", $data["sensors"]);
         $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertEquals($expect, $data);
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testDeviceID

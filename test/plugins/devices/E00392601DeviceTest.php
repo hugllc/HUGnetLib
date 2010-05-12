@@ -197,6 +197,36 @@ class E00392601DeviceTest extends DevicePluginTestBase
         $this->o->fromString($preload);
         $this->assertSame($expect, $this->d->DriverInfo);
     }
+    /**
+    * data provider for testCompareFWVesrion
+    *
+    * @return array
+    */
+    public static function dataReadSetupTime()
+    {
+        return array(
+            array(date("Y-m-d H:i:s"), 60, false),
+            array("2004-01-01 00:00:00", 12, true),
+            array(date("Y-m-d H:i:s", time()-70), 1, true),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $lastConfig The last config date
+    * @param int    $interval   The second version
+    * @param bool   $expect     What to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetupTime
+    */
+    function testReadSetupTime($lastConfig, $interval, $expect)
+    {
+        $this->d->LastConfig = $lastConfig;
+        $ret = $this->o->readSetupTime($interval);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 

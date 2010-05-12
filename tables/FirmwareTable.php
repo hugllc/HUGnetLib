@@ -168,6 +168,11 @@ class FirmwareTable extends HUGnetDBTable
             "Type" => "tinyint(4)",
             "Default" => 1,
         ),
+        "md5" => array(
+            "Name" => "md5",
+            "Type" => "varchar(64)",
+            "Null" => true,
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -194,6 +199,7 @@ class FirmwareTable extends HUGnetDBTable
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",    // Server group to use
+        "filename" => "",
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -244,7 +250,6 @@ class FirmwareTable extends HUGnetDBTable
             }
         }
         return 0;
-
     }
     /**
     * This function outputs this firmware into a file that can be stored on
@@ -254,12 +259,68 @@ class FirmwareTable extends HUGnetDBTable
     *
     * @return bool True on success, false on failure
     */
-    public function saveToFile($path = ".")
+    public function toFile($path = ".")
     {
         $filename  = str_replace("-", "", $this->FWPartNum)."-".$this->Version.".gz";
         return (bool)file_put_contents(
             $path."/".$filename,
             gzencode((string)$this)
+        );
+    }
+    /**
+    * This function outputs this firmware into a file that can be stored on
+    * a web site.
+    *
+    * @param string $file The filename to use.  Could be an md5sum line also
+    * @param string $path Where to get the file
+    *
+    * @return bool True on success, false on failure
+    */
+    public function fromFile($file, $path = ".")
+    {
+        $this->filename = $file;
+        $stuff = implode("", gzfile($path."/".$this->filename));
+        if (empty($stuff)) {
+            return false;
+        }
+        $this->fromString($stuff);
+        return true;
+    }
+    /**
+    * This function checks to see if a file exists in the database
+    *
+    * @param string $filename The filename or MD5 line.
+    *
+    * @return bool True on success, false on failure
+    */
+    public function checkFile($filename)
+    {
+        $this->clearData();
+        $this->filename = $filename;
+        $this->FWPartNum = substr($this->filename, 0, 9);
+        $this->Version = substr($this->filename, 10, 8);
+        $where = "`FWPartNum` = ? AND `Version` = ?";
+        $data = array($this->FWPartNum, $this->Version);
+        if (!empty($this->md5)) {
+            $where .= " AND `md5` = ?";
+            $data[] = $this->md5;
+        }
+        $ret = $this->myDriver->selectWhere($where, $data);
+        $this->myDriver->fetchInto();
+        return  !is_null($this->id);
+    }
+    /**
+    * Checks to see if our deviceID exists in the database
+    *
+    * @return bool True if it exists, false otherwise
+    */
+    public function exists()
+    {
+
+        return (bool) $this->myDriver->countWhere(
+            "FWPartNum = ? AND Version = ?",
+            array($this->FWPartNum, $this->Version),
+            "id"
         );
     }
     /******************************************************************
@@ -313,6 +374,39 @@ class FirmwareTable extends HUGnetDBTable
     protected function setHWPartNum($value)
     {
         $this->data["HWPartNum"] = substr(DevicesTable::formatPartNum($value), 0, 7);
+    }
+    /**
+    * Hexifies a version in x.y.z form.
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setVersion($value)
+    {
+        $this->data["Version"] = DevicesTable::formatVersion($value);
+    }
+    /**
+    * This function gets the filename and md5 sum
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setFilename($value)
+    {
+        if (substr($value, 0, 3) == "MD5") {
+            preg_match(
+                "/[0-9]{8}[A-Z]{1}\-[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}.gz/",
+                $value,
+                $match
+            );
+            $this->data["filename"] = $match[0];
+            $stuff = explode("=", $value);
+            $this->data["md5"] = trim($stuff[1]);
+        } else {
+            $this->data["filename"] = trim($value);
+        }
     }
 }
 ?>

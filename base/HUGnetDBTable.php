@@ -113,8 +113,6 @@ abstract class HUGnetDBTable extends HUGnetContainer
 
     /** @var object This is where we store our sqlDriver */
     protected $myDriver = null;
-    /** @var object This is where we store our sqlDriver */
-    protected $mySelectDriver = null;
     /** @var object This is where we store our configuration object */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -147,7 +145,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
                 $this,
                 $this->group
             );
-            $this->mySelectDriver = &$this->myConfig->servers->getDriver(
+            $this->myDriver = &$this->myConfig->servers->getDriver(
                 $this,
                 $this->group
             );
@@ -211,6 +209,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         $ret = $this->myDriver->selectWhere($key);
         $this->myDriver->fetchInto();
+        $this->myDriver->reset();
         return $ret;
     }
     /**
@@ -223,7 +222,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->default == $this->data) {
             return false;
         }
-        return $this->myDriver->updateOnce($this->toDB());
+        $ret = $this->myDriver->updateOnce($this->toDB());
+        $this->myDriver->reset();
+        return $ret;
     }
     /**
     * This function updates the record currently in this table
@@ -240,7 +241,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->default[$this->sqlId] === $this->data[$this->sqlId]) {
             $cols = $this->myDriver->autoIncrement();
         }
-        return $this->myDriver->insertOnce($this->toDB(), (array)$cols, $replace);
+        $ret = $this->myDriver->insertOnce($this->toDB(), (array)$cols, $replace);
+        $this->myDriver->reset();
+        return $ret;
     }
 
     /**
@@ -253,7 +256,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->default == $this->data) {
             return false;
         }
-        return $this->myDriver->deleteWhere($this->toDB());
+        $ret = $this->myDriver->deleteWhere($this->toDB());
+        $this->myDriver->reset();
+        return $ret;
     }
 
     /**
@@ -269,6 +274,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
                 $this->myDriver->addIndex($index);
             }
         }
+        $this->myDriver->reset();
         return $ret;
     }
     /**
@@ -281,8 +287,10 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function &select($where, $data = array())
     {
-        $this->mySelectDriver->selectWhere($where, $data);
-        return $this->mySelectDriver->fetchAll();
+        $this->myDriver->selectWhere($where, $data);
+        $ret = $this->myDriver->fetchAll();
+        $this->myDriver->reset();
+        return $ret;
     }
     /**
     * This function gets a record with the given key
@@ -294,7 +302,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function selectInto($where, $data = array())
     {
-        $this->mySelectDriver->selectWhere($where, $data);
+        $this->myDriver->selectWhere($where, $data);
         return $this->nextInto();
     }
     /**
@@ -308,7 +316,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function selectOneInto($where, $data = array())
     {
         $ret = $this->selectInto($where, $data);
-        $this->mySelectDriver->reset();
+        $this->myDriver->reset();
         return $ret;
     }
     /**
@@ -318,7 +326,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function nextInto()
     {
-        return $this->mySelectDriver->fetchInto();
+        $ret = $this->myDriver->fetchInto();
+        if ($ret === false) {
+            $this->myDriver->reset();
+        }
+        return $ret;
     }
     /**
     * This function creates other tables that are identical to this one, except

@@ -71,7 +71,6 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
     public function __construct(&$obj, $string = "")
     {
         $this->myDriver = &$obj;
-        $this->myDriver->DriverInfo = array();
         $this->info = &$this->myDriver->DriverInfo;
         $this->data = &$this->myDriver->params->DriverInfo;
     }

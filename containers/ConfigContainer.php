@@ -85,8 +85,8 @@ class ConfigContainer extends HUGnetContainer
             "enable"  => false,       // Enable this script
         ),
         "sync"        => array(        // Configuration for the analysis script
-            "downloads"  => "http://downloads.hugllc.com/",   // Where to get stuff
-            "firmware"   => "firmware/",
+            "downloads"  => "http://downloads.hugllc.com",   // Where to get stuff
+            "firmware"   => "firmware",       // The firmware directory
         ),
         "admin_email"     => "",           // Administrator Email
         "PluginDir"       => HUGNET_PLUGIN_BASE_PATH, // This is the plugin path

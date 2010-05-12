@@ -208,11 +208,6 @@ class DevicesTable extends HUGnetDBTable
             "Type" => "varchar(16)",
             "Default" => '15MIN',
         ),
-        "CurrentGatewayKey" => array(
-            "Name" => "CurrentGatewayKey",
-            "Type" => "int(11)",
-            "Default" => 0,
-        ),
         "sensors" => array(
             "Name" => "sensors",
             "Type" => "text",
@@ -278,9 +273,11 @@ class DevicesTable extends HUGnetDBTable
     public function exists()
     {
 
-        return (bool) $this->myDriver->countWhere(
+        $ret = (bool) $this->myDriver->countWhere(
             "DeviceID = ?", array($this->DeviceID), "DeviceID"
         );
+        $this->myDriver->reset();
+        return $ret;
     }
     /**
     * Changes the part number into XXXX-XX-XX-X form.
@@ -314,6 +311,37 @@ class DevicesTable extends HUGnetDBTable
             );
             if ($ret > 0) {
                 $value = $match[0];
+            }
+        }
+        return $value;
+    }
+    /**
+    * Puts a version number into a standard form
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    public static function formatVersion($value)
+    {
+        if (empty($value)) {
+            $value = "";
+        } else if (stripos($value, ".") === false) {
+            $version = strtoupper($value);
+            $str     = array();
+            for ($i = 0; $i < 3; $i++) {
+                $str[] .= (int)substr($version, ($i*2), 2);
+            }
+            $value = implode(".", $str);
+        } else {
+            $ret = preg_match(
+                "/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/",
+                $value,
+                $match
+            );
+            if ($ret > 0) {
+                $ver = explode(".", $match[0]);
+                $value = ((int)$ver[0]).".".((int)$ver[1]).".".((int)$ver[2]);
             }
         }
         return $value;
@@ -406,26 +434,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setFWVersion($value)
     {
-        if (empty($value)) {
-            $value = "";
-        } else if (stripos($value, ".") === false) {
-            $version = strtoupper($value);
-            $str     = array();
-            for ($i = 0; $i < 3; $i++) {
-                $str[] .= (int)substr($version, ($i*2), 2);
-            }
-            $value = implode(".", $str);
-        } else {
-            $ret = preg_match(
-                "/[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/",
-                $value,
-                $match
-            );
-            if ($ret > 0) {
-                $value = $match[0];
-            }
-        }
-        $this->data["FWVersion"] = $value;
+        $this->data["FWVersion"] = self::formatVersion($value);
     }
     /**
     * Sets the part number

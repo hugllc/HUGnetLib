@@ -131,5 +131,40 @@ class DeviceConfig extends ProcessBase
         // Update the row.  It changes the row even if it fails
         $dev->updateRow();
     }
+    /**
+    * This deals with Unsolicited Packets
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    protected function unsolicited(PacketContainer &$pkt)
+    {
+        // Be verbose
+        self::vprint(
+            "Got Unsolicited Packet from: ".$pkt->From." Type: ".$pkt->Type,
+            HUGnetClass::VPRINT_NORMAL
+        );
+        // Set up our DeviceContainer
+        $this->unsolicited->clearData();
+        // Find the device if it is there
+        $this->unsolicited->selectInto("DeviceID = ?", array($pkt->From));
+
+        if (!$this->unsolicited->isEmpty()) {
+            // If it is not empty, reset the LastConfig.  This causes it to actually
+            // try to get the config.
+            $this->unsolicited->readTimeReset();
+            // Set our gateway key
+            $this->unsolicited->GatewayKey = $this->GatewayKey;
+            // Update the row
+            $this->unsolicited->updateRow();
+        } else {
+            // This is a brand new device.  Set the DeviceID
+            $this->unsolicited->DeviceID = $pkt->From;
+            // Set our gateway key
+            $this->unsolicited->GatewayKey = $this->GatewayKey;
+            $this->unsolicited->insertRow();
+        }
+    }
 }
 ?>

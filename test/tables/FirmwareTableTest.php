@@ -201,6 +201,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "group" => "default",
+                    "filename" => "",
                     "id" => "3",
                     "Version" => "2.2.3",
                     "Code" => "abc",
@@ -213,6 +214,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Tag" => "v1.2.3",
                     "Target" => "mega16",
                     "Active" => "1",
+                    "md5" => null,
                 ),
                 true,
             ),
@@ -225,6 +227,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "group" => "default",
+                    "filename" => "",
                     "id" => "3",
                     "Version" => "2.2.3",
                     "Code" => "abc",
@@ -238,6 +241,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                     "Active" => "1",
                     "Target" => "mega16",
+                    "md5" => null,
                 ),
                 true,
             ),
@@ -250,6 +254,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "group" => "default",
+                    "filename" => "",
                     "id" => "2",
                     "Version" => "1.3.3",
                     "Code" => "abc",
@@ -262,6 +267,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Tag" => "v1.2.3",
                     "Target" => "mega16",
                     "Active" => "1",
+                    "md5" => null,
                 ),
                 true,
             ),
@@ -300,11 +306,11 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
         }
     }
     /**
-    * data provider for testSaveToFile
+    * data provider for testToFile
     *
     * @return array
     */
-    public static function dataSaveToFile()
+    public static function dataToFile()
     {
         return array(
             array(
@@ -350,13 +356,13 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
     *
     * @return null
     *
-    * @dataProvider dataSaveToFile
+    * @dataProvider dataToFile
     */
-    public function testSaveToFile($preload, $path, $filename, $expect)
+    public function testToFile($preload, $path, $filename, $expect)
     {
         @unlink($path."/".$filename);
         $this->o->fromArray($preload);
-        $ret = @$this->o->saveToFile($path);
+        $ret = @$this->o->toFile($path);
         $this->assertSame($expect, $ret);
         if ($expect) {
             $this->assertTrue(file_exists($path."/".$filename));
@@ -365,6 +371,71 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             $this->assertSame(
                 $this->o->toString(), $stuff, "File contents wrong"
             );
+        } else {
+            $this->assertFalse(file_exists($path."/".$filename));
+        }
+    }
+    /**
+    * data provider for testFromFile
+    *
+    * @return array
+    */
+    public static function dataFromFile()
+    {
+        return array(
+            array(
+                // Everything works
+                dirname(__FILE__)."/../files",
+                "MD5 (00392001C-00.01.04.gz) = bd2dd61d3ef24bfab9d40c8791f3b18b",
+                true,
+                array(
+                    "group" => "default",
+                    "filename" => "00392001C-00.01.04.gz",
+                    "id" => "37",
+                    "Version" => "0.1.4",
+                    "FWPartNum" => "0039-20-01-C",
+                    "HWPartNum" => "0039-21",
+                    "Date" => "2007-02-27 12:39:45",
+                    "FileType" => "SREC",
+                    "RelStatus" => 8,
+                    "Tag" => "f00392001-00-01-04",
+                    "Target" => "atmega16",
+                    "Active" => "0",
+                    "md5" => "bd2dd61d3ef24bfab9d40c8791f3b18b",
+                ),
+            ),
+            array(
+                // No HWPartNum Specified
+                "/this/is/a/dir/that/should/never/exist",
+                "00392001C-1.2.3.gz",
+                false,
+                array(),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $path     The file path to use
+    * @param string $filename The filename to check for
+    * @param bool   $expect   The expected return
+    * @param array  $data     The data array to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataFromFile
+    */
+    public function testFromFile($path, $filename, $expect, $data)
+    {
+        $this->o->clearData();
+        $ret = @$this->o->fromFile($filename, $path);
+        $this->assertSame($expect, $ret);
+        if ($expect) {
+            $theData = $this->readAttribute($this->o, "data");
+            unset($theData["Code"]);
+            unset($theData["Data"]);
+            $this->assertSame($data, $theData);
         } else {
             $this->assertFalse(file_exists($path."/".$filename));
         }
@@ -395,6 +466,16 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array("FWPartNum", "00392104C", "0039-21-04-C"),
             array("FWPartNum", "0039-21-04-C", "0039-21-04-C"),
             array("FWPartNum", "34523442350039-21-04-C", "0039-21-04-C"),
+            array(
+                "filename",
+                "MD5 (00392001C-00.00.07.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
+                "00392001C-00.00.07.gz"
+            ),
+            array(
+                "filename",
+                "00392001C-00.00.07.gz",
+                "00392001C-00.00.07.gz"
+            ),
         );
     }
 
@@ -455,6 +536,109 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
         $this->o->fromAny($preload);
         $ret = $this->o->CompareVersion($v1, $v2);
         $this->assertEquals($expect, $ret);
+    }
+    /**
+    * data provider for testCompareVesrion
+    *
+    * @return array
+    */
+    public static function dataCheckFile()
+    {
+        return array(
+            array(array(), "00392001C-01.02.03.gz", true),
+            array(
+                array(),
+                "MD5 (00392001C-00.00.07.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
+                false,
+            ),
+            array(
+                array(),
+                "MD5 (00392001C-01.02.03.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
+                true,
+            ),
+            // Wrong md5
+            array(
+                array(),
+                "MD5 (00392001C-01.02.03.gz) = 104e9ba35ebb82e6c70a9909e375b8bf",
+                false,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $preload The value to preload
+    * @param string $file    The filename to give it
+    * @param bool   $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheckFile
+    */
+    function testCheckFile($preload, $file, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->checkFile($file);
+        $this->assertEquals($expect, $ret);
+    }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataExists()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "FWPartNum" => "0039-21-01-C",
+                        "Version" => "1.2.3",
+                    ),
+                ),
+                array(
+                    "FWPartNum" => "0039-21-01-C",
+                    "Version" => "1.2.3",
+                ),
+                true
+            ),
+            array(
+                array(
+                    array(
+                        "FWPartNum" => "0039-21-01-C",
+                        "Version" => "1.2.3",
+                    ),
+                ),
+                array(
+                    "FWPartNum" => "0039-21-01-C",
+                    "Version" => "1.2.4",
+                ),
+                false
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param array $preload The data to load into the database
+    * @param mixed $data    The data to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataExists
+    *
+    * @return null
+    */
+    public function testExists($preload, $data, $expect)
+    {
+        foreach ((array)$preload as $load) {
+            $this->o->fromAny($load);
+            $this->o->insertRow();
+        }
+        $this->o->clearData();
+        $this->o->fromAny($data);
+        $ret = $this->o->exists();
+        $this->assertSame($expect, $ret);
     }
 
 }

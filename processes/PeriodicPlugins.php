@@ -37,6 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/ProcessBase.php";
+require_once dirname(__FILE__)."/../base/PeriodicPluginBase.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/PacketContainer.php";
 require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
@@ -104,6 +105,9 @@ class PeriodicPlugins extends ProcessBase
             $this->verbose
         );
         $classes = $this->myPlugins->getClass("periodic");
+        $data = array(
+            "verbose" => $this->verbose,
+        );
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
             if (is_subclass_of($c, "PeriodicPluginInterface")) {

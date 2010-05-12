@@ -303,6 +303,178 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         $this->o->config($loadable);
         $this->assertSame($expect, $this->socket->writeString);
     }
+        /**
+    * data provider for testPacketConsumer
+    *
+    * @return array
+    */
+    public static function dataPacketConsumer()
+    {
+        return array(
+            array(
+                array(
+                    array(
+                        "DeviceName" => "Hello",
+                        "DeviceID" => "123456",
+                        "GatewayKey" => 3,
+                        "HWPartNum" => "0039-21-20-C",
+                        "FWPartNum" => "0039-08-20-C",
+                        "FWVersion" => "1.2.3",
+                    ),
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "DeviceKey"         => "1",
+                        "DeviceID"          => "123456",
+                        "DeviceName"        => "Hello",
+                        "SerialNum"         => "0",
+                        "HWPartNum" => "0039-21-20-C",
+                        "FWPartNum" => "0039-08-20-C",
+                        "FWVersion" => "1.2.3",
+                        "RawSetup"=> "000000000000000000000000000000000000FFFFFF50",
+                        "Active"            => "1",
+                        "GatewayKey"        => "1",
+                        "ControllerKey"     => "0",
+                        "ControllerIndex"   => "0",
+                        "DeviceLocation"    => "",
+                        "DeviceJob"         => "",
+                        "Driver"            => "eDEFAULT",
+                        "PollInterval"      => "0",
+                        "ActiveSensors"     => "0",
+                        "DeviceGroup"       => "FFFFFF",
+                        "BoredomThreshold"  => "80",
+                        "LastConfig" => "1970-01-01 00:00:00",
+                        "LastPoll" => "1970-01-01 00:00:00",
+                        "LastHistory" => "1970-01-01 00:00:00",
+                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "MinAverage"        => "15MIN",
+                        "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
+                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "params"            => "YTowOnt9",
+                    ),
+                ),
+                "",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "DeviceKey"         => "1",
+                        "DeviceID"          => "123456",
+                        "DeviceName"        => "",
+                        "SerialNum"         => "0",
+                        "HWPartNum"         => "",
+                        "FWPartNum"         => "",
+                        "FWVersion"         => "",
+                        "RawSetup"          => "",
+                        "Active"            => "1",
+                        "GatewayKey"        => "1",
+                        "ControllerKey"     => "0",
+                        "ControllerIndex"   => "0",
+                        "DeviceLocation"    => "",
+                        "DeviceJob"         => "",
+                        "Driver"            => "eDEFAULT",
+                        "PollInterval"      => "0",
+                        "ActiveSensors"     => "0",
+                        "DeviceGroup"       => "FFFFFF",
+                        "BoredomThreshold"  => "80",
+                        "LastConfig" => "1970-01-01 00:00:00",
+                        "LastPoll" => "1970-01-01 00:00:00",
+                        "LastHistory" => "1970-01-01 00:00:00",
+                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "MinAverage"        => "15MIN",
+                        "sensors"           => "",
+                        "params"            => "",
+                    ),
+                ),
+                "",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A0112345600001916000000000000000000000000000000000000"
+                    ."FFFFFF50D1",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "03",
+                    "Data" => "01020304",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A01123456000019040102030468",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "02",
+                    "Data" => "01020304",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A01123456000019040102030468",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The data to preload into the devices table
+    * @param string $pkt     The packet string to use
+    * @param string $expect  The expected return
+    * @param string $write   The packet string expected to be written
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketConsumer
+    */
+    public function testPacketConsumer($preload, $pkt, $expect, $write)
+    {
+        $d = new DeviceContainer();
+        foreach ((array)$preload as $load) {
+            $d->fromArray($load);
+            $d->insertRow(true);
+        }
+        $p = new PacketContainer($pkt);
+        $this->o->packetConsumer($p);
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+        $this->assertSame($write, $this->socket->writeString);
+
+    }
+
 }
 
 
