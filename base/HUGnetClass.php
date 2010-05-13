@@ -80,6 +80,7 @@ abstract class HUGnetClass
     */
     public function __construct($config = array())
     {
+        $this->findClass("ErrorTable", "tables");
         if (is_array($config) && isset($config["verbose"])) {
             $this->verbose($config["verbose"]);
         }
@@ -122,6 +123,30 @@ abstract class HUGnetClass
             print "(".$class.") ";
         }
         print $str."\n";
+    }
+    /**
+    * Logs an error in the database
+    *
+    * @param mixed  $errno    The error number.  Could be a string or number
+    * @param string $errmsg   The error message
+    * @param string $severity The severity of the message
+    * @param string $method   Should be filled with __METHOD__
+    *
+    * @return null
+    */
+    public function logError($errno, $errmsg, $severity, $method)
+    {
+        $log = new ErrorTable(
+            array(
+                "class"    => get_class($this),
+                "method"   => $method,
+                "errno"    => $errno,
+                "error"    => $errmsg,
+                "Date"     => date("Y-m-d H:i:s"),
+                "Severity" => $severity,
+            )
+        );
+        return $log->insertRow(true);
     }
     /**
     * Load a class file if possible
@@ -273,6 +298,7 @@ abstract class HUGnetClass
     */
     function myConfigSetup()
     {
+        $this->findClass("ConfigContainer", "containers");
         $this->myConfig = &ConfigContainer::singleton();
     }
 

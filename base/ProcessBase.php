@@ -147,7 +147,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     {
         // Be verbose ;)
         self::vprint(
-            "Pausing $Timeout s  Using ID: ".$this->myDevice->DeviceID,
+            "Pausing $Timeout s  Using ID: ".$this->myDevice->DeviceID
+            ." ".date("Y-m-d H:i:s"),
             HUGnetClass::VPRINT_NORMAL
         );
         // Set our end time

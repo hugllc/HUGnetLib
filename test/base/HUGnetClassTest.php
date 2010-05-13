@@ -40,6 +40,7 @@ if (!defined("HUGNET_INCLUDE_PATH")) {
 }
 
 require_once dirname(__FILE__).'/../../base/HUGnetClass.php';
+require_once dirname(__FILE__).'/../../tables/ErrorTable.php';
 
 /**
  * Test class for HUGnetDB.
@@ -66,6 +67,12 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $config = array(
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
+        $this->pdo = &$this->config->servers->getPDO();
+        $this->error = new ErrorTable();
         parent::setUp();
         //$this->o =& HUGnetDB::getInstance("HUGnetDBClassTest", $this->config);
         $this->o = new HUGnetClassTestStub($this->config);
@@ -260,6 +267,69 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
         $this->o->throwExceptionTest("Not Happening", -5);
     }
     /**
+    * Test the myConfigSetup routine
+    *
+    * @return null
+    *
+    */
+    public function testMyConfigSetup()
+    {
+        $this->o->myConfigSetup();
+        $config = $this->readAttribute($this->o, "myConfig");
+        $this->assertSame("ConfigContainer", get_class($config));
+    }
+    /**
+    * data provider for testGetBytes
+    *
+    * @return array
+    */
+    public static function dataLogError()
+    {
+        return array(
+            array(
+                12, "Hello", 8, "m", true,
+                array(
+                    array(
+                        "id"     => "1",
+                        "class"  => "HUGnetClassTestStub",
+                        "method" => "m",
+                        "errno"  => "12",
+                        "error"  => "Hello",
+                        "Severity" => "8",
+                    ),
+                ),
+
+            ),
+        );
+    }
+
+    /**
+    * test
+    *
+    * @param mixed  $errno    The error number.  Could be a string or number
+    * @param string $errmsg   The error message
+    * @param string $severity The severity of the message
+    * @param string $method   Should be filled with __METHOD__
+    * @param string $expect   The expected return
+    * @param array  $log      The expected database entry
+    *
+    * @return null
+    *
+    * @dataProvider dataLogError
+    */
+    public function testLogError(
+        $errno, $errmsg, $severity, $method, $expect, $log
+    ) {
+        $ret = $this->o->logError($errno, $errmsg, $severity, $method);
+        $this->assertSame($expect, $ret);
+        $stmt = $this->pdo->query("SELECT * FROM `errors`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach (array_keys((array)$rows) as $k) {
+            unset($rows[$k]["Date"]);
+        }
+        $this->assertSame($log, $rows);
+    }
+    /**
     * data provider for testGetBytes
     *
     * @return array
@@ -288,9 +358,9 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     public function testSetStringSize($value, $size, $pad, $expect)
     {
         if (is_null($pad)) {
-            $ret = HUGnetClass::stringSize($value, $size);
+            $ret = $this->o->stringSize($value, $size);
         } else {
-            $ret = HUGnetClass::stringSize($value, $size, $pad);
+            $ret = $this->o->stringSize($value, $size, $pad);
         }
         $this->assertSame($expect, $value, '$value not changed correctly');
         $this->assertSame($expect, $ret, "Return was not correct");
@@ -321,7 +391,7 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     */
     public function testDehexify($str, $expect)
     {
-        $bin = HUGnetClass::dehexify($str);
+        $bin = $this->o->dehexify($str);
         $this->assertSame($expect, $bin);
     }
 
@@ -353,9 +423,9 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     public function testHexify($value, $width, $expect)
     {
         if (is_null($width)) {
-            $ret = HUGnetClass::hexify($value);
+            $ret = $this->o->hexify($value);
         } else {
-            $ret = HUGnetClass::hexify($value, $width);
+            $ret = $this->o->hexify($value, $width);
         }
         $this->assertEquals($expect, $ret);
     }
@@ -386,7 +456,7 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     */
     public function testHexifyStr($str, $expect)
     {
-        $ret = HUGnetClass::hexifyStr($str);
+        $ret = $this->o->hexifyStr($str);
         $this->assertEquals($expect, $ret);
     }
 }

@@ -87,6 +87,18 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
         return false;
     }
     /**
+    * Says whether this device is a gateway process or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that are for gateway processes.
+    *
+    * @return bool False
+    */
+    public function gateway()
+    {
+        return false;
+    }
+    /**
     * Reads the setup out of the device
     *
     * @return bool True on success, False on failure
@@ -159,6 +171,7 @@ abstract class DeviceDriverBase implements DeviceDriverInterface
         }
         // We failed.  State that.
         $this->data["ConfigFail"]++;
+
         return false;
     }
     /**

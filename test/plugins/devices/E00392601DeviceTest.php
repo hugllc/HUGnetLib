@@ -93,6 +93,15 @@ class E00392601DeviceTest extends DevicePluginTestBase
     {
         unset($this->o);
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testGateway()
+    {
+        $this->assertTrue($this->o->gateway());
+    }
 
     /**
     * Data provider for testRegisterPlugin

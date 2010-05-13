@@ -215,14 +215,16 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This function updates the record currently in this table
     *
+    * @param array $columns The columns to update, defaults to all
+    *
     * @return bool True on success, False on failure
     */
-    public function updateRow()
+    public function updateRow($columns = array())
     {
         if ($this->default == $this->data) {
             return false;
         }
-        $ret = $this->myDriver->updateOnce($this->toDB());
+        $ret = $this->myDriver->updateOnce($this->toDB(), "", array(), $columns);
         $this->myDriver->reset();
         return $ret;
     }

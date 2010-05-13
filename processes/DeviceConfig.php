@@ -91,7 +91,7 @@ class DeviceConfig extends ProcessBase
                 return;
             }
             $device = &$devs[$key];
-            if (!$loadable || $device->loadable()) {
+            if (!$loadable || $device->loadable() && $device->Active) {
                 // We don't want to get our own config
                 if ($device->DeviceID !== $this->myDevice->DeviceID) {
                     // We should only check stuff for our gateway
@@ -121,15 +121,41 @@ class DeviceConfig extends ProcessBase
         );
         // Read the setup
         if (!$dev->readSetup()) {
-            self::vprint(
-                "Failed. Failures: ".$dev->params->DriverInfo["ConfigFail"]
-                ." LastConfig try: "
-                .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
-                HUGnetClass::VPRINT_NORMAL
-            );
+            $this->_checkFail($dev);
         }
         // Update the row.  It changes the row even if it fails
         $dev->updateRow();
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return int The number of packets routed
+    */
+    private function _checkFail(DeviceContainer &$dev)
+    {
+        // Print out the failure if verbose
+        self::vprint(
+            "Failed. Failures: ".$dev->params->DriverInfo["ConfigFail"]
+            ." LastConfig try: "
+            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
+            HUGnetClass::VPRINT_NORMAL
+        );
+        // Log an error for every 10 failures
+        if (($dev->params->DriverInfo["ConfigFail"] % 10) == 0) {
+            $this->logError(
+                "NOCONFIG",
+                "Device ".$this->myDriver->DeviceID." is has failed "
+                .$dev->params->DriverInfo["ConfigFail"]." configs",
+                ErrorTable::SEVERITY_ERROR,
+                "DeviceConfig::config"
+            );
+        }
+        // for 100 failures mark the device inactive
+        if ($dev->params->DriverInfo["ConfigFail"] > 100) {
+            $dev->Active = 0;
+        }
     }
     /**
     * This deals with Unsolicited Packets
@@ -156,6 +182,8 @@ class DeviceConfig extends ProcessBase
             $this->unsolicited->readTimeReset();
             // Set our gateway key
             $this->unsolicited->GatewayKey = $this->GatewayKey;
+            // Set the device active
+            $this->unsolicited->Active = 1;
             // Update the row
             $this->unsolicited->updateRow();
         } else {

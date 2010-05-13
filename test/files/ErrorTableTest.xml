@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="errors">
+        <column>id</column>
+        <column>class</column>
+        <column>method</column>
+        <column>errno</column>
+        <column>error</column>
+        <column>Date</column>
+        <column>Severity</column>
+    </table>
+</dataset>

@@ -113,6 +113,18 @@ class E00392601Device extends DeviceDriverBase
         $this->fromString($string);
     }
     /**
+    * Says whether this device is a gateway process or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that are for gateway processes.
+    *
+    * @return bool False
+    */
+    public function gateway()
+    {
+        return true;
+    }
+    /**
     * Creates the object from a string
     *
     * @param bool $default Return items set to their default?

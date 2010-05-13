@@ -240,7 +240,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function tableExists()
     {
-        return (count($this->columns()) > 0);
+        return (count(@$this->columns()) > 0);
     }
 
     /**
@@ -784,6 +784,14 @@ abstract class HUGnetDBDriver extends HUGnetClass
             return false;
         }
         $this->pdoStatement = $this->pdo->prepare($this->query);
+        if (($this->pdoStatement === false)
+            && ($this->myTable->sqlTable != "errors")
+        ) {
+            $error = $this->pdo->errorInfo();
+            $this->logError(
+                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+            );
+        }
         return (bool) $this->pdoStatement;
     }
     /**
@@ -814,6 +822,12 @@ abstract class HUGnetDBDriver extends HUGnetClass
             "With Result: ".print_r($ret, true),
             HUGnetClass::VPRINT_VERBOSE
         );
+        if (!$ret && ($this->myTable->sqlTable != "errors")) {
+            $error = $this->pdoStatement->errorInfo();
+            $this->logError(
+                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+            );
+        }
         //$this->pdoStatement->debugDumpParams();
         return $ret;
     }
@@ -864,9 +878,20 @@ abstract class HUGnetDBDriver extends HUGnetClass
     {
         $pdo = $this->pdo->prepare($query);
         if (is_object($pdo)) {
-            $pdo->execute($data);
-            $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
+            if ($pdo->execute($data)) {
+                $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $error = $pdo->errorInfo();
+            }
             $pdo->closeCursor();
+        } else {
+            $error = $this->pdo->errorInfo();
+        }
+        // Set the errors if there are any and we are not on table 'errors'
+        if (($this->myTable->sqlTable != "errors") && is_array($error)) {
+            $this->logError(
+                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+            );
         }
         return $res;
     }

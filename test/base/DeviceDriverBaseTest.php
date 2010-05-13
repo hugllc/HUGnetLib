@@ -139,6 +139,15 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->o->loadable());
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testGateway()
+    {
+        $this->assertFalse($this->o->gateway());
+    }
 
     /**
     * test the set routine when an extra class exists

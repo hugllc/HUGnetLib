@@ -241,17 +241,6 @@ class PacketRouter extends ProcessBase
             PacketContainer::powerup("", $group);
         }
     }
-    /**
-    * This function should be used to wait between config attempts
-    *
-    * @param int $Timeout The timeout period to wait in uSeconds
-    *
-    * @return int The number of packets routed
-    */
-    public function wait($Timeout = 1000)
-    {
-        usleep($Timeout);
-    }
 
 }
 ?>
