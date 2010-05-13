@@ -51,6 +51,7 @@ require_once HUGNET_INCLUDE_PATH."/database/Process.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @deprecated since version 0.9.0
  */
 class ProcStats extends HUGnetDB implements HUGnetDBInterface
 {

@@ -33,6 +33,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @deprecated since version 0.9.0
  */
 
 

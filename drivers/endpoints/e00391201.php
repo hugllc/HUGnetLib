@@ -81,6 +81,7 @@ define("E00391201_SENSORS", 9);
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    SVN: $Id$
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @deprecated since version 0.9.0
 */
 class e00391201 extends eDEFAULT implements endpointDriverInterface
 {
