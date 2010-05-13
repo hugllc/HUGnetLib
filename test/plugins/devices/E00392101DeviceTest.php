@@ -147,11 +147,15 @@ class E00392101DeviceTest extends DevicePluginTestBase
     {
         return array(
             array(
-                "0102020202020202027070707070707070",
+                "040001E000380000809891",
                 array(
-                    "NumSensors" => 16,
-                    "PacketTimeout" => 2,
-                    "TimeConstant" => 1,
+                    "NumSensors" => 0,
+                    "SRAM" => 1024,
+                    "E2" => 480,
+                    "FLASH" => 14336,
+                    "FLASHPAGE" => 128,
+                    "PAGES" => 112,
+                    "CRC" => "9891",
                 ),
             ),
         );

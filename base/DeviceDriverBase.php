@@ -36,10 +36,11 @@
  *
  */
 
-
+/** This is the required files */
+require_once dirname(__FILE__).'/../base/HUGnetClass.php';
 require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../interfaces/DeviceDriverInterface.php';
-require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
+require_once dirname(__FILE__).'/../containers/PacketContainer.php';
 
 /**
  * Test class for filter.
@@ -54,7 +55,7 @@ require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class DeviceDriverBase implements DeviceDriverInterface
+abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array();

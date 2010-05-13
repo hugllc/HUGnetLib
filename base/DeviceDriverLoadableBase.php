@@ -36,10 +36,8 @@
  *
  */
 
-
+/** This is the stuff we need to include */
 require_once dirname(__FILE__).'/DeviceDriverBase.php';
-require_once dirname(__FILE__).'/../interfaces/DeviceDriverInterface.php';
-require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../tables/FirmwareTable.php';
 
 /**
@@ -111,5 +109,65 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
         }
         // Accounts for failures
         return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
+    }
+    /**
+    * Programs a page of flash
+    *
+    * Due to the nature of flash, $Val must contain the data for
+    * a whole page of flash.
+    *
+    * @param int    $addr The start address of this block
+    * @param string $data The data to program into E2 as a hex string
+    *
+    * @return true on success, false on failure
+    */
+    function writeFlashPage($addr, $data)
+    {
+        $pkt = new PacketContainer(
+            array(
+                "To"      => $this->myDriver->DeviceID,
+                "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                "Data"    => $this->stringSize(dechex(($addr>>8) & 0xFF), 2)
+                            .$this->stringSize(dechex($addr & 0xFF), 2)
+                            .$data,
+                "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
+            )
+        );
+        $pkt->send();
+        return (is_object($pkt->Reply) && ($pkt->Reply->Data == $pkt->Data));
+    }
+
+    /**
+    * Programs a block of E2
+    *
+    * This function won't let locations 0-9 be written.  They are reserved for the
+    * serial number and shouldn't be overwritten
+    *
+    * @param int    $addr The start address of this block
+    * @param string $data The data to program into E2 as a hex string
+    *
+    * @return true on success, false on failure
+    */
+    function writeE2Page($addr, $data)
+    {
+
+        // Protect the first 10 bytes of E2
+        if ($addr < 10) {
+            $data = substr($data, (20 - (2*$addr)));
+            $addr = 10;
+        }
+        $pkt = new PacketContainer(
+            array(
+                "To"      => $this->myDriver->DeviceID,
+                "Command" => PacketContainer::COMMAND_WRITEE2,
+                "Data"    => $this->stringSize(dechex(($addr>>8) & 0xFF), 2)
+                            .$this->stringSize(dechex($addr & 0xFF), 2)
+                            .$data,
+                "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
+            )
+        );
+        $pkt->send();
+        return (is_object($pkt->Reply) && ($pkt->Reply->Data == $pkt->Data));
+
     }
 }

@@ -82,11 +82,32 @@ class E00392101Device extends DeviceDriverLoadableBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["NumSensors"] = 16;
-        $this->myDriver->DriverInfo["PacketTimeout"] = 2;
+        $this->myDriver->DriverInfo["NumSensors"] = 0;
         $this->fromString($string);
     }
-
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromString($string)
+    {
+        if (empty($string)) {
+            return;
+        }
+        $this->Info = &$this->myDriver->DriverInfo;
+        $this->Info["SRAM"]     = hexdec(substr($string, 0, 4));
+        $this->Info["E2"]       = hexdec(substr($string, 4, 4));
+        $this->Info["FLASH"]    = hexdec(substr($string, 8, 6));
+        $this->Info["FLASHPAGE"]= hexdec(substr($string, 14, 4));
+        if ($this->Info["FLASHPAGE"] == 0) {
+            $this->Info["FLASHPAGE"] = 128;
+        }
+        $this->Info["PAGES"] = $this->Info["FLASH"]/$this->Info["FLASHPAGE"];
+        $this->Info["CRC"] = strtoupper(substr($string, 18, 4));
+    }
 }
 
 ?>

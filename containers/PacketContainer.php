@@ -77,8 +77,16 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     const COMMAND_BADC = "FF";
     /** The placeholder for the Read E2 command */
     const COMMAND_READE2 = "0A";
+    /** The placeholder for the Read SRAM command */
+    const COMMAND_READSRAM = "0B";
+    /** The placeholder for the Read FLASH command */
+    const COMMAND_READFLASH = "0C";
     /** The placeholder for the Write E2 command */
-    const COMMAND_READRAM = "0B";
+    const COMMAND_WRITEE2 = "1A";
+    /** The placeholder for the Write SRAM command */
+    const COMMAND_WRITESRAM = "1B";
+    /** The placeholder for the Write FLASH command */
+    const COMMAND_WRITEFLASH = "1C";
     /** The placeholder for the reply command */
     const SETRTC_COMMAND = "50";
     /** The placeholder for the reply command */
@@ -110,7 +118,11 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         self::COMMAND_GETDATA             => "SENSORREAD",
         self::COMMAND_BADC                => "BAD COMMAND",
         self::COMMAND_READE2              => "READ_E2",
-        self::COMMAND_READRAM             => "READ_RAM",
+        self::COMMAND_READSRAM            => "READ_SRAM",
+        self::COMMAND_READFLASH           => "READ_SRAM",
+        self::COMMAND_WRITEE2             => "WRITE_E2",
+        self::COMMAND_WRITESRAM           => "WRITE_SRAM",
+        self::COMMAND_WRITEFLASH          => "WRITE_SRAM",
         self::SETRTC_COMMAND              => "SET_RTC",
         self::READRTC_COMMAND             => "READ_RTC",
         self::COMMAND_POWERUP             => "POWERUP",

@@ -146,15 +146,23 @@ class DeviceConfig extends ProcessBase
         if (($dev->params->DriverInfo["ConfigFail"] % 10) == 0) {
             $this->logError(
                 "NOCONFIG",
-                "Device ".$this->myDriver->DeviceID." is has failed "
+                "Device ".$dev->DeviceID." is has failed "
                 .$dev->params->DriverInfo["ConfigFail"]." configs",
-                ErrorTable::SEVERITY_ERROR,
+                ErrorTable::SEVERITY_WARNING,
                 "DeviceConfig::config"
             );
         }
         // for 100 failures mark the device inactive
         if ($dev->params->DriverInfo["ConfigFail"] > 100) {
             $dev->Active = 0;
+            $this->logError(
+                "NOTACTIVE",
+                "Device ".$dev->DeviceID." is has failed to respond to "
+                .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
+                ."device inactive.",
+                ErrorTable::SEVERITY_ERROR,
+                "DeviceConfig::config"
+            );
         }
     }
     /**

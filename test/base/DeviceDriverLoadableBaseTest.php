@@ -134,6 +134,272 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
 
+    /**
+    * data provider for testCompareFWVesrion
+    *
+    * @return array
+    */
+    public static function dataWriteE2Page()
+    {
+        return array(
+            array(
+                10,
+                "010203040506",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000A010203040506",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A010203040506",
+                    )
+                ),
+                true,
+            ),
+            array(
+                0,
+                "000102030405060708090A0B0C0D0E0F",
+                "000124",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000124",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000A0A0B0C0D0E0F",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000124",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A0A0B0C0D0E0F",
+                    )
+                ),
+                true,
+            ),
+            // Wrong value written
+            array(
+                10,
+                "010203040506",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000A010203040507",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A010203040506",
+                    )
+                ),
+                false,
+            ),
+            // No Reply
+            array(
+                10,
+                "010203040506",
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "000A010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A010203040506",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $addr    The address to write to
+    * @param stirng $data    The hexified data string to send to it
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteE2Page
+    */
+    function testWriteE2Page(
+        $addr, $data, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->writeE2Page($addr, $data);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testCompareFWVesrion
+    *
+    * @return array
+    */
+    public static function dataWriteFlashPage()
+    {
+        return array(
+            // Everything works
+            array(
+                0,
+                "010203040506",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0000010203040506",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000010203040506",
+                    )
+                ),
+                true,
+            ),
+            // Wrong value written
+            array(
+                0,
+                "010203040506",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0000010203040507",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000010203040506",
+                    )
+                ),
+                false,
+            ),
+            // No Reply
+            array(
+                0,
+                "010203040506",
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "0000010203040506",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000010203040506",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $addr    The address to write to
+    * @param stirng $data    The hexified data string to send to it
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteFlashPage
+    */
+    function testWriteFlashPage(
+        $addr, $data, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->writeFlashPage($addr, $data);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+
 }
 /**
 * Driver for the polling script (0039-26-01-P)

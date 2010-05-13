@@ -69,8 +69,11 @@ class DummyDeviceContainer extends HUGnetClass
     public $LastPoll = "1970-01-01 00:00:00";
     /** @var The last poll time */
     public $PollInterval = 1;
+    /** @var The device ID */
+    public $DeviceID = "000123";
 
     public $default = array(
+        "DeviceID" => "000123",
         "DriverInfo" => array(),
         "GatewayKey" => 5,
         "string" => "000000000100392601500039260150010203FFFFFF10",
