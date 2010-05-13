@@ -945,7 +945,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "",
                 "5A5A5A55000ABC0000200401020304C3"
                 ."5A5A5A55000ABC0000200401020304C3"
-                ."5A5A5A03000ABC000020040102030495"
+                ."5A5A5A03000ABC0000200095"
                 ."5A5A5A55000ABC0000200401020304C3",
                 array(
                     "To" => "000ABC",
@@ -1069,7 +1069,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Retries" => 2,  // This causes the findping
                 ),
                 "",
-                "5A5A5A55000ABC0000200401020304C35A5A5A03000ABC000020040102030495",
+                "5A5A5A55000ABC0000200401020304C35A5A5A03000ABC0000200095",
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -1295,7 +1295,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "",
                 "5A5A5A02000ABC000020040102030494"
                 ."5A5A5A02000ABC000020040102030494"
-                ."5A5A5A03000ABC000020040102030495"
+                ."5A5A5A03000ABC0000200095"
                 ."5A5A5A02000ABC000020040102030494",
                 array(
                     "To" => "000ABC",

@@ -404,7 +404,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
                 ) {
                     // Most of the stuff stays the same, so we are just cloning this
                     $ping = clone $this;
-                    $ping->ping(array("Retries" => 1), true);
+                    $ping->ping(array("Retries" => 1, "Data" => ""), true);
                 }
                 // Loop while:
                 // * We still have retries  ($this->Retries > 0)

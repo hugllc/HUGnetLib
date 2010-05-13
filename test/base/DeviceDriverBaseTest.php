@@ -411,7 +411,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                        "Data" => "000020",
+                        "Data" => "",
                     )
                 )
                 .(string) new PacketContainer(
@@ -511,7 +511,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                        "Data" => "000020",
+                        "Data" => "",
                     )
                 )
                 .(string) new PacketContainer(
@@ -610,7 +610,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                        "Data" => "000020",
+                        "Data" => "",
                     )
                 )
                 .(string) new PacketContainer(
@@ -709,7 +709,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                        "Data" => "000020",
+                        "Data" => "",
                     )
                 )
                 .(string) new PacketContainer(
