@@ -135,11 +135,11 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * data provider for testCompareFWVesrion
+    * data provider for testWriteE2
     *
     * @return array
     */
-    public static function dataWriteE2Page()
+    public static function dataWriteE2()
     {
         return array(
             array(
@@ -151,7 +151,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "From" => "000123",
                         "To" => "000020",
                         "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "000A010203040506",
+                        "Data" => "010203040506",
                     )
                 ),
                 (string) new PacketContainer(
@@ -173,7 +173,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "From" => "000124",
                         "To" => "000020",
                         "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "000A0A0B0C0D0E0F",
+                        "Data" => "0A0B0C0D0E0F",
                     )
                 ),
                 (string) new PacketContainer(
@@ -196,7 +196,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "From" => "000123",
                         "To" => "000020",
                         "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "000A010203040507",
+                        "Data" => "010203040507",
                     )
                 ),
                 (string) new PacketContainer(
@@ -265,24 +265,24 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataWriteE2Page
+    * @dataProvider dataWriteE2
     */
-    function testWriteE2Page(
+    function testWriteE2(
         $addr, $data, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
-        $ret = $this->o->writeE2Page($addr, $data);
+        $ret = $this->o->writeE2($addr, $data);
         $this->assertSame($write, $this->socket->writeString, "Write string wrong");
         $this->assertSame($expect, $ret, "Return value is wrong");
     }
     /**
-    * data provider for testCompareFWVesrion
+    * data provider for testWriteFlash
     *
     * @return array
     */
-    public static function dataWriteFlashPage()
+    public static function dataWriteFlash()
     {
         return array(
             // Everything works
@@ -295,7 +295,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "From" => "000123",
                         "To" => "000020",
                         "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "0000010203040506",
+                        "Data" => "010203040506",
                     )
                 ),
                 (string) new PacketContainer(
@@ -318,7 +318,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "From" => "000123",
                         "To" => "000020",
                         "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "0000010203040507",
+                        "Data" => "010203040507",
                     )
                 ),
                 (string) new PacketContainer(
@@ -387,15 +387,396 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataWriteFlashPage
+    * @dataProvider dataWriteFlash
     */
-    function testWriteFlashPage(
+    function testWriteFlash(
         $addr, $data, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
-        $ret = $this->o->writeFlashPage($addr, $data);
+        $ret = $this->o->writeFlash($addr, $data);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testWriteCRC
+    *
+    * @return array
+    */
+    public static function dataWriteCRC()
+    {
+        return array(
+            // Everything works
+            array(
+                "0102",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0102",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "0102",
+                    )
+                ),
+                true,
+            ),
+            // Wrong value written
+            array(
+                "0102",
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0103",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "0102",
+                    )
+                ),
+                false,
+            ),
+            // No Reply
+            array(
+                "0102",
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "0102",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "0102",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "0102",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "0102",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $crc     The CRC to write
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteCRC
+    */
+    function testWriteCRC(
+        $crc, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->writeCRC($crc);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testReadCRC
+    *
+    * @return array
+    */
+    public static function dataReadCRC()
+    {
+        return array(
+            // Everything works
+            array(
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0102",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_READCRC,
+                    )
+                ),
+                "0102",
+            ),
+            // No Reply
+            array(
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_READCRC,
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_READCRC,
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_READCRC,
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataReadCRC
+    */
+    function testReadCRC(
+        $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->readCRC();
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testRunBootloader
+    *
+    * @return array
+    */
+    public static function dataRunBootloader()
+    {
+        return array(
+            // Everything works
+            array(
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_RUNBOOTLOADER,
+                    )
+                ),
+                true,
+                0,
+            ),
+            array(
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_RUNBOOTLOADER,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_RUNBOOTLOADER,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => DeviceDriverLoadableBase::COMMAND_RUNBOOTLOADER,
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The timeout to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRunBootloader
+    */
+    function testRunBootloader($devID, $read, $write, $expect, $timeout = 0)
+    {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->runBootloader();
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testRunApplication
+    *
+    * @return array
+    */
+    public static function dataRunApplication()
+    {
+        return array(
+            // Everything works
+            array(
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                    )
+                ),
+                true,
+            ),
+            array(
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The timeout to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRunApplication
+    */
+    function testRunApplication($devID, $read, $write, $expect, $timeout=0)
+    {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->runApplication();
         $this->assertSame($write, $this->socket->writeString, "Write string wrong");
         $this->assertSame($expect, $ret, "Return value is wrong");
     }
@@ -439,6 +820,57 @@ class TestDeviceLoadable extends DeviceDriverLoadableBase
     {
         parent::__construct($obj, $string);
         $this->fromString($string);
+    }
+    /**
+    * Programs a page of flash
+    *
+    * Due to the nature of flash, $Val must contain the data for
+    * a whole page of flash.
+    *
+    * @param int    $addr The start address of this block
+    * @param string $data The data to program into E2 as a hex string
+    *
+    * @return true on success, false on failure
+    */
+    public function writeFlash($addr, $data)
+    {
+        return parent::writeFlash($addr, $data);
+    }
+    /**
+    * Programs a block of E2
+    *
+    * This function won't let locations 0-9 be written.  They are reserved for the
+    * serial number and shouldn't be overwritten
+    *
+    * @param int    $addr The start address of this block
+    * @param string $data The data to program into E2 as a hex string
+    *
+    * @return true on success, false on failure
+    */
+    public function writeE2($addr, $data)
+    {
+        return parent::writeE2($addr, $data);
+    }
+    /**
+    * Gets the CRC of the data
+    *
+    * @return The CRC on success, false on failure
+    */
+    public function readCRC()
+    {
+        return parent::readCRC();
+    }
+
+    /**
+    * Gets the CRC of the data
+    *
+    * @param string $crc The CRC to write
+    *
+    * @return The CRC on success, false on failure
+    */
+    public function writeCRC($crc)
+    {
+        return parent::writeCRC($crc);
     }
 
 }

@@ -57,9 +57,6 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 class E00392100Device extends DeviceDriverLoadableBase
     implements DeviceDriverInterface
 {
-    /** This command runs the boot loader, crashing the running program */
-    const COMMAND_RUNBOOTLOADER = "09";
-
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00392100",
@@ -73,11 +70,6 @@ class E00392100Device extends DeviceDriverLoadableBase
                 "0039-21-02-A" => "DEFAULT",
             ),
         ),
-    );
-    /** @var This is what our targets are for the various hardware part numbers */
-    protected $HWTargets = array(
-        "0039-21-01-A" => "atmega16",
-        "0039-21-02-A" => "atmega324p",
     );
     /**
     * Builds the class
@@ -106,8 +98,17 @@ class E00392100Device extends DeviceDriverLoadableBase
     {
         $ret = $this->readConfig();
         if ($ret) {
+            if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
+                // Reset config time so this device is checked again.
+                $this->readTimeReset();
+                // Wrong Driver  We should exit with a failure
+                $ret = false;
+            }
+        }
+        if ($ret) {
             $this->_setFirmware();
-            if ($this->myFirmware->compareVersion($this->myDriver->FWVersion) < 0) {
+            $ver = $this->myFirmware->compareVersion($this->myDriver->FWVersion);
+            if ($ver < 0) {
                 // Crash the running program so the board can be reloaded
                 $this->runBootloader();
                 // This is because the program needs to be reloaded.  It can
@@ -122,30 +123,12 @@ class E00392100Device extends DeviceDriverLoadableBase
     *
     * @return bool True on success, False on failure
     */
-    public function runBootloader()
-    {
-        $pkt = new PacketContainer(array(
-            "To" => $this->myDriver->DeviceID,
-            "Command" => self::COMMAND_RUNBOOTLOADER,
-            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
-            "GetReply" => false,
-        ));
-        $pkt->send();
-        return false;
-    }
-    /**
-    * Reads the setup out of the device
-    *
-    * @return bool True on success, False on failure
-    */
     private function _setFirmware()
     {
         $this->myFirmware->fromArray(
             array(
                 "HWPartNum" => $this->myDriver->HWPartNum,
                 "FWPartNum" => $this->myDriver->FWPartNum,
-                "Version" => $this->myDriver->FWVersion,
-                "Target" => $this->HWTargets[$this->myDriver->HWPartNum],
             )
         );
         $this->myFirmware->getLatest();

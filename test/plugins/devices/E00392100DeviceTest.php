@@ -195,6 +195,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "FWVersion" => "0.0.9",
+                    "Driver" => "e00392100",
                 ),
                 "000025",
                 "000000002500392101410039200143000009FFFFFF50",
@@ -237,6 +238,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "FWVersion" => "0.0.9",
+                    "Driver" => "e00392100",
                 ),
                 "000025",
                 "000000002500392101410039200143000009FFFFFF50",
@@ -259,6 +261,43 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "Data" => "",
                 )),
                 true,
+            ),
+            array(
+                array(
+                    array(
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "0.0.8",
+                        "Target" => "atmega16",
+                    ),
+                ),
+                array(
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "FWVersion" => "0.0.9",
+                    "Driver" => "e00392101",
+                ),
+                "000025",
+                "000000002500392101410039200643000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200643000009FFFFFF50",
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200643000009FFFFFF50",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Data" => "",
+                )),
+                false,
             ),
             array(
                 array(),

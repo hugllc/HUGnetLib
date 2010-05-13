@@ -334,6 +334,422 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame(0, $this->d->params->DriverInfo["LastPoll"]);
         $this->assertSame(0, $this->d->params->DriverInfo["PollFail"]);
     }
+    /**
+    * data provider for testSendPkt
+    *
+    * @return array
+    */
+    public static function dataSendPkt()
+    {
+        return array(
+            // Everything works
+            array(
+                PacketContainer::COMMAND_READFLASH,
+                "010203040506",
+                true,
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "060504030201",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "010203040506",
+                    )
+                ),
+                "060504030201",
+            ),
+            // reply not expected
+            array(
+                PacketContainer::COMMAND_READFLASH,
+                "010203040506",
+                false,
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "010203040506",
+                    )
+                ),
+                true,
+            ),
+            // No Reply
+            array(
+                PacketContainer::COMMAND_READFLASH,
+                "000020",
+                true,
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $command The address to write to
+    * @param string $data    The hexified data string to send to it
+    * @param bool   $reply   Whether to expect a reply or not
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataSendPkt
+    */
+    function testSendPkt(
+        $command, $data, $reply, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->sendPkt($command, $data, $reply);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testReadFlash
+    *
+    * @return array
+    */
+    public static function dataReadFlash()
+    {
+        return array(
+            // Everything works
+            array(
+                10,
+                6,
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000A06",
+                    )
+                ),
+                "010203040506",
+            ),
+            // No Reply
+            array(
+                0,
+                32,
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "000020",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $addr    The address to write to
+    * @param int    $length  The hexified data string to send to it
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataReadFlash
+    */
+    function testReadFlash(
+        $addr, $length, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->readFlash($addr, $length);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testReadSRAM
+    *
+    * @return array
+    */
+    public static function dataReadSRAM()
+    {
+        return array(
+            // Everything works
+            array(
+                10,
+                6,
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READSRAM,
+                        "Data" => "000A06",
+                    )
+                ),
+                "010203040506",
+            ),
+            // No Reply
+            array(
+                0,
+                32,
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READSRAM,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READSRAM,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READSRAM,
+                        "Data" => "000020",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $addr    The address to write to
+    * @param int    $length  The hexified data string to send to it
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSRAM
+    */
+    function testReadSRAM(
+        $addr, $length, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->readSRAM($addr, $length);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
+    /**
+    * data provider for testReadE2
+    *
+    * @return array
+    */
+    public static function dataReadE2()
+    {
+        return array(
+            // Everything works
+            array(
+                10,
+                6,
+                "000123",
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READE2,
+                        "Data" => "000A06",
+                    )
+                ),
+                "010203040506",
+            ),
+            // No Reply
+            array(
+                0,
+                32,
+                "000123",
+                "",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READE2,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READE2,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "000020",
+                    )
+                )
+                .(string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READE2,
+                        "Data" => "000020",
+                    )
+                ),
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int    $addr    The address to write to
+    * @param int    $length  The hexified data string to send to it
+    * @param string $devID   The deviceID to use
+    * @param string $read    The read string
+    * @param string $write   The write string
+    * @param bool   $expect  The expected return value
+    * @param int    $timeout The packet timeout to use.  0 == default
+    *
+    * @return null
+    *
+    * @dataProvider dataReadE2
+    */
+    function testReadE2(
+        $addr, $length, $devID, $read, $write, $expect, $timeout = 0
+    ) {
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DeviceID = $devID;
+        $this->socket->readString = $read;
+        $ret = $this->o->readE2($addr, $length);
+        $this->assertSame($write, $this->socket->writeString, "Write string wrong");
+        $this->assertSame($expect, $ret, "Return value is wrong");
+    }
 
 }
 /**
@@ -393,7 +809,56 @@ class TestDevice extends DeviceDriverBase
     {
         return parent::readCalibration();
     }
+    /**
+    * reads a block of flash
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    public function readSRAM($addr, $length)
+    {
+        return parent::readSRAM($addr, $length);
+    }
+    /**
+    * reads a block of flash
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    public function readFlash($addr, $length)
+    {
+        return parent::readFlash($addr, $length);
+    }
 
+    /**
+    * Reads a block of E2
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    public function readE2($addr, $length)
+    {
+        return parent::readE2($addr, $length);
+    }
+    /**
+    * Deals with memory.  This will read and write to any type of memory
+    *
+    * @param string $command The command to use
+    * @param string $data    The data to use
+    * @param bool   $reply   Wait for a reply
+    *
+    * @return true on success, false on failure
+    */
+    public function sendPkt($command, $data = "", $reply = true)
+    {
+        return parent::sendPkt($command, $data, $reply);
+    }
 }
 
 ?>

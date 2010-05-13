@@ -71,6 +71,11 @@ class E00392101Device extends DeviceDriverLoadableBase
             ),
         ),
     );
+    /** @var This is what our targets are for the various hardware part numbers */
+    protected $FWPartNum = array(
+        "0039-21-01-A" => "0039-20-01-C",
+        "0039-21-02-A" => "0039-20-14-C",
+    );
     /**
     * Builds the class
     *
@@ -84,6 +89,96 @@ class E00392101Device extends DeviceDriverLoadableBase
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 0;
         $this->fromString($string);
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * After we get the setup we try to load the program and try to run it.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetup()
+    {
+        $ret = $this->readConfig();
+        if ($ret) {
+            if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
+                // Reset config time so this device is checked again.
+                $this->readTimeReset();
+                // Wrong Driver  We should exit with a failure
+                $ret = false;
+            } else {
+                $ret = $this->writeProgram();
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Writes the program into the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function writeProgram()
+    {
+        $this->_setFirmware();
+        $ret = $this->writeCode();
+        if ($ret) {
+            $ret = $this->writeData();
+        }
+        if ($ret) {
+            $ret = $this->runApplication();
+        }
+        if ($ret) {
+            $this->logError(
+                "LAODPROG",
+                "Device ".$this->myDriver->DeviceID." has been loaded with "
+                .$this->myFirmware->FWPartNum." v".$this->myFirmware->Version.".",
+                ErrorTable::SEVERITY_NOTICE,
+                __METHOD__
+            );
+        }
+        return $ret;
+    }
+    /**
+    * Writes the code into the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function writeCode()
+    {
+        $code = $this->myFirmware->getCode("FF");
+        $size = strlen($code)/2;
+        $pageSize = $this->myDriver->DriverInfo["FLASHPAGE"];
+        $code = str_split($code, $pageSize*2);
+        foreach ($code as $page => $data) {
+            $data = str_pad($data, $pageSize*2, "FF");
+            $addr = $page * $pageSize;
+            $ret = $this->writeFlash($addr, $data);
+            if ($ret === false) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+    * Writes the data into the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function writeData()
+    {
+        $code = $this->myFirmware->getData("FF");
+        $size = strlen($code)/2;
+        $pageSize = $this->myDriver->DriverInfo["FLASHPAGE"];
+        $code = str_split($code, $pageSize*2);
+        foreach ($code as $page => $data) {
+            $data = str_pad($data, $pageSize*2, "FF");
+            $addr = $page * $pageSize;
+            $ret = $this->writeE2($addr, $data);
+            if ($ret === false) {
+                return false;
+            }
+        }
+        return true;
     }
     /**
     * Creates the object from a string
@@ -107,6 +202,21 @@ class E00392101Device extends DeviceDriverLoadableBase
         }
         $this->Info["PAGES"] = $this->Info["FLASH"]/$this->Info["FLASHPAGE"];
         $this->Info["CRC"] = strtoupper(substr($string, 18, 4));
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    private function _setFirmware()
+    {
+        $this->myFirmware->fromArray(
+            array(
+                "HWPartNum" => $this->myDriver->HWPartNum,
+                "FWPartNum" => $this->FWPartNum[$this->myDriver->HWPartNum],
+            )
+        );
+        $this->myFirmware->getLatest();
     }
 }
 

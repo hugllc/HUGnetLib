@@ -156,17 +156,11 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     {
         // Save the time.
         $this->data["LastConfig"] = time();
-        // Build the packet
-        $pkt = new PacketContainer(array(
-            "To" => $this->myDriver->DeviceID,
-            "Command" => PacketContainer::COMMAND_GETSETUP,
-            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
-        ));
-        // send the packet
-        $pkt->send();
-        if (is_object($pkt->Reply)) {
-            $this->myDriver->fromString($pkt->Reply->Data);
-            $this->myDriver->LastConfig = $pkt->Reply->Date;
+        // Send the packet out
+        $ret = $this->sendPkt(PacketContainer::COMMAND_GETSETUP);
+        if (is_string($ret)) {
+            $this->myDriver->fromString($ret);
+            $this->myDriver->LastConfig = date("Y-m-d H:i:s");
             $this->data["ConfigFail"] = 0;
             return true;
         }
@@ -182,18 +176,109 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     */
     protected function readCalibration()
     {
-        $pkt = new PacketContainer(array(
-            "To" => $this->myDriver->DeviceID,
-            "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-            "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
-        ));
-        $pkt->send();
-        if (is_object($pkt->Reply)) {
-            $this->myDriver->params->Raw["Calibration"] = $pkt->Reply->Data;
-            $this->myDriver->sensors->fromCalString($pkt->Reply->Data);
+        $ret = $this->sendPkt(PacketContainer::COMMAND_GETCALIBRATION);
+        if (is_string($ret)) {
+            $this->myDriver->params->Raw["Calibration"] = $ret;
+            $this->myDriver->sensors->fromCalString($ret);
             return true;
         }
         return false;
+    }
+    /**
+    * Deals with memory.  This will read and write to any type of memory
+    *
+    * @param int    $addr    The start address of this block
+    * @param string $data    The data to program into E2 as a hex string
+    * @param string $command The command to use
+    *
+    * @return true on success, false on failure
+    */
+    protected function memPage($addr, $data, $command)
+    {
+        return $this->sendPkt(
+            $command,
+            $this->stringSize(dechex(($addr>>8) & 0xFF), 2)
+            .$this->stringSize(dechex($addr & 0xFF), 2)
+            .$data
+        );
+    }
+    /**
+    * Deals with memory.  This will read and write to any type of memory
+    *
+    * @param string $command The command to use
+    * @param string $data    The data to use
+    * @param bool   $reply   Wait for a reply
+    *
+    * @return true on success, false on failure
+    */
+    protected function sendPkt($command, $data = "", $reply = true)
+    {
+        $pkt = new PacketContainer(
+            array(
+                "To"       => $this->myDriver->DeviceID,
+                "Command"  => $command,
+                "Data"     => $data,
+                "GetReply" => $reply,
+                "Timeout"  => $this->myDriver->DriverInfo["PacketTimeout"],
+            )
+        );
+        $ret = $pkt->send();
+        if ($reply === false) {
+            return $ret;
+        } else if (is_object($pkt->Reply)) {
+            return $pkt->Reply->Data;
+        }
+        return false;
+    }
+    /**
+    * reads a block of flash
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    protected function readSRAM($addr, $length)
+    {
+        return $this->memPage(
+            $addr,
+            $this->stringSize(dechex($length), 2),
+            PacketContainer::COMMAND_READSRAM
+        );
+    }
+    /**
+    * reads a block of flash
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    protected function readFlash($addr, $length)
+    {
+        return $this->memPage(
+            $addr,
+            $this->stringSize(dechex($length), 2),
+            PacketContainer::COMMAND_READFLASH
+        );
+    }
+
+    /**
+    * Reads a block of E2
+    *
+    * @param int $addr   The start address of this block
+    * @param int $length The length to read.  0-255
+    *
+    * @return true on success, false on failure
+    */
+    protected function readE2($addr, $length)
+    {
+
+        return $this->memPage(
+            $addr,
+            $this->stringSize(dechex($length), 2),
+            PacketContainer::COMMAND_READE2
+        );
     }
 
     /**

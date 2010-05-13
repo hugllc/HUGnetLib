@@ -408,5 +408,62 @@ class FirmwareTable extends HUGnetDBTable
             $this->data["filename"] = trim($value);
         }
     }
+    /**
+    * Changes an SREC source into a raw memory buffer
+    *
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
+    *
+    * @return string The raw memory buffer
+    */
+    public function getCode($empty="FF")
+    {
+        return $this->_interpSREC($this->Code);
+    }
+    /**
+    * Changes an SREC source into a raw memory buffer
+    *
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
+    *
+    * @return string The raw memory buffer
+    */
+    public function getData($empty="FF")
+    {
+        return $this->_interpSREC($this->Data);
+    }
+    /**
+    * Changes an SREC source into a raw memory buffer
+    *
+    * @param string $srec  The S record to change.
+    * @param string $empty This is what a byte looks like when it is
+    *    erased.  The default is for flash memory (FF);
+    *
+    * @return string The raw memory buffer
+    */
+    private function _interpSREC($srec, $empty="FF")
+    {
+        // Put the srec into the buffer
+        $srec = explode("\n", $srec);
+        foreach ((array)$srec as $rec) {
+            if (substr($rec, 0, 2) == "S1") {
+                // Set up all the stuff to put into the buffer
+                $size  = hexdec(substr($rec, 2, 2));
+                $size -= 3;
+                $addr  = hexdec(substr($rec, 4, 4));
+                $data  = substr($rec, 8, ($size*2));
+                // Make sure the buffer is big enough for the data
+                $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
+                // Put the data into the buffer
+                $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
+            }
+        }
+        // remove the extra
+        while (substr($buffer, -2) == $empty) {
+            $buffer = substr($buffer, 0, -2);
+        }
+        // return the buffer
+        return $buffer;
+    }
 }
 ?>

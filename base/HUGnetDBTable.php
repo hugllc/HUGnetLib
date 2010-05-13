@@ -221,7 +221,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function updateRow($columns = array())
     {
-        if ($this->default == $this->data) {
+        if ($this->isEmpty()) {
             return false;
         }
         $ret = $this->myDriver->updateOnce($this->toDB(), "", array(), $columns);
@@ -255,7 +255,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function deleteRow()
     {
-        if ($this->default == $this->data) {
+        if ($this->isEmpty()) {
             return false;
         }
         $ret = $this->myDriver->deleteWhere($this->toDB());

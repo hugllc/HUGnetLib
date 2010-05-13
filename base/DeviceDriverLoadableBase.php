@@ -56,6 +56,15 @@ require_once dirname(__FILE__).'/../tables/FirmwareTable.php';
 abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     implements DeviceDriverInterface
 {
+    /** The placeholder for the Read CRC command */
+    const COMMAND_READCRC = "06";
+    /** The placeholder for the Read CRC command */
+    const COMMAND_WRITECRC = "07";
+    /** This command runs the application */
+    const COMMAND_RUNAPPLICATION = "08";
+    /** This command runs the boot loader, crashing the running program */
+    const COMMAND_RUNBOOTLOADER = "09";
+
     /** @var This is our firmware interface */
     protected $myFirmware = null;
     /**
@@ -121,20 +130,10 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     *
     * @return true on success, false on failure
     */
-    function writeFlashPage($addr, $data)
+    protected function writeFlash($addr, $data)
     {
-        $pkt = new PacketContainer(
-            array(
-                "To"      => $this->myDriver->DeviceID,
-                "Command" => PacketContainer::COMMAND_WRITEFLASH,
-                "Data"    => $this->stringSize(dechex(($addr>>8) & 0xFF), 2)
-                            .$this->stringSize(dechex($addr & 0xFF), 2)
-                            .$data,
-                "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
-            )
-        );
-        $pkt->send();
-        return (is_object($pkt->Reply) && ($pkt->Reply->Data == $pkt->Data));
+        $ret = $this->memPage($addr, $data, PacketContainer::COMMAND_WRITEFLASH);
+        return ($ret === $data);
     }
 
     /**
@@ -148,7 +147,7 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     *
     * @return true on success, false on failure
     */
-    function writeE2Page($addr, $data)
+    protected function writeE2($addr, $data)
     {
 
         // Protect the first 10 bytes of E2
@@ -156,18 +155,52 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
             $data = substr($data, (20 - (2*$addr)));
             $addr = 10;
         }
-        $pkt = new PacketContainer(
-            array(
-                "To"      => $this->myDriver->DeviceID,
-                "Command" => PacketContainer::COMMAND_WRITEE2,
-                "Data"    => $this->stringSize(dechex(($addr>>8) & 0xFF), 2)
-                            .$this->stringSize(dechex($addr & 0xFF), 2)
-                            .$data,
-                "Timeout" => $this->myDriver->DriverInfo["PacketTimeout"],
-            )
-        );
-        $pkt->send();
-        return (is_object($pkt->Reply) && ($pkt->Reply->Data == $pkt->Data));
+        $ret = $this->memPage($addr, $data, PacketContainer::COMMAND_WRITEE2);
+        return ($ret === $data);
+    }
+    /**
+    * Gets the CRC of the data
+    *
+    * @return The CRC on success, false on failure
+    */
+    protected function readCRC()
+    {
+        return $this->sendPkt(self::COMMAND_READCRC);
+    }
 
+    /**
+    * Gets the CRC of the data
+    *
+    * @param string $crc The CRC to write
+    *
+    * @return The CRC on success, false on failure
+    */
+    protected function writeCRC($crc)
+    {
+        $ret = $this->sendPkt(
+            self::COMMAND_WRITECRC,
+            $this->stringSize($crc, 4)
+        );
+        return ($ret == $crc);
+    }
+    /**
+    * Runs the application
+    *
+    * @return bool true on success, false on failure
+    */
+    function runApplication()
+    {
+        $ret = $this->sendPkt(self::COMMAND_RUNAPPLICATION, "");
+        return is_string($ret);
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function runBootloader()
+    {
+        $ret = $this->sendPkt(self::COMMAND_RUNBOOTLOADER, "");
+        return is_string($ret);
     }
 }

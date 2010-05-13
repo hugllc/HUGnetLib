@@ -143,7 +143,9 @@ class DeviceConfig extends ProcessBase
             HUGnetClass::VPRINT_NORMAL
         );
         // Log an error for every 10 failures
-        if (($dev->params->DriverInfo["ConfigFail"] % 10) == 0) {
+        if ((($dev->params->DriverInfo["ConfigFail"] % 10) == 0)
+            && ($dev->params->DriverInfo["ConfigFail"] > 0)
+        ) {
             $this->logError(
                 "NOCONFIG",
                 "Device ".$dev->DeviceID." is has failed "
