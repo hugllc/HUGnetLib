@@ -96,6 +96,25 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
 
 
     /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testLoadable()
+    {
+        $this->assertFalse($this->o->loadable());
+    }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testGateway()
+    {
+        $this->assertFalse($this->o->gateway());
+    }
+
+    /**
     * data provider for testReadSetup, testReadConfig
     *
     * @return array
@@ -131,25 +150,6 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
-    * test the loadable routine.
-    *
-    * @return null
-    */
-    public function testLoadable()
-    {
-        $this->assertFalse($this->o->loadable());
-    }
-    /**
-    * test the loadable routine.
-    *
-    * @return null
-    */
-    public function testGateway()
-    {
-        $this->assertFalse($this->o->gateway());
-    }
-
-    /**
     * test the set routine when an extra class exists
     *
     * @param string $id     The Device ID to pretend to be
@@ -165,7 +165,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public function testReadSetup($id, $string, $read, $write, $expect)
     {
         $this->d->DeviceID = $id;
-        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->d->DriverInfo["PacketTimeout"] = 2;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");

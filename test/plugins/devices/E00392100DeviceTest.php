@@ -338,7 +338,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
             $this->d->$key = $val;
         }
         $this->d->DeviceID = $id;
-        $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
