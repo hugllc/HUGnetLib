@@ -162,7 +162,7 @@ class DevicePoll extends ProcessBase
     *
     * @return string
     */
-    protected function unsolicited(PacketContainer &$pkt)
+    public function packetConsumer(PacketContainer &$pkt)
     {
         // Be verbose
         self::vprint(

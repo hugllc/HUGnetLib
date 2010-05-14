@@ -117,7 +117,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     {
         // Set up our hooks
         $this->myConfig->hooks->registerHook("UnsolicitedPacket", $this);
-        $this->myConfig->hooks->registerHook("myPacket", $this);
+        $this->myConfig->hooks->registerHook("myPacket", $this->myDevice);
     }
     /**
     * Requires a gatewaykey to continue
@@ -179,38 +179,6 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     * @return string
     */
     public function packetConsumer(PacketContainer &$pkt)
-    {
-        if ($pkt->toMe()) {
-            $this->toMe($pkt);
-        } else if ($pkt->unsolicited()) {
-            $this->unsolicited($pkt);
-        }
-    }
-    /**
-    * This deals with Packets to me
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    protected function toMe(PacketContainer &$pkt)
-    {
-        if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
-            $pkt->reply((string)$this->myDevice);
-        } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
-            || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
-        ) {
-            $pkt->reply($pkt->Data);
-        }
-    }
-    /**
-    * This deals with Unsolicited Packets
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    protected function unsolicited(PacketContainer &$pkt)
     {
     }
     /**

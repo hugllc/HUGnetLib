@@ -86,6 +86,8 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
         $this->d = new DeviceContainer(
             array(
                 "DeviceID"   => "000019",
+                "HWPartNum"  => "0039-26-02-P",
+                "FWPartNum"  => "0039-26-02-P",
             )
         );
         $this->o = new PeriodicSync($data, $this->d);

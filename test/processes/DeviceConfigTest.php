@@ -81,6 +81,8 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         $this->d = new DeviceContainer(
             array(
                 "DeviceID"   => "000019",
+                "HWPartNum"  => "0039-26-06-P",
+                "FWPartNum"  => "0039-26-06-P",
             )
         );
         $this->o = new DeviceConfig(array(), $this->d);
@@ -468,48 +470,6 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 "",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "5C",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A0112345600001916000000000000000000000000000000000000"
-                    ."FFFFFF50D1",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "03",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A01123456000019040102030468",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "02",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A01123456000019040102030468",
             ),
         );
     }

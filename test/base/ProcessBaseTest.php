@@ -120,6 +120,15 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $o = new ProcessBaseClassTest(array(), $this->d);
     }
     /**
+    * Tests for exceptions
+    *
+    * @return null
+    */
+    public function testPacketConsumer()
+    {
+        $this->o->packetConsumer(new PacketContainer());
+    }
+    /**
     * data provider for testConstructor
     *
     * @return array
@@ -212,99 +221,6 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataPacketConsumer()
-    {
-        return array(
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000000",
-                    "From" => "123456",
-                    "Command" => "5C",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "5C",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A0112345600001916000000000000000000000000000000000000"
-                    ."FFFFFF50D1",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "03",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A01123456000019040102030468",
-            ),
-            array(
-                array(
-                ),
-                array(
-                    "To" => "000019",
-                    "From" => "123456",
-                    "Command" => "02",
-                    "Data" => "01020304",
-                    "group" => "default",
-                ),
-                array(
-                ),
-                "5A5A5A01123456000019040102030468",
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload The data to preload into the devices table
-    * @param string $pkt     The packet string to use
-    * @param string $expect  The expected return
-    * @param string $write   The packet string expected to be written
-    *
-    * @return null
-    *
-    * @dataProvider dataPacketConsumer
-    */
-    public function testPacketConsumer($preload, $pkt, $expect, $write)
-    {
-        $d = new DeviceContainer();
-        foreach ((array)$preload as $load) {
-            $d->fromArray($load);
-            $d->insertRow(true);
-        }
-        $p = new PacketContainer($pkt);
-        $this->o->packetConsumer($p);
-        $stmt = $this->pdo->query("SELECT * FROM `devices`");
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->assertSame($expect, $rows);
-        $this->assertSame($write, $this->socket->writeString);
-
-    }
-    /**
-    * data provider for testPacketConsumer
-    *
-    * @return array
-    */
     public static function dataWait()
     {
         return array(
@@ -320,19 +236,6 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 true,
                 "",
                 "",
-                null,
-            ),
-            array(
-                2,
-                true,
-                (string)new PacketContainer(array(
-                    "From" => "123456",
-                    "To" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "0102030405",
-                )),
-                "5A5A5A0112345600001916000000000000000000000000000000000000"
-                    ."FFFFFF50D1",
                 null,
             ),
         );

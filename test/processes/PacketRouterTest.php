@@ -93,6 +93,8 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         $this->d = new DeviceContainer(
             array(
                 "DeviceID"   => "000019",
+                "HWPartNum"  => "0039-26-04-P",
+                "FWPartNum"  => "0039-26-04-P",
             )
         );
 

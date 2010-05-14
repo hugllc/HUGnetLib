@@ -877,6 +877,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     public function query($query = "", $data = array())
     {
         $pdo = $this->pdo->prepare($query);
+        $res = false;
         if (is_object($pdo)) {
             if ($pdo->execute($data)) {
                 $res = $pdo->fetchAll(PDO::FETCH_ASSOC);

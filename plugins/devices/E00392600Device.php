@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class E00392601Device extends DeviceDriverBase
+class E00392600Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
     /** @var int The job number for polling */
@@ -73,11 +73,12 @@ class E00392601Device extends DeviceDriverBase
     const JOB_CHECK    = 7;
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "e00392601",
+        "Name" => "e00392600",
         "Type" => "device",
-        "Class" => "E00392601Device",
+        "Class" => "E00392600Device",
         "Devices" => array(
             "DEFAULT" => array(
+                "0039-26-00-P" => "DEFAULT",
                 "0039-26-01-P" => "DEFAULT",
                 "0039-26-02-P" => "DEFAULT",
                 "0039-26-03-P" => "DEFAULT",
@@ -91,7 +92,7 @@ class E00392601Device extends DeviceDriverBase
     /** @var array These define what jobs this driver might see */
     protected $jobs = array(
         self::JOB_POLL     => "Poll",
-        self::JOB_SYNC => "Sync",
+        self::JOB_SYNC     => "Sync",
         self::JOB_ANALYSIS => "Analysis",
         self::JOB_ENDPOINT => "Endpoint",
         self::JOB_CONTROL  => "Control",
@@ -227,6 +228,38 @@ class E00392601Device extends DeviceDriverBase
         }
         // Accounts for failures
         return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
+    }
+    /**
+    * Consumes packets and returns some stuff.
+    *
+    * This function deals with setup and ping requests
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        $this->pktSetupEcho($pkt);
+    }
+    /**
+    * This deals with Packets to me
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    protected function pktSetupEcho(PacketContainer &$pkt)
+    {
+        if ($pkt->toMe()) {
+            if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
+                $pkt->reply((string)$this->myDriver);
+            } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
+                || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
+            ) {
+                $pkt->reply($pkt->Data);
+            }
+        }
     }
 
 }

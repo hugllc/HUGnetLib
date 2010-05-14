@@ -37,7 +37,7 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
+require_once dirname(__FILE__).'/../../../plugins/devices/E00392800Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
 require_once dirname(__FILE__).'/../../../containers/PacketContainer.php';

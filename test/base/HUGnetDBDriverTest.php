@@ -1691,6 +1691,60 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                     ),
                 ),
             ),
+            array(
+                "SELECT * FROM `badTable` WHERE id = ?",
+                array(-5),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
+            array(
+                "SELECT * FROM `myTable` WHERE id = ?",
+                array(-10, 11, 12),
+                false,
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+            ),
         );
     }
     /**

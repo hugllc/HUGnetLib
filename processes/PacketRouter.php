@@ -161,7 +161,7 @@ class PacketRouter extends ProcessBase
                         $pkt->group." -> Me ".$this->_output($pkt),
                         HUGnetClass::VPRINT_NORMAL
                     );
-                    $this->toMe($pkt);
+                    $this->myDevice->packetConsumer($pkt);
                 } else {
                     $this->_setRoute($pkt);
                     $this->send($pkt);

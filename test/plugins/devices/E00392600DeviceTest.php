@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../../plugins/devices/E00392601Device.php';
+require_once dirname(__FILE__).'/../../../plugins/devices/E00392600Device.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
 
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392601DeviceTest extends DevicePluginTestBase
+class E00392600DeviceTest extends DevicePluginTestBase
 {
 
     /**
@@ -76,9 +76,12 @@ class E00392601DeviceTest extends DevicePluginTestBase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
-        $this->o = new E00392601Device($this->d);
+        $this->pdo = &$this->config->servers->getPDO();
+        $this->d = new DummyDeviceContainer();
+        $this->d->DeviceID = "000019";
+        $this->o = new E00392600Device($this->d);
     }
 
     /**
@@ -111,7 +114,7 @@ class E00392601DeviceTest extends DevicePluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00392601Device"),
+            array("E00392600Device"),
         );
     }
     /**
@@ -235,6 +238,99 @@ class E00392601DeviceTest extends DevicePluginTestBase
         $this->d->LastConfig = $lastConfig;
         $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testPacketConsumer
+    *
+    * @return array
+    */
+    public static function dataPacketConsumer()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "5C",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A0112345600001916000000000100392601500039260150010203"
+                    ."FFFFFF1090",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "03",
+                    "Data" => "01020304",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A01123456000019040102030468",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => "02",
+                    "Data" => "01020304",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A01123456000019040102030468",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The data to preload into the devices table
+    * @param string $pkt     The packet string to use
+    * @param string $expect  The expected return
+    * @param string $write   The packet string expected to be written
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketConsumer
+    */
+    public function testPacketConsumer($preload, $pkt, $expect, $write)
+    {
+        $d = new DeviceContainer();
+        foreach ((array)$preload as $load) {
+            $d->fromArray($load);
+            $d->insertRow(true);
+        }
+        $p = new PacketContainer($pkt);
+        $this->o->packetConsumer($p);
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+        $this->assertSame($write, $this->socket->writeString);
+
     }
 
 }
