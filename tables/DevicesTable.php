@@ -210,12 +210,12 @@ class DevicesTable extends HUGnetDBTable
         ),
         "sensors" => array(
             "Name" => "sensors",
-            "Type" => "text",
+            "Type" => "longtext",
             "Default" => '',
         ),
         "params" => array(
             "Name" => "params",
-            "Type" => "text",
+            "Type" => "longtext",
             "Default" => '',
         ),
     );
