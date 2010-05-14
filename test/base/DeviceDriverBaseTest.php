@@ -138,6 +138,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
                 true,
+                0,
             ),
             array(
                 "000025",
@@ -146,30 +147,93 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 "5A5A5A5C00002500002000595A5A5A5C0000250000200059"
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
                 false,
+                1,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id     The Device ID to pretend to be
-    * @param string $string The string for the dummy device to return
-    * @param string $read   The read string to put in
-    * @param string $write  The write string expected
-    * @param string $expect The expected return
+    * @param string $id      The Device ID to pretend to be
+    * @param string $string  The string for the dummy device to return
+    * @param string $read    The read string to put in
+    * @param string $write   The write string expected
+    * @param string $expect  The expected return
+    * @param int    $timeout The timeout to use
     *
     * @return null
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadSetup($id, $string, $read, $write, $expect)
+    public function testReadSetup($id, $string, $read, $write, $expect, $timeout)
     {
         $this->d->DeviceID = $id;
-        $this->d->DriverInfo["PacketTimeout"] = 2;
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
+    }
+    /**
+    * data provider for testReadData
+    *
+    * @return array
+    */
+    public static function dataReadData()
+    {
+        return array(
+            array(
+                "000025",
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "010203040506070809",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETDATA,
+                    "Data" => "",
+                )),
+                true,
+                0,
+            ),
+            array(
+                "000025",
+                "000000000100392601500039260150010203FFFFFF10",
+                "",
+                "5A5A5A5500002500002000505A5A5A550000250000200050"
+                    ."5A5A5A0300002500002000065A5A5A550000250000200050",
+                false,
+                1,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id      The Device ID to pretend to be
+    * @param string $string  The string for the dummy device to return
+    * @param string $read    The read string to put in
+    * @param string $write   The write string expected
+    * @param string $expect  The expected return
+    * @param int    $timeout The timeout to use
+    *
+    * @return null
+    *
+    * @dataProvider dataReadData
+    */
+    public function testReadData($id, $string, $read, $write, $expect, $timeout)
+    {
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->socket->readString = $read;
+        $ret = $this->o->readData();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        //$this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
     }
 
@@ -300,11 +364,51 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
-    * data provider for testReadTimeReset
+    * data provider for testReadDataTime
     *
     * @return array
     */
-    public static function dataReadTimeReset()
+    public static function dataReadDataTime()
+    {
+        return array(
+            array(date("Y-m-d H:i:s"), array(), 100, false),
+            array("2004-01-01 00:00:00", array(), 10, true),
+            array("2004-01-01 00:00:00", array(), 0, false),
+            array(date("Y-m-d H:i:s", time()-3600), array(), 10, true),
+            array(
+                date("Y-m-d H:i:s", time()-86400),
+                array("PollFail" => 60, "LastPoll" => time()),
+                12,
+                false,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $lastPoll The last config date
+    * @param array  $persist  The persistant information from the driver
+    * @param int    $interval The second version
+    * @param bool   $expect   What to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataReadDataTime
+    */
+    function testReadDataTime($lastPoll, $persist, $interval, $expect)
+    {
+        $this->d->params->DriverInfo = $persist;
+        $this->d->LastPoll = $lastPoll;
+        $this->d->PollInterval = $interval;
+        $ret = $this->o->readDataTime();
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * data provider for testReadSetupTimeReset
+    *
+    * @return array
+    */
+    public static function dataReadSetupTimeReset()
     {
         return array(
             array(date("Y-m-d H:i:s"), array()),
@@ -320,16 +424,45 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataReadTimeReset
+    * @dataProvider dataReadSetupTimeReset
     */
-    function testReadTimeReset($lastConfig, $persist)
+    function testReadSetupTimeReset($lastConfig, $persist)
     {
         $this->d->params->DriverInfo = $persist;
         $this->d->LastConfig = $lastConfig;
-        $this->o->readTimeReset();
+        $this->o->readSetupTimeReset();
         $this->assertSame("1970-01-01 00:00:00", $this->d->LastConfig);
         $this->assertSame(0, $this->d->params->DriverInfo["LastConfig"]);
         $this->assertSame(0, $this->d->params->DriverInfo["ConfigFail"]);
+    }
+    /**
+    * data provider for testReadDataTimeReset
+    *
+    * @return array
+    */
+    public static function dataReadDataTimeReset()
+    {
+        return array(
+            array(date("Y-m-d H:i:s"), array()),
+            array("2004-01-01 00:00:00", array()),
+            array(date("Y-m-d H:i:s", time()-3600), array()),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $lastPoll The last config date
+    * @param array  $persist  The persistant information from the driver
+    *
+    * @return null
+    *
+    * @dataProvider dataReadDataTimeReset
+    */
+    function testReadDataTimeReset($lastPoll, $persist)
+    {
+        $this->d->params->DriverInfo = $persist;
+        $this->d->LastPoll = $lastConfig;
+        $this->o->readDataTimeReset();
         $this->assertSame("1970-01-01 00:00:00", $this->d->LastPoll);
         $this->assertSame(0, $this->d->params->DriverInfo["LastPoll"]);
         $this->assertSame(0, $this->d->params->DriverInfo["PollFail"]);

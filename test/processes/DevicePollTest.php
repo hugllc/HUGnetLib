@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../processes/DeviceConfig.php';
+require_once dirname(__FILE__).'/../../processes/DevicePoll.php';
 
 /**
  * Test class for filter.
@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../processes/DeviceConfig.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceConfigTest extends PHPUnit_Framework_TestCase
+class DevicePollTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -83,7 +83,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 "DeviceID"   => "000019",
             )
         );
-        $this->o = new DeviceConfig(array(), $this->d);
+        $this->o = new DevicePoll(array(), $this->d);
     }
 
     /**
@@ -116,7 +116,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceConfig(array(), $this->d);
+        $o = new DevicePoll(array(), $this->d);
     }
     /**
     * data provider for testConstructor
@@ -157,7 +157,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceConfig($preload, $this->d);
+        $o = new DevicePoll($preload, $this->d);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
@@ -169,11 +169,11 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-    * data provider for testConfig
+    * data provider for testPoll
     *
     * @return array
     */
-    public static function dataConfig()
+    public static function dataPoll()
     {
         return array(
             array(
@@ -181,14 +181,17 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     array(
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                 ),
                 true,
@@ -202,7 +205,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Command" => PacketContainer::COMMAND_GETDATA,
                     "Data" => "",
                 )),
             ),
@@ -222,6 +225,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-01-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "654321",
@@ -229,6 +233,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-13-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 2,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "234567",
@@ -236,6 +241,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-13-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                 ),
                 true,
@@ -249,7 +255,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Command" => PacketContainer::COMMAND_GETDATA,
                     "Data" => "",
                 )),
             ),
@@ -261,9 +267,10 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-01-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                         "params" => array(
                             "DriverInfo" => array(
-                                "ConfigFail" => 109,
+                                "PollFail" => 29,
                             ),
                         ),
                     ),
@@ -273,9 +280,10 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-13-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 2,
+                        "PollInterval" => 10,
                         "params" => array(
                             "DriverInfo" => array(
-                                "ConfigFail" => 109,
+                                "PollFail" => 29,
                             ),
                         ),
                     ),
@@ -285,9 +293,10 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "FWPartNum" => "0039-20-13-C",
                         "FWVersion" => "1.2.3",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                         "params" => array(
                             "DriverInfo" => array(
-                                "ConfigFail" => 109,
+                                "PollFail" => 29,
                             ),
                         ),
                     ),
@@ -298,13 +307,13 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Command" => PacketContainer::COMMAND_GETDATA,
                     "Data" => "",
                 )).
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Command" => PacketContainer::COMMAND_GETDATA,
                     "Data" => "",
                 )).
                 (string)new PacketContainer(array(
@@ -316,7 +325,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
+                    "Command" => PacketContainer::COMMAND_GETDATA,
                     "Data" => "",
                 )),
             ),
@@ -326,14 +335,17 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     array(
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
+                        "PollInterval" => 10,
                     ),
                     array(
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
+                        "PollInterval" => 10,
                     ),
                 ),
                 false,
@@ -355,9 +367,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataConfig
+    * @dataProvider dataPoll
     */
-    public function testConfig($preload, $loop, $loadable, $read, $expect)
+    public function testPoll($preload, $loop, $loadable, $read, $expect)
     {
         $d = new DeviceContainer();
         foreach ((array)$preload as $load) {
@@ -367,7 +379,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         }
         $this->socket->readString = $read;
         $this->o->loop = $loop;
-        $this->o->config($loadable);
+        $this->o->poll($loadable);
         $this->assertSame($expect, $this->socket->writeString);
     }
         /**
@@ -535,9 +547,6 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         }
         $p = new PacketContainer($pkt);
         $this->o->packetConsumer($p);
-        $stmt = $this->pdo->query("SELECT * FROM `devices`");
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->assertSame($expect, $rows);
         $this->assertSame($write, $this->socket->writeString);
 
     }

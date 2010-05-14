@@ -41,6 +41,7 @@ require_once dirname(__FILE__).'/../base/HUGnetClass.php';
 require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../interfaces/DeviceDriverInterface.php';
 require_once dirname(__FILE__).'/../containers/PacketContainer.php';
+require_once dirname(__FILE__).'/../tables/RawHistoryTable.php';
 
 /**
  * Test class for filter.
@@ -136,12 +137,20 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return bool True on success, False on failure
     */
-    public function readTimeReset()
+    public function readSetupTimeReset()
     {
         // Config
         $this->myDriver->setDefault("LastConfig");
         $this->data["ConfigFail"] = 0;
         $this->data["LastConfig"] = 0;
+    }
+    /**
+    * Resets all of the timers associated with reading and writing.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readDataTimeReset()
+    {
         // Poll
         $this->myDriver->setDefault("LastPoll");
         $this->data["PollFail"] = 0;
@@ -152,7 +161,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return bool True on success, False on failure
     */
-    protected function readconfig()
+    protected function readConfig()
     {
         // Save the time.
         $this->data["LastConfig"] = time();
@@ -182,6 +191,80 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             $this->myDriver->sensors->fromCalString($ret);
             return true;
         }
+        return false;
+    }
+        /**
+    * Checks the interval to see if it is ready to config.
+    *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: return based on number of failures.  Pause longer for more failures
+    *
+    *    It waits an extra 6 seconds for each failed poll
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readDataTime()
+    {
+        // This is what would normally be our time.  Every 12 hours.
+        $interval = $this->myDriver->PollInterval;
+        if (empty($interval)) {
+            // No polling if the interval is set to 0
+            return false;
+        }
+        $base = strtotime($this->myDriver->LastPoll) < (time() - $interval*60);
+        if ($base === false) {
+            return $base;
+        }
+        // Accounts for failures
+        return $this->data["LastPoll"] < (time() - $this->data["PollFail"]*6);
+    }
+    /**
+    * Reads the data out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readData()
+    {
+        return $this->readSensors();
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readSensors()
+    {
+        // Save the time.
+        $this->data["LastPoll"] = time();
+        // Send the packet out
+        $pkt = new PacketContainer(
+            array(
+                "To"       => $this->myDriver->DeviceID,
+                "Command"  => PacketContainer::COMMAND_GETDATA,
+                "Timeout"  => $this->myDriver->DriverInfo["PacketTimeout"],
+            )
+        );
+        $ret = $pkt->send();
+        if (is_object($pkt->Reply)) {
+            $ret = RawHistoryTable::insertRecord(
+                array(
+                    "DeviceID" => $this->myDriver->DeviceID,
+                    "Date" => $pkt->Date,
+                    "packet" => $pkt->toString(),
+                    "device" => $this->myDriver->toString(),
+                    "dataIndex" => hexdec(substr($pkt->Reply->Data, 0, 2)),
+                )
+            );
+            if ($ret) {
+                $this->myDriver->LastPoll = date("Y-m-d H:i:s");
+                $this->data["PollFail"] = 0;
+            }
+            return $ret;
+        }
+        // We failed.  State that.
+        $this->data["PollFail"]++;
+
         return false;
     }
     /**

@@ -100,7 +100,7 @@ class E00392100Device extends DeviceDriverLoadableBase
         if ($ret) {
             if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
                 // Reset config time so this device is checked again.
-                $this->readTimeReset();
+                $this->readSetupTimeReset();
                 // Wrong Driver  We should exit with a failure
                 $ret = false;
             }

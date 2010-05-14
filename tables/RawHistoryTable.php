@@ -113,6 +113,11 @@ class RawHistoryTable extends HUGnetDBTable
             "Type" => "longtext",
             "Default" => "",
         ),
+        "dataIndex" => array(
+            "Name" => "dataIndex",
+            "Type" => "int",
+            "Default" => 0,
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -132,7 +137,7 @@ class RawHistoryTable extends HUGnetDBTable
         "DateDeviceID" => array(
             "Name" => "DateDeviceID",
             "Unique" => true,
-            "Columns" => array("Date", "DeviceID"),
+            "Columns" => array("Date", "DeviceID", "dataIndex"),
         ),
     );
 
@@ -140,6 +145,18 @@ class RawHistoryTable extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    /**
+    * Inserts a record into the database if it isn't there already
+    *
+    * @param mixed $data The string or data to use to insert this row
+    *
+    * @return null
+    */
+    static public function insertRecord($data)
+    {
+        $hist = new RawHistoryTable($data);
+        return $hist->insertRow();
+    }
     /**
     * This is the constructor
     *

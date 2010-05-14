@@ -54,7 +54,7 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceConfig extends ProcessBase
+class DevicePoll extends ProcessBase
 {
 
     /**
@@ -81,7 +81,7 @@ class DeviceConfig extends ProcessBase
     *
     * @return null
     */
-    public function config($loadable = false)
+    public function poll($loadable = false)
     {
         // Get the devices
         $devs = $this->device->select(1);
@@ -94,9 +94,9 @@ class DeviceConfig extends ProcessBase
             if (!$loadable || $device->loadable() && $device->Active) {
                 // We don't want to get our own config
                 if ($device->DeviceID !== $this->myDevice->DeviceID) {
-                    // We should only check stuff for our gateway
+                    // We should only poll stuff for our gateway
                     if ($this->GatewayKey == $device->GatewayKey) {
-                        if ($device->readSetupTime()) {
+                        if ($device->readDataTime()) {
                             $this->_check($device);
                         }
                     }
@@ -115,12 +115,12 @@ class DeviceConfig extends ProcessBase
     {
         // Be verbose ;)
         self::vprint(
-            "Checking ".$dev->DeviceID." LastConfig: ".
-            $dev->LastConfig,
+            "Polling ".$dev->DeviceID." LastPoll: ".
+            $dev->LastPoll,
             HUGnetClass::VPRINT_NORMAL
         );
         // Read the setup
-        if (!$dev->readSetup()) {
+        if (!$dev->readData()) {
             $this->_checkFail($dev);
         }
         // Update the row.  It changes the row even if it fails
@@ -137,32 +137,20 @@ class DeviceConfig extends ProcessBase
     {
         // Print out the failure if verbose
         self::vprint(
-            "Failed. Failures: ".$dev->params->DriverInfo["ConfigFail"]
-            ." LastConfig try: "
-            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
+            "Failed. Failures: ".$dev->params->DriverInfo["PollFail"]
+            ." LastPoll try: "
+            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastPoll"]),
             HUGnetClass::VPRINT_NORMAL
         );
         // Log an error for every 10 failures
-        if ((($dev->params->DriverInfo["ConfigFail"] % 10) == 0)
-            && ($dev->params->DriverInfo["ConfigFail"] > 0)
+        if ((($dev->params->DriverInfo["PollFail"] % 10) == 0)
+            && ($dev->params->DriverInfo["PollFail"] > 0)
         ) {
             $this->logError(
-                "NOCONFIG",
+                "NOPOLL",
                 "Device ".$dev->DeviceID." is has failed "
-                .$dev->params->DriverInfo["ConfigFail"]." configs",
+                .$dev->params->DriverInfo["PollFail"]." polls",
                 ErrorTable::SEVERITY_WARNING,
-                "DeviceConfig::config"
-            );
-        }
-        // for 100 failures mark the device inactive
-        if ($dev->params->DriverInfo["ConfigFail"] > 100) {
-            $dev->Active = 0;
-            $this->logError(
-                "NOTACTIVE",
-                "Device ".$dev->DeviceID." is has failed to respond to "
-                .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
-                ."device inactive.",
-                ErrorTable::SEVERITY_ERROR,
                 "DeviceConfig::config"
             );
         }
@@ -189,19 +177,13 @@ class DeviceConfig extends ProcessBase
         if (!$this->unsolicited->isEmpty()) {
             // If it is not empty, reset the LastConfig.  This causes it to actually
             // try to get the config.
-            $this->unsolicited->readSetupTimeReset();
+            $this->unsolicited->readDataTimeReset();
             // Set our gateway key
             $this->unsolicited->GatewayKey = $this->GatewayKey;
             // Set the device active
             $this->unsolicited->Active = 1;
             // Update the row
             $this->unsolicited->updateRow();
-        } else {
-            // This is a brand new device.  Set the DeviceID
-            $this->unsolicited->DeviceID = $pkt->From;
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
-            $this->unsolicited->insertRow();
         }
     }
 }

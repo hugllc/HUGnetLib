@@ -68,7 +68,7 @@ class DummyDeviceContainer extends HUGnetClass
     /** @var The last poll time */
     public $LastPoll = "1970-01-01 00:00:00";
     /** @var The last poll time */
-    public $PollInterval = 1;
+    public $PollInterval = 10;
     /** @var The device ID */
     public $DeviceID = "000123";
 
@@ -79,7 +79,7 @@ class DummyDeviceContainer extends HUGnetClass
         "string" => "000000000100392601500039260150010203FFFFFF10",
         "LastConfig" => "1970-01-01 00:00:00",
         "LastPoll" => "1970-01-01 00:00:00",
-        "PollInterval" => 1,
+        "PollInterval" => 10,
     );
     /**
     * Builds the class
@@ -110,6 +110,15 @@ class DummyDeviceContainer extends HUGnetClass
     public function fromString($string)
     {
         $this->string = $string;
+    }
+    /**
+    * returns a string
+    *
+    * @return null
+    */
+    public function toString()
+    {
+        return $this->__toString();
     }
     /**
     * resets a value to its default
