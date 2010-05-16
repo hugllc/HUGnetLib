@@ -269,5 +269,16 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
     {
         return (array)$this->groups;
     }
+    /**
+    * Group Exists
+    *
+    * @param string $group The group to check
+    *
+    * @return bool True if group exists and connection is made, false otherwise
+    */
+    public function available($group = "default")
+    {
+        return $this->connect($group);
+    }
 }
 ?>

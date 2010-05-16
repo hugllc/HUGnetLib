@@ -72,6 +72,8 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     protected $driver = null;
     /** @var string This is the last deviceID that we found */
     protected $lastDeviceID = array();
+    /** @var int How long to wait for the Packets.  0 means the packet default */
+    public $PacketTimeout = 0;
 
     /**
     * Sets all of the endpoint attributes from an array
@@ -259,6 +261,7 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
             "To" => $id,
             "GetReply" => true,
             "Retries" => 2,
+            "Timeout" => $this->PacketTimeout,
         ));
         self::vprint("Checking ".$pkt->To, HUGnetClass::VPRINT_NORMAL);
         foreach ($groups as $group) {
@@ -318,6 +321,17 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     public function groups()
     {
         return (array)$this->groups;
+    }
+    /**
+    * Group Exists
+    *
+    * @param string $group The group to check
+    *
+    * @return bool True if group exists and connection is made, false otherwise
+    */
+    public function available($group = "default")
+    {
+        return $this->connect($group);
     }
 
 }

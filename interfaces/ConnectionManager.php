@@ -56,7 +56,7 @@ interface ConnectionManager
     *
     * @param string $group The group to check
     *
-    * @return object PDO object, null on failure
+    * @return bool True if connected, false if not connected
     */
     public function connected($group = "default");
 
@@ -82,5 +82,13 @@ interface ConnectionManager
     * @return null
     */
     public function groups();
+    /**
+    * Group Exists
+    *
+    * @param string $group The group to check
+    *
+    * @return bool True if group exists and connection is made, false otherwise
+    */
+    public function available($group = "default");
 }
 ?>

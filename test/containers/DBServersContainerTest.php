@@ -510,6 +510,45 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * Tests to make sure this function fails if
+    * someone tries to make a cache from a memory
+    * sqlite instance.
+    *
+    * @param string $preload    The configuration to use
+    * @param string $group      The group to check
+    * @param mixed  $preconnect Connect before the test connect
+    * @param bool   $expect     The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConnect()
+    */
+    public function testAvailable($preload, $group, $preconnect, $expect)
+    {
+        $o = new DBServersContainer($preload);
+        if (!is_bool($preconnect)) {
+            $o->connect($preconnect);
+        }
+        if (is_null($group)) {
+            $ret = $o->available();
+        } else {
+            $ret = $o->available($group);
+        }
+        if (empty($group)) {
+            $group = "default";
+        }
+        $this->assertSame($expect, $ret);
+        foreach (array("server", "pdo") as $var) {
+            $check = $this->readAttribute($o, $var);
+            if ($ret) {
+                $this->assertTrue(is_object($check[$group]), "$var not found");
+            } else {
+                $this->assertNull($check[$group], "$var should be null");
+            }
+        }
+    }
+
+    /**
     * Data provider for testDisconnect
     *
     * @return array
