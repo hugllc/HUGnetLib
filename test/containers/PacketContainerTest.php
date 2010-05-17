@@ -485,7 +485,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataFromString()
+    public static function dataFromPktString()
     {
         return array(
             array(
@@ -566,11 +566,11 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataFromString
+    * @dataProvider dataFromPktString
     */
-    public function testFromString($preload, $expect)
+    public function testFromPktString($preload, $expect)
     {
-        $this->o->fromString($preload);
+        $this->o->fromPktString($preload);
         $ret = $this->readAttribute($this->o, "data");
         $this->checkDateTime($ret, false);
         $this->assertEquals($expect, $ret);
@@ -1826,7 +1826,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function data2String()
+    public static function dataToPktString()
     {
         return array(
             array(
@@ -1872,12 +1872,12 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider data2String
+    * @dataProvider dataToPktString
     */
-    public function testToString($preload, $expect)
+    public function testToPktString($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertSame($expect, $this->o->toString());
+        $this->assertSame($expect, $this->o->toPktString());
 
     }
 

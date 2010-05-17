@@ -195,7 +195,7 @@ class DeviceContainer extends DevicesTable
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         $this->SerialNum = hexdec(substr($string, 0, 10));
         $this->DeviceID  = $this->SerialNum;
@@ -208,8 +208,17 @@ class DeviceContainer extends DevicesTable
         $this->_setupClasses();
         $this->_registerDriver();
         if (is_object($this->epDriver)) {
-            $this->epDriver->fromString(substr($string, self::CONFIGEND));
+            $this->epDriver->fromSetupString(substr($string, self::CONFIGEND));
         }
+    }
+    /**
+    * Converts the object to a string
+    *
+    * @return mixed The value of the attribute
+    */
+    public function __toString()
+    {
+        return $this->toSetupString();
     }
     /**
     * Returns the object as a string
@@ -218,7 +227,7 @@ class DeviceContainer extends DevicesTable
     *
     * @return string
     */
-    public function toString($default = true)
+    public function toSetupString($default = true)
     {
         $string  = self::hexify($this->SerialNum, 10);
         $string .= self::hexifyPartNum($this->HWPartNum);
@@ -227,7 +236,7 @@ class DeviceContainer extends DevicesTable
         $string .= $this->DeviceGroup;
         $string .= self::hexify($this->BoredomThreshold, 2);
         if (is_object($this->epDriver)) {
-            $string .= $this->epDriver->toString($default);
+            $string .= $this->epDriver->toSetupString($default);
         }
         return $string;
 
@@ -248,11 +257,30 @@ class DeviceContainer extends DevicesTable
         $this->_registerDriver();
         // Make sure RawSetup is populated
         if (empty($this->RawSetup)) {
-            $this->RawSetup = $this->toString();
+            $this->RawSetup = $this->toSetupString();
         }
         // Get the driver config
         if (is_object($this->epDriver)) {
-            $this->epDriver->fromString(substr($this->RawSetup, self::CONFIGEND));
+            $this->epDriver->fromSetupString(
+                substr($this->RawSetup, self::CONFIGEND)
+            );
+        }
+    }
+    /**
+    * Creates the object from a string or array
+    *
+    * @param mixed &$data This is whatever you want to give the class
+    *
+    * @return null
+    */
+    public function fromAny(&$data)
+    {
+        if (is_string($data)
+            && (preg_match("/(0039){1}[0-9A-F]{6}/", $data) > 0)
+        ) {
+            $this->fromSetupString($data);
+        } else {
+            parent::fromAny($data);
         }
     }
     /**

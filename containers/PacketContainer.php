@@ -199,7 +199,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromPktString($string)
     {
         if (!($string = self::_checkStr($string))) {
             return;
@@ -215,13 +215,22 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->setType("UNKNOWN");
     }
     /**
+    * Converts the object to a string
+    *
+    * @return mixed The value of the attribute
+    */
+    public function __toString()
+    {
+        return $this->toPktString();
+    }
+    /**
     * Returns the object as a string
     *
     * @param bool $default Return items set to their default?
     *
     * @return string
     */
-    public function toString($default = true)
+    public function toPktString($default = true)
     {
         // Return an empty string if the packet is empty
         if ($this->isEmpty()) {
@@ -299,6 +308,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     {
         if ($this->isMine($data, "PacketSocketTable")) {
             $this->fromPacketSocket($data);
+        } else if (is_string($data) && (substr($data, 0, 4) == "5A5A")) {
+            $this->fromPktString($data);
         } else {
             parent::fromAny($data);
         }
@@ -331,7 +342,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $pkt = self::_new(self::FULL_PREAMBLE.$pktStr);
         } else {
             $pkt = &$this;
-            $this->fromString(self::FULL_PREAMBLE.$pktStr);
+            $this->fromPktString(self::FULL_PREAMBLE.$pktStr);
         }
         // Check the checksum  If it is bad return a false
         if ($pkt->Checksum !== $pkt->checksum()) {

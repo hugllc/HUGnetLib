@@ -88,7 +88,7 @@ class E00392101Device extends DeviceDriverLoadableBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 0;
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
     /**
     * Reads the setup out of the device.
@@ -187,7 +187,7 @@ class E00392101Device extends DeviceDriverLoadableBase
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         if (empty($string)) {
             return;

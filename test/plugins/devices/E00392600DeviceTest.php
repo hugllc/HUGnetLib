@@ -122,7 +122,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
     *
     * @return array
     */
-    public static function data2String()
+    public static function dataToSetupString()
     {
         return array(
             array(
@@ -148,13 +148,13 @@ class E00392600DeviceTest extends DevicePluginTestBase
     *
     * @return null
     *
-    * @dataProvider data2String
+    * @dataProvider dataToSetupString
     */
-    public function testToString($preload, $expect)
+    public function testToSetupString($preload, $expect)
     {
         $this->d->DriverInfo = $preload;
         $this->d->GatewayKey = (int)$preload["GatewayKey"];
-        $ret = $this->o->toString();
+        $ret = $this->o->toSetupString();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -162,7 +162,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
     *
     * @return array
     */
-    public static function dataFromString()
+    public static function dataFromSetupString()
     {
         return array(
             array(
@@ -202,11 +202,11 @@ class E00392600DeviceTest extends DevicePluginTestBase
     *
     * @return null
     *
-    * @dataProvider dataFromString
+    * @dataProvider dataFromSetupString
     */
-    public function testFromString($preload, $expect)
+    public function testFromSetupString($preload, $expect)
     {
-        $this->o->fromString($preload);
+        $this->o->fromSetupString($preload);
         $this->assertSame($expect, $this->d->DriverInfo);
     }
     /**

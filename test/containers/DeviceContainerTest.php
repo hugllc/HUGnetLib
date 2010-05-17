@@ -79,7 +79,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->config->forceConfig($config);
         $this->o = new DeviceContainer(array(
             "DeviceID"  => "000019",
-            "HWPartNum" => "ABCD-EF-01-A",
+            "HWPartNum" => "0039-CD-01-A",
             "FWPartNum" => "0123-45-67-C",
             "FWVersion" => "0.0.5",
         ));
@@ -107,17 +107,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         return array(
             // #0
             array(
-                "00000000E8ABCFEF01410124456743000302FFFFFF",
+                "00000000E80039CF01410039246743000302FFFFFF",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF",
+                    "RawSetup"  => "00000000E80039CF01410039246743000302FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -145,17 +145,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #1
             array(
-                "00000000E8ABCFEF01410124456743000102FFFFFF",
+                "00000000E80039CF01410039246743000102FFFFFF",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -182,17 +182,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #2
             array(
-                "00000000E8ABCEEF01410124456743000005FFFFFF",
+                "00000000E80039CE01410039246743000005FFFFFF",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCE-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CE-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF",
+                    "RawSetup"  => "00000000E80039CE01410039246743000005FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -219,17 +219,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #3
             array(
-                "00000000E8ABCDEF01410123456743000005FFFFFF",
+                "00000000E80039CD01410123456743000005FFFFFF",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCD-EF-01-A",
+                    "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF",
+                    "RawSetup"  => "00000000E80039CD01410123456743000005FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -256,17 +256,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #4
             array(
-                "00000000E8ABCCEF01410125456743000005FFFFFF",
+                "00000000E80039CC01410039256743000005FFFFFF",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCC-EF-01-A",
-                    "FWPartNum" => "0125-45-67-C",
+                    "HWPartNum" => "0039-CC-01-A",
+                    "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF",
+                    "RawSetup"  => "00000000E80039CC01410039256743000005FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -301,10 +301,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -329,10 +329,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -496,8 +496,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
                     "RawSetup"  => "",
                     "Active" => 1,
@@ -524,10 +524,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF1E",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF1E",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -681,21 +681,21 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataFromString()
+    public static function dataFromSetupString()
     {
         return array(
             array(
-                "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                    "RawSetup"  => "00000000E80039CF01410039246743000302FFFFFF50",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -723,17 +723,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array(
-                "00000000E8ABCFEF01410124456743000102FFFFFF50",
+                "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF50",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF50",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -759,17 +759,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array(
-                "00000000E8ABCEEF01410124456743000005FFFFFF1E",
+                "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCE-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CE-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF1E",
+                    "RawSetup"  => "00000000E80039CE01410039246743000005FFFFFF1E",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -795,17 +795,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array(
-                "00000000E8ABCDEF01410123456743000005FFFFFF530123456789",
+                "00000000E80039CD01410123456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCD-EF-01-A",
+                    "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53".
+                    "RawSetup"  => "00000000E80039CD01410123456743000005FFFFFF53".
                         "0123456789",
                     "Active" => 1,
                     "GatewayKey" => 0,
@@ -832,17 +832,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array(
-                "00000000E8ABCCEF01410125456743000005FFFFFF2101",
+                "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
                     "group" => "default",
                     "DeviceKey" => null,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCC-EF-01-A",
-                    "FWPartNum" => "0125-45-67-C",
+                    "HWPartNum" => "0039-CC-01-A",
+                    "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF2101",
+                    "RawSetup"  => "00000000E80039CC01410039256743000005FFFFFF2101",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -879,11 +879,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataFromString
+    * @dataProvider dataFromSetupString
     */
-    public function testFromString($preload, $expect)
+    public function testFromSetupString($preload, $expect)
     {
-        $this->o->fromString($preload);
+        $this->o->fromSetupString($preload);
         $data = $this->readAttribute($this->o, "data");
         $this->assertType("object", $data["params"]);
         $data["params"] = $data["params"]->toArray();
@@ -896,7 +896,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function data2String()
+    public static function dataToSetupString()
     {
         return array(
             array(
@@ -907,10 +907,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                    "RawSetup"  => "00000000E80039CF01410039246743000302FFFFFF50",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -930,7 +930,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
-                "00000000E8ABCFEF01410124456743000302FFFFFF50",
+                "00000000E80039CF01410039246743000302FFFFFF50",
             ),
             array(
                 array(
@@ -939,10 +939,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCF-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
-                    "RawSetup"  => "00000000E8ABCFEF01410124456743000102FFFFFF21"
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF21"
                         ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
@@ -963,7 +963,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
-                "00000000E8ABCFEF01410124456743000102FFFFFF5001234567",
+                "00000000E80039CF01410039246743000102FFFFFF5001234567",
             ),
             array(
                 array(
@@ -972,10 +972,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCE-EF-01-A",
-                    "FWPartNum" => "0124-45-67-C",
+                    "HWPartNum" => "0039-CE-01-A",
+                    "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCEEF01410124456743000005FFFFFF31"
+                    "RawSetup"  => "00000000E80039CE01410039246743000005FFFFFF31"
                         ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
@@ -996,7 +996,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
-                "00000000E8ABCEEF01410124456743000005FFFFFF2001234567",
+                "00000000E80039CE01410039246743000005FFFFFF2001234567",
             ),
             array(
                 array(
@@ -1005,10 +1005,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCD-EF-01-A",
+                    "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCDEF01410123456743000005FFFFFF53"
+                    "RawSetup"  => "00000000E80039CD01410123456743000005FFFFFF53"
                         ."01234567",
                     "Active" => 1,
                     "GatewayKey" => 0,
@@ -1029,7 +1029,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
-                "00000000E8ABCDEF01410123456743000005FFFFFF3001234567",
+                "00000000E80039CD01410123456743000005FFFFFF3001234567",
             ),
             array(
                 array(
@@ -1039,10 +1039,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "SerialNum" => 232,
-                    "HWPartNum" => "ABCC-EF-01-A",
-                    "FWPartNum" => "0125-45-67-C",
+                    "HWPartNum" => "0039-CC-01-A",
+                    "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E8ABCCEF01410125456743000005FFFFFF23",
+                    "RawSetup"  => "00000000E80039CC01410039256743000005FFFFFF23",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -1062,7 +1062,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "CurrentGatewayKey" => 0,
                     "params" => "",
                 ),
-                "00000000E8ABCCEF01410125456743000005FFFFFF40",
+                "00000000E80039CC01410039256743000005FFFFFF40",
             ),
         );
     }
@@ -1074,12 +1074,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider data2String
+    * @dataProvider dataToSetupString
     */
-    public function testToString($preload, $expect)
+    public function testToSetupString($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertSame($expect, $this->o->toString());
+        $this->assertSame($expect, $this->o->toSetupString());
     }
 
 

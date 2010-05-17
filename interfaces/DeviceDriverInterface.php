@@ -57,7 +57,7 @@ interface DeviceDriverInterface
     *
     * @return null
     */
-    public function fromString($string);
+    public function fromSetupString($string);
     /**
     * Creates the object from a string
     *
@@ -65,6 +65,6 @@ interface DeviceDriverInterface
     *
     * @return null
     */
-    public function toString($default = true);
+    public function toSetupString($default = true);
 
 }

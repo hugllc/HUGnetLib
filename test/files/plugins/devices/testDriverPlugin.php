@@ -61,16 +61,16 @@ class TestDriverPlugin extends DeviceDriverBase
         "Type" => "device",
         "Class" => "TestDriverPlugin",
         "Devices" => array(
-            "0124-45-67-C" => array(
-                "ABCE-EF-01-A" => "DEFAULT",
-                "ABCF-EF-01-A" => "0.1.2,0.2.3",
+            "0039-24-67-C" => array(
+                "0039-CE-01-A" => "DEFAULT",
+                "0039-CF-01-A" => "0.1.2,0.2.3",
             ),
             "DEFAULT" => array(
-                "ABCB-EF-01-A" => "DEFAULT",
-                "ABCD-EF-01-A" => "DEFAULT",
+                "0039-CB-01-A" => "DEFAULT",
+                "0039-CD-01-A" => "DEFAULT",
             ),
-            "0125-45-67-C" => array(
-                "ABCC-EF-01-A" => "BAD",
+            "0039-25-67-C" => array(
+                "0039-CC-01-A" => "BAD",
             ),
         ),
     );
@@ -85,7 +85,7 @@ class TestDriverPlugin extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct(&$obj, $string);
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
     /**
     * Creates the object from a string
@@ -94,7 +94,7 @@ class TestDriverPlugin extends DeviceDriverBase
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         // This is just so we can check for it.
         $this->myDriver->DriverInfo["RawDriverInfo"] = (string)$string;
@@ -106,7 +106,7 @@ class TestDriverPlugin extends DeviceDriverBase
     *
     * @return null
     */
-    public function toString($default = true)
+    public function toSetupString($default = true)
     {
         return $this->myDriver->DriverInfo["RawDriverInfo"];
     }

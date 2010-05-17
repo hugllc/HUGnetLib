@@ -111,7 +111,7 @@ class E00391200Device extends DeviceDriverBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 16;
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
 
 }

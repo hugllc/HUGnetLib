@@ -323,7 +323,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testToString()
     {
-        $this->assertSame("", $this->o->toString());
+        $this->assertSame("", $this->o->toSetupString());
     }
     /**
     * data provider for testCompareFWVesrion
@@ -922,7 +922,7 @@ class TestDevice extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
     /**
     * Reads the setup out of the device

@@ -819,7 +819,7 @@ class TestDeviceLoadable extends DeviceDriverLoadableBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
     /**
     * Programs a page of flash

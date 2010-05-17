@@ -168,7 +168,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         // Send the packet out
         $ret = $this->sendPkt(PacketContainer::COMMAND_GETSETUP);
         if (is_string($ret)) {
-            $this->myDriver->fromString($ret);
+            $this->myDriver->fromSetupString($ret);
             $this->myDriver->LastConfig = date("Y-m-d H:i:s");
             $this->data["ConfigFail"] = 0;
             return true;
@@ -371,7 +371,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return null
     */
-    public function toString($default = true)
+    public function toSetupString($default = true)
     {
         return "";
 
@@ -383,7 +383,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string, 0, 2));
         if (is_object($this->myDriver->sensors)) {

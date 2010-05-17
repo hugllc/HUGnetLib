@@ -63,6 +63,8 @@ class DummyDeviceContainer extends HUGnetClass
     public $GatewayKey = 5;
     /** @var The string to return */
     public $string = "000000000100392601500039260150010203FFFFFF10";
+    /** @var The string to return */
+    public $otherString = "";
     /** @var The last config time */
     public $LastConfig = "1970-01-01 00:00:00";
     /** @var The last poll time */
@@ -107,7 +109,7 @@ class DummyDeviceContainer extends HUGnetClass
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         $this->string = $string;
     }
@@ -116,9 +118,18 @@ class DummyDeviceContainer extends HUGnetClass
     *
     * @return null
     */
-    public function toString()
+    public function toSetupString()
     {
         return $this->__toString();
+    }
+    /**
+    * returns a string
+    *
+    * @return null
+    */
+    public function toString()
+    {
+        return $this->otherString;
     }
     /**
     * resets a value to its default

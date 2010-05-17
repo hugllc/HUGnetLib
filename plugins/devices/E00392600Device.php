@@ -111,7 +111,7 @@ class E00392600Device extends DeviceDriverBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 0;
-        $this->fromString($string);
+        $this->fromSetupString($string);
     }
     /**
     * Says whether this device is a gateway process or not
@@ -132,7 +132,7 @@ class E00392600Device extends DeviceDriverBase
     *
     * @return null
     */
-    public function toString($default = true)
+    public function toSetupString($default = true)
     {
         $this->Info = &$this->myDriver->DriverInfo;
         $string  = $this->myDriver->hexify($this->Info["Job"], 2);
@@ -159,7 +159,7 @@ class E00392600Device extends DeviceDriverBase
     *
     * @return null
     */
-    public function fromString($string)
+    public function fromSetupString($string)
     {
         if (empty($string)) {
             return;
