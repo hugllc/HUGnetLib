@@ -197,8 +197,8 @@ class DeviceContainer extends DevicesTable
     */
     public function fromSetupString($string)
     {
-        $this->SerialNum = hexdec(substr($string, 0, 10));
-        $this->DeviceID  = $this->SerialNum;
+        $this->id = hexdec(substr($string, 0, 10));
+        $this->DeviceID  = $this->id;
         $this->HWPartNum = substr($string, self::HW_START, 10);
         $this->FWPartNum = substr($string, self::FW_START, 10);
         $this->FWVersion = substr($string, self::FWV_START, 6);
@@ -229,7 +229,7 @@ class DeviceContainer extends DevicesTable
     */
     public function toSetupString($default = true)
     {
-        $string  = self::hexify($this->SerialNum, 10);
+        $string  = self::hexify($this->id, 10);
         $string .= self::hexifyPartNum($this->HWPartNum);
         $string .= self::hexifyPartNum($this->FWPartNum);
         $string .= self::hexifyVersion($this->FWVersion);

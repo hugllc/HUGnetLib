@@ -240,7 +240,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         // Send the packet out
         $pkt = new PacketContainer(
             array(
-                "To"       => $this->myDriver->DeviceID,
+                "To"       => (int)$this->myDriver->id,
                 "Command"  => PacketContainer::COMMAND_GETDATA,
                 "Timeout"  => $this->myDriver->DriverInfo["PacketTimeout"],
             )
@@ -249,7 +249,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if (is_object($pkt->Reply)) {
             $ret = RawHistoryTable::insertRecord(
                 array(
-                    "DeviceID" => $this->myDriver->DeviceID,
+                    "id" => (int)$this->myDriver->id,
                     "Date" => $pkt->Date,
                     "packet" => $pkt->toString(),
                     "device" => $this->myDriver->toString(),
@@ -298,7 +298,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     {
         $pkt = new PacketContainer(
             array(
-                "To"       => $this->myDriver->DeviceID,
+                "To"       => (int) $this->myDriver->id,
                 "Command"  => $command,
                 "Data"     => $data,
                 "GetReply" => $reply,

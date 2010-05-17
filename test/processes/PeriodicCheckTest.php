@@ -83,14 +83,14 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $this->d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-                "HWPartNum"  => "0039-26-07-P",
-                "FWPartNum"  => "0039-26-07-P",
-            )
+        $d = array(
+            "id"         => 0x000019,
+            "DeviceID"   => "000019",
+            "HWPartNum"  => "0039-26-07-P",
+            "FWPartNum"  => "0039-26-07-P",
         );
-        $this->o = new PeriodicCheck($data, $this->d);
+        $this->o = new PeriodicCheck($data, $d);
+        $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
     /**

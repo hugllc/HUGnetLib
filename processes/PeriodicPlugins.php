@@ -74,12 +74,12 @@ class PeriodicPlugins extends ProcessBase
     /**
     * Builds the class
     *
-    * @param array           $data    The data to build the class with
-    * @param DeviceContainer &$device This is the class to send packets to me to.
+    * @param array $data   The data to build the class with
+    * @param array $device This is the setup for my device class
     *
     * @return null
     */
-    public function __construct($data, DeviceContainer &$device)
+    public function __construct($data, $device)
     {
         parent::__construct($data, $device);
         $this->registerHooks();

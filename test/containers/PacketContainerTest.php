@@ -1166,8 +1166,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "Date" => "2004-02-28 01:02:03",
                 ),
                 array(
+                    "Date" => "2004-02-28 01:02:03",
                 ),
                 true,
             ),

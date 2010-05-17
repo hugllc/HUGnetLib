@@ -271,6 +271,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         $addr, $data, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->writeE2($addr, $data);
@@ -393,6 +394,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         $addr, $data, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->writeFlash($addr, $data);
@@ -511,6 +513,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         $crc, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->writeCRC($crc);
@@ -599,6 +602,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
         $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->readCRC();
@@ -685,6 +689,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
     function testRunBootloader($devID, $read, $write, $expect, $timeout = 0)
     {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->runBootloader();
@@ -774,6 +779,7 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
     function testRunApplication($devID, $read, $write, $expect, $timeout=0)
     {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->runApplication();

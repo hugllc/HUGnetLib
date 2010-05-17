@@ -60,12 +60,12 @@ class DevicePoll extends ProcessBase
     /**
     * Builds the class
     *
-    * @param array           $data    The data to build the class with
-    * @param DeviceContainer &$device This is the class to send packets to me to.
+    * @param array $data   The data to build the class with
+    * @param array $device This is the setup for my device class
     *
     * @return null
     */
-    public function __construct($data, DeviceContainer &$device)
+    public function __construct($data, $device)
     {
         parent::__construct($data, $device);
         $this->registerHooks();
@@ -93,7 +93,7 @@ class DevicePoll extends ProcessBase
             $device = &$devs[$key];
             if (!$loadable || $device->loadable() && $device->Active) {
                 // We don't want to get our own config
-                if ($device->DeviceID !== $this->myDevice->DeviceID) {
+                if ($device->id !== $this->myDevice->id) {
                     // We should only poll stuff for our gateway
                     if ($this->GatewayKey == $device->GatewayKey) {
                         if ($device->readDataTime()) {

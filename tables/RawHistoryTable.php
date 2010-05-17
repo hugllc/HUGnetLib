@@ -93,10 +93,9 @@ class RawHistoryTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "DeviceID" => array(
-            "Name" => "DeviceID",
-            "Type" => "varchar(6)",
-            "Default" => '000000',
+        "id" => array(
+            "Name" => "id",
+            "Type" => "int",
         ),
         "Date" => array(
             "Name" => "Date",
@@ -134,10 +133,10 @@ class RawHistoryTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "DateDeviceID" => array(
-            "Name" => "DateDeviceID",
+        "DateIDIndex" => array(
+            "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("Date", "DeviceID", "dataIndex"),
+            "Columns" => array("Date", "id", "dataIndex"),
         ),
     );
 
@@ -185,15 +184,15 @@ class RawHistoryTable extends HUGnetDBTable
         $this->data["Date"] = $this->sqlDate($value);
     }
     /**
-    * function to set DeviceID
+    * function to set id
     *
     * @param string $value The value to set
     *
     * @return null
     */
-    protected function setDeviceID($value)
+    protected function setId($value)
     {
-        $this->data["DeviceID"] = self::stringSize($value, 6);
+        $this->data["id"] = (int)$value;
     }
 
 }

@@ -211,6 +211,8 @@ class DevicesTableTest extends HUGnetDBTableTestBase
             array("DeviceGroup", "345", "000345"),
             array("DeviceGroup", 345, "000159"),
             array("DeviceGroup", 0x345, "000345"),
+            array("id", 0x159, 345),
+            array("id", 1.3, 1),
         );
     }
 
@@ -246,10 +248,9 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
-                        "DeviceKey" => "1",
+                        "id" => "156",
                         "DeviceID" => "00009C",
                         "DeviceName" => "",
-                        "SerialNum" => "0",
                         "HWPartNum" => "",
                         "FWPartNum" => "",
                         "FWVersion" => "",

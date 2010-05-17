@@ -78,14 +78,14 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $this->d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-                "HWPartNum"  => "0039-26-01-P",
-                "FWPartNum"  => "0039-26-01-P",
-            )
+        $d = array(
+            "id"         => 0x000019,
+            "DeviceID"   => "000019",
+            "HWPartNum"  => "0039-26-01-P",
+            "FWPartNum"  => "0039-26-01-P",
         );
-        $this->o = new DevicePoll(array(), $this->d);
+        $this->o = new DevicePoll(array(), $d);
+        $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
     /**
@@ -181,16 +181,19 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => hexdec("123456"),
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => hexdec("654321"),
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => hexdec("000019"),
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
                         "PollInterval" => 10,
@@ -222,6 +225,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => hexdec("123456"),
                         "DeviceID" => "123456",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
@@ -230,6 +234,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => hexdec("654321"),
                         "DeviceID" => "654321",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -238,6 +243,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => hexdec("234567"),
                         "DeviceID" => "234567",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -264,6 +270,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => hexdec("123456"),
                         "DeviceID" => "123456",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
@@ -277,6 +284,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     array(
+                        "id" => hexdec("654321"),
                         "DeviceID" => "654321",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -290,6 +298,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     array(
+                        "id" => hexdec("234567"),
                         "DeviceID" => "234567",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -335,16 +344,19 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => 0x123456,
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => 0x654321,
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
                         "PollInterval" => 10,
                     ),
                     array(
+                        "id" => 0x000019,
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
                         "PollInterval" => 10,

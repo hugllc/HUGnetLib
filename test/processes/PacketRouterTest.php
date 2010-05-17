@@ -90,15 +90,15 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
-        $this->d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-                "HWPartNum"  => "0039-26-04-P",
-                "FWPartNum"  => "0039-26-04-P",
-            )
+        $d = array(
+            "id"         => 0x000019,
+            "DeviceID"   => "000019",
+            "HWPartNum"  => "0039-26-04-P",
+            "FWPartNum"  => "0039-26-04-P",
         );
 
-        $this->o = new PacketRouter(array(), $this->d);
+        $this->o = new PacketRouter(array(), $d);
+        $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
     /**

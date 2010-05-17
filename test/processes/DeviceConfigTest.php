@@ -78,14 +78,14 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $this->d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-                "HWPartNum"  => "0039-26-06-P",
-                "FWPartNum"  => "0039-26-06-P",
-            )
+        $d = array(
+            "id"         => 0x000019,
+            "DeviceID"   => "000019",
+            "HWPartNum"  => "0039-26-06-P",
+            "FWPartNum"  => "0039-26-06-P",
         );
-        $this->o = new DeviceConfig(array(), $this->d);
+        $this->o = new DeviceConfig(array(), $d);
+        $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
     /**
@@ -181,14 +181,17 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => 0x123456,
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
                     ),
                     array(
+                        "id" => 0x654321,
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
                     ),
                     array(
+                        "id" => 0x000019,
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
                     ),
@@ -219,6 +222,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => 0x123456,
                         "DeviceID" => "123456",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
@@ -226,6 +230,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "GatewayKey" => 1,
                     ),
                     array(
+                        "id" => 0x654321,
                         "DeviceID" => "654321",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -233,6 +238,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "GatewayKey" => 2,
                     ),
                     array(
+                        "id" => 0x234567,
                         "DeviceID" => "234567",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -258,6 +264,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => 0x123456,
                         "DeviceID" => "123456",
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
@@ -270,6 +277,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     array(
+                        "id" => 0x654321,
                         "DeviceID" => "654321",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -282,6 +290,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     array(
+                        "id" => 0x234567,
                         "DeviceID" => "234567",
                         "HWPartNum" => "0039-28-01-A",
                         "FWPartNum" => "0039-20-13-C",
@@ -326,14 +335,17 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     array(
+                        "id" => 0x123456,
                         "DeviceID" => "123456",
                         "GatewayKey" => 1,
                     ),
                     array(
+                        "id" => 0x654321,
                         "DeviceID" => "654321",
                         "GatewayKey" => 2,
                     ),
                     array(
+                        "id" => hexdec("00019"),
                         "DeviceID" => "000019",
                         "GatewayKey" => 1,
                     ),
@@ -384,6 +396,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 array(
                     array(
                         "DeviceName" => "Hello",
+                        "id" => hexdec("123456"),
                         "DeviceID" => "123456",
                         "GatewayKey" => 3,
                         "HWPartNum" => "0039-21-20-C",
@@ -399,10 +412,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        "DeviceKey"         => "1",
+                        "id"                => (string)hexdec("123456"),
                         "DeviceID"          => "123456",
                         "DeviceName"        => "Hello",
-                        "SerialNum"         => "0",
                         "HWPartNum" => "0039-21-20-C",
                         "FWPartNum" => "0039-08-20-C",
                         "FWVersion" => "1.2.3",
@@ -441,10 +453,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        "DeviceKey"         => "1",
+                        "id"                => "1193046",
                         "DeviceID"          => "123456",
                         "DeviceName"        => "",
-                        "SerialNum"         => "0",
                         "HWPartNum"         => "",
                         "FWPartNum"         => "",
                         "FWVersion"         => "",
@@ -495,7 +506,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         }
         $p = new PacketContainer($pkt);
         $this->o->packetConsumer($p);
-        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $stmt = $this->pdo->query(
+            "SELECT * FROM `devices` where id <> ".$this->d->id
+        );
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
         $this->assertSame($write, $this->socket->writeString);

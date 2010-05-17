@@ -303,6 +303,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
     */
     public function testReadSetup($id, $timeout, $string, $read, $write, $expect)
     {
+        $this->d->id = hexdec($id);
         $this->d->DeviceID = $id;
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;

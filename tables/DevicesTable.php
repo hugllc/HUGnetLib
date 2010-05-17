@@ -60,7 +60,7 @@ class DevicesTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "devices";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "DeviceKey";
+    public $sqlId = "id";
     /**
     * @var array This is the definition of the columns
     *
@@ -87,10 +87,9 @@ class DevicesTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
-        "DeviceKey" => array(
-            "Name" => "DeviceKey",
+        "id" => array(
+            "Name" => "id",
             "Type" => "INTEGER",
-            "AutoIncrement" => true,
             "Primary" => true,
         ),
         "DeviceID" => array(
@@ -102,11 +101,6 @@ class DevicesTable extends HUGnetDBTable
             "Name" => "DeviceName",
             "Type" => "varchar(128)",
             "Default" => '',
-        ),
-        "SerialNum" => array(
-            "Name" => "SerialNum",
-            "Type" => "bigint(20)",
-            "Default" => 0,
         ),
         "HWPartNum" => array(
             "Name" => "HWPartNum",
@@ -234,11 +228,6 @@ class DevicesTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "DeviceID" => array(
-            "Name" => "DeviceID",
-            "Unique" => true,
-            "Columns" => array("DeviceID"),
-        ),
     );
 
     /** @var object This is where we store our sqlDriver */
@@ -252,6 +241,16 @@ class DevicesTable extends HUGnetDBTable
     /** @var array This is where the data is stored */
     protected $data = array();
     /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+        $this->create();
+    }
+    /**
     * Inserts a device ID into the database if it isn't there already
     *
     * @param mixed $data The string or data to use to insert this row
@@ -264,6 +263,20 @@ class DevicesTable extends HUGnetDBTable
         if (!$dev->exists()) {
             $dev->insertRow();
         }
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @param bool $replace Replace any records found that collide with this one.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertRow($replace = false)
+    {
+        if (empty($this->id)) {
+            $this->id = hexdec($this->DeviceID);
+        }
+        parent::insertRow($replace);
     }
     /**
     * Checks to see if our deviceID exists in the database
@@ -365,6 +378,17 @@ class DevicesTable extends HUGnetDBTable
             $value = dechex($value);
         }
         $this->data["DeviceID"] = self::stringSize($value, 6);
+    }
+    /**
+    * function to set DeviceID
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        $this->data["id"] = (int) $value;
     }
     /**
     * function to set DeviceGroup

@@ -68,21 +68,23 @@ class MysqlDriver extends HUGnetDBDriver
     public function columns()
     {
         $columns = $this->query("SHOW COLUMNS FROM ".$this->table());
-        foreach ((array)$columns as $col) {
-            // @codeCoverageIgnoreStart
-            // This is impossible to test without a mysql server
-            $cols[$col['Field']] = array(
-                "Name" => $col['Field'],
-                "Type" => $col['Type'],
-                "Default" => ($col["Default"] == "NULL") ? null : $col["Default"],
-                "Null" => ($col["Null"] == "NO") ? false : true,
-                "Primary" => ($col["Key"] == "PRI"),
-                "Unique" => ($col["Key"] == "UNI"),
-                "AutoIncrement" => !is_bool(
-                    stripos($col["Extra"], "auto_increment")
-                ),
-            );
-            // @codeCoverageIgnoreEnd
+        if (is_array($columns)) {
+            foreach ($columns as $col) {
+                // @codeCoverageIgnoreStart
+                // This is impossible to test without a mysql server
+                $cols[$col['Field']] = array(
+                    "Name" => $col['Field'],
+                    "Type" => $col['Type'],
+                    "Default" => ($col["Default"] == "NULL") ? null:$col["Default"],
+                    "Null" => ($col["Null"] == "NO") ? false : true,
+                    "Primary" => ($col["Key"] == "PRI"),
+                    "Unique" => ($col["Key"] == "UNI"),
+                    "AutoIncrement" => !is_bool(
+                        stripos($col["Extra"], "auto_increment")
+                    ),
+                );
+                // @codeCoverageIgnoreEnd
+            }
         }
         return (array)$cols;
 

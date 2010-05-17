@@ -110,10 +110,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CF01410039246743000302FFFFFF",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
@@ -148,10 +147,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CF01410039246743000102FFFFFF",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -185,10 +183,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CE01410039246743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CE-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
@@ -222,10 +219,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CD01410123456743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
@@ -259,10 +255,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CC01410039256743000005FFFFFF",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CC-01-A",
                     "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
@@ -297,10 +292,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "DriverInfo" => array(),
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -325,10 +319,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -361,10 +354,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "group"             => "default",
-                    "DeviceKey"         => null,
+                    "id"                => 0,
                     "DeviceID"          => "000000",
                     "DeviceName"        => "",
-                    "SerialNum"         => 0,
                     "HWPartNum"         => "",
                     "FWPartNum"         => "",
                     "FWVersion"         => "",
@@ -399,10 +391,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group"             => "default",
                     "DriverInfo"        => array(),
-                    "DeviceKey"         => 1,
+                    "id"                => 1234,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
-                    "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
                     "FWVersion"         => "2.1.3",
@@ -427,10 +418,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group"             => "default",
-                    "DeviceKey"         => 1,
+                    "id"                => 1234,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
-                    "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
                     "FWVersion"         => "2.1.3",
@@ -492,10 +482,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "DriverInfo" => array(),
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -520,10 +509,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -555,10 +543,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 array(
                     "group"             => "default",
-                    "DeviceKey"         => null,
+                    "id"                => 0,
                     "DeviceID"          => "000000",
                     "DeviceName"        => "",
-                    "SerialNum"         => 0,
                     "HWPartNum"         => "",
                     "FWPartNum"         => "",
                     "FWVersion"         => "",
@@ -593,10 +580,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "group"             => "default",
                     "DriverInfo"        => array(
                     ),
-                    "DeviceKey"         => 1,
+                    "id"                => 1234,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
-                    "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
                     "FWVersion"         => "2.1.3",
@@ -621,10 +607,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "group"             => "default",
-                    "DeviceKey"         => 1,
+                    "id"                => 1234,
                     "DeviceID"          => "004738",
                     "DeviceName"        => "Name",
-                    "SerialNum"         => 1234,
                     "HWPartNum"         => "0039-21-02-A",
                     "FWPartNum"         => "0039-22-95-C",
                     "FWVersion"         => "2.1.3",
@@ -688,10 +673,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
@@ -726,10 +710,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -762,10 +745,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CE-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
@@ -798,10 +780,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CD01410123456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
@@ -835,10 +816,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CC-01-A",
                     "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
@@ -903,10 +883,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "DriverInfo" => array(),
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.3.2",
@@ -935,10 +914,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CF-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.1.2",
@@ -968,10 +946,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CE-01-A",
                     "FWPartNum" => "0039-24-67-C",
                     "FWVersion" => "0.0.5",
@@ -1001,10 +978,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "group" => "default",
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CD-01-A",
                     "FWPartNum" => "0123-45-67-C",
                     "FWVersion" => "0.0.5",
@@ -1035,10 +1011,9 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "DriverInfo" => array(),
-                    "DeviceKey" => null,
+                    "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
-                    "SerialNum" => 232,
                     "HWPartNum" => "0039-CC-01-A",
                     "FWPartNum" => "0039-25-67-C",
                     "FWVersion" => "0.0.5",
@@ -1079,7 +1054,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testToSetupString($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertSame($expect, $this->o->toSetupString());
+        $this->assertSame($expect, (string)$this->o);
     }
 
 

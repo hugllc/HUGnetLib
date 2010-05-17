@@ -78,12 +78,12 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     /**
     * Builds the class
     *
-    * @param array           $data    The data to build the class with
-    * @param DeviceContainer &$device This is the class to send packets to me to.
+    * @param array $data   The data to build the class with
+    * @param array $device This is the setup for my device class
     *
     * @return null
     */
-    public function __construct($data, DeviceContainer &$device)
+    public function __construct($data, $device)
     {
         // Clear the data
         $this->clearData();
@@ -102,7 +102,9 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // This is our device container
         $this->unsolicited = new DeviceContainer();
         // This is the device container with our setup information in it.
-        $this->myDevice = &$device;
+        $this->myDevice = new DeviceContainer($device);
+        $this->myDevice->insertRow(true);
+
         // Trap the exit signal and exit gracefully
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "loopEnd"));
@@ -151,6 +153,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             ." ".date("Y-m-d H:i:s"),
             HUGnetClass::VPRINT_NORMAL
         );
+        // Update our device
+        $this->updateMyDevice();
         // Set our end time
         $end = time() + $Timeout;
         // Monitor for packets.  The GetReply => true allows the hooks to
@@ -231,6 +235,21 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $match
         );
         return trim((string)$match[0]);
+    }
+    /**
+    * This updates my device record
+    *
+    * @return string
+    */
+    protected function updateMyDevice()
+    {
+        static $last;
+        // Do this only once per minute max
+        if ($last != date("i")) {
+            $this->myDevice->LastConfig = date("Y-m-d H:i:s");
+            $this->myDevice->updateRow();
+            $last = date("i");
+        }
     }
 
 }

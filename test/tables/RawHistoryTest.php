@@ -200,7 +200,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
             ),
             array("Date", 1234567890, "2009-02-13 17:31:30"),
             array("Date", "This is not a date", "1970-01-01 00:00:00"),
-            array("DeviceID", "7b", "00007B"),
+            array("id", 71, 71),
         );
     }
 

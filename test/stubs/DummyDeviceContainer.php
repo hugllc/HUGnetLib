@@ -73,6 +73,8 @@ class DummyDeviceContainer extends HUGnetClass
     public $PollInterval = 10;
     /** @var The device ID */
     public $DeviceID = "000123";
+    /** @var The device ID */
+    public $id = 0x123;
 
     public $default = array(
         "DeviceID" => "000123",

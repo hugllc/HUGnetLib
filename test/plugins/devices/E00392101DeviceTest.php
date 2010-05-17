@@ -849,6 +849,7 @@ S9030000FC",
         foreach ((array)$device as $key => $val) {
             $this->d->$key = $val;
         }
+        $this->d->id = hexdec($id);
         $this->d->DeviceID = $id;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();

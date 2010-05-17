@@ -167,7 +167,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testReadSetup($id, $string, $read, $write, $expect, $timeout)
     {
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($id);
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
@@ -184,7 +184,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "000025",
+                "37",
                 "000000002500391101410039201343000009FFFFFF50",
                 (string)new PacketContainer(array(
                     "From" => "000025",
@@ -202,7 +202,25 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 0,
             ),
             array(
-                "000025",
+                0x000025,
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "010203040506070809",
+                )),
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETDATA,
+                    "Data" => "",
+                )),
+                true,
+                0,
+            ),
+            array(
+                0x000025,
                 "000000000100392601500039260150010203FFFFFF10",
                 "",
                 "5A5A5A5500002500002000505A5A5A550000250000200050"
@@ -228,7 +246,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testReadData($id, $string, $read, $write, $expect, $timeout)
     {
-        $this->d->DeviceID = $id;
+        $this->d->id = $id;
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readData();
@@ -252,6 +270,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testReadConfig($id, $string, $read, $write, $expect)
     {
+        $this->d->id = hexdec($id);
         $this->d->DeviceID = $id;
         $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
@@ -308,6 +327,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testReadCalibration($id, $read, $write, $expect)
     {
+        $this->d->id = hexdec($id);
         $this->d->DeviceID = $id;
         $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
@@ -480,7 +500,31 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 PacketContainer::COMMAND_READFLASH,
                 "010203040506",
                 true,
-                "000123",
+                0x123,
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000123",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "060504030201",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000123",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_READFLASH,
+                        "Data" => "010203040506",
+                    )
+                ),
+                "060504030201",
+            ),
+            // Everything works
+            array(
+                PacketContainer::COMMAND_READFLASH,
+                "010203040506",
+                true,
+                "291",
                 (string) new PacketContainer(
                     array(
                         "From" => "000123",
@@ -504,7 +548,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 PacketContainer::COMMAND_READFLASH,
                 "010203040506",
                 false,
-                "000123",
+                0x000123,
                 "",
                 (string) new PacketContainer(
                     array(
@@ -521,7 +565,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 PacketContainer::COMMAND_READFLASH,
                 "000020",
                 true,
-                "000123",
+                0x000123,
                 "",
                 (string) new PacketContainer(
                     array(
@@ -580,7 +624,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $command, $data, $reply, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
-        $this->d->DeviceID = $devID;
+        $this->d->id = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->sendPkt($command, $data, $reply);
         $this->assertSame($write, $this->socket->writeString, "Write string wrong");
@@ -679,6 +723,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $addr, $length, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->readFlash($addr, $length);
@@ -778,6 +823,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $addr, $length, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->readSRAM($addr, $length);
@@ -877,6 +923,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $addr, $length, $devID, $read, $write, $expect, $timeout = 0
     ) {
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->id = hexdec($devID);
         $this->d->DeviceID = $devID;
         $this->socket->readString = $read;
         $ret = $this->o->readE2($addr, $length);
