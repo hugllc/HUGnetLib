@@ -167,6 +167,17 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     public static function dataFromArray()
     {
         return array(
+            array(
+                array(
+                    "id" => 100,
+                    "packet" => "",
+                    "device" => "",
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                ),
+            ),
         );
     }
 
@@ -183,7 +194,11 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     public function testFromArray($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame("DeviceContainer", get_class($data["device"]));
+        $this->assertSame("DeviceContainer", get_class($this->o->device));
+        $this->assertSame("PacketContainer", get_class($data["packet"]));
+        $this->assertSame("PacketContainer", get_class($this->o->packet));
     }
     /**
     * data provider for testSet
@@ -220,6 +235,60 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
         $this->o->$var = $value;
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
+    }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataInsertRow()
+    {
+        $packet = new PacketContainer(
+            array(
+                "Date" => "2003-01-23 23:35:12",
+            )
+        );
+        $device = new DeviceContainer();
+
+        return array(
+            array(
+                array(
+                        "id"        => "123",
+                        "Date"      => "1977-01-01 08:09:00",
+                        "packet"    => $packet->toString(),
+                        "device"    => $device->toString(),
+                        "command"   => "55",
+                        "dataIndex" => "232",
+                ),
+                array(
+                    array(
+                        "id"        => "123",
+                        "Date"      => "1977-01-01 08:09:00",
+                        "packet"    => $packet->toString(),
+                        "device"    => $device->toString(),
+                        "command"   => "55",
+                        "dataIndex" => "232",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataInsertRow
+    *
+    * @return null
+    */
+    public function testInsertRow($preload, $expect)
+    {
+        $this->o->insertRecord($preload);
+        $stmt = $this->pdo->query("SELECT * FROM `rawHistory`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
     }
 
 }

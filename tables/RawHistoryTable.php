@@ -39,6 +39,8 @@
 require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../containers/DeviceContainer.php";
+require_once dirname(__FILE__)."/../containers/PacketContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -112,6 +114,11 @@ class RawHistoryTable extends HUGnetDBTable
             "Type" => "longtext",
             "Default" => "",
         ),
+        "command" => array(
+            "Name" => "command",
+            "Type" => "varchar(2)",
+            "Default" => "",
+        ),
         "dataIndex" => array(
             "Name" => "dataIndex",
             "Type" => "int",
@@ -136,7 +143,7 @@ class RawHistoryTable extends HUGnetDBTable
         "DateIDIndex" => array(
             "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("Date", "id", "dataIndex"),
+            "Columns" => array("Date", "id", "dataIndex", "command"),
         ),
     );
 
@@ -144,6 +151,21 @@ class RawHistoryTable extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    /** @var This is the packet */
+    public $packet = null;
+    /** @var This is the device */
+    public $device = null;
+
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+        $this->create();
+    }
     /**
     * Inserts a record into the database if it isn't there already
     *
@@ -157,16 +179,35 @@ class RawHistoryTable extends HUGnetDBTable
         return $hist->insertRow();
     }
     /**
-    * This is the constructor
+    * Sets all of the endpoint attributes from an array
     *
-    * @param mixed $data This is an array or string to create the object from
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
     */
-    function __construct($data="")
+    public function fromArray($array)
     {
-        parent::__construct($data);
-        $this->create();
+        parent::fromArray($array);
+        $this->_setupClasses();
     }
-
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    private function _setupClasses()
+    {
+        if (!is_object($this->data["device"])) {
+            // Do the sensors
+            $this->data["device"] = new DeviceContainer($this->device);
+            $this->device = &$this->data["device"];
+        }
+        if (!is_object($this->data["packet"])) {
+            // Do the sensors
+            $this->data["packet"] = new PacketContainer($this->packet);
+            $this->packet = &$this->data["packet"];
+        }
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

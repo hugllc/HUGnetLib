@@ -253,6 +253,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
                     "Date" => $pkt->Date,
                     "packet" => $pkt->toString(),
                     "device" => $this->myDriver->toString(),
+                    "command" => $pkt->Command,
                     "dataIndex" => hexdec(substr($pkt->Reply->Data, 0, 2)),
                 )
             );
