@@ -371,15 +371,15 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     protected function sqlDate($value)
     {
-        if (is_numeric($value)) {
-            $date = (int) $value;
-        } else if (is_string($value)) {
-            $date = strtotime($value);
+        if (is_int($value)) {
+            $value = date("Y-m-d H:i:s", $value);
         }
-        if ($date !== false) {
-            return date("Y-m-d H:i:s", $date);
+        try {
+            $date = new DateTime($value, new DateTimeZone("UTC"));
+        } catch (exception $e) {
+            return "1970-01-01 00:00:00";
         }
-        return "1970-01-01 00:00:00";
+        return $date->format("Y-m-d H:i:s");
     }
 }
 
