@@ -110,7 +110,7 @@ class E00392101Device extends DeviceDriverLoadableBase
                 $ret = $this->writeProgram();
             }
         }
-        return $ret;
+        return $this->setLastConfig($ret);
     }
     /**
     * Writes the program into the device

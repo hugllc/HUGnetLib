@@ -57,6 +57,9 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 class E00392100Device extends DeviceDriverLoadableBase
     implements DeviceDriverInterface
 {
+    /** The placeholder for the reading the downstream units from a controller */
+    const COMMAND_READDOWNSTREAM = "56";
+
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00392100",
@@ -116,7 +119,39 @@ class E00392100Device extends DeviceDriverLoadableBase
                 $ret = false;
             }
         }
-        return $ret;
+        if ($ret) {
+            $ret = $this->readDownstreamDevices();
+        }
+        return $this->setLastConfig($ret);
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readDownstreamDevices()
+    {
+        // Send the packet out
+        $ret = $this->sendPkt(self::COMMAND_READDOWNSTREAM);
+        if (is_string($ret) && !empty($ret)) {
+            $dev = new DeviceContainer();
+            $strings = str_split($ret, 180);
+            foreach ($strings as $key => $str) {
+                $devs = str_split($str, 6);
+                foreach ($devs as $d) {
+                    $dev->clearData();
+                    $id = hexdec($d);
+                    if (!empty($id)) {
+                        $dev->getRow($id);
+                        $dev->ControllerKey = $this->myDriver->id;
+                        $dev->ControllerIndex = $key;
+                        $dev->updateRow(array("ControllerKey", "ControllerIndex"));
+                    }
+                }
+            }
+            $ret = true;;
+        }
+        return (bool) $ret;
     }
     /**
     * Reads the setup out of the device

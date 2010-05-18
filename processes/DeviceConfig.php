@@ -157,6 +157,8 @@ class DeviceConfig extends ProcessBase
         // for 100 failures mark the device inactive
         if ($dev->params->DriverInfo["ConfigFail"] > 100) {
             $dev->Active = 0;
+            $dev->ControllerKey = 0;
+            $dev->ControllerIndex = 0;
             $this->logError(
                 "DEACTIVATE",
                 $dev->DeviceID.": has failed to respond to "

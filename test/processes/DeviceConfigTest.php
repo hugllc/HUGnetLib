@@ -178,6 +178,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     public static function dataConfig()
     {
         return array(
+            // #0
             array(
                 array(
                     array(
@@ -211,6 +212,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
             ),
+            // #1
             array(
                 array(
                 ),
@@ -219,6 +221,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                 "",
                 "",
             ),
+            // #2
             array(
                 array(
                     array(
@@ -253,14 +256,27 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "To" => "000019",
                     "Command" => PacketContainer::COMMAND_REPLY,
                     "Data" => "000012345600392101410039200143000009FFFFFF50",
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => str_repeat("000000", 60),
                 )),
                 (string)new PacketContainer(array(
                     "To" => "123456",
                     "From" => "000019",
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
+                )).
+                (string)new PacketContainer(array(
+                    "To" => "123456",
+                    "From" => "000019",
+                    "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
+                    "Data" => "",
                 )),
             ),
+            // #3
             array(
                 array(
                     array(
@@ -331,6 +347,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
             ),
+            // #4
             // Should exit before it does anything
             array(
                 array(

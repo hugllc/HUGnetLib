@@ -139,6 +139,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
+                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                0,
             ),
             array(
                 "000025",
@@ -148,25 +150,30 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
                 false,
                 1,
+                "1970-01-01 00:00:00",
+                1,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id      The Device ID to pretend to be
-    * @param string $string  The string for the dummy device to return
-    * @param string $read    The read string to put in
-    * @param string $write   The write string expected
-    * @param string $expect  The expected return
-    * @param int    $timeout The timeout to use
+    * @param string $id         The Device ID to pretend to be
+    * @param string $string     The string for the dummy device to return
+    * @param string $read       The read string to put in
+    * @param string $write      The write string expected
+    * @param string $expect     The expected return
+    * @param int    $timeout    The timeout to use
+    * @param string $LastConfig The time last congig should be set to (regex)
+    * @param int    $configFail The number of failures to report
     *
     * @return null
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadSetup($id, $string, $read, $write, $expect, $timeout)
-    {
+    public function testReadSetup(
+        $id, $string, $read, $write, $expect, $timeout, $LastConfig, $configFail
+    ) {
         $this->d->id = hexdec($id);
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
@@ -174,6 +181,16 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
+        $this->assertRegExp(
+            "/".$LastConfig."/",
+            $this->d->LastConfig,
+            "LastConfig wrong"
+        );
+        $this->assertSame(
+            $configFail,
+            $this->d->params->DriverInfo["ConfigFail"],
+            "ConfigFail wrong"
+        );
     }
     /**
     * data provider for testReadData
@@ -200,6 +217,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
+                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                0,
             ),
             array(
                 0x000025,
@@ -218,6 +237,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
+                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                0,
             ),
             array(
                 0x000025,
@@ -227,25 +248,30 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     ."5A5A5A0300002500002000065A5A5A550000250000200050",
                 false,
                 1,
+                "1970-01-01 00:00:00",
+                1,
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id      The Device ID to pretend to be
-    * @param string $string  The string for the dummy device to return
-    * @param string $read    The read string to put in
-    * @param string $write   The write string expected
-    * @param string $expect  The expected return
-    * @param int    $timeout The timeout to use
+    * @param string $id       The Device ID to pretend to be
+    * @param string $string   The string for the dummy device to return
+    * @param string $read     The read string to put in
+    * @param string $write    The write string expected
+    * @param string $expect   The expected return
+    * @param int    $timeout  The timeout to use
+    * @param string $LastPoll The time last congig should be set to (regex)
+    * @param int    $PollFail The number of failures to report
     *
     * @return null
     *
     * @dataProvider dataReadData
     */
-    public function testReadData($id, $string, $read, $write, $expect, $timeout)
-    {
+    public function testReadData(
+        $id, $string, $read, $write, $expect, $timeout, $LastPoll, $PollFail
+    ) {
         $this->d->id = $id;
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
@@ -253,6 +279,16 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         //$this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
+        $this->assertRegExp(
+            "/".$LastPoll."/",
+            $this->d->LastPoll,
+            "LastPoll wrong"
+        );
+        $this->assertSame(
+            $PollFail,
+            $this->d->params->DriverInfo["PollFail"],
+            "PollFail wrong"
+        );
     }
 
     /**

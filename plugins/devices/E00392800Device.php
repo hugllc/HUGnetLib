@@ -104,7 +104,7 @@ class E00392800Device extends DeviceDriverBase
         if ($this->readConfig()) {
             return $this->readCalibration();
         }
-        return false;
+        return $this->setLastConfig($ret);
     }
 
 }

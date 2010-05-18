@@ -145,12 +145,18 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     /**
     * This function should be used to wait between config attempts
     *
+    * It waits up to the Timeout.  The timeout is calculated from the last time
+    * that it ran, so it will only wait the full timeout if there is nothing
+    * for the process to do.  If the process takes more than the timeout period
+    * to finish then it will not wait at all.
+    *
     * @param int $Timeout The timeout period to wait
     *
     * @return int The number of packets routed
     */
     public function wait($Timeout = 60)
     {
+        static $end;
         // Be verbose ;)
         self::vprint(
             "Pausing $Timeout s  Using ID: ".$this->myDevice->DeviceID
@@ -159,13 +165,13 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         );
         // Update our device
         $this->updateMyDevice();
-        // Set our end time
-        $end = time() + $Timeout;
         // Monitor for packets.  The GetReply => true allows the hooks to
         // take care of any packets.
         while ((time() < $end) && $this->loop()) {
             PacketContainer::monitor(array("GetReply" => true, "Timeout" => 1));
         }
+        // Set our end time
+        $end = time() + $Timeout;
     }
     /**
     * This function sends a powerup packet

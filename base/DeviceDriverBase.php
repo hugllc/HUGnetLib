@@ -107,7 +107,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     */
     public function readSetup()
     {
-        return $this->readConfig();
+        $ret = $this->readConfig();
+        return $this->setLastConfig($ret);
     }
     /**
     * Checks the interval to see if it is ready to config.
@@ -169,13 +170,44 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         $ret = $this->sendPkt(PacketContainer::COMMAND_GETSETUP);
         if (is_string($ret)) {
             $this->myDriver->fromSetupString($ret);
+            return true;
+        }
+        return false;
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @param bool $pass Whether to set a pass or fail
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function setLastConfig($pass=true)
+    {
+        if ($pass) {
             $this->myDriver->LastConfig = date("Y-m-d H:i:s");
             $this->data["ConfigFail"] = 0;
             return true;
         }
         // We failed.  State that.
         $this->data["ConfigFail"]++;
-
+        return false;
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @param bool $pass Whether to set a pass or fail
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function setLastPoll($pass=true)
+    {
+        if ($pass) {
+            $this->myDriver->LastPoll = date("Y-m-d H:i:s");
+            $this->data["PollFail"] = 0;
+            return true;
+        }
+        // We failed.  State that.
+        $this->data["PollFail"]++;
         return false;
     }
     /**
@@ -226,7 +258,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     */
     public function readData()
     {
-        return $this->readSensors();
+        $ret = $this->readSensors();
+        return $this->setLastPoll($ret);
     }
     /**
     * Reads the setup out of the device
@@ -257,15 +290,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
                     "dataIndex" => hexdec(substr($pkt->Reply->Data, 0, 2)),
                 )
             );
-            if ($ret) {
-                $this->myDriver->LastPoll = date("Y-m-d H:i:s");
-                $this->data["PollFail"] = 0;
-            }
             return $ret;
         }
-        // We failed.  State that.
-        $this->data["PollFail"]++;
-
         return false;
     }
     /**
