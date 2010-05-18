@@ -241,7 +241,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     *
     * @return array
     */
-    public static function dataInsertRow()
+    public static function dataInsertRecord()
     {
         $packet = new PacketContainer(
             array(
@@ -279,13 +279,13 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     * @param array $preload The array to preload into the class
     * @param array $expect  The expected return
     *
-    * @dataProvider dataInsertRow
+    * @dataProvider dataInsertRecord
     *
     * @return null
     */
-    public function testInsertRow($preload, $expect)
+    public function testInsertRecord($preload, $expect)
     {
-        $this->o->insertRecord($preload);
+        RawHistoryTable::insertRecord($preload);
         $stmt = $this->pdo->query("SELECT * FROM `rawHistory`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
