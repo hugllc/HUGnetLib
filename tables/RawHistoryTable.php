@@ -106,22 +106,22 @@ class RawHistoryTable extends HUGnetDBTable
         ),
         "packet" => array(
             "Name" => "packet",
-            "Type" => "longtext",
+            "Type" => "longblob",
             "Default" => "",
         ),
         "device" => array(
             "Name" => "device",
-            "Type" => "longtext",
+            "Type" => "longblob",
             "Default" => "",
         ),
         "command" => array(
             "Name" => "command",
-            "Type" => "varchar(2)",
+            "Type" => "char(2)",
             "Default" => "",
         ),
         "dataIndex" => array(
             "Name" => "dataIndex",
-            "Type" => "int",
+            "Type" => "tinyint",
             "Default" => 0,
         ),
     );
@@ -177,6 +177,24 @@ class RawHistoryTable extends HUGnetDBTable
     {
         $hist = new RawHistoryTable($data);
         return $hist->insertRow();
+    }
+    /**
+    * Returns an array with only the values the database cares about
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toDB($default = true)
+    {
+        foreach ((array)$this->sqlColumns as $col) {
+            if (is_object($this->data[$col["Name"]])) {
+                $array[$col["Name"]] = $this->data[$col["Name"]]->toZip();
+            } else {
+                $array[$col["Name"]] = $this->data[$col["Name"]];
+            }
+        }
+        return (array)$array;
     }
     /**
     * Sets all of the endpoint attributes from an array

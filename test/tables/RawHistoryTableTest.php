@@ -156,8 +156,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketLogTable($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $o = new RawHistoryTable($preload);
+        $this->assertSame($expect, $o->toArray());
     }
     /**
     * data provider for testDeviceID
@@ -264,8 +264,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     array(
                         "id"        => "123",
                         "Date"      => "1977-01-01 08:09:00",
-                        "packet"    => $packet->toString(),
-                        "device"    => $device->toString(),
+                        "packet"    => $packet->toZip(),
+                        "device"    => $device->toZip(),
                         "command"   => "55",
                         "dataIndex" => "232",
                     ),

@@ -1226,10 +1226,192 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     public function testFromString($string, $expect)
     {
         $o = new HUGnetContainerTestClass();
-        $o->fromString($string, $next);
+        $o->fromString($string);
         $this->assertSame(
             $expect,
             $o->toArray()
+        );
+    }
+
+    /**
+    * data provider for testFromZip
+    *
+    * @return array
+    */
+    public static function dataFromZip()
+    {
+        return array(
+            array(
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 10,
+                            "Attrib2" => "Hello",
+                            "Attrib4" => array("Hi"),
+                            "Attrib5" => "Another string",
+                            "Attrib6" => array("Two Element"),
+                            "Attrib8" => 4.321,
+                        )
+                    )
+                ),
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+            ),
+            array(
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 10,
+                            "Attrib2" => "Hello",
+                            "Attrib4" => array("Hi"),
+                            "Attrib5" => "Another string",
+                            "Attrib6" => array("Two Element"),
+                            "Attrib8" => 4.321,
+                        )
+                    )
+                ),
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+            ),
+            array(
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 100,
+                            "Attrib2" => "Hello There",
+                            "Attrib3" => "Some Data",
+                            "Attrib4" => array("Hello Everyone"),
+                            "Attrib5" => "NonBlank String",
+                            "Attrib6" => array("Three Element"),
+                            "Attrib7" => 1.15,
+                            "Attrib8" => 9.95,
+                        )
+                    )
+                ),
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The array to use to build it
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromZip
+    */
+    public function testFromZip($string, $expect)
+    {
+        $this->o->fromZip($string);
+        $this->assertSame(
+            $expect,
+            $this->o->toArray()
+        );
+    }
+    /**
+    * data provider for testToZip
+    *
+    * @return array
+    */
+    public static function dataToZip()
+    {
+        return array(
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 10,
+                            "Attrib2" => "Hello",
+                            "Attrib3" => "Data",
+                            "Attrib4" => array("Hi"),
+                        )
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib4" => array("Hi"),
+                    "Attrib5" => "Another string",
+                    "Attrib6" => array("Two Element"),
+                    "Attrib8" => 4.321,
+                ),
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 10,
+                            "Attrib2" => "Hello",
+                            "Attrib3" => "Data",
+                            "Attrib4" => array("Hi"),
+                        )
+                    )
+                ),
+            ),
+            array(
+                array(
+                    "Attrib1" => 100,
+                    "Attrib2" => "Hello There",
+                    "Attrib3" => "Some Data",
+                    "Attrib4" => array("Hello Everyone"),
+                    "Attrib5" => "NonBlank String",
+                    "Attrib6" => array("Three Element"),
+                    "Attrib7" => 1.15,
+                    "Attrib8" => 9.95,
+                ),
+                gzcompress(
+                    serialize(
+                        array(
+                            "Attrib1" => 100,
+                            "Attrib2" => "Hello There",
+                            "Attrib3" => "Some Data",
+                            "Attrib4" => array("Hello Everyone"),
+                        )
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload Data to preload
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToZip
+    */
+    public function testToZip($preload, $expect)
+    {
+        $o = new HUGnetContainerTestClass($preload);
+        $ret = $o->toZip();
+        $this->assertSame(
+            $expect,
+            $ret
         );
     }
     /**
@@ -1276,6 +1458,26 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 base64_encode(
+                    serialize(
+                        array(
+                            "Attrib1" => 10,
+                            "Attrib2" => "Hello",
+                            "Attrib4" => array("Hi"),
+                            "Attrib5" => "Another string",
+                            "Attrib6" => array("Two Element"),
+                            "Attrib8" => 4.321,
+                        )
+                    )
+                ),
+                array(
+                    "Attrib1" => 10,
+                    "Attrib2" => "Hello",
+                    "Attrib3" => "Data",
+                    "Attrib4" => array("Hi"),
+                ),
+            ),
+            array(
+                gzcompress(
                     serialize(
                         array(
                             "Attrib1" => 10,

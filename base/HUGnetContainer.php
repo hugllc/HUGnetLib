@@ -409,18 +409,6 @@ abstract class HUGnetContainer extends HUGnetClass
         }
     }
     /**
-    * Creates the object from a string
-    *
-    * @param string $string This is the raw string for the device
-    *
-    * @return null
-    */
-    public function fromString($string)
-    {
-        $stuff = unserialize(base64_decode($string));
-        $this->fromArray($stuff);
-    }
-    /**
     * Creates the object from a string or array
     *
     * @param mixed $data This is whatever you want to give the class
@@ -430,10 +418,29 @@ abstract class HUGnetContainer extends HUGnetClass
     public function fromAny($data)
     {
         if (is_string($data)) {
-            $this->fromString($data);
+            if ($this->fromString($data) === false) {
+                @$this->fromZip($data);
+            }
         } else if (is_array($data)) {
             $this->fromArray($data);
         }
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return boolean
+    */
+    public function fromString($string)
+    {
+        if (!empty($string)) {
+            $stuff = unserialize(base64_decode($string));
+        }
+        if ($stuff) {
+            $this->fromArray($stuff);
+        }
+        return (bool)$stuff;
     }
     /**
     * Returns the object as a string
@@ -445,6 +452,34 @@ abstract class HUGnetContainer extends HUGnetClass
     public function toString($default = true)
     {
         return base64_encode(serialize($this->toArray($default)));
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $zip This is the raw string for the device
+    *
+    * @return null
+    */
+    public function fromZip($zip)
+    {
+        if (!empty($zip)) {
+            $stuff = unserialize(gzuncompress($zip));
+        }
+        if ($stuff) {
+            $this->fromArray($stuff);
+        }
+        return (bool) $stuff;
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toZip($default = true)
+    {
+        return gzcompress(serialize($this->toArray($default)));
     }
     /**
     * Returns the md5 hash of the object
