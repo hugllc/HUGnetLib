@@ -38,6 +38,7 @@
 /** require our base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../interfaces/HUGnetDBDriverInterface.php";
 /**
  * Base class for all database work
  *
@@ -55,7 +56,7 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class HUGnetDBDriver extends HUGnetClass
+abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInterface
 {
     /** @var int This is where we store the limit */
     public $limit = 0;
@@ -142,7 +143,10 @@ abstract class HUGnetDBDriver extends HUGnetClass
     */
     public function createTable($columns = null)
     {
-        if ($this->tableExists()) {
+        if ((empty($columns) && empty($this->myTable->sqlColumns)
+            || ($this->table() == "table"))
+            || $this->tableExists()
+        ) {
             return false;
         }
         if (empty($columns)) {
@@ -228,12 +232,6 @@ abstract class HUGnetDBDriver extends HUGnetClass
     }
 
     /**
-    * Creates the field array
-    *
-    * @return null
-    */
-    abstract public function columns();
-    /**
     * Checks to see if a table exists
     *
     * @return null
@@ -312,7 +310,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
                 $this->columns[$column] = $column;
             }
         }
-        if (empty($this->columns)) {
+        if (empty($this->columns) && !empty($this->myTable->sqlColumns)) {
             $this->dataColumns();
         }
     }
@@ -707,7 +705,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return int
     */
-    function getNextID()
+    public function getNextID()
     {
         $query = "SELECT MAX(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();
@@ -723,7 +721,7 @@ abstract class HUGnetDBDriver extends HUGnetClass
     *
     * @return int
     */
-    function getPrevID()
+    public function getPrevID()
     {
         $query = "SELECT MIN(".$this->myTable->sqlId.") as id "
                 ." from ".$this->table();

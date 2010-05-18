@@ -180,15 +180,15 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         );
     }
     /**
-     * Tests galtol
-     *
-     * @param string $preload The query to preload the database with
-     * @param array  $expect  The expeced return array
-     *
-     * @return null
-     *
-     * @dataProvider dataColumns
-     */
+    * Tests galtol
+    *
+    * @param string $preload The query to preload the database with
+    * @param array  $expect  The expeced return array
+    *
+    * @return null
+    *
+    * @dataProvider dataColumns
+    */
     public function testColumns($preload, $expect)
     {
         $this->pdo->query($preload);
@@ -270,6 +270,94 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->o->addColumn($column);
         $this->assertAttributeSame($expect, "query", $this->o);
     }
+    /**
+    * test the lock routine.
+    *
+    * @return null
+    */
+    public function testLock()
+    {
+        $this->assertTrue($this->o->lock());
+    }
+    /**
+    * test the unlock routine.
+    *
+    * @return null
+    */
+    public function testUnlock()
+    {
+        $this->assertTrue($this->o->unlock());
+    }
+    /**
+    * test the check routine.
+    *
+    * @return null
+    */
+    public function testCheck()
+    {
+        $this->assertTrue($this->o->check(true));
+    }
+    /**
+    * Data provider for testAddColumnQuery
+    *
+    * @return array
+    */
+    public static function dataTables()
+    {
+        return array(
+            array(
+                array(
+                    "CREATE TABLE `anotherTable` ("
+                    ." `id` int(11) PRIMARY KEY NOT NULL,"
+                    ." `name` varchar(32) NOT NULL,"
+                    ." `value` float NULL"
+                    ." ) TABLESPACE MEMORY;",
+                    "CREATE TABLE `myTable2` ("
+                    ." `id` int(11) PRIMARY KEY NOT NULL,"
+                    ." `name` varchar(32) NOT NULL,"
+                    ." `value` float NULL"
+                    ." ) TABLESPACE MEMORY;",
+                ),
+                array(
+                    "anotherTable" => "anotherTable",
+                    "myTable" => "myTable",
+                    "myTable2" => "myTable2",
+                ),
+                array(
+                    "anotherTable" => "anotherTable",
+                    "myTable" => "myTable",
+                    "myTable2" => "myTable2",
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests tables
+    *
+    * @param array $queries Array of SQL queryies to send
+    * @param array $expect  The expected return value
+    * @param array $tables  Tables to drop at the end of it
+    *
+    * @return null
+    *
+    * @dataProvider dataTables
+    */
+    public function testTables($queries, $expect, $tables)
+    {
+        if ($this->skipPDOTests) {
+            $this->markTestSkipped("No MySQL server available");
+        } else {
+            foreach ((array)$queries as $query) {
+                $this->pdo->query($query);
+            }
+            $cols = $this->o->tables();
+            $this->assertSame($expect, $cols);
+            foreach ((array)$tables as $table) {
+                $this->pdo->query("DROP TABLE `".$table."`");
+            }
+        }
+    }
+
 }
 
 ?>

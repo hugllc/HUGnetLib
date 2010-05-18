@@ -167,6 +167,42 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
         $cols = $this->o->columns();
         $this->assertSame($expect, $cols);
     }
+    /**
+    * test the lock routine.
+    *
+    * @return null
+    */
+    public function testLock()
+    {
+        $this->assertTrue($this->o->lock());
+    }
+    /**
+    * test the unlock routine.
+    *
+    * @return null
+    */
+    public function testUnlock()
+    {
+        $this->assertTrue($this->o->unlock());
+    }
+    /**
+    * test the check routine.
+    *
+    * @return null
+    */
+    public function testCheck()
+    {
+        $this->assertTrue($this->o->check());
+    }
+    /**
+    * test the check routine.
+    *
+    * @return null
+    */
+    public function testTables()
+    {
+        $this->assertSame(array(), $this->o->tables());
+    }
 }
 
 ?>

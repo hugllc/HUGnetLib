@@ -136,7 +136,71 @@ class MysqlDriver extends HUGnetDBDriver
             $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
         }
     }
-
+    /**
+    * Checks the database table, repairs and optimizes it
+    *
+    * @param bool $force Force the repair
+    *
+    * @return mixed
+    */
+    public function check($force = false)
+    {
+        $return = true;
+        $this->lock();
+        $ret = $this->query("FLUSH TABLES ".$this->table());
+        $ret = $this->query("CHECK TABLE ".$this->table());
+        if (($ret[count($ret)-1]["Msg_text"] != "OK") || $force) {
+            $ret = $this->query("REPAIR TABLE ".$this->table());
+            if ($ret[count($ret)-1]["Msg_text"] != "OK") {
+                // @codeCoverageIgnoreStart
+                // It is impossible to make this run, since it only runs when the
+                // table is corrupt and not fixable
+                $return = false;
+            }
+            // @codeCoverageIgnoreEnd
+        }
+        $ret = $this->query("OPTIMIZE TABLE ".$this->table());
+        $this->unlock();
+        return $return;
+    }
+    /**
+    * Locks the table
+    *
+    * @return boolean True on success, false on failure
+    */
+    public function lock()
+    {
+        $this->query("LOCK TABLES ".$this->table()." WRITE");
+        return true;
+    }
+    /**
+    * Unlocks the table
+    *
+    * @return mixed
+    */
+    public function unlock()
+    {
+        $this->query("UNLOCK TABLES");
+        return true;
+    }
+    /**
+    * Get the names of all the tables in the current database
+    *
+    * @return array of table names
+    */
+    public function tables()
+    {
+        $ret = $this->query("SHOW TABLES");
+        $return = array();
+        foreach ($ret as $t) {
+            // @codeCoverageIgnoreStart
+            // This is impossible to test without a mysql server
+            list($key, $value) = each($t);
+            $return[$value] = $value;
+            // @codeCoverageIgnoreEnd
+        }
+        return $return;
+    }
 
 }
 

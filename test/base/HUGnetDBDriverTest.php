@@ -1808,5 +1808,41 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
             $this->columns[$col['name']] = $col['type'];
         }
     }
+    /**
+    * Checks the database table, repairs and optimizes it
+    *
+    * @return mixed
+    */
+    public function check()
+    {
+        return true;
+    }
+    /**
+    * Locks the table
+    *
+    * @return mixed
+    */
+    public function lock()
+    {
+        return true;
+    }
+    /**
+    * Unlocks the table
+    *
+    * @return mixed
+    */
+    public function unlock()
+    {
+        return true;
+    }
+    /**
+    * Get the names of all the tables in the current database
+    *
+    * @return array of table names
+    */
+    public function tables()
+    {
+        return array();
+    }
 }
 ?>
