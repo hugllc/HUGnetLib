@@ -148,7 +148,7 @@ class DevicePoll extends ProcessBase
         ) {
             $this->logError(
                 "NOPOLL",
-                "Device ".$dev->DeviceID." is has failed "
+                $dev->DeviceID.": has failed "
                 .$dev->params->DriverInfo["PollFail"]." polls",
                 ErrorTable::SEVERITY_WARNING,
                 "DeviceConfig::config"

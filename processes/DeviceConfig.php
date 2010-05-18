@@ -148,7 +148,7 @@ class DeviceConfig extends ProcessBase
         ) {
             $this->logError(
                 "NOCONFIG",
-                "Device ".$dev->DeviceID." is has failed "
+                $dev->DeviceID.": has failed "
                 .$dev->params->DriverInfo["ConfigFail"]." configs",
                 ErrorTable::SEVERITY_WARNING,
                 "DeviceConfig::config"
@@ -158,8 +158,8 @@ class DeviceConfig extends ProcessBase
         if ($dev->params->DriverInfo["ConfigFail"] > 100) {
             $dev->Active = 0;
             $this->logError(
-                "NOTACTIVE",
-                "Device ".$dev->DeviceID." is has failed to respond to "
+                "DEACTIVATE",
+                $dev->DeviceID.": has failed to respond to "
                 .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
                 ."device inactive.",
                 ErrorTable::SEVERITY_ERROR,

@@ -91,10 +91,6 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->myConfig = &ConfigContainer::singleton();
         // Run the parent stuff
         parent::__construct($data);
-        // Set the gatewaykey if it hasn't been set
-        if (empty($this->GatewayKey)) {
-            $this->GatewayKey = $this->myConfig->script_gateway;
-        }
         // Set the verbosity
         $this->verbose($this->myConfig->verbose);
         // This is our device container
@@ -103,6 +99,14 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->unsolicited = new DeviceContainer();
         // This is the device container with our setup information in it.
         $this->myDevice = new DeviceContainer($device);
+        $this->myDevice->DeviceJob = posix_getpid();
+        $this->myDevice->DeviceLocation = ProcessBase::getIP();
+        // Set the gatewaykey if it hasn't been set
+        if (empty($this->GatewayKey)) {
+            $this->GatewayKey = $this->myConfig->script_gateway;
+        }
+        $this->myDevice->GatewayKey = $this->GatewayKey;
+        $this->myDevice->LastConfig = date("Y-m-d H:i:s");
         $this->myDevice->insertRow(true);
 
         // Trap the exit signal and exit gracefully
