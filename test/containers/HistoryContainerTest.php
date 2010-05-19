@@ -100,7 +100,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "DataPointContainer",
+                "GenericDataPoint",
                 $obj,
                 array(
                     "DeviceKey" => 23,
@@ -154,7 +154,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "DataPointContainer",
+                "GenericDataPoint",
                 $obj,
                 array(
                     "DeviceKey" => 23,

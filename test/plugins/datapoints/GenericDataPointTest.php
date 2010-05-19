@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
+ * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -36,9 +36,10 @@
  *
  */
 
-
-require_once dirname(__FILE__).'/../../containers/HistoryContainer.php';
-require_once dirname(__FILE__).'/../../containers/DataPointContainer.php';
+/** Get our classes */
+require_once dirname(__FILE__).'/../../../plugins/datapoints/GenericDataPoint.php';
+require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
+require_once dirname(__FILE__).'/DataPointPluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -46,14 +47,14 @@ require_once dirname(__FILE__).'/../../containers/DataPointContainer.php';
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DataPointContainerTest extends PHPUnit_Framework_TestCase
+class GenericDataPointTest extends DataPointPluginTestBase
 {
 
     /**
@@ -66,6 +67,13 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $config = array(
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
+        $this->socket = &$this->config->sockets->getSocket("default");
+        $this->d = new DummyDeviceContainer();
+        $this->o = new GenericDataPoint($this->d);
     }
 
     /**
@@ -78,81 +86,19 @@ class DataPointContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->o);
     }
 
-
     /**
-    * data provider for testDeviceID
+    * Data provider for testRegisterPlugin
     *
     * @return array
     */
-    public static function dataConstructor()
+    public static function dataRegisterPlugin()
     {
         return array(
-            array(
-                new HistoryContainer($row, $obj),
-                5,
-                "5",
-            ),
+            array("GenericDataPoint"),
         );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $obj    The history Container object
-    * @param mixed  $value  The value to set it to
-    * @param int    $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataConstructor
-    */
-    public function testConstructor($obj, $value, $expect)
-    {
-        $o = new DataPointContainer($obj, $value);
-        $this->assertSame($expect, (string)$o);
-    }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                new HistoryContainer($row, $obj),
-                5,
-                "5",
-            ),
-            array(
-                new HistoryContainer($row, $obj),
-                null,
-                null,
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $obj    The history Container object
-    * @param mixed  $value  The value to set it to
-    * @param int    $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($obj, $value, $expect)
-    {
-        $o = DataPointContainer::factory($obj, $value);
-        if (is_null($expect)) {
-            $this->assertNull($o);
-        } else {
-            $this->assertSame($expect, (string)$o);
-        }
     }
 
 }

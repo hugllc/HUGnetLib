@@ -165,7 +165,10 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
         $array["Date"]      = $this->Date;
         $array["deltaT"]    = $this->deltaT;
         foreach (array_keys((array)$this->data["elements"]) as $key) {
-            $array["Data".$key] = $this->data["elements"][$key]->value;
+            $data = $this->data["elements"][$key]->value();
+            if (!is_null($data)) {
+                $array["Data".$key] = $data;
+            }
         }
         $array["UTCOffset"]    = $this->UTCOffset;
         return $array;
@@ -181,8 +184,8 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     protected function &createSensor($sensor, $value = null)
     {
-        if (self::findClass("DataPointContainer")) {
-            $data = &DataPointContainer::factory(
+        if (self::findClass("DataPointBase", "base")) {
+            $data = &DataPointBase::factory(
                 $this, $value
             );
         }

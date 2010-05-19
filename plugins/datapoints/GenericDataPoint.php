@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/HUGnetClass.php";
+require_once dirname(__FILE__)."/../../base/DataPointBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,14 +51,15 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DataPointContainer extends HUGnetClass
+class GenericDataPoint extends DataPointBase
 {
-    /** @var The sensor we are attached to */
-    public $value = null;
-    /** @var The sensor we are attached to */
-    private $_sensor = null;
-    /** @var The sensor we are attached to */
-    public $row = null;
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "GenericDataPoint",
+        "Type" => "datapoint",
+        "Class" => "GenericDataPoint",
+        "Units" => array("DEFAULT"),
+    );
 
     /**
     * Disconnects from the database
@@ -70,47 +71,9 @@ class DataPointContainer extends HUGnetClass
     */
     public function __construct(&$row, $value = null)
     {
-        $this->sensor  = &$row->device->sensor[$sensor];
-        $this->row     = &$row;
-        $this->value   = $value;
+        parent::__construct($row, $value);
     }
 
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function __destruct()
-    {
-    }
-
-    /**
-    * Creates a sensor from data given
-    *
-    * @param object &$row  A reference to the object that is creating us
-    * @param mixed  $value The current value of the data
-    *
-    * @return Reference to the sensor on success, null on failure
-    */
-    public static function &factory(&$row, $value = null)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-        $class = __CLASS__;
-        $data = new $class($row, $value);
-        return $data;
-    }
-
-    /**
-    * returns a string
-    *
-    * @return Reference to the sensor on success, null on failure
-    */
-    public function __toString()
-    {
-        return (string)$this->value;
-    }
 
 }
 ?>

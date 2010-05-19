@@ -86,7 +86,6 @@ class E00392100Device extends DeviceDriverLoadableBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 6;
-        $this->myDriver->DriverInfo["PacketTimeout"] = 2;
         $this->fromSetupString($string);
         $this->_setFirmware();
     }

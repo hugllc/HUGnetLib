@@ -101,8 +101,9 @@ class E00392800Device extends DeviceDriverBase
     */
     public function readSetup()
     {
-        if ($this->readConfig()) {
-            return $this->readCalibration();
+        $ret = $this->readConfig();
+        if ($ret) {
+            $ret = $this->readCalibration();
         }
         return $this->setLastConfig($ret);
     }
