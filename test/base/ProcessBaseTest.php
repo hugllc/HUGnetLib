@@ -259,6 +259,9 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $this->socket->readString = $read;
         $this->o->loop = $loop;
         $start = time();
+        // This is called twice because it will wait the full time only the second
+        // run.  The first run it sets the timeout begining.
+        $this->o->wait($timeout);
         $this->o->wait($timeout);
         $end = time();
         if ($loop) {
