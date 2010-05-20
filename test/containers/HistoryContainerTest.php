@@ -36,8 +36,9 @@
  *
  */
 
-
+/** Pull in the stuff we need */
 require_once dirname(__FILE__).'/../../containers/HistoryContainer.php';
+require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
 
 /**
  * Test class for filter.
@@ -65,6 +66,13 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $config = array(
+            "PluginDir" => realpath(
+                dirname(__FILE__)."/../files/plugins/"
+            ),
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
         $this->o = new HistoryContainer($preload, $obj);
     }
 
@@ -100,7 +108,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "GenericDataPoint",
+                "Test2DataPoint",
                 $obj,
                 array(
                     "DeviceKey" => 23,
@@ -154,7 +162,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "GenericDataPoint",
+                "Test2DataPoint",
                 $obj,
                 array(
                     "DeviceKey" => 23,

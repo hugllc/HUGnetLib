@@ -73,7 +73,7 @@ class GenericDataPointTest extends DataPointPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericDataPoint($this->d);
+        $this->o = new GenericDataPoint($value, $units, DataPointBase::TYPE_RAW);
     }
 
     /**

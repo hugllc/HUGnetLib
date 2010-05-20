@@ -54,26 +54,34 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  */
 class DataPointBase extends HUGnetClass
 {
-    /** @var The sensor we are attached to */
+    /** This is a raw record */
+    const TYPE_RAW = "raw";
+    /** This is a differential record */
+    const TYPE_DIFF = "diff";
+    /** This is a raw record */
+    const TYPE_IGNORE = "ignore";
+
+    /** @var The value of this point */
     protected $value = null;
-    /** @var The sensor we are attached to */
-    protected $sensor = null;
-    /** @var The sensor we are attached to */
-    protected $row = null;
+    /** @var The units of this point */
+    protected $units = null;
+    /** @var The type of this point */
+    protected $type = null;
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param object &$row  A reference to the object that is creating us
     * @param mixed  $value The current value of the data
+    * @param string $units The units to usef
+    * @param string $type  The type of record
     *
     * @return null
     */
-    public function __construct(&$row, $value = null)
+    public function __construct($value, $units, $type)
     {
-        $this->sensor  = &$row->device->sensor[$sensor];
-        $this->row     = &$row;
-        $this->value   = $value;
+        $this->value = $value;
+        $this->units = $units;
+        $this->type  = $type;
     }
 
     /**
@@ -88,36 +96,60 @@ class DataPointBase extends HUGnetClass
     /**
     * Creates a sensor from data given
     *
-    * @param object &$row  A reference to the object that is creating us
     * @param mixed  $value The current value of the data
+    * @param string $units The units to usef
+    * @param string $type  The type of record
     *
     * @return string/false The name of the class to use.  False on failure
     */
-    protected static function getClass($units, $value = null)
+    protected static function getClass($value, $units, $type)
     {
-        $config = &ConfigContainer::singleton();
-        $drivers = $config->plugins->getClass("datapoint");
-        foreach ((array)$drivers as $driver) {
-            if (in_array($units, $driver["Units"])) {
-                $ret = $driver["Class"];
-                break;
+        static $config;
+        static $drivers;
+        // Get the config if we don't have it yet.
+        if (empty($config)) {
+            $config = &ConfigContainer::singleton();
+        }
+        // Set up the drivers if they are not already set up
+        if (empty($drivers)) {
+            $drivers = array();
+            foreach ((array)$config->plugins->getClass("datapoint") as $d) {
+                foreach ($d["Units"] as $u) {
+                    $drivers[$u] = $d["Class"];
+                }
             }
         }
-        return "GenericDataPoint";
+        // Return the units if there is one.
+        if (isset($drivers[$units])) {
+            return $drivers[$units];
+        }
+        // Return the default driver if we didn't find anything else
+        return $drivers["DEFAULT"];
+
     }
     /**
     * Creates a sensor from data given
     *
-    * @param object &$row  A reference to the object that is creating us
     * @param mixed  $value The current value of the data
+    * @param string $units The units to usef
+    * @param string $type  The type of record
     *
     * @return Reference to the sensor on success, null on failure
     */
-    public static function &factory(&$row, $value = null)
+    public static function &factory($value, $units, $type)
     {
-        $class = self::getClass($units, $value);
-        $data = new $class($row, $value);
+        $class = self::getClass($value, $units, $type);
+        $data = new $class($value, $units, $type);
         return $data;
+    }
+    /**
+    * returns a string
+    *
+    * @return Reference to the sensor on success, null on failure
+    */
+    public function toString()
+    {
+        return trim((string)$this->value." ".$this->units);
     }
 
     /**
@@ -127,7 +159,7 @@ class DataPointBase extends HUGnetClass
     */
     public function __toString()
     {
-        return (string)$this->value;
+        return $this->toString();
     }
 
 }

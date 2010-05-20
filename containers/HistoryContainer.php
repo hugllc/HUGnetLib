@@ -186,7 +186,7 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     {
         if (self::findClass("DataPointBase", "base")) {
             $data = &DataPointBase::factory(
-                $this, $value
+                $value, $sensor->storageUnits, $sensor->dataType
             );
         }
         return $data;

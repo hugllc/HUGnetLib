@@ -62,16 +62,17 @@ class GenericDataPoint extends DataPointBase
     );
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param object &$row  A reference to the object that is creating us
     * @param mixed  $value The current value of the data
+    * @param string $units The units to usef
+    * @param string $type  The type of record
     *
     * @return null
     */
-    public function __construct(&$row, $value = null)
+    public function __construct($value, $units, $type)
     {
-        parent::__construct($row, $value);
+        parent::__construct($value, $units, $type);
     }
 
 

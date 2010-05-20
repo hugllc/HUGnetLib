@@ -66,6 +66,13 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $config = array(
+            "PluginDir" => realpath(
+                dirname(__FILE__)."/../files/plugins/"
+            ),
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
     }
 
     /**
@@ -90,9 +97,9 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new HistoryContainer($row, $obj),
                 5,
-                "5",
+                "&deg;C",
+                DataPointBase::TYPE_RAW,
             ),
         );
     }
@@ -100,18 +107,21 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $obj    The history Container object
     * @param mixed  $value  The value to set it to
+    * @param string $units  The units to use
+    * @param string $type   The datatype to use
     * @param int    $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($obj, $value, $expect)
+    public function testConstructor($value, $units, $type)
     {
-        $o = new DataPointBaseTestClass($obj, $value);
-        $this->assertSame($expect, (string)$o);
+        $o = new DataPointBaseTestClass($value, $units, $type);
+        $this->assertAttributeSame($value, "value", $o);
+        $this->assertAttributeSame($units, "units", $o);
+        $this->assertAttributeSame($type, "type", $o);
     }
 
     /**
@@ -123,13 +133,94 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new HistoryContainer($row, $obj),
                 5,
-                "5",
+                "strangeUnit",
+                DataPointBase::TYPE_RAW,
+                "TestDataPoint",
             ),
             array(
-                new HistoryContainer($row, $obj),
                 null,
+                "",
+                DataPointBase::TYPE_IGNORE,
+                "Test2DataPoint",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $value  The value to set it to
+    * @param string $units  The units to use
+    * @param string $type   The datatype to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($value, $units, $type, $expect)
+    {
+        $o = DataPointBase::factory($value, $units, $type);
+        $this->assertSame($expect, get_class($o));
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataValue()
+    {
+        return array(
+            array(
+                5,
+                "&deg;C",
+                DataPointBase::TYPE_RAW,
+                5,
+            ),
+            array(
+                null,
+                "",
+                DataPointBase::TYPE_IGNORE,
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $value  The value to set it to
+    * @param string $units  The units to use
+    * @param string $type   The datatype to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataValue
+    */
+    public function testValue($value, $units, $type, $expect)
+    {
+        $o = DataPointBase::factory($value, $units, $type);
+        $this->assertSame($expect, $o->value());
+    }
+    /**
+    * data provider for testString
+    *
+    * @return array
+    */
+    public static function dataString()
+    {
+        return array(
+            array(
+                5,
+                "&deg;C",
+                DataPointBase::TYPE_RAW,
+                "5 &deg;C",
+            ),
+            array(
+                null,
+                "",
+                DataPointBase::TYPE_IGNORE,
                 "",
             ),
         );
@@ -137,19 +228,19 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $obj    The history Container object
     * @param mixed  $value  The value to set it to
+    * @param string $units  The units to use
+    * @param string $type   The datatype to use
     * @param int    $expect The expected return
     *
     * @return null
     *
-    * @dataProvider dataFactory
+    * @dataProvider dataString
     */
-    public function testFactory($obj, $value, $expect)
+    public function testString($value, $units, $type, $expect)
     {
-        $o = DataPointBase::factory($obj, $value);
+        $o = DataPointBase::factory($value, $units, $type);
         $this->assertSame($expect, (string)$o);
-
     }
 
 }
