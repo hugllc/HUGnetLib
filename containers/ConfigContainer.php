@@ -158,6 +158,7 @@ class ConfigContainer extends HUGnetContainer
         $this->data["sockets"] = &self::factory($this->sockets, "SocketsContainer");
         // The import set $this->servers instead of $this->data["servers"].
         $this->sockets = &$this->data["sockets"];
+        $this->sockets->verbose($this->verbose);
     }
 
     /**
@@ -173,6 +174,7 @@ class ConfigContainer extends HUGnetContainer
         );
         // The import set $this->servers instead of $this->data["servers"].
         $this->servers = &$this->data["servers"];
+        $this->servers->verbose($this->verbose);
     }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
@@ -273,6 +275,23 @@ class ConfigContainer extends HUGnetContainer
             $version = file_get_contents($path."/VERSION.TXT");
         }
         return $version;
+    }
+    /**
+    * Sets the verbosity
+    *
+    * @param int $level The verbosity level
+    *
+    * @return null
+    */
+    public function verbose($level=0)
+    {
+        parent::verbose($level);
+        if (is_object($this->servers)) {
+            $this->servers->verbose($level);
+        }
+        if (is_object($this->sockets)) {
+            $this->sockets->verbose($level);
+        }
     }
 }
 ?>
