@@ -311,6 +311,39 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->assertSame("DBServersContainer", get_class($servers));
     }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataVerbose()
+    {
+        return array(
+            array(0, 0),
+            array(6, 6),
+            array(15, 15),
+            array(false, 0),
+            array(true, 1),
+        );
+    }
+    /**
+    * test
+    *
+    * @param int $val    The database key to get the record from
+    * @param int $expect The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataVerbose
+    */
+    public function testVerbose($val, $expect)
+    {
+        $o = new ConfigContainer();
+        $o->verbose($val);
+        $this->assertAttributeSame($expect, "verbose", $o);
+        $this->assertAttributeSame($expect, "verbose", $o->sockets);
+        $this->assertAttributeSame($expect, "verbose", $o->servers);
+    }
 
 }
 
