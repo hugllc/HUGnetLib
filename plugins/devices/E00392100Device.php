@@ -103,6 +103,8 @@ class E00392100Device extends DeviceDriverLoadableBase
             if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
                 // Reset config time so this device is checked again.
                 $this->readSetupTimeReset();
+                // Try to just run the application first
+                $this->runApplication();
                 // Wrong Driver  We should exit with a failure
                 $ret = false;
             }
@@ -113,6 +115,8 @@ class E00392100Device extends DeviceDriverLoadableBase
             if ($ver < 0) {
                 // Crash the running program so the board can be reloaded
                 $this->runBootloader();
+                // This forces us to not just run the application again
+                $this->myDriver->Driver = "";
                 // This is because the program needs to be reloaded.  It can
                 // only be reloaded if it is using the 00392101 driver.
                 $ret = false;

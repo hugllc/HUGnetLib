@@ -414,7 +414,16 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "From" => "000020",
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
-                )),
+                )).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                        "Data" => "",
+                    )
+                ),
                 false,
                 array(),
             ),

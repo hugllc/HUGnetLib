@@ -107,6 +107,7 @@ class E00392101Device extends DeviceDriverLoadableBase
                 // Wrong Driver  We should exit with a failure
                 $ret = false;
             } else {
+                // If that fails,
                 $ret = $this->writeProgram();
             }
         }
