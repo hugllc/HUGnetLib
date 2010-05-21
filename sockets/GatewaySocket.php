@@ -69,7 +69,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         "isVisible" => 0,                   // Whether this gateway is visible
         "Timeout" => 2,                     // Timeout when talking on this gateway
         "group" => "default",               // The group this gateway is in
-        "DeviceID" => "000020",             // This is our device ID
+        "DeviceID" => "FD0020",    // This is our device ID
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -92,6 +92,8 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     public function __construct($data)
     {
+        // This forces it to always be present, even if the data gets cleared
+        $this->default["DeviceID"] = PacketContainer::tempDeviceID();
         $this->data = $this->default;
         $this->fromArray($data);
     }

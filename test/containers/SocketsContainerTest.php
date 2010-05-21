@@ -610,7 +610,15 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
         }
         $conf->sockets->PacketTimeout = 2;
         $id = $conf->sockets->deviceID($groups);
-        $this->assertSame($expect, $id);
+
+        $this->assertThat(
+            hexdec($id), $this->greaterThanOrEqual(SocketsContainer::MIN_SN)
+        );
+        $this->assertThat(
+            hexdec($id), $this->lessThanOrEqual(SocketsContainer::MAX_SN)
+        );
+
+        //$this->assertSame($expect, $id);
         if (is_string($id)) {
             if (!is_array($groups)) {
                 $groups = array($groups => $groups);

@@ -155,7 +155,10 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
     {
 
         $this->lock(array_keys($this->default));
-        $this->vprint("Trying ".$this->server[$group]->getDSN(), 3);
+        $this->vprint(
+            "Trying ".$this->server[$group]->getDSN(),
+            HUGnetClass::VPRINT_VERBOSE
+        );
         try {
             $this->pdo[$group] = new PDO(
                 $this->server[$group]->getDSN(),
@@ -166,14 +169,17 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
         } catch (PDOException $e) {
             self::vprint(
                 "Error (".$e->getCode()."): ".$e->getMessage()."\n",
-                1
+                HUGnetClass::VPRINT_ERROR
             );
             // Just to be sure
             $this->disconnect($group);
             // Return failure
             return false;
         }
-        $this->vprint("Connected to ".$this->server[$group]->getDSN(), 3);
+        $this->vprint(
+            "Connected to ".$this->server[$group]->getDSN(),
+            HUGnetClass::VPRINT_VERBOSE
+        );
         return true;
     }
 

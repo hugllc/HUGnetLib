@@ -148,7 +148,6 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                     "group" => "default",
                     "Timeout" => 10,
                     "readIndex" => 0,
-                    "DeviceID" => "000020",
                     "senderID" => 0,
                 ),
             ),
@@ -188,7 +187,13 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
         $o = new PacketSocket($preload);
         $this->assertThat($o->senderID, $this->greaterThan(0));
         $o->senderID = 0;
-        $this->assertAttributeSame($expect, "data", $o);
+        $data = $this->readAttribute($o, "data");
+        if (!isset($expect["DeviceID"])) {
+            $this->assertTrue(PacketContainer::checkDeviceID($data["DeviceID"]));
+            unset($data["DeviceID"]);
+        }
+
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testConnectExc

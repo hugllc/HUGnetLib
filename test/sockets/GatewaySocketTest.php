@@ -105,7 +105,6 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "isVisible" => 0,
                     "Timeout" => 2,
                     "group" => "default",
-                    "DeviceID" => "000020",
                 ),
             ),
             array(
@@ -152,7 +151,12 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new GatewaySocket($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $data = $this->readAttribute($o, "data");
+        if (!isset($expect["DeviceID"])) {
+            $this->assertTrue(PacketContainer::checkDeviceID($data["DeviceID"]));
+            unset($data["DeviceID"]);
+        }
+        $this->assertSame($expect, $data);
     }
     /**
     * data provider for testConnect

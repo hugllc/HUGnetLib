@@ -64,7 +64,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
         "group" => "default",               // The gateway group this is in
         "Timeout" => 10,                    // This is the timeout value
         "readIndex" => 0,                   // The index to start reading at
-        "DeviceID" => "000020",             // This is our device ID
+        "DeviceID" => "FD0020",             // This is our device ID
         "senderID" => 0,                    // Our ID as a sender
     );
     /** @var array This is where the data is stored */
@@ -88,6 +88,9 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     */
     public function __construct($data = array())
     {
+        // This forces it to always be present, even if the data gets cleared
+        $this->default["DeviceID"] = PacketContainer::tempDeviceID();
+        $this->clearData();
         parent::__construct($data);
         $this->myConfig = &ConfigContainer::singleton();
         $this->senderID = mt_rand(1, 24777216);

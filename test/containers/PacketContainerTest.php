@@ -1926,6 +1926,56 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testGetDeviceID()
+    {
+        $id = PacketContainer::tempDeviceID();
+        $this->assertThat(
+            $id, $this->greaterThanOrEqual(PacketContainer::MIN_SN)
+        );
+        $this->assertThat(
+            $id, $this->lessThanOrEqual(PacketContainer::MAX_SN)
+        );
+    }
+
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataCheckDeviceID()
+    {
+        return array(
+            array(PacketContainer::MIN_SN - 1, false),
+            array(PacketContainer::MAX_SN + 1, false),
+            array(PacketContainer::MIN_SN, true),
+            array(PacketContainer::MAX_SN, true),
+            array(dechex(PacketContainer::MIN_SN - 1), false),
+            array(dechex(PacketContainer::MAX_SN + 1), false),
+            array(dechex(PacketContainer::MIN_SN), true),
+            array(dechex(PacketContainer::MAX_SN), true),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheckDeviceID
+    */
+    public function testCheckDeviceID($value, $expect)
+    {
+        $this->assertSame($expect, PacketContainer::checkDeviceID($value));
+    }
+
 }
 
 ?>

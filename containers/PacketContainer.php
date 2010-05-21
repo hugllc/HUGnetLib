@@ -105,7 +105,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /** This is the 'to' field for an unsolicited packet */
     const UNSOLICITED_TO = "000000";
     /** This is the maximum our SN can be */
-    const MAX_SN = 0x1F;
+    const MAX_SN = 0xFDFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_SN = 0xFD0000;
 
     static private $_Types = array(
         self::COMMAND_ACK                 => "REPLY",
@@ -533,6 +535,27 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         }
         // Send the packet
         return (bool)$this->send();
+    }
+    /**
+    * Returns a random DeviceID that can be used by a process on the computer
+    *
+    * @return int A device ID usable by a process
+    */
+    static public function tempDeviceID()
+    {
+        return mt_rand(self::MIN_SN, self::MAX_SN);
+    }
+    /**
+    * Checks to see if the contained packet is an unsolicited
+    *
+    * @return bool true if it is unsolicited, false otherwise
+    */
+    static public function checkDeviceID($id)
+    {
+        if (is_string($id)) {
+            $id = hexdec($id);
+        }
+        return ($id <= self::MAX_SN) && ($id >= self::MIN_SN);
     }
     /**
     * Checks to see if the contained packet is an unsolicited

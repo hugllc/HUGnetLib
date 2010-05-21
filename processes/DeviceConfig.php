@@ -155,18 +155,22 @@ class DeviceConfig extends ProcessBase
             );
         }
         // for 100 failures mark the device inactive
-        if ($dev->params->DriverInfo["ConfigFail"] > 100) {
+        if (($dev->gateway() && ($dev->params->DriverInfo["ConfigFail"] > 10))
+            || ($dev->params->DriverInfo["ConfigFail"] > 100)
+        ) {
             $dev->Active = 0;
             $dev->ControllerKey = 0;
             $dev->ControllerIndex = 0;
-            $this->logError(
-                "DEACTIVATE",
-                $dev->DeviceID.": has failed to respond to "
-                .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
-                ."device inactive.",
-                ErrorTable::SEVERITY_ERROR,
-                "DeviceConfig::config"
-            );
+            if (!$dev->gateway()) {
+                $this->logError(
+                    "DEACTIVATE",
+                    $dev->DeviceID.": has failed to respond to "
+                    .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
+                    ."device inactive.",
+                    ErrorTable::SEVERITY_ERROR,
+                    "DeviceConfig::config"
+                );
+            }
         }
     }
     /**

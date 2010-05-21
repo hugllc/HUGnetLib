@@ -219,7 +219,9 @@ class PacketRouter extends ProcessBase
     private function _setRoute(PacketContainer &$pkt)
     {
         if (!$pkt->unsolicited()) {
-            if (!isset($this->Routes[$pkt->From]) && ($pkt->From !== "000020")) {
+            if (!isset($this->Routes[$pkt->From])
+                && !(PacketContainer::checkDeviceID($pkt->From))
+            ) {
                 // If we have not seen this before try to put it in the database
                 DevicesTable::insertDeviceID(
                     array(

@@ -56,6 +56,11 @@ require_once dirname(__FILE__)."/PacketContainer.php";
  */
 class SocketsContainer extends HUGnetContainer implements ConnectionManager
 {
+    /** This is the maximum our SN can be */
+    const MAX_SN = 0xFEFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_SN = 0xFE0000;
+
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -207,21 +212,20 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     * Finds a deviceID that we can use
     *
     * @param array $groups array of groups to check
-    * @param int   $seed   Where to start checking
     *
     * @return null
     */
-    public function deviceID($groups = array(), $seed = 1)
+    public function deviceID($groups = array())
     {
         if (empty($groups)) {
             // If we get no groups, do all
             $groups = $this->groups();
         }
         // Find an ID to use
-        $id = false;
-        for ($i = $seed; ($i < 0x20) && ($id === false); $i++) {
+        do {
+            $i = mt_rand(self::MIN_SN, self::MAX_SN);
             $id = $this->_checkID($i, $groups);
-        }
+        } while ($id === false);
         $this->forceDeviceID($id, $groups);
         return $id;
     }
@@ -272,7 +276,10 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
             $pkt->send();
             if (is_object($pkt->Reply)) {
                 // We got a reply so this id exists.  return false.
+                // @codeCoverageIgnoreStart
+                // Can't get here, as we can't predict where the start is
                 return false;
+                // @codeCoverageIgnoreEnd
             }
         }
         // Return the good ID
