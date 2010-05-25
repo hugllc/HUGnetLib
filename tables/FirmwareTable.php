@@ -123,10 +123,20 @@ class FirmwareTable extends HUGnetDBTable
             "Type" => "longtext",
             "Default" => '',
         ),
+        "CodeCRC" => array(
+            "Name" => "CodeCRC",
+            "Type" => "int",
+            "Default" => '0',
+        ),
         "Data" => array(
             "Name" => "Data",
             "Type" => "longtext",
             "Default" => '',
+        ),
+        "DataCRC" => array(
+            "Name" => "DataCRC",
+            "Type" => "int",
+            "Default" => '0',
         ),
         "FWPartNum" => array(
             "Name" => "FWPartNum",
@@ -220,6 +230,7 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function getLatest()
     {
+        $status = $ths->RelStatus;
         $data  = array($this->FWPartNum, $this->RelStatus, 0);
         $where  = " FWPartNum = ? AND RelStatus <= ?";
         $where .= " AND Active <> ?";
@@ -252,6 +263,34 @@ class FirmwareTable extends HUGnetDBTable
         return 0;
     }
     /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        parent::fromArray($array);
+        if (!$this->checkCRC()) {
+            $this->RelStatus = self::BAD;
+        }
+    }
+    /**
+    * Checks the crc of the data and code.
+    *
+    * @return bool True if crc is good, false otherwise
+    */
+    public function checkCRC()
+    {
+        if (($this->DataCRC != crc32($this->Data))
+            || ($this->CodeCRC != crc32($this->Code))
+        ) {
+            return false;
+        }
+        return true;
+    }
+    /**
     * This function outputs this firmware into a file that can be stored on
     * a web site.
     *
@@ -279,11 +318,19 @@ class FirmwareTable extends HUGnetDBTable
     public function fromFile($file, $path = ".")
     {
         $this->filename = $file;
+        // If the md5 is set and bad, fail
+        if (!empty($this->md5) && ($this->md5 != md5_file($path."/".$this->filename))
+        ) {
+            return false;
+        }
         $stuff = implode("", gzfile($path."/".$this->filename));
         if (empty($stuff)) {
             return false;
         }
+        $md5 = $this->md5;
         $this->fromString($stuff);
+        $this->md5 = $md5;
+        $this->filename = $file;
         return true;
     }
     /**
