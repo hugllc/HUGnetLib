@@ -90,14 +90,14 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
-        $d = array(
+        $this->device = array(
             "id"         => 0x000019,
             "DeviceID"   => "000019",
             "HWPartNum"  => "0039-26-04-P",
             "FWPartNum"  => "0039-26-04-P",
         );
 
-        $this->o = new PacketRouter(array(), $d);
+        $this->o = new PacketRouter(array(), $this->device);
         $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
@@ -132,7 +132,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PacketRouter($array, $this->d);
+        $o = new PacketRouter($array, $this->device);
     }
     /**
     * data provider for testConstructor
@@ -183,7 +183,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketRouter($preload, $this->d);
+        $o = new PacketRouter($preload, $this->device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly

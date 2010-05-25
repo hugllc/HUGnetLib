@@ -83,13 +83,13 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $d = array(
+        $this->device = array(
             "id"         => 0x000019,
             "DeviceID"   => "000019",
             "HWPartNum"  => "0039-26-02-P",
             "FWPartNum"  => "0039-26-02-P",
         );
-        $this->o = new PeriodicSync($data, $d);
+        $this->o = new PeriodicSync($data, $this->device);
         $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
@@ -124,7 +124,7 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PeriodicSync(array(), $this->d);
+        $o = new PeriodicSync(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -177,7 +177,7 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PeriodicSync($preload, $this->d);
+        $o = new PeriodicSync($preload, $this->device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly

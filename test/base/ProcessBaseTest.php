@@ -78,12 +78,14 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $this->d = new DeviceContainer(
-            array(
-                "DeviceID"   => "000019",
-            )
+        $this->devArray =  array(
+            "id"        => 0x19,
+            "DeviceID"  => "000019",
+            "HWPartNum" => "0039-26-01-P",
+            "GatewayKey" => "1",
         );
-        $this->o = new ProcessBaseClassTest(array(), $this->d);
+        $this->o = new ProcessBaseClassTest(array(), $this->devArray);
+        $this->d = &$this->o->myDevice;
     }
 
     /**
@@ -117,7 +119,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new ProcessBaseClassTest(array(), $this->d);
+        $o = new ProcessBaseClassTest(array(), $this->devArray);
     }
     /**
     * Tests for exceptions
@@ -139,6 +141,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
            array(
                 array(),
                 array(
+                ),
+                array(
                     "group" => "default",
                     "GatewayKey" => 1,
                 ),
@@ -149,8 +153,24 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "GatewayKey" => 3,
                 ),
                 array(
+                    "id"       => 0x19,
+                ),
+                array(
                     "group" => "test",
                     "GatewayKey" => 3,
+                ),
+            ),
+           array(
+                array(
+                    "group" => "test",
+                    "GatewayKey" => 1,
+                ),
+                array(
+                    "HWPartNum" => "0039-26-01-P",
+                ),
+                array(
+                    "group" => "test",
+                    "GatewayKey" => 1,
                 ),
             ),
         );
@@ -159,15 +179,16 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array $preload The value to preload
+    * @param array $device  The device array to use
     * @param array $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect)
+    public function testConstructor($preload, $device, $expect)
     {
-        $o = new ProcessBaseClassTest($preload, $this->d);
+        $o = new ProcessBaseClassTest($preload, $device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
@@ -338,12 +359,12 @@ class ProcessBaseClassTest extends ProcessBase implements PacketConsumerInterfac
     /**
     * Builds the class
     *
-    * @param array           $data    The data to build the class with
-    * @param DeviceContainer &$device This is the class to send packets to me to.
+    * @param array $data   The data to build the class with
+    * @param array $device This is the class to send packets to me to.
     *
     * @return null
     */
-    public function __construct($data, DeviceContainer &$device)
+    public function __construct($data, $device)
     {
         parent::__construct($data, $device);
         $this->registerHooks();

@@ -97,22 +97,64 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->device = new DeviceContainer();
         // This is our device container
         $this->unsolicited = new DeviceContainer();
-        // This is the device container with our setup information in it.
-        $this->myDevice = new DeviceContainer($device);
-        $this->myDevice->DeviceJob = posix_getpid();
-        $this->myDevice->DeviceLocation = ProcessBase::getIP();
         // Set the gatewaykey if it hasn't been set
         if (empty($this->GatewayKey)) {
             $this->GatewayKey = $this->myConfig->script_gateway;
         }
-        $this->myDevice->GatewayKey = $this->GatewayKey;
-        $this->myDevice->LastConfig = date("Y-m-d H:i:s");
-        $this->myDevice->insertRow(true);
-
+        $this->setupMyDevice($device);
         // Trap the exit signal and exit gracefully
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "loopEnd"));
         }
+    }
+    /**
+    * Registers the packet hooks
+    *
+    * @param array $device This is the setup for my device class
+    *
+    * @return null
+    */
+    protected function setupMyDevice($device)
+    {
+        // This sets us up as a device
+        self::vprint("Setting up my device...", HUGnetClass::VPRINT_NORMAL);
+        $this->myDevice = new DeviceContainer($device);
+        $this->myDevice->GatewayKey = $this->GatewayKey;
+        $this->myDevice->DeviceJob = posix_getpid();
+        $this->myDevice->DeviceLocation = ProcessBase::getIP();
+        // Get the deviceID
+        if (empty($device["id"])) {
+            $id = $this->getMyDeviceID();
+            // Setting up the id
+            $this->myDevice->id = hexdec($id);
+        }
+        $this->myDevice->DeviceID = $this->myDevice->id;
+        // This is the device container with our setup information in it.
+        $this->myDevice->LastConfig = date("Y-m-d H:i:s");
+        $this->myDevice->insertRow(true);
+    }
+    /**
+    * Registers the packet hooks
+    *
+    * @return null
+    */
+    protected function getMyDeviceID()
+    {
+        self::vprint("Finding my DeviceID...", HUGnetClass::VPRINT_NORMAL);
+        $devs = $this->myDevice->select(
+            "HWPartNum = ? AND DeviceLocation = ? AND GatewayKey = ?",
+            array(
+                $this->myDevice->HWPartNum,
+                $this->myDevice->DeviceLocation,
+                $this->myDevice->GatewayKey,
+            )
+        );
+        if (is_object($devs[0])) {
+            $DeviceID = $devs[0]->DeviceID;
+        } else {
+            $DeviceID = $this->myConfig->sockets->deviceID(array());
+        }
+        return $DeviceID;
     }
     /**
     * Registers the packet hooks
@@ -180,6 +222,10 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     */
     public function powerup()
     {
+        $this->vprint(
+            "Starting... (".$this->myDevice->DeviceID.")",
+            HUGnetClass::VPRINT_NORMAL
+        );
         // Send a powerup packet
         PacketContainer::powerup("", $this->group);
     }

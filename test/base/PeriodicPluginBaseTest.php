@@ -71,11 +71,9 @@ class PeriodicPluginBaseTest extends PHPUnit_Framework_TestCase
                 "script_gateway" => 13,
             )
         );
-        $this->d = new DeviceContainer(
-            array(
-            )
+        $this->device = array(
         );
-        $this->p = new PeriodicPlugins($data, $this->d);
+        $this->p = new PeriodicPlugins($data, $this->device);
         $this->o = new PeriodicPluginBaseTestStub($stub, $this->p);
     }
 

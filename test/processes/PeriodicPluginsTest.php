@@ -83,13 +83,13 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $d = array(
+        $this->device = array(
             "id"         => 0x000019,
             "DeviceID"   => "000019",
             "HWPartNum"  => "0039-26-00-P",
             "FWPartNum"  => "0039-26-00-P",
         );
-        $this->o = new PeriodicPlugins($data, $d);
+        $this->o = new PeriodicPlugins($data, $this->device);
         $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
@@ -124,7 +124,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PeriodicPlugins(array(), $this->d);
+        $o = new PeriodicPlugins(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -177,7 +177,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PeriodicPlugins($preload, $this->d);
+        $o = new PeriodicPlugins($preload, $this->device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly

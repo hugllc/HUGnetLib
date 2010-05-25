@@ -78,13 +78,13 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
-        $d = array(
+        $this->device = array(
             "id"         => 0x000019,
             "DeviceID"   => "000019",
             "HWPartNum"  => "0039-26-06-P",
             "FWPartNum"  => "0039-26-06-P",
         );
-        $this->o = new DeviceConfig(array(), $d);
+        $this->o = new DeviceConfig(array(), $this->device);
         $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
@@ -118,7 +118,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceConfig(array(), $this->d);
+        $o = new DeviceConfig(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -159,7 +159,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceConfig($preload, $this->d);
+        $o = new DeviceConfig($preload, $this->device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
