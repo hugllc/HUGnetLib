@@ -40,8 +40,6 @@ require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/DeviceContainer.php";
-require_once dirname(__FILE__)."/../containers/PacketContainer.php";
-require_once dirname(__FILE__)."/DevicesHistoryTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -56,20 +54,12 @@ require_once dirname(__FILE__)."/DevicesHistoryTable.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class RawHistoryTable extends HUGnetDBTable
+class DevicesHistoryTable extends HUGnetDBTable
 {
-    /** @var notice level severity */
-    const SEVERITY_NOTICE = 1;
-    /** @var warning level severity */
-    const SEVERITY_WARNING = 2;
-    /** @var error level severity */
-    const SEVERITY_ERROR = 4;
-    /** @var critical level severity */
-    const SEVERITY_CRITICAL = 8;
     /** @var string This is the table we should use */
-    public $sqlTable = "rawHistory";
+    public $sqlTable = "devicesHistory";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = null;
+    public $sqlId = "id";
     /**
     * @var array This is the definition of the columns
     *
@@ -98,32 +88,26 @@ class RawHistoryTable extends HUGnetDBTable
     public $sqlColumns = array(
         "id" => array(
             "Name" => "id",
-            "Type" => "int",
+            "Type" => "INTEGER",
+            "Primary" => true,
         ),
-        "Date" => array(
-            "Name" => "Date",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+        "DeviceID" => array(
+            "Name" => "DeviceID",
+            "Type" => "INTEGER",
         ),
-        "packet" => array(
-            "Name" => "packet",
-            "Type" => "longblob",
+        "SaveDate" => array(
+            "Name" => "SaveDate",
+            "Type" => "bigint",
+        ),
+        "SetupString" => array(
+            "Name" => "SetupString",
+            "Type" => "varchar(255)",
             "Default" => "",
         ),
-        "deviceHistoryID" => array(
-            "Name" => "deviceHistoryID",
-            "Type" => "int",
+        "SensorString" => array(
+            "Name" => "SensorString",
+            "Type" => "text",
             "Default" => "",
-        ),
-        "command" => array(
-            "Name" => "command",
-            "Type" => "char(2)",
-            "Default" => "",
-        ),
-        "dataIndex" => array(
-            "Name" => "dataIndex",
-            "Type" => "tinyint",
-            "Default" => 0,
         ),
     );
     /**
@@ -141,10 +125,10 @@ class RawHistoryTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
-        "DateIDIndex" => array(
-            "Name" => "DateIDIndex",
-            "Unique" => true,
-            "Columns" => array("Date", "id", "dataIndex", "command"),
+        "DeviceID" => array(
+            "Name"    => "DeviceID",
+            "Unique"  => true,
+            "Columns" => array("DeviceID", "SetupString", "SensorString"),
         ),
     );
 
@@ -152,113 +136,72 @@ class RawHistoryTable extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
     );
-    /** @var This is the packet */
-    public $packet = null;
-    /** @var This is the device history container*/
-    public $devHist = null;
+    /** @var This is the device */
+    public $device = null;
 
     /**
     * This is the constructor
     *
-    * @param mixed $data This is an array or string to create the object from
+    * @param mixed  $data  This is an array or string to create the object from
+    * @param string $table The table to use
     */
-    function __construct($data="")
+    function __construct($data="", $table="")
     {
         parent::__construct($data);
         $this->create();
     }
     /**
-    * Inserts a record into the database if it isn't there already
+    * This function updates the record currently in this table
     *
-    * @param mixed $data The string or data to use to insert this row
+    * @param bool $replace Replace any records found that collide with this one.
     *
-    * @return null
+    * @return bool True on success, False on failure
     */
-    static public function insertRecord($data)
+    public function insertRow($replace = false)
     {
-        $hist = new RawHistoryTable($data);
-        return $hist->insertRow();
-    }
-    /**
-    * Returns an array with only the values the database cares about
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toDB($default = true)
-    {
-        foreach ((array)$this->sqlColumns as $col) {
-            if (is_object($this->data[$col["Name"]])) {
-                $array[$col["Name"]] = $this->data[$col["Name"]]->toZip();
-            } else {
-                $array[$col["Name"]] = $this->data[$col["Name"]];
-            }
+        $ret = $this->select(
+            "DeviceID = ? AND SetupString = ? and SensorString = ?",
+            array(
+                $this->DeviceID,
+                $this->SetupString,
+                $this->SensorString,
+            )
+        );
+        if (is_object($ret[0])) {
+            $this->id = (int)$ret[0]->id;
+            return true;
         }
-        return (array)$array;
+        $this->id = $this->myDriver->getNextID();
+        return parent::insertRow($replace);
     }
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param array $array This is an array of this class's attributes
+    * @param DeviceContainer &$dev The device container to use
     *
     * @return null
     */
-    public function fromArray($array)
+    public function fromDeviceContainer(DeviceContainer &$dev)
     {
-        parent::fromArray($array);
-        if (empty($this->deviceHistoryID) && isset($array["device"])) {
-            if (is_object($array["device"])) {
-                $dev = &$array["device"];
-            } else {
-                $dev = new DeviceContainer($array["device"]);
-            }
-            $this->devHist = new DevicesHistoryTable($dev);
-            $this->devHist->insertRow();
-            $this->deviceHistoryID = $this->devHist->id;
-        }
-        $this->_setupClasses();
+        $this->DeviceID = $dev->id;
+        $this->SensorString = $dev->sensors->toString();
+        $this->SetupString = $dev->toSetupString();
+        $this->SaveDate = time();
     }
     /**
-    * Sets all of the endpoint attributes from an array
+    * Creates the object from a string or array
+    *
+    * @param mixed &$data This is whatever you want to give the class
     *
     * @return null
     */
-    private function _setupClasses()
+    public function fromAny(&$data)
     {
-        if (!is_object($this->data["packet"])) {
-            // Do the sensors
-            $this->data["packet"] = new PacketContainer($this->packet);
-            $this->packet = &$this->data["packet"];
+        if (is_object($data) && is_a($data, "DeviceContainer")) {
+            $this->fromDeviceContainer($data);
+        } else {
+            parent::fromAny($data);
         }
     }
-    /******************************************************************
-     ******************************************************************
-     ********  The following are input modification functions  ********
-     ******************************************************************
-     ******************************************************************/
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setDate($value)
-    {
-        $this->data["Date"] = $this->sqlDate($value);
-    }
-    /**
-    * function to set id
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = (int)$value;
-    }
-
 }
 ?>

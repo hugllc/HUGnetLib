@@ -170,12 +170,75 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
             array(
                 array(
                     "id" => 100,
-                    "packet" => "",
-                    "device" => "",
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => "1234-11-12 00:00:12",
+                        "Command" => "55",
+                        "Data" => "01020304",
+                    ),
+                    "device" => new DeviceContainer(),
                     "command" => "55",
                     "dataIndex" => 123,
                 ),
                 array(
+                    "group" => "default",
+                    "id" => 100,
+                    "Date" => "1970-01-01 00:00:00",
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => "1234-11-12 00:00:12",
+                        "Command" => "55",
+                        "Length" => 4,
+                        "Time" => 0.0,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "SENSORREAD",
+                        "Reply" => null,
+                        "Checksum" => "C6",
+                        "CalcChecksum" => "C6",
+                    ),
+                    "deviceHistoryID" => 1,
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+            ),
+            array(
+                array(
+                    "id" => 100,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => "1234-11-12 00:00:12",
+                        "Command" => "55",
+                        "Data" => "01020304",
+                    ),
+                    "device" => array(),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 100,
+                    "Date" => "1970-01-01 00:00:00",
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => "1234-11-12 00:00:12",
+                        "Command" => "55",
+                        "Length" => 4,
+                        "Time" => 0.0,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "SENSORREAD",
+                        "Reply" => null,
+                        "Checksum" => "C6",
+                        "CalcChecksum" => "C6",
+                    ),
+                    "deviceHistoryID" => 1,
+                    "command" => "55",
+                    "dataIndex" => 123,
                 ),
             ),
         );
@@ -195,10 +258,9 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     {
         $this->o->fromArray($preload);
         $data = $this->readAttribute($this->o, "data");
-        $this->assertSame("DeviceContainer", get_class($data["device"]));
-        $this->assertSame("DeviceContainer", get_class($this->o->device));
         $this->assertSame("PacketContainer", get_class($data["packet"]));
         $this->assertSame("PacketContainer", get_class($this->o->packet));
+        $this->assertSame($expect, $this->o->toArray());
     }
     /**
     * data provider for testSet
@@ -256,7 +318,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "id"        => "123",
                         "Date"      => "1977-01-01 08:09:00",
                         "packet"    => $packet->toString(),
-                        "device"    => $device->toString(),
+                        "device"    => $device->toArray(),
                         "command"   => "55",
                         "dataIndex" => "232",
                 ),
@@ -265,7 +327,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "id"        => "123",
                         "Date"      => "1977-01-01 08:09:00",
                         "packet"    => $packet->toZip(),
-                        "device"    => $device->toZip(),
+                        "deviceHistoryID"    => "1",
                         "command"   => "55",
                         "dataIndex" => "232",
                     ),
