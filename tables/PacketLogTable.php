@@ -199,11 +199,10 @@ class PacketLogTable extends HUGnetDBTable
     /**
     * Creates the object from a string
     *
-    * @See PacketLog::default for documentaion on the packet structure
-    *
     * @param string &$pkt This is the raw string for the device
     *
     * @return null
+    * @See PacketLog::default for documentaion on the packet structure
     */
     public function fromPacket(&$pkt)
     {
