@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,18 +51,21 @@ require_once dirname(__FILE__)."/../base/DeviceSensorBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceSensorContainer extends DeviceSensorBase
+class Test1Sensor extends DeviceSensorBase
 {
-    /** These are the endpoint information bits */
-    /** @var array This is the default values for the data */
-    protected $default = array(
-        "Loc" => "",                     // The location of the sensors
-        "sensorType" => "",              // The type of the sensors
-        "Units" => "",                   // The units to use on the sensors
-        "dataType" => "raw",             // The datatype of each sensor
-        "Extra" => array(),              // Extra input for crunching numbers
-        "RawCalibration" => "",          // The raw calibration string
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Test1Sensor",
+        "Type" => "sensor",
+        "Class" => "Test1Sensor",
+        "Sensors" => array("DEFAULT"),
     );
+    /** @var object This is where we store our configuration */
+    protected $unitTypeValues = array("b", "resistance");
+    /** @var object This is where we store our configuration */
+    protected $unitsValues = array("d", "Ohms");
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("a", "b", "resistive");
 
     /**
     * Disconnects from the database
@@ -72,32 +75,8 @@ class DeviceSensorContainer extends DeviceSensorBase
     */
     public function __construct($data, &$device)
     {
-        // Set up the class
         parent::__construct($data, $device);
-        // Get the drivers available
-        $this->_registerDriverPlugins();
     }
-    /**
-    * Disconnects from the gateway
-    *
-    * @return null
-    */
-    private function _registerDriverPlugins()
-    {
-        $myDev = $this->myConfig->plugins->getClass("deviceSensors");
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
-    *
-    * @return null
-    */
-    public function &factory($data, &$device)
-    {
-        $sensor = new DeviceSensorContainer($data, $device);
-        return $sensor;
-    }
+
 }
 ?>

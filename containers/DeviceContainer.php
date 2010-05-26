@@ -252,6 +252,11 @@ class DeviceContainer extends DevicesTable
     public function fromArray($array)
     {
         parent::fromArray($array);
+        // This is to upgrade the tables from the old format
+        $upgrade = false;
+        if (empty($this->sensors)) {
+            $upgrade = true;
+        }
         $this->_setupClasses();
         // Get the driver
         $this->_registerDriver();
@@ -264,6 +269,10 @@ class DeviceContainer extends DevicesTable
             $this->epDriver->fromSetupString(
                 substr($this->RawSetup, self::CONFIGEND)
             );
+        }
+        // This will only be coming from the database, not a setup string.
+        if ($upgrade) {
+            $this->sensors->fromParams($this->params);
         }
     }
     /**
@@ -297,15 +306,10 @@ class DeviceContainer extends DevicesTable
         }
         if (!is_object($this->sensors)) {
             // Do the sensors
-            $empty = empty($this->data["sensors"]);
             $this->data["sensors"] = new DeviceSensorsContainer(
                 $this->sensors, $this
             );
             $this->sensors = &$this->data["sensors"];
-            // This converts from the old way to the new way.
-            if ($empty) {
-                $this->sensors->fromParams($this->params);
-            }
         }
     }
     /**

@@ -58,20 +58,23 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "Loc" => "",                     // The location of the sensors
-        "sensorType" => "",              // The type of the sensors
-        "Units" => "",                   // The units to use on the sensors
+        "location" => "",                // The location of the sensors
+        "id" => 0,                      // The id of the sensor.  This is the value
+                                         // Stored in the device  It will be an int
+        "type" => "",                    // The type of the sensors
+        "units" => "",                   // The units the values are stored in
+        "unitType" => "unknown",         // The type of units that this uses
         "dataType" => "raw",             // The datatype of each sensor
-        "Extra" => array(),              // Extra input for crunching numbers
-        "RawCalibration" => "",          // The raw calibration string
+        "extra" => array(),              // Extra input for crunching numbers
+        "rawCalibration" => "",          // The raw calibration string
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /** @var object This is the device I am attached to */
     protected $myDevice = null;
     /** @var object This is where we store our configuration */
     protected $myConfig = null;
+    /** @var object This is where we store our configuration */
+    protected $dataTypeValues = array("raw", "diff", "ignore");
 
     /**
     * Disconnects from the database
@@ -88,6 +91,74 @@ abstract class DeviceSensorBase extends HUGnetContainer
         // Set up the class
         parent::__construct($data);
     }
+    /******************************************************************
+     ******************************************************************
+     ********  The following are input modification functions  ********
+     ******************************************************************
+     ******************************************************************/
+    /**
+    * function to set a limited set of values
+    *
+    * @param string $key   The key to use
+    * @param mixed  $value The value to set
+    *
+    * @return null
+    */
+    protected function limitedValues($key, $value)
+    {
+        $values = $key."Values";
+        if (in_array($value, (array)$this->$values)) {
+            return $value;
+        }
+        return $this->default[$key];
+    }
+    /**
+    * function to set DataType
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setDataType($value)
+    {
+        $this->data["dataType"] = $this->limitedValues(
+            "dataType", strtolower($value)
+        );
+    }
+    /**
+    * function to set units
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setUnits($value)
+    {
+        $this->data["units"] = $this->limitedValues("units", $value);
+    }
+    /**
+    * function to set unitType
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setUnitType($value)
+    {
+        $this->data["unitType"] = $this->limitedValues("unitType", $value);
+    }
+    /**
+    * function to set type
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setType($value)
+    {
+        $this->data["type"] = $this->limitedValues("type", $value);
+    }
+
 
 }
 ?>

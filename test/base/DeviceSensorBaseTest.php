@@ -105,12 +105,14 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
             array(
                 array(),
                 array(
-                    "Loc" => "",
-                    "sensorType" => "",
-                    "Units" => "",
+                    "location" => "f",
+                    "id" => 0,
+                    "type" => "sensor",
+                    "units" => "q",
+                    "unitType" => "unknown",
                     "dataType" => "raw",
-                    "Extra" => array(),
-                    "RawCalibration" => "",
+                    "extra" => array(),
+                    "rawCalibration" => "cali",
                 ),
             ),
         );
@@ -139,6 +141,44 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
             get_class($this->d), get_class($device), "Wrong device class"
         );
     }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+            array("units", "a", "q"),
+            array("units", "d", "d"),
+            array("unitType", "b", "b"),
+            array("unitType", "a", "unknown"),
+            array("dataType", "raw", "raw"),
+            array("dataType", "Ignore", "ignore"),
+            array("dataType", "diff", "diff"),
+            array("dataType", "SomethingElse", "raw"),
+            array("type", "SomethingElse", "sensor"),
+            array("type", "j", "j"),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($var, $value, $expect)
+    {
+        $this->o->$var = $value;
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame($expect, $data[$var]);
+    }
 
 }
 /**
@@ -157,15 +197,30 @@ class TestDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "testDevice",
-        "Type" => "device",
-        "Class" => "TestDevice",
-        "Devices" => array(
-            "DEFAULT" => array(
-                "DEFAULT" => "DEFAULT",
-            ),
-        ),
+        "Name" => "testSensor",
+        "Type" => "sensor",
+        "Class" => "TestSensor",
+        "Sensors" => array(),
     );
+    /** These are the endpoint information bits */
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "location" => "f",                // The location of the sensors
+        "id" => 0,                      // The id of the sensor.  This is the value
+                                         // Stored in the device  It will be an int
+        "type" => "sensor",                    // The type of the sensors
+        "units" => "q",                   // The units the values are stored in
+        "unitType" => "unknown",         // The type of units that this uses
+        "dataType" => "raw",             // The datatype of each sensor
+        "extra" => array(),              // Extra input for crunching numbers
+        "rawCalibration" => "cali",          // The raw calibration string
+    );
+    /** @var object This is where we store our configuration */
+    protected $unitTypeValues = array("b");
+    /** @var object This is where we store our configuration */
+    protected $unitsValues = array("d");
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("j");
 
 }
 
