@@ -63,7 +63,7 @@ class Test1Sensor extends DeviceSensorBase
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b", "resistance");
     /** @var object This is where we store our configuration */
-    protected $unitsValues = array("d", "Ohms");
+    protected $unitsValues = array("d", "Ohms", "testUnit", "strangeUnit");
     /** @var object This is where we store our configuration */
     protected $typeValues = array("a", "b", "resistive");
 
@@ -76,6 +76,39 @@ class Test1Sensor extends DeviceSensorBase
     public function __construct($data, &$device)
     {
         parent::__construct($data, $device);
+    }
+    /**
+    * function to set units
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setUnits($value)
+    {
+        $this->data["units"] = $value;
+    }
+    /**
+    * function to set unitType
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setUnitType($value)
+    {
+        $this->data["unitType"] = $value;
+    }
+    /**
+    * function to set type
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setType($value)
+    {
+        $this->data["type"] = $value;
     }
 
 }

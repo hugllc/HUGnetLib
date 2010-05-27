@@ -39,6 +39,7 @@
 /** Pull in the stuff we need */
 require_once dirname(__FILE__).'/../../containers/HistoryContainer.php';
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
+require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 
 /**
  * Test class for filter.
@@ -73,7 +74,8 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new HistoryContainer($preload, $obj);
+        $this->d = new DeviceContainer($data);
+        $this->o = new HistoryContainer($preload, $this->d);
     }
 
     /**
@@ -109,7 +111,8 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(0, 1),
                 "Test2DataPoint",
-                $obj,
+                new DeviceContainer(array(
+                )),
                 array(
                     "DeviceKey" => 23,
                     "Date" => "2007-05-21 03:35:13",
@@ -151,6 +154,13 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     */
     public static function dataFactory()
     {
+        $config = array(
+            "PluginDir" => realpath(
+                dirname(__FILE__)."/../files/plugins/"
+            ),
+        );
+        $c = &ConfigContainer::singleton();
+        $c->forceConfig($config);
         return array(
             array(
                 array(
@@ -162,8 +172,25 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "Test2DataPoint",
-                $obj,
+                array(
+                    "Test2DataPoint",
+                    "TestDataPoint",
+                ),
+                new DeviceContainer(array(
+                    "DriverInfo" => array(
+                        "TotalSensors" => 2,
+                    ),
+                    "sensors" => array(
+                        0 => array(
+                            "id"    => 2,
+                            "units" => "anotherUnit",
+                        ),
+                        1 => array(
+                            "id"    => 0,
+                            "units" => "testUnit",
+                        ),
+                    ),
+                )),
                 array(
                     "DeviceKey" => 23,
                     "Date" => "2007-05-21 03:35:13",
@@ -191,45 +218,15 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFactory($preload, $check, $class, $obj, $expect)
     {
-        $o = &HistoryContainer::factory($preload, $obj);
+        $o = &$this->o->factory($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
         foreach ((array)$check as $key) {
-            $this->assertSame($class, get_class($o->elements[$key]));
+            $this->assertSame(
+                $class[$key], get_class($o->elements[$key]), "key $key is wrong"
+            );
         }
     }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataCreateSensor()
-    {
-        return array(
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload Values to preload in
-    * @param mixed  $sensor  The value to set it to
-    * @param mixed  $value   The value to set it to
-    * @param int    $expect  The expected return
-    * @param string $class   The class of the returned object
-    *
-    * @return null
-    *
-    * @dataProvider dataCreateSensor
-    */
-    public function testCreateSensor($preload, $sensor, $value, $expect, $class)
-    {
-        $this->o->fromArray($preload);
-        $ret = $this->o->createSensor($sensor, $value);
-        $this->assertSame($class, get_class($ret));
-    }
-
 
 }
 

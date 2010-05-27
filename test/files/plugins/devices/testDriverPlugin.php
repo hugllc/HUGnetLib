@@ -84,7 +84,7 @@ class TestDriverPlugin extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
-        parent::__construct(&$obj, $string);
+        parent::__construct($obj, $string);
         $this->fromSetupString($string);
     }
     /**

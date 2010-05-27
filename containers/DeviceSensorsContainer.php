@@ -83,12 +83,10 @@ class DeviceSensorsContainer extends HUGnetContainer
         $this->myDevice = &$device;
         // Setup our configuration
         $this->myConfig = &ConfigContainer::singleton();
-        // Set up the class
-        $this->_registerSensorPlugins();
         parent::__construct($data);
     }
     /**
-    * Disconnects from the gateway
+    * Registers all of hte sensor plugins
     *
     * @return null
     */
@@ -202,6 +200,10 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     protected function &sensorFactory($array)
     {
+        // This has to be here so $this->drivers is ALWAYS available
+        if (empty($this->drivers)) {
+            $this->_registerSensorPlugins();
+        }
         $id = $array["id"];
         if (isset($this->drivers[$id])) {
             $class = $this->drivers[$id];
@@ -226,6 +228,22 @@ class DeviceSensorsContainer extends HUGnetContainer
             $class = $this->drivers["DEFAULT"];
         }
         return is_a($sensor, $class);
+    }
+
+    /**
+    * Creates a sensor object
+    *
+    * @param int $key The array key for the sensor object
+    *
+    * @return Returns a reference to the sensor object
+    */
+    public function &sensor($key)
+    {
+        static $default;
+        if (isset($this->sensor[$key])) {
+            return $this->sensor[$key];
+        }
+        return $this->sensorFactory($array);
     }
 
 }

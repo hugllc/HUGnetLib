@@ -505,6 +505,56 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromParams($obj);
         $this->assertSame($expect, $this->o->toArray());
     }
+    /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataSensor()
+    {
+        return array(
+            array(
+                array(
+                    0 => array("id" => 3),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                0,
+                3,
+                "Test2Sensor",
+            ),
+            array(
+                array(
+                    0 => array("id" => 3),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                8,
+                3,
+                "Test1Sensor",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $num     The string to use for the input
+    * @param int    $sensors The total number of sensors
+    * @param array  $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataSensor
+    */
+    public function testSensor($preload, $num, $sensors, $expect)
+    {
+        $this->d->DriverInfo["TotalSensors"] = $sensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, get_class($this->o->sensor($num)));
+    }
 }
 
 ?>

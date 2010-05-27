@@ -97,9 +97,16 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                5,
-                "&deg;C",
-                DataPointBase::TYPE_RAW,
+                array(
+                    "value" => 5,
+                    "units" => "&deg;C",
+                    "type" => DataPointBase::TYPE_RAW,
+                ),
+                array(
+                    "value" => 5,
+                    "units" => "&deg;C",
+                    "type" => DataPointBase::TYPE_RAW,
+                ),
             ),
         );
     }
@@ -107,61 +114,19 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $value  The value to set it to
-    * @param string $units  The units to use
-    * @param string $type   The datatype to use
-    * @param int    $expect The expected return
+    * @param array $data   The data to use
+    * @param array $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($value, $units, $type)
+    public function testConstructor($data, $expect)
     {
-        $o = new DataPointBaseTestClass($value, $units, $type);
-        $this->assertAttributeSame($value, "value", $o);
-        $this->assertAttributeSame($units, "units", $o);
-        $this->assertAttributeSame($type, "type", $o);
-    }
-
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFactory()
-    {
-        return array(
-            array(
-                5,
-                "strangeUnit",
-                DataPointBase::TYPE_RAW,
-                "TestDataPoint",
-            ),
-            array(
-                null,
-                "",
-                DataPointBase::TYPE_IGNORE,
-                "Test2DataPoint",
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $value  The value to set it to
-    * @param string $units  The units to use
-    * @param string $type   The datatype to use
-    * @param int    $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFactory
-    */
-    public function testFactory($value, $units, $type, $expect)
-    {
-        $o = DataPointBase::factory($value, $units, $type);
-        $this->assertSame($expect, get_class($o));
+        $o = new DataPointBaseTestClass($data);
+        foreach ((array)$expect as $key => $value) {
+            $this->assertAttributeSame($value, $key, $o);
+        }
     }
 
     /**
@@ -173,15 +138,19 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                5,
-                "&deg;C",
-                DataPointBase::TYPE_RAW,
+                array(
+                    "value" => 5,
+                    "units" => "&deg;C",
+                    "type" => DataPointBase::TYPE_RAW,
+                ),
                 5,
             ),
             array(
-                null,
-                "",
-                DataPointBase::TYPE_IGNORE,
+                array(
+                    "value" => null,
+                    "units" => "",
+                    "type" => DataPointBase::TYPE_IGNORE,
+                ),
                 null,
             ),
         );
@@ -189,18 +158,16 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $value  The value to set it to
-    * @param string $units  The units to use
-    * @param string $type   The datatype to use
-    * @param int    $expect The expected return
+    * @param array $data   The data to use
+    * @param int   $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataValue
     */
-    public function testValue($value, $units, $type, $expect)
+    public function testValue($data, $expect)
     {
-        $o = DataPointBase::factory($value, $units, $type);
+        $o = new DataPointBaseTestClass($data);
         $this->assertSame($expect, $o->value());
     }
     /**
@@ -212,15 +179,19 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                5,
-                "&deg;C",
-                DataPointBase::TYPE_RAW,
+                array(
+                    "value" => 5,
+                    "units" => "&deg;C",
+                    "type" => DataPointBase::TYPE_RAW,
+                ),
                 "5 &deg;C",
             ),
             array(
-                null,
-                "",
-                DataPointBase::TYPE_IGNORE,
+                array(
+                    "value" => null,
+                    "units" => "",
+                    "type" => DataPointBase::TYPE_IGNORE,
+                ),
                 "",
             ),
         );
@@ -228,18 +199,16 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $value  The value to set it to
-    * @param string $units  The units to use
-    * @param string $type   The datatype to use
-    * @param int    $expect The expected return
+    * @param array $data   The data to use
+    * @param int   $expect The expected return
     *
     * @return null
     *
     * @dataProvider dataString
     */
-    public function testString($value, $units, $type, $expect)
+    public function testString($data, $expect)
     {
-        $o = DataPointBase::factory($value, $units, $type);
+        $o = new DataPointBaseTestClass($data);
         $this->assertSame($expect, (string)$o);
     }
 

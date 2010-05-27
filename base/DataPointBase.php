@@ -71,17 +71,15 @@ class DataPointBase extends HUGnetClass
     /**
     * Sets everything up
     *
-    * @param mixed  $value The current value of the data
-    * @param string $units The units to usef
-    * @param string $type  The type of record
+    * @param array $data The data to start with
     *
     * @return null
     */
-    public function __construct($value, $units, $type)
+    public function __construct($data)
     {
-        $this->value = $value;
-        $this->units = $units;
-        $this->type  = $type;
+        $this->value = $data["value"];
+        $this->units = $data["units"];
+        $this->type  = $data["type"];
     }
 
     /**
@@ -92,55 +90,6 @@ class DataPointBase extends HUGnetClass
     public function value()
     {
         return $this->value;
-    }
-    /**
-    * Creates a sensor from data given
-    *
-    * @param mixed  $value The current value of the data
-    * @param string $units The units to usef
-    * @param string $type  The type of record
-    *
-    * @return string/false The name of the class to use.  False on failure
-    */
-    protected static function getClass($value, $units, $type)
-    {
-        static $config;
-        static $drivers;
-        // Get the config if we don't have it yet.
-        if (empty($config)) {
-            $config = &ConfigContainer::singleton();
-        }
-        // Set up the drivers if they are not already set up
-        if (empty($drivers)) {
-            $drivers = array();
-            foreach ((array)$config->plugins->getClass("datapoint") as $d) {
-                foreach ($d["Units"] as $u) {
-                    $drivers[$u] = $d["Class"];
-                }
-            }
-        }
-        // Return the units if there is one.
-        if (isset($drivers[$units])) {
-            return $drivers[$units];
-        }
-        // Return the default driver if we didn't find anything else
-        return $drivers["DEFAULT"];
-
-    }
-    /**
-    * Creates a sensor from data given
-    *
-    * @param mixed  $value The current value of the data
-    * @param string $units The units to usef
-    * @param string $type  The type of record
-    *
-    * @return Reference to the sensor on success, null on failure
-    */
-    public static function &factory($value, $units, $type)
-    {
-        $class = self::getClass($value, $units, $type);
-        $data = new $class($value, $units, $type);
-        return $data;
     }
     /**
     * returns a string

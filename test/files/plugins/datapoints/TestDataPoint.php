@@ -64,15 +64,13 @@ class TestDataPoint extends DataPointBase
     /**
     * Sets everything up
     *
-    * @param mixed  $value The current value of the data
-    * @param string $units The units to usef
-    * @param string $type  The type of record
+    * @param array $data The data to start with
     *
     * @return null
     */
-    public function __construct($value, $units, $type)
+    public function __construct($data)
     {
-        parent::__construct($value, $units, $type);
+        parent::__construct($data);
     }
 
 

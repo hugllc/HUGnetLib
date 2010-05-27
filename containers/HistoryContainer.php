@@ -66,24 +66,19 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /** @var array This is where the data is stored */
     protected $data = array();
 
-    protected $device = null;
-
-    /** The database table to use */
-    protected $table = "history";
-    /** This is the Field name for the key of the record */
-    protected $id = null;
-    /** The type of data */
-    protected $dataType = "float";
-
     /** The number of data elements */
     private $_elements = 19;
-    /** The number of columns */
-    private $_columns = 3;
 
     /** @var int The delta time between this element and the next */
     public $DeltaT = null;
     /** @var string The date of this record */
     public $Date = null;
+    /** @var object This is where we store our sqlDriver */
+    protected $myDevice = null;
+    /** @var object This is where we store our configuration object */
+    protected $myConfig = null;
+    /** @var object This is where we store our sensor driver listing */
+    protected $drivers = array();
     /**
     * Builds the class
     *
@@ -94,21 +89,28 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     public function __construct($row, &$device)
     {
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->_registerDataPointPlugins();
         $this->DeltaT =& $this->data["deltaT"];
         $this->Date =& $this->data["Date"];
-        $this->device =& $device;
+        $this->myDevice = &$device;
         if (is_array($row)) {
             $this->fromArray($row);
         }
     }
-
     /**
-    * Disconnects from the database
+    * Registers all of hte sensor plugins
     *
     * @return null
     */
-    public function __destruct()
+    private function _registerDataPointPlugins()
     {
+        $this->drivers = array();
+        foreach ((array)$this->myConfig->plugins->getClass("datapoint") as $d) {
+            foreach ($d["Units"] as $u) {
+                $this->drivers[$u] = $d["Class"];
+            }
+        }
     }
     /**
     * Builds the class
@@ -144,10 +146,13 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
         $this->data["elements"] = array();
         for ($i = 0; $i < $this->_elements; $i++) {
             $field = "Data".$i;
-            $sensor = &$this->createSensor($i, $array[$field]);
-            if (!is_null($sensor)) {
-                $this->data["elements"][$i] = $sensor;
-            }
+            $this->data["elements"][$i] = &$this->dataPointFactory(
+                array(
+                    "value" => $array[$field],
+                    "units" => $this->myDevice->sensors->sensor($i)->units,
+                    "type" => $this->myDevice->sensors->sensor($i)->dataType,
+                )
+            );
         }
     }
 
@@ -160,7 +165,6 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     public function toArray($default = false)
     {
-
         $array["DeviceKey"] = $this->DeviceKey;
         $array["Date"]      = $this->Date;
         $array["deltaT"]    = $this->deltaT;
@@ -177,19 +181,19 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /**
     * Creates a sensor from data given
     *
-    * @param int   $sensor The sensor to create
-    * @param mixed $value  The current value of the data
+    * @param array $data The data to us to build the class
     *
-    * @return Reference to the sensor on success, null on failure
+    * @return Reference to the datapoint on success, null on failure
     */
-    protected function &createSensor($sensor, $value = null)
+    protected function &dataPointFactory($data)
     {
-        if (self::findClass("DataPointBase", "base")) {
-            $data = &DataPointBase::factory(
-                $value, $sensor->storageUnits, $sensor->dataType
-            );
+        $units = $data["units"];
+        if (isset($this->drivers[$units])) {
+            $class = $this->drivers[$units];
+        } else {
+            $class = $this->drivers["DEFAULT"];
         }
-        return $data;
+        return new $class($data);
     }
 
 }

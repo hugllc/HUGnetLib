@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,21 +51,15 @@ require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test2Sensor extends DeviceSensorBase
+class GenericDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test2Sensor",
+        "Name" => "GenericDeviceSensor",
         "Type" => "sensor",
-        "Class" => "Test2Sensor",
-        "Sensors" => array(2,3,4,5),
+        "Class" => "GenericDeviceSensor",
+        "Sensors" => array("DEFAULT"),
     );
-    /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b");
-    /** @var object This is where we store our configuration */
-    protected $unitsValues = array("d", "anotherUnit");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "c", "e");
 
     /**
     * Disconnects from the database
@@ -77,6 +71,11 @@ class Test2Sensor extends DeviceSensorBase
     {
         parent::__construct($data, $device);
     }
+    /******************************************************************
+     ******************************************************************
+     ********  The following are input modification functions  ********
+     ******************************************************************
+     ******************************************************************/
     /**
     * function to set units
     *
@@ -86,7 +85,7 @@ class Test2Sensor extends DeviceSensorBase
     */
     protected function setUnits($value)
     {
-        $this->data["units"] = $value;
+        $this->data["units"] = (string)$value;
     }
     /**
     * function to set unitType
@@ -97,7 +96,7 @@ class Test2Sensor extends DeviceSensorBase
     */
     protected function setUnitType($value)
     {
-        $this->data["unitType"] = $value;
+        $this->data["unitType"] = (string)$value;
     }
     /**
     * function to set type
@@ -108,7 +107,7 @@ class Test2Sensor extends DeviceSensorBase
     */
     protected function setType($value)
     {
-        $this->data["type"] = $value;
+        $this->data["type"] = ((int)$value && 0xFF);
     }
 
 }
