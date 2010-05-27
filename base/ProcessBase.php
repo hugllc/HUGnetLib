@@ -130,7 +130,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         }
         $this->myDevice->DeviceID = $this->myDevice->id;
         // This is the device container with our setup information in it.
-        $this->myDevice->LastConfig = date("Y-m-d H:i:s");
+        $this->myDevice->LastConfig = time();
         $this->myDevice->insertRow(true);
     }
     /**
@@ -151,6 +151,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         );
         if (is_object($devs[0])) {
             $DeviceID = $devs[0]->DeviceID;
+            $this->myConfig->sockets->forceDeviceID($DeviceID);
         } else {
             $DeviceID = $this->myConfig->sockets->deviceID(array());
         }
@@ -302,7 +303,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         static $last;
         // Do this only once per minute max
         if ($last != date("i")) {
-            $this->myDevice->LastConfig = date("Y-m-d H:i:s");
+            $this->myDevice->LastConfig = time();
             $this->myDevice->updateRow();
             $last = date("i");
         }
