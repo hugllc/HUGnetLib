@@ -160,6 +160,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id" => "2",
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" => "Another THing",
                     "value" => "22.0",
                 ),
@@ -260,6 +261,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "other" => "things",
                         "id" => "-5",
                         "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 0,
                         "name" => "Something Negative",
                         "value" => "-25.0",
                     ),
@@ -269,6 +271,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "other" => "things",
                         "id" => "1",
                         "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 0,
                         "name" => "Something Here",
                         "value" => "25.0",
                     ),
@@ -278,6 +281,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "other" => "things",
                         "id" => "2",
                         "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 0,
                         "name" => "Another THing",
                         "value" => "22.0",
                     ),
@@ -287,6 +291,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         "other" => "things",
                         "id" => "32",
                         "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 0,
                         "name" => "A way up here thing",
                         "value" => "23.0",
                     ),
@@ -357,6 +362,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id" => "-5",
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" => "Something Negative",
                     "value" => "-25.0",
                 ),
@@ -678,11 +684,11 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                     "id" => 10,
                     "name" => "This is a name",
-                    "value" => "YTo3OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToi"
-                        ."Zmx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5"
-                        ."ncyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwLT"
-                        ."AxLTAxIDAwOjAwOjAwIjtzOjQ6Im5hbWUiO3M6NDoiTmFtZSI7czo1Oi"
-                        ."J2YWx1ZSI7ZDoxMjt9",
+                    "value" => "YTo4OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToi"
+                        ."Zmx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW"
+                        ."5ncyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwL"
+                        ."TAxLTAxIDAwOjAwOjAwIjtzOjExOiJteU90aGVyRGF0ZSI7aTowO3M6"
+                        ."NDoibmFtZSI7czo0OiJOYW1lIjtzOjU6InZhbHVlIjtkOjEyO30=",
                 ),
             ),
         );
@@ -726,6 +732,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id" => 5,
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" => "Name",
                     "value" => 12.0,
                 ),
@@ -751,6 +758,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "nStuff",
                     "id" => 6,
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),
@@ -773,6 +781,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id" => 5,
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" => "Obi-wan",
                     "value" => 325.0,
                 ),
@@ -814,7 +823,14 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 "myDate", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
             ),
             array("myDate", 1234567890, "2009-02-13 17:31:30"),
+            array("myDate", "1234567890", "2009-02-13 17:31:30"),
             array("myDate", "This is not a date", "1970-01-01 00:00:00"),
+            array("myOtherDate", "2010-04-25 13:42:23", 1272202943),
+            array("myOtherDate", "2010-04-25", 1272153600),
+            array("myOtherDate", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("myOtherDate", 1234567890, 1234567890),
+            array("myOtherDate", "1234567890", 1234567890),
+            array("myOtherDate", "This is not a date", 0),
         );
     }
 
@@ -851,6 +867,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id" => "13",
                     "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
                     "name" =>  "This is a string",
                     "value" =>  "-35",
                 ),
@@ -962,6 +979,7 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
         "other" => "things",
         "id" => 5,
         "myDate" => "1970-01-01 00:00:00",
+        "myOtherDate" => 0,
     );
     /**
     * function to set To
@@ -973,6 +991,17 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
     protected function setMyDate($value)
     {
         $this->data["myDate"] = self::sqlDate($value);
+    }
+    /**
+    * function to set To
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setMyOtherDate($value)
+    {
+        $this->data["myOtherDate"] = self::unixDate($value);
     }
 
 }

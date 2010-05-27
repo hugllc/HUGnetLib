@@ -97,8 +97,8 @@ class PacketLogTable extends HUGnetDBTable
         ),
         "Date" => array(
             "Name" => "Date",
-            "Type" => "datetime",
-            "Default" => "0000-00-00 00:00:00",
+            "Type" => "bigint",
+            "Default" => 0,
         ),
         "Command" => array(
             "Name" => "Command",

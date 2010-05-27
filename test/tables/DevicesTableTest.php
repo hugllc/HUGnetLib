@@ -193,13 +193,11 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("LastHistory", "2010-04-25 13:42:23", "2010-04-25 13:42:23"),
-            array("LastPoll", "2010-04-25", "2010-04-25 00:00:00"),
-            array(
-                "LastConfig", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
-            ),
-            array("LastAnalysis", 1234567890, "2009-02-13 17:31:30"),
-            array("LastAnalysis", "This is not a date", "1970-01-01 00:00:00"),
+            array("LastHistory", "2010-04-25 13:42:23", 1272202943),
+            array("LastPoll", "2010-04-25", 1272153600),
+            array("LastConfig", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("LastAnalysis", 1234567890, 1234567890),
+            array("LastAnalysis", "This is not a date", 0),
             array("FWVersion", "1.2.3", "1.2.3"),
             array("FWVersion", "01.02.03", "1.2.3"),
             array("FWVersion", "011005", "1.10.5"),
@@ -266,10 +264,10 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
                         "BoredomThreshold" => "80",
-                        "LastConfig" => "1970-01-01 00:00:00",
-                        "LastPoll" => "1970-01-01 00:00:00",
-                        "LastHistory" => "1970-01-01 00:00:00",
-                        "LastAnalysis" => "1970-01-01 00:00:00",
+                        "LastConfig" => "0",
+                        "LastPoll" => "0",
+                        "LastHistory" => "0",
+                        "LastAnalysis" => "0",
                         "MinAverage" => "15MIN",
                         "sensors" => "",
                         "params" => "",

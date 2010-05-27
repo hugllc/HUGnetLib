@@ -116,7 +116,7 @@ class DeviceConfig extends ProcessBase
         // Be verbose ;)
         self::vprint(
             "Checking ".$dev->DeviceID." LastConfig: ".
-            $dev->LastConfig,
+            date("Y-m-d H:i:s", $dev->LastConfig),
             HUGnetClass::VPRINT_NORMAL
         );
         // Read the setup
@@ -165,8 +165,8 @@ class DeviceConfig extends ProcessBase
                 $this->logError(
                     "DEACTIVATE",
                     $dev->DeviceID.": has failed to respond to "
-                    .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering the "
-                    ."device inactive.",
+                    .$dev->params->DriverInfo["ConfigFail"]." configs.  Rendering "
+                    ."the device inactive.",
                     ErrorTable::SEVERITY_ERROR,
                     "DeviceConfig::config"
                 );

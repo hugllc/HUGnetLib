@@ -136,7 +136,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     protected $default = array(
         "To"       => "000000",   // Who the packet is to
         "From"     => "000000",   // Who the packet is from
-        "Date"     => "",         // The date we created this object
+        "Date"     => 0,         // The date we created this object
         "Command"  => "00",       // The command we used
         "Length"   => 0,          // The length of the data section
         "Time"     => 0.0,        // The time we sent the packet out
@@ -149,8 +149,6 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         "GetReply" => true,       // Should we wait for a reply
         "group"    => "default",  // This is the socket group we belong to
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /** @var object This is our socket */
     protected $mySocket = null;
@@ -172,7 +170,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         // This sets up the socket for us
         $this->group = $this->data["group"];
         if (empty($this->Date)) {
-            $this->Date = date("Y-m-d H:i:s");
+            $this->Date = time();
         }
         $this->verbose($this->myConfig->verbose);
     }
@@ -548,6 +546,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * Checks to see if the contained packet is an unsolicited
     *
+    * @param mixed $id The DeviceID or id of the device
+    *
     * @return bool true if it is unsolicited, false otherwise
     */
     static public function checkDeviceID($id)
@@ -598,7 +598,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function timeout($timeout=0)
     {
         $timeout = empty($timeout) ? $this->Timeout : $timeout;
-        return (bool)((strtotime($this->Date) + $timeout) < time());
+        return (bool)(($this->Date + $timeout) < time());
     }
     /**
     * returns true if this packet is the same as the given one.
@@ -625,7 +625,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if ($this->_toMe($pkt)
             && ($pkt->Command == self::COMMAND_REPLY)
             && ($this->To == $pkt->From)
-            && (strtotime($this->Date) <= strtotime($pkt->Date))
+            && ($this->Date <= $pkt->Date)
         ) {
             return true;
         }
@@ -860,6 +860,27 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if (!empty($value)) {
             $this->data["Timeout"] = $value;
         }
+    }
+    /**
+    * function to set the Date
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setDate($value)
+    {
+        if (is_numeric($value)) {
+            $value = (int)$value;
+        } else {
+            try {
+                $date = new DateTime($value, new DateTimeZone("UTC"));
+                $value = $date->getTimestamp();
+            } catch (exception $e) {
+                $value = $this->default["Date"];
+            }
+        }
+        $this->data["Date"] = $value;
     }
 }
 ?>

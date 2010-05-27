@@ -179,23 +179,23 @@ class DevicesTable extends HUGnetDBTable
         ),
         "LastConfig" => array(
             "Name" => "LastConfig",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+            "Type" => "bigint",
+            "Default" => '0',
         ),
         "LastPoll" => array(
             "Name" => "LastPoll",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+            "Type" => "bigint",
+            "Default" => '0',
         ),
         "LastHistory" => array(
             "Name" => "LastHistory",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+            "Type" => "bigint",
+            "Default" => '0',
         ),
         "LastAnalysis" => array(
             "Name" => "LastAnalysis",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+            "Type" => "bigint",
+            "Default" => '0',
         ),
         "MinAverage" => array(
             "Name" => "MinAverage",
@@ -413,7 +413,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setLastHistory($value)
     {
-        $this->data["LastHistory"] = $this->sqlDate($value);
+        $this->data["LastHistory"] = $this->unixDate($value);
     }
     /**
     * function to set LastHistory
@@ -424,7 +424,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setLastConfig($value)
     {
-        $this->data["LastConfig"] = $this->sqlDate($value);
+        $this->data["LastConfig"] = $this->unixDate($value);
     }
     /**
     * function to set LastHistory
@@ -435,7 +435,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setLastPoll($value)
     {
-        $this->data["LastPoll"] = $this->sqlDate($value);
+        $this->data["LastPoll"] = $this->unixDate($value);
     }
     /**
     * function to set LastHistory
@@ -446,7 +446,7 @@ class DevicesTable extends HUGnetDBTable
     */
     protected function setLastAnalysis($value)
     {
-        $this->data["LastAnalysis"] = $this->sqlDate($value);
+        $this->data["LastAnalysis"] = $this->unixDate($value);
     }
 
     /**

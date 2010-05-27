@@ -217,9 +217,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
     public static function dataReadSetupTime()
     {
         return array(
-            array(date("Y-m-d H:i:s"), 60, false),
+            array(time(), 60, false),
             array("2004-01-01 00:00:00", 12, true),
-            array(date("Y-m-d H:i:s", time()-70), 1, true),
+            array(time()-70, 1, true),
         );
     }
     /**

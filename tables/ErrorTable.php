@@ -198,7 +198,7 @@ class ErrorTable extends HUGnetDBTable
     */
     protected function setDate($value)
     {
-        $this->data["Date"] = $this->sqlDate($value);
+        $this->data["Date"] = $this->unixDate($value);
     }
 
 }

@@ -139,7 +139,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
-                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                time(),
                 0,
             ),
             array(
@@ -181,9 +181,9 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
-        $this->assertRegExp(
-            "/".$LastConfig."/",
+        $this->assertThat(
             $this->d->LastConfig,
+            $this->greaterThanOrEqual($LastConfig),
             "LastConfig wrong"
         );
         $this->assertSame(
@@ -217,7 +217,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
-                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                time(),
                 0,
             ),
             array(
@@ -237,7 +237,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 )),
                 true,
                 0,
-                "2[0-9]{3}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",
+                time(),
                 0,
             ),
             array(
@@ -248,7 +248,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     ."5A5A5A0300002500002000065A5A5A550000250000200050",
                 false,
                 1,
-                "1970-01-01 00:00:00",
+                0,
                 1,
             ),
         );
@@ -279,9 +279,9 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         //$this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
-        $this->assertRegExp(
-            "/".$LastPoll."/",
+        $this->assertThat(
             $this->d->LastPoll,
+            $this->greaterThanOrEqual($LastPoll),
             "LastPoll wrong"
         );
         $this->assertSame(
@@ -389,11 +389,11 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReadSetupTime()
     {
         return array(
-            array(date("Y-m-d H:i:s"), array(), 10, false),
+            array(time(), array(), 10, false),
             array("2004-01-01 00:00:00", array(), 12, true),
-            array(date("Y-m-d H:i:s", time()-3600), array(), 1, true),
+            array(time()-3600, array(), 1, true),
             array(
-                date("Y-m-d H:i:s", time()-86400),
+                time()-86400,
                 array("ConfigFail" => 60, "LastConfig" => time()),
                 12,
                 false,
@@ -427,12 +427,12 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReadDataTime()
     {
         return array(
-            array(date("Y-m-d H:i:s"), array(), 100, false),
+            array(time(), array(), 100, false),
             array("2004-01-01 00:00:00", array(), 10, true),
             array("2004-01-01 00:00:00", array(), 0, false),
-            array(date("Y-m-d H:i:s", time()-3600), array(), 10, true),
+            array(time()-3600, array(), 10, true),
             array(
-                date("Y-m-d H:i:s", time()-86400),
+                time()-86400,
                 array("PollFail" => 60, "LastPoll" => time()),
                 12,
                 false,

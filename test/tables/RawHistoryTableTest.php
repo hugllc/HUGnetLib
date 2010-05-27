@@ -173,7 +173,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     "packet" => array(
                         "To" => "000012",
                         "From" => "000283",
-                        "Date" => "1234-11-12 00:00:12",
+                        "Date" => 1048472484,
                         "Command" => "55",
                         "Data" => "01020304",
                     ),
@@ -184,11 +184,11 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "id" => 100,
-                    "Date" => "1970-01-01 00:00:00",
+                    "Date" => 0,
                     "packet" => array(
                         "To" => "000012",
                         "From" => "000283",
-                        "Date" => "1234-11-12 00:00:12",
+                        "Date" => 1048472484,
                         "Command" => "55",
                         "Length" => 4,
                         "Time" => 0.0,
@@ -210,7 +210,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     "packet" => array(
                         "To" => "000012",
                         "From" => "000283",
-                        "Date" => "1234-11-12 00:00:12",
+                        "Date" => 1048472484,
                         "Command" => "55",
                         "Data" => "01020304",
                     ),
@@ -221,11 +221,11 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "id" => 100,
-                    "Date" => "1970-01-01 00:00:00",
+                    "Date" => 0,
                     "packet" => array(
                         "To" => "000012",
                         "From" => "000283",
-                        "Date" => "1234-11-12 00:00:12",
+                        "Date" => 1048472484,
                         "Command" => "55",
                         "Length" => 4,
                         "Time" => 0.0,
@@ -270,13 +270,11 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("Date", "2010-04-25 13:42:23", "2010-04-25 13:42:23"),
-            array("Date", "2010-04-25", "2010-04-25 00:00:00"),
-            array(
-                "Date", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
-            ),
-            array("Date", 1234567890, "2009-02-13 17:31:30"),
-            array("Date", "This is not a date", "1970-01-01 00:00:00"),
+            array("Date", "2010-04-25 13:42:23", 1272202943),
+            array("Date", "2010-04-25", 1272153600),
+            array("Date", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("Date", 1234567890, 1234567890),
+            array("Date", "This is not a date", 0),
             array("id", 71, 71),
         );
     }
@@ -325,7 +323,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     array(
                         "id"        => "123",
-                        "Date"      => "1977-01-01 08:09:00",
+                        "Date"      => "220954140",
                         "packet"    => $packet->toZip(),
                         "deviceHistoryID"    => "1",
                         "command"   => "55",

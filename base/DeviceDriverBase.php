@@ -126,7 +126,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function readSetupTime($interval = 12)
     {
         // This is what would normally be our time.  Every 12 hours.
-        $base = strtotime($this->myDriver->LastConfig) < (time() - $interval*3600);
+        $base = $this->myDriver->LastConfig < (time() - $interval*3600);
         if ($base === false) {
             return $base;
         }
@@ -184,7 +184,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function setLastConfig($pass=true)
     {
         if ($pass) {
-            $this->myDriver->LastConfig = date("Y-m-d H:i:s");
+            $this->myDriver->LastConfig = time();
             $this->data["ConfigFail"] = 0;
             return true;
         }
@@ -202,7 +202,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function setLastPoll($pass=true)
     {
         if ($pass) {
-            $this->myDriver->LastPoll = date("Y-m-d H:i:s");
+            $this->myDriver->LastPoll = time();
             $this->data["PollFail"] = 0;
             return true;
         }
@@ -244,7 +244,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             // No polling if the interval is set to 0
             return false;
         }
-        $base = strtotime($this->myDriver->LastPoll) < (time() - $interval*60);
+        $base = $this->myDriver->LastPoll < (time() - $interval*60);
         if ($base === false) {
             return $base;
         }

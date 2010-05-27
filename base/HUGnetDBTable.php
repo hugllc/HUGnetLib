@@ -371,8 +371,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     protected function sqlDate($value)
     {
-        if (is_int($value)) {
-            $value = date("Y-m-d H:i:s", $value);
+        if (is_numeric($value)) {
+            $value = date("Y-m-d H:i:s", (int)$value);
         }
         try {
             $date = new DateTime($value, new DateTimeZone("UTC"));
@@ -380,6 +380,25 @@ abstract class HUGnetDBTable extends HUGnetContainer
             return "1970-01-01 00:00:00";
         }
         return $date->format("Y-m-d H:i:s");
+    }
+    /**
+    * This routine takes any date and turns it into an SQL date
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function unixDate($value)
+    {
+        if (is_numeric($value)) {
+            return (int)$value;
+        }
+        try {
+            $date = new DateTime($value, new DateTimeZone("UTC"));
+        } catch (exception $e) {
+            return 0;
+        }
+        return $date->getTimestamp();
     }
 }
 

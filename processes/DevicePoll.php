@@ -116,7 +116,7 @@ class DevicePoll extends ProcessBase
         // Be verbose ;)
         self::vprint(
             "Polling ".$dev->DeviceID." LastPoll: ".
-            $dev->LastPoll,
+            date("Y-m-d H:i:s", $dev->LastPoll),
             HUGnetClass::VPRINT_NORMAL
         );
         // Read the setup

@@ -193,13 +193,11 @@ class ErrorTableTest extends HUGnetDBTableTestBase
     public static function dataSet()
     {
         return array(
-            array("Date", "2010-04-25 13:42:23", "2010-04-25 13:42:23"),
-            array("Date", "2010-04-25", "2010-04-25 00:00:00"),
-            array(
-                "Date", "Sun, 25 April 2010, 1:42:23pm", "2010-04-25 13:42:23"
-            ),
-            array("Date", 1234567890, "2009-02-13 17:31:30"),
-            array("Date", "This is not a date", "1970-01-01 00:00:00"),
+            array("Date", "2010-04-25 13:42:23", 1272202943),
+            array("Date", "2010-04-25", 1272153600),
+            array("Date", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("Date", 1234567890, 1234567890),
+            array("Date", "This is not a date", 0),
         );
     }
 
@@ -244,7 +242,7 @@ class ErrorTableTest extends HUGnetDBTableTestBase
                         "method" => "fakeMethod",
                         "errno"  => "#5",
                         "error"  => "This is an error message",
-                        "Date"   => "2003-02-28 01:59:00",
+                        "Date"   => "1046397540",
                         "Severity" => "1",
                     ),
                 ),

@@ -1783,10 +1783,14 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function checkDateTime(&$ret, $checkTime = true)
     {
         // Test the date separately
-        $this->assertRegExp(
-            "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
-            $ret["Date"]
-        );
+        $this->assertType("int", $ret["Date"], "Date must be an int");
+        if ($checkTime) {
+            $this->assertThat(
+                $ret["Date"],
+                $this->greaterThan(0),
+                "Date must be greater than zero"
+            );
+        }
         unset($ret["Date"]);
         // Test the time separately
         $this->assertType("float", $ret["Time"], "Time must be a float");
@@ -1800,12 +1804,14 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         unset($ret["Time"]);
         // Now check the reply, if there is one
         if (is_array($ret["Reply"])) {
-            // Test the date separately
-            $this->assertRegExp(
-                "/2[0-9]{3}-[0-1][0-9]-[0-3][0-9] "
-                ."[0-2][0-9]:[0-5][0-9]:[0-5][0-9]/",
-                $ret["Reply"]["Date"]
-            );
+            $this->assertType("int", $ret["Reply"]["Date"], "Date must be an int");
+            if ($checkTime) {
+                $this->assertThat(
+                    $ret["Reply"]["Date"],
+                    $this->greaterThan(0),
+                    "Date must be greater than zero"
+                );
+            }
             unset($ret["Reply"]["Date"]);
             // Test the time separately
             $this->assertType(
@@ -1906,6 +1912,12 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array("Timeout", 0, 5),
             array("Timeout", 1, 1),
+            array("Date", "2010-04-25 13:42:23", 1272202943),
+            array("Date", "2010-04-25", 1272153600),
+            array("Date", "Sun, 25 April 2010, 1:42:23pm", 1272202943),
+            array("Date", 1234567890, 1234567890),
+            array("Date", "1234567890", 1234567890),
+            array("Date", "This is not a date", 0),
         );
     }
 
@@ -1964,8 +1976,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $value  The value to set
-    * @param mixed  $expect The expected return
+    * @param mixed $value  The value to set
+    * @param mixed $expect The expected return
     *
     * @return null
     *
