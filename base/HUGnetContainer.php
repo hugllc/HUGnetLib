@@ -70,6 +70,8 @@ abstract class HUGnetContainer extends HUGnetClass
     protected $default = array();
     /** @var array This is where the data is stored */
     protected $data = array();
+    /** @var array This is where the fixed data is stored (not writable outside) */
+    protected $fixed = array();
 
     /**
     * This is the constructor
@@ -188,6 +190,8 @@ abstract class HUGnetContainer extends HUGnetClass
     {
         if (array_key_exists($name, $this->default)) {
             return $this->data[$name];
+        } else if (array_key_exists($name, $this->fixed)) {
+            return $this->fixed[$name];
         }
         return null;
     }

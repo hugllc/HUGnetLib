@@ -124,6 +124,40 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * data provider for testGet
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array("var", 16, null),
+            array("Hello", 16, 16),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $attrib This is the attribute to set
+    * @param mixed  $value  The value to set it to
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet(
+        $attrib,
+        $value,
+        $expect
+    ) {
+        $o = new HUGnetContainerTestClass3();
+        $o->setFixed($attrib, $value);
+        $this->assertSame($expect, $o->$attrib);
+    }
+
+    /**
     * data provider for testDeviceID
     *
     * @return array
@@ -1695,5 +1729,18 @@ class HUGnetContainerTestClass3 extends HUGnetContainer
             ),
         ),
     );
+    /**
+    * Set one of the fixed value
+    *
+    * @param string $name  The name of the value
+    * @param mixed  $value The value to set
+    *
+    * @return null
+    */
+    public function setFixed($name, $value)
+    {
+        $this->fixed[$name] = $value;
+    }
+
 }
 ?>
