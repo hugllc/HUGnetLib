@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/HistoryContainer.php';
+require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
 require_once dirname(__FILE__).'/../../base/DataPointBase.php';
 
 /**
@@ -127,6 +128,7 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
         foreach ((array)$expect as $key => $value) {
             $this->assertAttributeSame($value, $key, $o);
         }
+        $this->assertAttributeSame($expect, "original", $o);
     }
 
     /**
@@ -210,6 +212,59 @@ class DataPointBaseTest extends PHPUnit_Framework_TestCase
     {
         $o = new DataPointBaseTestClass($data);
         $this->assertSame($expect, (string)$o);
+    }
+    /**
+     * Data provider for testConvertTo
+     *
+     * @return array
+     */
+    public static function dataConverTo()
+    {
+        return array(
+            array(
+                array(
+                    "value" => 100,
+                    "units" => "&#176;C",
+                    "type"  => DataPointBase::TYPE_RAW,
+                ),
+                "&#176;F",
+                100,
+                "&#176;C",
+                false,
+            ),
+            array(
+                array(
+                    "value" => -40,
+                    "units" => "&#176;C",
+                    "type"  => DataPointBase::TYPE_RAW,
+                ),
+                "&#176;C",
+                -40,
+                "&#176;C",
+                true,
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array  $preload the stuff to preload into the datapoint
+    * @param string $units   The units to convert to
+    * @param mixed  $expect  The value to expect
+    * @param string $eUnits  The units to expect
+    * @param bool   $return  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataConverTo
+    */
+    public function testConvertTo($preload, $units, $expect, $eUnits, $return)
+    {
+        $this->o = new DataPointBaseTestClass($preload);
+        $ret = $this->o->convertTo($units);
+        $this->assertAttributeEquals($expect, "value", $this->o, "Value Wrong");
+        $this->assertAttributeEquals($eUnits, "units", $this->o, "Units Wrong");
+        $this->assertSame($return, $ret, "Return Wrong");
     }
 
 }

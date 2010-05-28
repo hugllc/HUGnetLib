@@ -35,9 +35,6 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** This is for the base class */
-require_once dirname(__FILE__)."/../../base/DataPointBase.php";
-
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -51,27 +48,29 @@ require_once dirname(__FILE__)."/../../base/DataPointBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDataPoint extends DataPointBase
+interface DataPointInterface
 {
-    /** @var This is to register the class */
-    public static $registerPlugin = array(
-        "Name" => "GenericDataPoint",
-        "Type" => "datapoint",
-        "Class" => "GenericDataPoint",
-        "Units" => array("DEFAULT"),
-    );
 
     /**
-    * Sets everything up
+    * Returns the value
     *
-    * @param array $data The data to start with
+    * @return mixed The value
+    */
+    public function value();
+    /**
+    * returns a string
+    *
+    * @return Reference to the sensor on success, null on failure
+    */
+    public function toString();
+    /**
+    * Does the actual conversion
+    *
+    * @param string $units The units to convert to
     *
     * @return null
     */
-    public function __construct($data)
-    {
-        parent::__construct($data);
-    }
+    public function convertTo($units);
 
 }
 ?>

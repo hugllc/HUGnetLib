@@ -144,14 +144,15 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
             }
         }
         $this->data["elements"] = array();
-        for ($i = 0; $i < $this->_elements; $i++) {
+        for ($i = 0; $i < $this->myDevice->DriverInfo["TotalSensors"]; $i++) {
             $field = "Data".$i;
             $this->data["elements"][$i] = &$this->dataPointFactory(
                 array(
                     "value" => $array[$field],
                     "units" => $this->myDevice->sensors->sensor($i)->units,
                     "type" => $this->myDevice->sensors->sensor($i)->dataType,
-                )
+                ),
+                $this->myDevice->sensors->sensor($i)->unitType
             );
         }
     }
@@ -181,15 +182,15 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /**
     * Creates a sensor from data given
     *
-    * @param array $data The data to us to build the class
+    * @param array  $data     The data to us to build the class
+    * @param string $unitType The type of units
     *
     * @return Reference to the datapoint on success, null on failure
     */
-    protected function &dataPointFactory($data)
+    protected function &dataPointFactory($data, $unitType)
     {
-        $units = $data["units"];
-        if (isset($this->drivers[$units])) {
-            $class = $this->drivers[$units];
+        if (isset($this->drivers[$unitType])) {
+            $class = $this->drivers[$unitType];
         } else {
             $class = $this->drivers["DEFAULT"];
         }

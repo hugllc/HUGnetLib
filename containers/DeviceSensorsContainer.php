@@ -145,14 +145,19 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     public function fromTypeString($string)
     {
+        if (empty($string) || !is_string($string)) {
+            return;
+        }
         $sensors = str_split($string, 2);
         foreach ($sensors as $key => $value) {
             if ($key >= $this->myDevice->DriverInfo["TotalSensors"]) {
                 break;
             }
             $id = hexdec($value);
-            if (!$this->checkSensor($id, $this->sensor[$key])) {
-                $this->sensor[$key] = $this->sensorFactory(array("id" => $id));
+            if (!$this->checkSensor($id, $this->sensor($key))) {
+                $data = $this->sensor($key)->toArray();
+                $data["id"] = $id;
+                $this->sensor[$key] = $this->sensorFactory($data);
             }
             $this->sensor[$key]->id = $id;
         }
@@ -239,7 +244,6 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     public function &sensor($key)
     {
-        static $default;
         if (isset($this->sensor[$key])) {
             return $this->sensor[$key];
         }

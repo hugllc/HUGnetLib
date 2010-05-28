@@ -111,8 +111,11 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(0, 1),
                 "Test2DataPoint",
-                new DeviceContainer(array(
-                )),
+                array(
+                    "DriverInfo" => array(
+                        "TotalSensors" => 2,
+                    ),
+                ),
                 array(
                     "DeviceKey" => 23,
                     "Date" => "2007-05-21 03:35:13",
@@ -128,18 +131,19 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload The value to preload into the constructor
-    * @param array  $check   The elements to check for the right class
-    * @param string $class   The class to check for
-    * @param object $obj     The device object to send
-    * @param array  $expect  The array to expect back
+    * @param array  $preload    The value to preload into the constructor
+    * @param array  $check      The elements to check for the right class
+    * @param string $class      The class to check for
+    * @param object $objPreload The device object to send
+    * @param array  $expect     The array to expect back
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $check, $class, $obj, $expect)
+    public function testConstructor($preload, $check, $class, $objPreload, $expect)
     {
+        $obj = new DeviceContainer($objPreload);
         $o = new HistoryContainer($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
@@ -176,7 +180,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "Test2DataPoint",
                     "TestDataPoint",
                 ),
-                new DeviceContainer(array(
+                array(
                     "DriverInfo" => array(
                         "TotalSensors" => 2,
                     ),
@@ -184,13 +188,15 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                         0 => array(
                             "id"    => 2,
                             "units" => "anotherUnit",
+                            "unitType" => "secondUnit",
                         ),
                         1 => array(
                             "id"    => 0,
                             "units" => "testUnit",
+                            "unitType" => "firstUnit",
                         ),
                     ),
-                )),
+                ),
                 array(
                     "DeviceKey" => 23,
                     "Date" => "2007-05-21 03:35:13",
@@ -206,18 +212,19 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload The value to preload into the constructor
-    * @param array  $check   The elements to check for the right class
-    * @param string $class   The class to check for
-    * @param object $obj     The device object to send
-    * @param array  $expect  The array to expect back
+    * @param array  $preload    The value to preload into the constructor
+    * @param array  $check      The elements to check for the right class
+    * @param string $class      The class to check for
+    * @param object $objPreload The setup for the device object to send
+    * @param array  $expect     The array to expect back
     *
     * @return null
     *
     * @dataProvider dataFactory
     */
-    public function testFactory($preload, $check, $class, $obj, $expect)
+    public function testFactory($preload, $check, $class, $objPreload, $expect)
     {
+        $obj = new DeviceContainer($objPreload);
         $o = &$this->o->factory($preload, $obj);
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);

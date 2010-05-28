@@ -103,6 +103,7 @@ class GenericDataPointTest extends DataPointPluginTestBase
         );
     }
 
+
 }
 
 ?>

@@ -59,7 +59,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "location" => "",                // The location of the sensors
-        "id" => 0,                      // The id of the sensor.  This is the value
+        "id" => null,                    // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "",                    // The type of the sensors
         "units" => "",                   // The units the values are stored in

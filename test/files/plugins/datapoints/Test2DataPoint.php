@@ -37,6 +37,8 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../../../base/DataPointBase.php";
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -58,7 +60,7 @@ class Test2DataPoint extends DataPointBase
         "Name" => "Test2DataPoint",
         "Type" => "datapoint",
         "Class" => "Test2DataPoint",
-        "Units" => array("anotherUnit", "DEFAULT"),
+        "Units" => array("secondUnit", "DEFAULT"),
     );
 
     /**
@@ -73,6 +75,16 @@ class Test2DataPoint extends DataPointBase
         parent::__construct($data);
     }
 
+    /**
+    * Does the actual conversion
+    *
+    * @param string $units The units to convert to
+    *
+    * @return null
+    */
+    public function convertTo($units)
+    {
+    }
 
 }
 ?>

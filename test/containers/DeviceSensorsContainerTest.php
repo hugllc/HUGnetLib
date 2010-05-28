@@ -277,7 +277,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     1 => array(
                         "location" => "",
-                        "id" => 0,
+                        "id" => 8,
                         "type" => "",
                         "units" => "",
                         "unitType" => "unknown",
@@ -303,7 +303,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     1 => array(
                         "location" => "",
-                        "id" => 0,
+                        "id" => 8,
                         "type" => "",
                         "units" => "",
                         "unitType" => "unknown",
@@ -342,8 +342,13 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 false,
                 array(
                     "Sensors" => 2,
+                    array(
+                        "id" => 0,
+                    ),
+                    array(
+                        "id" => 0,
+                    ),
                 ),
-
             ),
         );
     }
@@ -378,19 +383,46 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     0 => array("id" => 3),
-                    2 => array("id" => 8),
+                    1 => array("id" => 8),
                 ),
                 "00020102",
                 2,
                 array(
-                    "RawCalibration" => "",
                     "Sensors" => 2,
+                    array(
+                        "id" => 0,
+                    ),
+                    array(
+                        "id" => 2,
+                    ),
                 ),
                 array(
                     "Test1Sensor",
                     "Test2Sensor",
                 ),
                 array(0, 2),
+            ),
+            array(
+                array(
+                    0 => array("id" => 3),
+                    1 => array("id" => 8),
+                ),
+                false,
+                2,
+                array(
+                    "Sensors" => 2,
+                    array(
+                        "id" => 3,
+                    ),
+                    array(
+                        "id" => 8,
+                    ),
+                ),
+                array(
+                    "Test2Sensor",
+                    "Test1Sensor",
+                ),
+                array(3, 8),
             ),
         );
     }
@@ -416,16 +448,14 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->fromTypeString($string);
+        $this->assertSame($expect, $this->o->toArray());
         $s = $this->readAttribute($this->o, "sensor");
         foreach (array_keys((array)$s) as $k) {
             $this->assertSame(
                 $sensors[$k], get_class($s[$k]), "Sensor $k is wrong"
             );
-            $this->assertSame(
-                $types[$k], $s[$k]->id, "Type $k is wrong"
-            );
         }
-        $this->assertAttributeSame($expect, "data", $this->o);
+
     }
     /**
     * data provider for testFromParams

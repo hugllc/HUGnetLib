@@ -363,13 +363,13 @@ abstract class HUGnetContainer extends HUGnetClass
     public function toArray($default = true)
     {
         foreach ($this->getProperties() as $key) {
-            if (($this->$key != $this->default[$key]) || $default) {
+            if (($this->$key !== $this->default[$key]) || $default) {
                 $value = $this->toArrayIterator(
                     $this->data[$key],
                     $this->default[$key],
                     $default
                 );
-                if (($value != $default[$key]) || $default) {
+                if (($value !== $this->default[$key]) || $default) {
                     $data[$key] = $value;
                 }
             }
@@ -392,13 +392,13 @@ abstract class HUGnetContainer extends HUGnetClass
         } else if (is_array($array)) {
             $ret = array();
             foreach (array_keys($array) as $key) {
-                if (($array[$key] != $default[$key]) || $retDefault) {
+                if (($array[$key] !== $default[$key]) || $retDefault) {
                     $value = $this->toArrayIterator(
                         $array[$key],
                         $default[$key],
                         $retDefault
                     );
-                    if (($value != $default[$key]) || $retDefault) {
+                    if (($value !== $default[$key]) || $retDefault) {
                         $ret[$key] = $value;
                     }
                 }

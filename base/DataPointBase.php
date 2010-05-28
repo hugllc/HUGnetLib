@@ -37,7 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
-require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+require_once dirname(__FILE__)."/../interfaces/DataPointInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DataPointBase extends HUGnetClass
+abstract class DataPointBase extends HUGnetClass implements DataPointInterface
 {
     /** This is a raw record */
     const TYPE_RAW = "raw";
@@ -67,6 +67,8 @@ class DataPointBase extends HUGnetClass
     protected $units = null;
     /** @var The type of this point */
     protected $type = null;
+    /** @var The original values given to us */
+    protected $original = null;
 
     /**
     * Sets everything up
@@ -80,6 +82,7 @@ class DataPointBase extends HUGnetClass
         $this->value = $data["value"];
         $this->units = $data["units"];
         $this->type  = $data["type"];
+        $this->original = $data;
     }
 
     /**
@@ -91,6 +94,18 @@ class DataPointBase extends HUGnetClass
     {
         return $this->value;
     }
+    /**
+    * Does the actual conversion
+    *
+    * @param string $units The units to convert to
+    *
+    * @return null
+    */
+    public function convertTo($units)
+    {
+        return ($units === $this->units);
+    }
+
     /**
     * returns a string
     *
