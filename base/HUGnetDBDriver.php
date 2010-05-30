@@ -103,7 +103,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         $this->dataColumns();
         if ($this->myConfig->verbose > 5) {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } else if ($this->myConfig->verbose > 0) {
+        } else if ($this->myConfig->verbose > 1) {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         } else {
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);

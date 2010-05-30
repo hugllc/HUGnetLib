@@ -113,7 +113,8 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Clear the number of sensors
         $this->Sensors = 0;
         // Now setup our sensors
-        for ($i = 0; $i < $this->myDevice->DriverInfo["TotalSensors"]; $i++) {
+        for ($i = 0; $i < (int)$this->myDevice->DriverInfo["NumSensors"]; $i++) {
+            $this->upgradeArray($array[$i], $i);
             $this->sensor[$i] = &$this->sensorFactory($array[$i]);
             $this->Sensors++;
         }
@@ -130,9 +131,6 @@ class DeviceSensorsContainer extends HUGnetContainer
         $data = parent::toArray($default);
         foreach (array_keys($this->sensor) as $key) {
             $data[$key] = $this->sensor[$key]->toArray($default);
-            if (empty($data[$key])) {
-                unset($data[$key]);
-            }
         }
         return (array)$data;
     }
@@ -150,41 +148,48 @@ class DeviceSensorsContainer extends HUGnetContainer
         }
         $sensors = str_split($string, 2);
         foreach ($sensors as $key => $value) {
-            if ($key >= $this->myDevice->DriverInfo["TotalSensors"]) {
+            if ($key >= $this->Sensors) {
                 break;
             }
             $id = hexdec($value);
-            if (!$this->checkSensor($id, $this->sensor($key))) {
+            $good = $this->checkSensor(
+                $id,
+                $this->sensor($key)->type,
+                $this->sensor($key)
+            );
+            if (!$good) {
                 $data = $this->sensor($key)->toArray();
                 $data["id"] = $id;
                 $this->sensor[$key] = $this->sensorFactory($data);
             }
-            $this->sensor[$key]->id = $id;
+            $this->sensor($key)->id = $id;
         }
     }
     /**
     * Creates the sensors from the old method of storing them.
     *
-    * @param DeviceParamsContainer &$obj the parameters to use
+    * @param DeviceParamsContainer &$array the array to upgrade to use
+    * @param int                   $i      the index to get data from
     *
     * @return null
     */
-    public function fromParams(DeviceParamsContainer &$obj)
+    protected function upgradeArray(&$array, $i)
     {
+        $stuff = array(
+            "type"     => &$this->myDevice->params->sensorType,
+            "location" => &$this->myDevice->params->Loc,
+            "dataType" => &$this->myDevice->params->dType,
+            "extra"    => &$this->myDevice->params->Extra,
+        );
+        $sync = array("location", "type", "dataType", "extra");
         // Now setup our sensors
-        for ($i = 0; $i < $this->myDevice->DriverInfo["TotalSensors"]; $i++) {
-            if (is_object($this->sensor[$i])) {
-                $this->sensor[$i]->fromArray(
-                    array(
-                        "location" => $obj->Loc[$i],
-                        "type" => $obj->sensorType[$i],
-                        "dataType" => $obj->dType[$i],
-                        "extra" => $obj->Extra[$i],
-                    )
-                );
+        foreach ($sync as $key) {
+            if (empty($array[$key])
+                && !empty($stuff[$key][$i])
+            ) {
+                $array[$key] = $stuff[$key][(int)$i];
             }
         }
-
     }
     /**
     * Creates the object from a string
@@ -205,34 +210,46 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     protected function &sensorFactory($array)
     {
-        // This has to be here so $this->drivers is ALWAYS available
-        if (empty($this->drivers)) {
-            $this->_registerSensorPlugins();
-        }
-        $id = $array["id"];
-        if (isset($this->drivers[$id])) {
-            $class = $this->drivers[$id];
-        } else {
-            $class = $this->drivers["DEFAULT"];
-        }
+        $class = $this->sensorClass($array["id"], $array["type"]);
         return new $class($array, $this->myDevice);
     }
     /**
     * Creates a sensor object
     *
+    * @param int    $id   The ID for the sensor to use
+    * @param string $type The type to check
+    *
+    * @return string The class for this sensor
+    */
+    protected function sensorClass($id, $type)
+    {
+        // This has to be here so $this->drivers is ALWAYS available
+        if (empty($this->drivers)) {
+            $this->_registerSensorPlugins();
+        }
+        $sid = $this->stringSize(dechex($id), 2);
+        $idType  = $sid.":".trim($type);
+        if (!is_int($id)) {
+            return $this->drivers["DEFAULT"];
+        } else if (isset($this->drivers[$idType])) {
+            return $this->drivers[$idType];
+        } else if (isset($this->drivers[$sid])) {
+            return $this->drivers[$sid];
+        }
+        return $this->drivers["DEFAULT"];
+    }
+    /**
+    * Creates a sensor object
+    *
     * @param int    $id      The ID for the sensor to use
+    * @param string $type    The type to check
     * @param object &$sensor The sensor to check
     *
     * @return bool True if the sensor is correct, false otherwise
     */
-    protected function checkSensor($id, &$sensor)
+    protected function checkSensor($id, $type, &$sensor)
     {
-        if (isset($this->drivers[$id])) {
-            $class = $this->drivers[$id];
-        } else {
-            $class = $this->drivers["DEFAULT"];
-        }
-        return is_a($sensor, $class);
+        return is_a($sensor, $this->sensorClass($id, $type));
     }
 
     /**

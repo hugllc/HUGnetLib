@@ -37,7 +37,7 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/sensors/GenericDeviceSensor.php';
+require_once dirname(__FILE__).'/../../../plugins/sensors/IMCSolarDeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
+class IMCSolarDeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -73,7 +73,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericDeviceSensor(
+        $this->o = new IMCSolarDeviceSensor(
             array(
             ),
             $this->d
@@ -101,23 +101,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("GenericDeviceSensor"),
-        );
-    }
-    /**
-    * data provider for testSet
-    *
-    * @return array
-    */
-    public static function dataSet()
-    {
-        return array(
-            array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
-            array("dataType", "diff", "diff"),
-            array("dataType", "SomethingElse", "raw"),
-            array("type", "SomethingElse", "SomethingElse"),
-            array("type", "j", "j"),
+            array("IMCSolarDeviceSensor"),
         );
     }
     /**
@@ -132,7 +116,31 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
                 array('extra'=>array(10)),
                 63630,
                 0,
-                63630
+                null
+            ), // -40.1 degrees
+            array(
+                array('extra'=>array(10)),
+                400,
+                0,
+                null
+            ),  // 192.2 degrees
+            array(
+                array('extra'=>array(0)),
+                5000,
+                0,
+                null
+            ),
+            array(
+                array('extra'=>array(10)),
+                5000,
+                0,
+                94.0506
+            ),
+            array(
+                array('extra'=>array(0)),
+                5000,
+                0,
+                null
             ),
             array(
                 array('dataType' => DeviceSensorBase::TYPE_IGNORE),
@@ -159,7 +167,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new GenericDeviceSensor($preload, $this->d);
+        $o = new IMCSolarDeviceSensor($preload, $this->d);
         $ret = $o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }

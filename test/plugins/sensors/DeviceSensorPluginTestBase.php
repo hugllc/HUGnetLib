@@ -39,6 +39,7 @@
 // Need to make sure this file is not added to the code coverage
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 require_once dirname(__FILE__)."/../PluginTestBase.php";
+require_once dirname(__FILE__).'/../../../containers/DeviceContainer.php';
 /**
  * Test class for device drivers
  *
@@ -64,35 +65,36 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     */
     public function testRegisterPluginDevices($class)
     {
+        $d = new DeviceContainer();
         $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
         $this->assertType(
             "array",
             $var["Sensors"],
             "Units is not an array"
         );
         foreach ($var["Sensors"] as $key => $sensor) {
-            if (is_string($sensor)) {
-                $this->assertSame(
-                    "DEFAULT",
-                    $sensor,
-                    "'DEFAULT' is the only allowed string for a sensor"
+            $this->assertType("string", $sensor, "Sensor $key is not a string");
+            $this->assertRegExp(
+                "/([0-9]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",
+                $sensor,
+                "Sensor string is not of the form 'id:sensorType'"
+            );
+            if ($sensor !== "DEFAULT") {
+                // These need to be put here
+                $idValues = $this->readAttribute($obj, "idValues");
+                $typeValues = $this->readAttribute($obj, "typeValues");
+                $sen = explode(":", $sensor);
+                $this->assertTrue(
+                    in_array(hexdec($sen[0]), $idValues),
+                    hexdec($sen[0])." is not in idValues"
                 );
-            } else {
-                $this->assertType(
-                    "int",
-                    $sensor,
-                    "sensor $key is not an int"
-                );
-                $this->assertThat(
-                    $sensor,
-                    $this->greaterThanOrEqual(0),
-                    "Sensor must be greater than 0"
-                );
-                $this->assertThat(
-                    $sensor,
-                    $this->lessThan(256),
-                    "Sensor must be less than 256"
-                );
+                if (strlen($sen[1])) {
+                    $this->assertTrue(
+                        in_array($sen[1], $typeValues),
+                        $sen[1]." is not in typeValues"
+                    );
+                }
             }
         }
     }
@@ -108,6 +110,34 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testParent($class)
     {
         $this->assertTrue(is_subclass_of($class, "DeviceSensorBase"));
+    }
+    /**
+    * data provider for testSet
+    *
+    * @return array
+    */
+    public static function dataSet()
+    {
+        return array(
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $var    The variable to set
+    * @param mixed  $value  The value to set
+    * @param mixed  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSet
+    */
+    public function testSet($var, $value, $expect)
+    {
+        $this->o->$var = $value;
+        $data = $this->readAttribute($this->o, "data");
+        $this->assertSame($expect, $data[$var]);
     }
 }
 

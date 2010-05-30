@@ -189,6 +189,30 @@ class DevicesHistoryTable extends HUGnetDBTable
         $this->SaveDate = time();
     }
     /**
+    * returns a device with the stuff here
+    *
+    * @return null
+    */
+    public function &toDeviceContainer()
+    {
+        $dev = new DeviceContainer($this->SetupString);
+        $dev->sensors->fromString($this->SensorString);
+        return $dev;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param int $id The id of the record to get
+    *
+    * @return null
+    */
+    static public function &deviceFactory($id)
+    {
+        $hist = new DevicesHistoryTable();
+        $hist->getRow($id);
+        return $hist->toDeviceContainer();
+    }
+    /**
     * Creates the object from a string or array
     *
     * @param mixed &$data This is whatever you want to give the class

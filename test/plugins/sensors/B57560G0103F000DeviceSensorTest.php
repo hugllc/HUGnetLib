@@ -37,7 +37,8 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/sensors/GenericDeviceSensor.php';
+require_once dirname(__FILE__)
+    .'/../../../plugins/sensors/B57560G0103F000DeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -54,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
+class B57560G0103F000DeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -73,7 +74,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericDeviceSensor(
+        $this->o = new B57560G0103F000DeviceSensor(
             array(
             ),
             $this->d
@@ -101,23 +102,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("GenericDeviceSensor"),
-        );
-    }
-    /**
-    * data provider for testSet
-    *
-    * @return array
-    */
-    public static function dataSet()
-    {
-        return array(
-            array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
-            array("dataType", "diff", "diff"),
-            array("dataType", "SomethingElse", "raw"),
-            array("type", "SomethingElse", "SomethingElse"),
-            array("type", "j", "j"),
+            array("B57560G0103F000DeviceSensor"),
         );
     }
     /**
@@ -129,13 +114,37 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     {
         return array(
             array(
-                array('extra'=>array(10)),
-                63630,
+                array('extra' => array(10)),
+                65630,
                 0,
-                63630
+                null
+            ), // -40.1 degrees
+            array(
+                array('extra' => array(10)),
+                50,
+                0,
+                null
+            ),  // 192.2 degrees
+            array(
+                array('extra' => array(0)),
+                5000,
+                0,
+                null
             ),
             array(
-                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+                array('extra' => array(10)),
+                5000,
+                0,
+                110.0645
+            ),
+            array(
+                array('extra'=>array(0)),
+                5000,
+                0,
+                null
+            ),
+            array(
+                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
                 null
@@ -159,7 +168,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new GenericDeviceSensor($preload, $this->d);
+        $o = new B57560G0103F000DeviceSensor($preload, $this->d);
         $ret = $o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }

@@ -37,7 +37,8 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/sensors/GenericDeviceSensor.php';
+require_once dirname(__FILE__)
+    .'/../../../plugins/sensors/BCTherm2322640DeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -54,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
+class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -73,7 +74,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericDeviceSensor(
+        $this->o = new BCTherm2322640DeviceSensor(
             array(
             ),
             $this->d
@@ -101,41 +102,55 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("GenericDeviceSensor"),
+            array("BCTherm2322640DeviceSensor"),
         );
     }
     /**
-    * data provider for testSet
-    *
-    * @return array
-    */
-    public static function dataSet()
-    {
-        return array(
-            array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
-            array("dataType", "diff", "diff"),
-            array("dataType", "SomethingElse", "raw"),
-            array("type", "SomethingElse", "SomethingElse"),
-            array("type", "j", "j"),
-        );
-    }
-    /**
-    * Data provider for testGetReading
-    *
-    * @return array
-    */
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
     public static function dataGetReading()
     {
         return array(
             array(
-                array('extra'=>array(10)),
-                63630,
+                array('extra' => array(10, 10)),
+                63570,
                 0,
-                63630
+                null
+            ), // -40.1 degrees
+            array(
+                array('extra' => array(10, 10)),
+                1150,
+                0,
+                null
+            ),  // 150.9 degrees
+            array(
+                array('extra' => array(10, 10)),
+                5000,
+                0,
+                93.3105
             ),
             array(
-                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+                array('extra' => array(0, 10)),
+                5000,
+                0,
+                null
+            ),
+            array(
+                array('extra' => array(0, 0)),
+                5000,
+                0,
+                null
+            ),
+            array(
+                array('extra' => array(10, 0)),
+                5000,
+                0,
+                null
+            ),
+            array(
+                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
                 null
@@ -159,7 +174,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new GenericDeviceSensor($preload, $this->d);
+        $o = new BCTherm2322640DeviceSensor($preload, $this->d);
         $ret = $o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }

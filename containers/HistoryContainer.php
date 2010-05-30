@@ -144,7 +144,7 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
             }
         }
         $this->data["elements"] = array();
-        for ($i = 0; $i < $this->myDevice->DriverInfo["TotalSensors"]; $i++) {
+        for ($i = 0; $i < $this->myDevice->sensors->Sensors; $i++) {
             $field = "Data".$i;
             $this->data["elements"][$i] = &$this->dataPointFactory(
                 array(

@@ -110,11 +110,18 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                     "UTCOffset" => -5,
                 ),
                 array(0, 1),
-                "Test2DataPoint",
+                array(
+                    "Test2DataPoint",
+                    "TestDataPoint",
+                ),
                 array(
                     "DriverInfo" => array(
-                        "TotalSensors" => 2,
+                        "NumSensors" => 2,
                     ),
+                    "sensors" => array(
+                        array("id" => 3, "type" => "Hello"),
+                        array(),
+                    )
                 ),
                 array(
                     "DeviceKey" => 23,
@@ -148,7 +155,9 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
         $ret = $o->toArray();
         $this->assertSame($expect, $ret);
         foreach ((array)$check as $key) {
-            $this->assertSame($class, get_class($o->elements[$key]));
+            $this->assertSame(
+                $class[$key], get_class($o->elements[$key]), "Key $key is wrong"
+            );
         }
     }
     /**
@@ -182,7 +191,7 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "DriverInfo" => array(
-                        "TotalSensors" => 2,
+                        "NumSensors" => 2,
                     ),
                     "sensors" => array(
                         0 => array(

@@ -79,7 +79,6 @@ class EVIRTUALDevice extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["NumSensors"] = 0;
     }
 
 }

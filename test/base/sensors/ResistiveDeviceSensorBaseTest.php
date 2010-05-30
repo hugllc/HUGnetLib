@@ -37,9 +37,10 @@
  */
 
 
-require_once dirname(__FILE__).'/../../base/DeviceSensorBase.php';
-require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
-require_once dirname(__FILE__).'/../stubs/DummyDeviceContainer.php';
+require_once dirname(__FILE__)
+    .'/../../../base/sensors/ResistiveDeviceSensorBase.php';
+require_once dirname(__FILE__).'/../../../containers/ConfigContainer.php';
+require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 
 /**
  * Test class for filter.
@@ -54,7 +55,7 @@ require_once dirname(__FILE__).'/../stubs/DummyDeviceContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
+class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -77,7 +78,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->d = new DummyDeviceContainer();
-        $this->o = new TestDeviceSensor($data, $this->d);
+        $this->o = new TestResistiveDeviceSensor($data, $this->d);
     }
 
     /**
@@ -102,19 +103,6 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
-            array(
-                array(),
-                array(
-                    "location" => "f",
-                    "id" => 0,
-                    "type" => "sensor",
-                    "units" => "q",
-                    "unitType" => "unknown",
-                    "dataType" => "raw",
-                    "extra" => array(),
-                    "rawCalibration" => "cali",
-                ),
-            ),
         );
     }
 
@@ -130,65 +118,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new TestDeviceSensor($data, $this->d);
+        $o = new TestResistiveDeviceSensor($data, $this->d);
         $this->assertAttributeSame($expect, "data", $o, "Wrong data in class");
-        $config = $this->readAttribute($o, "myConfig");
-        $this->assertSame(
-            "ConfigContainer", get_class($config), "Wrong config class"
-        );
-        $device = $this->readAttribute($o, "myDevice");
-        $this->assertSame(
-            get_class($this->d), get_class($device), "Wrong device class"
-        );
-    }
-    /**
-    * data provider for testGetExtra
-    *
-    * @return array
-    */
-    public static function dataGetExtra()
-    {
-        return array(
-            array(
-                array(
-                    "extra" => array(6,5,4),
-                ),
-                1,
-                5
-            ),
-            array(
-                array(
-                    "extra" => array(6,5,4),
-                ),
-                3,
-                3
-            ),
-            array(
-                array(
-                    "extra" => array(6,5,4),
-                ),
-                100,
-                null
-            ),
-        );
     }
 
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $preload The stuff to give to the constructor
-    * @param int    $index   The index to use for the extra array
-    * @param string $expect  The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetExtra
-    */
-    public function testGetExtra($preload, $index, $expect)
-    {
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->getExtra($index));
-    }
     /**
     * data provider for testSet
     *
@@ -197,12 +130,6 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public static function dataSet()
     {
         return array(
-            array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
-            array("dataType", "diff", "diff"),
-            array("dataType", "SomethingElse", "raw"),
-            array("type", "SomethingElse", "sensor"),
-            array("type", "j", "sensor"),
         );
     }
 
@@ -223,6 +150,70 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
+    /**
+     * Data provider for testGetResistance
+     *
+     * @return array
+     */
+    public static function dataGetResistance()
+    {
+        return array(
+            array(array("timeConstant" => 0), 0, 1, 0.0),
+            array(array(), 10000, 10, 1.8027),
+            array(array("D" => 0), 10000, 10, 0.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param int   $A       The a to d reading
+    * @param float $Bias    The bias resistance
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetResistance
+    */
+    public function testGetResistance($preload, $A, $Bias, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->getResistance($A, $Bias));
+    }
+
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
+    public static function dataGetSweep()
+    {
+        return array(
+            array(array(), 0, 1, 0.0),
+            array(array(), 10000, 10, 1.5274),
+            array(array(), 65535, 10, 10.0),
+            array(array("D" => 0), 10000, 10, 0.0),
+            array(array("Tf" => 0), 10000, 10, 10.0),
+            array(array("Tf" => -1), 10000, 10, 0.0),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param int   $A       The a to d reading
+    * @param float $R       The bias resistance
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSweep
+    */
+    public function testGetSweep($preload, $A, $R, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->getSweep($A, $R));
+    }
 
 }
 /**
@@ -237,38 +228,8 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class TestDeviceSensor extends DeviceSensorBase
+class TestResistiveDeviceSensor extends ResistiveDeviceSensorBase
 {
-    /** @var This is to register the class */
-    public static $registerPlugin = array(
-        "Name" => "testSensor",
-        "Type" => "sensor",
-        "Class" => "TestSensor",
-        "Sensors" => array(),
-    );
-    /** These are the endpoint information bits */
-    /** @var array This is the default values for the data */
-    protected $default = array(
-        "location" => "f",                // The location of the sensors
-        "id" => 0,                      // The id of the sensor.  This is the value
-                                         // Stored in the device  It will be an int
-        "type" => "sensor",                    // The type of the sensors
-        "units" => "q",                   // The units the values are stored in
-        "unitType" => "unknown",         // The type of units that this uses
-        "dataType" => "raw",             // The datatype of each sensor
-        "extra" => array(),              // Extra input for crunching numbers
-        "rawCalibration" => "cali",          // The raw calibration string
-    );
-    /**
-    * This is the array of sensor information.
-    */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "unknown",
-        "storageUnit" => 'unknown',
-        "extraText" => array(),
-        "extraDefault" => array(0,1,2,3,4,5,6,7),
-    );
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b");
     /** @var object This is where we store our configuration */
@@ -276,15 +237,29 @@ class TestDeviceSensor extends DeviceSensorBase
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
     /**
-    * Gets the extra values
+    * Converts a raw AtoD reading into resistance
     *
-    * @param array $index The extra index to use
+    * @param int   $A    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
     *
-    * @return mixed the extra value
+    * @return The resistance corresponding to the values given in k Ohms
     */
-    public function getExtra($index)
+    public function getResistance($A, $Bias)
     {
-        return parent::getExtra($index);
+        return parent::getResistance($A, $Bias);
+    }
+
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * @param int   $A Integer The AtoD reading
+    * @param float $R Float The overall resistance in kOhms
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function getSweep($A, $R)
+    {
+        return parent::getSweep($A, $R);
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -294,7 +269,7 @@ class TestDeviceSensor extends DeviceSensorBase
     *
     * @return float The direction in degrees
     */
-    public function getReading($A, $deltaT = 0)
+    function getReading($A, $deltaT = 0)
     {
     }
 }

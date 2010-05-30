@@ -37,6 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/HUGnetContainer.php";
+require_once dirname(__FILE__)."/DataPointBase.php";
 require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
 
 /**
@@ -55,26 +56,44 @@ require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
 abstract class DeviceSensorBase extends HUGnetContainer
     implements DeviceSensorInterface
 {
+    /** This is a raw record */
+    const TYPE_RAW = DataPointBase::TYPE_RAW;
+    /** This is a differential record */
+    const TYPE_DIFF = DataPointBase::TYPE_DIFF;
+    /** This is a raw record */
+    const TYPE_IGNORE = DataPointBase::TYPE_IGNORE;
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "location" => "",                // The location of the sensors
         "id" => null,                    // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "",                    // The type of the sensors
-        "units" => "",                   // The units the values are stored in
-        "unitType" => "unknown",         // The type of units that this uses
+        "location" => "",                // The location of the sensors
         "dataType" => "raw",             // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "",          // The raw calibration string
+    );
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Unknown Sensor",
+        "unitType" => "unknown",
+        "units" => 'unknown',
+        "extraText" => array(),
+        "extraDefault" => array(),
     );
 
     /** @var object This is the device I am attached to */
     protected $myDevice = null;
     /** @var object This is where we store our configuration */
     protected $myConfig = null;
-    /** @var object This is where we store our configuration */
+    /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array("raw", "diff", "ignore");
+    /** @var object These are the valid values for unitType */
+    protected $unitTypeValues = array();
+    /** @var object These are the valid values for units */
+    protected $unitsValues = array();
 
     /**
     * Disconnects from the database
@@ -90,6 +109,38 @@ abstract class DeviceSensorBase extends HUGnetContainer
         $this->myConfig = &ConfigContainer::singleton();
         // Set up the class
         parent::__construct($data);
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param array $index The extra index to use
+    *
+    * @return
+    */
+    protected function getExtra($index)
+    {
+        if (isset($this->extra[$index])) {
+            return $this->extra[$index];
+        }
+        return $this->extraDefault[$index];
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return null
+    */
+    public function toArray($default = true)
+    {
+        // Always return the type and id
+        return array_merge(
+            array(
+                "id"   => $this->id,
+                "type" => $this->type,
+            ),
+            parent::toArray($default)
+        );
     }
     /******************************************************************
      ******************************************************************
@@ -126,28 +177,6 @@ abstract class DeviceSensorBase extends HUGnetContainer
         );
     }
     /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnits($value)
-    {
-        $this->data["units"] = $this->limitedValues("units", $value);
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = $this->limitedValues("unitType", $value);
-    }
-    /**
     * function to set type
     *
     * @param mixed $value The value to set
@@ -156,7 +185,20 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     protected function setType($value)
     {
-        $this->data["type"] = $this->limitedValues("type", $value);
+        // This should not be set externally
+    }
+    /**
+    * function to set id
+    *
+    * @param mixed $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        // This should not be set externally
+        $this->data["id"] = $this->limitedValues("id", (int)$value);;
+        $this->data["type"] = $this->default["type"];
     }
 
 

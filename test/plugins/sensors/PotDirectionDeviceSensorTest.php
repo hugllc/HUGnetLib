@@ -37,7 +37,8 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/sensors/GenericDeviceSensor.php';
+require_once dirname(__FILE__)
+    .'/../../../plugins/sensors/PotDirectionDeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -54,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
+class PotDirectionDeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -73,7 +74,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericDeviceSensor(
+        $this->o = new PotDirectionDeviceSensor(
             array(
             ),
             $this->d
@@ -101,41 +102,73 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("GenericDeviceSensor"),
+            array("PotDirectionDeviceSensor"),
         );
     }
     /**
-    * data provider for testSet
-    *
-    * @return array
-    */
-    public static function dataSet()
-    {
-        return array(
-            array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
-            array("dataType", "diff", "diff"),
-            array("dataType", "SomethingElse", "raw"),
-            array("type", "SomethingElse", "SomethingElse"),
-            array("type", "j", "j"),
-        );
-    }
-    /**
-    * Data provider for testGetReading
-    *
-    * @return array
-    */
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
     public static function dataGetReading()
     {
         return array(
-            array(
-                array('extra'=>array(10)),
-                63630,
+            array(   // #0
+                array('extra' => array(10, 0, 0, 180, 10)),
+                65535,
                 0,
-                63630
+                180.0
             ),
-            array(
-                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+            array(   // #1
+                array('extra' => array(10, 0, 1, 180, 10)),
+                1150,
+                0,
+                343.512
+            ),
+            array(   // #2
+                array('extra' => array(10, 1, 0, 1, 15)),
+                5000,
+                0,
+                null,
+            ),
+            array(   // #3
+                array('extra' => array(0, 1, 0, 1, 15)),
+                5000,
+                0,
+                null,
+            ),
+            array(   // #4
+                array('extra' => array()),
+                0,
+                0,
+                0.0,
+            ),
+            array(   // #5
+                array('extra' => array()),
+                65535,
+                0,
+                180.0,
+            ),
+            array(   // #6
+                array('extra'=>array()),
+                32768,
+                0,
+                90.0878,
+            ),
+            array(   // #7
+                array('extra'=>array(100, 0, 10, 360, 90)),
+                32,
+                0,
+                315.2201,
+            ),
+            array(   // #8
+                array('extra'=>array(100, 0, 10, 360, 90)),
+                65432,
+                0,
+                44.7251,
+            ),
+            array(   // #9
+                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
                 null
@@ -159,7 +192,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new GenericDeviceSensor($preload, $this->d);
+        $o = new PotDirectionDeviceSensor($preload, $this->d);
         $ret = $o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }

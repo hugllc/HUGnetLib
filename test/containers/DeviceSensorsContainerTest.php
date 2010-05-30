@@ -80,7 +80,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->d = new DummyDeviceContainer();
+        $this->d = new DeviceContainer();
         $this->o = new DeviceSensorsContainer($data, $this->d);
     }
 
@@ -162,10 +162,30 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     0 => array("id" => 0),
                     1 => array("id" => 2),
                 ),
-                2,
                 array(
-                    "RawCalibration" => "",
+                    "DriverInfo" => array("NumSensors" => 2),
+                    "params" => array(
+                        "sensorType" => array("Test1Sensor", "a"),
+                        "dType" => array("raw", "diff"),
+                        "Loc" => array("Here", "There"),
+                        "Extra" => array(array(1,2), array(3,4)),
+                    )
+                ),
+                array(
                     "Sensors" => 2,
+                    array(
+                        "id" => 0,
+                        "type" => "Test1Sensor",
+                        "location" => "Here",
+                        "extra" => array(1,2),
+                    ),
+                    array(
+                        "id" => 2,
+                        "type" => "a",
+                        "location" => "There",
+                        "dataType" => "diff",
+                        "extra" => array(3,4),
+                    ),
                 ),
                 array(
                     "Test1Sensor",
@@ -178,18 +198,19 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed $preload      The stuff to give to the constructor
-    * @param int   $TotalSensors The total number of sensors
-    * @param array $expect       The expected data
-    * @param array $sensors      The expected sensor data
+    * @param mixed $preload    The stuff to give to the constructor
+    * @param mixed $devPreload The device preload
+    * @param array $expect     The expected data
+    * @param array $sensors    The expected sensor data
     *
     * @return null
     *
     * @dataProvider dataFromArray
     */
-    public function testFromArray($preload, $TotalSensors, $expect, $sensors)
-    {
-        $this->d->DriverInfo["TotalSensors"] = $TotalSensors;
+    public function testFromArray(
+        $preload, $devPreload, $expect, $sensors
+    ) {
+        $this->d->fromArray($devPreload);
         $this->o->clearData();
         $this->o->fromArray($preload);
         $s = $this->readAttribute($this->o, "sensor");
@@ -198,7 +219,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 $sensors[$k], get_class($s[$k]), "Sensor $k wrong"
             );
         }
-        $this->assertAttributeSame($expect, "data", $this->o);
+        $this->assertSame($expect, $this->o->toArray());
     }
     /**
     * data provider for testConstructor
@@ -213,21 +234,17 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "",
                     "Sensors" => 2,
                     0 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
                     ),
                     1 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
@@ -239,21 +256,17 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "",
                     "Sensors" => 2,
                     0 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
                     ),
                     1 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
@@ -266,21 +279,17 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "abcd",
                     "Sensors" => 2,
                     0 => array(
-                        "location" => "Here and there",
                         "id" => 0,
                         "type" => "resistive",
-                        "units" => "Ohms",
-                        "unitType" => "resistance",
+                        "location" => "Here and there",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
                     ),
                     1 => array(
-                        "location" => "",
                         "id" => 8,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "diff",
                         "extra" => array("Here"),
                         "rawCalibration" => "12345",
@@ -292,21 +301,17 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "abcd",
                     "Sensors" => 2,
                     0 => array(
-                        "location" => "Here and there",
                         "id" => 0,
                         "type" => "resistive",
-                        "units" => "Ohms",
-                        "unitType" => "resistance",
+                        "location" => "Here and there",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
                     ),
                     1 => array(
-                        "location" => "",
                         "id" => 8,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "diff",
                         "extra" => array("Here"),
                         "rawCalibration" => "12345",
@@ -318,21 +323,17 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "RawCalibration" => "",
                     "Sensors" => 2,
                     0 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
                     ),
                     1 => array(
-                        "location" => "",
                         "id" => 0,
                         "type" => "",
-                        "units" => "",
-                        "unitType" => "unknown",
+                        "location" => "",
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
@@ -344,9 +345,11 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "Sensors" => 2,
                     array(
                         "id" => 0,
+                        "type" => "",
                     ),
                     array(
                         "id" => 0,
+                        "type" => "",
                     ),
                 ),
             ),
@@ -367,7 +370,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $TotalSensors, $default, $expect)
     {
-        $this->d->DriverInfo["TotalSensors"] = $TotalSensors;
+        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, $this->o->toArray($default));
@@ -382,7 +385,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    0 => array("id" => 3),
+                    0 => array("id" => 3, "type" => "Hello"),
                     1 => array("id" => 8),
                 ),
                 "00020102",
@@ -391,9 +394,11 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "Sensors" => 2,
                     array(
                         "id" => 0,
+                        "type" => "Hello",
                     ),
                     array(
                         "id" => 2,
+                        "type" => "",
                     ),
                 ),
                 array(
@@ -404,25 +409,33 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    0 => array("id" => 3),
+                    0 => array("id" => 3, "type" => "Hello"),
                     1 => array("id" => 8),
+                    2 => array("id" => 4),
                 ),
                 false,
-                2,
+                3,
                 array(
-                    "Sensors" => 2,
+                    "Sensors" => 3,
                     array(
                         "id" => 3,
+                        "type" => "Hello",
                     ),
                     array(
                         "id" => 8,
+                        "type" => "",
+                    ),
+                    array(
+                        "id" => 4,
+                        "type" => "",
                     ),
                 ),
                 array(
                     "Test2Sensor",
                     "Test1Sensor",
+                    "Test2Sensor",
                 ),
-                array(3, 8),
+                array(3, 8, 4),
             ),
         );
     }
@@ -444,7 +457,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     public function testFromTypeString(
         $preload, $string, $TotalSensors, $expect, $sensors, $types
     ) {
-        $this->d->DriverInfo["TotalSensors"] = $TotalSensors;
+        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->fromTypeString($string);
@@ -452,89 +465,15 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $s = $this->readAttribute($this->o, "sensor");
         foreach (array_keys((array)$s) as $k) {
             $this->assertSame(
+                $types[$k], $s[$k]->id, "Sensor $k id is wrong"
+            );
+            $this->assertSame(
                 $sensors[$k], get_class($s[$k]), "Sensor $k is wrong"
             );
         }
 
     }
-    /**
-    * data provider for testFromParams
-    *
-    * @return array
-    */
-    public static function dataFromParams()
-    {
-        return array(
-            array(
-                array(
-                    0 => array("id" => 3),
-                    1 => array("id" => 8),
-                ),
-                new DeviceParamsContainer(array(
-                    "Loc" => array(
-                        "biskit",
-                        "gravee",
-                    ),
-                    "sensorType" => array(
-                        "a", "b",
-                    ),
-                    "dType" => array(
-                        "ignore", "diff",
-                    ),
-                    "Extra" => array(
-                        "e", "f",
-                    ),
-                )),
-                2,
-                array(
-                    "Sensors" => 2,
-                    0 => array(
-                        "location" => "biskit",
-                        "id" => 3,
-                        "type" => "a",
-                        "dataType" => "ignore",
-                        "extra" => "e",
-                    ),
-                    1 => array(
-                        "location" => "gravee",
-                        "id" => 8,
-                        "type" => "b",
-                        "dataType" => "diff",
-                        "extra" => "f",
-                    ),
-                ),
-                array(
-                    "Test1Sensor",
-                    "Test2Sensor",
-                ),
-                array(0, 2),
-            ),
-        );
-    }
 
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $preload      The stuff to give to the constructor
-    * @param object $obj          The object to use for the input
-    * @param int    $TotalSensors The total number of sensors
-    * @param array  $expect       The expected data
-    * @param array  $sensors      The expected sensor data
-    * @param array  $types        The types to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataFromParams
-    */
-    public function testFromParams(
-        $preload, $obj, $TotalSensors, $expect, $sensors, $types
-    ) {
-        $this->d->DriverInfo["TotalSensors"] = $TotalSensors;
-        $this->o->clearData();
-        $this->o->fromArray($preload);
-        $this->o->fromParams($obj);
-        $this->assertSame($expect, $this->o->toArray());
-    }
     /**
     * data provider for testSensor
     *
@@ -545,13 +484,23 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    0 => array("id" => 3),
+                    0 => array("id" => 3, "type" => "Hello"),
                     1 => array("id" => 2),
                     2 => array("id" => 8),
                 ),
                 0,
                 3,
                 "Test2Sensor",
+            ),
+            array(
+                array(
+                    0 => array("id" => 3),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                0,
+                3,
+                "Test1Sensor",
             ),
             array(
                 array(
@@ -580,7 +529,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSensor($preload, $num, $sensors, $expect)
     {
-        $this->d->DriverInfo["TotalSensors"] = $sensors;
+        $this->d->DriverInfo["NumSensors"] = $sensors;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, get_class($this->o->sensor($num)));

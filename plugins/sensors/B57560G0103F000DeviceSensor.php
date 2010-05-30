@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,32 +51,57 @@ require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GenericDeviceSensor extends DeviceSensorBase
+class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "GenericDeviceSensor",
+        "Name" => "B57560G0103F000DeviceSensor",
         "Type" => "sensor",
-        "Class" => "GenericDeviceSensor",
-        "Sensors" => array("DEFAULT"),
+        "Class" => "B57560G0103F000DeviceSensor",
+        "Sensors" => array("02:B57560G0103F000"),
     );
-    /** These are the endpoint information bits */
-    /** @var array This is the default values for the data */
-    protected $default = array(
-        "id" => null,                    // The id of the sensor.  This is the value
-                                         // Stored in the device  It will be an int
-        "type" => "",                    // The type of the sensors
-        "location" => "",                // The location of the sensors
-        "dataType" => "raw",             // The datatype of each sensor
-        "extra" => array(),              // Extra input for crunching numbers
-        "rawCalibration" => "",          // The raw calibration string
-        "longName" => "Unknown Sensor",
-        "unitType" => "unknown",
-        "units" => 'unknown',
-        "extraText" => array(),
-        "extraDefault" => array(),
-    );
+    /** @var object These are the valid values for units */
+    protected $idValues = array(2);
+    /** @var object These are the valid values for type */
+    protected $typeValues = array("B57560G0103F000");
 
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "EPCOS B57560G0103F000",
+        "unitType" => "Temperature",
+        "units" => '&#176;C',
+        "extraText" => array("Bias Resistor in k Ohms"),
+        "extraDefault" => array(10),
+    );
+    /** @var array The table for IMC Sensors */
+    protected $valueTable = array(
+        "519910" => -55, "379890" => -50, "280700" => -45,
+        "209600" => -40, "158090" => -35, "120370" => -30,
+        "92484" => -25, "71668" => -20, "55993" => -15,
+        "44087" => -10, "34971" => -5, "27936" => 0,
+        "22468" => 5, "18187" => 10, "14813" => 15,
+        "12136" => 20, "10000" => 25, "8284" => 30,
+        "6899" => 35, "5774" => 40, "4856" => 45,
+        "4103" => 50, "3482" => 55, "2967" => 60,
+        "2539" => 65, "2182" => 70, "1882" => 75,
+        "1629" => 80, "1415" => 85, "1234" => 90,
+        "1079" => 95, "946.6" => 100, "833.1" => 105,
+        "735.5" => 110, "651.1" => 115, "578.1" => 120,
+        "514.6" => 125, "459.4" => 130, "411.1" => 135,
+        "368.8" => 140, "331.6" => 145, "298.9" => 150,
+        "270.0" => 155, "244.4" => 160, "221.7" => 165,
+        "201.6" => 170, "183.6" => 175, "167.6" => 180,
+        "153.3" => 185, "140.4" => 190, "128.9" => 195,
+        "118.5" => 200, "109.1" => 205, "100.7" => 210,
+        "93.01" => 215, "86.08" => 220, "79.78" => 225,
+        "74.05" => 230, "68.83" => 235, "64.08" => 240,
+        "59.73" => 245, "55.75" => 250, "52.11" => 255,
+        "48.76" => 260, "45.69" => 265, "42.87" => 270,
+        "40.26" => 275, "37.86" => 280, "35.64" => 285,
+        "33.59" => 290, "31.70" => 295, "29.94" => 300,
+    );
     /**
     * Disconnects from the database
     *
@@ -85,73 +110,40 @@ class GenericDeviceSensor extends DeviceSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->default["id"] = 2;
+        $this->default["type"] = "B57560G0103F000";
         parent::__construct($data, $device);
+        // This takes care of The older sensors with the 100k bias resistor
     }
     /**
-    * Changes a raw reading into a output value
+    * Converts resistance to temperature for IMCSolar thermistor
+    * 10K thermistor.
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     *
-    * @return mixed The value in whatever the units are in the sensor
+    * @return float The temperature in degrees C.
     */
     function getReading($A, $deltaT = 0)
     {
         if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
             return null;
         }
-        return $A;
+        $Bias = $this->getExtra(0);
+        $ohms = $this->getResistance($A, $Bias);
+        $T    = $this->tableInterpolate($ohms);
+        if (is_null($T)) {
+            return null;
+        }
+        // tableInterpolate forces the result to be in range, or returns null
+        $T = round($T, 4);
+        return $T;
     }
-
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-    /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnits($value)
-    {
-        $this->data["units"] = (string)$value;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = (string)$value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setType($value)
-    {
-        $this->data["type"] = (string)$value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = (int)$value;
-    }
 
 }
 ?>

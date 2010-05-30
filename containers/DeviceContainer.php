@@ -206,7 +206,6 @@ class DeviceContainer extends DevicesTable
         $this->BoredomThreshold = hexdec(trim(substr($string, self::BOREDOM, 2)));
         $this->RawSetup         = $string;
         $this->_setupClasses();
-        $this->_registerDriver();
         if (is_object($this->epDriver)) {
             $this->epDriver->fromSetupString(substr($string, self::CONFIGEND));
         }
@@ -254,12 +253,8 @@ class DeviceContainer extends DevicesTable
         parent::fromArray($array);
         // This is to upgrade the tables from the old format
         $upgrade = false;
-        if (empty($this->sensors)) {
-            $upgrade = true;
-        }
+        // Setup our classes
         $this->_setupClasses();
-        // Get the driver
-        $this->_registerDriver();
         // Make sure RawSetup is populated
         if (empty($this->RawSetup)) {
             $this->RawSetup = $this->toSetupString();
@@ -269,10 +264,6 @@ class DeviceContainer extends DevicesTable
             $this->epDriver->fromSetupString(
                 substr($this->RawSetup, self::CONFIGEND)
             );
-        }
-        // This will only be coming from the database, not a setup string.
-        if ($upgrade) {
-            $this->sensors->fromParams($this->params);
         }
     }
     /**
@@ -299,12 +290,13 @@ class DeviceContainer extends DevicesTable
     */
     private function _setupClasses()
     {
-        if (!is_object($this->params)) {
+        if (!is_a($this->params, "DeviceParamsContainer")) {
             // Do the sensors
             $this->data["params"] = new DeviceParamsContainer($this->params);
             $this->params = &$this->data["params"];
         }
-        if (!is_object($this->sensors)) {
+        $this->_registerDriver();
+        if (!is_a($this->sensors, "DeviceSensorsContainer")) {
             // Do the sensors
             $this->data["sensors"] = new DeviceSensorsContainer(
                 $this->sensors, $this

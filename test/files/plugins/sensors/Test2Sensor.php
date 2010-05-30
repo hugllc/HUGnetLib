@@ -60,14 +60,22 @@ class Test2Sensor extends DeviceSensorBase
         "Name" => "Test2Sensor",
         "Type" => "sensor",
         "Class" => "Test2Sensor",
-        "Sensors" => array(2,3,4,5),
+        "Sensors" => array("02","03:Hello","04","05"),
     );
     /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b");
+    protected $typeValues = array("a", "c", "e", "Test2Sensor", "Hello");
     /** @var object This is where we store our configuration */
-    protected $unitsValues = array("d", "anotherUnit");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "c", "e");
+    protected $idValues = array(2, 3, 4, 5);
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Unknown Sensor",
+        "unitType" => "secondUnit",
+        "units" => 'anotherUnit',
+        "extraText" => array(),
+        "extraDefault" => array(),
+    );
 
     /**
     * Disconnects from the database
@@ -78,31 +86,23 @@ class Test2Sensor extends DeviceSensorBase
     public function __construct($data, &$device)
     {
         parent::__construct($data, $device);
+        if ($this->id == 3) {
+            $this->data["type"] = "Hello";
+        }
     }
     /**
-    * function to set units
+    * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param mixed $value The value to set
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
     *
-    * @return null
+    * @return float The direction in degrees
     */
-    protected function setUnits($value)
+    function getReading($A, $deltaT = 0)
     {
-        $this->data["units"] = $value;
     }
     /**
     * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = $value;
-    }
-    /**
-    * function to set type
     *
     * @param mixed $value The value to set
     *

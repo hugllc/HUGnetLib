@@ -150,7 +150,7 @@ class E00391200DeviceTest extends DevicePluginTestBase
             array(
                 "0102020202020202027070707070707070",
                 array(
-                    "NumSensors" => 16,
+                    "NumSensors" => 9,
                     "TimeConstant" => 1,
                 ),
             ),

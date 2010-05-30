@@ -50,5 +50,14 @@
  */
 interface DeviceSensorInterface
 {
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    */
+    function getReading($A, $deltaT = 0);
 }
 ?>

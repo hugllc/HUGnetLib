@@ -36,9 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
-// Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,30 +51,36 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test1Sensor extends DeviceSensorBase
+class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test1Sensor",
+        "Name" => "PotDirectionDeviceSensor",
         "Type" => "sensor",
-        "Class" => "Test1Sensor",
-        "Sensors" => array("DEFAULT"),
+        "Class" => "PotDirectionDeviceSensor",
+        "Sensors" => array("02:potDirection"),
     );
-    /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b", "resistance");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "b", "resistive");
+    /** @var object These are the valid values for units */
+    protected $idValues = array(2);
+    /** @var object These are the valid values for type */
+    protected $typeValues = array("potDirection");
+
     /**
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "firstUnit",
-        "units" => 'testUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
+        "longName" => "POT Direction Sensor",
+        "unitType" => "Direction",
+        "units" => '&#176;',
+        "extraText" => array(
+            "POT Resistance in kOhms",
+            "Direction 1 in degrees",
+            "Resistance 1 in kOhms",
+            "Direction 2 in degrees",
+            "Resistance 2 in kOhms",
+        ),
+        "extraDefault" => array(25,0, 0, 180, 25),
     );
-
     /**
     * Disconnects from the database
     *
@@ -86,6 +90,7 @@ class Test1Sensor extends DeviceSensorBase
     public function __construct($data, &$device)
     {
         parent::__construct($data, $device);
+        // This takes care of The older sensors with the 100k bias resistor
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
@@ -97,51 +102,37 @@ class Test1Sensor extends DeviceSensorBase
     */
     function getReading($A, $deltaT = 0)
     {
+        if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
+            return null;
+        }
+        $RTotal = $this->getExtra(0);
+        $dir1   = $this->getExtra(1);
+        $R1     = $this->getExtra(2);
+        $dir2   = $this->getExtra(3);
+        $R2     = $this->getExtra(4);
+        $R      = $this->getSweep($A, $RTotal);
+
+        if (is_null($R) || ($dir1 == $dir2) || ($R1 == $R2) || ($RTotal == 0)) {
+            return null;
+        }
+
+        $m = ($dir1 - $dir2) / ($R1 - $R2);
+        $b = $dir2 - ($m * $R2);
+        $dir = ($m * $R) + $b;
+
+        while ($dir > 360) {
+            $dir -= 360;
+        }
+        while ($dir < 0) {
+            $dir += 360;
+        }
+        return round($dir, 4);
     }
-    /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnits($value)
-    {
-        $this->data["units"] = $value;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = $value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setType($value)
-    {
-        $this->data["type"] = $value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = $value;
-    }
+    /******************************************************************
+     ******************************************************************
+     ********  The following are input modification functions  ********
+     ******************************************************************
+     ******************************************************************/
 
 }
 ?>

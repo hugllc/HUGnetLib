@@ -153,8 +153,8 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 "0102020202020202027070707070707070",
                 array(
                     "PacketTimeout" => 0,
-                    "NumSensors" => 6,
                     "TimeConstant" => 1,
+                    "NumSensors" => 6,
                 ),
             ),
         );
