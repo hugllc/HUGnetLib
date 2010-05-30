@@ -123,8 +123,8 @@ class ErrorTable extends HUGnetDBTable
         ),
         "Date" => array(
             "Name" => "Date",
-            "Type" => "datetime",
-            "Default" => '1970-01-01 00:00:00',
+            "Type" => "bigint",
+            "Default" => '0',
         ),
         "Severity" => array(
             "Name" => "Severity",

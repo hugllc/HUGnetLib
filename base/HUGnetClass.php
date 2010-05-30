@@ -142,7 +142,7 @@ abstract class HUGnetClass
                 "method"   => $method,
                 "errno"    => $errno,
                 "error"    => $errmsg,
-                "Date"     => date("Y-m-d H:i:s"),
+                "Date"     => time(),
                 "Severity" => $severity,
             )
         );
