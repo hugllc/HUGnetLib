@@ -37,6 +37,7 @@
  */
 
 require_once dirname(__FILE__).'/../../../plugins/database/SqliteDriver.php';
+require_once dirname(__FILE__).'/../../stubs/DummyTableContainer.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**

@@ -367,6 +367,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     */
+    /*
     public function testErrorHandler()
     {
         $o = new MysqlDriverTestStub($this->table, $this->pdo);
@@ -384,7 +385,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         );
         $this->assertFalse($config->servers->connected($this->table->group));
     }
-
+    */
 }
 /**
  * Test class for HUGnetDB.
