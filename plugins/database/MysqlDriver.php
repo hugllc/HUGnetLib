@@ -201,6 +201,25 @@ class MysqlDriver extends HUGnetDBDriver
         }
         return $return;
     }
+    /**
+    * This function deals with errors
+    *
+    * @param array  $errorInfo The output of any of the pdo errorInfo() functions
+    * @param string $method    The function or method the error was in
+    * @param string $severity  The severity of the error.  This should be fed with
+    *                          ErrorTable::SEVERITY_WARNING, et al.
+    *
+    * @return mixed
+    */
+    protected function errorHandler($errorInfo, $method, $severity)
+    {
+        parent::errorHandler($errorInfo, $method, $severity);
+        if ($errorInfo[1] == 2006) {
+            // The database has gone away, so disconnect.  Reconnection should be
+            // automatically handled.
+            $this->myConfig->servers->disconnect($this->myTable->group);
+        }
+    }
 
 }
 

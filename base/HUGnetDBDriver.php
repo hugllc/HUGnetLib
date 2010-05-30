@@ -782,12 +782,11 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             return false;
         }
         $this->pdoStatement = $this->pdo->prepare($this->query);
-        if (($this->pdoStatement === false)
-            && ($this->myTable->sqlTable != "errors")
-        ) {
-            $error = $this->pdo->errorInfo();
-            $this->logError(
-                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+        if ($this->pdoStatement === false) {
+            $this->errorHandler(
+                $this->pdo->errorInfo(),
+                __METHOD__,
+                ErrorTable::SEVERITY_WARNING
             );
         }
         return (bool) $this->pdoStatement;
@@ -820,10 +819,11 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             "With Result: ".print_r($ret, true),
             HUGnetClass::VPRINT_VERBOSE
         );
-        if (!$ret && ($this->myTable->sqlTable != "errors")) {
-            $error = $this->pdoStatement->errorInfo();
-            $this->logError(
-                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+        if (!$ret) {
+            $this->errorHandler(
+                $this->pdoStatement->errorInfo(),
+                __METHOD__,
+                ErrorTable::SEVERITY_WARNING
             );
         }
         //$this->pdoStatement->debugDumpParams();
@@ -842,6 +842,26 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     {
         $data = $this->prepareData($data);
         return $this->execute($data);
+    }
+    /**
+    * This function deals with errors
+    *
+    * @param array  $errorInfo The output of any of the pdo errorInfo() functions
+    * @param string $method    The function or method the error was in
+    * @param string $severity  The severity of the error.  This should be fed with
+    *                          ErrorTable::SEVERITY_WARNING, et al.
+    *
+    * @return mixed
+    */
+    protected function errorHandler($errorInfo, $method, $severity)
+    {
+        if ($this->myTable->sqlTable != "errors") {
+            $this->logError(
+                $errorInfo[0],
+                $errorInfo[2],
+                ErrorTable::SEVERITY_WARNING, __METHOD__
+            );
+        }
     }
     /**
     * Resets all internal variables to be ready for the next query
