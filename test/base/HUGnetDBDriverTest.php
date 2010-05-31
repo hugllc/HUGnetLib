@@ -66,7 +66,19 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function setUp()
     {
-        $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+        $this->skipPDOTests = true;
+        $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
+            ),
+        );
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->myConfig->forceConfig($config);
+        $this->pdo = &$this->myConfig->servers->getPDO("default");
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $this->pdo->query(
             "CREATE TABLE `myTable` ("
@@ -1795,7 +1807,7 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     public function __construct(&$table, PDO &$pdo)
     {
         parent::__construct($table, $pdo);
-        $this->qpdo =& $this->pdo;
+        $this->qpdo =& $this->pdo();
     }
     /**
     * Gets columns from a SQLite server

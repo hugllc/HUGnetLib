@@ -68,10 +68,23 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     protected function setUp()
     {
         $this->skipPDOTests = false;
-        try {
-            $this->pdo = PHPUnit_Util_PDO::factory(
-                "mysql://test:test@localhost/test"
-            );
+
+        $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "mysql",
+                    "host" => "localhost",
+                    "user" => "test",
+                    "password" => "test",
+                    "db" => "test",
+                    "group" => "default",
+                ),
+            ),
+        );
+        $this->myConfig = &ConfigContainer::singleton();
+        $this->myConfig->forceConfig($config);
+        $this->pdo = &$this->myConfig->servers->getPDO("default");
+        if (is_a($this->pdo, "PDO")) {
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
                 "CREATE TABLE `myTable` ("
@@ -80,9 +93,19 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
                 ." `value` float NULL"
                 ." ) TABLESPACE MEMORY;"
             );
-        } catch (PDOException $e) {
+        } else {
             $this->skipPDOTests = true;
-            $this->pdo = PHPUnit_Util_PDO::factory("sqlite::memory:");
+            $config = array(
+                "servers" => array(
+                    array(
+                        "driver" => "sqlite",
+                        "file" => ":memory:",
+                        "group" => "default",
+                    ),
+                ),
+            );
+            $this->myConfig->forceConfig($config);
+            $this->pdo = &$this->myConfig->servers->getPDO("default");
             $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
             $this->pdo->query(
                 "CREATE TABLE `myTable` ("
@@ -92,9 +115,10 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
                 ." ) "
             );
         }
+
         parent::setUp();
         $this->table = new DummyTableContainer();
-        $this->o = new MysqlDriver($this->table, $this->pdo);
+        $this->o = new MysqlDriver($this->table, "default");
     }
 
     /**
@@ -136,6 +160,28 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         return $this->createXMLDataSet(
             dirname(__FILE__).'/../../files/HUGnetDBDriverTest.xml'
         );
+    }
+    /**
+    * Tests errorHandler
+    *
+    * @return null
+    */
+    public function testErrorHandler()
+    {
+        $o = new MysqlDriverTestStub($this->table, "default");
+        $config = &ConfigContainer::singleton();
+        $config->servers->connect($this->table->group);
+        $this->assertTrue($config->servers->connected($this->table->group));
+        $o->errorHandler(
+            array(
+                "HY000",
+                2006,
+                "MySQL server has gone away"
+            ),
+            "test",
+            ErrorTable::SEVERITY_WARNING
+        );
+        $this->assertFalse($config->servers->connected($this->table->group));
     }
     /**
     * Data provider for testFindUnit
@@ -351,6 +397,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         if ($this->skipPDOTests) {
             $this->markTestSkipped("No MySQL server available");
         } else {
+            $this->pdo->query("DROP TABLE IF EXISTS `errors`;");
             foreach ((array)$queries as $query) {
                 $this->pdo->query($query);
             }
@@ -362,30 +409,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
         }
     }
 
-    /**
-    * Tests errorHandler
-    *
-    * @return null
-    */
-    /*
-    public function testErrorHandler()
-    {
-        $o = new MysqlDriverTestStub($this->table, $this->pdo);
-        $config = &ConfigContainer::singleton();
-        $config->servers->connect($this->table->group);
-        $this->assertTrue($config->servers->connected($this->table->group));
-        $o->errorHandler(
-            array(
-                "HY000",
-                2006,
-                "MySQL server has gone away"
-            ),
-            "test",
-            ErrorTable::SEVERITY_WARNING
-        );
-        $this->assertFalse($config->servers->connected($this->table->group));
-    }
-    */
+
 }
 /**
  * Test class for HUGnetDB.
@@ -406,11 +430,10 @@ class MysqlDriverTestStub extends MysqlDriver
     * Register this database object
     *
     * @param object &$table The table object
-    * @param PDO    &$pdo   The PDO object
     */
-    public function __construct(&$table, PDO &$pdo)
+    public function __construct(&$table)
     {
-        parent::__construct($table, $pdo);
+        parent::__construct($table);
     }
     /**
     * This function deals with errors

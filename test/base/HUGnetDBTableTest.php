@@ -67,6 +67,18 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->myConfig = &ConfigContainer::singleton();
         $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "nonDefault",
+                ),
+            ),
         );
         $this->myConfig->forceConfig($config);
         $this->pdo = &$this->myConfig->servers->getPDO();
@@ -141,6 +153,62 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         );
         $this->myConfig->forceConfig($config);
         $o = new HUGnetDBTableTestStub($empty, $this->pdo);
+    }
+
+    /**
+    * Data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => 5,
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "Name",
+                    "value" => 12.0,
+                ),
+            ),
+            array(
+                array(
+                    "group" => "nonDefault",
+                ),
+                array(
+                    "group" => "nonDefault",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => 5,
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "Name",
+                    "value" => 12.0,
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataConstructor
+    *
+    * @return null
+    */
+    public function testConstructor($preload, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $this->assertSame($expect, $o->toArray());
+        $default = $this->readAttribute($o, "default");
+        $this->assertSame($expect["group"], $default["group"]);
     }
 
     /**

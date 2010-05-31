@@ -137,14 +137,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         $this->clearData();
         parent::__construct($data);
-        if (!$this->isMine($this->myConfig, "ConfigContainer")) {
-            $this->myConfig = &ConfigContainer::singleton();
-        }
+        // Get our config.
+        $this->myConfig = &ConfigContainer::singleton();
         if (is_object($this->myConfig->servers)) {
-            $this->myDriver = &$this->myConfig->servers->getDriver(
-                $this,
-                $this->group
-            );
             $this->myDriver = &$this->myConfig->servers->getDriver(
                 $this,
                 $this->group
@@ -161,6 +156,21 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         // @codeCoverageIgnoreEnd
         $this->verbose($this->myConfig->verbose);
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        parent::fromArray($array);
+        // Set the new default group.  This is for when the data is cleared
+        // The group will remain the same.
+        $this->default["group"] = $this->data["group"];
+
     }
 
     /**

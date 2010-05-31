@@ -115,8 +115,7 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
     */
     public function connected($group = "default")
     {
-        return is_object($this->pdo[$group])
-            && (get_class($this->pdo[$group]) == "PDO");
+        return is_object($this->pdo[$group]) && (is_a($this->pdo[$group], "PDO"));
     }
 
     /**
@@ -208,7 +207,7 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
         if ($this->connect($group)) {
             $driverName = ucfirst($this->server[$group]->driver."Driver");
             if (self::findClass($driverName, "/plugins/database/")) {
-                return new $driverName($table, $this->pdo[$group]);
+                return new $driverName($table);
             }
             // @codeCoverageIgnoreStart
             // It thinks this line won't run.  I don't know why.

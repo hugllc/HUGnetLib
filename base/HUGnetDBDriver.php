@@ -85,9 +85,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     * Register this database object
     *
     * @param object &$table The table object
-    * @param PDO    &$pdo   The PDO object
     */
-    public function __construct(&$table, PDO &$pdo)
+    public function __construct(&$table)
     {
         if (!is_object($table)) {
             $this->throwException("No table given", -2);
@@ -97,18 +96,17 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         // @codeCoverageIgnoreEnd
 
         $this->myTable = &$table;
-        $this->pdo     = &$pdo;
         $this->myConfig = &ConfigContainer::singleton();
         $this->verbose($this->myConfig->verbose);
         $this->dataColumns();
         if ($this->myConfig->verbose > 5) {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } else if ($this->myConfig->verbose > 1) {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         } else {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
         }
-        $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+        $this->pdo()->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
     }
     /**
     * Register this database object
@@ -116,6 +114,19 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     public function __destruct()
     {
         $this->reset();
+    }
+
+    /**
+    * Gets a reference to the PDO object we are using
+    *
+    * We do this because it might go away and have to reconnect.  If that happens
+    * this automatically picks up the new one.
+    *
+    * @return Reference to the PDO object
+    */
+    protected function &pdo()
+    {
+        return $this->myConfig->servers->getPDO($this->myTable->group);
     }
 
     /**
@@ -201,7 +212,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
+            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
         }
     }
     /**
@@ -250,8 +261,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     */
     public function getAttribute($attrib)
     {
-        if (is_object($this->pdo)) {
-            $ret = $this->pdo->getAttribute($attrib);
+        if (is_object($this->pdo())) {
+            $ret = $this->pdo()->getAttribute($attrib);
         }
         return $ret;
     }
@@ -781,10 +792,10 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         if (empty($this->query)) {
             return false;
         }
-        $this->pdoStatement = $this->pdo->prepare($this->query);
+        $this->pdoStatement = $this->pdo()->prepare($this->query);
         if ($this->pdoStatement === false) {
             $this->errorHandler(
-                $this->pdo->errorInfo(),
+                $this->pdo()->errorInfo(),
                 __METHOD__,
                 ErrorTable::SEVERITY_WARNING
             );
@@ -858,8 +869,9 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         if ($this->myTable->sqlTable != "errors") {
             $this->logError(
                 $errorInfo[0],
-                $errorInfo[2],
-                ErrorTable::SEVERITY_WARNING, __METHOD__
+                $this->myTable->group.": ".$errorInfo[2],
+                $severity,
+                $method
             );
         }
     }
@@ -894,7 +906,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     */
     public function query($query = "", $data = array())
     {
-        $pdo = $this->pdo->prepare($query);
+        $pdo = $this->pdo()->prepare($query);
         $res = false;
         if (is_object($pdo)) {
             if ($pdo->execute($data)) {
@@ -904,12 +916,14 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             }
             $pdo->closeCursor();
         } else {
-            $error = $this->pdo->errorInfo();
+            $error = $this->pdo()->errorInfo();
         }
         // Set the errors if there are any and we are not on table 'errors'
-        if (($this->myTable->sqlTable != "errors") && is_array($error)) {
-            $this->logError(
-                $error[0], $error[2], ErrorTable::SEVERITY_WARNING, __METHOD__
+        if (is_array($error)) {
+            $this->errorHandler(
+                $error,
+                __METHOD__,
+                ErrorTable::SEVERITY_WARNING
             );
         }
         return $res;

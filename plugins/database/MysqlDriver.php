@@ -133,7 +133,7 @@ class MysqlDriver extends HUGnetDBDriver
             $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
+            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
         }
     }
     /**
@@ -217,7 +217,7 @@ class MysqlDriver extends HUGnetDBDriver
         if ($errorInfo[1] == 2006) {
             // The database has gone away, so disconnect.  Reconnection should be
             // automatically handled.
-            //$this->myConfig->servers->disconnect($this->myTable->group);
+            $this->myConfig->servers->disconnect($this->myTable->group);
         }
     }
 
