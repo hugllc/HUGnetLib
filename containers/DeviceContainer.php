@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/../interfaces/PacketConsumerInterface.php';
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DeviceContainer extends DevicesTable
-    implements DeviceContainerInterface
+    implements DeviceContainerInterface, PacketConsumerInterface
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -350,6 +350,21 @@ class DeviceContainer extends DevicesTable
     {
         return (bool)(empty($this->data["DeviceID"])
             || ($this->data["DeviceID"] == '000000'));
+    }
+    /**
+    * Consumes packets and returns some stuff.
+    *
+    * This function deals with setup and ping requests
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    public function packetConsumer(PacketContainer &$pkt)
+    {
+        if (method_exists($this->epDriver, "packetConsumer")) {
+            $this->epDriver->packetConsumer($pkt);
+        }
     }
 
 }
