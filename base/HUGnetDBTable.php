@@ -407,7 +407,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         } catch (exception $e) {
             return 0;
         }
-        return $date->getTimestamp();
+        return (int)$date->format("U");
     }
 }
 
