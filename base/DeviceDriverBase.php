@@ -75,6 +75,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         $this->myDriver = &$obj;
         $this->info = &$this->myDriver->DriverInfo;
         $this->data = &$this->myDriver->params->DriverInfo;
+        $this->verbose($this->myDriver->verbose);
     }
     /**
     * Says whether this device has loadable firmware or not
@@ -162,7 +163,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return bool True on success, False on failure
     */
-    protected function readConfig()
+    public function readConfig()
     {
         // Save the time.
         $this->data["LastConfig"] = time();

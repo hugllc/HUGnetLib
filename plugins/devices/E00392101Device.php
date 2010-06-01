@@ -124,20 +124,48 @@ class E00392101Device extends DeviceDriverLoadableBase
         if (($this->myFirmware->RelStatus == FirmwareTable::BAD)
             || $this->myFirmware->isEmpty()
         ) {
+            $this->logError(
+                "NOFIRMWARE",
+                "There is no firmware avaiable for HW#".$this->myDriver->HWPartNum,
+                ErrorTable::SEVERITY_CRITICAL,
+                __METHOD__
+            );
             return false;
         }
+        // Print out some stuff
+        self::vprint(
+            "Found firmware ".$this->myFirmware->FWPartNum
+            ." v".$this->myFirmware->Version,
+            HUGnetClass::VPRINT_NORMAL
+        );
         $ret = $this->writeCode();
         if ($ret) {
             $ret = $this->writeData();
         }
         if ($ret) {
             $ret = $this->runApplication();
+            if ($ret) {
+                $msg = "Running the program "
+                    ."in device ".$this->myDriver->DeviceID." Succeeded";
+            } else {
+                $msg = "Running the program "
+                    ."in device ".$this->myDriver->DeviceID." Failed";
+            }
+            self::vprint(
+                $msg,
+                HUGnetClass::VPRINT_NORMAL
+            );
         }
         if ($ret) {
+            $msg = "Device ".$this->myDriver->DeviceID." has been loaded with "
+                .$this->myFirmware->FWPartNum." v".$this->myFirmware->Version.".";
+            self::vprint(
+                $msg,
+                HUGnetClass::VPRINT_NORMAL
+            );
             $this->logError(
                 "LOADPROG",
-                "Device ".$this->myDriver->DeviceID." has been loaded with "
-                .$this->myFirmware->FWPartNum." v".$this->myFirmware->Version.".",
+                $msg,
                 ErrorTable::SEVERITY_NOTICE,
                 __METHOD__
             );
@@ -160,8 +188,18 @@ class E00392101Device extends DeviceDriverLoadableBase
             $addr = $page * $pageSize;
             $ret = $this->writeFlash($addr, $data);
             if ($ret === false) {
+                self::vprint(
+                    "Writing Code Page ".$page." "
+                    ."in device ".$this->myDriver->DeviceID." Failed",
+                    HUGnetClass::VPRINT_NORMAL
+                );
                 return false;
             }
+            self::vprint(
+                "Writing Code Page ".$page." "
+                ."in device ".$this->myDriver->DeviceID." Succeeded",
+                HUGnetClass::VPRINT_NORMAL
+            );
         }
         return true;
     }
@@ -181,8 +219,18 @@ class E00392101Device extends DeviceDriverLoadableBase
             $addr = $page * $pageSize;
             $ret = $this->writeE2($addr, $data);
             if ($ret === false) {
+                self::vprint(
+                    "Writing Data Page ".$page." "
+                    ."in device ".$this->myDriver->DeviceID." Failed",
+                    HUGnetClass::VPRINT_NORMAL
+                );
                 return false;
             }
+            self::vprint(
+                "Writing Data Page ".$page." "
+                ."in device ".$this->myDriver->DeviceID." Succeeded",
+                HUGnetClass::VPRINT_NORMAL
+            );
         }
         return true;
     }

@@ -123,6 +123,7 @@ abstract class HUGnetClass
             print "(".$class.") ";
         }
         print $str."\n";
+        flush();
     }
     /**
     * Logs an error in the database
