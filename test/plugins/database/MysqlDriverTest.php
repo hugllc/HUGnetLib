@@ -181,7 +181,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
             "test",
             ErrorTable::SEVERITY_WARNING
         );
-        $this->assertFalse($config->servers->connected($this->table->group));
+        $this->assertTrue($config->servers->connected($this->table->group));
     }
     /**
     * Data provider for testFindUnit

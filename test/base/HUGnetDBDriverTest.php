@@ -102,7 +102,9 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     protected function tearDown()
     {
-        $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
+        if (is_a($this->pdo, "PDO")) {
+            $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
+        }
         unset($this->o);
         unset($this->pdo);
     }
@@ -149,9 +151,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     */
-    public function testConstructPDOExec()
+    public function testConnectPDOExec()
     {
-        $o = new HUGnetDBDriverTestStub($this->table, $empty);
+        $this->table->group = "BogusGroup";
+        $this->o->Connect();
     }
     /**
     * Data provider for testAddColumnQuery
@@ -1804,10 +1807,10 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     * @param object &$table The table object
     * @param PDO    &$pdo   The PDO object
     */
-    public function __construct(&$table, PDO &$pdo)
+    public function __construct(&$table)
     {
-        parent::__construct($table, $pdo);
-        $this->qpdo =& $this->pdo();
+        parent::__construct($table);
+        $this->qpdo =& $this->pdo;
     }
     /**
     * Gets columns from a SQLite server
@@ -1819,6 +1822,15 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
         foreach ((array)$this->columns as $col) {
             $this->columns[$col['name']] = $col['type'];
         }
+    }
+    /**
+    * This gets a new PDO object
+    *
+    * @return null
+    */
+    public function connect()
+    {
+        return parent::connect();
     }
     /**
     * Checks the database table, repairs and optimizes it

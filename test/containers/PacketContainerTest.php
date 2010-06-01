@@ -880,10 +880,12 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 "5A5A5A55000020000ABC0401020304C3",
+                "000020",
                 true,
             ),
             array(
                 array(),
+                "FE2351",
                 false,
             ),
             array(
@@ -894,6 +896,18 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Length"  => 4,
                     "Data" => "01020304",
                 ),
+                "000020",
+                true,
+            ),
+            array(
+                array(
+                    "To" => "FE1293",
+                    "From" => "000ABC",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                "FE1293",
                 true,
             ),
             array(
@@ -904,6 +918,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Length"  => 4,
                     "Data" => "01020304",
                 ),
+                "FE2351",
                 false,
             ),
         );
@@ -911,15 +926,17 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload What to preload into the object
-    * @param array $expect  The expected return
+    * @param array  $preload What to preload into the object
+    * @param string $myID    The ID to load into the socket
+    * @param array  $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataToMe
     */
-    public function testToMe($preload, $expect)
+    public function testToMe($preload, $myID, $expect)
     {
+        $this->config->sockets->forceDeviceID($myID);
         $o = new PacketContainer($preload);
         $ret = $o->toMe();
         $this->assertSame($expect, $ret);

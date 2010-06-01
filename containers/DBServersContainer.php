@@ -152,7 +152,6 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
     */
     private function _connect($group = "default")
     {
-
         $this->lock(array_keys($this->default));
         $this->vprint(
             "Trying ".$this->server[$group]->getDSN(),
@@ -225,9 +224,9 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
     */
     public function disconnect($group = "default")
     {
-        $this->driver[$group] = null;
-        $this->server[$group] = null;
-        $this->pdo[$group] = null;
+        unset($this->driver[$group]);
+        unset($this->server[$group]);
+        unset($this->pdo[$group]);
         $this->unlock(array_keys($this->default));
     }
 

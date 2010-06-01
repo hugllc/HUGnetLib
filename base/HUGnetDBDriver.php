@@ -98,15 +98,17 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         $this->myTable = &$table;
         $this->myConfig = &ConfigContainer::singleton();
         $this->verbose($this->myConfig->verbose);
+        // Connect to the database
+        $this->connect();
         $this->dataColumns();
         if ($this->myConfig->verbose > 5) {
-            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } else if ($this->myConfig->verbose > 1) {
-            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         } else {
-            $this->pdo()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
         }
-        $this->pdo()->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
+        $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
     }
     /**
     * Register this database object
@@ -117,16 +119,25 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     }
 
     /**
-    * Gets a reference to the PDO object we are using
+    * This gets a new PDO object
     *
-    * We do this because it might go away and have to reconnect.  If that happens
-    * this automatically picks up the new one.
-    *
-    * @return Reference to the PDO object
+    * @return null
     */
-    protected function &pdo()
+    protected function connect()
     {
-        return $this->myConfig->servers->getPDO($this->myTable->group);
+        $this->pdo = null;
+        $this->pdo = &$this->myConfig->servers->getPDO($this->myTable->group);
+        if (!is_a($this->pdo, "PDO")) {
+            $this->throwException(
+                "No available database connection available in group '"
+                .$this->myTable->group
+                ."'.  Check your database configuration.  Available php drivers: "
+                .implode(", ", PDO::getAvailableDrivers()), -2
+            );
+            // @codeCoverageIgnoreStart
+            // It thinks this line won't run.  The above function never returns.
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -212,7 +223,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             $this->query .= " NOT NULL";
         }
         if (!is_null($column["Default"])) {
-            $this->query .= " DEFAULT ".$this->pdo()->quote($column["Default"]);
+            $this->query .= " DEFAULT ".$this->pdo->quote($column["Default"]);
         }
     }
     /**
@@ -261,8 +272,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     */
     public function getAttribute($attrib)
     {
-        if (is_object($this->pdo())) {
-            $ret = $this->pdo()->getAttribute($attrib);
+        if (is_object($this->pdo)) {
+            $ret = $this->pdo->getAttribute($attrib);
         }
         return $ret;
     }
@@ -792,10 +803,10 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         if (empty($this->query)) {
             return false;
         }
-        $this->pdoStatement = $this->pdo()->prepare($this->query);
+        $this->pdoStatement = $this->pdo->prepare($this->query);
         if ($this->pdoStatement === false) {
             $this->errorHandler(
-                $this->pdo()->errorInfo(),
+                $this->pdo->errorInfo(),
                 __METHOD__,
                 ErrorTable::SEVERITY_WARNING
             );
@@ -906,7 +917,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     */
     public function query($query = "", $data = array())
     {
-        $pdo = $this->pdo()->prepare($query);
+        $pdo = $this->pdo->prepare($query);
         $res = false;
         if (is_object($pdo)) {
             if ($pdo->execute($data)) {
@@ -916,7 +927,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             }
             $pdo->closeCursor();
         } else {
-            $error = $this->pdo()->errorInfo();
+            $error = $this->pdo->errorInfo();
         }
         // Set the errors if there are any and we are not on table 'errors'
         if (is_array($error)) {

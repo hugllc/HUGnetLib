@@ -148,8 +148,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if (!is_object($this->myDriver)) {
             $this->throwException(
                 "No available database connection available in group '".$this->group
-                ."'.  Check your database configuration.  Available php drivers: "
-                .implode(", ", PDO::getAvailableDrivers()), -2
+                ."'.  Check your database configuration.", -2
             );
             // @codeCoverageIgnoreStart
             // It thinks this line won't run.  The above function never returns.
