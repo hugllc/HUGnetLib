@@ -123,20 +123,20 @@ class FirmwareTable extends HUGnetDBTable
             "Type" => "longtext",
             "Default" => '',
         ),
-        "CodeCRC" => array(
-            "Name" => "CodeCRC",
-            "Type" => "int",
-            "Default" => '0',
+        "CodeHash" => array(
+            "Name" => "CodeHash",
+            "Type" => "varchar(64)",
+            "Default" => '',
         ),
         "Data" => array(
             "Name" => "Data",
             "Type" => "longtext",
             "Default" => '',
         ),
-        "DataCRC" => array(
-            "Name" => "DataCRC",
-            "Type" => "int",
-            "Default" => '0',
+        "DataHash" => array(
+            "Name" => "DataHash",
+            "Type" => "varchar(64)",
+            "Default" => '',
         ),
         "FWPartNum" => array(
             "Name" => "FWPartNum",
@@ -161,7 +161,7 @@ class FirmwareTable extends HUGnetDBTable
         "RelStatus" => array(
             "Name" => "RelStatus",
             "Type" => "tinyint(4)",
-            "Default" => self::DEV,
+            "Default" => self::BAD,
         ),
         "Tag" => array(
             "Name" => "Tag",
@@ -238,7 +238,19 @@ class FirmwareTable extends HUGnetDBTable
             $where .= " AND HWPartNum = ?";
             $data[] = $this->HWPartNum;
         }
-        return $this->selectOneInto($where, $data);
+        $ret = $this->selectInto($where, $data);
+        // This makes sure we are getting a good one if there is one, instead
+        // of a bad one.
+        while (($this->RelStatus == self::BAD) || !$this->checkHash()) {
+            $ret = $this->nextInto();
+            // This is so when we come to the end we exit the loop
+            if ($ret === false) {
+                $this->clearData();
+                break;
+            }
+        }
+        $this->myDriver->reset();
+        return $ret;
     }
     /**
     * Runs a function using the correct driver for the endpoint
@@ -272,19 +284,22 @@ class FirmwareTable extends HUGnetDBTable
     public function fromArray($array)
     {
         parent::fromArray($array);
-        if (!$this->checkCRC()) {
-            $this->RelStatus = self::BAD;
+        if (empty($this->DataHash)) {
+            $this->DataHash = md5($this->Data);
+        }
+        if (empty($this->CodeHash)) {
+            $this->CodeHash = md5($this->Code);
         }
     }
     /**
-    * Checks the crc of the data and code.
+    * Checks the hash of the data and code.
     *
-    * @return bool True if crc is good, false otherwise
+    * @return bool True if hash is good, false otherwise
     */
-    public function checkCRC()
+    public function checkHash()
     {
-        if (($this->DataCRC != crc32($this->Data))
-            || ($this->CodeCRC != crc32($this->Code))
+        if (($this->DataHash != md5($this->Data))
+            || ($this->CodeHash != md5($this->Code))
         ) {
             return false;
         }

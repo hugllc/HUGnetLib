@@ -190,6 +190,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "0.1.0",
                         "Target" => "atmega16",
+                        "RelStatus" => FirmwareTable::RELEASE,
                     ),
                 ),
                 array(
@@ -237,6 +238,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "0.0.8",
                         "Target" => "atmega16",
+                        "RelStatus" => FirmwareTable::RELEASE,
                     ),
                 ),
                 array(
@@ -386,6 +388,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "0.0.8",
                         "Target" => "atmega16",
+                        "RelStatus" => FirmwareTable::RELEASE,
                     ),
                 ),
                 array(

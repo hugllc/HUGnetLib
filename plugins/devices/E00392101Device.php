@@ -121,6 +121,11 @@ class E00392101Device extends DeviceDriverLoadableBase
     public function writeProgram()
     {
         $this->_setFirmware();
+        if (($this->myFirmware->RelStatus == FirmwareTable::BAD)
+            || $this->myFirmware->isEmpty()
+        ) {
+            return false;
+        }
         $ret = $this->writeCode();
         if ($ret) {
             $ret = $this->writeData();
@@ -130,7 +135,7 @@ class E00392101Device extends DeviceDriverLoadableBase
         }
         if ($ret) {
             $this->logError(
-                "LAODPROG",
+                "LOADPROG",
                 "Device ".$this->myDriver->DeviceID." has been loaded with "
                 .$this->myFirmware->FWPartNum." v".$this->myFirmware->Version.".",
                 ErrorTable::SEVERITY_NOTICE,

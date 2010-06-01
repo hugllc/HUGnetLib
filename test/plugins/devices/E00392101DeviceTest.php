@@ -75,6 +75,7 @@ class E00392101DeviceTest extends DevicePluginTestBase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->pdo = &$this->config->servers->getPDO();
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->firmware = new FirmwareTable();
         $this->d = new DummyDeviceContainer();
@@ -197,7 +198,7 @@ class E00392101DeviceTest extends DevicePluginTestBase
     public static function dataWriteProgram()
     {
         return array(
-            array(
+            array(  // #0
                 array(
                     "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
@@ -207,7 +208,7 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "CodeCRC" => 3424705308,
+                    "CodeHash" => "",
                     "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
 S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
@@ -216,10 +217,11 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "DataCRC" => 3424705308,
+                    "DataHash" => "",
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "Version" => "1.2.3",
+                    "RelStatus" => FirmwareTable::RELEASE,
                 ),
                 array(
                     "NumSensors" => 0,
@@ -352,7 +354,7 @@ S9030000FC",
                 ),
                 true,
             ),
-            array(
+            array(   // #1
                 array(
                     "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
@@ -362,7 +364,7 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "CodeCRC" => 3424705308,
+                    "CodeHash" => "",
                     "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
 S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
@@ -371,10 +373,11 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "DataCRC" => 3424705308,
+                    "DataHash" => "",
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "Version" => "1.2.3",
+                    "RelStatus" => FirmwareTable::RELEASE,
                 ),
                 array(
                     "NumSensors" => 0,
@@ -477,7 +480,7 @@ S9030000FC",
                 ),
                 false,
             ),
-            array(
+            array(      // #2   -- E2 fails
                 array(
                     "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
@@ -487,7 +490,7 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "CodeCRC" => 3424705308,
+                    "CodeHash" => "",
                     "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
                     ."500102020202101002026F46
 S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
@@ -496,10 +499,11 @@ S1230060270010270000002027001027000000202700102700000020270010270000002084
 S1230080270010270000002027001027000000202700102700000020270010270000002064
 S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
 S9030000FC",
-                    "DataCRC" => 3424705308,
+                    "DataHash" => "",
                     "HWPartNum" => "0039-21-01-A",
                     "FWPartNum" => "0039-20-01-C",
                     "Version" => "1.2.3",
+                    "RelStatus" => FirmwareTable::RELEASE,
                 ),
                 array(
                     "NumSensors" => 0,
@@ -590,6 +594,46 @@ S9030000FC",
                 ),
                 false,
             ),
+            // Bad firmware.
+            array( // #3
+                array(
+                    "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                    "CodeHash" => "3424705308",
+                    "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                    "DataHash" => "3424705308",
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "Version" => "1.2.3",
+                    "RelStatus" => FirmwareTable::RELEASE,
+                ),
+                array(
+                    "NumSensors" => 0,
+                    "SRAM" => 1024,
+                    "E2" => 480,
+                    "FLASH" => 14336,
+                    "FLASHPAGE" => 128,
+                    "PAGES" => 112,
+                    "CRC" => "9891",
+                ),
+                "0039-21-01-A",
+                "",
+                "",
+                false,
+            ),
         );
     }
 
@@ -631,7 +675,7 @@ S9030000FC",
     public static function dataReadSetup()
     {
         return array(
-            array(
+            array(  // #0
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -668,7 +712,7 @@ S9030000FC",
                 )),
                 false,
             ),
-            array(
+            array(   // #1
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -705,13 +749,14 @@ S9030000FC",
                 )),
                 false,
             ),
-            array(
+            array(   // #2
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
                         "FWPartNum" => "0039-20-01-C",
                         "Version" => "0.0.8",
                         "Target" => "atmega16",
+                        "RelStatus" => FirmwareTable::RELEASE,
                     ),
                 ),
                 array(
@@ -815,7 +860,7 @@ S9030000FC",
                 ),
                 true,
             ),
-            array(
+            array(  // #3
                 array(),
                 array(
                     "DriverInfo" => array("PacketTimeout" => 1),
