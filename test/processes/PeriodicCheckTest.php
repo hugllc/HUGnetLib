@@ -143,6 +143,7 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "php",
                     "PluginWebDir"    => "",
                     "PluginSkipDir"   => array(),
+                    "PluginType"      => "check",
                 ),
             ),
            array(
@@ -153,6 +154,7 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "checkHere",
                 ),
                 array(
                     "group" => "test",
@@ -161,6 +163,7 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "checkHere",
                 ),
             ),
         );
@@ -198,6 +201,8 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "periodic",
                 ),
                 1,
                 array("TestPeriodicPlugin", "TestPeriodicPlugin2"),
@@ -218,14 +223,72 @@ class PeriodicCheckTest extends PHPUnit_Framework_TestCase
     */
     public function testMain($preload, $expect, $plugins)
     {
-        $this->o->fromArray($preload);
-        $this->o->main();
+        $o = new PeriodicCheck($preload, $this->device);
+        $o->main();
         $this->assertSame($expect, $GLOBALS["testPeriodic"]);
-        $plug = $this->readAttribute($this->o, "active");
+        $plug = $this->readAttribute($o, "active");
         foreach (array_keys((array)$plug) as $k) {
             // If the return type is int then array_search found the item
             $this->assertType("int", array_search(get_class($plug[$k]), $plugins));
         }
+    }
+    /**
+    * data provider for testErrorEmail
+    *
+    * @return array
+    */
+    public static function dataMail()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "test" => true,
+                    "admin_email" => "test@hugllc.com",
+                ),
+                "This is a subject",
+                "This is a body",
+                array(
+                    "test@hugllc.com",
+                    "This is a subject",
+                    "This is a body",
+                    "",
+                    ""
+                ),
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "test" => true,
+                ),
+                "This is an subject",
+                "This-is a body",
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The value to preload
+    * @param array  $config  The configuration to force
+    * @param string $subject The subject of the message
+    * @param string $message The actual message
+    * @param array  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataMail
+    */
+    public function testMail(
+        $preload, $config, $subject, $message, $expect
+    ) {
+        $this->config->forceConfig($config);
+        $this->o->fromArray($preload);
+        $ret = $this->o->mail($subject, $message);
+        $this->assertSame($expect, $ret);
     }
 }
 

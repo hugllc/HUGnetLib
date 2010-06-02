@@ -143,6 +143,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "php",
                     "PluginWebDir"    => "",
                     "PluginSkipDir"   => array(),
+                    "PluginType"      => "periodic",
                 ),
             ),
            array(
@@ -153,6 +154,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "periodicStuff",
                 ),
                 array(
                     "group" => "test",
@@ -161,6 +163,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "periodicStuff",
                 ),
             ),
         );

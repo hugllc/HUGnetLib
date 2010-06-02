@@ -65,6 +65,7 @@ class PeriodicPlugins extends ProcessBase
         "PluginExtension" => "php",
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
+        "PluginType"      => "periodic",
     );
     /** @var array Array of objects that are our plugins */
     protected $active = array();
@@ -104,7 +105,7 @@ class PeriodicPlugins extends ProcessBase
             $this->PluginSkipDir,
             $this->verbose
         );
-        $classes = $this->myPlugins->getClass("periodic");
+        $classes = $this->myPlugins->getClass($this->PluginType);
         $data = array(
             "verbose" => $this->verbose,
         );

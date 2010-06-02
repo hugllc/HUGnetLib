@@ -143,6 +143,7 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "php",
                     "PluginWebDir"    => "",
                     "PluginSkipDir"   => array(),
+                    "PluginType"      => "sync",
                 ),
             ),
            array(
@@ -153,6 +154,7 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "syncHere",
                 ),
                 array(
                     "group" => "test",
@@ -161,6 +163,7 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "there",
                     "PluginWebDir"    => "everywhere",
                     "PluginSkipDir"   => array("at once"),
+                    "PluginType"      => "syncHere",
                 ),
             ),
         );
@@ -198,6 +201,8 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "periodic",
                 ),
                 1,
                 array("TestPeriodicPlugin", "TestPeriodicPlugin2"),
@@ -218,10 +223,10 @@ class PeriodicSyncTest extends PHPUnit_Framework_TestCase
     */
     public function testMain($preload, $expect, $plugins)
     {
-        $this->o->fromArray($preload);
-        $this->o->main();
+        $o = new PeriodicSync($preload, $this->device);
+        $o->main();
         $this->assertSame($expect, $GLOBALS["testPeriodic"]);
-        $plug = $this->readAttribute($this->o, "active");
+        $plug = $this->readAttribute($o, "active");
         foreach (array_keys((array)$plug) as $k) {
             // If the return type is int then array_search found the item
             $this->assertType("int", array_search(get_class($plug[$k]), $plugins));

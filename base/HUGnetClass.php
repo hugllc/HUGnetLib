@@ -35,6 +35,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+/** This is for the error handling */
+require_once dirname(__FILE__)."/../tables/ErrorTable.php";
 /**
  * Base class for all other classes
  *

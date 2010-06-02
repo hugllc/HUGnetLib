@@ -53,6 +53,58 @@ require_once dirname(__FILE__)."/PeriodicPlugins.php";
  */
 class PeriodicCheck extends PeriodicPlugins
 {
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        if (empty($array["PluginType"])) {
+            $array["PluginType"] = 'check';
+        }
+        parent::fromArray($array);
+    }
+    /**
+    * Wrapper to send out an email
+    *
+    * This wrapper is just for testing purposes, so I can isolate the call to 'mail'
+    *
+    * @param string $subject The subject of the message
+    * @param string $message The actual message
+    *
+    * @return mixed Array in test mode, bool in normal mode
+    */
+    public function mail($subject, $message)
+    {
+        if (empty($this->myConfig->admin_email)) {
+            return false;
+        }
+        $additional_headers    = "";
+        $additional_parameters = "";
+        // Do a test if we are in test mode.
+        if ($this->myConfig->test) {
+            return array(
+                $this->myConfig->admin_email,
+                $subject,
+                $message,
+                $additional_headers,
+                $additional_parameters
+            );
+        }
+        // @codeCoverageIgnoreStart
+        // Can't test this call
+        return mail(
+            $this->myConfig->admin_email,
+            $subject,
+            $message,
+            $additional_headers,
+            $additional_parameters
+        );
+        // @codeCoverageIgnoreEnd
+    }
 
 }
 ?>

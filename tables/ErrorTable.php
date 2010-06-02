@@ -63,6 +63,13 @@ class ErrorTable extends HUGnetDBTable
     const SEVERITY_ERROR = 4;
     /** @var critical level severity */
     const SEVERITY_CRITICAL = 8;
+    /** @var array The names of the error severities */
+    static $severityNames = array(
+        self::SEVERITY_NOTICE   => "Notice",
+        self::SEVERITY_WARNING  => "Warning",
+        self::SEVERITY_ERROR    => "Error",
+        self::SEVERITY_CRITICAL => "Critical",
+    );
     /** @var string This is the table we should use */
     public $sqlTable = "errors";
     /** @var string This is the primary key of the table.  Leave blank if none  */

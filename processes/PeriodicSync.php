@@ -53,6 +53,20 @@ require_once dirname(__FILE__)."/PeriodicPlugins.php";
  */
 class PeriodicSync extends PeriodicPlugins
 {
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromArray($array)
+    {
+        if (empty($array["PluginType"])) {
+            $array["PluginType"] = 'sync';
+        }
+        parent::fromArray($array);
+    }
 
 }
 ?>
