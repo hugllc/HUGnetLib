@@ -634,6 +634,181 @@ S9030000FC",
                 "",
                 false,
             ),
+            array(  // #4   Running program fails
+                array(
+                    "Code" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                    "CodeHash" => "",
+                    "Data" => "S1230000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                    ."500102020202101002026F46
+S12300206F6F6F6F707070010000000000000002000000000000001027001027000000102F
+S12300402700102700000010270010270000001027001027000000102700102700000010E4
+S1230060270010270000002027001027000000202700102700000020270010270000002084
+S1230080270010270000002027001027000000202700102700000020270010270000002064
+S12300A0270010270000002027001027000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF71
+S9030000FC",
+                    "DataHash" => "",
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "Version" => "1.2.3",
+                    "RelStatus" => FirmwareTable::RELEASE,
+                ),
+                array(
+                    "NumSensors" => 0,
+                    "SRAM" => 1024,
+                    "E2" => 480,
+                    "FLASH" => 14336,
+                    "FLASHPAGE" => 128,
+                    "PAGES" => 112,
+                    "CRC" => "9891",
+                ),
+                "0039-21-01-A",
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                            ."500102020202101002026F6F6F6F6F707070010000000000000"
+                            ."002000000000000001027001027000000102700102700000010"
+                            ."270010270000001027001027000000102700102700000010270"
+                            ."010270000002027001027000000202700102700000020270010"
+                            ."2700000020",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "2700102700000020270010270000002027001027000"
+                            ."000202700102700000020270010270000002027001027000000F"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0039201343000008FFFFFF50010202020210100202"
+                            ."6F6F6F6F6F70707001000000000000000200000000000000102"
+                            ."700102700000010270010270000001027001027000000102700"
+                            ."102700000010270010270000001027001027000000202700102"
+                            ."70000002027001027000000202700102700000020",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "2700102700000020270010270000002027001027000"
+                            ."000202700102700000020270010270000002027001027000000F"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ),
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000FFFFFFFFFFFFFFFFFFFF0039201343000008FFFFFF"
+                            ."500102020202101002026F6F6F6F6F707070010000000000000"
+                            ."002000000000000001027001027000000102700102700000010"
+                            ."270010270000001027001027000000102700102700000010270"
+                            ."010270000002027001027000000202700102700000020270010"
+                            ."2700000020",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "00802700102700000020270010270000002027001027000"
+                            ."000202700102700000020270010270000002027001027000000F"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000A0039201343000008FFFFFF50010202020210100202"
+                            ."6F6F6F6F6F70707001000000000000000200000000000000102"
+                            ."700102700000010270010270000001027001027000000102700"
+                            ."102700000010270010270000001027001027000000202700102"
+                            ."70000002027001027000000202700102700000020",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "00802700102700000020270010270000002027001027000"
+                            ."000202700102700000020270010270000002027001027000000F"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                        "Data" => "",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                        "Data" => "",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                        "Data" => "",
+                    )
+                ),
+                false,
+            ),
         );
     }
 
