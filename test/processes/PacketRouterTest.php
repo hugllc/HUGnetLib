@@ -446,6 +446,13 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 "$group has the wrong string"
             );
         }
+        $dev = $this->readAttribute($this->o, "myDevice");
+        $cmd = PacketContainer::COMMAND_POWERUP;
+        $this->assertSame(
+            1,
+            $dev->params->ProcessInfo["unsolicited"][$cmd],
+            "Incrementing powerup count failed"
+        );
     }
 
 

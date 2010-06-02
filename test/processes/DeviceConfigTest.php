@@ -454,7 +454,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "MinAverage"        => "15MIN",
                         "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
                             ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
-                        "params"            => "YTowOnt9",
+                        "params"            => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YT"
+                            ."oxOntzOjExOiJ1bnNvbGljaXRlZCI7YToxOntzOjI6IjVDIjtpOj"
+                            ."E7fX19",
                     ),
                 ),
                 "",

@@ -243,6 +243,8 @@ class PacketRouter extends ProcessBase
         foreach ((array)$this->groups as $group) {
             PacketContainer::powerup("", $group);
         }
+        $cmd = PacketContainer::COMMAND_POWERUP;
+        $this->myDevice->params->ProcessInfo["unsolicited"][$cmd]++;
     }
 
 }

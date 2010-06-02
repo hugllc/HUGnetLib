@@ -64,6 +64,7 @@ class DeviceParamsContainer extends HUGnetContainer
         "Extra" => array(),             // Extra input for crunching numbers
         "Raw"   => array(),             // Array of raw setup stuff
         "DriverInfo" => array(),        // Persistant storage for the driver
+        "ProcessInfo" => array(),       // Persistant storage for the processes
     );
     /** @var array This is where the data is stored */
     protected $data = array();

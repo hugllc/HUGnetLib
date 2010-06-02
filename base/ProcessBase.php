@@ -229,6 +229,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         );
         // Send a powerup packet
         PacketContainer::powerup("", $this->group);
+        $cmd = PacketContainer::COMMAND_POWERUP;
+        $this->myDevice->params->ProcessInfo["unsolicited"][$cmd]++;
     }
     /**
     * Consumes packets and returns some stuff.

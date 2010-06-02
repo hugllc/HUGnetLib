@@ -236,6 +236,13 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             $write, $this->socket->writeString,
             "$group has the wrong string"
         );
+        $dev = $this->readAttribute($this->o, "myDevice");
+        $cmd = PacketContainer::COMMAND_POWERUP;
+        $this->assertSame(
+            1,
+            $dev->params->ProcessInfo["unsolicited"][$cmd],
+            "Incrementing powerup count failed"
+        );
     }
     /**
     * data provider for testPacketConsumer

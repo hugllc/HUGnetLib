@@ -191,23 +191,24 @@ class DeviceConfig extends ProcessBase
         $this->unsolicited->clearData();
         // Find the device if it is there
         $this->unsolicited->selectInto("DeviceID = ?", array($pkt->From));
+        // Set our gateway key
+        $this->unsolicited->GatewayKey = $this->GatewayKey;
+        // Set the device active
+        $this->unsolicited->Active = 1;
 
         if (!$this->unsolicited->isEmpty()) {
             // If it is not empty, reset the LastConfig.  This causes it to actually
             // try to get the config.
             $this->unsolicited->readSetupTimeReset();
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
-            // Set the device active
-            $this->unsolicited->Active = 1;
+            // Increment the unsolicited count
+            $this->unsolicited->params->ProcessInfo["unsolicited"][$pkt->Command]++;
             // Update the row
             $this->unsolicited->updateRow();
         } else {
             // This is a brand new device.  Set the DeviceID
             $this->unsolicited->id = hexdec($pkt->From);
             $this->unsolicited->DeviceID = $pkt->From;
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
+            // Insert this row
             $this->unsolicited->insertRow();
         }
     }
