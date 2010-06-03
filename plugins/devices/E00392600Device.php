@@ -222,12 +222,12 @@ class E00392600Device extends DeviceDriverBase
     public function readSetupTime($interval = 10)
     {
         // This is what would normally be our time.  Every 10 minutes
-        $base = $this->myDriver->LastConfig < (time() - $interval*60);
+        $base = $this->data["LastConfig"] < (time() - $interval*60);
         if ($base === false) {
             return $base;
         }
         // Accounts for failures
-        return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
+        return $this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60);
     }
     /**
     * Consumes packets and returns some stuff.

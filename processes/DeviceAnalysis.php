@@ -37,9 +37,6 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/ProcessBase.php";
-require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-require_once dirname(__FILE__)."/../containers/PacketContainer.php";
-require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -54,9 +51,24 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DevicePoll extends ProcessBase
+class DeviceAnalysis extends ProcessBase
 {
-
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "group"      => "default",          // The groups to route between
+        "GatewayKey" => 0,                  // The gateway key we are using
+        "PluginDir"       => "./plugins",  // This is the plugin path
+        "PluginExtension" => "php",
+        "PluginWebDir"    => "",
+        "PluginSkipDir"   => array(),
+        "PluginType"      => "analysis",
+    );
+    /** @var array Array of objects that are our plugins */
+    protected $active = array();
+    /** @var array Array of objects that are our plugins */
+    protected $priority = array();
+    /** @var object This is where our plugin object resides */
+    protected $myPlugins = array();
     /**
     * Builds the class
     *
@@ -70,18 +82,48 @@ class DevicePoll extends ProcessBase
         parent::__construct($data, $device);
         $this->registerHooks();
         $this->requireGateway();
+        $this->_registerPlugins();
     }
     /**
     * This function gets setup information from all of the devices
     *
     * This function should be called periodically as often as possible.  It will
-    * go through the whole list of devices before returning.
-    *
-    * @param bool $loadable Only do devices that have loadable firmware
+    * check all plugins before returning
     *
     * @return null
     */
-    public function poll($loadable = false)
+    private function _registerPlugins()
+    {
+        $this->active = array();
+        $this->myPlugins = new plugins(
+            $this->PluginDir."/",
+            $this->PluginExtension,
+            $this->PluginWebDir,
+            $this->PluginSkipDir,
+            $this->verbose
+        );
+        $classes = $this->myPlugins->getClass($this->PluginType);
+        $data = array(
+            "verbose" => $this->verbose,
+        );
+        foreach ((array)$classes as $class) {
+            $c = $class["Class"];
+            $n = $class["Name"];
+            if (is_subclass_of($c, "AnalysisPluginInterface")) {
+                $this->active[$n] = new $c($data, $this);
+                $this->priority[$this->active[$n]->priority()][$n] = $n;
+            }
+        }
+    }
+    /**
+    * This process runs analysis plugins on the data
+    *
+    * This function should be called periodically as often as possible.  It will
+    * go through the whole list of devices before returning.
+    *
+    * @return null
+    */
+    public function main()
     {
         // Get the devices
         $devs = $this->device->selectIDs(
@@ -95,12 +137,9 @@ class DevicePoll extends ProcessBase
                 return;
             }
             $this->device->getRow($key);
-            if (!$loadable || $this->device->loadable()) {
-                if ($this->device->readDataTime()) {
-                    $this->_check($this->device);
-                }
-            }
+            $this->_check($this->device);
         }
+
     }
     /**
     * This function should be used to wait between config attempts
@@ -111,77 +150,10 @@ class DevicePoll extends ProcessBase
     */
     private function _check(DeviceContainer &$dev)
     {
-        // Be verbose ;)
-        self::vprint(
-            "Polling ".$dev->DeviceID." LastPoll: ".
-            date("Y-m-d H:i:s", $dev->params->DriverInfo["LastPoll"]),
-            HUGnetClass::VPRINT_NORMAL
-        );
-        // Read the setup
-        if (!$dev->readData()) {
-            $this->_checkFail($dev);
-        }
-        // Update the row.  It changes the row even if it fails
-        $dev->updateRow();
-    }
-    /**
-    * This function should be used to wait between config attempts
-    *
-    * @param DeviceContainer &$dev The device to check
-    *
-    * @return int The number of packets routed
-    */
-    private function _checkFail(DeviceContainer &$dev)
-    {
-        // Print out the failure if verbose
-        self::vprint(
-            "Failed. Failures: ".$dev->params->DriverInfo["PollFail"]
-            ." LastPoll try: "
-            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastPollTry"]),
-            HUGnetClass::VPRINT_NORMAL
-        );
-        // Log an error for every 10 failures
-        if ((($dev->params->DriverInfo["PollFail"] % 10) == 0)
-            && ($dev->params->DriverInfo["PollFail"] > 0)
-        ) {
-            $this->logError(
-                "NOPOLL",
-                $dev->DeviceID.": has failed "
-                .$dev->params->DriverInfo["PollFail"]." polls",
-                ErrorTable::SEVERITY_WARNING,
-                "DeviceConfig::config"
-            );
-        }
-    }
-    /**
-    * This deals with Unsolicited Packets
-    *
-    * @param PacketContainer &$pkt The packet that is to us
-    *
-    * @return string
-    */
-    public function packetConsumer(PacketContainer &$pkt)
-    {
-        // Be verbose
-        self::vprint(
-            "Got Unsolicited Packet from: ".$pkt->From." Type: ".$pkt->Type,
-            HUGnetClass::VPRINT_NORMAL
-        );
-        // Set up our DeviceContainer
-        $this->unsolicited->clearData();
-        // Find the device if it is there
-        $this->unsolicited->selectInto("DeviceID = ?", array($pkt->From));
-
-        if (!$this->unsolicited->isEmpty()) {
-            // If it is not empty, reset the LastConfig.  This causes it to actually
-            // try to get the config.
-            $this->unsolicited->readDataTimeReset();
-            // Set our gateway key
-            $this->unsolicited->GatewayKey = $this->GatewayKey;
-            // Set the device active
-            $this->unsolicited->Active = 1;
-            // Update the row
-            $this->unsolicited->updateRow();
+        foreach ($this->priority as $p) {
+            foreach ($p as $n) {
+                $this->active[$n]->main($dev);
+            }
         }
     }
 }

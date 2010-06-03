@@ -222,6 +222,15 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $ret;
     }
     /**
+    * This function gets a record with the given key
+    *
+    * @return bool True on success, False on failure
+    */
+    public function refresh()
+    {
+        return $this->getRow($this->data[$this->sqlId]);
+    }
+    /**
     * This function updates the record currently in this table
     *
     * @param array $columns The columns to update, defaults to all
@@ -301,6 +310,29 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $this->myDriver->selectWhere($where, $data);
         $ret = $this->myDriver->fetchAll();
         $this->myDriver->reset();
+        return $ret;
+    }
+    /**
+    * This function gets a record with the given key
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return array Array of objects
+    */
+    public function selectIDs($where, $data = array())
+    {
+        $this->myDriver->selectWhere(
+            $where,
+            $data,
+            array($this->sqlId => $this->sqlId)
+        );
+        $res = $this->myDriver->fetchAll(PDO::FETCH_ASSOC);
+        $this->myDriver->reset();
+        $ret = array();
+        foreach ((array)$res as $r) {
+            $ret[$r[$this->sqlId]] = $r[$this->sqlId];
+        }
         return $ret;
     }
     /**

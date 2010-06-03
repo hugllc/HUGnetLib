@@ -35,8 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** This is for the error handling */
-require_once dirname(__FILE__)."/../tables/ErrorTable.php";
 /**
  * Base class for all other classes
  *
@@ -139,6 +137,8 @@ abstract class HUGnetClass
     */
     public function logError($errno, $errmsg, $severity, $method)
     {
+        // Load the class dynamically
+        $this->findClass("ErrorTable", "tables");
         $log = new ErrorTable(
             array(
                 "class"    => get_class($this),

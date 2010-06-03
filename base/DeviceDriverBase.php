@@ -127,12 +127,12 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function readSetupTime($interval = 12)
     {
         // This is what would normally be our time.  Every 12 hours.
-        $base = $this->myDriver->LastConfig < (time() - $interval*3600);
+        $base = $this->data["LastConfig"] < (time() - $interval*3600);
         if ($base === false) {
             return $base;
         }
         // Accounts for failures
-        return $this->data["LastConfig"] < (time() - $this->data["ConfigFail"]*60);
+        return $this->data["LastConfigTry"] < (time() - $this->data["ConfigFail"]*60);
     }
     /**
     * Resets all of the timers associated with reading and writing.
@@ -142,9 +142,9 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function readSetupTimeReset()
     {
         // Config
-        $this->myDriver->setDefault("LastConfig");
-        $this->data["ConfigFail"] = 0;
         $this->data["LastConfig"] = 0;
+        $this->data["ConfigFail"] = 0;
+        $this->data["LastConfigTry"] = 0;
     }
     /**
     * Resets all of the timers associated with reading and writing.
@@ -154,9 +154,9 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function readDataTimeReset()
     {
         // Poll
-        $this->myDriver->setDefault("LastPoll");
-        $this->data["PollFail"] = 0;
         $this->data["LastPoll"] = 0;
+        $this->data["PollFail"] = 0;
+        $this->data["LastPollTry"] = 0;
     }
     /**
     * Reads the setup out of the device
@@ -166,7 +166,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function readConfig()
     {
         // Save the time.
-        $this->data["LastConfig"] = time();
+        $this->data["LastConfigTry"] = time();
         // Send the packet out
         $ret = $this->sendPkt(PacketContainer::COMMAND_GETSETUP);
         if (is_string($ret)) {
@@ -185,7 +185,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function setLastConfig($pass=true)
     {
         if ($pass) {
-            $this->myDriver->LastConfig = time();
+            $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
             return true;
         }
@@ -203,7 +203,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function setLastPoll($pass=true)
     {
         if ($pass) {
-            $this->myDriver->LastPoll = time();
+            $this->data["LastPoll"] = time();
             $this->data["PollFail"] = 0;
             return true;
         }
@@ -245,12 +245,12 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             // No polling if the interval is set to 0
             return false;
         }
-        $base = $this->myDriver->LastPoll < (time() - $interval*60);
+        $base = $this->data["LastPoll"] < (time() - $interval*60);
         if ($base === false) {
             return $base;
         }
         // Accounts for failures
-        return $this->data["LastPoll"] < (time() - $this->data["PollFail"]*6);
+        return $this->data["LastPollTry"] < (time() - $this->data["PollFail"]*6);
     }
     /**
     * Reads the data out of the device
@@ -270,7 +270,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function readSensors()
     {
         // Save the time.
-        $this->data["LastPoll"] = time();
+        $this->data["LastPollTry"] = time();
         // Send the packet out
         $pkt = new PacketContainer(
             array(

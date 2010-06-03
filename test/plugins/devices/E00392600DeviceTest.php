@@ -235,7 +235,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
     */
     function testReadSetupTime($lastConfig, $interval, $expect)
     {
-        $this->d->LastConfig = $lastConfig;
+        $this->d->params->DriverInfo["LastConfig"] = $lastConfig;
         $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
     }

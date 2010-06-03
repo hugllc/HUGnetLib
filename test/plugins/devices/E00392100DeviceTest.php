@@ -183,7 +183,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
     public static function dataReadSetup()
     {
         return array(
-            array(
+            array(  #0
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -231,7 +231,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 false,
                 array(),
             ),
-            array(
+            array(  #1
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -299,7 +299,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
@@ -310,12 +310,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -328,7 +322,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "37",
@@ -339,12 +333,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -357,7 +345,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "37",
@@ -368,12 +356,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -381,7 +363,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 ),
             ),
             // Board rebooted
-           array(
+           array(  #2
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -476,7 +458,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
@@ -487,12 +469,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -505,7 +481,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "37",
@@ -516,12 +492,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -534,7 +504,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "FWPartNum" => "",
                         "FWVersion" => "",
                         "RawSetup"  => "000000000000000000000000000000000000"
-                            ."FFFFFF50",
+                            ."FFFFFF00",
                         "Active" => "1",
                         "GatewayKey" => "0",
                         "ControllerKey" => "37",
@@ -545,12 +515,6 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "BoredomThreshold" => "80",
-                        "LastConfig" => "0",
-                        "LastPoll" => "0",
-                        "LastHistory" => "0",
-                        "LastAnalysis" => "0",
-                        "MinAverage" => "15MIN",
                         "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
                             ."3M6NzoiU2Vuc29ycyI7aTowO30=",
                         "params" => "YTowOnt9",
@@ -627,7 +591,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 ),
                 array(
                 ),
-                "000000000000000000000000000000000000FFFFFF50",
+                "000000000000000000000000000000000000FFFFFF00",
                 "",
                 "5A5A5A5C00002500002000595A5A5A5C0000250000200059"
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",

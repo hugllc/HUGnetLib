@@ -150,7 +150,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
                 false,
                 1,
-                "1970-01-01 00:00:00",
+                null,
                 1,
             ),
         );
@@ -182,7 +182,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
         $this->assertThat(
-            $this->d->LastConfig,
+            $this->d->params->DriverInfo["LastConfig"],
             $this->greaterThanOrEqual($LastConfig),
             "LastConfig wrong"
         );
@@ -248,7 +248,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     ."5A5A5A0300002500002000065A5A5A550000250000200050",
                 false,
                 1,
-                0,
+                null,
                 1,
             ),
         );
@@ -280,7 +280,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         //$this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
         $this->assertThat(
-            $this->d->LastPoll,
+            $this->d->params->DriverInfo["LastPoll"],
             $this->greaterThanOrEqual($LastPoll),
             "LastPoll wrong"
         );
@@ -394,7 +394,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(time()-3600, array(), 1, true),
             array(
                 time()-86400,
-                array("ConfigFail" => 60, "LastConfig" => time()),
+                array("ConfigFail" => 60, "LastConfigTry" => time()),
                 12,
                 false,
             ),
@@ -415,7 +415,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     function testReadSetupTime($lastConfig, $persist, $interval, $expect)
     {
         $this->d->params->DriverInfo = $persist;
-        $this->d->LastConfig = $lastConfig;
+        $this->d->params->DriverInfo["LastConfig"] = $lastConfig;
         $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
     }
@@ -433,7 +433,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(time()-3600, array(), 10, true),
             array(
                 time()-86400,
-                array("PollFail" => 60, "LastPoll" => time()),
+                array("PollFail" => 60, "LastPollTry" => time()),
                 12,
                 false,
             ),
@@ -454,7 +454,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     function testReadDataTime($lastPoll, $persist, $interval, $expect)
     {
         $this->d->params->DriverInfo = $persist;
-        $this->d->LastPoll = $lastPoll;
+        $this->d->params->DriverInfo["LastPoll"] = $lastPoll;
         $this->d->PollInterval = $interval;
         $ret = $this->o->readDataTime();
         $this->assertSame($expect, $ret);
@@ -485,10 +485,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     function testReadSetupTimeReset($lastConfig, $persist)
     {
         $this->d->params->DriverInfo = $persist;
-        $this->d->LastConfig = $lastConfig;
+        $this->d->params->DriverInfo["LastConfig"] = $lastConfig;
         $this->o->readSetupTimeReset();
-        $this->assertSame("1970-01-01 00:00:00", $this->d->LastConfig);
         $this->assertSame(0, $this->d->params->DriverInfo["LastConfig"]);
+        $this->assertSame(0, $this->d->params->DriverInfo["LastConfigTry"]);
         $this->assertSame(0, $this->d->params->DriverInfo["ConfigFail"]);
     }
     /**
@@ -517,10 +517,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     function testReadDataTimeReset($lastPoll, $persist)
     {
         $this->d->params->DriverInfo = $persist;
-        $this->d->LastPoll = $lastConfig;
+        $this->d->params->DriverInfo["LastPoll"] = $lastConfig;
         $this->o->readDataTimeReset();
-        $this->assertSame("1970-01-01 00:00:00", $this->d->LastPoll);
         $this->assertSame(0, $this->d->params->DriverInfo["LastPoll"]);
+        $this->assertSame(0, $this->d->params->DriverInfo["LastPollTry"]);
         $this->assertSame(0, $this->d->params->DriverInfo["PollFail"]);
     }
     /**

@@ -115,5 +115,17 @@ class DummyTableContainer extends HUGnetDBTable
         return $row;
     }
 
+
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param mixed $stuff The stuff given to the function.
+    *
+    * @return null
+    */
+    public function someFunction($stuff)
+    {
+        return $this->toArray($stuff);
+    }
 }
 ?>

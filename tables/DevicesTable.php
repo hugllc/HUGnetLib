@@ -172,36 +172,6 @@ class DevicesTable extends HUGnetDBTable
             "Type" => "varchar(6)",
             "Default" => 'FFFFFF',
         ),
-        "BoredomThreshold" => array(
-            "Name" => "BoredomThreshold",
-            "Type" => "tinyint(4)",
-            "Default" => 80,
-        ),
-        "LastConfig" => array(
-            "Name" => "LastConfig",
-            "Type" => "bigint",
-            "Default" => '0',
-        ),
-        "LastPoll" => array(
-            "Name" => "LastPoll",
-            "Type" => "bigint",
-            "Default" => '0',
-        ),
-        "LastHistory" => array(
-            "Name" => "LastHistory",
-            "Type" => "bigint",
-            "Default" => '0',
-        ),
-        "LastAnalysis" => array(
-            "Name" => "LastAnalysis",
-            "Type" => "bigint",
-            "Default" => '0',
-        ),
-        "MinAverage" => array(
-            "Name" => "MinAverage",
-            "Type" => "varchar(16)",
-            "Default" => '15MIN',
-        ),
         "sensors" => array(
             "Name" => "sensors",
             "Type" => "longtext",
@@ -404,51 +374,6 @@ class DevicesTable extends HUGnetDBTable
         }
         $this->data["DeviceGroup"] = self::stringSize($value, 6);
     }
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setLastHistory($value)
-    {
-        $this->data["LastHistory"] = $this->unixDate($value);
-    }
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setLastConfig($value)
-    {
-        $this->data["LastConfig"] = $this->unixDate($value);
-    }
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setLastPoll($value)
-    {
-        $this->data["LastPoll"] = $this->unixDate($value);
-    }
-    /**
-    * function to set LastHistory
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setLastAnalysis($value)
-    {
-        $this->data["LastAnalysis"] = $this->unixDate($value);
-    }
-
     /**
     * Hexifies a version in x.y.z form.
     *

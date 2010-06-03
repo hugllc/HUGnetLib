@@ -257,6 +257,29 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         }
     }
     /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetRow
+    *
+    * @return null
+    */
+    public function testRefresh($preload, $key, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $id = $o->sqlId;
+        $o->$id = $key;
+        $o->refresh();
+        if (is_array($expect)) {
+            $this->assertSame($expect, $o->toArray());
+        } else {
+            $this->assertNull($ret);
+        }
+    }
+    /**
     * Data provider for testCreate
     *
     * @return array
@@ -452,8 +475,44 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     public function testSelectOneInto($preload, $where, $data, $expect)
     {
         $o = new HUGnetDBTableTestStub($preload);
-        $res = $o->selectInto($where, $data);
+        $res = $o->selectOneInto($where, $data);
         $this->assertSame($expect, $o->toArray());
+    }
+    /**
+    * Data provider for testSelectIDs
+    *
+    * @return array
+    */
+    public static function dataSelectIDs()
+    {
+        return array(
+            array(
+                array(),
+                "",
+                array(),
+                array(
+                    "-5" => "-5", "1" => "1", "2" => "2", "32" => "32"
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSelectIds
+    *
+    * @return null
+    */
+    public function testSelectIds($preload, $where, $data, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $ret = $o->selectIDs($where, $data);
+        $this->assertSame($expect, $ret);
     }
     /**
     * Data provider for testGetRow

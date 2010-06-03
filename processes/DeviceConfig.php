@@ -84,22 +84,20 @@ class DeviceConfig extends ProcessBase
     public function config($loadable = false)
     {
         // Get the devices
-        $devs = $this->device->select(1);
+        $devs = $this->device->selectIDs(
+            "GatewayKey = ? AND Active = ? AND id <> ?",
+            array($this->GatewayKey, 1, $this->myDevice->id)
+        );
+        shuffle($devs);
         // Go through the devices
-        foreach (array_keys((array)$devs) as $key) {
+        foreach ($devs as $key) {
             if (!$this->loop()) {
                 return;
             }
-            $device = &$devs[$key];
-            if (!$loadable || $device->loadable() && $device->Active) {
-                // We don't want to get our own config
-                if ($device->DeviceID !== $this->myDevice->DeviceID) {
-                    // We should only check stuff for our gateway
-                    if ($this->GatewayKey == $device->GatewayKey) {
-                        if ($device->readSetupTime()) {
-                            $this->_check($device);
-                        }
-                    }
+            $this->device->getRow($key);
+            if (!$loadable || $this->device->loadable()) {
+                if ($this->device->readSetupTime()) {
+                    $this->_check($this->device);
                 }
             }
         }
@@ -116,7 +114,7 @@ class DeviceConfig extends ProcessBase
         // Be verbose ;)
         self::vprint(
             "Checking ".$dev->DeviceID." LastConfig: ".
-            date("Y-m-d H:i:s", $dev->LastConfig),
+            date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
             HUGnetClass::VPRINT_NORMAL
         );
         // Read the setup
@@ -139,7 +137,7 @@ class DeviceConfig extends ProcessBase
         self::vprint(
             "Failed. Failures: ".$dev->params->DriverInfo["ConfigFail"]
             ." LastConfig try: "
-            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfig"]),
+            .date("Y-m-d H:i:s", $dev->params->DriverInfo["LastConfigTry"]),
             HUGnetClass::VPRINT_NORMAL
         );
         // Log an error for every 10 failures

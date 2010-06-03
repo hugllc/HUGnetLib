@@ -66,7 +66,7 @@ class PeriodicCheck extends PeriodicPlugins
             $array["PluginType"] = 'check';
         }
         parent::fromArray($array);
-    }
+   }
     /**
     * Wrapper to send out an email
     *

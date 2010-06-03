@@ -203,9 +203,11 @@ class DeviceContainer extends DevicesTable
         $this->FWPartNum = substr($string, self::FW_START, 10);
         $this->FWVersion = substr($string, self::FWV_START, 6);
         $this->DeviceGroup      = trim(strtoupper(substr($string, self::GROUP, 6)));
-        $this->BoredomThreshold = hexdec(trim(substr($string, self::BOREDOM, 2)));
         $this->RawSetup         = $string;
         $this->_setupClasses();
+        $this->params->DriverInfo["BoredomThreshold"] = hexdec(
+            trim(substr($string, self::BOREDOM, 2))
+        );
         if (is_object($this->epDriver)) {
             $this->epDriver->fromSetupString(substr($string, self::CONFIGEND));
         }
@@ -233,7 +235,7 @@ class DeviceContainer extends DevicesTable
         $string .= self::hexifyPartNum($this->FWPartNum);
         $string .= self::hexifyVersion($this->FWVersion);
         $string .= $this->DeviceGroup;
-        $string .= self::hexify($this->BoredomThreshold, 2);
+        $string .= self::hexify($this->params->DriverInfo["BoredomThreshold"], 2);
         if (is_object($this->epDriver)) {
             $string .= $this->epDriver->toSetupString($default);
         }

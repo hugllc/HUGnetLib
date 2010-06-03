@@ -141,7 +141,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     protected function getMyDeviceID()
     {
         self::vprint("Finding my DeviceID...", HUGnetClass::VPRINT_NORMAL);
-        $devs = $this->myDevice->select(
+        // If this is a restart, pull all the old device info.
+        $ret = $this->myDevice->selectOneInto(
             "HWPartNum = ? AND DeviceLocation = ? AND GatewayKey = ?",
             array(
                 $this->myDevice->HWPartNum,
@@ -149,8 +150,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
                 $this->myDevice->GatewayKey,
             )
         );
-        if (is_object($devs[0])) {
-            $DeviceID = $devs[0]->DeviceID;
+        if ($ret) {
+            $DeviceID = $this->myDevice->DeviceID;
             $this->myConfig->sockets->forceDeviceID($DeviceID);
         } else {
             $DeviceID = $this->myConfig->sockets->deviceID(array());
@@ -305,7 +306,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         static $last;
         // Do this only once per minute max
         if ($last != date("i")) {
-            $this->myDevice->LastConfig = time();
+            $this->myDevice->params->DriverInfo["LastConfig"] = time();
             $this->myDevice->updateRow();
             $last = date("i");
         }

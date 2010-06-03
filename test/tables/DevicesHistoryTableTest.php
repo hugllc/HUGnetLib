@@ -294,7 +294,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "id" => null,
                     "DeviceID" => 12,
                     "SaveDate" => 0,
-                    "SetupString" => "000000000C00392102410039200141000102FFFFFF50",
+                    "SetupString" => "000000000C00392102410039200141000102FFFFFF00",
                     "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                 ),
