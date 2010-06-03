@@ -183,7 +183,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
     public static function dataReadSetup()
     {
         return array(
-            array(  #0
+            array(  // #0
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -231,7 +231,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 false,
                 array(),
             ),
-            array(  #1
+            array(  // #1
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -363,7 +363,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 ),
             ),
             // Board rebooted
-           array(  #2
+           array(  // #2
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -521,7 +521,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     ),
                 ),
             ),
-            array(
+            array( // #3
                 array(
                     array(
                         "HWPartNum" => "0039-21-01-A",
@@ -583,7 +583,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 false,
                 array(),
             ),
-            array(
+            array( // #4
                 array(),
                 array(
                     "id"        => 0x25,
