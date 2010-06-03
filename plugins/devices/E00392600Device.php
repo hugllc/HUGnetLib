@@ -57,6 +57,8 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 class E00392600Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
+    /** The placeholder for the reading the downstream units from a controller */
+    const COMMAND_READDOWNSTREAM = "56";
     /** @var int The job number for polling */
     const JOB_POLL     = 1;
     /** @var int The job number for updatedb */
@@ -84,7 +86,6 @@ class E00392600Device extends DeviceDriverBase
                 "0039-26-03-P" => "DEFAULT",
                 "0039-26-04-P" => "DEFAULT",
                 "0039-26-05-P" => "DEFAULT",
-                "0039-26-06-P" => "DEFAULT",
                 "0039-26-07-P" => "DEFAULT",
             ),
         ),
