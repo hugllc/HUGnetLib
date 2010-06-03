@@ -116,6 +116,19 @@ class E00392101Device extends DeviceDriverLoadableBase
     /**
     * Writes the program into the device
     *
+    * The steps are as follows:
+    * 1. Get the firmware
+    * 2. Write the Code (Flash)
+    * 3. Write the Data (E2)
+    * 4. Write the CRC (This allows the program to boot)
+    * 5. Run the program
+    *
+    * The program will not boot unless the CRC is written.  The device calculates
+    * it and sets it, we just have to tell the device to do it.  On boot the
+    * device checks the saved CRC against the calculated one.  If they match it
+    * tries to run the loaded application.
+    *
+    * @todo This routine could use some cleanup
     * @return bool True on success, False on failure
     */
     public function writeProgram()
@@ -143,6 +156,11 @@ class E00392101Device extends DeviceDriverLoadableBase
             $ret = $this->writeData();
         }
         if ($ret) {
+            $crc = $this->writeCRC();
+            self::vprint(
+                "Setting the application CRC to $crc",
+                HUGnetClass::VPRINT_NORMAL
+            );
             $ret = $this->runApplication();
             if ($ret) {
                 $msg = "Running the program "

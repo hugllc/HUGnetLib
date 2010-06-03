@@ -426,32 +426,9 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
-                        "Data" => "0102",
                     )
                 ),
-                true,
-            ),
-            // Wrong value written
-            array(
                 "0102",
-                "000123",
-                (string) new PacketContainer(
-                    array(
-                        "From" => "000123",
-                        "To" => "000020",
-                        "Command" => PacketContainer::COMMAND_REPLY,
-                        "Data" => "0103",
-                    )
-                ),
-                (string) new PacketContainer(
-                    array(
-                        "To" => "000123",
-                        "From" => "000020",
-                        "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
-                        "Data" => "0102",
-                    )
-                ),
-                false,
             ),
             // No Reply
             array(
@@ -463,7 +440,6 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
-                        "Data" => "0102",
                     )
                 )
                 .(string) new PacketContainer(
@@ -471,7 +447,6 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
-                        "Data" => "0102",
                     )
                 )
                 .(string) new PacketContainer(
@@ -487,7 +462,6 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
                         "To" => "000123",
                         "From" => "000020",
                         "Command" => DeviceDriverLoadableBase::COMMAND_WRITECRC,
-                        "Data" => "0102",
                     )
                 ),
                 false,

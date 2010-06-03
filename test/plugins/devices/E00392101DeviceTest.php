@@ -289,6 +289,14 @@ S9030000FC",
                         "To" => "000020",
                         "From" => "000123",
                         "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "ABCD",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
                         "Data" => "",
                     )
                 ),
@@ -341,6 +349,15 @@ S9030000FC",
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "",
                     )
                 ).
                 (string) new PacketContainer(
@@ -719,6 +736,14 @@ S9030000FC",
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFF",
                     )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000123",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "ABCD",
+                    )
                 ),
                 (string) new PacketContainer(
                     array(
@@ -769,6 +794,15 @@ S9030000FC",
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000123",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "",
                     )
                 ).
                 (string) new PacketContainer(
@@ -988,6 +1022,14 @@ S9030000FC",
                         "To" => "000020",
                         "From" => "000025",
                         "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "ABCD",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000025",
+                        "Command" => PacketContainer::COMMAND_REPLY,
                         "Data" => "",
                     )
                 ),
@@ -1022,6 +1064,15 @@ S9030000FC",
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
                             ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command"
+                            => DeviceDriverLoadableBase::COMMAND_WRITECRC,
+                        "Data" => "",
                     )
                 ).
                 (string) new PacketContainer(

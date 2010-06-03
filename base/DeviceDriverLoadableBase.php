@@ -171,17 +171,11 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     /**
     * Gets the CRC of the data
     *
-    * @param string $crc The CRC to write
-    *
     * @return The CRC on success, false on failure
     */
-    protected function writeCRC($crc)
+    protected function writeCRC()
     {
-        $ret = $this->sendPkt(
-            self::COMMAND_WRITECRC,
-            $this->stringSize($crc, 4)
-        );
-        return ($ret == $crc);
+        return $this->sendPkt(self::COMMAND_WRITECRC);
     }
     /**
     * Runs the application

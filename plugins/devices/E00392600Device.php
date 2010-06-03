@@ -112,6 +112,7 @@ class E00392600Device extends DeviceDriverBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 0;
+        $this->myDriver->DriverInfo["PacketTimeout"] = 10;
         $this->fromSetupString($string);
     }
     /**

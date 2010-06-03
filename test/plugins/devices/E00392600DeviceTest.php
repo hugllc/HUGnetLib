@@ -170,6 +170,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                     ."01020304E7",
                 array(
                     "NumSensors" => 0,
+                    "PacketTimeout" => 10,
                     "Job" => 6,
                     "Function" => "Config",
                     "CurrentGatewayKey" => 12,
@@ -183,6 +184,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                     ."0102030412",
                 array(
                     "NumSensors" => 0,
+                    "PacketTimeout" => 10,
                     "Job" => 10,
                     "Function" => "Unknown",
                     "CurrentGatewayKey" => 12,
