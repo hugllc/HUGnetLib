@@ -127,7 +127,10 @@ class E00392100Device extends DeviceDriverLoadableBase
             }
         }
         if ($ret) {
-            $ret = $this->readDownstreamDevices();
+            // This doesn't count towards whether the config passes or fails because
+            // the packet is currently too big to go through the new controller
+            // board.  If it works it works.  If it doesn't it doesn't.
+            $this->readDownstreamDevices();
         }
         return $this->setLastConfig($ret);
     }

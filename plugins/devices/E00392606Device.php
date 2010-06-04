@@ -114,7 +114,10 @@ class E00392606Device extends E00392600Device
     {
         $ret = $this->readConfig();
         if ($ret) {
-            $ret = $this->readDownstreamDevices();
+            // This doesn't count towards whether the config passes or fails because
+            // the packet is currently too big to go through the new controller
+            // board.  If it works it works.  If it doesn't it doesn't.
+            $this->readDownstreamDevices();
         }
         return $this->setLastConfig($ret);
     }
