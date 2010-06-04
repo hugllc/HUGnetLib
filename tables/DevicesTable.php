@@ -57,6 +57,15 @@ require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
  */
 class DevicesTable extends HUGnetDBTable
 {
+    /** This is the maximum our SN can be */
+    const MAX_TEMP_SN = 0xFDFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_TEMP_SN = 0xFD0000;
+    /** This is the maximum our SN can be */
+    const MAX_GROUP_SN = 0xFFFFFF;
+    /** This is the minimum our SN can be */
+    const MIN_GROUP_SN = 0xFF0000;
+
     /** @var string This is the table we should use */
     public $sqlTable = "devices";
     /** @var string This is the primary key of the table.  Leave blank if none  */
@@ -231,11 +240,12 @@ class DevicesTable extends HUGnetDBTable
     {
         $dev = new DevicesTable($data);
         if (!$dev->exists()) {
-            $dev->insertRow();
+            return $dev->insertRow();
         }
+        return false;
     }
     /**
-    * This function updates the record currently in this table
+    * This function inserts this record in the table
     *
     * @param bool $replace Replace any records found that collide with this one.
     *
@@ -246,7 +256,15 @@ class DevicesTable extends HUGnetDBTable
         if (empty($this->id)) {
             $this->id = hexdec($this->DeviceID);
         }
-        parent::insertRow($replace);
+        // This is so we don't insert bad DeviceIDs.
+        // Group and temporary DeviceIDs are omitted, as well as the default one
+        if ((($this->id >= self::MIN_GROUP_SN) && ($this->id <= self::MAX_GROUP_SN))
+            || (($this->id >= self::MIN_TEMP_SN) && ($this->id <= self::MAX_TEMP_SN))
+            || ($this->id == $this->default["id"])
+        ) {
+            return false;
+        }
+        return parent::insertRow($replace);
     }
     /**
     * Checks to see if our deviceID exists in the database

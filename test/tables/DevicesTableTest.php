@@ -262,6 +262,51 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                         "params" => "",
                     ),
                 ),
+                true,
+            ),
+            array(
+                array(
+                    "DeviceID" => DevicesTable::MAX_GROUP_SN,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "DeviceID" => DevicesTable::MIN_GROUP_SN,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "DeviceID" => DevicesTable::MIN_TEMP_SN,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "DeviceID" => DevicesTable::MIN_TEMP_SN,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                false,
             ),
         );
     }
@@ -269,18 +314,20 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     * Tests the insert of a DeviceID
     *
     * @param mixed $data   The data to use
-    * @param array $expect The expected return
+    * @param array $expect The expected table row
+    * @param bool  $ret    The expected return
     *
     * @dataProvider dataInsertDeviceID
     *
     * @return null
     */
-    public function testInsertDeviceID($data, $expect)
+    public function testInsertDeviceID($data, $expect, $ret)
     {
-        DevicesTable::insertDeviceID($data);
+        $return = DevicesTable::insertDeviceID($data);
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
+        $this->assertSame($ret, $return);
     }
     /**
     * Data provider for testInsertRow

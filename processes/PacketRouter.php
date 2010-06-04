@@ -112,7 +112,7 @@ class PacketRouter extends ProcessBase
         // Remove the original group if it is there.
         unset($groups[$pkt->group]);
         // Print out this packet
-        self::vprint(
+        $this->vprint(
             $pkt->group." -> (".implode((array)$groups, ", ")
             .") ".$this->_output($pkt),
             HUGnetClass::VPRINT_NORMAL
@@ -144,7 +144,7 @@ class PacketRouter extends ProcessBase
             if (!$this->loop()) {
                 return $packets;
             }
-            self::vprint("Reading $group", HUGnetClass::VPRINT_VERBOSE);
+            $this->vprint("Reading $group", HUGnetClass::VPRINT_VERBOSE);
 
             // Make sure of our timeout is low.  We set it to 0.5
             $data = array(
@@ -157,7 +157,7 @@ class PacketRouter extends ProcessBase
             if (is_object($pkt)) {
                 if ($pkt->toMe()) {
                     // Print out this packet
-                    self::vprint(
+                    $this->vprint(
                         $pkt->group." -> Me ".$this->_output($pkt),
                         HUGnetClass::VPRINT_NORMAL
                     );
@@ -219,10 +219,15 @@ class PacketRouter extends ProcessBase
     private function _setRoute(PacketContainer &$pkt)
     {
         if (!$pkt->unsolicited()) {
-            if (!isset($this->Routes[$pkt->From])
-                && !(PacketContainer::checkDeviceID($pkt->From))
-            ) {
+            if (!isset($this->Routes[$pkt->From])) {
+                // Print out this packet
+                $this->vprint(
+                    "Trying to insert ".$pkt->From." into the database.",
+                    HUGnetClass::VPRINT_NORMAL
+                );
                 // If we have not seen this before try to put it in the database
+                // It will reject any bad DeviceIDs, so we don't have to worry about
+                // what we might be putting into the database.
                 DevicesTable::insertDeviceID(
                     array(
                         "DeviceID" => $pkt->From,
