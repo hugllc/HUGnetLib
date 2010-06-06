@@ -1805,7 +1805,6 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     * Register this database object
     *
     * @param object &$table The table object
-    * @param PDO    &$pdo   The PDO object
     */
     public function __construct(&$table)
     {

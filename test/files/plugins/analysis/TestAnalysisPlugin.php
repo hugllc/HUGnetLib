@@ -38,7 +38,7 @@
 // Need to make sure this file is not added to the code coverage
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-require_once dirname(__FILE__).'/../../../../base/AnalysisPluginBase.php';
+require_once dirname(__FILE__).'/../../../../base/DeviceProcessPluginBase.php';
 
 /**
  * Test class for filter.
@@ -53,8 +53,8 @@ require_once dirname(__FILE__).'/../../../../base/AnalysisPluginBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestAnalysisPlugin extends AnalysisPluginBase
-    implements AnalysisPluginInterface
+class TestAnalysisPlugin extends DeviceProcessPluginBase
+    implements DeviceProcessPluginInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
@@ -71,6 +71,6 @@ class TestAnalysisPlugin extends AnalysisPluginBase
     */
     public function main(DeviceContainer &$dev)
     {
-        $GLOBALS["testAnalysis"]++;
+        $dev->params->DriverInfo[__CLASS__]++;
     }
 }

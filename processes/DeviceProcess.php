@@ -37,9 +37,6 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/ProcessBase.php";
-require_once dirname(__FILE__)."/../base/PeriodicPluginBase.php";
-require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-require_once dirname(__FILE__)."/../containers/PacketContainer.php";
 require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
 
 /**
@@ -55,7 +52,7 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class PeriodicPlugins extends ProcessBase
+class DeviceProcess extends ProcessBase implements PacketConsumerInterface
 {
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -65,13 +62,14 @@ class PeriodicPlugins extends ProcessBase
         "PluginExtension" => "php",
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
-        "PluginType"      => "periodic",
+        "PluginType"      => "deviceProcess",
     );
     /** @var array Array of objects that are our plugins */
     protected $active = array();
+    /** @var array Array of objects that are our plugins */
+    protected $priority = array();
     /** @var object This is where our plugin object resides */
     protected $myPlugins = array();
-
     /**
     * Builds the class
     *
@@ -85,7 +83,7 @@ class PeriodicPlugins extends ProcessBase
         parent::__construct($data, $device);
         $this->registerHooks();
         $this->requireGateway();
-        $this->_registerPlugins();
+        $this->registerPlugins();
     }
     /**
     * This function gets setup information from all of the devices
@@ -95,7 +93,7 @@ class PeriodicPlugins extends ProcessBase
     *
     * @return null
     */
-    private function _registerPlugins()
+    protected function registerPlugins()
     {
         $this->active = array();
         $this->myPlugins = new plugins(
@@ -111,64 +109,73 @@ class PeriodicPlugins extends ProcessBase
         );
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
-            if (is_subclass_of($c, "PeriodicPluginInterface")) {
-                $this->active[$class["Name"]] = new $c($data, $this);
+            $n = $class["Name"];
+            if (is_subclass_of($c, "DeviceProcessPluginInterface")) {
+                $this->active[$n] = new $c($data, $this);
+                $this->priority[$this->active[$n]->priority()][$n] = $n;
             }
         }
     }
     /**
-    * This function gets setup information from all of the devices
+    * This process runs analysis plugins on the data
     *
     * This function should be called periodically as often as possible.  It will
-    * check all plugins before returning
+    * go through the whole list of devices before returning.
     *
     * @return null
     */
     public function main()
     {
-        foreach (array_keys((array)$this->active) as $key) {
-            if ($this->active[$key]->ready()) {
-                $this->active[$key]->main();
+        // Get the devices
+        $devs = $this->device->selectIDs(
+            "GatewayKey = ? AND Active = ? AND id <> ?",
+            array($this->GatewayKey, 1, $this->myDevice->id)
+        );
+        shuffle($devs);
+        // Go through the devices
+        foreach ($devs as $key) {
+            if (!$this->loop()) {
+                return;
+            }
+            $this->device->getRow($key);
+            $this->_check($this->device);
+            $this->device->updateRow();
+        }
+
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return int The number of packets routed
+    */
+    private function _check(DeviceContainer &$dev)
+    {
+        foreach ($this->priority as $p) {
+            foreach ($p as $n) {
+                if ($this->active[$n]->ready($dev)) {
+                    $this->active[$n]->main($dev);
+                }
             }
         }
     }
     /**
-    * Wrapper to send out an email
+    * This deals with Unsolicited Packets
     *
-    * This wrapper is just for testing purposes, so I can isolate the call to 'mail'
+    * @param PacketContainer &$pkt The packet that is to us
     *
-    * @param string $subject The subject of the message
-    * @param string $message The actual message
-    *
-    * @return mixed Array in test mode, bool in normal mode
+    * @return string
     */
-    public function mail($subject, $message)
+    public function packetConsumer(PacketContainer &$pkt)
     {
-        if (empty($this->myConfig->admin_email)) {
-            return false;
+        foreach ($this->priority as $p) {
+            foreach ($p as $n) {
+                if ($this->active[$n] instanceof PacketConsumerInterface) {
+                    $this->active[$n]->packetConsumer($pkt);
+                }
+            }
         }
-        $additional_headers    = "";
-        $additional_parameters = "";
-        // Do a test if we are in test mode.
-        if ($this->myConfig->test) {
-            return array(
-                $this->myConfig->admin_email,
-                $subject,
-                $message,
-                $additional_headers,
-                $additional_parameters
-            );
-        }
-        // @codeCoverageIgnoreStart
-        // Can't test this call
-        return mail(
-            $this->myConfig->admin_email,
-            $subject,
-            $message,
-            $additional_headers,
-            $additional_parameters
-        );
-        // @codeCoverageIgnoreEnd
     }
 }
 ?>

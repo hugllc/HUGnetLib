@@ -62,11 +62,12 @@ if (!defined("HUGNET_DATABASE")) {
 
 $temp_dir = sys_get_temp_dir();
 
-/** Include the database code */
-require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
-/** Include the endpoint driver code */
-require_once HUGNET_INCLUDE_PATH."/driver.php";
-/** Include the endpoint driver code */
-require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
-
+if (defined("LEGACY")) {
+    /** Include the database code */
+    require_once HUGNET_INCLUDE_PATH."/base/HUGnetDB.php";
+    /** Include the endpoint driver code */
+    require_once HUGNET_INCLUDE_PATH."/driver.php";
+    /** Include the endpoint driver code */
+    require_once HUGNET_INCLUDE_PATH."/lib/HUGnetMisc.php";
+}
 ?>

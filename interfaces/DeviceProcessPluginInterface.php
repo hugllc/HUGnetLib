@@ -24,7 +24,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Base
+ * @category   Interfaces
  * @package    HUGnetLib
  * @subpackage Plugins
  * @author     Scott Price <prices@hugllc.com>
@@ -35,15 +35,12 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-/** Require the files we need */
-require_once dirname(__FILE__)."/HUGnetClass.php";
-require_once dirname(__FILE__)."/../interfaces/AnalysisPluginInterface.php";
 /**
  * Base class for all other classes
  *
  * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
  *
- * @category   Base
+ * @category   Interfaces
  * @package    HUGnetLib
  * @subpackage Plugins
  * @author     Scott Price <prices@hugllc.com>
@@ -52,45 +49,30 @@ require_once dirname(__FILE__)."/../interfaces/AnalysisPluginInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class AnalysisPluginBase extends HUGnetClass
-    implements AnalysisPluginInterface
+interface DeviceProcessPluginInterface
 {
-    /** @var This is to register the class */
-    public static $registerPlugin = array(
-        "Name" => "Default",
-        "Type" => "analysis",
-        "Class" => "dummy",
-    );
-    /** @var This is when we were created */
-    protected $created = 0;
-    /** @var This is when we were last run */
-    protected $last = 0;
-
     /**
-    * This function sets up the driver object, and the database object.  The
-    * database object is taken from the driver object.
+    * This function does the stuff in the class.
     *
-    * @param mixed          $config The configuration array
-    * @param DeviceAnalysis &$obj   The controller object
+    * @param DeviceContainer &$dev The device to check
     *
-    * @return null
+    * @return bool True if ready to return, false otherwise
     */
-    public function __construct($config, DeviceAnalysis &$obj)
-    {
-        parent::__construct($config);
-        $this->created = time();
-        $this->control = &$obj;
-    }
-
+    public function main(DeviceContainer &$dev);
     /**
     * This function simply returns the priority of this plugin
     *
     * @return int
     */
-    public function priority()
-    {
-        return 50;
-    }
+    public function priority();
+    /**
+    * This function does the stuff in the class.
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function ready(DeviceContainer &$dev);
 }
 
 

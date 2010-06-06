@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../processes/DeviceAnalysis.php';
+require_once dirname(__FILE__).'/../../processes/DeviceProcess.php';
 
 /**
  * Test class for filter.
@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../processes/DeviceAnalysis.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
+class DeviceProcessTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -89,7 +89,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
             "HWPartNum"  => "0039-26-02-P",
             "FWPartNum"  => "0039-26-02-P",
         );
-        $this->o = new DeviceAnalysis($data, $this->device);
+        $this->o = new DeviceProcess($data, $this->device);
         $this->d = $this->readAttribute($this->o, "myDevice");
     }
 
@@ -124,7 +124,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceAnalysis(array(), $this->device);
+        $o = new DeviceProcess(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -143,7 +143,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                     "PluginExtension" => "php",
                     "PluginWebDir"    => "",
                     "PluginSkipDir"   => array(),
-                    "PluginType"      => "analysis",
+                    "PluginType"      => "deviceProcess",
                 ),
             ),
            array(
@@ -180,7 +180,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceAnalysis($preload, $this->device);
+        $o = new DeviceProcess($preload, $this->device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
@@ -231,7 +231,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
-                    "PluginType" => "analysis",
+                    "PluginType" => "deviceProcess",
                 ),
                 true,
                 array(
@@ -239,7 +239,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                     hexdec("654321") => null,
                     hexdec("234567") => 1
                 ),
-                array("TestAnalysisPlugin", "TestAnalysisPlugin2"),
+                array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
             array(
                 array(
@@ -273,7 +273,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
-                    "PluginType" => "analysis",
+                    "PluginType" => "deviceProcess",
                 ),
                 false,
                 array(
@@ -281,7 +281,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                     hexdec("654321") => null,
                     hexdec("234567") => null
                 ),
-                array("TestAnalysisPlugin", "TestAnalysisPlugin2"),
+                array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
         );
     }
@@ -307,7 +307,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
             $d->fromArray($load);
             $d->insertRow(true);
         }
-        $o = new DeviceAnalysis($preload, $this->device);
+        $o = new DeviceProcess($preload, $this->device);
         $o->loop = $loop;
         $o->main();
         foreach ((array)$devs as $load) {
@@ -330,7 +330,61 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
             );
         }
     }
-}
 
+    /**
+    * data provider for testMain
+    *
+    * @return array
+    */
+    public static function dataPacketConsumer()
+    {
+        return array(
+            array(
+                array(
+                    "Date" => 1275683593,
+                ),
+                array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "deviceProcess",
+                ),
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Date" => 1275683593,
+                    "Command" => "00",
+                    "Type" => "UNKNOWN",
+                    "Length" => 0,
+                    "Time" => 0.0,
+                    "Data" => "",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "Timeout" => 5,
+                    "Retries" => 3,
+                    "GetReply" => true,
+                    "group" => "TestDeviceProcessPlugin2",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $pkt     The packet data to send
+    * @param array  $preload The data to preload into the devices table
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketConsumer
+    */
+    public function testPacketConsumer($pkt, $preload, $expect)
+    {
+        $p = new PacketContainer($pkt);
+        $o = new DeviceProcess($preload, $this->device);
+        $o->packetConsumer($p);
+        $this->assertAttributeSame($expect, "data", $p);
+    }
+}
 
 ?>

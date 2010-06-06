@@ -396,7 +396,7 @@ class DevicePollTest extends PHPUnit_Framework_TestCase
         $this->o->poll($loadable);
         $this->assertSame($expect, $this->socket->writeString);
     }
-        /**
+    /**
     * data provider for testPacketConsumer
     *
     * @return array

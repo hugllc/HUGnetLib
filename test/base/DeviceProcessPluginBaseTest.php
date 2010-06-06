@@ -36,12 +36,12 @@
  */
 
 /** This is what we are testing */
-require_once dirname(__FILE__).'/../../base/AnalysisPluginBase.php';
+require_once dirname(__FILE__).'/../../base/DeviceProcessPluginBase.php';
 require_once dirname(__FILE__).'/../../processes/DeviceAnalysis.php';
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 
 /**
- * Test class for AnalysisPluginBase
+ * Test class for DeviceProcessPluginBase
  *
  * @category   Test
  * @package    HUGnetLibTest
@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class AnalysisPluginBaseTest extends PHPUnit_Framework_TestCase
+class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -74,7 +74,7 @@ class AnalysisPluginBaseTest extends PHPUnit_Framework_TestCase
         $this->device = array(
         );
         $this->p = new DeviceAnalysis($data, $this->device);
-        $this->o = new AnalysisPluginBaseTestStub($stub, $this->p);
+        $this->o = new DeviceProcessPluginBaseTestStub($stub, $this->p);
     }
 
     /**
@@ -113,7 +113,7 @@ class AnalysisPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($config, $expect)
     {
-        $o = new AnalysisPluginBaseTestStub($config, $this->p);
+        $o = new DeviceProcessPluginBaseTestStub($config, $this->p);
         foreach ($expect as $key => $value) {
             $this->assertAttributeSame($value, $key, $o);
         }
@@ -167,13 +167,13 @@ class AnalysisPluginBaseTest extends PHPUnit_Framework_TestCase
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class AnalysisPluginBaseTestStub extends AnalysisPluginBase
+class DeviceProcessPluginBaseTestStub extends DeviceProcessPluginBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "Test Stub",
         "Type" => "analysis",
-        "Class" => "AnalysisPluginBaseTestStub",
+        "Class" => "DeviceProcessPluginBaseTestStub",
     );
     /**
     * This function does the stuff in the class.

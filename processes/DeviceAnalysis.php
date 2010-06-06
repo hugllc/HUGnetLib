@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../base/ProcessBase.php";
+require_once dirname(__FILE__)."/DeviceProcess.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,24 +51,8 @@ require_once dirname(__FILE__)."/../base/ProcessBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceAnalysis extends ProcessBase
+class DeviceAnalysis extends DeviceProcess
 {
-    /** @var array This is the default values for the data */
-    protected $default = array(
-        "group"      => "default",          // The groups to route between
-        "GatewayKey" => 0,                  // The gateway key we are using
-        "PluginDir"       => "./plugins",  // This is the plugin path
-        "PluginExtension" => "php",
-        "PluginWebDir"    => "",
-        "PluginSkipDir"   => array(),
-        "PluginType"      => "analysis",
-    );
-    /** @var array Array of objects that are our plugins */
-    protected $active = array();
-    /** @var array Array of objects that are our plugins */
-    protected $priority = array();
-    /** @var object This is where our plugin object resides */
-    protected $myPlugins = array();
     /**
     * Builds the class
     *
@@ -79,82 +63,10 @@ class DeviceAnalysis extends ProcessBase
     */
     public function __construct($data, $device)
     {
+        if (!isset($data["PluginType"])) {
+            $data["PluginType"] = "analysis";
+        }
         parent::__construct($data, $device);
-        $this->registerHooks();
-        $this->requireGateway();
-        $this->_registerPlugins();
-    }
-    /**
-    * This function gets setup information from all of the devices
-    *
-    * This function should be called periodically as often as possible.  It will
-    * check all plugins before returning
-    *
-    * @return null
-    */
-    private function _registerPlugins()
-    {
-        $this->active = array();
-        $this->myPlugins = new plugins(
-            $this->PluginDir."/",
-            $this->PluginExtension,
-            $this->PluginWebDir,
-            $this->PluginSkipDir,
-            $this->verbose
-        );
-        $classes = $this->myPlugins->getClass($this->PluginType);
-        $data = array(
-            "verbose" => $this->verbose,
-        );
-        foreach ((array)$classes as $class) {
-            $c = $class["Class"];
-            $n = $class["Name"];
-            if (is_subclass_of($c, "AnalysisPluginInterface")) {
-                $this->active[$n] = new $c($data, $this);
-                $this->priority[$this->active[$n]->priority()][$n] = $n;
-            }
-        }
-    }
-    /**
-    * This process runs analysis plugins on the data
-    *
-    * This function should be called periodically as often as possible.  It will
-    * go through the whole list of devices before returning.
-    *
-    * @return null
-    */
-    public function main()
-    {
-        // Get the devices
-        $devs = $this->device->selectIDs(
-            "GatewayKey = ? AND Active = ? AND id <> ?",
-            array($this->GatewayKey, 1, $this->myDevice->id)
-        );
-        shuffle($devs);
-        // Go through the devices
-        foreach ($devs as $key) {
-            if (!$this->loop()) {
-                return;
-            }
-            $this->device->getRow($key);
-            $this->_check($this->device);
-        }
-
-    }
-    /**
-    * This function should be used to wait between config attempts
-    *
-    * @param DeviceContainer &$dev The device to check
-    *
-    * @return int The number of packets routed
-    */
-    private function _check(DeviceContainer &$dev)
-    {
-        foreach ($this->priority as $p) {
-            foreach ($p as $n) {
-                $this->active[$n]->main($dev);
-            }
-        }
     }
 }
 ?>
