@@ -59,7 +59,9 @@ class DevicesHistoryTable extends HUGnetDBTable
     /** @var string This is the table we should use */
     public $sqlTable = "devicesHistory";
     /** @var string This is the primary key of the table.  Leave blank if none  */
-    public $sqlId = "id";
+    public $sqlId = null;
+    /** @var string The orderby clause for this table */
+    public $sqlOrderBy = "SaveDate ASC";
     /**
     * @var array This is the definition of the columns
     *
@@ -88,11 +90,6 @@ class DevicesHistoryTable extends HUGnetDBTable
     public $sqlColumns = array(
         "id" => array(
             "Name" => "id",
-            "Type" => "INTEGER",
-            "Primary" => true,
-        ),
-        "DeviceID" => array(
-            "Name" => "DeviceID",
             "Type" => "INTEGER",
         ),
         "SaveDate" => array(
@@ -123,12 +120,18 @@ class DevicesHistoryTable extends HUGnetDBTable
     *       .
     *       .
     *   ),
+    *
+    *  To add a length to the column, simply add a comma and then the length to
+    *  the column name in the "Columns" array.  For a column named "colName" with
+    *  a index length of 15 would be:
+    *
+    *  "colName,15"
     */
     public $sqlIndexes = array(
         "DeviceID" => array(
             "Name"    => "DeviceID",
             "Unique"  => true,
-            "Columns" => array("DeviceID", "SetupString", "SensorString"),
+            "Columns" => array("id", "SaveDate", "SetupString", "SensorString,255"),
         ),
     );
 
@@ -160,18 +163,17 @@ class DevicesHistoryTable extends HUGnetDBTable
     public function insertRow($replace = false)
     {
         $ret = $this->select(
-            "DeviceID = ? AND SetupString = ? and SensorString = ?",
+            "id = ? AND SetupString = ? and SensorString = ?",
             array(
-                $this->DeviceID,
+                $this->id,
                 $this->SetupString,
                 $this->SensorString,
             )
         );
         if (is_object($ret[0])) {
-            $this->id = (int)$ret[0]->id;
+            $this->SaveDate = (int)$ret[0]->SaveDate;
             return true;
         }
-        $this->id = $this->myDriver->getNextID();
         return parent::insertRow($replace);
     }
     /**
@@ -183,7 +185,7 @@ class DevicesHistoryTable extends HUGnetDBTable
     */
     public function fromDeviceContainer(DeviceContainer &$dev)
     {
-        $this->DeviceID = $dev->id;
+        $this->id = $dev->id;
         $this->SensorString = $dev->sensors->toString();
         $this->SetupString = $dev->toSetupString();
         $this->SaveDate = time();
@@ -226,6 +228,22 @@ class DevicesHistoryTable extends HUGnetDBTable
         } else {
             parent::fromAny($data);
         }
+    }
+    /******************************************************************
+     ******************************************************************
+     ********  The following are input modification functions  ********
+     ******************************************************************
+     ******************************************************************/
+    /**
+    * function to set id
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setId($value)
+    {
+        $this->data["id"] = (int)$value;
     }
 }
 ?>

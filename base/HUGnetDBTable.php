@@ -108,6 +108,12 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *       .
     *       .
     *   ),
+    *
+    *  To add a length to the column, simply add a comma and then the length to
+    *  the column name in the "Columns" array.  For a column named "colName" with
+    *  a index length of 15 would be:
+    *
+    *  "colName,15"
     */
     public $sqlIndexes = array();
 

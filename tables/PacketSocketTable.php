@@ -162,17 +162,11 @@ class PacketSocketTable extends HUGnetDBTable
         ),
     );
 
-    /** @var object This is where we store our sqlDriver */
-    protected $myDriver = null;
-    /** @var object This is where we store our configuration object */
-    protected $myConfig = null;
     /** @var array This is the default values for the data */
     protected $default = array(
         "TimeoutPeriod" => 5,    // The timeout period of this packet
         "group" => "default",    // Server group to use
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
     /** @var array This is our standard order by clause */
     public $sqlOrderBy = "PacketTime ASC";
     /** @var array This is our standard order by clause */

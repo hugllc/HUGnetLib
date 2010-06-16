@@ -2,26 +2,22 @@
 <dataset>
     <table name="devicesHistory">
         <column>id</column>
-        <column>DeviceID</column>
         <column>SaveDate</column>
         <column>SetupString</column>
         <column>SensorString</column>
         <row>
-            <value>1</value>
             <value>15</value>
             <value>123456789</value>
             <value>aassddff</value>
             <value>ffssddaa</value>
         </row>
         <row>
-            <value>2</value>
             <value>15</value>
             <value>123456795</value>
             <value>aaasssdddfff</value>
             <value>fffsssdddaaa</value>
         </row>
         <row>
-            <value>3</value>
             <value>15</value>
             <value>123456799</value>
             <value>aaaassssddddffff</value>

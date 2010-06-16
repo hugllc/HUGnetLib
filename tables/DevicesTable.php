@@ -209,16 +209,10 @@ class DevicesTable extends HUGnetDBTable
     public $sqlIndexes = array(
     );
 
-    /** @var object This is where we store our sqlDriver */
-    protected $myDriver = null;
-    /** @var object This is where we store our configuration object */
-    protected $myConfig = null;
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",    // Server group to use
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
     /**
     * This is the constructor
     *

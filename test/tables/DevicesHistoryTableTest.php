@@ -57,22 +57,19 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
 {
     static $preload = array(
         array(
-            "id" => "1",
-            "DeviceID" => "15",
+            "id" => "15",
             "SaveDate" => "123456789",
             "SetupString" => "aassddff",
             "SensorString" => "ffssddaa",
         ),
         array(
-            "id" => "2",
-            "DeviceID" => "15",
+            "id" => "15",
             "SaveDate" => "123456795",
             "SetupString" => "aaasssdddfff",
             "SensorString" => "fffsssdddaaa",
         ),
         array(
-            "id" => "3",
-            "DeviceID" => "15",
+            "id" => "15",
             "SaveDate" => "123456799",
             "SetupString" => "aaaassssddddffff",
             "SensorString" => "ffffssssddddaaaa",
@@ -221,7 +218,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 array(
-                    "DeviceID" => 12,
+                    "id" => 12,
                     "SetupString" => "asdf",
                     "SensorString" => "fdsa",
                     "SaveDate" => 123456,
@@ -230,25 +227,24 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     self::$preload,
                     array(
                         array(
-                            "id" => "4",
-                            "DeviceID" => "12",
+                            "id" => "12",
                             "SaveDate" => "123456",
                             "SetupString" => "asdf",
                             "SensorString" => "fdsa",
                         ),
                     )
                 ),
-                4,
+                12,
             ),
             array(
                 array(
-                    "DeviceID" => 15,
+                    "id" => 15,
+                    "SaveDate" => 123456,
                     "SetupString" => "aassddff",
                     "SensorString" => "ffssddaa",
-                    "SaveDate" => 123456,
                 ),
                 self::$preload,
-                1,
+                15,
             ),
         );
     }
@@ -270,8 +266,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
         $this->o->insertRow();
         $stmt = $this->pdo->query("SELECT * FROM `devicesHistory`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->assertSame($expect, $rows);
-        $this->assertSame($id, $this->o->id);
+        $this->assertSame($expect, $rows, "Database is wrong");
+        $this->assertSame($id, $this->o->id, "ID is wrong");
     }
     /**
     * data provider for testForceTable
@@ -283,7 +279,6 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 new DeviceContainer(array(
-                    "DeviceID" => 12,
                     "id" => 12,
                     "HWPartNum" => "0039-21-02-A",
                     "FWPartNum" => "0039-20-01-A",
@@ -291,8 +286,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 )),
                 array(
                     "group" => "default",
-                    "id" => null,
-                    "DeviceID" => 12,
+                    "id" => 12,
                     "SaveDate" => 0,
                     "SetupString" => "000000000C00392102410039200141000102FFFFFF00",
                     "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"

@@ -73,6 +73,8 @@ class ConfigContainer extends HUGnetContainer
         ),
         "config"          => array(        // Configuration for the config script
             "enable"  => false,       // Enable this script
+            "deactivate" => 50,      //  How many failed attempts before disabling
+                                       // The device.
         ),
         "control"         => array(        // Configuration for the control script
             "enable"  => false,       // Enable this script

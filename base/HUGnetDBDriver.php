@@ -248,7 +248,17 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         }
         $this->query .= " INDEX `".$index["Name"]."` ON ";
         $this->query .= $this->table();
-        $this->query .= " (`".implode((array)$index["Columns"], "`, `")."`)";
+        $this->query .= " (";
+        $sep = "";
+        foreach ((array)$index["Columns"] as $col) {
+            $c = explode(",", $col);
+            $this->query .= $sep."`".$c[0]."`";
+            if (!empty($c[1])) {
+                $this->query .= " (".$c[1].")";
+            }
+            $sep = ", ";
+        }
+        $this->query .= ")";
         $this->prepare();
         $this->executeData();
     }
@@ -880,7 +890,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         if ($this->myTable->sqlTable != "errors") {
             $this->logError(
                 $errorInfo[0],
-                $this->myTable->group.": ".$errorInfo[2],
+                $this->myTable->group." (".$this->myTable->sqlTable."): "
+                .$errorInfo[2],
                 $severity,
                 $method
             );

@@ -464,6 +464,15 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
                 ."(`id`, `value`)",
             ),
+            array(
+                array(
+                    "Name" => "IndexName",
+                    "Unique" => true,
+                    "Columns" => array("id", "value,15"),
+                ),
+                "CREATE UNIQUE INDEX `IndexName` ON `myTable` "
+                ."(`id`, `value` (15))",
+            ),
         );
     }
     /**

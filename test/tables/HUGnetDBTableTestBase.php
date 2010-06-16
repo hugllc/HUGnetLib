@@ -203,10 +203,17 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             "In index '$name' Columns is not an array"
         );
         foreach ($index["Columns"] as $col) {
+            $c = explode(",", $col);
             $this->assertTrue(
-                isset($obj->sqlColumns[$col]),
-                "In index '$name' has non-existant column $col"
+                isset($obj->sqlColumns[$c[0]]),
+                "In index '$name' has non-existant column ".$c[0]
             );
+            if (!empty($c[1])) {
+                $this->assertTrue(
+                    is_numeric($c[1]),
+                    "Column index length is not numeric"
+                );
+            }
         }
     }
     /**

@@ -199,7 +199,6 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "Checksum" => "C6",
                         "CalcChecksum" => "C6",
                     ),
-                    "deviceHistoryID" => 1,
                     "command" => "55",
                     "dataIndex" => 123,
                 ),
@@ -236,7 +235,6 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "Checksum" => "C6",
                         "CalcChecksum" => "C6",
                     ),
-                    "deviceHistoryID" => 1,
                     "command" => "55",
                     "dataIndex" => 123,
                 ),
@@ -256,11 +254,19 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public function testFromArray($preload, $expect)
     {
+        $date = time();
         $this->o->fromArray($preload);
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame("PacketContainer", get_class($data["packet"]));
         $this->assertSame("PacketContainer", get_class($this->o->packet));
-        $this->assertSame($expect, $this->o->toArray());
+        $row = $this->o->toArray();
+        $this->assertThat(
+            $row["devicesHistoryDate"],
+            $this->greaterThanOrEqual($date),
+            "Date is wrong on key $key"
+        );
+        unset($row["devicesHistoryDate"]);
+        $this->assertSame($expect, $row);
     }
     /**
     * data provider for testSet
@@ -325,7 +331,6 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "id"        => "123",
                         "Date"      => "220954140",
                         "packet"    => $packet->toZip(),
-                        "deviceHistoryID"    => "1",
                         "command"   => "55",
                         "dataIndex" => "232",
                     ),
@@ -345,9 +350,18 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public function testInsertRecord($preload, $expect)
     {
+        $date = time();
         RawHistoryTable::insertRecord($preload);
         $stmt = $this->pdo->query("SELECT * FROM `rawHistory`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach (array_keys($rows) as $key) {
+            $this->assertThat(
+                $rows[$key]["devicesHistoryDate"],
+                $this->greaterThanOrEqual($date),
+                "Date is wrong on key $key"
+            );
+            unset($rows[$key]["devicesHistoryDate"]);
+        }
         $this->assertSame($expect, $rows);
     }
 

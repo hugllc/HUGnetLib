@@ -212,7 +212,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // Monitor for packets.  The GetReply => true allows the hooks to
         // take care of any packets.
         while ((time() < $end) && $this->loop()) {
-            PacketContainer::monitor(array("GetReply" => true, "Timeout" => 1));
+            PacketContainer::monitor(array("GetReply" => true, "Timeout" => 5));
         }
         // Set our end time
         $end = time() + $Timeout;

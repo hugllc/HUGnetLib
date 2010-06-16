@@ -110,10 +110,10 @@ class RawHistoryTable extends HUGnetDBTable
             "Type" => "longblob",
             "Default" => "",
         ),
-        "deviceHistoryID" => array(
-            "Name" => "deviceHistoryID",
+        "devicesHistoryDate" => array(
+            "Name" => "devicesHistoryDate",
             "Type" => "int",
-            "Default" => "",
+            "Default" => 0,
         ),
         "command" => array(
             "Name" => "command",
@@ -126,6 +126,8 @@ class RawHistoryTable extends HUGnetDBTable
             "Default" => 0,
         ),
     );
+    //ALTER TABLE `rawHistory` CHANGE `deviceHistoryID` `deviceHistoryDate`
+    //BIGINT NOT NULL
     /**
     * @var array This is the definition of the indexes
     *
@@ -207,7 +209,7 @@ class RawHistoryTable extends HUGnetDBTable
     public function fromArray($array)
     {
         parent::fromArray($array);
-        if (empty($this->deviceHistoryID) && isset($array["device"])) {
+        if (empty($this->devicesHistoryDate) && isset($array["device"])) {
             if (is_object($array["device"])) {
                 $dev = &$array["device"];
             } else {
@@ -215,7 +217,7 @@ class RawHistoryTable extends HUGnetDBTable
             }
             $this->devHist = new DevicesHistoryTable($dev);
             $this->devHist->insertRow();
-            $this->deviceHistoryID = $this->devHist->id;
+            $this->devicesHistoryDate = $this->devHist->SaveDate;
         }
         $this->_setupClasses();
     }

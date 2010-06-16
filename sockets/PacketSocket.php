@@ -143,7 +143,7 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     {
         $ret = &$this->myTable->getNextPacket();
         if ($ret === false) {
-            usleep(100000);
+            usleep(500000);
         }
         return $ret;
     }
