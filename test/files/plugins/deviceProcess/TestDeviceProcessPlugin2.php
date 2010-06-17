@@ -39,6 +39,7 @@
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once dirname(__FILE__).'/../../../../base/DeviceProcessPluginBase.php';
+require_once dirname(__FILE__).'/../../../../interfaces/PacketConsumerInterface.php';
 
 /**
  * Test class for filter.

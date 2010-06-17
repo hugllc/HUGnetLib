@@ -65,7 +65,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new PluginsContainer();
+        //$this->o = new PluginsContainer();
     }
 
     /**
@@ -78,7 +78,8 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
-        unset($this->o);
+        //unset($this->o);        var_dump($this->plugins);
+
     }
     /**
     * data provider for testConstructor
@@ -95,7 +96,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "dir" => dirname(__FILE__)."/../files/plugins/",
-                    "extension" => "php",
+                    "extension" => ".php",
                 ),
                 array (
                     'analysis' => array (
@@ -334,6 +335,18 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => ".inc.php",
+                ),
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => ".inc.php",
+                ),
+                array (
+                ),
+            ),
         );
     }
 
@@ -353,6 +366,60 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         $o = new PluginsContainer($preload);
         $this->assertAttributeSame($data, "data", $o);
         $this->assertAttributeSame($plugins, "plugins", $o);
+    }
+
+
+    /**
+    * data provider for testGetPlugin
+    *
+    * @return array
+    */
+    public static function dataGetPlugin()
+    {
+        return array(
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "periodic",
+                array (
+                    'testPeriodic' => array (
+                        'Name' => 'testPeriodic',
+                        'Type' => 'periodic',
+                        'Class' => 'TestPeriodicPlugin',
+                        'Flags' => array (
+                            0 => 'testPeriodic',
+                        ),
+                    ),
+                    'testPeriodic2' => array (
+                        'Name' => 'testPeriodic2',
+                        'Type' => 'periodic',
+                        'Class' => 'TestPeriodicPlugin2',
+                        'Flags' => array (
+                            0 => 'testPeriodic2',
+                        ),
+                    ),
+                ),
+
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to preload
+    * @param string $type    The type to get
+    * @param mixed  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetPlugin
+    */
+    public function testGetPlugin($preload, $type, $expect)
+    {
+        $o = new PluginsContainer($preload);
+        $this->assertSame($expect, $o->getPlugin($type));
     }
 
 
@@ -380,8 +447,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSet($var, $value, $expect)
     {
-        $this->o->$var = $value;
-        $data = $this->readAttribute($this->o, "data");
+        $o = new PluginsContainer($preload);
+        $o->$var = $value;
+        $data = $this->readAttribute($o, "data");
         $this->assertSame($expect, $data[$var]);
     }
     /**
@@ -408,8 +476,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToString($preload, $expect)
     {
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->toString());
+        $o = new PluginsContainer($preload);
+        $o->fromAny($preload);
+        $this->assertSame($expect, $o->toString());
     }
     /**
     * data provider for testToString
@@ -435,8 +504,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $expect)
     {
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->toArray());
+        $o = new PluginsContainer($preload);
+        $o->fromAny($preload);
+        $this->assertSame($expect, $o->toArray());
     }
 
 

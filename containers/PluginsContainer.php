@@ -63,6 +63,8 @@ class PluginsContainer extends HUGnetContainer
     );
     /** @var array The directory to skip. */
     protected $cache = array();
+    /** @var array The directory to skip. */
+    protected $typeCache = array();
     /** @var array Plugin Functions */
     protected $plugins = array();
     /** @var array This is where information on the plugin files is stored. */
@@ -194,9 +196,9 @@ class PluginsContainer extends HUGnetContainer
         if (!class_exists($name)) {
             return false;
         }
-        $reg = eval(
-            "return $name::\$registerPlugin;"
-        );
+        if (property_exists($name, "registerPlugin")) {
+            $reg = eval("return $name::\$registerPlugin;");
+        }
         if (empty($reg) && method_exists($name, "registerPlugin")) {
             $reg = eval("return $name::registerPlugin();");
         }
@@ -213,6 +215,76 @@ class PluginsContainer extends HUGnetContainer
     }
 
     /**
+    * Returns an array of plugins of the proper type
+    *
+    * @param string $type The type to get
+    *
+    * @return string The stripped name
+    */
+    protected function getType($type)
+    {
+        if (isset($this->plugins[$type])) {
+            return $this->plugins[$type];
+        }
+        return array();
+    }
+
+    /**
+    * Returns an array of plugins of the proper type
+    *
+    * @param string $type The type to get
+    * @param string $flag The flag to check for
+    *
+    * @return array The array of stuff
+    */
+    public function getPlugin($type, $flag=null)
+    {
+        if (empty($flag)) {
+            return $this->getType($type);
+        } else if (isset($this->plugins[$type][$flag])) {
+            return $this->plugins[$type][$flag];
+        }
+        return $this->_getPlugin($this->plugins[$type], $flag);
+
+    }
+
+    /**
+    * Returns an array of plugins of the proper type
+    *
+    * @param string $type The type to get
+    * @param string $flag The flag to check for
+    *
+    * @return string The stripped name
+    */
+    public function _getPlugin(&$type, $flag)
+    {
+
+        if (isset($this->typeCache[$flag])) {
+            return $type[$flag];
+        }
+        $f = explode(":", $flag);
+        $try = array();
+        if (count($flag) > 2) {
+            $try[] = $f[0].":".$f[1].":DEFAULT";
+            $try[] = $f[0].":DEFAULT:".$f[2];
+            $try[] = "DEFAULT:".$f[1].":".$f[2];
+            $try[] = "DEFAULT:".$f[1].":DEFAULT";
+        }
+        if (count($flag) > 1) {
+            $try[] = $f[0].":DEFAULT";
+            $try[] = "DEFAULT:".$f[1];
+        }
+        foreach ($try as $t) {
+            if (isset($type[$t])) {
+                $this->typeCache[$flag] = $t;
+                return $type[$t];
+            }
+        }
+        return $type["DEFAULT"];
+    }
+
+
+    /**
     * Strips the extension off of a file
     *
     * @param string $name The name of the file to be stripped
@@ -222,9 +294,6 @@ class PluginsContainer extends HUGnetContainer
     private function _stripFileExtension($name)
     {
         $pos = strpos($name, $this->extension);
-        if ($pos > 0) {
-            $pos-=1;  // Remove the trailing .
-        }
         return substr($name, 0, $pos);
     }
 
@@ -264,13 +333,13 @@ class PluginsContainer extends HUGnetContainer
     *
     * @return null
     */
-    protected function setPluginExtension($value)
+    protected function setExtension($value)
     {
         $value = (string)$value;
         if (substr($value, 0, 1) !== ".") {
             $value = ".".$value;
         }
-        $this->data["PluginExtension"] = $value;
+        $this->data["extension"] = $value;
     }
 
 }
