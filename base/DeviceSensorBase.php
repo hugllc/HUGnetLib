@@ -78,7 +78,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     protected $fixed = array(
         "longName" => "Unknown Sensor",
-        "unitType" => "unknown",
+        "unitType" => "Generic",
         "units" => 'unknown',
         "extraText" => array(),
         "extraDefault" => array(),

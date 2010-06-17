@@ -967,6 +967,163 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $ret, "Return value is wrong");
     }
 
+    /**
+    * data provider for testSensorStringToInt
+    *
+    * @return array
+    */
+    public static function dataSensorStringToInt()
+    {
+        return array(
+            array("000001", 65536),
+            array("000100", 256),
+            array("010000", 1),
+            array("010101", 65793),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $string The string to feed the function
+    * @param int    $int    The integer to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataSensorStringToInt
+    */
+    function testSensorStringToInt($string, $int)
+    {
+        $this->assertSame($int, $this->o->sensorStringToInt($string));
+    }
+
+    /**
+    * data provider for testSensorStringArrayToInts
+    *
+    * @return array
+    */
+    public static function dataSensorStringArrayToInts()
+    {
+        return array(
+            array(
+                array("000001", "000100", "010000", "010101"),
+                array(65536, 256, 1, 65793),
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $array  The array of strings to feed the function
+    * @param array $expect The array of integers to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataSensorStringArrayToInts
+    */
+    function testSensorStringArrayToInts($array, $expect)
+    {
+        $this->assertSame($expect, $this->o->sensorStringArrayToInts($array));
+    }
+
+    /**
+    * data provider for testDataIndex
+    *
+    * @return array
+    */
+    public static function dataDataIndex()
+    {
+        return array(
+            array(
+                "0001020304",
+                0
+            ),
+            array(
+                "110506",
+                17
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $string The data string
+    * @param array  $expect The integer to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataDataIndex
+    */
+    function testDataIndex($string, $expect)
+    {
+        $this->assertSame($expect, $this->o->dataIndex($string));
+    }
+
+    /**
+    * data provider for testTimeConstant
+    *
+    * @return array
+    */
+    public static function dataTimeConstant()
+    {
+        return array(
+            array(
+                "0001020304",
+                2
+            ),
+            array(
+                "11050001020304",
+                5
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $string The data string
+    * @param array  $expect The integer to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataTimeConstant
+    */
+    function testTimeConstant($string, $expect)
+    {
+        $this->assertSame($expect, $this->o->timeConstant($string));
+    }
+
+    /**
+    * data provider for testSensorData
+    *
+    * @return array
+    */
+    public static function dataSensorData()
+    {
+        return array(
+            array(
+                "000102000001000100010000010101",
+                array(65536, 256, 1, 65793),
+            ),
+            array(
+                "110500010203040506",
+                array(197121, 394500)
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param string $string The data string
+    * @param array  $expect The integer to expect in return
+    *
+    * @return null
+    *
+    * @dataProvider dataSensorData
+    */
+    function testSensorData($string, $expect)
+    {
+        $this->assertSame($expect, $this->o->sensorData($string));
+    }
+
 }
 /**
 * Driver for the polling script (0039-26-01-P)
@@ -1074,6 +1231,31 @@ class TestDevice extends DeviceDriverBase
     public function sendPkt($command, $data = "", $reply = true)
     {
         return parent::sendPkt($command, $data, $reply);
+    }
+    /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param string $string The string to convert
+    *
+    * @return int
+    */
+    public function sensorStringToInt($string)
+    {
+        return parent::sensorStringToInt($string);
+    }
+    /**
+    * Takes in an array of raw strings and returns an array of integers
+    *
+    * @param array $array The array of sensor strings to convert.
+    *
+    * @return array of ints
+    */
+    public function sensorStringArrayToInts($array)
+    {
+        return parent::sensorStringArrayToInts($array);
     }
 }
 

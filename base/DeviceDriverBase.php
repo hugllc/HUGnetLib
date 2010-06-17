@@ -288,7 +288,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
                     "packet" => $pkt->toString(),
                     "device" => $this->myDriver->toString(),
                     "command" => $pkt->Command,
-                    "dataIndex" => hexdec(substr($pkt->Reply->Data, 0, 2)),
+                    "dataIndex" => $this->dataIndex($pkt->Reply->Data),
                 )
             );
             return $ret;
@@ -402,7 +402,6 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     public function toSetupString($default = true)
     {
         return "";
-
     }
     /**
     * Creates the object from a string
@@ -418,5 +417,81 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             $this->myDriver->sensors->fromTypeString(substr($string, 2));
         }
     }
+    /**
+    * Takes in a raw string from a sensor gets the dataIndex out of it
+    *
+    * @param string $string The string to convert
+    *
+    * @return int
+    */
+    public function dataIndex($string)
+    {
+        return hexdec(substr($string, 0, 2));
+    }
+    /**
+    * Takes in a raw string from a sensor gets the timeConstant
+    *
+    * @param string $string The string to convert
+    *
+    * @return int
+    */
+    public function timeConstant($string)
+    {
+        $tc = hexdec(substr($string, 4, 2));
+        if (empty($tc)) {
+            // This is the old location for the time constant
+            $tc = hexdec(substr($string, 2, 2));
+        }
+        return $tc;
+    }
+    /**
+    * Takes in a raw string from a sensor gets the sensor data
+    *
+    * @param string $string The string to convert
+    *
+    * @return array
+    */
+    public function sensorData($string)
+    {
+        // Get the raw sensor string
+        $raw = str_split(substr($string, 6), 6);
+        return $this->sensorStringArrayToInts($raw);
+    }
+    /**
+    * Takes in a raw string from a sensor and makes an int out it
+    *
+    * The sensor data is stored little-endian, so it just takes that and adds
+    * the bytes together.
+    *
+    * @param string $string The string to convert
+    *
+    * @return int
+    */
+    protected function sensorStringToInt($string)
+    {
+        $bytes = str_split($string, 2);
+        $shift = 0;
+        $return = 0;
+        foreach ($bytes as $b) {
+            $return += hexdec($b) << $shift;
+            $shift += 8;
+        }
+        return $return;
+    }
 
+    /**
+    * Takes in an array of raw strings and returns an array of integers
+    *
+    * @param array $array The array of sensor strings to convert.
+    *
+    * @return array of ints
+    */
+    protected function sensorStringArrayToInts($array)
+    {
+        $return = array();
+        foreach ((array)$array as $key => $string) {
+            $return[$key] = $this->sensorStringToInt($string);
+        }
+        return $return;
+    }
 }
