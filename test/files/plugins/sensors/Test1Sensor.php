@@ -60,7 +60,7 @@ class Test1Sensor extends DeviceSensorBase
         "Name" => "Test1Sensor",
         "Type" => "sensor",
         "Class" => "Test1Sensor",
-        "Sensors" => array("DEFAULT"),
+        "Flags" => array("DEFAULT"),
     );
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b", "resistance");

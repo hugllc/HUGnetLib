@@ -67,10 +67,10 @@ abstract class DataPointPluginTestBase extends PluginTestBase
         $var = eval("return $class::\$registerPlugin;");
         $this->assertType(
             "array",
-            $var["Units"],
-            "Units is not an array"
+            $var["Flags"],
+            "Flags is not an array"
         );
-        foreach ($var["Units"] as $key => $units) {
+        foreach ($var["Flags"] as $key => $units) {
             $this->assertType(
                 "string",
                 $units,

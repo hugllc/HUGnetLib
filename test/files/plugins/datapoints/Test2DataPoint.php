@@ -60,7 +60,7 @@ class Test2DataPoint extends DataPointBase
         "Name" => "Test2DataPoint",
         "Type" => "datapoint",
         "Class" => "Test2DataPoint",
-        "Units" => array("moreUnit", "DEFAULT"),
+        "Flags" => array("moreUnit", "DEFAULT"),
     );
 
     /**

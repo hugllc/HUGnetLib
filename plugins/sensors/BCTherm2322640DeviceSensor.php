@@ -58,7 +58,7 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
         "Name" => "BCTherm2322640DeviceSensor",
         "Type" => "sensor",
         "Class" => "BCTherm2322640DeviceSensor",
-        "Sensors" => array("00", "02", "02:BCTherm2322640"),
+        "Flags" => array("00", "02", "02:BCTherm2322640"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(0, 2);

@@ -56,6 +56,7 @@ class MysqlDriver extends HUGnetDBDriver
         "Name"  => "mysql",
         "Type"  => "database",
         "Class" => "mysqlDriver",
+        "Flags" => array("mysql"),
     );
     /** @var bool Does this driver support auto_increment? */
     protected $AutoIncrement = "AUTO_INCREMENT";

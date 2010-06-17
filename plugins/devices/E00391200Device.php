@@ -90,7 +90,7 @@ class E00391200Device extends DeviceDriverBase
                 "0039-12-02-A" => "DEFAULT",
                 "0039-12-02-B" => "DEFAULT",
             ),
-                        "DEFAULT" => array(
+            "DEFAULT" => array(
                 "0039-12-00-A" => "DEFAULT",
                 "0039-12-01-A" => "DEFAULT",
                 "0039-12-02-A" => "DEFAULT",

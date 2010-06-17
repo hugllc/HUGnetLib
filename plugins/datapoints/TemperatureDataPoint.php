@@ -57,7 +57,7 @@ class TemperatureDataPoint extends DataPointBase
         "Name" => "Temperature",
         "Type" => "units",
         "Class" => "TemperatureDataPoint",
-        "Units" => array('temperature'),
+        "Flags" => array('temperature'),
     );
 
     /** @var This is the preferred unit to display */

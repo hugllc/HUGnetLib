@@ -39,9 +39,6 @@
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../lib/plugins.inc.php";
 
-define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
-
-
 /**
  * This class contains the configuration control.
  *

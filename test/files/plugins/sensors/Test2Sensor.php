@@ -60,7 +60,7 @@ class Test2Sensor extends DeviceSensorBase
         "Name" => "Test2Sensor",
         "Type" => "sensor",
         "Class" => "Test2Sensor",
-        "Sensors" => array("02","03:Hello","04","05"),
+        "Flags" => array("02","03:Hello","04","05"),
     );
     /** @var object This is where we store our configuration */
     protected $typeValues = array("a", "c", "e", "Test2Sensor", "Hello");

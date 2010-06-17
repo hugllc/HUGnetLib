@@ -58,7 +58,7 @@ class GenericDataPoint extends DataPointBase
         "Name" => "GenericDataPoint",
         "Type" => "datapoint",
         "Class" => "GenericDataPoint",
-        "Units" => array("DEFAULT"),
+        "Flags" => array("DEFAULT"),
     );
 
     /**

@@ -58,7 +58,7 @@ class GenericDeviceSensor extends DeviceSensorBase
         "Name" => "GenericDeviceSensor",
         "Type" => "sensor",
         "Class" => "GenericDeviceSensor",
-        "Sensors" => array("DEFAULT"),
+        "Flags" => array("DEFAULT"),
     );
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */

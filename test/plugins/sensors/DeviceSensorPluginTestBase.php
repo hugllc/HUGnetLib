@@ -70,10 +70,10 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $obj = new $class($data, $d);
         $this->assertType(
             "array",
-            $var["Sensors"],
-            "Units is not an array"
+            $var["Flags"],
+            "Flags is not an array"
         );
-        foreach ($var["Sensors"] as $key => $sensor) {
+        foreach ($var["Flags"] as $key => $sensor) {
             $this->assertType("string", $sensor, "Sensor $key is not a string");
             $this->assertRegExp(
                 "/([0-9]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",

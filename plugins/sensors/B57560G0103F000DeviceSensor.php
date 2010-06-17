@@ -58,7 +58,7 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
         "Name" => "B57560G0103F000DeviceSensor",
         "Type" => "sensor",
         "Class" => "B57560G0103F000DeviceSensor",
-        "Sensors" => array("02:B57560G0103F000"),
+        "Flags" => array("02:B57560G0103F000"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(2);

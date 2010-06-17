@@ -56,7 +56,8 @@ class SqliteDriver extends HUGnetDBDriver
         "Name"  => "sqlite",
         "Type"  => "database",
         "Class" => "sqliteDriver",
-    );
+        "Flags" => array("sqlite", "DEFAULT"),
+     );
 
     /**
     * Gets columns from a SQLite server

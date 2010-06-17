@@ -58,7 +58,7 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
         "Name" => "IMCSolarDeviceSensor",
         "Type" => "sensor",
         "Class" => "IMCSolarDeviceSensor",
-        "Sensors" => array("02:imcSolar"),
+        "Flags" => array("02:imcSolar"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(2);

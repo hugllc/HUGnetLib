@@ -60,18 +60,13 @@ class TestDriverPlugin extends DeviceDriverBase
         "Name" => "testDriver",
         "Type" => "device",
         "Class" => "TestDriverPlugin",
-        "Devices" => array(
-            "0039-24-67-C" => array(
-                "0039-CE-01-A" => "DEFAULT",
-                "0039-CF-01-A" => "0.1.2,0.2.3",
-            ),
-            "DEFAULT" => array(
-                "0039-CB-01-A" => "DEFAULT",
-                "0039-CD-01-A" => "DEFAULT",
-            ),
-            "0039-25-67-C" => array(
-                "0039-CC-01-A" => "BAD",
-            ),
+        "Flags" => array(
+            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+            "0039-24-67-C:0039-CF-01-A:0.1.2",
+            "0039-24-67-C:0039-CF-01-A:0.2.3",
+            "DEFAULT:0039-CB-01-A:DEFAULT",
+            "DEFAULT:0039-CD-01-A:DEFAULT",
+            "0039-25-67-C:0039-CC-01-A:BAD",
         ),
     );
     /**

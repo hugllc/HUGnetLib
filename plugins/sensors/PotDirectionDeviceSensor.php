@@ -58,7 +58,7 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
         "Name" => "PotDirectionDeviceSensor",
         "Type" => "sensor",
         "Class" => "PotDirectionDeviceSensor",
-        "Sensors" => array("02:potDirection"),
+        "Flags" => array("02:potDirection"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(2);
