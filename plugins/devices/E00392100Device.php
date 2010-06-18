@@ -65,13 +65,9 @@ class E00392100Device extends DeviceDriverLoadableBase
         "Name" => "e00392100",
         "Type" => "device",
         "Class" => "E00392100Device",
-        "Devices" => array(
-            "0039-20-01-C" => array(
-                "0039-21-01-A" => "DEFAULT",
-            ),
-            "0039-20-14-C" => array(
-                "0039-21-02-A" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "0039-20-01-C:0039-21-01-A:DEFAULT",
+            "0039-20-14-C:0039-21-02-A:DEFAULT",
         ),
     );
     /**

@@ -37,7 +37,9 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
-require_once dirname(__FILE__)."/../lib/plugins.inc.php";
+require_once dirname(__FILE__)."/PluginsContainer.php";
+/** This is where we store the plugin path */
+define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
 
 /**
  * This class contains the configuration control.
@@ -88,8 +90,8 @@ class ConfigContainer extends HUGnetContainer
             "firmware"   => "firmware",       // The firmware directory
         ),
         "admin_email"     => "",           // Administrator Email
-        "PluginDir"       => HUGNET_PLUGIN_BASE_PATH, // This is the plugin path
-        "PluginExtension" => "php",
+        "plugins"         => array(
+        ),
         "PluginWebDir"    => "",
         "PluginSkipDir"   => array(),
         "useSocket"       => "default",    // What kind of socket to use
@@ -102,10 +104,10 @@ class ConfigContainer extends HUGnetContainer
     protected $servers = null;
     /** @var object This is where we store our sockets */
     protected $sockets = null;
+    /** @var object This is where we store our plugins */
+    protected $plugins = null;
     /** @var object This is where we store our hooks */
     protected $hooks = null;
-    /** @var object This is where we store our plugins */
-    public $plugins = null;
 
     /** @var string The version of HUGnetLib */
     private $_version = null;
@@ -137,15 +139,22 @@ class ConfigContainer extends HUGnetContainer
         $this->_setServers();
         $this->_setSocket();
         $this->_setHooks();
-        $this->plugins = new plugins(
-            $this->PluginDir."/",
-            $this->PluginExtension,
-            $this->PluginWebDir,
-            $this->PluginSkipDir,
-            $this->verbose
-        );
+        $this->_setPlugins();
     }
 
+    /**
+    * Build everything
+    *
+    * @return null
+    */
+    private function _setPlugins()
+    {
+        // Load the container
+        $this->data["plugins"] = &self::factory($this->plugins, "PluginsContainer");
+        // The import set $this->servers instead of $this->data["servers"].
+        $this->plugins = &$this->data["plugins"];
+        $this->plugins->verbose($this->verbose);
+    }
 
     /**
     * Build everything

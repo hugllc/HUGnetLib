@@ -62,10 +62,8 @@ class EVIRTUALDevice extends DeviceDriverBase
         "Name" => "eVIRTUAL",
         "Type" => "device",
         "Class" => "EVIRTUALDevice",
-        "Devices" => array(
-            "DEFAULT" => array(
-                "VIRTUAL" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "DEFAULT:VIRTUAL:DEFAULT",
         ),
     );
     /**

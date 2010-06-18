@@ -71,8 +71,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
-            "PluginDir" => realpath(
-                dirname(__FILE__)."/../files/plugins/"
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();
@@ -134,7 +134,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -270,7 +270,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -352,7 +352,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -410,7 +410,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     "DriverInfo"        => array(
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -444,7 +444,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public static function dataFromArray()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "group" => "default",
                     "DriverInfo" => array(),
@@ -501,7 +501,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                ),
             ),
-            array(
+            array( // #1
                 array(),
                 array(
                     "group"             => "default",
@@ -526,12 +526,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"           => array(),
                 ),
             ),
-            array(
+            array( // #2
                 array(
                     "group"             => "default",
                     "DriverInfo"        => array(
@@ -584,7 +584,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                     "DriverInfo"        => array(
-                        "TimeConstant"  => 0,
+                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -620,7 +620,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public static function dataFromSetupString()
     {
         return array(
-            array(
+            array( // #0
                 "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
                     "group" => "default",
@@ -649,12 +649,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
                         "RawDriverInfo" => "",
-                        "TimeConstant" => 0,
                     ),
                     "sensors"            => array(),
                ),
             ),
-            array(
+            array( // #1
                 "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
                     "group" => "default",
@@ -687,7 +686,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                ),
             ),
-            array(
+            array( // #2
                 "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
                     "group" => "default",
@@ -720,7 +719,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                ),
             ),
-            array(
+            array( // #3
                 "00000000E80039CD01410123456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
@@ -754,7 +753,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                ),
             ),
-            array(
+            array(  // #4
                 "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
                     "group" => "default",
@@ -782,8 +781,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
-                        "TimeConstant" => 1,
+                        "RawDriverInfo" => "01",
                     ),
                     "sensors"            => array(),
                ),

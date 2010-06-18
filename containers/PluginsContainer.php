@@ -37,8 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
-
-define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
+require_once dirname(__FILE__)."/ConfigContainer.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -87,18 +86,17 @@ class PluginsContainer extends HUGnetContainer
     * Combs recursively through whatever directory it is given and looks for
     * plugins.  It then registers them if it can.
     *
-    * @param string $basedir   The name of the directory to search.  This is
+    * @param string $basedir The name of the directory to search.  This is
     *     here so that when this routine is called recursively it can go
     *     through different directories in the directory specified by this->dir.
-    * @param int    $Level     Depreciated
-    * @param bool   $recursive Whether to be recursive or not
     *
     * @return null
     */
-    protected function getPluginDir(
-        $basedir   = ".",
-        $Level     = 0
-    ) {
+    protected function getPluginDir($basedir)
+    {
+        if (empty($basedir)) {
+            return;
+        }
         $this->vprint("Checking for Plugins in ".$basedir."\n", 4);
         $plugindir = @opendir($basedir);
         $files = array();
@@ -112,20 +110,16 @@ class PluginsContainer extends HUGnetContainer
         $count = 0;
         foreach ($files as $file) {
             $file     = str_replace("/", "", trim($file));
-            $basefile = realpath($basedir."/".$file);
+            // We don't want any dot files
             if (substr($file, 0, 1) == ".") {
                 continue;
             }
+            // Get the real path of this file and deal with it
+            $basefile = realpath($basedir."/".$file);
             if (is_file($basefile)) {
-                $ext = substr($file, (-1*strlen($this->extension)));
-                if ($ext == $this->extension) {
-                    $this->includeFile($file, $basedir);
-                }
+                $this->includeFile($file, $basedir);
             } else if (is_dir($basefile)) {
-                $count += $this->getPluginDir(
-                    $basefile."/",
-                    $Level + 1
-                );
+                $count += $this->getPluginDir($basefile."/");
             }
         }
         return $count;
@@ -143,39 +137,28 @@ class PluginsContainer extends HUGnetContainer
     */
     protected function includeFile($file, $filedir = "")
     {
+        $ext = substr($file, (-1*strlen($this->extension)));
+        if ($ext != $this->extension) {
+            return;
+        }
         $realFile = realpath($filedir.$file);
-        if (empty($this->cache[$realFile]) || !is_array($this->cache[$realFile])) {
-            $plugin_info = false;
-            $this->vprint("Checking File:  ".$file."\n", 4);
-            try {
-                // These files might need to be included more than once,
-                // so we use include
-                $freturn = include_once $realFile;
-                // Register a possible class.  This will try to register
-                // a class whether or not the file actually included
-                // It will fail silently if it doesn't exist
-                $class = $this->_stripFileExtension($file);
-                $this->registerClass($class);
-            } catch (ErrorException $e) {
-                $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
-                $freturn = false;
-            } catch (Exception $e) {
-                $this->vprint("Caught Exception: ".$e->getMessage()."\n", 1);
-                $freturn = false;
-            }
-
-            // Bad things happened.  ;)
-            if (!$freturn) {
-                $this->vprint($freturn, 4);
-                $this->vprint("\tErrors encountered parsing file.");
-                $this->vprint("Skipping ".$file.".\n", 4);
-                return;
-            }
-        } else {
-            $this->vprint("Cache Hit: $realFile\n", 4);
-             // Have to make sure that this unset.  Otherwise could we double cache
+        $plugin_info = false;
+        $this->vprint("Checking File:  ".$file."\n", 4);
+        try {
+            // These files might need to be included more than once,
+            // so we use include
+            $freturn = include_once $realFile;
+            // Register a possible class.  This will try to register
+            // a class whether or not the file actually included
+            // It will fail silently if it doesn't exist
             $class = $this->_stripFileExtension($file);
             $this->registerClass($class);
+        } catch (ErrorException $e) {
+            $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
+            $freturn = false;
+        } catch (Exception $e) {
+            $this->vprint("Caught Exception: ".$e->getMessage()."\n", 1);
+            $freturn = false;
         }
         $this->file_count++;
 
@@ -191,7 +174,7 @@ class PluginsContainer extends HUGnetContainer
     *
     * @return bool
     */
-    private function registerClass($name)
+    protected function registerClass($name)
     {
         if (!class_exists($name)) {
             return false;
@@ -251,28 +234,28 @@ class PluginsContainer extends HUGnetContainer
     /**
     * Returns an array of plugins of the proper type
     *
-    * @param string $type The type to get
-    * @param string $flag The flag to check for
+    * @param string &$type The type to get
+    * @param string $flag  The flag to check for
     *
     * @return string The stripped name
     */
-    public function _getPlugin(&$type, $flag)
+    private function _getPlugin(&$type, $flag)
     {
-
         if (isset($this->typeCache[$flag])) {
-            return $type[$flag];
+            return $type[$this->typeCache[$flag]];
         }
         $f = explode(":", $flag);
         $try = array();
-        if (count($flag) > 2) {
+        if (count($f) > 2) {
             $try[] = $f[0].":".$f[1].":DEFAULT";
             $try[] = $f[0].":DEFAULT:".$f[2];
             $try[] = "DEFAULT:".$f[1].":".$f[2];
             $try[] = "DEFAULT:".$f[1].":DEFAULT";
         }
-        if (count($flag) > 1) {
+        if (count($f) > 1) {
             $try[] = $f[0].":DEFAULT";
             $try[] = "DEFAULT:".$f[1];
+            $try[] = $f[0];
         }
         foreach ($try as $t) {
             if (isset($type[$t])) {
@@ -280,6 +263,7 @@ class PluginsContainer extends HUGnetContainer
                 return $type[$t];
             }
         }
+        $this->typeCache[$flag] = "DEFAULT";
         return $type["DEFAULT"];
     }
 

@@ -95,6 +95,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "DBServersContainer",
                 "SocketsContainer",
                 "HooksContainer",
+                "PluginsContainer",
             ),
             array(
                 dirname(__FILE__)."/../files/config1.inc.php",
@@ -119,6 +120,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "DBServersContainer",
                 "SocketsContainer",
                 "HooksContainer",
+                "PluginsContainer",
             ),
             array(
                 dirname(__FILE__)."/../files/config2.inc.php",
@@ -143,6 +145,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "DBServersContainer",
                 "SocketsContainer",
                 "HooksContainer",
+                "PluginsContainer",
             ),
             array(
                 array(
@@ -221,6 +224,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "DBServersContainer",
                 "SocketsContainer",
                 "HooksContainer",
+                "PluginsContainer",
             ),
         );
     }
@@ -233,19 +237,22 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     * @param array $servers The expected class under 'servers'
     * @param array $sockets The expected class under 'sockets'
     * @param array $hooks   The expected class under 'hooks'
+    * @param array $plugins The expected class under 'plugins'
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect, $servers, $sockets, $hooks)
-    {
+    public function testConstructor(
+        $preload, $expect, $servers, $sockets, $hooks, $plugins
+    ) {
         $o = new ConfigContainer($preload);
         $ret = $o->toArray(false);
         $this->assertSame($expect, $ret);
         $this->assertSame($servers, get_class($o->servers));
         $this->assertSame($sockets, get_class($o->sockets));
         $this->assertSame($hooks, get_class($o->hooks));
+        $this->assertSame($plugins, get_class($o->plugins));
     }
 
     /**

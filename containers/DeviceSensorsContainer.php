@@ -86,20 +86,6 @@ class DeviceSensorsContainer extends HUGnetContainer
         parent::__construct($data);
     }
     /**
-    * Registers all of hte sensor plugins
-    *
-    * @return null
-    */
-    private function _registerSensorPlugins()
-    {
-        $this->drivers = array();
-        foreach ((array)$this->myConfig->plugins->getClass("sensor") as $d) {
-            foreach ((array)$d["Sensors"] as $u) {
-                $this->drivers[$u] = $d["Class"];
-            }
-        }
-    }
-    /**
     * Sets all of the endpoint attributes from an array
     *
     * @param array $array This is an array of this class's attributes
@@ -223,20 +209,11 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     protected function sensorClass($id, $type)
     {
-        // This has to be here so $this->drivers is ALWAYS available
-        if (empty($this->drivers)) {
-            $this->_registerSensorPlugins();
-        }
         $sid = $this->stringSize(dechex($id), 2);
-        $idType  = $sid.":".trim($type);
-        if (!is_int($id)) {
-            return $this->drivers["DEFAULT"];
-        } else if (isset($this->drivers[$idType])) {
-            return $this->drivers[$idType];
-        } else if (isset($this->drivers[$sid])) {
-            return $this->drivers[$sid];
-        }
-        return $this->drivers["DEFAULT"];
+        $driver = $this->myConfig->plugins->getPlugin(
+            "sensor", $sid.":".$type
+        );
+        return $driver["Class"];
     }
     /**
     * Creates a sensor object

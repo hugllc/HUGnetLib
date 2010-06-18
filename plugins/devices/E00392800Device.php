@@ -62,22 +62,16 @@ class E00392800Device extends DeviceDriverBase
         "Name" => "e00392800",
         "Type" => "device",
         "Class" => "E00392800Device",
-        "Devices" => array(
-            "0039-20-12-C" => array(
-                "0039-28-01-A" => "DEFAULT",
-                "0039-28-01-B" => "DEFAULT",
-                "0039-28-01-C" => "DEFAULT",
-            ),
-            "0039-20-13-C" => array(
-                "0039-28-01-A" => "DEFAULT",
-                "0039-28-01-B" => "DEFAULT",
-                "0039-28-01-C" => "DEFAULT",
-            ),
-            "DEFAULT" => array(
-                "0039-28-01-A" => "DEFAULT",
-                "0039-28-01-B" => "DEFAULT",
-                "0039-28-01-C" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "0039-20-12-C:0039-28-01-A:DEFAULT",
+            "0039-20-12-C:0039-28-01-B:DEFAULT",
+            "0039-20-12-C:0039-28-01-C:DEFAULT",
+            "0039-20-13-C:0039-28-01-A:DEFAULT",
+            "0039-20-13-C:0039-28-01-B:DEFAULT",
+            "0039-20-13-C:0039-28-01-C:DEFAULT",
+            "DEFAULT:0039-28-01-A:DEFAULT",
+            "DEFAULT:0039-28-01-B:DEFAULT",
+            "DEFAULT:0039-28-01-C:DEFAULT",
         ),
     );
     /**

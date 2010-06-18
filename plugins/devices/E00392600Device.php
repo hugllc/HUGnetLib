@@ -78,16 +78,14 @@ class E00392600Device extends DeviceDriverBase
         "Name" => "e00392600",
         "Type" => "device",
         "Class" => "E00392600Device",
-        "Devices" => array(
-            "DEFAULT" => array(
-                "0039-26-00-P" => "DEFAULT",
-                "0039-26-01-P" => "DEFAULT",
-                "0039-26-02-P" => "DEFAULT",
-                "0039-26-03-P" => "DEFAULT",
-                "0039-26-04-P" => "DEFAULT",
-                "0039-26-05-P" => "DEFAULT",
-                "0039-26-07-P" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "DEFAULT:0039-26-00-P:DEFAULT",
+            "DEFAULT:0039-26-01-P:DEFAULT",
+            "DEFAULT:0039-26-02-P:DEFAULT",
+            "DEFAULT:0039-26-03-P:DEFAULT",
+            "DEFAULT:0039-26-04-P:DEFAULT",
+            "DEFAULT:0039-26-05-P:DEFAULT",
+            "DEFAULT:0039-26-07-P:DEFAULT",
         ),
     );
     /** @var array These define what jobs this driver might see */

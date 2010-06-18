@@ -62,41 +62,28 @@ class E00391200Device extends DeviceDriverBase
         "Name" => "e00391200",
         "Type" => "device",
         "Class" => "E00391200Device",
-        "Devices" => array(
-            "0039-11-02-B" => array(
-                "0039-12-00-A" => "DEFAULT",
-                "0039-12-01-A" => "DEFAULT",
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-01-B" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
-            "0039-11-03-B" => array(
-                "0039-12-00-A" => "DEFAULT",
-                "0039-12-01-A" => "DEFAULT",
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-01-B" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
-
-            "0039-20-02-C" => array(
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
-            "0039-20-03-C" => array(
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
-            "0039-20-07-C" => array(
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
-            "DEFAULT" => array(
-                "0039-12-00-A" => "DEFAULT",
-                "0039-12-01-A" => "DEFAULT",
-                "0039-12-02-A" => "DEFAULT",
-                "0039-12-01-B" => "DEFAULT",
-                "0039-12-02-B" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "0039-11-02-B:0039-12-00-A:DEFAULT",
+            "0039-11-02-B:0039-12-01-A:DEFAULT",
+            "0039-11-02-B:0039-12-02-A:DEFAULT",
+            "0039-11-02-B:0039-12-01-B:DEFAULT",
+            "0039-11-02-B:0039-12-02-B:DEFAULT",
+            "0039-11-03-B:0039-12-00-A:DEFAULT",
+            "0039-11-03-B:0039-12-01-A:DEFAULT",
+            "0039-11-03-B:0039-12-02-A:DEFAULT",
+            "0039-11-03-B:0039-12-01-B:DEFAULT",
+            "0039-11-03-B:0039-12-02-B:DEFAULT",
+            "0039-20-02-C:0039-12-02-A:DEFAULT",
+            "0039-20-02-C:0039-12-02-B:DEFAULT",
+            "0039-20-03-C:0039-12-02-A:DEFAULT",
+            "0039-20-03-C:0039-12-02-B:DEFAULT",
+            "0039-20-07-C:0039-12-02-A:DEFAULT",
+            "0039-20-07-C:0039-12-02-B:DEFAULT",
+            "DEFAULT:0039-12-00-A:DEFAULT",
+            "DEFAULT:0039-12-01-A:DEFAULT",
+            "DEFAULT:0039-12-02-A:DEFAULT",
+            "DEFAULT:0039-12-01-B:DEFAULT",
+            "DEFAULT:0039-12-02-B:DEFAULT",
         ),
     );
     /**

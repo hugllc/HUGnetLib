@@ -90,26 +90,11 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     public function __construct($row, &$device)
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->_registerDataPointPlugins();
         $this->DeltaT =& $this->data["deltaT"];
         $this->Date =& $this->data["Date"];
         $this->myDevice = &$device;
         if (is_array($row)) {
             $this->fromArray($row);
-        }
-    }
-    /**
-    * Registers all of hte sensor plugins
-    *
-    * @return null
-    */
-    private function _registerDataPointPlugins()
-    {
-        $this->drivers = array();
-        foreach ((array)$this->myConfig->plugins->getClass("datapoint") as $d) {
-            foreach ($d["Units"] as $u) {
-                $this->drivers[$u] = $d["Class"];
-            }
         }
     }
     /**
@@ -189,11 +174,8 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     */
     protected function &dataPointFactory($data, $unitType)
     {
-        if (isset($this->drivers[$unitType])) {
-            $class = $this->drivers[$unitType];
-        } else {
-            $class = $this->drivers["DEFAULT"];
-        }
+        $driver = $this->myConfig->plugins->getPlugin("datapoint", $unitType);
+        $class = $driver["Class"];
         return new $class($data);
     }
 

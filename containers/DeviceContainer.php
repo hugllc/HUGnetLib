@@ -100,7 +100,6 @@ class DeviceContainer extends DevicesTable
     public function __construct($data = array())
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->_registerDriverPlugins();
         parent::__construct($data);
         $this->create();
         $this->_setupClasses();
@@ -127,55 +126,17 @@ class DeviceContainer extends DevicesTable
     }
 
     /**
-    * Disconnects from the gateway
-    *
-    * @return null
-    */
-    private function _registerDriverPlugins()
-    {
-        $myDev = $this->myConfig->plugins->getClass("device");
-        $this->myDev = array();
-        foreach ((array)$myDev as $device) {
-            foreach ($device["Devices"] as $fw => $Firm) {
-                foreach ($Firm as $hw => $ver) {
-                    $dev = explode(",", $ver);
-                    foreach ($dev as $d) {
-                        if (!isset($this->dev[$hw][$fw][$d])) {
-                            if (empty($this->myDev["drivers"][$device["Name"]])) {
-                                $this->myDev["drivers"][$device["Name"]] = $device;
-                            }
-                            $this->myDev[$hw][$fw][$d]
-                                = &$this->myDev["drivers"][$device["Name"]];
-                        }
-                    }
-                }
-            }
-        }
-    }
-    /**
     * Creates the object from a string
     *
     * @return null
     */
     private function _registerDriver()
     {
-        if (isset($this->myDev[$this->HWPartNum])) {
-            $hwLoc = &$this->myDev[$this->HWPartNum];
-        } else {
-            $hwLoc = &$this->myDev["DEFAULT"];
-        }
         // Set this as the default
-        $driver = array("Name" => "eDEFAULT", "Class" => "eDEFAULTDevice");
-
-        if (is_array($hwLoc[$this->FWPartNum][$this->FWVersion])) {
-            $driver = $hwLoc[$this->FWPartNum][$this->FWVersion];
-        } else if (is_array($hwLoc[$this->FWPartNum]["BAD"])) {
-            // Use the default driver here
-        } else if (is_array($hwLoc[$this->FWPartNum]["DEFAULT"])) {
-            $driver = $hwLoc[$this->FWPartNum]["DEFAULT"];
-        } else if (is_array($hwLoc["DEFAULT"]["DEFAULT"])) {
-            $driver = $hwLoc["DEFAULT"]["DEFAULT"];
-        }
+        $driver = $this->myConfig->plugins->getPlugin(
+            "device",
+            $this->FWPartNum.":".$this->HWPartNum.":".$this->FWVersion
+        );
         if ($driver["Name"] !== $this->Driver) {
             $this->Driver = $driver["Name"];
         }

@@ -61,10 +61,8 @@ class E00392606Device extends E00392600Device
         "Name" => "e00392606",
         "Type" => "device",
         "Class" => "E00392606Device",
-        "Devices" => array(
-            "DEFAULT" => array(
-                "0039-26-06-P" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "DEFAULT:0039-26-06-P:DEFAULT",
         ),
     );
     /**

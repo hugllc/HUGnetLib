@@ -68,8 +68,8 @@ class HistoryContainerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
-            "PluginDir" => realpath(
-                dirname(__FILE__)."/../files/plugins/"
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

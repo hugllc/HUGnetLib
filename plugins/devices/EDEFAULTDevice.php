@@ -62,10 +62,8 @@ class EDEFAULTDevice extends DeviceDriverBase
         "Name" => "eDEFAULT",
         "Type" => "device",
         "Class" => "EDEFAULTDevice",
-        "Devices" => array(
-            "DEFAULT" => array(
-                "DEFAULT" => "DEFAULT",
-            ),
+        "Flags" => array(
+            "DEFAULT"
         ),
     );
     /**

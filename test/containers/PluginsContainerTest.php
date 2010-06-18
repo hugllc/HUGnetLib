@@ -245,7 +245,6 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                                 "0039-25-67-C:0039-CC-01-A:BAD",
                             ),
                         ),
-
                         "0039-25-67-C:0039-CC-01-A:BAD" => array (
                             'Name' => 'testDriver',
                             'Type' => 'device',
@@ -257,6 +256,14 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                                 "DEFAULT:0039-CB-01-A:DEFAULT",
                                 "DEFAULT:0039-CD-01-A:DEFAULT",
                                 "0039-25-67-C:0039-CC-01-A:BAD",
+                            ),
+                        ),
+                        "DEFAULT" => array (
+                            'Name' => 'eDEFAULT',
+                            'Type' => 'device',
+                            'Class' => 'TestDriverPlugin2',
+                            "Flags" => array(
+                                "DEFAULT",
                             ),
                         ),
                     ),
@@ -347,6 +354,17 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                 array (
                 ),
             ),
+            array(
+                array(
+                    "dir" => "",
+                ),
+                array(
+                    "dir" => "",
+                    "extension" => ".php",
+                ),
+                array (
+                ),
+            ),
         );
     }
 
@@ -383,6 +401,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                     "extension" => "php",
                 ),
                 "periodic",
+                null,
                 array (
                     'testPeriodic' => array (
                         'Name' => 'testPeriodic',
@@ -401,25 +420,133 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "bogusType",
+                null,
+                array (
+                ),
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-25-67-C:0039-CB-01-A:1.2.3",
+                array (
+                    'Name' => 'testDriver',
+                    'Type' => 'device',
+                    'Class' => 'TestDriverPlugin',
+                    "Flags" => array(
+                        "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                        "0039-24-67-C:0039-CF-01-A:0.1.2",
+                        "0039-24-67-C:0039-CF-01-A:0.2.3",
+                        "DEFAULT:0039-CB-01-A:DEFAULT",
+                        "DEFAULT:0039-CD-01-A:DEFAULT",
+                        "0039-25-67-C:0039-CC-01-A:BAD",
+                    ),
+                ),
+                array(
+                    "0039-25-67-C:0039-CB-01-A:1.2.3"
+                        => "DEFAULT:0039-CB-01-A:DEFAULT"
+                ),
+            ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-24-67-C:0039-CF-01-A:0.1.2",
+                array (
+                    'Name' => 'testDriver',
+                    'Type' => 'device',
+                    'Class' => 'TestDriverPlugin',
+                    "Flags" => array(
+                        "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                        "0039-24-67-C:0039-CF-01-A:0.1.2",
+                        "0039-24-67-C:0039-CF-01-A:0.2.3",
+                        "DEFAULT:0039-CB-01-A:DEFAULT",
+                        "DEFAULT:0039-CD-01-A:DEFAULT",
+                        "0039-25-67-C:0039-CC-01-A:BAD",
+                    ),
+                ),
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-25-67-C:0039-67-01-A:1.2.3",
+                array (
+                    'Name' => 'eDEFAULT',
+                    'Type' => 'device',
+                    'Class' => 'TestDriverPlugin2',
+                    "Flags" => array(
+                        "DEFAULT",
+                    ),
+                ),
+                array(
+                    "0039-25-67-C:0039-67-01-A:1.2.3" => "DEFAULT"
+                ),
+            ),
+            array(
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "sensor",
+                "04:bogusType",
+                array (
+                    'Name' => 'Test2Sensor',
+                    'Type' => 'sensor',
+                    'Class' => 'Test2Sensor',
+                    "Flags" => array(
+                        "02",
+                        "03:Hello",
+                        "04",
+                        "05",
+                    ),
+                ),
+                array(
+                    "04:bogusType" => "04"
+                ),
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $preload The stuff to preload
-    * @param string $type    The type to get
-    * @param mixed  $expect  The expected return
+    * @param mixed  $preload   The stuff to preload
+    * @param string $type      The type to get
+    * @param string $flag      The flag to use
+    * @param mixed  $expect    The expected return
+    * @param mixed  $typeCache The type cache expected
     *
     * @return null
     *
     * @dataProvider dataGetPlugin
     */
-    public function testGetPlugin($preload, $type, $expect)
+    public function testGetPlugin($preload, $type, $flag, $expect, $typeCache)
     {
         $o = new PluginsContainer($preload);
-        $this->assertSame($expect, $o->getPlugin($type));
+        $this->assertSame($expect, $o->getPlugin($type, $flag), "Run 1 failed");
+        // Do the same thing again to make sure of the same result.
+        $this->assertSame($expect, $o->getPlugin($type, $flag), "Run 2 failed");
+        // This checks the type cache
+        $this->assertAttributeSame($typeCache, "typeCache", $o);
     }
 
 
@@ -431,6 +558,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     public static function dataSet()
     {
         return array(
+            array("extension", "php", ".php"),
+            array("extension", "inc.php", ".inc.php"),
+            array("extension", ".inc.php", ".inc.php"),
         );
     }
 

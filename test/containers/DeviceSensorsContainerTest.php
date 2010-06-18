@@ -74,8 +74,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "dummy" => true,
                 ),
             ),
-            "PluginDir" => realpath(
-                dirname(__FILE__)."/../files/plugins/"
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();
