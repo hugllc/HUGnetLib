@@ -131,8 +131,10 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($base === false) {
             return $base;
         }
-        // Accounts for failures
-        return $this->data["LastConfigTry"] < (time() - $this->data["ConfigFail"]*60);
+        // Accounts for failures, but try once a day
+        return ($this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60))
+            || ($this->data["LastConfigTry"]<(time() - 86400));
+
     }
     /**
     * Resets all of the timers associated with reading and writing.
@@ -187,6 +189,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($pass) {
             $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
+            $this->myDriver->Active = 1;
             return true;
         }
         // We failed.  State that.

@@ -63,8 +63,6 @@ class PeriodicPlugins extends ProcessBase
         "GatewayKey" => 0,                  // The gateway key we are using
         "PluginDir"       => "./plugins",  // This is the plugin path
         "PluginExtension" => "php",
-        "PluginWebDir"    => "",
-        "PluginSkipDir"   => array(),
         "PluginType"      => "periodic",
     );
     /** @var array Array of objects that are our plugins */
@@ -98,14 +96,11 @@ class PeriodicPlugins extends ProcessBase
     private function _registerPlugins()
     {
         $this->active = array();
-        $this->myPlugins = new plugins(
-            $this->PluginDir."/",
-            $this->PluginExtension,
-            $this->PluginWebDir,
-            $this->PluginSkipDir,
-            $this->verbose
-        );
-        $classes = $this->myPlugins->getClass($this->PluginType);
+        $this->myPlugins = new PluginsContainer(array(
+            "dir" => $this->PluginDir,
+            "extension" => $this->PluginExtension,
+        ));
+        $classes = $this->myPlugins->getPlugin($this->PluginType);
         $data = array(
             "verbose" => $this->verbose,
         );

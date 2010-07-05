@@ -116,8 +116,9 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
         if ($base === false) {
             return $base;
         }
-        // Accounts for failures
-        return $this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60);
+        // Accounts for failures, but try once a day
+        return ($this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60))
+            || ($this->data["LastConfigTry"]<(time() - 86400));
     }
     /**
     * Programs a page of flash
