@@ -141,6 +141,15 @@ class E00392101DeviceTest extends DevicePluginTestBase
         $this->assertSame($expect, $ret);
     }
     /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testController()
+    {
+        $this->assertTrue($this->o->controller());
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array

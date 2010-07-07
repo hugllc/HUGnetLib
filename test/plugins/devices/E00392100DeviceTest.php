@@ -176,6 +176,15 @@ class E00392100DeviceTest extends DevicePluginTestBase
         $this->assertSame($expect, $this->d->DriverInfo);
     }
     /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testController()
+    {
+        $this->assertTrue($this->o->controller());
+    }
+    /**
     * data provider for testReadSetup, testReadConfig
     *
     * @return array

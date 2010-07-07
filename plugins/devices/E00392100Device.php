@@ -86,6 +86,18 @@ class E00392100Device extends DeviceDriverLoadableBase
         $this->_setFirmware();
     }
     /**
+    * Says whether this device is a controller board or not
+    *
+    * This default always returns false.   This is a controller baord, so we
+    * return true
+    *
+    * @return bool False
+    */
+    public function controller()
+    {
+        return true;
+    }
+    /**
     * Reads the setup out of the device.
     *
     * If the device is using outdated firmware we have to

@@ -659,6 +659,7 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     */
     public function fetchInto()
     {
+
         if (!is_object($this->pdoStatement)) {
             return false;
         }
@@ -839,7 +840,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             }
         }
         $this->vprint(
-            "Executing: ".print_r($this->query, true),
+            "Executing (group: ".$this->myTable->group."): "
+            .print_r($this->query, true),
             HUGnetClass::VPRINT_VERBOSE
         );
         $this->vprint(
@@ -848,7 +850,8 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         );
         $ret = $this->pdoStatement->execute($data);
         $this->vprint(
-            "With Result: ".print_r($ret, true),
+            "With Result: ".print_r($ret, true)
+            . "(".$this->pdoStatement->rowCount()." rows)",
             HUGnetClass::VPRINT_VERBOSE
         );
         if (!$ret) {

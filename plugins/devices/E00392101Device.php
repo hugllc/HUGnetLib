@@ -87,6 +87,18 @@ class E00392101Device extends DeviceDriverLoadableBase
         $this->fromSetupString($string);
     }
     /**
+    * Says whether this device is a controller board or not
+    *
+    * This default always returns false.   This is a controller baord, so we
+    * return true
+    *
+    * @return bool False
+    */
+    public function controller()
+    {
+        return true;
+    }
+    /**
     * Reads the setup out of the device.
     *
     * After we get the setup we try to load the program and try to run it.

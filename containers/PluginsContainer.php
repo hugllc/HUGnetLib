@@ -141,7 +141,7 @@ class PluginsContainer extends HUGnetContainer
         if ($ext != $this->extension) {
             return;
         }
-        $realFile = realpath($filedir.$file);
+        $realFile = realpath($filedir."/".$file);
         $plugin_info = false;
         $this->vprint("Checking File:  ".$file."\n", 4);
         try {

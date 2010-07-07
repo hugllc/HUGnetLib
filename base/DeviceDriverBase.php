@@ -102,6 +102,18 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         return false;
     }
     /**
+    * Says whether this device is a controller board or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that are for controller boards.
+    *
+    * @return bool False
+    */
+    public function controller()
+    {
+        return false;
+    }
+    /**
     * Reads the setup out of the device
     *
     * @return bool True on success, False on failure
@@ -189,6 +201,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($pass) {
             $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
+            $this->myDriver->params->LastContact = time();
             $this->myDriver->Active = 1;
             return true;
         }
@@ -208,6 +221,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($pass) {
             $this->data["LastPoll"] = time();
             $this->data["PollFail"] = 0;
+            $this->myDriver->params->LastContact = time();
             return true;
         }
         // We failed.  State that.

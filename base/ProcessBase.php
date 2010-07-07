@@ -307,6 +307,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // Do this only once per minute max
         if ($last != date("i")) {
             $this->myDevice->params->DriverInfo["LastConfig"] = time();
+            $this->myDevice->params->LastContact = time();
+            $this->myDevice->Active = 1;
             $this->myDevice->updateRow();
             $last = date("i");
         }
