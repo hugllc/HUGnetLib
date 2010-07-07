@@ -141,6 +141,11 @@ class E00392101Device extends DeviceDriverLoadableBase
     */
     public function writeProgram()
     {
+        // We need to set the packet timeout to 10 seconds,because of the long
+        // packets.
+        $OldTimeout = $this->myDriver->DriverInfo["PacketTimeout"];
+        $this->myDriver->DriverInfo["PacketTimeout"] = 10;
+        // Sets up the firmware
         $this->_setFirmware();
         if (($this->myFirmware->RelStatus == FirmwareTable::BAD)
             || $this->myFirmware->isEmpty()
@@ -196,6 +201,7 @@ class E00392101Device extends DeviceDriverLoadableBase
                 __METHOD__
             );
         }
+        $this->myDriver->DriverInfo["PacketTimeout"] = $OldTimeout;
         return $ret;
     }
     /**
