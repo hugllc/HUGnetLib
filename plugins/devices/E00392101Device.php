@@ -65,6 +65,7 @@ class E00392101Device extends DeviceDriverLoadableBase
         "Flags" => array(
             "0039-20-06-C:0039-21-01-A:DEFAULT",
             "0039-20-15-C:0039-21-02-A:DEFAULT",
+            "0039-20-16-C:0039-21-02-A:DEFAULT",
         ),
     );
     /** @var This is what our targets are for the various hardware part numbers */
