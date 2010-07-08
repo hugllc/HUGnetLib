@@ -60,6 +60,7 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
         "Name" => "Default",
         "Type" => "deviceProcess",
         "Class" => "dummy",
+        "Priority" => 50,
     );
     /** @var This is when we were created */
     protected $created = 0;
@@ -81,16 +82,6 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
         $this->created = time();
         $this->control = &$obj;
     }
-
-    /**
-    * This function simply returns the priority of this plugin
-    *
-    * @return int
-    */
-    public function priority()
-    {
-        return 50;
-    }
     /**
     * This function does the stuff in the class.
     *
@@ -101,6 +92,16 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
     public function ready(DeviceContainer &$dev)
     {
         return true;
+    }
+    /**
+    * This runs before once as the last part of the constructor
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function pre(DeviceContainer &$dev)
+    {
     }
 }
 

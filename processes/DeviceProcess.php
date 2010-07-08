@@ -82,6 +82,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
         $this->registerHooks();
         $this->requireGateway();
         $this->registerPlugins();
+        $this->main("pre");
     }
     /**
     * This function gets setup information from all of the devices
@@ -106,9 +107,10 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
             $n = $class["Name"];
+            $p = (!is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
             if (is_subclass_of($c, "DeviceProcessPluginInterface")) {
                 $this->active[$n] = new $c($data, $this);
-                $this->priority[$this->active[$n]->priority()][$n] = $n;
+                $this->priority[$p][$n] = $n;
             }
         }
     }
@@ -120,7 +122,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     *
     * @return null
     */
-    public function main()
+    public function main($fct = "main")
     {
         // Get the devices
         $devs = $this->device->selectIDs(
@@ -134,7 +136,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
                 return;
             }
             $this->device->getRow($key);
-            $this->_check($this->device);
+            $this->_check($this->device, $fct);
             $this->device->updateRow();
         }
 
@@ -146,12 +148,12 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     *
     * @return int The number of packets routed
     */
-    private function _check(DeviceContainer &$dev)
+    private function _check(DeviceContainer &$dev, $fct = "main")
     {
         foreach ($this->priority as $p) {
             foreach ($p as $n) {
-                if ($this->active[$n]->ready($dev)) {
-                    $this->active[$n]->main($dev);
+                if ($this->active[$n]->$fct($dev) === false) {
+                    return;
                 }
             }
         }

@@ -52,6 +52,14 @@
 interface DeviceProcessPluginInterface
 {
     /**
+    * This runs before once as the last part of the constructor
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return bool True if ready to return, false otherwise
+    */
+    public function pre(DeviceContainer &$dev);
+    /**
     * This function does the stuff in the class.
     *
     * @param DeviceContainer &$dev The device to check
@@ -59,12 +67,6 @@ interface DeviceProcessPluginInterface
     * @return bool True if ready to return, false otherwise
     */
     public function main(DeviceContainer &$dev);
-    /**
-    * This function simply returns the priority of this plugin
-    *
-    * @return int
-    */
-    public function priority();
     /**
     * This function does the stuff in the class.
     *

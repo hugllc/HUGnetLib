@@ -143,15 +143,6 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
         $this->o->setLast($last);
         $this->assertSame($expect, $this->o->ready());
     }
-    /**
-    * test
-    *
-    * @return null
-    */
-    public function testPriority()
-    {
-        $this->assertSame(50, $this->o->priority());
-    }
 }
 
 /**
