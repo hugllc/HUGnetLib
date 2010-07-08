@@ -212,7 +212,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 ),
                 array(
                 ),
-                "000000002500392101410039200143000009FFFFFF50",
+                "000000002500392101410039200643000002FFFFFF50",
                 (string)new PacketContainer(array(
                     "From" => "000025",
                     "To" => "000020",
@@ -224,6 +224,12 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000020",
                     "Command" => PacketContainer::COMMAND_REPLY,
                     "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200643000002FFFFFF50",
                 )),
                 (string)new PacketContainer(array(
                     "To" => "000025",
@@ -235,6 +241,12 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000025",
                     "From" => "000020",
                     "Command" => E00392100Device::COMMAND_RUNBOOTLOADER,
+                    "Data" => "",
+                )).
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
                 )),
                 false,
@@ -284,7 +296,12 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000020",
                     "Command" => PacketContainer::COMMAND_REPLY,
                     "Data" => "000082".str_repeat("000000", 29)
-                        ."000073".str_repeat("000000", 29),
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000073".str_repeat("000000", 29),
                 )),
                 (string)new PacketContainer(array(
                     "To" => "000025",
@@ -296,7 +313,13 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000025",
                     "From" => "000020",
                     "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
-                    "Data" => "",
+                    "Data" => "00",
+                )).
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
+                    "Data" => "01",
                 )),
                 true,
                 array(
@@ -428,7 +451,12 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000020",
                     "Command" => PacketContainer::COMMAND_REPLY,
                     "Data" => "000082".str_repeat("000000", 29)
-                        ."000073".str_repeat("000000", 29),
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000073".str_repeat("000000", 29),
                 )),
                 (string)new PacketContainer(array(
                     "To" => "000025",
@@ -455,7 +483,13 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "To" => "000025",
                     "From" => "000020",
                     "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
-                    "Data" => "",
+                    "Data" => "00",
+                )).
+                (string)new PacketContainer(array(
+                    "To" => "000025",
+                    "From" => "000020",
+                    "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
+                    "Data" => "01",
                 )),
                 true,
                 array(

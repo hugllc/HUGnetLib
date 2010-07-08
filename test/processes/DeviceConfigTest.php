@@ -261,7 +261,13 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "From" => "123456",
                     "To" => "000019",
                     "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => str_repeat("000000", 60),
+                    "Data" => str_repeat("000000", 30),
+                )).
+                (string)new PacketContainer(array(
+                    "From" => "123456",
+                    "To" => "000019",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => str_repeat("000000", 30),
                 )),
                 (string)new PacketContainer(array(
                     "To" => "123456",
@@ -273,7 +279,13 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                     "To" => "123456",
                     "From" => "000019",
                     "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
-                    "Data" => "",
+                    "Data" => "00",
+                )).
+                (string)new PacketContainer(array(
+                    "To" => "123456",
+                    "From" => "000019",
+                    "Command" => E00392100Device::COMMAND_READDOWNSTREAM,
+                    "Data" => "01",
                 )),
             ),
             // #3

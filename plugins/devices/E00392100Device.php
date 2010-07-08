@@ -128,7 +128,7 @@ class E00392100Device extends DeviceDriverLoadableBase
                 // Crash the running program so the board can be reloaded
                 $this->runBootloader();
                 // This forces us to not just run the application again
-                $this->myDriver->Driver = "e00392101";
+                $this->readConfig();
                 // This is because the program needs to be reloaded.  It can
                 // only be reloaded if it is using the 00392101 driver.
                 $ret = false;
@@ -149,13 +149,15 @@ class E00392100Device extends DeviceDriverLoadableBase
     */
     protected function readDownstreamDevices()
     {
-        // Send the packet out
-        $ret = $this->sendPkt(self::COMMAND_READDOWNSTREAM);
-        if (is_string($ret) && !empty($ret)) {
-            $dev = new DeviceContainer();
-            $strings = str_split($ret, 180);
-            foreach ($strings as $key => $str) {
-                $devs = str_split($str, 6);
+        for ($key = 0; $key < 2; $key++) {
+            // Send the packet out
+            $ret = $this->sendPkt(
+                self::COMMAND_READDOWNSTREAM,
+                $this->stringSize($key, 2)
+            );
+            if (is_string($ret) && !empty($ret)) {
+                $dev = new DeviceContainer();
+                $devs = str_split($ret, 6);
                 foreach ($devs as $d) {
                     $dev->clearData();
                     $id = hexdec($d);
@@ -166,8 +168,8 @@ class E00392100Device extends DeviceDriverLoadableBase
                         $dev->updateRow(array("ControllerKey", "ControllerIndex"));
                     }
                 }
+                $ret = true;;
             }
-            $ret = true;;
         }
         return (bool) $ret;
     }
