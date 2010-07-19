@@ -89,6 +89,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            // #0
             array(
                 array(),
                 array(),
@@ -97,6 +98,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "HooksContainer",
                 "PluginsContainer",
             ),
+            // #1
             array(
                 dirname(__FILE__)."/../files/config1.inc.php",
                 array(
@@ -122,6 +124,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "HooksContainer",
                 "PluginsContainer",
             ),
+            // #2
             array(
                 dirname(__FILE__)."/../files/config2.inc.php",
                 array(
@@ -147,6 +150,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                 "HooksContainer",
                 "PluginsContainer",
             ),
+            // #3
             array(
                 array(
                     "servers" => array(
@@ -248,7 +252,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     ) {
         $o = new ConfigContainer($preload);
         $ret = $o->toArray(false);
-        $this->assertSame($expect, $ret);
+        $this->assertSame($expect, $ret, "toArray wrong");
         $this->assertSame($servers, get_class($o->servers));
         $this->assertSame($sockets, get_class($o->sockets));
         $this->assertSame($hooks, get_class($o->hooks));

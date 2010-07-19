@@ -101,13 +101,13 @@ class ConfigContainer extends HUGnetContainer
     /** @var array This is where the data is stored */
     protected $data = array();
     /** @var object This is where we store our database connection */
-    protected $servers = null;
+    public $servers = null;
     /** @var object This is where we store our sockets */
-    protected $sockets = null;
+    public $sockets = null;
     /** @var object This is where we store our plugins */
-    protected $plugins = null;
+    public $plugins = null;
     /** @var object This is where we store our hooks */
-    protected $hooks = null;
+    public $hooks = null;
 
     /** @var string The version of HUGnetLib */
     private $_version = null;
@@ -150,9 +150,9 @@ class ConfigContainer extends HUGnetContainer
     private function _setPlugins()
     {
         // Load the container
-        $this->data["plugins"] = &self::factory($this->plugins, "PluginsContainer");
-        // The import set $this->servers instead of $this->data["servers"].
-        $this->plugins = &$this->data["plugins"];
+        $this->plugins = &self::factory($this->plugins, "PluginsContainer");
+        // The import set $this->servers instead of $this->servers.
+        //$this->plugins = &$this->plugins;
         $this->plugins->verbose($this->verbose);
     }
 
@@ -164,9 +164,9 @@ class ConfigContainer extends HUGnetContainer
     private function _setSocket()
     {
         // Load the container
-        $this->data["sockets"] = &self::factory($this->sockets, "SocketsContainer");
-        // The import set $this->servers instead of $this->data["servers"].
-        $this->sockets = &$this->data["sockets"];
+        $this->sockets = &self::factory($this->sockets, "SocketsContainer");
+        // The import set $this->servers instead of $this->servers.
+        //$this->sockets = &$this->sockets;
         $this->sockets->verbose($this->verbose);
     }
 
@@ -178,11 +178,11 @@ class ConfigContainer extends HUGnetContainer
     private function _setServers()
     {
         // Load the container
-        $this->data["servers"] = &self::factory(
+        $this->servers = &self::factory(
             $this->servers, "DBServersContainer"
         );
-        // The import set $this->servers instead of $this->data["servers"].
-        $this->servers = &$this->data["servers"];
+        // The import set $this->servers instead of $this->servers.
+        //$this->servers = &$this->servers;
         $this->servers->verbose($this->verbose);
     }
     /**
@@ -193,9 +193,9 @@ class ConfigContainer extends HUGnetContainer
     private function _setHooks()
     {
         // Load the container
-        $this->data["hooks"] = self::factory($this->hooks, "HooksContainer");
-        // The import set $this->servers instead of $this->data["servers"].
-        $this->hooks = &$this->data["hooks"];
+        $this->hooks = self::factory($this->hooks, "HooksContainer");
+        // The import set $this->servers instead of $this->servers.
+        //$this->hooks = &$this->hooks;
     }
     /**
     * creates a dsn for the PDO stuff.  The DSNs apper in the $servers array
@@ -251,7 +251,7 @@ class ConfigContainer extends HUGnetContainer
     */
     public function &dbServers()
     {
-        return $this->data["servers"];
+        return $this->servers;
     }
 
     /**

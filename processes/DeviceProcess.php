@@ -120,14 +120,16 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     * This function should be called periodically as often as possible.  It will
     * go through the whole list of devices before returning.
     *
+    * @param string $fct The function to call
+    *
     * @return null
     */
     public function main($fct = "main")
     {
         // Get the devices
         $devs = $this->device->selectIDs(
-            "GatewayKey = ? AND Active = ? AND id <> ?",
-            array($this->GatewayKey, 1, $this->myDevice->id)
+            "GatewayKey = ? AND id <> ?",
+            array($this->GatewayKey, $this->myDevice->id)
         );
         shuffle($devs);
         // Go through the devices
@@ -145,6 +147,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     * This function should be used to wait between config attempts
     *
     * @param DeviceContainer &$dev The device to check
+    * @param string          $fct  The function to call
     *
     * @return int The number of packets routed
     */

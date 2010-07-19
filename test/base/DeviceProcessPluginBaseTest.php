@@ -126,23 +126,35 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReady()
     {
         return array(
+            array(array(), true),
         );
     }
     /**
     * test
     *
-    * @param array $last   What to set 'last' to
+    * @param array $dev    The device array to use
     * @param bool  $expect The return value
     *
     * @return null
     *
     * @dataProvider dataReady
     */
-    public function testReady($last, $expect)
+    public function testReady($dev, $expect)
     {
-        $this->o->setLast($last);
-        $this->assertSame($expect, $this->o->ready());
+        $d = new DeviceContainer($dev);
+        $this->assertSame($expect, $this->o->ready($d));
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testPre()
+    {
+        $d = new DeviceContainer();
+        $this->assertTrue($this->o->pre($d));
+    }
+
 }
 
 /**

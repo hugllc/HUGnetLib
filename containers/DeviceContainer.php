@@ -101,8 +101,6 @@ class DeviceContainer extends DevicesTable
     {
         $this->myConfig = &ConfigContainer::singleton();
         parent::__construct($data);
-        $this->create();
-        $this->_setupClasses();
     }
     /**
     * Tries to run a function defined by what is called..
@@ -245,6 +243,7 @@ class DeviceContainer extends DevicesTable
         } else {
             parent::fromAny($data);
         }
+        $this->_setupClasses();
     }
     /**
     * Sets all of the endpoint attributes from an array
@@ -255,16 +254,16 @@ class DeviceContainer extends DevicesTable
     {
         if (!is_a($this->params, "DeviceParamsContainer")) {
             // Do the sensors
-            $this->data["params"] = new DeviceParamsContainer($this->params);
-            $this->params = &$this->data["params"];
+            $this->params = new DeviceParamsContainer($this->params);
+            //$this->params = &$this->data["params"];
         }
         $this->_registerDriver();
         if (!is_a($this->sensors, "DeviceSensorsContainer")) {
             // Do the sensors
-            $this->data["sensors"] = new DeviceSensorsContainer(
+            $this->sensors = new DeviceSensorsContainer(
                 $this->sensors, $this
             );
-            $this->sensors = &$this->data["sensors"];
+            //$this->sensors = &$this->data["sensors"];
         }
     }
     /**

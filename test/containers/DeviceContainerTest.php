@@ -127,14 +127,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 0,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -161,14 +161,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 0,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo"    => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -195,14 +195,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 0,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo"    => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -229,14 +229,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo"    => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 0,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo"    => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -263,14 +263,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 0,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -318,10 +318,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
-                    "params" => array(
-                    ),
                     "DriverInfo" => array(
                         "RawDriverInfo"    => "",
+                    ),
+                    "params" => array(
                     ),
                     "sensors"            => array(),
                ),
@@ -348,11 +348,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval"      => 0,
                     "ActiveSensors"     => 0,
                     "DeviceGroup"       => "FFFFFF",
-                    "params"            => array(
-                    ),
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
                         "RawDriverInfo" => "",
+                    ),
+                    "params"            => array(
                     ),
                     "sensors"            => array(),
                 ),
@@ -404,13 +404,44 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval"      => 52,
                     "ActiveSensors"     => 3,
                     "DeviceGroup"       => "123456",
+                    "DriverInfo"        => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "params"            => array(
                         "DriverInfo" => array(
                             "BoredomThreshold"  => 20,
                         ),
                     ),
+                    "sensors"            => array(),
+                ),
+            ),
+            // #6
+            array(
+                "",
+                array(
+                    "group"             => "default",
+                    "id"                => 0,
+                    "DeviceID"          => "000000",
+                    "DeviceName"        => "",
+                    "HWPartNum"         => "",
+                    "FWPartNum"         => "",
+                    "FWVersion"         => "",
+                    "RawSetup"     => "",
+                    "Active"            => 1,
+                    "GatewayKey"        => 0,
+                    "ControllerKey"     => 0,
+                    "ControllerIndex"   => 0,
+                    "DeviceLocation"    => "",
+                    "DeviceJob"         => "",
+                    "Driver"            => "eDEFAULT",
+                    "PollInterval"      => 0,
+                    "ActiveSensors"     => 0,
+                    "DeviceGroup"       => "FFFFFF",
                     "DriverInfo"        => array(
+                        "PacketTimeout" => 0,
                         "RawDriverInfo" => "",
+                    ),
+                    "params"            => array(
                     ),
                     "sensors"            => array(),
                 ),
@@ -430,11 +461,24 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new DeviceContainer($preload);
-        $data = $this->readAttribute($o, "data");
-        $this->assertType("object", $data["params"]);
-        $data["params"] = $data["params"]->toArray();
-        $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertType("object", $o->params);
+        $this->assertSame(
+            $expect["params"],
+            $o->params->toArray(false),
+            "Params are wrong"
+        );
+        unset($expect["params"]);
+        $this->assertType("object", $o->sensors);
+        $this->assertSame(
+            $expect["sensors"],
+            $o->sensors->toArray(false),
+            "Sensors are wrong"
+        );
+        unset($expect["sensors"]);
+        //$this->assertSame($expect, $data);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+        }
     }
     /**
     * data provider for testDeviceID
@@ -490,13 +534,13 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 30,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -522,11 +566,11 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval"      => 0,
                     "ActiveSensors"     => 0,
                     "DeviceGroup"       => "FFFFFF",
-                    "params"            => array(
-                    ),
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
                         "RawDriverInfo" => "",
+                    ),
+                    "params"            => array(
                     ),
                     "sensors"           => array(),
                 ),
@@ -578,13 +622,13 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval"      => 52,
                     "ActiveSensors"     => 3,
                     "DeviceGroup"       => "123456",
+                    "DriverInfo"        => array(
+                        "RawDriverInfo" => "",
+                    ),
                     "params"            => array(
                         "DriverInfo" => array(
                             "BoredomThreshold"  => 20,
                         ),
-                    ),
-                    "DriverInfo"        => array(
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                 ),
@@ -606,11 +650,24 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o->clearData();
         $this->o->fromArray($preload);
-        $data = $this->readAttribute($this->o, "data");
-        $this->assertType("object", $data["params"]);
-        $data["params"] = $data["params"]->toArray();
-        $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertType("object", $this->o->params);
+        $this->assertSame(
+            $expect["params"],
+            $this->o->params->toArray(false),
+            "Params are wrong"
+        );
+        unset($expect["params"]);
+        $this->assertType("object", $this->o->sensors);
+        $this->assertSame(
+            $expect["sensors"],
+            $this->o->sensors->toArray(false),
+            "Sensors are wrong"
+        );
+        unset($expect["sensors"]);
+        //$this->assertSame($expect, $data);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $this->o->$key, "Bad Value in key $key");
+        }
     }
     /**
     * data provider for testDeviceID
@@ -641,14 +698,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 80,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -674,14 +731,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 80,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -707,14 +764,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 30,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "sensors"            => array(),
                ),
@@ -741,14 +798,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "0123456789",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 83,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "0123456789",
                     ),
                     "sensors"            => array(),
                ),
@@ -774,14 +831,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "PollInterval" => 0,
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
+                    "DriverInfo" => array(
+                        "PacketTimeout" => 0,
+                        "RawDriverInfo" => "01",
+                    ),
                     "params" => array(
                         "DriverInfo" => array(
                             "BoredomThreshold" => 33,
                         ),
-                    ),
-                    "DriverInfo" => array(
-                        "PacketTimeout" => 0,
-                        "RawDriverInfo" => "01",
                     ),
                     "sensors"            => array(),
                ),
@@ -801,12 +858,24 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testFromSetupString($preload, $expect)
     {
         $this->o->fromSetupString($preload);
-        $data = $this->readAttribute($this->o, "data");
-        $this->assertType("object", $data["params"]);
-        $data["params"] = $data["params"]->toArray();
-        $this->assertType("object", $data["sensors"]);
-        $data["sensors"] = $data["sensors"]->toArray();
-        $this->assertSame($expect, $data);
+        $this->assertType("object", $this->o->params);
+        $this->assertSame(
+            $expect["params"],
+            $this->o->params->toArray(false),
+            "Params are wrong"
+        );
+        unset($expect["params"]);
+        $this->assertType("object", $this->o->sensors);
+        $this->assertSame(
+            $expect["sensors"],
+            $this->o->sensors->toArray(false),
+            "Sensors are wrong"
+        );
+        unset($expect["sensors"]);
+        //$this->assertSame($expect, $data);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $this->o->$key, "Bad Value in key $key");
+        }
     }
     /**
     * data provider for testDeviceID

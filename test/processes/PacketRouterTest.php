@@ -184,8 +184,9 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new PacketRouter($preload, $this->device);
-        $ret = $this->readAttribute($o, "data");
-        $this->assertSame($expect, $ret);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+        }
         // Check the configuration is set correctly
         $config = $this->readAttribute($o, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));

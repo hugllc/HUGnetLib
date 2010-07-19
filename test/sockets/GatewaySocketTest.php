@@ -151,12 +151,10 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new GatewaySocket($preload);
-        $data = $this->readAttribute($o, "data");
-        if (!isset($expect["DeviceID"])) {
-            $this->assertTrue(PacketContainer::checkDeviceID($data["DeviceID"]));
-            unset($data["DeviceID"]);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $o->$key, "$key is wrong");
         }
-        $this->assertSame($expect, $data);
+
     }
     /**
     * data provider for testConnect

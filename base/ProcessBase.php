@@ -117,7 +117,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     protected function setupMyDevice($device)
     {
         // This sets us up as a device
-        self::vprint("Setting up my device...", HUGnetClass::VPRINT_NORMAL);
+        $this->vprint("Setting up my device...", HUGnetClass::VPRINT_NORMAL);
         $this->myDevice = new DeviceContainer($device);
         $this->myDevice->GatewayKey = $this->GatewayKey;
         $this->myDevice->DeviceJob = posix_getpid();
@@ -140,7 +140,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     */
     protected function getMyDeviceID()
     {
-        self::vprint("Finding my DeviceID...", HUGnetClass::VPRINT_NORMAL);
+        $this->vprint("Finding my DeviceID...", HUGnetClass::VPRINT_NORMAL);
         // If this is a restart, pull all the old device info.
         $ret = $this->myDevice->selectOneInto(
             "HWPartNum = ? AND DeviceLocation = ? AND GatewayKey = ?",
@@ -153,6 +153,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         if ($ret) {
             $DeviceID = $this->myDevice->DeviceID;
             $this->myConfig->sockets->forceDeviceID($DeviceID);
+            $this->vprint("Reusing DeviceID ".$DeviceID, HUGnetClass::VPRINT_NORMAL);
         } else {
             $DeviceID = $this->myConfig->sockets->deviceID(array());
         }
@@ -202,7 +203,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     {
         static $end;
         // Be verbose ;)
-        self::vprint(
+        $this->vprint(
             "Pausing $Timeout s  Using ID: ".$this->myDevice->DeviceID
             ." ".date("Y-m-d H:i:s"),
             HUGnetClass::VPRINT_NORMAL
@@ -255,7 +256,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     public function loopEnd($signo)
     {
         // Be verbose
-        self::vprint(
+        $this->vprint(
             "Got exit signal",
             HUGnetClass::VPRINT_NORMAL
         );

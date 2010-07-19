@@ -107,8 +107,7 @@ class DeviceParamsContainerTest extends PHPUnit_Framework_TestCase
     public function testSet($var, $value, $expect)
     {
         $this->o->$var = $value;
-        $data = $this->readAttribute($this->o, "data");
-        $this->assertSame($expect, $data[$var]);
+        $this->assertSame($expect, $this->o->$var);
     }
     /**
     * data provider for testToString

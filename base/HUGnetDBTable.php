@@ -174,7 +174,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         parent::fromArray($array);
         // Set the new default group.  This is for when the data is cleared
         // The group will remain the same.
-        $this->default["group"] = $this->data["group"];
+        $this->default["group"] = $this->group;
 
     }
 
@@ -188,10 +188,13 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function toDB($default = true)
     {
         foreach ((array)$this->sqlColumns as $col) {
-            if (is_object($this->data[$col["Name"]])) {
-                $array[$col["Name"]] = $this->data[$col["Name"]]->toString();
+            $key = $col["Name"];
+            if (is_object($this->$key)) {
+                if (method_exists($this->$key, "toString")) {
+                    $array[$col["Name"]] = $this->$key->toString();
+                }
             } else {
-                $array[$col["Name"]] = $this->data[$col["Name"]];
+                $array[$col["Name"]] = $this->$key;
             }
         }
         return (array)$array;
@@ -234,7 +237,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function refresh()
     {
-        return $this->getRow($this->data[$this->sqlId]);
+        $id = $this->sqlId;
+        return $this->getRow($this->$id);
     }
     /**
     * This function updates the record currently in this table
@@ -264,7 +268,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->isEmpty()) {
             return false;
         }
-        if ($this->default[$this->sqlId] === $this->data[$this->sqlId]) {
+        $id = $this->sqlId;
+        if ($this->default[$this->sqlId] === $this->$id) {
             $cols = $this->myDriver->autoIncrement();
         }
         $ret = $this->myDriver->insertOnce($this->toDB(), (array)$cols, $replace);

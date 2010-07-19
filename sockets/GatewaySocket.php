@@ -93,8 +93,10 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
     public function __construct($data)
     {
         // This forces it to always be present, even if the data gets cleared
-        $this->default["DeviceID"] = PacketContainer::tempDeviceID();
-        $this->data = $this->default;
+        $this->default["DeviceID"] = self::stringSize(
+            hexdec(PacketContainer::tempDeviceID()), 6
+        );
+        $this->clearData();
         $this->fromArray($data);
     }
 
@@ -135,11 +137,11 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
             HUGnetClass::VPRINT_VERBOSE
         );
         $this->socket = @fsockopen(
-            $this->data["GatewayIP"],
-            $this->data["GatewayPort"],
+            $this->GatewayIP,
+            $this->GatewayPort,
             $this->Errno,
             $this->Error,
-            $this->data["Timeout"]
+            $this->Timeout
         );
         if (is_resource($this->socket)) {
             stream_set_blocking($this->socket, false);
@@ -256,7 +258,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         }
         $read = array($this->socket);
 
-        $socks = @stream_select($read, $write, $except, $this->data["Timeout"]);
+        $socks = @stream_select($read, $write, $except, $this->Timeout);
 
         $string = "";
         if ($socks === false) {

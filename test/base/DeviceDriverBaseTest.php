@@ -1132,6 +1132,34 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, $this->o->sensorData($string));
     }
+    /**
+    * Data provider for testLostContact
+    *
+    * @return array
+    */
+    public static function dataLostContact()
+    {
+        return array(
+            array(array(), -4000, true),
+            array(array(), 0, false),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $dev        The device to use
+    * @param int   $timeOffset The offset in time to use
+    * @param bool  $expect     The return value
+    *
+    * @return null
+    *
+    * @dataProvider dataLostContact
+    */
+    public function testLostContact($dev, $timeOffset, $expect)
+    {
+        $this->d->params->LastContact = time() + $timeOffset;
+        $this->assertSame($expect, $this->o->lostContact());
+    }
 
 }
 /**

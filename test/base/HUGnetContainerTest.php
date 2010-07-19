@@ -970,10 +970,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     {
         $o = new HUGnetContainerTestClass();
         $o->fromArray($array);
-        $this->assertSame(
-            $expect,
-            $this->readAttribute($o, "data")
-        );
+        foreach ((array)$expect as $key => $val) {
+            $this->assertSame(
+                $val,
+                $o->$key,
+                "$key is wrong"
+            );
+        }
     }
     /**
     * data provider for testDeviceID

@@ -159,9 +159,9 @@ abstract class HUGnetContainer extends HUGnetClass
             if (method_exists($this, $fct)) {
                 $this->$fct($value);
             } else {
-                if (is_array($value)) {
+                if (is_array($value) || is_object($value)) {
                     $this->$name = $value;
-                    $this->data[$name] = &$this->$name;
+                    unset($this->data[$name]);
                 } else {
                     $this->data[$name] = $value;
                 }
@@ -369,7 +369,7 @@ abstract class HUGnetContainer extends HUGnetClass
         foreach ($this->getProperties() as $key) {
             if (($this->$key !== $this->default[$key]) || $default) {
                 $value = $this->toArrayIterator(
-                    $this->data[$key],
+                    $this->$key,
                     $this->default[$key],
                     $default
                 );
@@ -515,7 +515,14 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function isEmpty()
     {
-        return (bool)(($this->default === $this->data) || empty($this->data));
+        $ret = true;
+        foreach ($this->default as $key => $value) {
+            if ($this->default[$key] !== $this->$key) {
+                $ret = false;
+                break;
+            }
+        }
+        return (bool)($ret || empty($this->data));
     }
 
 }

@@ -447,7 +447,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "HWPartNum" => "0039-21-20-C",
                         "FWPartNum" => "0039-08-20-C",
                         "FWVersion" => "1.2.3",
-                        "RawSetup"=> "000000000000000000000000000000000000FFFFFF00",
+                        "RawSetup"=> "000012345600392120430039082043010203FFFFFF00",
                         "Active"            => "1",
                         "GatewayKey"        => "1",
                         "ControllerKey"     => "0",
@@ -460,9 +460,11 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "DeviceGroup"       => "FFFFFF",
                         "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
                             ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
-                        "params"            => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YT"
-                            ."oxOntzOjExOiJ1bnNvbGljaXRlZCI7YToxOntzOjI6IjVDIjtpOj"
-                            ."E7fX19",
+                        "params"            => "YToyOntzOjEwOiJEcml2ZXJJbmZvIjthOj"
+                            ."M6e3M6MTA6Ikxhc3RDb25maWciO2k6MDtzOjEwOiJDb25maWdGYW"
+                            ."lsIjtpOjA7czoxMzoiTGFzdENvbmZpZ1RyeSI7aTowO31zOjExOi"
+                            ."JQcm9jZXNzSW5mbyI7YToxOntzOjExOiJ1bnNvbGljaXRlZCI7YT"
+                            ."oxOntzOjI6IjVDIjtpOjE7fX19",
                     ),
                 ),
                 "",
@@ -520,6 +522,7 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
     {
         $d = new DeviceContainer();
         foreach ((array)$preload as $load) {
+            $d->clearData();
             $d->fromArray($load);
             $d->insertRow(true);
         }

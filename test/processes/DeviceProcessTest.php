@@ -377,7 +377,10 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
         $p = new PacketContainer($pkt);
         $o = new DeviceProcess($preload, $this->device);
         $o->packetConsumer($p);
-        $this->assertAttributeSame($expect, "data", $p);
+        //$this->assertAttributeSame($expect, "data", $p);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $p->$key, "$key is wrong");
+        }
     }
 }
 

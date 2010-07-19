@@ -154,6 +154,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     protected $mySocket = null;
     /** @var object This is our config */
     protected $myConfig = null;
+    /** @var object This is where we store our reply */
+    public $Reply = null;
 
     /**
     * Builds the class
@@ -168,7 +170,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->myConfig = &ConfigContainer::singleton();
         parent::__construct($data);
         // This sets up the socket for us
-        $this->group = $this->data["group"];
+        //$this->group = $this->data["group"];
         if (empty($this->Date)) {
             $this->Date = time();
         }
@@ -275,8 +277,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function toArray($default = true)
     {
-        if (is_object($this->data["Reply"])) {
-            $Reply = $this->data["Reply"]->toArray();
+        if (is_object($this->Reply)) {
+            $Reply = $this->Reply->toArray();
         }
         for ($i = 0; $i < (strlen($this->Data)/2); $i++) {
             $Data[] = hexdec(substr($this->Data, ($i*2), 2));
@@ -361,7 +363,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if ($this->GetReply) {
             if (self::myReply($pkt)) {
                 // This is our reply.  Set it and return
-                $this->data["Reply"] =& $pkt;
+                $this->Reply =& $pkt;
                 return true;
             } else if (self::_unsolicited($pkt)) {
                 // This is an unsolicited packet
@@ -583,9 +585,9 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function isEmpty()
     {
         return (bool)(
-            (($this->default["Command"] === $this->data["Command"])
-            && ($this->default["To"] === $this->data["To"])
-            && ($this->default["From"] === $this->data["From"]))
+            (($this->default["Command"] === $this->Command)
+            && ($this->default["To"] === $this->To)
+            && ($this->default["From"] === $this->From))
             || empty($this->data));
     }
     /**

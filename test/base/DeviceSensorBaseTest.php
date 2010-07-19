@@ -131,7 +131,9 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new TestDeviceSensor($data, $this->d);
-        $this->assertAttributeSame($expect, "data", $o, "Wrong data in class");
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+        }
         $config = $this->readAttribute($o, "myConfig");
         $this->assertSame(
             "ConfigContainer", get_class($config), "Wrong config class"
@@ -220,8 +222,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public function testSet($var, $value, $expect)
     {
         $this->o->$var = $value;
-        $data = $this->readAttribute($this->o, "data");
-        $this->assertSame($expect, $data[$var]);
+        $this->assertSame($expect, $this->o->$var);
     }
 
 }

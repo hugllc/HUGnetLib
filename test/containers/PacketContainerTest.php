@@ -329,8 +329,12 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $ret = $this->readAttribute($o, "data");
         $this->checkDateTime($ret, false);
         // Check to make sure the data var is set correctly
-        $this->assertEquals($expect, $ret);
+        //$this->assertEquals($expect, $ret);
         // Check the configuration is set correctly
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+        }
+
         $config = $this->readAttribute($o, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the socket is set correctly
@@ -573,7 +577,9 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromPktString($preload);
         $ret = $this->readAttribute($this->o, "data");
         $this->checkDateTime($ret, false);
-        $this->assertEquals($expect, $ret);
+        foreach ($expect as $key => $value) {
+            $this->assertSame($value, $this->o->$key, "Bad Value in key $key");
+        }
     }
     /**
     * data provider for testDeviceID

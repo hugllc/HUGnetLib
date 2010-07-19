@@ -30,3 +30,14 @@ style:
 	mkdir -p ${BASE_DIR}Documentation
 	${PHPCS} --standard=PHPCS --report=full --standard=Pear --ignore="Documentation/,JoomlaMock/,tmpl/" .
 
+
+setup:
+	sudo apt-get install php-pear php5-xdebug
+	if [ "${PHPUNIT}x" = "x" ]; then \
+		sudo pear channel-discover pear.phpunit.de; \
+		sudo pear channel-discover pear.symfony-project.com; \
+		sudo pear install --alldeps phpunit/PHPUnit; \
+	fi;
+	if [ "${PHPCS}x" = "x" ]; then \
+		sudo pear install --alldeps PHP_CodeSniffer \
+	fi;

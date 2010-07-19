@@ -116,7 +116,9 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray($preload, $expect)
     {
         $o = new HooksContainer($preload);
-        $this->assertAttributeEquals($expect, "data", $o);
+        foreach ($expect as $key => $value) {
+            $this->assertEquals($value, $o->$key, "Bad Value in key $key");
+        }
     }
     /**
     * Data provider for testGroup

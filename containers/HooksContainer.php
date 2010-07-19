@@ -59,7 +59,7 @@ class HooksContainer extends HUGnetContainer
         "hooks" => array(),               // The array of server information
     );
     /** @var array This is where the data is stored */
-    protected $data = array();
+    public $hooks = array();
 
     /**
     * Sets all of the endpoint attributes from an array
@@ -73,7 +73,7 @@ class HooksContainer extends HUGnetContainer
         foreach ((array)$array as $key => $hook) {
             $class = &$hook["class"];
             if (class_exists($class)) {
-                $this->data["hooks"][$key] = array(
+                $this->hooks[$key] = array(
                     "obj" => new $class($hook["obj"]),
                     "class" => $class,
                 );
@@ -91,7 +91,7 @@ class HooksContainer extends HUGnetContainer
     public function registerHook($name, &$object)
     {
         if (is_object($object)) {
-            $this->data["hooks"][$name] = array(
+            $this->hooks[$name] = array(
                 "obj" => &$object,
                 "class" => get_class($object),
             );
@@ -110,15 +110,15 @@ class HooksContainer extends HUGnetContainer
     */
     public function &hook($name, $interface = "")
     {
-        if (!is_object($this->data["hooks"][$name]["obj"])) {
+        if (!is_object($this->hooks[$name]["obj"])) {
             return $this;
         }
         if (!empty($interface)
-            && !($this->data["hooks"][$name]["obj"] instanceof $interface)
+            && !($this->hooks[$name]["obj"] instanceof $interface)
         ) {
             return $this;
         }
-        return $this->data["hooks"][$name]["obj"];
+        return $this->hooks[$name]["obj"];
     }
     /**
     * Tries to run a function defined by what is called..

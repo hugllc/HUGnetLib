@@ -102,6 +102,7 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
     */
     public function pre(DeviceContainer &$dev)
     {
+        return true;
     }
 }
 

@@ -70,7 +70,7 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     protected $data = array();
 
     /** @var object This is a link to the connected server */
-    protected $socket = null;
+    public $socket = null;
     /** @var object These are the server groups we know */
     protected $groups = null;
     /** @var object These are the server groups we know */
@@ -96,30 +96,30 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
                 || isset($sock["GatewayKey"])
             ) {
                 if ($this->findClass("GatewaySocket", "/sockets/")) {
-                    $this->data["sockets"][$key] =& self::factory(
+                    $this->sockets[$key] =& self::factory(
                         $sock,
                         "GatewaySocket"
                     );
                 }
             } else if (isset($sock["dummy"])) {
                 if ($this->findClass("DummySocketContainer", "test/stubs")) {
-                    $this->data["sockets"][$key] =& self::factory(
+                    $this->sockets[$key] =& self::factory(
                         $sock,
                         "DummySocketContainer"
                     );
                 }
             } else {
                 if ($this->findClass("PacketSocket", "sockets")) {
-                    $this->data["sockets"][$key] =& self::factory(
+                    $this->sockets[$key] =& self::factory(
                         $sock,
                         "PacketSocket"
                     );
                 }
             }
-            if (isset($this->data["sockets"][$key])) {
+            if (isset($this->sockets[$key])) {
                 // Define this group;
-                $this->groups[$this->data["sockets"][$key]->group]
-                    = $this->data["sockets"][$key]->group;
+                $this->groups[$this->sockets[$key]->group]
+                    = $this->sockets[$key]->group;
             }
         }
     }
@@ -161,11 +161,11 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         if ($this->connected($group)) {
             return true;
         }
-        foreach (array_keys((array)$this->data["sockets"]) as $key) {
-            if ($this->data["sockets"][$key]->group !== $group) {
+        foreach (array_keys((array)$this->sockets) as $key) {
+            if ($this->sockets[$key]->group !== $group) {
                 continue;
             }
-            $this->socket[$group] =& $this->data["sockets"][$key];
+            $this->socket[$group] =& $this->sockets[$key];
             if ($this->socket[$group]->connect()) {
                 $this->lock(array_keys($this->default));
                 return true;
