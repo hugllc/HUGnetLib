@@ -222,22 +222,6 @@ class PacketRouter extends ProcessBase
     private function _setRoute(PacketContainer &$pkt)
     {
         if (!$pkt->unsolicited()) {
-            if (!isset($this->Routes[$pkt->From])) {
-                // Print out this packet
-                $this->vprint(
-                    "Trying to insert ".$pkt->From." into the database.",
-                    HUGnetClass::VPRINT_NORMAL
-                );
-                // If we have not seen this before try to put it in the database
-                // It will reject any bad DeviceIDs, so we don't have to worry about
-                // what we might be putting into the database.
-                DevicesTable::insertDeviceID(
-                    array(
-                        "DeviceID" => $pkt->From,
-                        "GatewayKey" => $this->myDevice->GatewayKey,
-                    )
-                );
-            }
             $this->Routes[$pkt->From] = $pkt->group;
         }
     }
