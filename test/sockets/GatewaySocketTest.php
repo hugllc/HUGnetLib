@@ -300,6 +300,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                 ),
                 "",
                 false,
+                50,
             ),
             // This test will fail without a local web server
             array(
@@ -309,6 +310,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                 ),
                 devInfo::hexifyStr("GET\r\n"),
                 @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
+                50,
             ),
         );
     }
@@ -319,16 +321,20 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     * @param array  $preload The value to preload
     * @param string $write   The string to write
     * @param mixed  $expect  The expected return
+    * @param int    $chars   The number of characters to read
     *
     * @return null
     *
     * @dataProvider dataRead
     */
-    public function testRead($preload, $write, $expect)
+    public function testRead($preload, $write, $expect, $chars)
     {
         $this->o->fromArray($preload);
         $this->o->write($write);
-        $read = $this->o->read();
+        // With the new timeout on the select we have to give the web server
+        // some time to respond.
+        sleep(1);
+        $read = $this->o->read($chars);
         if (is_string($expect)) {
             $read = devInfo::dehexify($read);
             //$this->assertFalse(is_bool(stristr($read, $expect)));
