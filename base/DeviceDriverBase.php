@@ -127,9 +127,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * I want:
     *    If the config is not $interval old: return false
-    *    else: return based on number of failures.  Pause longer for more failures
-    *
-    *    It waits an extra minute for each failure
+    *    else: if we have tried in the last 5 minutes, return false
+    *    else: return true
     *
     * @param int $interval The interval to check, in hours
     *
@@ -139,14 +138,12 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     {
         $this->data = &$this->myDriver->params->DriverInfo;
         // This is what would normally be our time.  Every 12 hours.
-        $base = $this->data["LastConfig"] < (time() - $interval*3600);
-        if ($base === false) {
-            return $base;
+        if (($this->data["LastConfig"] + ($interval * 3600)) > time()) {
+            return false;
+        } else if (($this->data["LastConfigTry"] + 300) > time()) {
+            return false;
         }
-        // Accounts for failures, but try once a day
-        return ($this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60))
-            || ($this->data["LastConfigTry"]<(time() - 86400));
-
+        return true;
     }
     /**
     * Resets all of the timers associated with reading and writing.
@@ -268,12 +265,13 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             // No polling if the interval is set to 0
             return false;
         }
-        $base = $this->data["LastPoll"] < (time() - $interval*60);
-        if ($base === false) {
-            return $base;
+        // The '-  30' is so that it can poll slightly before the interval is over
+        if (($this->data["LastPoll"] + ($interval * 60) - 30) > time()) {
+            return false;
+        } else if (($this->data["LastPollTry"] + 60) > time()) {
+            return false;
         }
-        // Accounts for failures
-        return $this->data["LastPollTry"] < (time() - $this->data["PollFail"]*6);
+        return true;
     }
     /**
     * Reads the data out of the device

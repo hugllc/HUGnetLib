@@ -111,14 +111,14 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     */
     public function readSetupTime($interval = 10)
     {
-        // This is what would normally be our time.  Every 10 minutes
-        $base = $this->data["LastConfig"] < (time() - $interval*60);
-        if ($base === false) {
-            return $base;
+        $this->data = &$this->myDriver->params->DriverInfo;
+        // This is what would normally be our time.  Every 12 hours.
+        if (($this->data["LastConfig"] + ($interval * 60)) > time()) {
+            return false;
+        } else if (($this->data["LastConfigTry"] + 60) > time()) {
+            return false;
         }
-        // Accounts for failures, but try once a day
-        return ($this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60))
-            || ($this->data["LastConfigTry"]<(time() - 86400));
+        return true;
     }
     /**
     * Programs a page of flash
