@@ -148,13 +148,16 @@ class PacketRouter extends ProcessBase
 
             // Make sure of our timeout is low.  We set it to 0.5
             $data = array(
-                "Timeout" => 1,
+                "Timeout" => -1,
                 "group" => $group,
                 "verbose" => $this->verbose,
             );
             // Check for packets coming in.
             $pkt = &PacketContainer::monitor($data);
             if (is_object($pkt)) {
+                // We reset this otherwise all of the packets come back as
+                // timed out.
+                $pkt->setDefault("Timeout");
                 if ($pkt->toMe()) {
                     // Print out this packet
                     $this->vprint(

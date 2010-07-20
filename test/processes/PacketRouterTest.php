@@ -386,6 +386,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->o->loop = $loop;
         $i = 0;
+        $start = time();
         do {
             foreach ((array)$read[$i] as $group => $string) {
                 $this->socket[$group]->readString = $string;

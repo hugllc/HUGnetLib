@@ -258,8 +258,8 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         }
         $read = array($this->socket);
 
-        $socks = @stream_select($read, $write, $except, $this->Timeout);
-
+        // Wait a maximum of 100,000 uSeconds.
+        $socks = @stream_select($read, $write, $except, 0, 100000);
         $string = "";
         if ($socks === false) {
             // This bit of code I am not sure how to get to.  It is unlikely it will
@@ -303,7 +303,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
     {
         $timeout = time() + $pkt->Timeout;
         do {
-            $this->buffer .= $this->read(1);
+            $this->buffer .= $this->read();
             $ret = $pkt->recv($this->buffer);
         } while (($ret === false) && ($timeout > time()));
         return $ret;

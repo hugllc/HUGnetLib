@@ -336,8 +336,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if (!is_string($pktStr)) {
             return false;
         }
-        // We got something that looks like a packet, so remove the buffer
-        $packet = "";
+        // We got a packet, so remove that part of the  buffer
+        $packet = substr($packet, (stripos($packet, $pktStr) + strlen($pktStr)));
         // Create a new packet object
         // checkStr strips the preamble but this expects it so we re-add it.
         if ($this->GetReply) {

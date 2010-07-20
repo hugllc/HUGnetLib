@@ -142,8 +142,8 @@ class PacketSocket extends HUGnetContainer implements HUGnetSocketInterface
     private function &_read()
     {
         $ret = &$this->myTable->getNextPacket();
-        if ($ret === false) {
-            usleep(500000);
+        if (($ret === false) && ($this->Timeout >= 0)) {
+            usleep(200000);
         }
         return $ret;
     }

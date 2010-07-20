@@ -172,7 +172,7 @@ class DummySocketContainer implements HUGnetSocketInterface
     {
         $timeout = time() + $pkt->Timeout;
         do {
-            $this->buffer .= $this->read(1);
+            $this->buffer .= $this->read();
             $ret = $pkt->recv($this->buffer);
         } while (($ret === false) && ($timeout > time()));
         return $ret;
