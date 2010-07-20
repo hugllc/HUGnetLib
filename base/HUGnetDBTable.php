@@ -196,6 +196,10 @@ abstract class HUGnetDBTable extends HUGnetContainer
             } else {
                 $array[$col["Name"]] = $this->$key;
             }
+            // This makes sure that it is not null if there is a default
+            if (is_null($array[$col["Name"]])) {
+                $array[$col["Name"]] = $col["Default"];
+            }
         }
         return (array)$array;
     }

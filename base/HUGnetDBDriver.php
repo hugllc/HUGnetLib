@@ -899,6 +899,10 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
                 $method
             );
         }
+        $this->vprint(
+            "With Error: ".print_r($errorInfo, true),
+            HUGnetClass::VPRINT_VERBOSE
+        );
     }
     /**
     * Resets all internal variables to be ready for the next query

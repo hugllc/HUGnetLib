@@ -295,7 +295,12 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $line,
             $match
         );
-        return trim((string)$match[0]);
+        $i = 0;
+        // This removes localhost.
+        do {
+            $ret = trim((string)$match[$i++]);
+        } while (preg_match("/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/", $ret) > 0);
+        return $ret;
     }
     /**
     * This updates my device record

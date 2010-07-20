@@ -340,6 +340,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     public function testGetIP()
     {
         $ret = ProcessBaseClassTest::getIP();
+        $this->assertNotRegExp(
+            "/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
+            $ret,
+            "returned localhost"
+        );
         $this->assertRegExp(
             "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
             $ret
