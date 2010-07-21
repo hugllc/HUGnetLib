@@ -202,13 +202,16 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($pass === true) {
             $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
+            $this->data["TotalConfigSuccess"]++;
             $this->myDriver->Active = 1;
             return true;
         } else if (is_null($pass)) {
+            $this->data["TotalConfigNull"]++;
             return null;
         }
         // We failed.  State that.
         $this->data["ConfigFail"]++;
+        $this->data["TotalConfigFail"]++;
         return false;
     }
     /**
@@ -224,11 +227,13 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if ($pass) {
             $this->data["LastPoll"] = time();
             $this->data["PollFail"] = 0;
+            $this->data["TotalPollSuccess"]++;
             $this->myDriver->params->LastContact = time();
             return true;
         }
         // We failed.  State that.
         $this->data["PollFail"]++;
+        $this->data["TotalPollFail"]++;
         return $pass;
     }
     /**
@@ -304,6 +309,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         );
         $ret = $pkt->send();
         if (is_object($pkt->Reply)) {
+            $this->data["ReplyPkts"]++;
+            $this->data["ReplyTotal"] += $pkt->replyTime();
             $ret = RawHistoryTable::insertRecord(
                 array(
                     "id" => (int)$this->myDriver->id,
@@ -316,6 +323,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             );
             return $ret;
         }
+        $this->data["NoReplyPkts"]++;
         return false;
     }
     /**
@@ -358,8 +366,11 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         );
         $ret = $pkt->send();
         if ($reply === false) {
+            $this->data["NoReplyPkts"]++;
             return $ret;
         } else if (is_object($pkt->Reply)) {
+            $this->data["ReplyPkts"]++;
+            $this->data["ReplyTotal"] += $pkt->replyTime();
             return $pkt->Reply->Data;
         }
         return false;
