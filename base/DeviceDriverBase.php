@@ -225,7 +225,11 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     {
         $this->data = &$this->myDriver->params->DriverInfo;
         if ($pass) {
-            $this->data["LastPoll"] = time();
+            $now = time();
+            if (!empty($this->data["LastPoll"])) {
+                $this->data["PollInt"] += ($now - $this->data["LastPoll"]);
+            }
+            $this->data["LastPoll"] = $now;
             $this->data["PollFail"] = 0;
             $this->data["TotalPollSuccess"]++;
             $this->myDriver->params->LastContact = time();

@@ -118,6 +118,11 @@ class E00392101Device extends DeviceDriverLoadableBase
             } else {
                 // If that fails,
                 $ret = $this->writeProgram();
+                if ($ret) {
+                    $this->myDriver->params->DriverInfo["loadProgSuccess"]++;
+                } else {
+                    $this->myDriver->params->DriverInfo["loadProgFail"]++;
+                }
             }
         }
         return $this->setLastConfig($ret);

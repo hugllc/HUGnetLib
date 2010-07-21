@@ -110,14 +110,23 @@ class E00392100Device extends DeviceDriverLoadableBase
         if ($ret) {
             if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
                 // Reset config time so this device is checked again.
-                $this->readSetupTimeReset();
+                //$this->readSetupTimeReset();
                 // Try to just run the application first
                 $this->runApplication();
                 // Wrong Driver  We should exit with a failure unless the setup
                 // returns us with the right one
                 $ret = $this->readConfig();
                 if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
+                    $this->vprint(
+                        "Running the Application:  Failed",
+                        HUGnetClass::VPRINT_NORMAL
+                    );
                     $ret = null;
+                } else {
+                    $this->vprint(
+                        "Running the Application:  Succeeded",
+                        HUGnetClass::VPRINT_NORMAL
+                    );
                 }
             }
         }
@@ -125,6 +134,13 @@ class E00392100Device extends DeviceDriverLoadableBase
             $this->_setFirmware();
             $ver = $this->myFirmware->compareVersion($this->myDriver->FWVersion);
             if ($ver < 0) {
+                $this->vprint(
+                    "Found new firmware "
+                    ." v".$this->myFirmware->Version
+                    ." > v".$this->myDriver->FWVersion,
+                    HUGnetClass::VPRINT_NORMAL
+                );
+
                 // Crash the running program so the board can be reloaded
                 $this->runBootloader();
                 // This forces us to not just run the application again
