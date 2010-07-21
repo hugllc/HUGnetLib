@@ -238,6 +238,10 @@ class FirmwareTable extends HUGnetDBTable
             $where .= " AND HWPartNum = ?";
             $data[] = $this->HWPartNum;
         }
+        if (!empty($this->Version)) {
+            $where .= " AND Version = ?";
+            $data[] = $this->Version;
+        }
         $ret = $this->selectInto($where, $data);
         // This makes sure we are getting a good one if there is one, instead
         // of a bad one.

@@ -114,7 +114,7 @@ class E00392101Device extends DeviceDriverLoadableBase
                 // Reset config time so this device is checked again.
                 $this->readSetupTimeReset();
                 // Wrong Driver  We should exit with a failure
-                $ret = false;
+                $ret = null;
             } else {
                 // If that fails,
                 $ret = $this->writeProgram();
@@ -137,17 +137,20 @@ class E00392101Device extends DeviceDriverLoadableBase
     * device checks the saved CRC against the calculated one.  If they match it
     * tries to run the loaded application.
     *
+    * @param string $version Selects a certain version of firmware.  If left empty
+    *                        it gets the latest.
+    *
     * @todo This routine could use some cleanup
     * @return bool True on success, False on failure
     */
-    public function writeProgram()
+    public function writeProgram($version = "")
     {
         // We need to set the packet timeout to 10 seconds,because of the long
         // packets.
         $OldTimeout = $this->myDriver->DriverInfo["PacketTimeout"];
         $this->myDriver->DriverInfo["PacketTimeout"] = 10;
         // Sets up the firmware
-        $this->_setFirmware();
+        $this->_setFirmware($version);
         if (($this->myFirmware->RelStatus == FirmwareTable::BAD)
             || $this->myFirmware->isEmpty()
         ) {
@@ -293,14 +296,18 @@ class E00392101Device extends DeviceDriverLoadableBase
     /**
     * Reads the setup out of the device
     *
+    * @param string $version Selects a certain version of firmware.  If left empty
+    *                        it gets the latest.
+    *
     * @return bool True on success, False on failure
     */
-    private function _setFirmware()
+    private function _setFirmware($version = "")
     {
         $this->myFirmware->fromArray(
             array(
                 "HWPartNum" => $this->myDriver->HWPartNum,
                 "FWPartNum" => $this->FWPartNum[$this->myDriver->HWPartNum],
+                "Version"   => $version,
             )
         );
         $this->myFirmware->getLatest();

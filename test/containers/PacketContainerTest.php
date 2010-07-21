@@ -753,6 +753,26 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
             ),
+            // Only Part of a packet
+            array(
+                array(
+                    "GetReply" => false,
+                ),
+                "5A5A5A0100002",
+                array(
+                    "To" => "000000",
+                    "From" => "000000",
+                    "Command" => "00",
+                    "Length"  => 0,
+                    "Data" => array(),
+                    "RawData" => "",
+                    "Type" => "UNKNOWN",
+                    "Reply" => null,
+                    "Checksum" => "00",
+                    "CalcChecksum" => "00",
+                ),
+                false,
+            ),
         );
     }
     /**

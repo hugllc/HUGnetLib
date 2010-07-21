@@ -235,6 +235,49 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
+            // Checks to see what happens when main return false
+            array(
+                array(
+                    array(
+                        "id" => hexdec("BADBAD"),
+                        "DeviceID" => "BADBAD",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                    ),
+                    array(
+                        "id" => hexdec("654321"),
+                        "DeviceID" => "654321",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 2,
+                        "PollInterval" => 10,
+                    ),
+                    array(
+                        "id" => hexdec("234567"),
+                        "DeviceID" => "234567",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                    ),
+                ),
+                array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "deviceProcess",
+                ),
+                true,
+                array(
+                    hexdec("BADBAD") => 1,
+                    hexdec("654321") => null,
+                    hexdec("234567") => 1
+                ),
+                array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
+            ),
             array(
                 array(
                     array(

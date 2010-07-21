@@ -249,7 +249,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
                 )),
-                false,
+                null,
                 array(),
             ),
             array(  // #1
@@ -623,7 +623,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
                 )),
-                false,
+                null,
                 array(),
             ),
             array( // #4

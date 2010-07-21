@@ -199,12 +199,13 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     protected function setLastConfig($pass=true)
     {
         $this->data = &$this->myDriver->params->DriverInfo;
-        if ($pass) {
+        if ($pass === true) {
             $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
-            $this->myDriver->params->LastContact = time();
             $this->myDriver->Active = 1;
             return true;
+        } else if (is_null($pass)) {
+            return null;
         }
         // We failed.  State that.
         $this->data["ConfigFail"]++;
@@ -228,7 +229,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         }
         // We failed.  State that.
         $this->data["PollFail"]++;
-        return false;
+        return $pass;
     }
     /**
     * Reads the calibration out of the device

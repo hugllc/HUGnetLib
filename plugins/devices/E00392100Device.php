@@ -117,7 +117,7 @@ class E00392100Device extends DeviceDriverLoadableBase
                 // returns us with the right one
                 $ret = $this->readConfig();
                 if ($this->myDriver->Driver !== self::$registerPlugin["Name"]) {
-                    $ret = false;
+                    $ret = null;
                 }
             }
         }
@@ -131,7 +131,7 @@ class E00392100Device extends DeviceDriverLoadableBase
                 $this->readConfig();
                 // This is because the program needs to be reloaded.  It can
                 // only be reloaded if it is using the 00392101 driver.
-                $ret = false;
+                $ret = null;
             }
         }
         if ($ret) {

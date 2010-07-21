@@ -928,7 +928,7 @@ S9030000FC",
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
                 )),
-                false,
+                null,
             ),
             array(   // #1
                 array(
@@ -965,7 +965,7 @@ S9030000FC",
                     "Command" => PacketContainer::COMMAND_GETSETUP,
                     "Data" => "",
                 )),
-                false,
+                null,
             ),
             array(   // #2
                 array(

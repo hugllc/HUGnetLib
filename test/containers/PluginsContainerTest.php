@@ -170,6 +170,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             'Name' => 'DeviceProcessAnalysis2',
                             'Type' => 'deviceProcess',
                             'Class' => 'TestDeviceProcessPlugin2',
+                            'Priority' => 1,
                             'Flags' => array (
                                 0 => 'DeviceProcessAnalysis2',
                             ),

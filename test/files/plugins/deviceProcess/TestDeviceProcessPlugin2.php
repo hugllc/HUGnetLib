@@ -62,6 +62,7 @@ class TestDeviceProcessPlugin2 extends DeviceProcessPluginBase
         "Name" => "DeviceProcessAnalysis2",
         "Type" => "deviceProcess",
         "Class" => "TestDeviceProcessPlugin2",
+        "Priority" => 1,
     );
     /**
     * This function does the stuff in the class.
@@ -73,6 +74,9 @@ class TestDeviceProcessPlugin2 extends DeviceProcessPluginBase
     public function main(DeviceContainer &$dev)
     {
         $dev->params->DriverInfo[__CLASS__]++;
+        if ($dev->DeviceID == "BADBAD") {
+            return false;
+        }
     }
     /**
     * This deals with Unsolicited Packets
