@@ -83,7 +83,6 @@ class E00392100Device extends DeviceDriverLoadableBase
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["NumSensors"] = 6;
         $this->fromSetupString($string);
-        $this->_setFirmware();
     }
     /**
     * Says whether this device is a controller board or not
@@ -135,7 +134,7 @@ class E00392100Device extends DeviceDriverLoadableBase
             $ver = $this->myFirmware->compareVersion($this->myDriver->FWVersion);
             if ($ver < 0) {
                 $this->vprint(
-                    "Found new firmware "
+                    "Found new firmware ".$this->myFirmware->FWPartNum
                     ." v".$this->myFirmware->Version
                     ." > v".$this->myDriver->FWVersion,
                     HUGnetClass::VPRINT_NORMAL
@@ -196,6 +195,7 @@ class E00392100Device extends DeviceDriverLoadableBase
     */
     private function _setFirmware()
     {
+        $this->myFirmware->clearData();
         $this->myFirmware->fromArray(
             array(
                 "HWPartNum" => $this->myDriver->HWPartNum,

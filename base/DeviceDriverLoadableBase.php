@@ -78,13 +78,7 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myFirmware = new FirmwareTable(
-            array(
-                "HWPartNum" => $this->myDriver->HWPartNum,
-                "FWPartNum" => $this->myDriver->FWPartNum,
-                "FirmwareVersion" => $this->myDriver->FWVersion,
-            )
-        );
+        $this->myFirmware = new FirmwareTable();
     }
     /**
     * Devices that inherit this class have loadable firmware, so this should return
