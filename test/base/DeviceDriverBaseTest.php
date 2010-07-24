@@ -225,8 +225,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
                 true,
-                0,
-                time(),
+                array(
+                    "PacketTimeout" => 0,
+                ),
+                time() - 60,
                 0,
             ),
             array(
@@ -245,8 +247,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     "Data" => "",
                 )),
                 true,
-                0,
-                time(),
+                array(
+                    "PacketTimeout" => 0,
+                ),
+                time() - 60,
                 0,
             ),
             array(
@@ -256,7 +260,9 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 "5A5A5A5500002500002000505A5A5A550000250000200050"
                     ."5A5A5A0300002500002000065A5A5A550000250000200050",
                 false,
-                1,
+                array(
+                    "PacketTimeout" => 1,
+                ),
                 null,
                 1,
             ),
@@ -265,34 +271,37 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id       The Device ID to pretend to be
-    * @param string $string   The string for the dummy device to return
-    * @param string $read     The read string to put in
-    * @param string $write    The write string expected
-    * @param string $expect   The expected return
-    * @param int    $timeout  The timeout to use
-    * @param string $LastPoll The time last congig should be set to (regex)
-    * @param int    $PollFail The number of failures to report
+    * @param string $id         The Device ID to pretend to be
+    * @param string $string     The string for the dummy device to return
+    * @param string $read       The read string to put in
+    * @param string $write      The write string expected
+    * @param string $expect     The expected return
+    * @param array  $DriverInfo The driver info to use
+    * @param string $LastPoll   The time last congig should be set to (regex)
+    * @param int    $PollFail   The number of failures to report
     *
     * @return null
     *
     * @dataProvider dataReadData
     */
     public function testReadData(
-        $id, $string, $read, $write, $expect, $timeout, $LastPoll, $PollFail
+        $id, $string, $read, $write, $expect, $DriverInfo, $LastPoll, $PollFail
     ) {
         $this->d->id = $id;
-        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->d->DriverInfo = $DriverInfo;
+        $this->d->params->DriverInfo["LastPoll"] = $LastPoll;
         $this->socket->readString = $read;
         $ret = $this->o->readData();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         //$this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
-        $this->assertThat(
-            $this->d->params->DriverInfo["LastPoll"],
-            $this->greaterThanOrEqual($LastPoll),
-            "LastPoll wrong"
-        );
+        if (!is_null($LastPoll)) {
+            $this->assertThat(
+                $this->d->params->DriverInfo["LastPoll"],
+                $this->greaterThan($LastPoll),
+                "LastPoll wrong"
+            );
+        }
         $this->assertSame(
             $PollFail,
             $this->d->params->DriverInfo["PollFail"],

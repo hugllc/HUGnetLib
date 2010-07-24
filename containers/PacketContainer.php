@@ -346,8 +346,10 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
             $pkt = &$this;
             $this->fromPktString(self::FULL_PREAMBLE.$pktStr);
         }
+        // Putting this in the if statement causes strange errors???  Not sure why
+        $chk = $pkt->checksum();
         // Check the checksum  If it is bad return a false
-        if ($pkt->Checksum !== $pkt->checksum()) {
+        if ($pkt->Checksum !== $chk) {
             self::vprint(
                 "Bad Checksum ".$pkt->Checksum." != ".$pkt->checksum(),
                 1

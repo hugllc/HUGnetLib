@@ -202,10 +202,11 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     public function wait($Timeout = 60)
     {
         static $end;
+
         // Be verbose ;)
         $this->vprint(
             "Pausing... Using ID: ".$this->myDevice->DeviceID
-            ." ".date("Y-m-d H:i:s"),
+            ." ".date("Y-m-d H:i:s"). " SpareTime: ".($end - time()),
             HUGnetClass::VPRINT_NORMAL
         );
         // Update our device
