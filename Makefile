@@ -39,5 +39,5 @@ setup:
 		sudo pear install --alldeps phpunit/PHPUnit; \
 	fi;
 	if [ "${PHPCS}x" = "x" ]; then \
-		sudo pear install --alldeps PHP_CodeSniffer \
+		sudo pear install --alldeps PHP_CodeSniffer; \
 	fi;

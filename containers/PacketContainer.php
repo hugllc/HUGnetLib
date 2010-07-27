@@ -394,6 +394,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function send()
     {
+        // Clear out any old replies
+        $this->Reply = null;
         // Send the packet out
         if (is_object($this->mySocket)) {
             if ($this->From == "000000") {
@@ -629,7 +631,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         if ($this->_toMe($pkt)
             && ($pkt->Command == self::COMMAND_REPLY)
             && ($this->To == $pkt->From)
-            && ($this->Date <= $pkt->Date)
+            && ($this->Time < $pkt->Time)
         ) {
             return true;
         }

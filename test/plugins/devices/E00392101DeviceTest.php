@@ -992,7 +992,7 @@ S9030000FC",
                     ),
                 ),
                 "000025",
-                "000000002500392101410039200643000009FFFFFF50",
+                "000000002500392101410039200143000009FFFFFF50",
                 (string)new PacketContainer(
                     array(
                         "From" => "000025",
@@ -1041,7 +1041,13 @@ S9030000FC",
                         "Command" => PacketContainer::COMMAND_REPLY,
                         "Data" => "",
                     )
-                ),
+                ).
+                (string)new PacketContainer(array(
+                    "From" => "000025",
+                    "To" => "000020",
+                    "Command" => PacketContainer::COMMAND_REPLY,
+                    "Data" => "000000002500392101410039200143000009FFFFFF50",
+                )),
                 (string)new PacketContainer(
                     array(
                         "To" => "000025",
@@ -1090,6 +1096,14 @@ S9030000FC",
                         "To" => "000025",
                         "Command"
                             => DeviceDriverLoadableBase::COMMAND_RUNAPPLICATION,
+                        "Data" => "",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
                         "Data" => "",
                     )
                 ),

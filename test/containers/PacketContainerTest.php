@@ -1035,6 +1035,54 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
+            // Good Reply (Reply already loaded)
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                    "group" => "default",
+                    "Reply" => new PacketContainer(array(
+                        "To" => "000ABC",
+                        "From" => "000020",
+                        "Command" => "55",
+                        "Data" => "01020304",
+                        "Checksum" => "C3",
+                        "group" => "other",
+                        "Timeout" => 1,
+                    )),
+                    "Timeout" => 1,
+                ),
+                "5A5A5A55000ABC0000200401020304C3A134389105239258"
+                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "000020",
+                        "From" => "000ABC",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "97",
+                        "CalcChecksum" => "97",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                "default",
+            ),
             // Good Reply alt socket
             array(
                 array(
@@ -1073,6 +1121,41 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "CalcChecksum" => "C3",
                 ),
                 "other",
+            ),
+            // No reply expected (Bad reply already loaded)
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "GetReply" => false,
+                    "Reply" => new PacketContainer(array(
+                        "To" => "000ABC",
+                        "From" => "000020",
+                        "Command" => "55",
+                        "Data" => "01020304",
+                        "Checksum" => "C3",
+                        "group" => "other",
+                        "Timeout" => 1,
+                    )),
+                ),
+                "",
+                "5A5A5A55000ABC0000200401020304C3",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => null,
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                "default",
             ),
             // No reply expected
             array(
@@ -1582,14 +1665,14 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "To" => "000ABC",
                     "From" => "000020",
                     "Command" => "55",
-                    "Date" => "2010-04-22 14:18:28",
+                    "Time" => 12341.1234,
                     "Data" => "01020304",
                 ),
                 array(
                     "To" => "000020",
                     "From" => "000ABC",
                     "Command" => "01",
-                    "Date" => "2010-04-22 14:18:28",
+                    "Time" => 12341.1235,
                     "Data" => "01020304",
                 ),
                 true
@@ -1600,14 +1683,32 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "To" => "000ABC",
                     "From" => "000020",
                     "Command" => "55",
-                    "Date" => "2010-04-22 14:18:28",
+                    "Time" => 12341.1234,
                     "Data" => "01020304",
                 ),
                 array(
                     "To" => "000020",
                     "From" => "000ABC",
                     "Command" => "01",
-                    "Date" => "2010-04-22 14:18:27",
+                    "Time" => 12341.1233,
+                    "Data" => "01020304",
+                ),
+                false
+            ),
+            // Bad reply.  Reply dated same as before packet
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Time" => 12341.1234,
+                    "Data" => "01020304",
+                ),
+                array(
+                    "To" => "000020",
+                    "From" => "000ABC",
+                    "Command" => "01",
+                    "Time" => 12341.1234,
                     "Data" => "01020304",
                 ),
                 false
@@ -1620,7 +1721,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "To" => "000020",
                     "From" => "000ABC",
                     "Command" => "01",
-                    "Date" => "2010-04-22 14:18:27",
+                    "Time" => 12341.1234,
                     "Data" => "01020304",
                 ),
                 false
@@ -1631,7 +1732,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "To" => "000ABC",
                     "From" => "000020",
                     "Command" => "55",
-                    "Date" => "2010-04-22 14:18:28",
+                    "Time" => 12341.1234,
                     "Data" => "01020304",
                 ),
                 array(
