@@ -170,13 +170,16 @@ class E00392100Device extends DeviceDriverLoadableBase
                 self::COMMAND_READDOWNSTREAM,
                 $this->stringSize($key, 2)
             );
+            $downstream = &$this->myDriver->params->DriverInfo["Downstream"];
             if (is_string($ret) && !empty($ret)) {
+                $downstream[(int)$key] = array();
                 $dev = new DeviceContainer();
                 $devs = str_split($ret, 6);
                 foreach ($devs as $d) {
                     $dev->clearData();
                     $id = hexdec($d);
                     if (!empty($id)) {
+                        $downstream[(int)$key][] = $d;
                         $dev->getRow($id);
                         $dev->ControllerKey = $this->myDriver->id;
                         $dev->ControllerIndex = $key;
