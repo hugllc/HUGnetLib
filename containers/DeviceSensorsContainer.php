@@ -152,6 +152,33 @@ class DeviceSensorsContainer extends HUGnetContainer
         }
     }
     /**
+    * Creates the object from a string
+    *
+    * @param array $array the array to use
+    *
+    * @return null
+    */
+    public function fromTypeArray($array)
+    {
+        if (empty($array) || !is_array($array)) {
+            return;
+        }
+        for ($key = 0; $key < $this->Sensors; $key++) {
+            $old = $this->sensor($key)->toArray();
+            $vals = array_merge($old, $array[$key]);
+            $good = $this->checkSensor(
+                $vals["id"],
+                $vals["type"],
+                $this->sensor($key)
+            );
+            if ($good) {
+                $this->sensor($key)->fromArray($array[$key]);
+            } else {
+                $this->sensor[$key] = $this->sensorFactory($vals);
+            }
+        }
+    }
+    /**
     * Creates the sensors from the old method of storing them.
     *
     * @param DeviceParamsContainer &$array the array to upgrade to use

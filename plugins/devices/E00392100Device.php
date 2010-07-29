@@ -207,6 +207,70 @@ class E00392100Device extends DeviceDriverLoadableBase
         );
         $this->myFirmware->getLatest();
     }
+    /**
+    * This always forces the sensors to the same thing (world view)
+    *
+    * Here is the actual sensor array (actual view):
+    *    Input 0: HUGnet2 Current
+    *    Input 1: HUGnet2 Temp
+    *    Input 2: HUGnet2 Voltage Low
+    *    Input 3: HUGnet2 Voltage High
+    *    Input 4: HUGnet1 Voltage High
+    *    Input 5: HUGnet1 Voltage Low
+    *    Input 6: HUGnet1 Temp
+    *    Input 7: HUGnet1 Current
+    *
+    * This is what we put forward to the world (world view):
+    *    Output 0: HUGnet1 Voltage
+    *    Output 1: HUGnet1 Current
+    *    Output 2: HUGnet1 Temp
+    *    Output 3: HUGnet2 Voltage
+    *    Output 4: HUGnet2 Current
+    *    Output 5: HUGnet2 Temp
+    *
+    * @param string $string This is totally ignored.
+    *
+    * @return null
+    */
+    public function fromSetupString($string)
+    {
+        $this->myDriver->DriverInfo["TimeConstant"] = 1;
+        if (is_object($this->myDriver->sensors)) {
+            $this->myDriver->Sensors = 6;
+            $this->myDriver->sensors->fromTypeArray(array(
+                0 => array(
+                    "id" => 0x40,
+                    "type" => "Controller",
+                    "location" => "HUGnet 1 Voltage",
+                ),
+                1 => array(
+                    "id" => 0x50,
+                    "type" => "Controller",
+                    "location" => "HUGnet 1 Current",
+                ),
+                2 => array(
+                    "id" => 0x02,
+                    "type" => "BCTherm2322640",
+                    "location" => "HUGnet 1 FET Temperature",
+                ),
+                3 => array(
+                    "id" => 0x40,
+                    "type" => "Controller",
+                    "location" => "HUGnet 2 Voltage",
+                ),
+                4 => array(
+                    "id" => 0x50,
+                    "type" => "Controller",
+                    "location" => "HUGnet 2 Current",
+                ),
+                5 => array(
+                    "id" => 0x02,
+                    "type" => "BCTherm2322640",
+                    "location" => "HUGnet 2 FET Temperature",
+                ),
+            ));
+        }
+    }
 }
 
 ?>

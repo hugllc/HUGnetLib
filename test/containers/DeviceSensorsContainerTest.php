@@ -475,6 +475,97 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataFromTypeArray()
+    {
+        return array(
+            array(
+                array(
+                    0 => array("id" => 2, "type" => "Hello", ),
+                    1 => array("id" => 2, "rawCalibration" => "abcd"),
+                ),
+                array(
+                    0 => array("id" => 0),
+                    1 => array("id" => 3, "type" => "Hello"),
+                ),
+                2,
+                array(
+                    "Sensors" => 2,
+                    array(
+                        "id" => 0,
+                        "type" => "Hello",
+                    ),
+                    array(
+                        "id" => 3,
+                        "type" => "Hello",
+                        "rawCalibration" => "abcd"
+                    ),
+                ),
+                array(
+                    "Test1Sensor",
+                    "Test2Sensor",
+                ),
+                array(0, 3),
+            ),
+            array(
+                array(
+                    0 => array("id" => 2, "type" => "Hello", ),
+                    1 => array("id" => 2, "rawCalibration" => "abcd"),
+                ),
+                "This is not an array",
+                2,
+                array(
+                    "Sensors" => 2,
+                    0 => array("id" => 2, "type" => "Hello", ),
+                    1 => array("id" => 2, "type" => "", "rawCalibration" => "abcd"),
+                ),
+                array(
+                    "Test2Sensor",
+                    "Test2Sensor",
+                ),
+                array(2, 2),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload      The stuff to give to the constructor
+    * @param array $array        The array to use for the input
+    * @param int   $TotalSensors The total number of sensors
+    * @param array $expect       The expected data
+    * @param array $sensors      The expected sensor data
+    * @param array $types        The types to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataFromTypeArray
+    */
+    public function testFromTypeArray(
+        $preload, $array, $TotalSensors, $expect, $sensors, $types
+    ) {
+        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->o->fromTypeArray($array);
+        $this->assertSame($expect, $this->o->toArray());
+        $s = $this->readAttribute($this->o, "sensor");
+        foreach (array_keys((array)$s) as $k) {
+            $this->assertSame(
+                $types[$k], $s[$k]->id, "Sensor $k id is wrong"
+            );
+            $this->assertSame(
+                $sensors[$k], get_class($s[$k]), "Sensor $k is wrong"
+            );
+        }
+
+    }
+
+    /**
     * data provider for testSensor
     *
     * @return array

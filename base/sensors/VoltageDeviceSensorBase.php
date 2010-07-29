@@ -49,15 +49,9 @@ require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-* @deprecated since version 0.9.0
 */
 abstract class VoltageDeviceSensorBase extends DeviceSensorBase
 {
-    /** @var This is to register the class */
-    public static $registerPlugin = array(
-        "Name" => "voltageSensor",
-        "Type" => "sensor",
-    );
     /** @var array This is the default values for the data */
     protected $default = array(
         "location" => "",                // The location of the sensors
