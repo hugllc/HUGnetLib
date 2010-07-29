@@ -213,7 +213,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->Length       = (int) hexdec(substr($string, 14, 2));
         $this->Data         = substr($string, 16, ($this->Length*2));
         $this->Checksum     = substr($string, (16 + ($this->Length*2)), 2);
-        $pktdata            = substr($string, 0, strlen($data)-2);
+        //$pktdata            = substr($string, 0, strlen($data)-2);
         $this->setType("UNKNOWN");
     }
     /**
@@ -248,9 +248,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $string .= sprintf("%02X", (strlen($this->Data)/2));
         // Data ('Length' chars)
         $string .= $this->Data;
-        $this->Checksum = self::_checksum($string);
         // Add this and the checksum (2 chars) to the return
-        return self::FULL_PREAMBLE.$string.$this->Checksum;
+        return self::FULL_PREAMBLE.$string.$this->_checksum($string);
     }
     /**
     * Sets all of the endpoint attributes from an array

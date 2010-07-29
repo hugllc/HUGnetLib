@@ -554,6 +554,16 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 PacketContainer::COMMAND_READFLASH,
                 "010203040506",
                 true,
+                0,
+                "",
+                "",
+                false,
+            ),
+            // Everything works
+            array(
+                PacketContainer::COMMAND_READFLASH,
+                "010203040506",
+                true,
                 0x123,
                 (string) new PacketContainer(
                     array(

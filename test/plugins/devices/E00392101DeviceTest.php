@@ -1121,6 +1121,120 @@ S9030000FC",
                     ."5A5A5A0300002500002000065A5A5A5C0000250000200059",
                 false,
             ),
+            array(   // #4
+                array(
+                    array(
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "Version" => "0.0.8",
+                        "Target" => "atmega16",
+                        "RelStatus" => FirmwareTable::RELEASE,
+                    ),
+                ),
+                array(
+                    "HWPartNum" => "0039-21-01-A",
+                    "FWPartNum" => "0039-20-01-C",
+                    "FWVersion" => "0.0.9",
+                    "Driver" => "e00392101",
+                    "DriverInfo" => array(
+                        "SRAM" => 1024,
+                        "E2" => 480,
+                        "FLASH" => 14336,
+                        "FLASHPAGE" => 128,
+                        "PAGES" => 112,
+                        "CRC" => "9891",
+                    ),
+                ),
+                "000025",
+                "000000002500392101410039200643000009FFFFFF50",
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200643000009FFFFFF50",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "To" => "000020",
+                        "From" => "000025",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command" => PacketContainer::COMMAND_WRITEFLASH,
+                        "Data" => "0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "",
+                    )
+                ).
+                (string) new PacketContainer(
+                    array(
+                        "From" => "000020",
+                        "To" => "000025",
+                        "Command" => PacketContainer::COMMAND_WRITEE2,
+                        "Data" => "000AFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                            ."FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+                    )
+                ),
+                false,
+            ),
         );
     }
 

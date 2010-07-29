@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/sensors/BCTherm2322640DeviceSensor.php';
+    .'/../../../plugins/sensors/FETBoardVoltageDeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
+class FETBoardVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -74,7 +74,7 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new BCTherm2322640DeviceSensor(
+        $this->o = new FETBoardVoltageDeviceSensor(
             array(
             ),
             $this->d
@@ -102,92 +102,59 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("BCTherm2322640DeviceSensor"),
+            array("FETBoardVoltageDeviceSensor"),
         );
     }
     /**
-     * Data provider for testGetReading
-     *
-     * @return array
-     */
+    * Data provider for testfetBoard
+    *
+    * @return array
+    */
     public static function dataGetReading()
     {
         return array(
             array(
-                array('extra' => array(10, 10)),
-                63570,
-                0,
-                null
-            ), // -40.1 degrees
-            array(
-                array('extra' => array(10, 10)),
-                1150,
-                0,
-                null
-            ),  // 150.9 degrees
-            array(
-                array('extra' => array(10, 10)),
-                5000,
-                0,
-                93.3105
+                1000,
+                1,
+                array(),
+                0.7502
             ),
             array(
-                array("id" => 2),
-                5000,
-                0,
-                93.3105
-            ),
-            array(
-                array("id" => 0),
-                5000,
-                0,
-                29.3987
-            ),
-            array(
-                array('extra' => array(0, 10)),
-                5000,
-                0,
+                null,
+                1,
+                array(),
                 null
             ),
             array(
-                array('extra' => array(0, 0)),
-                5000,
                 0,
-                null
+                1,
+                array(),
+                0.0
             ),
             array(
-                array('extra' => array(10, 0)),
-                5000,
-                0,
-                null
-            ),
-            array(
-                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
-                5000,
-                0,
-                null
+                65535,
+                1,
+                array(),
+                49.1649
             ),
         );
     }
     /**
-    * Generic function for testing sensor routines
+    * test
     *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $preload The data to preload into the class
-    * @param mixed $A       Data for the sensor to work on
+    * @param float $val     The incoming value
     * @param float $deltaT  The time differenct
-    * @param mixed $expect  The return data to expect
+    * @param int   $preload The values to preload into the object
+    * @param mixed $expect  The expected return value
     *
     * @return null
     *
-    * @dataProvider dataGetReading()
+    * @dataProvider dataGetReading
     */
-    public function testGetReading($preload, $A, $deltaT, $expect)
+    public function testGetReading($val, $deltaT, $preload, $expect)
     {
-
-        $o = new BCTherm2322640DeviceSensor($preload, $this->d);
-        $ret = $o->getReading($A, $deltaT);
+        $this->o->fromAny($preload);
+        $ret = $this->o->getReading($val, $deltaT);
         $this->assertSame($expect, $ret);
     }
 

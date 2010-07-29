@@ -359,6 +359,10 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     */
     protected function sendPkt($command, $data = "", $reply = true)
     {
+        // If the driver has gone away exit.
+        if (empty($this->myDriver->id)) {
+            return false;
+        }
         $pkt = new PacketContainer(
             array(
                 "To"       => (int) $this->myDriver->id,

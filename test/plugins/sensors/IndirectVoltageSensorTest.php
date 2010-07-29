@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/sensors/BCTherm2322640DeviceSensor.php';
+    .'/../../../plugins/sensors/IndirectVoltageDeviceSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
+class IndirectVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -74,7 +74,7 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new BCTherm2322640DeviceSensor(
+        $this->o = new IndirectVoltageDeviceSensor(
             array(
             ),
             $this->d
@@ -102,7 +102,7 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("BCTherm2322640DeviceSensor"),
+            array("IndirectVoltageDeviceSensor"),
         );
     }
     /**
@@ -114,58 +114,28 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
     {
         return array(
             array(
-                array('extra' => array(10, 10)),
-                63570,
-                0,
-                null
-            ), // -40.1 degrees
-            array(
-                array('extra' => array(10, 10)),
-                1150,
-                0,
-                null
-            ),  // 150.9 degrees
-            array(
-                array('extra' => array(10, 10)),
-                5000,
-                0,
-                93.3105
+                array(),
+                1000,
+                1,
+                1.2219
             ),
             array(
-                array("id" => 2),
-                5000,
-                0,
-                93.3105
-            ),
-            array(
-                array("id" => 0),
-                5000,
-                0,
-                29.3987
-            ),
-            array(
-                array('extra' => array(0, 10)),
-                5000,
-                0,
+                array(),
+                null,
+                1,
                 null
             ),
             array(
-                array('extra' => array(0, 0)),
-                5000,
+                array(),
                 0,
-                null
+                1,
+                0.0
             ),
             array(
-                array('extra' => array(10, 0)),
-                5000,
-                0,
-                null
-            ),
-            array(
-                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
-                5000,
-                0,
-                null
+                array(),
+                65535,
+                1,
+                80.077
             ),
         );
     }
@@ -186,8 +156,8 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new BCTherm2322640DeviceSensor($preload, $this->d);
-        $ret = $o->getReading($A, $deltaT);
+        $this->o->fromAny($preload);
+        $ret = $this->o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }
 
