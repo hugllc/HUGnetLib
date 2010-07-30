@@ -132,24 +132,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         if (empty($string) || !is_string($string)) {
             return;
         }
-        $sensors = str_split($string, 2);
-        foreach ($sensors as $key => $value) {
-            if ($key >= $this->Sensors) {
-                break;
-            }
-            $id = hexdec($value);
-            $good = $this->checkSensor(
-                $id,
-                $this->sensor($key)->type,
-                $this->sensor($key)
-            );
-            if (!$good) {
-                $data = $this->sensor($key)->toArray();
-                $data["id"] = $id;
-                $this->sensor[$key] = $this->sensorFactory($data);
-            }
-            $this->sensor($key)->id = $id;
-        }
+        $this->fromTypeArray(str_split($string, 2));
     }
     /**
     * Creates the object from a string
@@ -164,15 +147,19 @@ class DeviceSensorsContainer extends HUGnetContainer
             return;
         }
         for ($key = 0; $key < $this->Sensors; $key++) {
-            $old = $this->sensor($key)->toArray();
-            $vals = array_merge($old, $array[$key]);
+            $vals = $this->sensor($key)->toArray();
+            if (is_array($array[$key])) {
+                $vals = array_merge($vals, $array[$key]);
+            } else if (is_string($array[$key])) {
+                $vals["id"] = hexdec($array[$key]);
+            } else {
+                $vals["id"] = (int)$array[$key];
+            }
             $good = $this->checkSensor(
-                $vals["id"],
-                $vals["type"],
-                $this->sensor($key)
+                $vals["id"], $vals["type"], $this->sensor($key)
             );
             if ($good) {
-                $this->sensor($key)->fromArray($array[$key]);
+                $this->sensor($key)->fromArray($vals);
             } else {
                 $this->sensor[$key] = $this->sensorFactory($vals);
             }

@@ -515,6 +515,34 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     0 => array("id" => 2, "type" => "Hello", ),
                     1 => array("id" => 2, "rawCalibration" => "abcd"),
                 ),
+                array(
+                    0 => 0,
+                    1 => "03",
+                ),
+                2,
+                array(
+                    "Sensors" => 2,
+                    array(
+                        "id" => 0,
+                        "type" => "Hello",
+                    ),
+                    array(
+                        "id" => 3,
+                        "type" => "",
+                        "rawCalibration" => "abcd",
+                    ),
+                ),
+                array(
+                    "Test1Sensor",
+                    "Test1Sensor",
+                ),
+                array(0, 3),
+            ),
+            array(
+                array(
+                    0 => array("id" => 2, "type" => "Hello", ),
+                    1 => array("id" => 2, "rawCalibration" => "abcd"),
+                ),
                 "This is not an array",
                 2,
                 array(
@@ -556,10 +584,14 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $s = $this->readAttribute($this->o, "sensor");
         foreach (array_keys((array)$s) as $k) {
             $this->assertSame(
-                $types[$k], $s[$k]->id, "Sensor $k id is wrong"
+                $types[$k],
+                $s[$k]->id,
+                "Sensor $k id is wrong ".$types[$k]." != ".$s[$k]->id
             );
             $this->assertSame(
-                $sensors[$k], get_class($s[$k]), "Sensor $k is wrong"
+                $sensors[$k],
+                get_class($s[$k]),
+                "Sensor $k class is wrong ".$sensors[$k]." != ".get_class($s[$k])
             );
         }
 
