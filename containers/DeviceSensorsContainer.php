@@ -97,12 +97,12 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Set up everything else
         parent::fromArray($array);
         // Clear the number of sensors
-        $this->Sensors = 0;
+        $this->Sensors = (int)$this->myDevice->DriverInfo["NumSensors"];
         // Now setup our sensors
-        for ($i = 0; $i < (int)$this->myDevice->DriverInfo["NumSensors"]; $i++) {
+        for ($i = 0; $i < $this->Sensors; $i++) {
             $this->upgradeArray($array[$i], $i);
-            $this->sensor[$i] = &$this->sensorFactory($array[$i]);
-            $this->Sensors++;
+            $this->_setSensor($array[$i], $i, true);
+            //$this->sensor[$i] = &$this->sensorFactory($array[$i]);
         }
     }
     /**
@@ -147,23 +147,60 @@ class DeviceSensorsContainer extends HUGnetContainer
             return;
         }
         for ($key = 0; $key < $this->Sensors; $key++) {
-            $vals = $this->sensor($key)->toArray();
-            if (is_array($array[$key])) {
-                $vals = array_merge($vals, $array[$key]);
-            } else if (is_string($array[$key])) {
-                $vals["id"] = hexdec($array[$key]);
-            } else {
-                $vals["id"] = (int)$array[$key];
-            }
-            $good = $this->checkSensor(
-                $vals["id"], $vals["type"], $this->sensor($key)
-            );
-            if ($good) {
-                $this->sensor($key)->fromArray($vals);
-            } else {
-                $this->sensor[$key] = $this->sensorFactory($vals);
-            }
+            $this->_setSensor($array[$key], $key);
         }
+    }
+
+    /**
+    * Creates a sensor object, or updates the one in place
+    *
+    * @param array $data  The data to use for the sensor
+    * @param int   &$key  The key to use for the sensor array
+    * @param bool  $force Force the creation of a new object
+    *
+    * @return null
+    */
+    public function _setSensor($data, &$key, $force=false)
+    {
+        if (is_object($this->sensor[$key])) {
+            $vals = $this->sensor($key)->toArray();
+        } else {
+            $vals = array();
+        }
+        if (is_array($data)) {
+            $vals = array_merge($vals, $data);
+        } else if (is_string($data)) {
+            $vals["id"] = hexdec($data);
+        } else {
+            $vals["id"] = (int)$data;
+        }
+        $good = $this->checkSensor($vals["id"], $vals["type"], $this->sensor($key));
+        if ($good && !$force) {
+            $this->sensor($key)->fromArray($vals);
+        } else {
+            $this->sensor[$key] = &$this->sensorFactory($vals);
+        }
+        $this->_setSensorInputSize($key);
+    }
+
+    /**
+    * Creates a sensor object, or updates the one in place
+    *
+    * @param int   &$key  The key to use for the sensor array
+    *
+    * @return null
+    */
+    public function _setSensorInputSize(&$key)
+    {
+        $inputSize = $this->sensor($key)->inputSize;
+        for ($j = 1; $j < $inputSize; $j++) {
+            $this->sensor[$key+$j] = &$this->sensorFactory(
+                array(
+                    "id" => 0xFF, "type" => "null", "dataType" => "ignore",
+                )
+            );
+        }
+        $key += $j - 1;
     }
     /**
     * Creates the sensors from the old method of storing them.
@@ -240,7 +277,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     protected function checkSensor($id, $type, &$sensor)
     {
-        return is_a($sensor, $this->sensorClass($id, $type));
+        return is_object($sensor) && is_a($sensor, $this->sensorClass($id, $type));
     }
 
     /**
@@ -255,7 +292,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         if (isset($this->sensor[$key])) {
             return $this->sensor[$key];
         }
-        return $this->sensorFactory($array);
+        return $this->sensorFactory(array());
     }
 
 }

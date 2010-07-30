@@ -340,6 +340,16 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                                 3 => '05',
                             ),
                         ),
+                        '10' => array (
+                            "Name" => "Test3Sensor",
+                            "Type" => "sensor",
+                            "Class" => "Test3Sensor",
+                            "Flags" => array (
+                                0 => "10"
+                            ),
+
+                        ),
+
                     ),
                 ),
             ),

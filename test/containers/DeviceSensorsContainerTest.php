@@ -412,6 +412,44 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     0 => array("id" => 3, "type" => "Hello"),
                     1 => array("id" => 8),
                     2 => array("id" => 4),
+                    3 => array("id" => 5),
+                ),
+                "10020102",
+                4,
+                array(
+                    "Sensors" => 4,
+                    array(
+                        "id" => 0x10,
+                        "type" => "multiInput",
+                    ),
+                    array(
+                        "id" => 0xFF,
+                        "type" => "null",
+                        "dataType" => "ignore",
+                    ),
+                    array(
+                        "id" => 0xFF,
+                        "type" => "null",
+                        "dataType" => "ignore",
+                    ),
+                    array(
+                        "id" => 2,
+                        "type" => "",
+                    ),
+                ),
+                array(
+                    "Test3Sensor",
+                    "Test1Sensor",
+                    "Test1Sensor",
+                    "Test2Sensor",
+                ),
+                array(0x10, 0xFF, 0xFF, 2),
+            ),
+            array(
+                array(
+                    0 => array("id" => 3, "type" => "Hello"),
+                    1 => array("id" => 8),
+                    2 => array("id" => 4),
                 ),
                 false,
                 3,
@@ -465,10 +503,14 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $s = $this->readAttribute($this->o, "sensor");
         foreach (array_keys((array)$s) as $k) {
             $this->assertSame(
-                $types[$k], $s[$k]->id, "Sensor $k id is wrong"
+                $types[$k],
+                $s[$k]->id,
+                "Sensor $k id is wrong ".$types[$k]." != ".$s[$k]->id
             );
             $this->assertSame(
-                $sensors[$k], get_class($s[$k]), "Sensor $k is wrong"
+                $sensors[$k],
+                get_class($s[$k]),
+                "Sensor $k class is wrong ".$sensors[$k]." != ".get_class($s[$k])
             );
         }
 
