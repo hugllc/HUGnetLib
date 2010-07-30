@@ -237,38 +237,40 @@ class E00392100Device extends DeviceDriverLoadableBase
         $this->myDriver->DriverInfo["TimeConstant"] = 1;
         if (is_object($this->myDriver->sensors)) {
             $this->myDriver->Sensors = 6;
-            $this->myDriver->sensors->fromTypeArray(array(
-                0 => array(
-                    "id" => 0x40,
-                    "type" => "Controller",
-                    "location" => "HUGnet 1 Voltage",
-                ),
-                1 => array(
-                    "id" => 0x50,
-                    "type" => "Controller",
-                    "location" => "HUGnet 1 Current",
-                ),
-                2 => array(
-                    "id" => 0x02,
-                    "type" => "BCTherm2322640",
-                    "location" => "HUGnet 1 FET Temperature",
-                ),
-                3 => array(
-                    "id" => 0x40,
-                    "type" => "Controller",
-                    "location" => "HUGnet 2 Voltage",
-                ),
-                4 => array(
-                    "id" => 0x50,
-                    "type" => "Controller",
-                    "location" => "HUGnet 2 Current",
-                ),
-                5 => array(
-                    "id" => 0x02,
-                    "type" => "BCTherm2322640",
-                    "location" => "HUGnet 2 FET Temperature",
-                ),
-            ));
+            $this->myDriver->sensors->fromTypeArray(
+                array(
+                    0 => array(
+                        "id" => 0x40,
+                        "type" => "Controller",
+                        "location" => "HUGnet 1 Voltage",
+                    ),
+                    1 => array(
+                        "id" => 0x50,
+                        "type" => "Controller",
+                        "location" => "HUGnet 1 Current",
+                    ),
+                    2 => array(
+                        "id" => 0x02,
+                        "type" => "BCTherm2322640",
+                        "location" => "HUGnet 1 FET Temperature",
+                    ),
+                    3 => array(
+                        "id" => 0x40,
+                        "type" => "Controller",
+                        "location" => "HUGnet 2 Voltage",
+                    ),
+                    4 => array(
+                        "id" => 0x50,
+                        "type" => "Controller",
+                        "location" => "HUGnet 2 Current",
+                    ),
+                    5 => array(
+                        "id" => 0x02,
+                        "type" => "BCTherm2322640",
+                        "location" => "HUGnet 2 FET Temperature",
+                    ),
+                )
+            );
         }
     }
 }

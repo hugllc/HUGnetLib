@@ -39,7 +39,6 @@
 /**
 * This is the interface definition for the endpoint class
 *
-*
 * @category   Interfaces
 * @package    HUGnetLib
 * @subpackage Endpoints

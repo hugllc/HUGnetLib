@@ -266,7 +266,7 @@ class TestCurrentDeviceSensor extends CurrentDeviceSensorBase
     /**
     * This sensor returns us 10mV / % humidity
     *
-    * @param float $A      The incoming value
+    * @param float $A The incoming value
     *
     * @return direct voltage rounded to 4 places
     */
@@ -278,7 +278,7 @@ class TestCurrentDeviceSensor extends CurrentDeviceSensorBase
     /**
     * Gets the units for a sensor
     *
-    * @param int   $A    The AtoD reading
+    * @param int   $A The AtoD reading
     * @param float $R The resistance of the current sensing resistor
     * @param float $G The gain of the circuit
     *

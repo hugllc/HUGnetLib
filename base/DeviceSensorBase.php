@@ -115,7 +115,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     *
     * @param array $index The extra index to use
     *
-    * @return
+    * @return The extra value (or default if empty)
     */
     protected function getExtra($index)
     {

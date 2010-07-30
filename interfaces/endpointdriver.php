@@ -39,7 +39,6 @@
 /**
 * This is the interface definition for the driver class.
 *
-*
 * @category   Interfaces
 * @package    HUGnetLib
 * @subpackage Endpoints
@@ -223,7 +222,7 @@ interface EndpointDriverInterface
     /**
     * Gets calibration data for this endpoint
     *
-    * @param array  $Info   Infomation about the device to use
+    * @param array $Info Infomation about the device to use
     *
     * @return null
     *

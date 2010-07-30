@@ -153,8 +153,8 @@ class VoltageDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     * @param int   $A       The incoming value
     * @param float $R1      The resistor to the voltage
     * @param float $R2      The resistor to ground
-    * @param array $preload The values to preload into the object
     * @param float $Vref    The reference voltage
+    * @param array $preload The values to preload into the object
     * @param mixed $expect  The expected return value
     *
     * @return null
@@ -414,7 +414,7 @@ class TestVoltageDeviceSensor extends VoltageDeviceSensorBase
     /**
     * Volgate for the FET board voltage dividers
     *
-    * @param float $val    The incoming value
+    * @param float $val The incoming value
     *
     * @return float Voltage rounded to 4 places
     */
@@ -426,7 +426,7 @@ class TestVoltageDeviceSensor extends VoltageDeviceSensorBase
     /**
     * This sensor returns us 10mV / % humidity
     *
-    * @param float $A      The incoming value
+    * @param float $A The incoming value
     *
     * @return direct voltage rounded to 4 places
     */
@@ -463,7 +463,7 @@ class TestVoltageDeviceSensor extends VoltageDeviceSensorBase
     *
     * Given the formula I am using, P MUST be in bounds.
     *
-    * @param float $A      The incoming value
+    * @param float $A The incoming value
     *
     * @return output rounded to 4 places
     */
@@ -487,7 +487,7 @@ class TestVoltageDeviceSensor extends VoltageDeviceSensorBase
     *
     * Given the formula I am using, P MUST be in bounds.
     *
-    * @param float $A      The incoming value
+    * @param float $A The incoming value
     *
     * @return output to 4 places
     */

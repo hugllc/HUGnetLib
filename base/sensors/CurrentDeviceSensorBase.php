@@ -69,41 +69,6 @@ abstract class CurrentDeviceSensorBase extends DeviceSensorBase
     );
 
     /**
-    * Sensor information array
-    *//*
-    public $sensors = array(
-        0x50 => array(
-            "fetBoard" => array(
-                "longName" => "FET Board Current Sensor",
-                "unitType" => "Current",
-                "validUnits" => array('mA', 'A'),
-                "defaultUnits" =>  'mA',
-                "function" => "fetBoard",
-                "storageUnit" => 'mA',
-                "unitModes" => array(
-                    'mA' => 'raw,diff',
-                    'A' => 'raw,diff',
-                ),
-                "extraText" => array("R in Ohms", "Gain"),
-                "extraDefault" => array(0.5, 1),
-            ),
-            "Controller" => array(
-                "longName" => "Controller Board Current Sensor",
-                "unitType" => "Current",
-                "validUnits" => array('mA', 'A'),
-                "defaultUnits" =>  'mA',
-                "function" => "fetBoard",
-                "storageUnit" => 'mA',
-                "unitModes" => array(
-                    'mA' => 'raw,diff',
-                    'A' => 'raw,diff',
-                ),
-                "extraText" => array("R in Ohms", "Gain"),
-                "extraDefault" => array(0.5, 7),
-            ),
-        ),
-    );*/
-    /**
     * This takes in a raw AtoD reading and returns the current.
     *
     * This is further documented at: {@link

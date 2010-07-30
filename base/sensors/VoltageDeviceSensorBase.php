@@ -76,7 +76,6 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     * @param int   $A    The incoming value
     * @param float $R1   The resistor to the voltage
     * @param float $R2   The resistor to ground
-    * @param int   $T    The time constant
     * @param float $Vref The voltage reveference
     *
     * @return float Voltage rounded to 4 places
@@ -103,7 +102,6 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     * This returns the voltage that the port is seeing
     *
     * @param int   $A    The AtoD reading
-    * @param int   $T    The time constant
     * @param float $Vref The voltage reference
     *
     * @return The units for a particular sensor type
@@ -130,7 +128,7 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     /**
     * Volgate for the FET board voltage dividers
     *
-    * @param float $val    The incoming value
+    * @param float $val The incoming value
     *
     * @return float Voltage rounded to 4 places
     */
@@ -149,10 +147,7 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     /**
     * This sensor returns us 10mV / % humidity
     *
-    * @param float $A      The incoming value
-    * @param array $sensor The sensor setup array
-    * @param int   $T      The time constant
-    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $A The incoming value
     *
     * @return float Relative Humidity rounded to 4 places
     */
@@ -184,10 +179,7 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     *
     * Given the formula I am using, P MUST be in bounds.
     *
-    * @param float $A      The incoming value
-    * @param array $sensor The sensor setup array
-    * @param int   $T      The time constant
-    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $A The incoming value
     *
     * @return output rounded to 4 places
     */
@@ -233,10 +225,7 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
     *
     * Given the formula I am using, P MUST be in bounds.
     *
-    * @param float $A      The incoming value
-    * @param array $sensor The sensor setup array
-    * @param int   $T      The time constant
-    * @param mixed $extra  Extra parameters for the sensor
+    * @param float $A The incoming value
     *
     * @return output to 4 places
     */
