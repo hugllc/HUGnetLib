@@ -76,7 +76,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         foreach ($var["Flags"] as $key => $sensor) {
             $this->assertType("string", $sensor, "Sensor $key is not a string");
             $this->assertRegExp(
-                "/([0-9]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",
+                "/([0-9A-F]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",
                 $sensor,
                 "Sensor string is not of the form 'id:sensorType'"
             );
