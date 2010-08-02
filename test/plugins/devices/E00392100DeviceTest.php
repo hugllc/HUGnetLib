@@ -686,6 +686,76 @@ class E00392100DeviceTest extends DevicePluginTestBase
 
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeSensorData()
+    {
+        return array(
+            array(
+                "7FFF00F00FFF3FFF7EFF7EFF3FF00FFF00",
+                array(
+                    "DataIndex" => 127,
+                    "timeConstant" => 1,
+                    "deltaT" => 0,
+                    0 => array(
+                        "value" => 9.4428,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => "raw",
+                    ),
+                    1 => array(
+                        "value" => 5.6,
+                        "units" => "mA",
+                        "unitType" => "Current",
+                        "dataType" => "raw",
+                    ),
+                    2 => array(
+                        "value" => 100.6283,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => "raw",
+                    ),
+                    3 => array(
+                        "value" => 9.4428,
+                        "units" => "V",
+                        "unitType" => "Voltage",
+                        "dataType" => "raw",
+                    ),
+                    4 => array(
+                        "value" => 5.6,
+                        "units" => "mA",
+                        "unitType" => "Current",
+                        "dataType" => "raw",
+                    ),
+                    5 => array(
+                        "value" => 100.6283,
+                        "units" => "&#176;C",
+                        "unitType" => "Temperature",
+                        "dataType" => "raw",
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $data   The raw data
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeSensorData
+    */
+    public function testDecodeSensorData($data, $expect)
+    {
+        $ret = $this->o->decodeSensorData($data);
+        $this->assertSame($expect, $ret, "Arrays are not the same");
+    }
 
 }
 

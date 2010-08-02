@@ -72,7 +72,7 @@ class Test3Sensor extends DeviceSensorBase
     protected $fixed = array(
         "longName" => "Multi Input Sensor",
         "unitType" => "secondUnit",
-        "units" => 'anotherUnit',
+        "storageUnit" => 'anotherUnit2',
         "extraText" => array(),
         "extraDefault" => array(),
         "inputSize" => 3,
@@ -99,6 +99,7 @@ class Test3Sensor extends DeviceSensorBase
     */
     function getReading($A, $deltaT = 0)
     {
+        return $A >> 2;
     }
     /**
     * function to set unitType

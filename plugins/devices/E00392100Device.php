@@ -70,6 +70,9 @@ class E00392100Device extends DeviceDriverLoadableBase
             "0039-20-14-C:0039-21-02-A:DEFAULT",
         ),
     );
+    /** This is where we store the actual view sensors */
+    protected $actualSensors = null;
+
     /**
     * Builds the class
     *
@@ -239,39 +242,146 @@ class E00392100Device extends DeviceDriverLoadableBase
             $this->myDriver->Sensors = 6;
             $this->myDriver->sensors->fromTypeArray(
                 array(
-                    0 => array(
-                        "id" => 0x40,
-                        "type" => "Controller",
-                        "location" => "HUGnet 1 Voltage",
-                    ),
-                    1 => array(
-                        "id" => 0x50,
-                        "type" => "Controller",
-                        "location" => "HUGnet 1 Current",
-                    ),
-                    2 => array(
-                        "id" => 0x02,
-                        "type" => "BCTherm2322640",
-                        "location" => "HUGnet 1 FET Temperature",
-                    ),
-                    3 => array(
-                        "id" => 0x40,
-                        "type" => "Controller",
-                        "location" => "HUGnet 2 Voltage",
-                    ),
-                    4 => array(
-                        "id" => 0x50,
-                        "type" => "Controller",
-                        "location" => "HUGnet 2 Current",
-                    ),
-                    5 => array(
-                        "id" => 0x02,
-                        "type" => "BCTherm2322640",
-                        "location" => "HUGnet 2 FET Temperature",
-                    ),
+                    0 => $this->_voltageSensor("HUGnet 1 Voltage"),
+                    1 => $this->_currentSensor("HUGnet 1 Current"),
+                    2 => $this->_tempSensor("HUGnet 1 FET Temperature"),
+                    3 => $this->_voltageSensor("HUGnet 2 Voltage"),
+                    4 => $this->_currentSensor("HUGnet 2 Current"),
+                    5 => $this->_tempSensor("HUGnet 2 FET Temperature"),
                 )
             );
         }
+    }
+
+    /**
+    * This crunches the actual numbers for the sensor data
+    *
+    * Here is the actual sensor array (actual view):
+    *    Input 0: HUGnet2 Current
+    *    Input 1: HUGnet2 Temp
+    *    Input 2: HUGnet2 Voltage Low
+    *    Input 3: HUGnet2 Voltage High
+    *    Input 4: HUGnet1 Voltage High
+    *    Input 5: HUGnet1 Voltage Low
+    *    Input 6: HUGnet1 Temp
+    *    Input 7: HUGnet1 Current
+    *
+    * This is what we put forward to the world (world view):
+    *    Output 0: HUGnet1 Voltage
+    *    Output 1: HUGnet1 Current
+    *    Output 2: HUGnet1 Temp
+    *    Output 3: HUGnet2 Voltage
+    *    Output 4: HUGnet2 Current
+    *    Output 5: HUGnet2 Temp
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    public function decodeSensorData($string)
+    {
+        $this->myDriver->DriverInfo["TimeConstant"] = 1;
+        if (!is_object($this->actualSensors)) {
+            $this->actualSensors = new DeviceSensorsContainer(
+                array(
+                    "Sensors" => 8,
+                    0 => $this->_currentSensor("HUGnet 1 Current"),
+                    1 => $this->_tempSensor("HUGnet 1 FET Temperature"),
+                    2 => $this->_voltageSensor("HUGnet 1 Voltage Low"),
+                    3 => $this->_voltageSensor("HUGnet 1 Voltage High"),
+                    4 => $this->_voltageSensor("HUGnet 2 Voltage High"),
+                    5 => $this->_voltageSensor("HUGnet 2 Voltage Low"),
+                    6 => $this->_tempSensor("HUGnet 2 FET Temperature"),
+                    7 => $this->_currentSensor("HUGnet 2 Current"),
+                ),
+                $this->myDriver
+            );
+        }
+        $data = $this->_decodeSensorString($string);
+        $actual = $this->actualSensors->decodeSensorData($data);
+        $ret = array(
+            "DataIndex" => $data["DataIndex"],
+            "timeConstant" => 1,
+            "deltaT" => 0,
+            0 => $actual[3],
+            1 => $actual[0],
+            2 => $actual[1],
+            3 => $actual[4],
+            4 => $actual[7],
+            5 => $actual[6],
+        );
+        $ret[0]["value"] -= $actual[2]["value"];
+        $ret[3]["value"] -= $actual[5]["value"];
+        return $ret;
+    }
+
+    /**
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    private function _decodeSensorString($string)
+    {
+        $ret = array(
+            "DataIndex" => hexdec(substr($string, 0, 2)),
+        );
+        $index = 2;
+        for ($key = 0; $key < 8; $key++) {
+            $ret[$key] = hexdec(substr($string, $index, 2));
+            $ret[$key] += (hexdec(substr($string, $index+2, 2))) << 8;
+            $index += 4;
+        }
+        return $ret;
+    }
+    /**
+    * This returns an array to build a voltage sensor for the controller
+    *
+    * @param string $location The location to add to the sensors
+    *
+    * @return array The array of sensor information
+    */
+    private function _voltageSensor($location)
+    {
+        return array(
+            "id" => 0x40,
+            "type" => "Controller",
+            "location" => $location,
+            "extra" => array(180, 27),
+        );
+    }
+    /**
+    * This returns an array to build a voltage sensor for the controller
+    *
+    * @param string $location The location to add to the sensors
+    *
+    * @return array The array of sensor information
+    */
+    private function _currentSensor($location)
+    {
+        return array(
+            "id" => 0x50,
+            "type" => "Controller",
+            "location" => $location,
+            "extra" => array(0.5, 7),
+        );
+
+    }
+    /**
+    * This returns an array to build a voltage sensor for the controller
+    *
+    * @param string $location The location to add to the sensors
+    *
+    * @return array The array of sensor information
+    */
+    private function _tempSensor($location)
+    {
+        return array(
+            "id" => 0x02,
+            "type" => "BCTherm2322640",
+            "location" => $location,
+            "extra" => array(10, 10),
+        );
+
     }
 }
 

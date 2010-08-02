@@ -120,7 +120,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "RawCalibration" => "Hello There",
-                    "Sensors" => 0,
+                    "Sensors" => 10,
                 ),
             ),
         );
@@ -698,6 +698,69 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, get_class($this->o->sensor($num)));
+    }
+    /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataDecodeSensorData()
+    {
+        return array(
+            array(
+                array(
+                    "Sensors" => 3,
+                    0 => array("id" => 3),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                array(
+                    "deltaT" => 1,
+                    0 => 10,
+                    1 => 20,
+                    2 => 30,
+                ),
+                array(
+                    "deltaT" => 1,
+                    0 => array(
+                        "value" => 5,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    1 => array(
+                        "value" => 40,
+                        "units" => "anotherUnit",
+                        "unitType" => "secondUnit",
+                        "dataType" => "raw",
+                    ),
+                    2 => array(
+                        "value" => 15,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $data    The data to use
+    * @param array  $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeSensorData
+    */
+    public function testDecodeSensorData($preload, $data, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, $this->o->decodeSensorData($data));
     }
 }
 

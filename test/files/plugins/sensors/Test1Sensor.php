@@ -72,7 +72,7 @@ class Test1Sensor extends DeviceSensorBase
     protected $fixed = array(
         "longName" => "Unknown Sensor",
         "unitType" => "firstUnit",
-        "units" => 'testUnit',
+        "storageUnit" => 'testUnit',
         "extraText" => array(),
         "extraDefault" => array(),
     );
@@ -97,6 +97,7 @@ class Test1Sensor extends DeviceSensorBase
     */
     function getReading($A, $deltaT = 0)
     {
+        return $A/(abs($deltaT)+1);
     }
     /**
     * function to set units
