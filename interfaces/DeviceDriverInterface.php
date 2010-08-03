@@ -66,5 +66,98 @@ interface DeviceDriverInterface
     * @return null
     */
     public function toSetupString($default = true);
+    /**
+    *
+    * @param string $string  The string of sensor data
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
+    *
+    * @return null
+    */
+    public function decodeData($string, $command="", $deltaT = 0);
+    /**
+    * Says whether this device has loadable firmware or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that use loadable firmware.
+    *
+    * @return bool False
+    */
+    public function loadable();
+    /**
+    * Says whether this device is a gateway process or not
+    *
+    * This default always returns false.  It should be overwritten in classes
+    * that are for gateway processes.
+    *
+    * @return bool False
+    */
+    public function gateway();
+    /**
+    * Says whether this device is a controller board or not
+    *
+    * This default always returns false.   This is a controller baord, so we
+    * return true
+    *
+    * @return bool False
+    */
+    public function controller();
+    /**
+    * Reads the setup out of the device.
+    *
+    * If the device is using outdated firmware we have to
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetup();
+    /**
+    * Checks the interval to see if it is ready to config.
+    *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: if we have tried in the last 5 minutes, return false
+    *    else: return true
+    *
+    * @param int $interval The interval to check, in hours
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetupTime($interval);
+    /**
+    * Resets all of the timers associated with reading and writing.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readSetupTimeReset();
+    /**
+    * Resets all of the timers associated with reading and writing.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readDataTimeReset();
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readConfig();
+    /**
+    * Checks the interval to see if it is ready to config.
+    *
+    * I want:
+    *    If the config is not $interval old: return false
+    *    else: return based on number of failures.  Pause longer for more failures
+    *
+    *    It waits an extra 6 seconds for each failed poll
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readDataTime();
+    /**
+    * Reads the data out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readData();
 
 }

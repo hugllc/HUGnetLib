@@ -239,7 +239,7 @@ class E00392100Device extends DeviceDriverLoadableBase
     {
         $this->myDriver->DriverInfo["TimeConstant"] = 1;
         if (is_object($this->myDriver->sensors)) {
-            $this->myDriver->Sensors = 6;
+            $this->myDriver->sensors->Sensors = 6;
             $this->myDriver->sensors->fromTypeArray(
                 array(
                     0 => $this->_voltageSensor("HUGnet 1 Voltage"),
@@ -274,11 +274,25 @@ class E00392100Device extends DeviceDriverLoadableBase
     *    Output 4: HUGnet2 Current
     *    Output 5: HUGnet2 Temp
     *
-    * @param string $string The string of sensor data
+    * @param string $string  The string of sensor data
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
     *
     * @return null
     */
-    public function decodeSensorData($string)
+    public function decodeData($string, $command="", $deltaT=0)
+    {
+        return $this->_decodeSensorData($string, $deltaT);
+    }
+    /**
+    * This decodes the senor data
+    *
+    * @param string $string  The string of sensor data
+    * @param float  $deltaT  The time difference between this packet and the next
+    *
+    * @return null
+    */
+    public function _decodeSensorData($string, $deltaT)
     {
         $this->myDriver->DriverInfo["TimeConstant"] = 1;
         if (!is_object($this->actualSensors)) {
@@ -302,7 +316,7 @@ class E00392100Device extends DeviceDriverLoadableBase
         $ret = array(
             "DataIndex" => $data["DataIndex"],
             "timeConstant" => 1,
-            "deltaT" => 0,
+            "deltaT" => $deltaT,
             0 => $actual[3],
             1 => $actual[0],
             2 => $actual[1],
@@ -322,15 +336,8 @@ class E00392100Device extends DeviceDriverLoadableBase
     */
     private function _decodeSensorString($string)
     {
-        $ret = array(
-            "DataIndex" => hexdec(substr($string, 0, 2)),
-        );
-        $index = 2;
-        for ($key = 0; $key < 8; $key++) {
-            $ret[$key] = hexdec(substr($string, $index, 2));
-            $ret[$key] += (hexdec(substr($string, $index+2, 2))) << 8;
-            $index += 4;
-        }
+        $ret = $this->sensorStringArrayToInts(str_split(substr($string, 2), 4));
+        $ret["DataIndex"] = hexdec(substr($string, 0, 2));
         return $ret;
     }
     /**

@@ -691,11 +691,13 @@ class E00392100DeviceTest extends DevicePluginTestBase
     *
     * @return array
     */
-    public static function dataDecodeSensorData()
+    public static function dataDecodeData()
     {
         return array(
             array(
                 "7FFF00F00FFF3FFF7EFF7EFF3FF00FFF00",
+                PacketContainer::COMMAND_GETDATA,
+                0,
                 array(
                     "DataIndex" => 127,
                     "timeConstant" => 1,
@@ -744,16 +746,18 @@ class E00392100DeviceTest extends DevicePluginTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $data   The raw data
-    * @param array  $expect The expected return
+    * @param string $data    The raw data
+    * @param array  $expect  The expected return
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
     *
     * @return null
     *
-    * @dataProvider dataDecodeSensorData
+    * @dataProvider dataDecodeData
     */
-    public function testDecodeSensorData($data, $expect)
+    public function testDecodeData($data, $command, $deltaT, $expect)
     {
-        $ret = $this->o->decodeSensorData($data);
+        $ret = $this->o->decodeData($data, $command, $deltaT);
         $this->assertSame($expect, $ret, "Arrays are not the same");
     }
 

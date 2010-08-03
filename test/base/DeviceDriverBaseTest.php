@@ -73,6 +73,9 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     "dummy" => true,
                 ),
             ),
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
+            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -1178,6 +1181,100 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->d->params->LastContact = time() + $timeOffset;
         $this->assertSame($expect, $this->o->lostContact());
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataDecodeData()
+    {
+        return array(
+            array(
+                array(
+                    "sensors" => array(
+                        "Sensors" => 6,
+                        0 => array(
+                        ),
+                        1 => array(
+                        ),
+                        2 => array(
+                        ),
+                        3 => array(
+                        ),
+                        4 => array(
+                        ),
+                        5 => array(
+                        ),
+                     ),
+                ),
+                "7F0005020000040000080000100000200000400000",
+                PacketContainer::COMMAND_GETDATA,
+                1,
+                array(
+                    "deltaT" => 1,
+                    0 => array(
+                        "value" => 1,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    1 => array(
+                        "value" => 2,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    2 => array(
+                        "value" => 4,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    3 => array(
+                        "value" => 8,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    4 => array(
+                        "value" => 16,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    5 => array(
+                        "value" => 32,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    "DataIndex" => 127,
+                    "timeConstant" => 5,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $device  The device preload
+    * @param string $data    The raw data
+    * @param array  $expect  The expected return
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
+    *
+    * @return null
+    *
+    * @dataProvider dataDecodeData
+    */
+    public function testDecodeData($device, $data, $command, $deltaT, $expect)
+    {
+        $this->d = new DeviceContainer($device);
+        $this->o = new TestDevice($this->d);
+        $ret = $this->o->decodeData($data, $command, $deltaT);
+        $this->assertSame($expect, $ret, "Arrays are not the same");
     }
 
 }
