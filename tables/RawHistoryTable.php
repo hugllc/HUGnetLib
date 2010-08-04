@@ -191,10 +191,11 @@ class RawHistoryTable extends HUGnetDBTable
     public function toDB($default = true)
     {
         foreach ((array)$this->sqlColumns as $col) {
-            if (is_object($this->data[$col["Name"]])) {
-                $array[$col["Name"]] = $this->data[$col["Name"]]->toZip();
+            $key = $col["Name"];
+            if (is_object($this->$key)) {
+                $array[$col["Name"]] = $this->$key->toZip();
             } else {
-                $array[$col["Name"]] = $this->data[$col["Name"]];
+                $array[$col["Name"]] = $this->$key;
             }
         }
         return (array)$array;
@@ -228,10 +229,11 @@ class RawHistoryTable extends HUGnetDBTable
     */
     private function _setupClasses()
     {
-        if (!is_object($this->data["packet"])) {
+        if (!is_object($this->packet)) {
             // Do the sensors
-            $this->data["packet"] = new PacketContainer($this->packet);
-            $this->packet = &$this->data["packet"];
+            unset($this->data["packet"]);
+            $this->packet = new PacketContainer($this->packet);
+
         }
     }
     /******************************************************************

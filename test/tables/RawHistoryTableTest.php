@@ -257,7 +257,6 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
         $date = time();
         $this->o->fromArray($preload);
         $data = $this->readAttribute($this->o, "data");
-        $this->assertSame("PacketContainer", get_class($data["packet"]));
         $this->assertSame("PacketContainer", get_class($this->o->packet));
         $row = $this->o->toArray();
         $this->assertThat(
