@@ -71,7 +71,7 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
     protected $fixed = array(
         "longName" => "POT Direction Sensor",
         "unitType" => "Direction",
-        "units" => '&#176;',
+        "storageUnit" => '&#176;',
         "extraText" => array(
             "POT Resistance in kOhms",
             "Direction 1 in degrees",
@@ -89,6 +89,8 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->default["id"] = 0x02;
+        $this->default["type"] = "potDirection";
         parent::__construct($data, $device);
         // This takes care of The older sensors with the 100k bias resistor
     }

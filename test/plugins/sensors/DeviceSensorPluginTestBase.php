@@ -139,6 +139,154 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame($expect, $data[$var]);
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixed($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $default = $this->readAttribute($obj, "default");
+        $fixed = $this->readAttribute($obj, "fixed");
+        $this->assertType("array", $default, "default is not an array");
+        $this->assertType("array", $fixed, "fixed is not an array");
+        $this->assertSame(
+            array(),
+            array_intersect(array_keys($fixed), array_keys($default)),
+            "Array keys in fixed and default should not overlap"
+        );
+        $fields = array(
+            "id",
+            "type",
+            "location",
+            "dataType",
+            "extra",
+            "units",
+            "rawCalibration",
+            "longName",
+            "unitType",
+            "units",
+            "extraText",
+            "extraDefault",
+            "storageUnit",
+        );
+        foreach ($fields as $f) {
+            $this->assertTrue(
+                isset($default[$f]) || isset($fixed[$f]),
+                "field $f is missing from default or fixed"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixedArray($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $fields = array(
+            "extraText",
+            "extraDefault",
+        );
+        foreach ($fields as $f) {
+            $val = $obj->$f;
+            $this->assertType(
+                "array",
+                $val,
+                "field $f is not an array"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixedNotEmpty($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $fields = array(
+            "type",
+            "dataType",
+            "longName",
+            "unitType",
+            "storageUnit",
+        );
+        foreach ($fields as $f) {
+            $val = $obj->$f;
+            $this->assertFalse(
+                empty($val),
+                "field $f can not be empty"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixedInt($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $default = $this->readAttribute($obj, "default");
+        $fixed = $this->readAttribute($obj, "fixed");
+        $fields = array(
+            "id",
+        );
+        foreach ($fields as $f) {
+            $val = $obj->$f;
+            $this->assertTrue(
+                is_int($val),
+                "field $f can not be empty"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixedExtra($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $this->assertSame(
+            count($obj->extraText),
+            count($obj->extraDefault),
+            "ExtraDefault and extraText need to have the same number of entries"
+        );
+    }
 }
 
 ?>

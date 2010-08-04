@@ -240,6 +240,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                     1 => array(
                         "id" => 0,
@@ -248,6 +249,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                 ),
                 2,
@@ -262,6 +264,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                     1 => array(
                         "id" => 0,
@@ -270,6 +273,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                 ),
 
@@ -285,6 +289,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                     1 => array(
                         "id" => 8,
@@ -293,6 +298,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "diff",
                         "extra" => array("Here"),
                         "rawCalibration" => "12345",
+                        "units" => "",
                     ),
                 ),
                 2,
@@ -307,6 +313,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "raw",
                         "extra" => array(),
                         "rawCalibration" => "",
+                        "units" => "",
                     ),
                     1 => array(
                         "id" => 8,
@@ -315,6 +322,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => "diff",
                         "extra" => array("Here"),
                         "rawCalibration" => "12345",
+                        "units" => "",
                     ),
                 ),
             ),

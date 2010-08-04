@@ -75,6 +75,18 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
         "extraDefault" => array(),
         "inputSize" => 5,
     );
+    /**
+    * Disconnects from the database
+    *
+    * @param array  $data    The servers to use
+    * @param object &$device The device we are attached to
+    */
+    public function __construct($data, &$device)
+    {
+        $this->default["id"] = 0x6F;
+        $this->default["type"] = "maximum-inc";
+        parent::__construct($data, $device);
+    }
 
     /**
     * Returns a numeric direction in degrees from the numeric bit

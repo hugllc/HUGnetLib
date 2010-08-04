@@ -69,9 +69,10 @@ abstract class DeviceSensorBase extends HUGnetContainer
                                          // Stored in the device  It will be an int
         "type" => "",                    // The type of the sensors
         "location" => "",                // The location of the sensors
-        "dataType" => "raw",             // The datatype of each sensor
+        "dataType" => DataPointBase::TYPE_RAW,      // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "",          // The raw calibration string
+        "units" => "",                   // The units to put the data into by default
     );
     /**
     * This is the array of sensor information.
@@ -79,7 +80,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     protected $fixed = array(
         "longName" => "Unknown Sensor",
         "unitType" => "Generic",
-        "units" => 'unknown',
+        "storageUnit" => 'unknown',     // This is how the data is stored
         "extraText" => array(),
         "extraDefault" => array(),
     );
@@ -89,7 +90,9 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /** @var object This is where we store our configuration */
     protected $myConfig = null;
     /** @var object These are the valid values for dataType */
-    protected $dataTypeValues = array("raw", "diff", "ignore");
+    protected $dataTypeValues = array(
+        DataPointBase::TYPE_RAW, DataPointBase::TYPE_DIFF, DataPointBase::TYPE_IGNORE
+    );
     /** @var object These are the valid values for unitType */
     protected $unitTypeValues = array();
     /** @var object These are the valid values for units */

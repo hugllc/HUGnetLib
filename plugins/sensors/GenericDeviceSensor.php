@@ -63,18 +63,25 @@ class GenericDeviceSensor extends DeviceSensorBase
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
-        "id" => null,                    // The id of the sensor.  This is the value
+        "id" => 0x100,                    // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
-        "type" => "",                    // The type of the sensors
+        "type" => "unknown",                    // The type of the sensors
         "location" => "",                // The location of the sensors
-        "dataType" => "raw",             // The datatype of each sensor
+        "dataType" => DataPointBase::TYPE_RAW,      // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
+        "units" => "",                   // The units to put the data into by default
         "rawCalibration" => "",          // The raw calibration string
         "longName" => "Unknown Sensor",
         "unitType" => "unknown",
         "units" => 'unknown',
         "extraText" => array(),
         "extraDefault" => array(),
+        "storageUnit" => "unknown",
+    );
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
     );
 
     /**

@@ -71,7 +71,7 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
     protected $fixed = array(
         "longName" => "EPCOS B57560G0103F000",
         "unitType" => "Temperature",
-        "units" => '&#176;C',
+        "storageUnit" => '&#176;C',
         "extraText" => array("Bias Resistor in k Ohms"),
         "extraDefault" => array(10),
     );

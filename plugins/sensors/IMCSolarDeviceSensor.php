@@ -71,7 +71,7 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
     protected $fixed = array(
         "longName" => "IMC Solar Sensor",
         "unitType" => "Temperature",
-        "units" => '&#176;C',
+        "storageUnit" => '&#176;C',
         "extraText" => array("Bias Resistor in k Ohms"),
         "extraDefault" => array(100),
     );

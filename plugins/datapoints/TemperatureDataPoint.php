@@ -48,7 +48,6 @@ require_once dirname(__FILE__)."/../../base/DataPointBase.php";
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-* @deprecated since version 0.9.0
 */
 class TemperatureDataPoint extends DataPointBase
 {
@@ -57,7 +56,7 @@ class TemperatureDataPoint extends DataPointBase
         "Name" => "Temperature",
         "Type" => "units",
         "Class" => "TemperatureDataPoint",
-        "Flags" => array('temperature'),
+        "Flags" => array('Temperature'),
     );
 
     /** @var This is the preferred unit to display */
@@ -82,7 +81,6 @@ class TemperatureDataPoint extends DataPointBase
         } else {
             return parent::convertTo($units);
         }
-        $this->units = $units;
         return true;
     }
 
@@ -102,6 +100,7 @@ class TemperatureDataPoint extends DataPointBase
             $F += 32;
         }
         $this->value = (float)$F;
+        $this->units = '&#176;F';
     }
 
     /**
@@ -120,6 +119,7 @@ class TemperatureDataPoint extends DataPointBase
             $f -= 32;
         }
         $this->value = (float)((5/9)*$f);
+        $this->units = '&#176;C';
     }
 
 }
