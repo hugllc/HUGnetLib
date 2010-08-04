@@ -153,15 +153,17 @@ class PluginsContainer extends HUGnetContainer
             // It will fail silently if it doesn't exist
             $class = $this->_stripFileExtension($file);
             $this->registerClass($class);
+            // This next bit is hard to get to.
+            // @codeCoverageIgnoreStart
         } catch (ErrorException $e) {
             $this->vprint("Caught Error: ".$e->getMessage()."\n", 1);
             $freturn = false;
         } catch (Exception $e) {
             $this->vprint("Caught Exception: ".$e->getMessage()."\n", 1);
             $freturn = false;
+            // @codeCoverageIgnoreEnd
         }
         $this->file_count++;
-
     }
     /**
     * Tries to register a class
