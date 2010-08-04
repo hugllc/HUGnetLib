@@ -39,9 +39,6 @@
 require_once dirname(__FILE__)."/../base/HUGnetDBTable.php";
 /** This is for the configuration */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-require_once dirname(__FILE__)."/../containers/DeviceContainer.php";
-require_once dirname(__FILE__)."/../containers/PacketContainer.php";
-require_once dirname(__FILE__)."/DevicesHistoryTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -56,10 +53,10 @@ require_once dirname(__FILE__)."/DevicesHistoryTable.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class RawHistoryTable extends HUGnetDBTable
+abstract class HistoryTableBase extends HUGnetDBTable
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "rawHistory";
+    public $sqlTable = "";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /**
@@ -87,7 +84,7 @@ class RawHistoryTable extends HUGnetDBTable
     * Not all fields have to be filled in.  Name and Type are the only required
     * fields.  The index of the base array should be the same as the "Name" field.
     */
-    public $sqlColumns = array(
+    protected $fixedColumns = array(
         "id" => array(
             "Name" => "id",
             "Type" => "int",
@@ -97,29 +94,14 @@ class RawHistoryTable extends HUGnetDBTable
             "Type" => "bigint",
             "Default" => '0',
         ),
-        "packet" => array(
-            "Name" => "packet",
-            "Type" => "longblob",
-            "Default" => "",
-        ),
-        "devicesHistoryDate" => array(
-            "Name" => "devicesHistoryDate",
-            "Type" => "int",
-            "Default" => 0,
-        ),
-        "command" => array(
-            "Name" => "command",
-            "Type" => "char(2)",
-            "Default" => "",
-        ),
-        "dataIndex" => array(
-            "Name" => "dataIndex",
-            "Type" => "tinyint",
-            "Default" => 0,
+        "deltaT" => array(
+            "Name" => "deltaT",
+            "Type" => "float",
+            "Default" => 0.0,
         ),
     );
-    //ALTER TABLE `rawHistory` CHANGE `deviceHistoryID` `deviceHistoryDate`
-    //BIGINT NOT NULL
+    /** @car array This is where the columns will actually reside. */
+    public $sqlColumns = array();
     /**
     * @var array This is the definition of the indexes
     *
@@ -138,7 +120,7 @@ class RawHistoryTable extends HUGnetDBTable
         "DateIDIndex" => array(
             "Name" => "DateIDIndex",
             "Unique" => true,
-            "Columns" => array("Date", "id", "dataIndex", "command"),
+            "Columns" => array("Date", "id"),
         ),
     );
 
@@ -146,18 +128,18 @@ class RawHistoryTable extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
     );
-    /** @var This is the packet */
-    public $packet = null;
-    /** @var This is the device history container*/
-    public $devHist = null;
+    /** @var This is the dataset */
+    public $datacols = 15;
 
     /**
     * This is the constructor
     *
-    * @param mixed $data This is an array or string to create the object from
+    * @param mixed $data    This is an array or string to create the object from
+    * @param int   $columns The number of columns to create
     */
-    function __construct($data="")
+    function __construct($data="", $columns=null)
     {
+        $this->setupColumns($columns);
         parent::__construct($data);
         $this->create();
     }
@@ -170,62 +152,43 @@ class RawHistoryTable extends HUGnetDBTable
     */
     static public function insertRecord($data)
     {
-        $hist = new RawHistoryTable($data);
+        $class = get_called_class();
+        $hist = new $class($data);
         return $hist->insertRow();
     }
     /**
-    * Returns an array with only the values the database cares about
+    * Creates the object from a string or array
     *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toDB($default = true)
-    {
-        foreach ((array)$this->sqlColumns as $col) {
-            $key = $col["Name"];
-            if (is_object($this->$key)) {
-                $array[$col["Name"]] = $this->$key->toZip();
-            } else {
-                $array[$col["Name"]] = $this->$key;
-            }
-        }
-        return (array)$array;
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param array $array This is an array of this class's attributes
+    * @param mixed $data This is whatever you want to give the class
     *
     * @return null
     */
-    public function fromArray($array)
+    public function fromAny($data)
     {
-        parent::fromArray($array);
-        if (empty($this->devicesHistoryDate) && isset($array["device"])) {
-            if (is_object($array["device"])) {
-                $dev = &$array["device"];
-            } else {
-                $dev = new DeviceContainer($array["device"]);
-            }
-            $this->devHist = new DevicesHistoryTable($dev);
-            $this->devHist->insertRow();
-            $this->devicesHistoryDate = $this->devHist->SaveDate;
+        if (is_array($data) && isset($data[Data0])) {
+            $this->fromArray($data);
+        } else {
+            parent::fromAny($data);
         }
-        $this->_setupClasses();
     }
     /**
     * Sets all of the endpoint attributes from an array
     *
     * @return null
     */
-    private function _setupClasses()
+    protected function setupColumns($datacols = null)
     {
-        if (!is_object($this->packet)) {
-            // Do the sensors
-            unset($this->data["packet"]);
-            $this->packet = new PacketContainer($this->packet);
-
+        if (!empty($datacols)) {
+            $this->datacols = $datacols;
+        }
+        $this->sqlColumns = $this->fixedColumns;
+        for ($i = 0; $i < $this->datacols; $i++) {
+            $this->sqlColumns["Data$i"] = array(
+                "Name" => "Data$i",
+                "Type" => "float",
+                "Default" => null,
+                "Null" => true,
+            );
         }
     }
     /******************************************************************
