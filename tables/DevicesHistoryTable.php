@@ -197,21 +197,29 @@ class DevicesHistoryTable extends HUGnetDBTable
     */
     public function &toDeviceContainer()
     {
-        $dev = new DeviceContainer($this->SetupString);
+        $dev = new DeviceContainer();
+        $dev->fromSetupString($this->SetupString);
         $dev->sensors->fromString($this->SensorString);
         return $dev;
     }
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param int $id The id of the record to get
+    * @param int $id   The id of the record to get
+    * @param int $date The date to use
     *
     * @return null
     */
-    static public function &deviceFactory($id)
+    static public function &deviceFactory($id, $date = 0)
     {
         $hist = new DevicesHistoryTable();
-        $hist->getRow($id);
+        if (empty($date)) {
+            $date = time();
+        }
+        $hist->selectOneInto(
+            "id = ? AND SaveDate < ?",
+            array($id, $date)
+        );
         return $hist->toDeviceContainer();
     }
     /**
