@@ -157,6 +157,21 @@ abstract class HistoryTableBase extends HUGnetDBTable
         return $hist->insertRow();
     }
     /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function fromDataArray($array)
+    {
+        $this->deltaT = $array["deltaT"];
+        for ($i = 0; $i < $this->datacols; $i++) {
+            $key = "Data$i";
+            $this->$key = $array[$i]["value"];
+        }
+    }
+    /**
     * Creates the object from a string or array
     *
     * @param mixed $data This is whatever you want to give the class
@@ -165,8 +180,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     public function fromAny($data)
     {
-        if (is_array($data) && isset($data[Data0])) {
-            $this->fromArray($data);
+        if (is_array($data) && isset($data[0])) {
+            $this->fromDataArray($data);
         } else {
             parent::fromAny($data);
         }

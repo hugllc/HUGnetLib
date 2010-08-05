@@ -204,9 +204,73 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     *
     * @return array
     */
-    public static function dataFromArray()
+    public static function dataFromDataArray()
     {
         return array(
+            array(
+                array(
+                    "deltaT" => 1,
+                    0 => array(
+                        "value" => 1,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    1 => array(
+                        "value" => 2,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    2 => array(
+                        "value" => 4,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    3 => array(
+                        "value" => 8,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    4 => array(
+                        "value" => 16,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    5 => array(
+                        "value" => 32,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    "DataIndex" => 127,
+                    "timeConstant" => 5,
+                ),
+                array(
+                    "group" => "default",
+                    "id"  => 0,
+                    "Date"   => 0,
+                    "deltaT"  => 1,
+                    "Data0"  => 1,
+                    "Data1"  => 2,
+                    "Data2"  => 4,
+                    "Data3"  => 8,
+                    "Data4"  => 16,
+                    "Data5"  => 32,
+                    "Data6"  => null,
+                    "Data7"  => null,
+                    "Data8"  => null,
+                    "Data9"  => null,
+                    "Data10"  => null,
+                    "Data11"  => null,
+                    "Data12"  => null,
+                    "Data13"  => null,
+                    "Data14"  => null,
+                ),
+            ),
         );
     }
 
@@ -218,11 +282,144 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     *
     * @return null
     *
-    * @dataProvider dataFromArray
+    * @dataProvider dataFromDataArray
     */
-    public function testFromArray($preload, $expect)
+    public function testFromDataArray($preload, $expect)
     {
-        $this->o->fromArray($preload);
+        $this->o->fromDataArray($preload);
+        $this->assertAttributeSame($expect, "data", $this->o);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromAny()
+    {
+        return array(
+            array(
+                array(
+                    "deltaT" => 1,
+                    0 => array(
+                        "value" => 1,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    1 => array(
+                        "value" => 2,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    2 => array(
+                        "value" => 4,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    3 => array(
+                        "value" => 8,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    4 => array(
+                        "value" => 16,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    5 => array(
+                        "value" => 32,
+                        "units" => "testUnit",
+                        "unitType" => "firstUnit",
+                        "dataType" => "raw",
+                    ),
+                    "DataIndex" => 127,
+                    "timeConstant" => 5,
+                ),
+                array(
+                    "group" => "default",
+                    "id"  => 0,
+                    "Date"   => 0,
+                    "deltaT"  => 1,
+                    "Data0"  => 1,
+                    "Data1"  => 2,
+                    "Data2"  => 4,
+                    "Data3"  => 8,
+                    "Data4"  => 16,
+                    "Data5"  => 32,
+                    "Data6"  => null,
+                    "Data7"  => null,
+                    "Data8"  => null,
+                    "Data9"  => null,
+                    "Data10"  => null,
+                    "Data11"  => null,
+                    "Data12"  => null,
+                    "Data13"  => null,
+                    "Data14"  => null,
+                ),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 0,
+                    "Data1"  => 1,
+                    "Data2"  => 2,
+                    "Data3"  => 3,
+                    "Data4"  => 4,
+                    "Data5"  => 5,
+                    "Data6"  => 6,
+                    "Data7"  => 7,
+                    "Data8"  => 8,
+                    "Data9"  => 9,
+                    "Data10"  => 10,
+                    "Data11"  => 11,
+                    "Data12"  => 12,
+                    "Data13"  => 13,
+                    "Data14"  => 14,
+                ),
+                array(
+                    "group" => "default",
+                    "id"  => 41,
+                    "Date"   => 1046397540,
+                    "deltaT"  => 5.2,
+                    "Data0"  => 0,
+                    "Data1"  => 1,
+                    "Data2"  => 2,
+                    "Data3"  => 3,
+                    "Data4"  => 4,
+                    "Data5"  => 5,
+                    "Data6"  => 6,
+                    "Data7"  => 7,
+                    "Data8"  => 8,
+                    "Data9"  => 9,
+                    "Data10"  => 10,
+                    "Data11"  => 11,
+                    "Data12"  => 12,
+                    "Data13"  => 13,
+                    "Data14"  => 14,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload The value to preload
+    * @param array $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromAny
+    */
+    public function testFromAny($preload, $expect)
+    {
+        $this->o->fromAny($preload);
         $this->assertAttributeSame($expect, "data", $this->o);
     }
     /**

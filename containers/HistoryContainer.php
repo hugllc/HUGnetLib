@@ -69,10 +69,6 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     /** The number of data elements */
     private $_elements = 19;
 
-    /** @var int The delta time between this element and the next */
-    public $DeltaT = null;
-    /** @var string The date of this record */
-    public $Date = null;
     /** @var object This is where we store our sqlDriver */
     protected $myDevice = null;
     /** @var object This is where we store our configuration object */
@@ -90,8 +86,8 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
     public function __construct($row, &$device)
     {
         $this->myConfig = &ConfigContainer::singleton();
-        $this->DeltaT =& $this->data["deltaT"];
-        $this->Date =& $this->data["Date"];
+        //$this->DeltaT =& $this->data["deltaT"];
+        //$this->Date =& $this->data["Date"];
         $this->myDevice = &$device;
         if (is_array($row)) {
             $this->fromArray($row);
@@ -128,10 +124,10 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
                 $this->$field = $array[$field];
             }
         }
-        $this->data["elements"] = array();
+        $this->elements = array();
         for ($i = 0; $i < $this->myDevice->sensors->Sensors; $i++) {
             $field = "Data".$i;
-            $this->data["elements"][$i] = &$this->dataPointFactory(
+            $this->elements[$i] = &$this->dataPointFactory(
                 array(
                     "value" => $array[$field],
                     "units" => $this->myDevice->sensors->sensor($i)->units,
@@ -154,8 +150,8 @@ class HistoryContainer extends HUGnetContainer implements HUGnetDataRow
         $array["DeviceKey"] = $this->DeviceKey;
         $array["Date"]      = $this->Date;
         $array["deltaT"]    = $this->deltaT;
-        foreach (array_keys((array)$this->data["elements"]) as $key) {
-            $data = $this->data["elements"][$key]->value();
+        foreach (array_keys((array)$this->elements) as $key) {
+            $data = $this->elements[$key]->value();
             if (!is_null($data)) {
                 $array["Data".$key] = $data;
             }
