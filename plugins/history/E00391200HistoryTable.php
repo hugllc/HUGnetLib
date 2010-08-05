@@ -51,19 +51,19 @@ require_once dirname(__FILE__)."/../../base/HistoryTableBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392100History extends HistoryTableBase
+class E00391200HistoryTable extends HistoryTableBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "E00392100History",
-        "Type" => "history",
-        "Class" => "E00392100History",
-        "Flags" => array("e00392100"),
+        "Name" => "E00391200HistoryTable",
+        "Type" => "historyTable",
+        "Class" => "E00391200HistoryTable",
+        "Flags" => array("e00391200"),
     );
     /** @var string This is the table we should use */
-    public $sqlTable = "e00392100_history";
+    public $sqlTable = "e00391200_history";
     /** @var This is the dataset */
-    public $datacols = 10;
+    public $datacols = 13;
 
     /******************************************************************
      ******************************************************************

@@ -52,7 +52,7 @@ require_once dirname(__FILE__).'/../../../containers/DeviceContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class HistoryPluginTestBase extends PluginTestBase
+abstract class HistoryTablePluginTestBase extends PluginTestBase
 {
     /**
     * test the set routine when an extra class exists

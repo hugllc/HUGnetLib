@@ -38,8 +38,8 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/history/E00391200History.php';
-require_once dirname(__FILE__).'/HistoryPluginTestBase.php';
+    .'/../../../plugins/history/E00391200HistoryTable.php';
+require_once dirname(__FILE__).'/HistoryTablePluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/HistoryPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00391200HistoryTest extends HistoryPluginTestBase
+class E00391200HistoryTableTest extends HistoryTablePluginTestBase
 {
 
     /**
@@ -72,7 +72,7 @@ class E00391200HistoryTest extends HistoryPluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-        $this->o = new E00391200History(
+        $this->o = new E00391200HistoryTable(
             array(
             )
         );
@@ -99,7 +99,7 @@ class E00391200HistoryTest extends HistoryPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00391200History"),
+            array("E00391200HistoryTable"),
         );
     }
     /**
