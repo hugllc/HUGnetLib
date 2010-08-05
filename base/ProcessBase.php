@@ -291,16 +291,18 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     static public function getIP()
     {
         $line = trim(`/sbin/ifconfig`);
-        preg_match(
+        preg_match_all(
             "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
             $line,
             $match
         );
         $i = 0;
-        // This removes localhost.
+        // This removes localhost, netmask and broadcast addresses
         do {
-            $ret = trim((string)$match[$i++]);
-        } while (preg_match("/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/", $ret) > 0);
+            $ret = trim((string)$match[0][$i++]);
+            $local = preg_match("/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/", $ret);
+            $netmask = preg_match("/255/", $ret);
+        } while (($local + $netmask) > 0);
         return $ret;
     }
     /**

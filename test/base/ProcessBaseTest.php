@@ -345,6 +345,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             $ret,
             "returned localhost"
         );
+        $this->assertNotRegExp(
+            "/255/",
+            $ret,
+            "returned netmask or broadcast"
+        );
         $this->assertRegExp(
             "/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/",
             $ret
