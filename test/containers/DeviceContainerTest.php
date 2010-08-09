@@ -1281,6 +1281,207 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             $this->assertNull($GLOBALS["packetConsumer"]);
         }
     }
+    /**
+    * data provider for testHistoryTable
+    *
+    * @return array
+    */
+    public static function dataHistoryTable()
+    {
+        return array(
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                "Test2HistoryTable",
+            ),
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-99-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                "Test1HistoryTable",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The values to preload
+    * @param mixed  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHistoryTable
+    */
+    public function testHistoryTable($preload, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->historyTable());
+    }
+    /**
+    * data provider for testHistoryFactory
+    *
+    * @return array
+    */
+    public static function dataHistoryFactory()
+    {
+        return array(
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "deltaT" => 12,
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "deltaT" => 12,
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+            ),
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-99-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "deltaT" => 12,
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "deltaT" => 12,
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The values to preload
+    * @param array  $data    The data to load into the history object
+    * @param mixed  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataHistoryFactory
+    */
+    public function testHistoryFactory($preload, $data, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->historyFactory($data)->toArray());
+    }
 
 }
 

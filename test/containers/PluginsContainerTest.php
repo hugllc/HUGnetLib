@@ -268,6 +268,24 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    "historyTable" => array(
+                        "DEFAULT" => array(
+                            "Name" => "Test1HistoryTable",
+                            "Type" => "historyTable",
+                            "Class" => "Test1HistoryTable",
+                            "Flags" => array(
+                                "DEFAULT",
+                            ),
+                        ),
+                        "testDriver" => array(
+                            "Name" => "Test2HistoryTable",
+                            "Type" => "historyTable",
+                            "Class" => "Test2HistoryTable",
+                            "Flags" => array(
+                                "testDriver",
+                            ),
+                        ),
+                    ),
                     'periodic' => array (
                         'testPeriodic' => array (
                             'Name' => 'testPeriodic',

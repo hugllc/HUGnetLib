@@ -260,10 +260,14 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     public function fromArray($array)
     {
+        $this->Reply = null;
         parent::fromArray($array);
         $this->Length = strlen($this->Data)/2;
         if ((int)$this->Checksum == 0) {
             $this->Checksum = $this->checksum();
+        }
+        if (!empty($this->Reply) && !is_object($this->Reply)) {
+            $this->Reply = new PacketContainer($this->Reply);
         }
     }
 

@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/history/E00392800HistoryTable.php';
+    .'/../../../plugins/historyTable/E00392800HistoryTable.php';
 require_once dirname(__FILE__).'/HistoryTablePluginTestBase.php';
 
 /**

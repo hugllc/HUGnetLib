@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/history/E00392100HistoryTable.php';
+    .'/../../../plugins/historyTable/EDEFAULTHistoryTable.php';
 require_once dirname(__FILE__).'/HistoryTablePluginTestBase.php';
 
 /**
@@ -54,7 +54,7 @@ require_once dirname(__FILE__).'/HistoryTablePluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392100HistoryTableTest extends HistoryTablePluginTestBase
+class EDEFAULTHistoryTableTest extends HistoryTablePluginTestBase
 {
 
     /**
@@ -72,7 +72,7 @@ class E00392100HistoryTableTest extends HistoryTablePluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-        $this->o = new E00392100HistoryTable(
+        $this->o = new EDEFAULTHistoryTable(
             array(
             )
         );
@@ -99,7 +99,7 @@ class E00392100HistoryTableTest extends HistoryTablePluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00392100HistoryTable"),
+            array("EDEFAULTHistoryTable"),
         );
     }
     /**
@@ -111,7 +111,7 @@ class E00392100HistoryTableTest extends HistoryTablePluginTestBase
     */
     public function testSqlTable()
     {
-        $this->assertSame("e00392100_history", $this->o->sqlTable);
+        $this->assertSame("eDEFAULT_history", $this->o->sqlTable);
     }
     /**
     * Generic function for testing sensor routines
@@ -122,7 +122,7 @@ class E00392100HistoryTableTest extends HistoryTablePluginTestBase
     */
     public function testDatacols()
     {
-        $this->assertSame(10, $this->o->datacols);
+        $this->assertSame(13, $this->o->datacols);
     }
 
 }

@@ -319,7 +319,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
                 array(
                     "id" => (int)$this->myDriver->id,
                     "Date" => $pkt->Date,
-                    "packet" => $pkt->toString(),
+                    "packet" => $pkt->toArray(),
                     "device" => $this->myDriver->toString(),
                     "command" => $pkt->Command,
                     "dataIndex" => $this->dataIndex($pkt->Reply->Data),

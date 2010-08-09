@@ -328,6 +328,33 @@ class DeviceContainer extends DevicesTable
             $this->epDriver->packetConsumer($pkt);
         }
     }
+    /**
+    * Returns the name of the history table
+    *
+    * @return string
+    */
+    public function historyTable()
+    {
+        $hist = $this->myConfig->plugins->getPlugin(
+            "historyTable",
+            $this->Driver
+        );
+        return $hist["Class"];
+    }
+
+    /**
+    * returns a history object for this device
+    *
+    * @param array $data The data to build the history record with.
+    *
+    * @return string
+    */
+    public function &historyFactory($data)
+    {
+        $class = $this->historyTable();
+        return new $class($data);
+    }
+
 
 }
 ?>

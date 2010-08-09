@@ -349,7 +349,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public static function dataToArray()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -374,7 +374,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "CalcChecksum" => "C3",
                 ),
             ),
-            array(
+            array( // #1
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -399,7 +399,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "CalcChecksum" => "79",
                 ),
             ),
-            array(
+            array( // #2
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
@@ -464,6 +464,54 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public static function dataFromArray()
     {
         return array(
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "ABCDEF",
+                        "From" => "000020",
+                        "Command" => "5C",
+                        "Length"  => 0,
+                        "Data" => array(),
+                        "RawData" => "",
+                        "Type" => "CONFIG",
+                        "Reply" => null,
+                        "Checksum" => "F5",
+                        "CalcChecksum" => "F5",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "SENSORREAD",
+                    "Reply" => array(
+                        "To" => "ABCDEF",
+                        "From" => "000020",
+                        "Command" => "5C",
+                        "Length"  => 0,
+                        "Data" => array(),
+                        "RawData" => "",
+                        "Type" => "CONFIG",
+                        "Reply" => null,
+                        "Checksum" => "F5",
+                        "CalcChecksum" => "F5",
+                    ),
+                    "Checksum" => "C3",
+                    "CalcChecksum" => "C3",
+                ),
+            ),
         );
     }
 
@@ -480,9 +528,9 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray($preload, $expect)
     {
         $this->o->fromArray($preload);
-        $ret = $this->readAttribute($this->o, "data");
+        $ret = $this->o->toArray();
         $this->checkDateTime($ret, false);
-        $this->assertAttributeEquals($expect, $ret);
+        $this->assertSame($expect, $ret);
     }
     /**
     * data provider for testDeviceID
