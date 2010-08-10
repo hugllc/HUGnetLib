@@ -204,6 +204,31 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             "ConfigFail wrong"
         );
     }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id     The Device ID to pretend to be
+    * @param string $string The string for the dummy device to return
+    * @param string $read   The read string to put in
+    * @param string $write  The write string expected
+    * @param string $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadSetup
+    */
+    public function testReadConfig($id, $string, $read, $write, $expect)
+    {
+        $this->d->id = hexdec($id);
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = 1;
+        $this->socket->readString = $read;
+        $ret = $this->o->readConfig();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($string, $this->d->string, "Wrong Setup String");
+        $this->assertSame($expect, $ret, "Wrong return value");
+    }
     /**
     * data provider for testReadData
     *
@@ -233,6 +258,45 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 time() - 60,
                 0,
+                array(
+                    'group' => 'default',
+                    'id' => 37,
+                    'packet' => array(
+                        'To' => '000025',
+                        'From' => '000020',
+                        'Command' => '55',
+                        'Length' => 0,
+                        'Data' => array(),
+                        'RawData' => '',
+                        'Type' => 'SENSORREAD',
+                        'Reply' => array(
+                            'To' => '000020',
+                            'From' => '000025',
+                            'Command' => '01',
+                            'Length' => 9,
+                            'Data' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => 4,
+                                4 => 5,
+                                5 => 6,
+                                6 => 7,
+                                7 => 8,
+                                8 => 9,
+                            ),
+                            'RawData' => '010203040506070809',
+                            'Type' => 'REPLY',
+                            'Reply' => NULL,
+                            'Checksum' => '0C',
+                            'CalcChecksum' => '0C',
+                        ),
+                        'Checksum' => '70',
+                        'CalcChecksum' => '50',
+                    ),
+                    'command' => '55',
+                    'dataIndex' => '1',
+                ),
             ),
             array(
                 0x000025,
@@ -255,6 +319,45 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 time() - 60,
                 0,
+                array(
+                    'group' => 'default',
+                    'id' => 37,
+                    'packet' => array(
+                        'To' => '000025',
+                        'From' => '000020',
+                        'Command' => '55',
+                        'Length' => 0,
+                        'Data' => array(),
+                        'RawData' => '',
+                        'Type' => 'SENSORREAD',
+                        'Reply' => array(
+                            'To' => '000020',
+                            'From' => '000025',
+                            'Command' => '01',
+                            'Length' => 9,
+                            'Data' => array(
+                                0 => 1,
+                                1 => 2,
+                                2 => 3,
+                                3 => 4,
+                                4 => 5,
+                                5 => 6,
+                                6 => 7,
+                                7 => 8,
+                                8 => 9,
+                            ),
+                            'RawData' => '010203040506070809',
+                            'Type' => 'REPLY',
+                            'Reply' => NULL,
+                            'Checksum' => '0C',
+                            'CalcChecksum' => '0C',
+                        ),
+                        'Checksum' => '70',
+                        'CalcChecksum' => '50',
+                    ),
+                    'command' => '55',
+                    'dataIndex' => '1',
+                ),
             ),
             array(
                 0x000025,
@@ -268,6 +371,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 null,
                 1,
+                array(
+                ),
             ),
         );
     }
@@ -282,14 +387,18 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * @param array  $DriverInfo The driver info to use
     * @param string $LastPoll   The time last congig should be set to (regex)
     * @param int    $PollFail   The number of failures to report
+    * @param array  $row        The database row inserted
     *
     * @return null
     *
     * @dataProvider dataReadData
     */
     public function testReadData(
-        $id, $string, $read, $write, $expect, $DriverInfo, $LastPoll, $PollFail
+        $id, $string, $read, $write, $expect, $DriverInfo, $LastPoll, $PollFail, $row
     ) {
+        $this->pdo = &$this->config->servers->getPDO();
+        $this->pdo->query("DROP TABLE IF EXISTS `rawHistory`");
+
         $this->d->id = $id;
         $this->d->DriverInfo = $DriverInfo;
         $this->d->params->DriverInfo["LastPoll"] = $LastPoll;
@@ -310,31 +419,19 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             $this->d->params->DriverInfo["PollFail"],
             "PollFail wrong"
         );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $id     The Device ID to pretend to be
-    * @param string $string The string for the dummy device to return
-    * @param string $read   The read string to put in
-    * @param string $write  The write string expected
-    * @param string $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataReadSetup
-    */
-    public function testReadConfig($id, $string, $read, $write, $expect)
-    {
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
-        $this->d->DriverInfo["PacketTimeout"] = 1;
-        $this->socket->readString = $read;
-        $ret = $this->o->readConfig();
-        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
-        $this->assertSame($string, $this->d->string, "Wrong Setup String");
-        $this->assertSame($expect, $ret, "Wrong return value");
+        if ($expect) {
+            $stmt = $this->pdo->query("SELECT * FROM `rawHistory` WHERE id=".$id);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $rht = new RawHistoryTable($rows[0]);
+            $raw = $rht->toArray();
+            unset($raw["Date"]);
+            unset($raw["packet"]["Date"]);
+            unset($raw["packet"]["Time"]);
+            unset($raw["packet"]["Reply"]["Date"]);
+            unset($raw["packet"]["Reply"]["Time"]);
+            unset($raw["devicesHistoryDate"]);
+            $this->assertSame($row, $raw, "Inserted Row Wrong");
+        }
     }
     /**
     * data provider for testReadCalibration
