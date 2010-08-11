@@ -36,7 +36,8 @@
  *
  */
 
-
+/** Include the stuff we need */
+require_once dirname(__FILE__).'/../../base/DataPointBase.php';
 require_once dirname(__FILE__).'/../../base/DeviceDriverBase.php';
 require_once dirname(__FILE__).'/../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
@@ -1296,6 +1297,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         1 => array(
                         ),
                         2 => array(
+                            "dataType" => DataPointBase::TYPE_DIFF,
                         ),
                         3 => array(
                         ),
@@ -1308,43 +1310,45 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 "7F0005020000040000080000100000200000400000",
                 PacketContainer::COMMAND_GETDATA,
                 1,
+                array(null,null, 2, null, null, null),
                 array(
                     "deltaT" => 1,
                     0 => array(
                         "value" => 1,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     1 => array(
                         "value" => 2,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     2 => array(
-                        "value" => 4,
+                        "value" => 2,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "raw" => 4,
                     ),
                     3 => array(
                         "value" => 8,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     4 => array(
                         "value" => 16,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     5 => array(
                         "value" => 32,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     "DataIndex" => 127,
                     "timeConstant" => 5,
@@ -1358,19 +1362,20 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @param array  $device  The device preload
     * @param string $data    The raw data
-    * @param array  $expect  The expected return
     * @param string $command The command that was used to get the data
     * @param float  $deltaT  The time difference between this packet and the next
+    * @param float  $prev    The previous record
+    * @param array  $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataDecodeData
     */
-    public function testDecodeData($device, $data, $command, $deltaT, $expect)
+    public function testDecodeData($device, $data, $command, $deltaT, $prev, $expect)
     {
         $this->d = new DeviceContainer($device);
         $this->o = new TestDevice($this->d);
-        $ret = $this->o->decodeData($data, $command, $deltaT);
+        $ret = $this->o->decodeData($data, $command, $deltaT, $prev);
         $this->assertSame($expect, $ret, "Arrays are not the same");
     }
 

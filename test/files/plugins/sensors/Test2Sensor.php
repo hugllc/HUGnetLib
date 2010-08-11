@@ -85,6 +85,7 @@ class Test2Sensor extends DeviceSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->default["dataType"] = DataPointBase::TYPE_DIFF;
         parent::__construct($data, $device);
         if ($this->id == 3) {
             $this->data["type"] = "Hello";

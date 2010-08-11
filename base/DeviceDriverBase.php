@@ -551,14 +551,15 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     * @param string $string  The string of sensor data
     * @param string $command The command that was used to get the data
     * @param float  $deltaT  The time difference between this packet and the next
+    * @param float  $prev    The previous record
     *
     * @return null
     */
-    public function decodeData($string, $command="", $deltaT = 0)
+    public function decodeData($string, $command="", $deltaT = 0, $prev = null)
     {
         $data = $this->_decodeSensorString($string);
         $data["deltaT"] = $deltaT;
-        $ret = $this->myDriver->sensors->decodeSensorData($data);
+        $ret = $this->myDriver->sensors->decodeSensorData($data, $prev);
         $ret["DataIndex"] = $data["DataIndex"];
         $ret["timeConstant"] = $data["timeConstant"];
         $ret["deltaT"] = $data["deltaT"];

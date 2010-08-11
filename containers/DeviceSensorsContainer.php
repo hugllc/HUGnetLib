@@ -301,36 +301,21 @@ class DeviceSensorsContainer extends HUGnetContainer
     * Creates a sensor object
     *
     * @param array $data The data to decode
+    * @param array $prev The previous raw reading
     *
     * @return Returns an array of the data decoded
     */
-    public function decodeSensorData($data)
+    public function decodeSensorData($data, $prev = null)
     {
         $ret = array(
             "deltaT" => $data["deltaT"],
         );
         for($i = 0; $i < $this->Sensors; $i++) {
-            $ret[$i] = $this->_getReading($i, $data[$i], $data["deltaT"]);
+            $ret[$i] = $this->sensor($i)->getDataPoint(
+                $data[$i], $data["deltaT"], $prev[$i]
+            );
         }
         return $ret;
-    }
-    /**
-    * Creates a sensor object
-    *
-    * @param int   $sensor The sensor this value is for
-    * @param mixed $value  The raw value to decode
-    * @param float $deltaT The deltaT for this record
-    *
-    * @return Returns an array of the data decoded
-    */
-    private function _getReading($sensor, $value, $deltaT)
-    {
-        return array(
-            "value" => $this->sensor($sensor)->getReading($value, $deltaT),
-            "units" => $this->sensor($sensor)->storageUnit,
-            "unitType" => $this->sensor($sensor)->unitType,
-            "dataType" => $this->sensor($sensor)->dataType,
-        );
     }
 
 }

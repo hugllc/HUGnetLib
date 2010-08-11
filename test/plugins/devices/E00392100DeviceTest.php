@@ -715,7 +715,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "dataType" => "raw",
                     ),
                     2 => array(
-                        "value" => 100.6283,
+                        "value" => 34.5929,
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
                         "dataType" => "raw",
@@ -733,7 +733,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "dataType" => "raw",
                     ),
                     5 => array(
-                        "value" => 100.6283,
+                        "value" => 34.5929,
                         "units" => "&#176;C",
                         "unitType" => "Temperature",
                         "dataType" => "raw",
@@ -758,7 +758,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
     public function testDecodeData($data, $command, $deltaT, $expect)
     {
         $ret = $this->o->decodeData($data, $command, $deltaT);
-        $this->assertSame($expect, $ret, "Arrays are not the same");
+        $this->assertEquals($expect, $ret, "Arrays are not the same", 0.1);
     }
 
 }

@@ -192,6 +192,64 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->getExtra($index));
     }
     /**
+    * data provider for testGetExtra
+    *
+    * @return array
+    */
+    public static function dataDataPoint()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1,
+                2,
+                5,
+                array(
+                    "value" => 1,
+                    "units" => "unknown",
+                    "unitType" => "unknown",
+                    "dataType" => DataPointBase::TYPE_RAW,
+                ),
+            ),
+            array(
+                array(
+                    "dataType" => DataPointBase::TYPE_DIFF,
+                ),
+                1,
+                2,
+                5,
+                array(
+                    "value" => -4,
+                    "units" => "unknown",
+                    "unitType" => "unknown",
+                    "dataType" => DataPointBase::TYPE_DIFF,
+                    "raw" => 1,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $A       The value to send
+    * @param int    $deltaT  The delta Time
+    * @param mixed  $prev    The previous reading
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataDataPoint
+    */
+    public function testGetDataPoint($preload, $A, $deltaT, $prev, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->getDataPoint($A, $deltaT, $prev));
+    }
+    /**
     * data provider for testSet
     *
     * @return array
@@ -297,6 +355,7 @@ class TestDeviceSensor extends DeviceSensorBase
     */
     public function getReading($A, $deltaT = 0)
     {
+        return $A;
     }
 }
 

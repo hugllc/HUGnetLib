@@ -88,11 +88,12 @@ abstract class HistoryTableBase extends HUGnetDBTable
         "id" => array(
             "Name" => "id",
             "Type" => "int",
+            "Default" => 0,
         ),
         "Date" => array(
             "Name" => "Date",
             "Type" => "bigint",
-            "Default" => '0',
+            "Default" => 0,
         ),
         "deltaT" => array(
             "Name" => "deltaT",
@@ -127,9 +128,12 @@ abstract class HistoryTableBase extends HUGnetDBTable
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",    // Server group to use
+        "raw" => array(),
     );
     /** @var This is the dataset */
     public $datacols = 15;
+    /** @var This is the  raw data for differential mode */
+    public $raw = array();
 
     /**
     * This is the constructor
@@ -165,10 +169,17 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     public function fromDataArray($array)
     {
+        if (!empty($array["id"])) {
+            $this->id = $array["id"];
+        }
+        if (!empty($array["Date"])) {
+            $this->Date = $array["Date"];
+        }
         $this->deltaT = $array["deltaT"];
         for ($i = 0; $i < $this->datacols; $i++) {
             $key = "Data$i";
             $this->$key = $array[$i]["value"];
+            $this->raw[$i] = $array[$i]["raw"];
         }
     }
     /**

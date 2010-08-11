@@ -470,6 +470,37 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 404,
+                1280251875,
+                array(
+                    "DriverInfo" => array(
+                        "TimeConstant" => 1,
+                        "NumSensors"   => 6,
+                    ),
+                    "id" => 404,
+                    "DeviceID" => "000194",
+                    "HWPartNum" => "0039-21-02-A",
+                    "FWPartNum" => "0039-20-14-C",
+                    "FWVersion" => "0.0.8",
+                    "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
+                    "Driver" => "e00392100",
+                    "sensors" => array(
+                        "Sensors" => 6,
+                        0 => array("id" => 2, "type" => "BCTherm2322640"),
+                        1 => array("id" => 2, "type" => "BCTherm2322640"),
+                        3 => array("id" => 2, "type" => "BCTherm2322640"),
+                        4 => array("id" => 2, "type" => "BCTherm2322640"),
+                        2 => array("id" => 2, "type" => "BCTherm2322640"),
+                        5 => array("id" => 2, "type" => "BCTherm2322640"),
+                    ),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "BoredomThreshold" => 80,
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                404,
                 0,
                 array(
                     "DriverInfo" => array(

@@ -145,6 +145,31 @@ abstract class DeviceSensorBase extends HUGnetContainer
             parent::toArray($default)
         );
     }
+
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array $prev   The previous reading
+    *
+    * @return float The direction in degrees
+    */
+    public function getDataPoint($A, $deltaT = 0, $prev = null)
+    {
+        $val = $this->getReading($A, $deltaT);
+        $ret = array(
+            "value" => $val,
+            "units" => $this->storageUnit,
+            "unitType" => $this->unitType,
+            "dataType" => $this->dataType,
+        );
+        if ($this->dataType == DataPointBase::TYPE_DIFF) {
+            $ret["raw"] = $val;
+            $ret["value"] = ($val - $prev);
+        }
+        return $ret;
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

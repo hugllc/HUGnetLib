@@ -386,7 +386,7 @@ class E00392100Device extends DeviceDriverLoadableBase
             "id" => 0x02,
             "type" => "BCTherm2322640",
             "location" => $location,
-            "extra" => array(10, 10),
+            "extra" => array(100, 10),
         );
 
     }

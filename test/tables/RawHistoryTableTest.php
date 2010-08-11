@@ -363,6 +363,277 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
         }
         $this->assertSame($expect, $rows);
     }
+    /**
+    * Data provider for testGetDevice
+    *
+    * @return array
+    */
+    public static function dataGetDevice()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "01020304050607080910",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'TimeConstant' => 1,
+                        'NumSensors' => 6,
+                    ),
+                    'id' => 18,
+                    'DeviceID' => '000012',
+                    'HWPartNum' => '0039-21-02-A',
+                    'FWPartNum' => '0039-20-14-C',
+                    'FWVersion' => '0.0.0',
+                    'RawSetup' => '000000001200392102410039201443000000FFFFFF00',
+                    'Driver' => 'e00392100',
+                    'sensors' => array(
+                        'Sensors' => 6,
+                        0 => array(
+                            'id' => 64,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 1 Voltage',
+                            'extra' => array(
+                                0 => 180,
+                                1 => 27,
+                            ),
+                        ),
+                        1 => array(
+                            'id' => 80,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 1 Current',
+                            'extra' => array(
+                                0 => 0.5,
+                                1 => 7,
+                            ),
+                        ),
+                        3 => array(
+                            'id' => 64,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 2 Voltage',
+                            'extra' => array(
+                                0 => 180,
+                                1 => 27,
+                            ),
+                        ),
+                        4 => array(
+                            'id' => 80,
+                            'type' => 'Controller',
+                            'location' => 'HUGnet 2 Current',
+                            'extra' => array(
+                                0 => 0.5,
+                                1 => 7,
+                            ),
+                        ),
+                        2 => array(
+                            'id' => 0,
+                            'type' => 'BCTherm2322640',
+                        ),
+                        5 => array(
+                            'id' => 0,
+                            'type' => 'BCTherm2322640',
+                        ),
+                    ),
+                    'params' => array(
+                        'DriverInfo' => array(
+                            'BoredomThreshold' => 0,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetDevice
+    *
+    * @return null
+    */
+    public function testGetDevice($preload, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $array = $this->o->getDevice()->toArray(false);
+        $this->assertSame($expect, $array);
+    }
+    /**
+    * Data provider for testToHistory
+    *
+    * @return array
+    */
+    public static function dataToHistoryTable()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "631902BA100200B947124902008F0FA103",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 10.749,
+                    'Data1' => 11.7,
+                    'Data2' => 33.3514,
+                    'Data3' => 10.951,
+                    'Data4' => 20.3,
+                    'Data5' => 35.2126,
+                ),
+            ),
+            array(
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVerson" => "0.1.2",
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(),
+                array(
+                ),
+            ),
+            array(
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "C80001A013006813003213006913003A140083130102"
+                                ."025D029200BF00EC",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-12-01-A",
+                        "FWPartNum" => "0039-20-03-C",
+                        "FWVerson" => "0.1.2",
+                        "sensors" => array(
+                            "Sensors" => 5,
+                            0 => array(),
+                            1 => array(),
+                            2 => array("dataType" => DataPointBase::TYPE_DIFF),
+                            3 => array("dataType" => DataPointBase::TYPE_DIFF),
+                            4 => array(),
+                        ),
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                1048472184,
+                array(null, null, 91.4234, 90.5231, null),
+                array(
+                    "id" => 18,
+                    "raw" => array(
+                        2 => 93.9263,
+                        3 => 93.5304,
+                    ),
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 93.1399,
+                    'Data1' => 93.5384,
+                    'Data2' => 2.5029,
+                    'Data3' => 3.0073,
+                    'Data4' => 92.0645,
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param array $time    The time of the last packet
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataToHistoryTable
+    *
+    * @return null
+    */
+    public function testToHistoryTable($preload, $time, $prev, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $array = $this->o->toHistoryTable($time, $prev)->toArray(false);
+        $this->assertEquals($expect, $array, "", 0.1);
+    }
 
 }
 

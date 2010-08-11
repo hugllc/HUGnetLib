@@ -37,6 +37,7 @@
  */
 
 
+require_once dirname(__FILE__).'/../../base/DataPointBase.php';
 require_once dirname(__FILE__).'/../../containers/DeviceSensorsContainer.php';
 require_once dirname(__FILE__).'/../../containers/DeviceParamsContainer.php';
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
@@ -183,7 +184,6 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "id" => 2,
                         "type" => "a",
                         "location" => "There",
-                        "dataType" => "diff",
                         "extra" => array(3,4),
                     ),
                 ),
@@ -403,10 +403,12 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
+                        "dataType" => DataPointBase::TYPE_DIFF,
                     ),
                     array(
                         "id" => 2,
                         "type" => "",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                 ),
                 array(
@@ -429,6 +431,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0x10,
                         "type" => "multiInput",
+                        "dataType" => DataPointBase::TYPE_DIFF,
                     ),
                     array(
                         "id" => 0xFF,
@@ -547,6 +550,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
+                        "dataType" => DataPointBase::TYPE_DIFF,
                     ),
                     array(
                         "id" => 3,
@@ -575,10 +579,12 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
+                        "dataType" => DataPointBase::TYPE_DIFF,
                     ),
                     array(
                         "id" => 3,
                         "type" => "",
+                        "dataType" => DataPointBase::TYPE_DIFF,
                         "rawCalibration" => "abcd",
                     ),
                 ),
@@ -729,24 +735,28 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     2 => 30,
                 ),
                 array(
+                    null, 10, null, null
+                ),
+                array(
                     "deltaT" => 1,
                     0 => array(
                         "value" => 5,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                     1 => array(
-                        "value" => 40,
+                        "value" => 30,
                         "units" => "anotherUnit",
                         "unitType" => "secondUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "raw" => 40,
                     ),
                     2 => array(
                         "value" => 15,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => "raw",
+                        "dataType" => DataPointBase::TYPE_RAW,
                     ),
                 ),
             ),
@@ -758,17 +768,19 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param mixed  $preload The stuff to give to the constructor
     * @param string $data    The data to use
+    * @param array  $prev    The previous reading
     * @param array  $expect  The expected data
     *
     * @return null
     *
     * @dataProvider dataDecodeSensorData
     */
-    public function testDecodeSensorData($preload, $data, $expect)
+    public function testDecodeSensorData($preload, $data, $prev, $expect)
     {
         $this->o->clearData();
         $this->o->fromArray($preload);
-        $this->assertSame($expect, $this->o->decodeSensorData($data));
+        $data = $this->o->decodeSensorData($data, $prev);
+        $this->assertSame($expect, $data);
     }
 }
 

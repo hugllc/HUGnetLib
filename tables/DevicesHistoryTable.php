@@ -217,7 +217,7 @@ class DevicesHistoryTable extends HUGnetDBTable
             $date = time();
         }
         $hist->selectOneInto(
-            "id = ? AND SaveDate < ?",
+            "id = ? AND SaveDate <= ?",
             array($id, $date)
         );
         return $hist->toDeviceContainer();

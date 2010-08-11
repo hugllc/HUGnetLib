@@ -228,6 +228,42 @@ class RawHistoryTable extends HUGnetDBTable
 
         }
     }
+    /**
+    * Returns a device object
+    *
+    * @return null
+    */
+    public function &getDevice()
+    {
+        $dev = &DevicesHistoryTable::deviceFactory(
+            $this->id, $this->devicesHistoryDate
+        );
+        return $dev;
+
+    }
+    /**
+    * Returns a history table object
+    *
+    * @param int   $lastTime This is the time of the last packet.
+    * @param array $prev     The previous records data
+    *
+    * @return null
+    */
+    public function &toHistoryTable($lastTime, $prev = array())
+    {
+        $dev = &$this->getDevice();
+        if (!empty($this->packet->Reply->Data)) {
+            $data = $dev->decodeData(
+                $this->packet->Reply->Data,
+                $this->packet->Command,
+                (int)($this->Date - $lastTime),
+                $prev
+            );
+            $data["id"] = $this->id;
+            $data["Date"] = $this->Date;
+        }
+        return $dev->HistoryFactory($data);
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
