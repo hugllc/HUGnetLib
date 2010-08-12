@@ -493,6 +493,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     {
         return array(
             array(
+                array(),
                 array(
                     "id" => 18,
                     "Date" => 1048472484,
@@ -535,6 +536,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 ),
             ),
             array(
+                array(),
                 array(
                     "id" => 18,
                     "Date" => 1048472484,
@@ -561,6 +563,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 ),
             ),
             array(
+                array(),
                 array(
                     "id" => 18,
                     "Date" => 1048472484,
@@ -614,6 +617,134 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'Data4' => 92.0645,
                 ),
             ),
+            array(
+                array(
+                    array(
+                        "id" => 18,
+                        "Date" => 1048472184,
+                        "packet" => array(
+                            "To" => "000012",
+                            "From" => "000283",
+                            "Date" => 1048472184,
+                            "Command" => "55",
+                            "Data" => "",
+                            "Reply" => array(
+                                "To" => "000283",
+                                "From" => "000012",
+                                "Date" => 1048472185,
+                                "Command" => "01",
+                                "Data" => "C80001A013006813001614006914003A14008313"
+                                    ."0102025D029200BF00EC",
+                            ),
+                        ),
+                        "device" => array(
+                            "id" => 18,
+                            "DeviceID" => "000012",
+                            "HWPartNum" => "0039-12-01-A",
+                            "FWPartNum" => "0039-20-03-C",
+                            "FWVerson" => "0.1.2",
+                            "sensors" => array(
+                                "Sensors" => 5,
+                                0 => array(),
+                                1 => array(),
+                                2 => array("dataType" => DataPointBase::TYPE_DIFF),
+                                3 => array("dataType" => DataPointBase::TYPE_DIFF),
+                                4 => array(),
+                            ),
+                        ),
+                        "command" => "55",
+                        "dataIndex" => 123,
+                    ),
+                    array(
+                        "id" => 18,
+                        "Date" => 1048472084,
+                        "packet" => array(
+                            "To" => "000012",
+                            "From" => "000283",
+                            "Date" => 1048472084,
+                            "Command" => "55",
+                            "Data" => "",
+                            "Reply" => array(
+                                "To" => "000283",
+                                "From" => "000012",
+                                "Date" => 1048472085,
+                                "Command" => "01",
+                                "Data" => "C80001A013006813001612006912003A14008313"
+                                    ."0102025D029200BF00EC",
+                            ),
+                        ),
+                        "device" => array(
+                            "id" => 18,
+                            "DeviceID" => "000012",
+                            "HWPartNum" => "0039-12-01-A",
+                            "FWPartNum" => "0039-20-03-C",
+                            "FWVerson" => "0.1.2",
+                            "sensors" => array(
+                                "Sensors" => 5,
+                                0 => array(),
+                                1 => array(),
+                                2 => array("dataType" => DataPointBase::TYPE_DIFF),
+                                3 => array("dataType" => DataPointBase::TYPE_DIFF),
+                                4 => array(),
+                            ),
+                        ),
+                        "command" => "55",
+                        "dataIndex" => 123,
+                    ),
+                ),
+                array(
+                    "id" => 18,
+                    "Date" => 1048472484,
+                    "packet" => array(
+                        "To" => "000012",
+                        "From" => "000283",
+                        "Date" => 1048472484,
+                        "Command" => "55",
+                        "Data" => "",
+                        "Reply" => array(
+                            "To" => "000283",
+                            "From" => "000012",
+                            "Date" => 1048472485,
+                            "Command" => "01",
+                            "Data" => "C80001A013006813003213006913003A140083130102"
+                                ."025D029200BF00EC",
+                        ),
+                    ),
+                    "device" => array(
+                        "id" => 18,
+                        "DeviceID" => "000012",
+                        "HWPartNum" => "0039-12-01-A",
+                        "FWPartNum" => "0039-20-03-C",
+                        "FWVerson" => "0.1.2",
+                        "sensors" => array(
+                            "Sensors" => 5,
+                            0 => array(),
+                            1 => array(),
+                            2 => array("dataType" => DataPointBase::TYPE_DIFF),
+                            3 => array("dataType" => DataPointBase::TYPE_DIFF),
+                            4 => array(),
+                        ),
+                    ),
+                    "command" => "55",
+                    "dataIndex" => 123,
+                ),
+                0,
+                array(),
+                array(
+                    "id" => 18,
+                    "raw" => array(
+                        2 => 93.9263,
+                        3 => 93.5304,
+                    ),
+                    "Date" => 1048472484,
+                    'deltaT' => 300,
+                    'Data0' => 93.1399,
+                    'Data1' => 93.5384,
+                    'Data2' => 1.6131,
+                    'Data3' => 1.7878,
+                    'Data4' => 92.0645,
+                ),
+            ),
         );
     }
     /**
@@ -627,8 +758,13 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     *
     * @return null
     */
-    public function testToHistoryTable($preload, $time, $prev, $expect)
+    public function testToHistoryTable($db, $preload, $time, $prev, $expect)
     {
+        foreach ($db as $p) {
+            $this->o->clearData();
+            $this->o->fromAny($p);
+            $this->o->insertRow();
+        }
         $this->o->clearData();
         $this->o->fromAny($preload);
         $array = $this->o->toHistoryTable($time, $prev)->toArray(false);

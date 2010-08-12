@@ -245,11 +245,24 @@ class RawHistoryTable extends HUGnetDBTable
     * Returns a history table object
     *
     * @param int   $lastTime This is the time of the last packet.
-    * @param array $prev     The previous records data
+    * @param array &$prev    The previous records data
     *
     * @return null
     */
-    public function &toHistoryTable($lastTime, $prev = array())
+    public function &toHistoryTable($lastTime, &$prev = null)
+    {
+        $this->_getPrev($lastTime, $prev);
+        return $this->toHistory($lastTime, $prev);
+    }
+    /**
+    * Returns a history table object
+    *
+    * @param int   $lastTime This is the time of the last packet.
+    * @param array &$prev    The previous records data
+    *
+    * @return null
+    */
+    protected function &toHistory($lastTime, &$prev = null)
     {
         $dev = &$this->getDevice();
         if (!empty($this->packet->Reply->Data)) {
@@ -262,7 +275,32 @@ class RawHistoryTable extends HUGnetDBTable
             $data["id"] = $this->id;
             $data["Date"] = $this->Date;
         }
-        return $dev->HistoryFactory($data);
+        return $dev->historyFactory($data);
+    }
+
+    /**
+    *
+    *
+    * @param int   &$lastTime This is the time of the last packet.
+    * @param array &$prev     The previous records data
+    *
+    * @return null
+    */
+    private function _getPrev(&$lastTime, &$prev)
+    {
+        if (!is_array($prev) || empty($prev)) {
+            $raw = new RawHistoryTable();
+            $raw->sqlOrderBy = "Date DESC";
+            $raw->selectInto(
+                "`id` = ? AND `Date` < ?",
+                array($this->id, $this->Date)
+            );
+            $hist = $raw->toHistory(0);
+            $prev = $hist->raw;
+            if (empty($lastTime)) {
+                $lastTime = $hist->Date;
+            }
+        }
     }
     /******************************************************************
      ******************************************************************
