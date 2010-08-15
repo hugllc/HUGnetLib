@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interfaces
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,37 +35,39 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/../../../base/OutputContainer.php";
+
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This class keeps track of hooks that can be defined and used other places in the
+ * code to cause custom functions to happen.
  *
- * @category   Interfaces
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface OutputInterface
+class TestOutputContainer extends OutputContainer
 {
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function getOutputRow($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function getOutputHeader($cols = null);
+    /** These are the endpoint information bits */
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "a" => 1,
+        "b" => 2,
+        "c" => 3,
+        "d" => 4,
+    );
+    /** @var array This is the default column labels */
+    protected $labels = array(
+        "a" => "First Column",
+        "c" => "Third",
+        "d" => "Another Column",
+    );
+
 
 }
 ?>

@@ -25,7 +25,7 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interfaces
+ * @category   Misc
  * @package    HUGnetLib
  * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
@@ -35,21 +35,40 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
+
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This is a generic, extensible container class
  *
- * @category   Interfaces
+ * Classes can be added in so that their methods and properties can be used
+ * by this class and the reverse of that.  There can be a whole linked list
+ * of containers that extend eachother.
+ *
+ * @category   Misc
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface OutputInterface
+abstract class OutputContainer extends HUGnetContainer
+    implements OutputInterface
 {
+    /** @var array This is where the default labels are stored */
+    protected $labels = array();
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+    }
     /**
     * There should only be a single instance of this class
     *
@@ -57,7 +76,17 @@ interface OutputInterface
     *
     * @return array
     */
-    public function getOutputRow($cols = null);
+    public function getOutputRow($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            $cols = array_keys($this->default);
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            $ret[$col] = (string)$this->$col;
+        }
+        return $ret;
+    }
     /**
     * There should only be a single instance of this class
     *
@@ -65,7 +94,21 @@ interface OutputInterface
     *
     * @return array
     */
-    public function getOutputHeader($cols = null);
+    public function getOutputHeader($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            $cols = array_keys($this->default);
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            if (isset($this->labels[$col])) {
+                $ret[$col] = $this->labels[$col];
+            } else {
+                $ret[$col] = $col;
+            }
+        }
+        return $ret;
+    }
 
 }
 ?>

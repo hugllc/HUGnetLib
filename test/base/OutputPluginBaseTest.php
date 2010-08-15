@@ -40,6 +40,7 @@
 require_once dirname(__FILE__).'/../../containers/HistoryContainer.php';
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
 require_once dirname(__FILE__).'/../../base/OutputPluginBase.php';
+require_once dirname(__FILE__).'/../files/containers/TestOutputContainer.php';
 
 /**
  * Test class for filter.
@@ -72,8 +73,10 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
                 dirname(__FILE__)."/../files/plugins/"
             ),
         );
+        $this->output = new TestOutputContainer();
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->o = new OutputPluginBaseTestClass($this->output);
     }
 
     /**
