@@ -36,8 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/HUGnetContainer.php";
-require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
+require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 
 /**
  * This is a generic, extensible container class
@@ -55,60 +54,86 @@ require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class OutputContainer extends HUGnetContainer
-    implements OutputInterface
+class OutputContainer extends HUGnetContainer
 {
-    /** @var array This is where the default labels are stored */
-    protected $labels = array();
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "type" => "DEFAULT",
+        "iterate" => false,
+    );
+    /** @var object The data container class */
+    public $container = null;
+    
     /**
     * This is the constructor
     *
-    * @param mixed $data This is an array or string to create the object from
+    * @param mixed  $data       This is an array or string to create the object from
+    * @param object &$container the container to use for data
     */
-    function __construct($data="")
+    function __construct($data="", &$container=null)
     {
+        $this->setContainer($container);
+        // Setup our configuration
+        $this->myConfig = &ConfigContainer::singleton();
         parent::__construct($data);
     }
     /**
-    * There should only be a single instance of this class
+    * This is the constructor
     *
-    * @param array $cols The columns to get
-    *
-    * @return array
+    * @param mixed  $data       This is an array or string to create the object from
+    * @param object &$container the container to use for data
     */
-    public function getOutputRow($cols = null)
+    public function setContainer(&$container)
     {
-        if (!is_array($cols) || empty($cols)) {
-            $cols = array_keys($this->default);
-        }
-        $ret = array();
-        foreach ($cols as $col) {
-            $ret[$col] = (string)$this->$col;
-        }
-        return $ret;
+        $this->container = $container;
     }
     /**
-    * There should only be a single instance of this class
+    * Sets all of the endpoint attributes from an array
     *
-    * @param array $cols The columns to get
+    * @param bool $default Return items set to their default?
     *
-    * @return array
+    * @return null
     */
-    public function getOutputHeader($cols = null)
+    public function toArray($default = true)
     {
-        if (!is_array($cols) || empty($cols)) {
-            $cols = array_keys($this->default);
+        if (!is_a($this->container, "OutputInterface")) {
+            return array();
         }
-        $ret = array();
-        foreach ($cols as $col) {
-            if (isset($this->labels[$col])) {
-                $ret[$col] = $this->labels[$col];
-            } else {
-                $ret[$col] = $col;
-            }
-        }
-        return $ret;
+        return $this->container->toOutput();
     }
-
+    
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toString($default = true)
+    {
+        if (!is_a($this->container, "OutputInterface")) {
+            return "";
+        }
+        $class = $this->getPlugin();
+        $this->throwException("No default 'output' plugin found", -6, empty($class));
+        $out = new $class($this->toArray());
+        return $out->toString();
+    }
+    /**
+    * Creates a sensor object
+    *
+    * @param int    $id   The ID for the sensor to use
+    * @param string $type The type to check
+    *
+    * @return string The class for this sensor
+    */
+    protected function getPlugin()
+    {
+        $this->myConfig->plugins->verbose(10);
+        $driver = $this->myConfig->plugins->getPlugin(
+            "output", $this->type
+        );
+        return $driver["Class"];
+    }
 }
 ?>

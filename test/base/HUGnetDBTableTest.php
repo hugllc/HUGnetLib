@@ -806,6 +806,18 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                     "id" => 10,
                     "name" => "This is a name",
+                    "value" => null,
+                ),
+                array(
+                    "id" => 10,
+                    "name" => "This is a name",
+                    "value" => 12.0,
+                ),
+            ),
+            array(
+                array(
+                    "id" => 10,
+                    "name" => "This is a name",
                     "value" => new HUGnetDBTableTestStub(),
                 ),
                 array(
@@ -1020,6 +1032,123 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             $this->readAttribute($this->o, "data")
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "id"    => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => "0",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "id"    => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => "0",
+                ),
+            ),
+            array(
+                array(),
+                array("id", "myDate", "value"),
+                array(
+                    "id" => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "value" => "12",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutputHeader()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "id"    => "First Column",
+                    "myDate" => "Next One",
+                    "myOtherDate" => "Skipped One",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "id"    => "First Column",
+                    "myDate" => "Next One",
+                    "myOtherDate" => "Skipped One",
+                ),
+            ),
+            array(
+                array(),
+                array("myOtherDate","myDate", "fluff"),
+                array(
+                    "myOtherDate" => "Skipped One",
+                    "myDate" => "Next One",
+                    "fluff" => "fluff",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutputHeader
+    */
+    public function testToOutputHeader($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutputHeader($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 
@@ -1107,6 +1236,13 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
         "id" => 5,
         "myDate" => "1970-01-01 00:00:00",
         "myOtherDate" => 0,
+    );
+    /** These are the endpoint information bits */
+    /** @var array This is the labels for the data */
+    protected $labels = array(
+        "id" => "First Column",
+        "myDate" => "Next One",
+        "myOtherDate" => "Skipped One",
     );
     /**
     * function to set To

@@ -260,11 +260,32 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
+    * @expectedException Exception
+    */
+    public function testThrowException2()
+    {
+        $this->o->throwExceptionTest("Hello", -5, true);
+    }
+    /**
+    * test
+    *
+    * @return null
+    *
     */
     public function testThrowExceptionNot()
     {
         $this->o->config["silent"] = true;
         $this->o->throwExceptionTest("Not Happening", -5);
+    }
+    /**
+    * test
+    *
+    * @return null
+    *
+    */
+    public function testThrowExceptionNot2()
+    {
+        $this->o->throwExceptionTest("Not Happening", -5, false);
     }
     /**
     * Test the myConfigSetup routine
@@ -491,14 +512,15 @@ class HUGnetClassTestStub extends HUGnetClass
     /**
     * Throws an exception
     *
-    * @param string $msg  The message
-    * @param int    $code The error code
+    * @param string $msg       The message
+    * @param int    $code      The error code
+    * @param bool   $condition Throw exception on true.  Ignore on false
     *
     * @return null
     */
-    public function throwExceptionTest($msg, $code)
+    public function throwExceptionTest($msg, $code, $condition = true)
     {
-        $this->throwException($msg, $code);
+        $this->throwException($msg, $code, $condition);
     }
 
 }

@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../base/OutputContainer.php";
+require_once dirname(__FILE__)."/../../../base/HUGnetDBTable.php";
 
 /**
  * This class keeps track of hooks that can be defined and used other places in the
@@ -51,11 +51,12 @@ require_once dirname(__FILE__)."/../../../base/OutputContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestOutputContainer extends OutputContainer
+class TestOutputContainer extends HUGnetDBTable
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
+        "group" => "default",
         "a" => 1,
         "b" => 2,
         "c" => 3,

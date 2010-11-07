@@ -91,16 +91,6 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    * @expectedException Exception
-    */
-    public function testConstructorException()
-    {
-        $o = new OutputPluginBaseTestClass($data);
-    }
 
     /**
     * data provider for testDeviceID

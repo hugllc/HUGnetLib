@@ -174,18 +174,23 @@ abstract class HUGnetClass
     /**
     * Throws an exception
     *
-    * @param string $msg  The message
-    * @param int    $code The error code
+    * @param string $msg       The message
+    * @param int    $code      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
     *
     * @return null
     */
-    protected function throwException($msg, $code)
+    protected function throwException($msg, $code, $condition = true)
     {
         if (is_object($this) && ($this->config["silent"])) {
             return;
         }
-
-        throw new Exception($msg, $code);
+        if ((boolean)$condition) {
+            throw new Exception($msg, $code);
+            // @codeCoverageIgnoreStart
+            // This will never run.
+        }
     }
 
     /**

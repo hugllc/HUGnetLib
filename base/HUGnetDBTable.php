@@ -39,6 +39,7 @@
 require_once dirname(__FILE__)."/HUGnetClass.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
 /**
  * Base class for all database work
  *
@@ -57,6 +58,7 @@ require_once dirname(__FILE__)."/HUGnetContainer.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class HUGnetDBTable extends HUGnetContainer
+    implements OutputInterface
 {
     /** @var int This is where we store the limit */
     public $sqlLimit = 0;
@@ -455,6 +457,54 @@ abstract class HUGnetDBTable extends HUGnetContainer
             return 0;
         }
         return (int)$date->format("U");
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            if (empty($this->labels)) {
+                $cols = array_keys($this->default);
+            } else {
+                $cols = array_keys($this->labels);
+            }
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            $ret[$col] = (string)$this->$col;
+        }
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutputHeader($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            if (empty($this->labels)) {
+                $cols = array_keys($this->default);
+            } else {
+                $cols = array_keys($this->labels);
+            }
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            if (isset($this->labels[$col])) {
+                $ret[$col] = $this->labels[$col];
+            } else {
+                $ret[$col] = $col;
+            }
+        }
+        return $ret;
     }
 }
 

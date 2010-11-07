@@ -36,8 +36,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/HUGnetClass.php";
-require_once dirname(__FILE__)."/../interfaces/OutputPluginInterface.php";
+require_once dirname(__FILE__)."/../../../../base/OutputPluginBase.php";
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,21 +53,26 @@ require_once dirname(__FILE__)."/../interfaces/OutputPluginInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInterface
+class Test1Output extends OutputPluginBase
 {
     /** @var This is to register the class */
-    public $output = array();
+    public static $registerPlugin = array(
+        "Name" => "Test1Output",
+        "Type" => "output",
+        "Class" => "Test1Output",
+        "Flags" => array("DEFAULT"),
+    );
 
     /**
-    * Disconnects from the database
+    * Returns the object as a string
     *
-    * @param array $output The array to output
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
     */
-    public function __construct(&$output)
+    public function toString($default = true)
     {
-        $this->output = $output;
+        return print_r($this->output, true);
     }
-
-
 }
 ?>

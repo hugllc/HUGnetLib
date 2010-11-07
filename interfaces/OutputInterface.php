@@ -57,7 +57,7 @@ interface OutputInterface
     *
     * @return array
     */
-    public function getOutputRow($cols = null);
+    public function toOutput($cols = null);
     /**
     * There should only be a single instance of this class
     *
@@ -65,7 +65,7 @@ interface OutputInterface
     *
     * @return array
     */
-    public function getOutputHeader($cols = null);
+    public function toOutputHeader($cols = null);
 
 }
 ?>

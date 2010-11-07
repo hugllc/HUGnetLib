@@ -286,6 +286,14 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'output' => array(
+                        "DEFAULT" => array(
+                            "Name" => "Test1Output",
+                            "Type" => "output",
+                            "Class" => "Test1Output",
+                            "Flags" => array("DEFAULT"),
+                        ),
+                    ),
                     'periodic' => array (
                         'testPeriodic' => array (
                             'Name' => 'testPeriodic',
