@@ -74,5 +74,25 @@ class Test1Output extends OutputPluginBase
     {
         return print_r($this->output, true);
     }
+
+    /**
+    * This function implements the output before the data
+    *
+    * @return String the text to output
+    */
+    public function pre()
+    {
+        return "pre";
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function post()
+    {
+        return "post";
+    }
+
 }
 ?>

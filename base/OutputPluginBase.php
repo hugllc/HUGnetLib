@@ -62,9 +62,64 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     *
     * @param array $output The array to output
     */
-    public function __construct(&$output)
+    public function __construct(&$output = null)
     {
-        $this->output = $output;
+        $this->setOutput($output);
+    }
+    /**
+    * This function implements the output before the data
+    *
+    * @param array $output The array to output
+    * 
+    * @return String the text to output
+    */
+    protected function setOutput($output)
+    {
+        if (!is_null($output)) {
+            $this->output = $output;
+        }
+    }
+
+    /**
+    * This function implements the output before the data
+    *
+    * @param array $output The array to output
+    *
+    * @return String the text to output
+    */
+    public function row($output = null)
+    {
+        $this->setOutput($output);
+        return $this->toString();
+    }
+    /**
+    * This function implements the output before the data
+    *
+    * @return String the text to output
+    */
+    public function pre()
+    {
+        return "";
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function post()
+    {
+        return "";
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toString($default = true)
+    {
+        return print_r($this->output, true);
     }
 
 

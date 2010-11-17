@@ -37,6 +37,8 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../../base/HUGnetDBTable.php";
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
  * This class keeps track of hooks that can be defined and used other places in the
@@ -57,10 +59,10 @@ class TestOutputContainer extends HUGnetDBTable
     /** @var array This is the default values for the data */
     protected $default = array(
         "group" => "default",
-        "a" => 1,
-        "b" => 2,
-        "c" => 3,
-        "d" => 4,
+        "a" => null,
+        "b" => null,
+        "c" => null,
+        "d" => null,
     );
     /** @var array This is the default column labels */
     protected $labels = array(
@@ -68,7 +70,66 @@ class TestOutputContainer extends HUGnetDBTable
         "c" => "Third",
         "d" => "Another Column",
     );
+    /** @var array Array of data to use */
+    var $myData = array(
+        array(
+            "group" => "default",
+            "a" => 1,
+            "b" => 2,
+            "c" => 3,
+            "d" => 4,
+        ),
+        array(
+            "group" => "default",
+            "a" => 4,
+            "b" => 3,
+            "c" => 2,
+            "d" => 1,
+        ),
 
+    );
+    /** @var int Index for where in the data array we are */
+    protected $index = 0;
+    /**
+    * This is the constructor
+    *
+    * @param mixed $data This is an array or string to create the object from
+    */
+    function __construct($data="")
+    {
+        parent::__construct($data);
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $array This is an array of this class's attributes
+    *
+    * @return null
+    */
+    public function loadData($array)
+    {
+
+        if (!is_array($array[0])) {
+            $array = array($array);
+        }
+        $this->myData = $array;
+        $this->nextInto();
+    }
+    /**
+    * This puts the next result into the object
+    *
+    * @return bool True on success, False on failure
+    */
+    public function nextInto()
+    {
+        if (is_array($this->myData[$this->index])) {
+            $this->fromArray($this->myData[$this->index]);
+            $this->index++;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 ?>

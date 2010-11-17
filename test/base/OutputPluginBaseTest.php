@@ -100,6 +100,12 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
+            array(
+                array("1" => "2"),
+                array(
+                    "output" => array("1" => "2"),
+                ),
+            ),
         );
     }
 
@@ -119,38 +125,62 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
         foreach ((array)$expect as $key => $value) {
             $this->assertAttributeSame($value, $key, $o);
         }
-        $this->assertAttributeSame($expect, "original", $o);
     }
     /**
      * Data provider for testConvertTo
      *
      * @return array
      */
-    public static function dataConverTo()
+    public static function dataRow()
     {
         return array(
+            array(
+                array(),
+                array("1" => "2"),
+                "Array\n(\n    [1] => 2\n)\n",
+            ),
+            array(
+                array("1" => "2"),
+                null,
+                "Array\n(\n    [1] => 2\n)\n",
+            ),
         );
     }
     /**
-    * test CtoF()
+    * test Row()
     *
-    * @param array  $preload the stuff to preload into the datapoint
-    * @param string $units   The units to convert to
-    * @param mixed  $expect  The value to expect
-    * @param string $eUnits  The units to expect
-    * @param bool   $return  The expected return value
+    * @param array  $preload the stuff to preload into the plugin
+    * @param array  $output  The output to load into the plugin
+    * @param string $expect  The value to expect
     *
     * @return null
     *
-    * @dataProvider dataConverTo
+    * @dataProvider dataRow
     */
-    public function testConvertTo($preload, $units, $expect, $eUnits, $return)
+    public function testRow($preload, $output, $expect)
     {
         $this->o = new OutputPluginBaseTestClass($preload);
-        $ret = $this->o->convertTo($units);
-        $this->assertAttributeEquals($expect, "value", $this->o, "Value Wrong");
-        $this->assertAttributeEquals($eUnits, "units", $this->o, "Units Wrong");
-        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertSame($expect, $this->o->row($output));
+    }
+
+    /**
+    * test Pre()
+    *
+    * @return null
+    */
+    public function testPre()
+    {
+        $this->assertSame("", $this->o->pre());
+    }
+
+    /**
+    * test Row()
+    *
+    * @return null
+    */
+    public function testPost()
+    {
+        $this->assertSame("", $this->o->post());
     }
 
 }

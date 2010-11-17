@@ -59,7 +59,7 @@ class OutputContainer extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "type" => "DEFAULT",
-        "iterate" => false,
+        "iterate" => true,
     );
     /** @var object The data container class */
     public $container = null;
@@ -116,8 +116,13 @@ class OutputContainer extends HUGnetContainer
         }
         $class = $this->getPlugin();
         $this->throwException("No default 'output' plugin found", -6, empty($class));
-        $out = new $class($this->toArray());
-        return $out->toString();
+        $out = new $class();
+        $ret = $out->pre();
+        do {
+            $ret .= $out->row($this->toArray());
+        } while ($this->iterate && $this->container->nextInto());
+        $ret .= $out->post();
+        return $ret;
     }
     /**
     * Creates a sensor object

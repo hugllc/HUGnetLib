@@ -50,6 +50,34 @@
  */
 interface OutputPluginInterface
 {
+    /**
+    * This function implements the output before the data
+    *
+    * @return String the text to output
+    */
+    public function pre();
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function post();
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toString($default = true);
+    /**
+    * This function implements the output before the data
+    *
+    * @param array $output The array to output
+    *
+    * @return String the text to output
+    */
+    public function row($output = null);
 
 }
 ?>

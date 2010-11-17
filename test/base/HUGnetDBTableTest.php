@@ -1096,6 +1096,74 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
+    public static function dataToOutput2()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id"    => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => "0",
+                    "name" => "Name",
+                    "value" => "12",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id"    => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => "0",
+                    "name" => "Name",
+                    "value" => "12",
+                ),
+            ),
+            array(
+                array(),
+                array("id", "myDate", "value"),
+                array(
+                    "id" => "5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "value" => "12",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput2
+    */
+    public function testToOutput2($preload, $cols, $expect)
+    {
+        $o = new HUGnetDBTableTestStub2($preload);
+        $ret = $o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
     public static function dataToOutputHeader()
     {
         return array(
@@ -1144,6 +1212,75 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->o->clearData();
         $this->o->fromAny($preload);
         $ret = $this->o->toOutputHeader($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutputHeader2()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "group" => "group",
+                    "fluff" => "fluff",
+                    "other" => "other",
+                    "id" => "id",
+                    "myDate" => "myDate",
+                    "myOtherDate" => "myOtherDate",
+                    "name" => "name",
+                    "value" => "value",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "group" => "group",
+                    "fluff" => "fluff",
+                    "other" => "other",
+                    "id" => "id",
+                    "myDate" => "myDate",
+                    "myOtherDate" => "myOtherDate",
+                    "name" => "name",
+                    "value" => "value",
+                ),
+            ),
+            array(
+                array(),
+                array("myOtherDate","myDate", "fluff"),
+                array(
+                    "myOtherDate" => "myOtherDate",
+                    "myDate" => "myDate",
+                    "fluff" => "fluff",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutputHeader2
+    */
+    public function testToOutputHeader2($preload, $cols, $expect)
+    {
+        
+        $o = new HUGnetDBTableTestStub2($preload);
+        $ret = $o->toOutputHeader($cols);
         $this->assertSame(
             $expect,
             $ret
@@ -1243,6 +1380,115 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
         "id" => "First Column",
         "myDate" => "Next One",
         "myOtherDate" => "Skipped One",
+    );
+    /**
+    * function to set To
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setMyDate($value)
+    {
+        $this->data["myDate"] = self::sqlDate($value);
+    }
+    /**
+    * function to set To
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setMyOtherDate($value)
+    {
+        $this->data["myOtherDate"] = self::unixDate($value);
+    }
+
+}
+/**
+ * Test class for HUGnetDB.
+ * Generated by PHPUnit on 2007-12-13 at 10:28:11.
+ *
+ * @category   Test
+ * @package    HUGnetLibTest
+ * @subpackage Database
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class HUGnetDBTableTestStub2 extends HUGnetDBTable
+{
+    /** @var string This is the table we should use */
+    public $sqlTable = "myTable";
+    /** @var string This is the primary key of the table.  Leave blank if none  */
+    public $sqlId = "id";
+    /**
+    * @var array This is the definition of the columns
+    *
+    * This should consist of the following structure:
+    * array(
+    *   "name" => array(
+    *       "Name"          => string The name of the column
+    *       "Type"          => string The type of the column
+    *       "Default"       => mixed  The default value for the column
+    *       "Null"          => bool   true if null is allowed, false otherwise
+    *       "AutoIncrement" => bool   true if the column is auto_increment
+    *       "CharSet"       => string the character set if the column is text or char
+    *       "Collate"       => string colation if the table is text or char
+    *       "Primary"       => bool   If we are a primary Key.
+    *       "Unique"        => bool   If we are a unique column.
+    *   ),
+    *   "name2" => array(
+    *   .
+    *   .
+    *   .
+    * );
+    *
+    * Not all fields have to be filled in.  Name and Type are the only required
+    * fields.  The index of the base array should be the same as the "Name" field.
+    */
+    public $sqlColumns = array(
+        "id" => array(
+            "Name" => "id",
+            "Type" => "INTEGER",
+            "Default" => 0,
+            "AutoIncrement" => true,
+        ),
+        "name" => array("Name" => "name", "Type" => "varchar", "Default" => "Name"),
+        "value" => array("Name" => "value", "Type" => "float", "Default" => 12.0),
+    );
+    /**
+    * @var array This is the definition of the indexes
+    *
+    *   array(
+    *       "Name" => array (
+    *           "Name"    => string The name of the index
+    *           "Unique"  => bool   Create a Unique index
+    *           "Columns" => array  Array of column names
+    *       ),
+    *       "name2" => array(
+    *       .
+    *       .
+    *   ),
+    */
+    public $sqlIndexes = array(
+        "stuff" => array(
+            "Name" => "stuff",
+            "Unique" => true,
+            "Columns" => array("id", "value"),
+        ),
+    );
+
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "group" => "default",
+        "fluff" => "nStuff",
+        "other" => "things",
+        "id" => 5,
+        "myDate" => "1970-01-01 00:00:00",
+        "myOtherDate" => 0,
     );
     /**
     * function to set To

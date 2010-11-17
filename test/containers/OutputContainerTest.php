@@ -100,25 +100,62 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                array(),
-                "Array
+                array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                "preArray
 (
     [a] => 1
     [c] => 3
     [d] => 4
 )
-"
+post"
             ),
             array(
                 array(),
                 array("a" => 3, "c" => 8, "d" => 9),
-                "Array
+                "preArray
 (
     [a] => 3
     [c] => 8
     [d] => 9
 )
-"
+post"
+            ),
+            array(
+                array(
+                ),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                "preArray
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+Array
+(
+    [a] => 3
+    [c] => 8
+    [d] => 9
+)
+post"
+            ),
+            array(
+                array(
+                    "iterate" => false,
+                ),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                "preArray
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+post"
             ),
         );
     }
@@ -138,7 +175,7 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->cont->clearData();
-        $this->cont->fromAny($container);
+        $this->cont->loadData($container);
         $ret = $this->o->toString();
         $this->assertSame(
             $expect,
@@ -171,7 +208,7 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
-                array(),
+                array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 array("a" => "1", "c" => "3", "d" => "4")
             ),
             array(
@@ -197,7 +234,7 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->cont->clearData();
-        $this->cont->fromAny($container);
+        $this->cont->loadData($container);
         $ret = $this->o->toArray();
         $this->assertSame(
             $expect,
