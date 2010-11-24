@@ -198,10 +198,6 @@ abstract class HUGnetDBTable extends HUGnetContainer
             } else {
                 $array[$col["Name"]] = $this->$key;
             }
-            // This makes sure that it is not null if there is a default
-            if (is_null($array[$col["Name"]])) {
-                $array[$col["Name"]] = $col["Default"];
-            }
         }
         return (array)$array;
     }
@@ -218,6 +214,39 @@ abstract class HUGnetDBTable extends HUGnetContainer
         foreach (array_keys((array)$this->sqlColumns) as $key => $col) {
             $this->$col = trim($values[$key]);
         }
+    }
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int   $start The start of the time
+    * @param int   $end   The end of the time
+    * @param mixed $id    The ID to use.  None if null
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getPeriod($start, $end = null, $id = null)
+    {
+        // If date field doesn't exist return
+        if (empty($this->dateField)) {
+            return false;
+        }
+        // Make sure the start and end dates are in the correct form
+        $start = $this->unixDate($start);
+        if (empty($end)) {
+            $end = $start;
+        }
+        $end = $this->unixDate($end);
+        // Set up the where and data fields
+        $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
+        $data = array($start, $end);
+        if (!is_null($id)) {
+            $where .= " AND `".$this->sqlId."` = ?";
+            $data[] = $id;
+        }
+        return $this->selectInto(
+            $where,
+            $data
+        );
     }
     /**
     * This function gets a record with the given key

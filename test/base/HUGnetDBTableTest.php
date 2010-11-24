@@ -90,6 +90,14 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             ." `value` float NULL"
             ." )"
         );
+        $this->pdo->query(
+            "CREATE TABLE `myTable2` ("
+            ." `id` INTEGER NOT NULL,"
+            ." `name` varchar(32) NOT NULL,"
+            ." `value` float NULL,"
+            ." `myOtherDate` int NOT NULL default 0"
+            ." )"
+        );
         parent::setUp();
         $this->o = new HUGnetDBTableTestStub();
     }
@@ -131,7 +139,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            dirname(__FILE__).'/../files/HUGnetDBDriverTest.xml'
+            dirname(__FILE__).'/../files/HUGnetDBTableTest.xml'
         );
     }
     /**
@@ -255,6 +263,167 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         } else {
             $this->assertNull($ret);
         }
+    }
+    /**
+    * Data provider for testGetPeriod
+    *
+    * @return array
+    */
+    public static function dataGetPeriod()
+    {
+        return array(
+            array(
+                array(
+                ),
+                3,
+                6,
+                32,
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 4,
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                5,
+                6,
+                32,
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+            ),
+            array(
+                array(
+                ),
+                5,
+                null,
+                32,
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 5,
+                        "name" => "A way up here thing",
+                        "value" => "24.0",
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetPeriod
+    *
+    * @return null
+    */
+    public function testGetPeriod($preload, $start, $end, $key, $expect)
+    {
+        $o = new HUGnetDBTableTestStub2($preload);
+        $ret = $o->getPeriod($start, $end, $key);
+        if ($ret !== false) {
+            $ret = array();
+            do {
+                $ret[] = $o->toArray();
+            } while ($o->nextInto());
+        }
+        $this->assertSame($expect, $ret);
+    }
+    /**
+    * Data provider for testGetPeriod2
+    *
+    * @return array
+    */
+    public static function dataGetPeriod2()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1,
+                3,
+                2,
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param mixed $key     The key to use
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetPeriod2
+    *
+    * @return null
+    */
+    public function testGetPeriod2($preload, $start, $end, $key, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $ret = $o->getPeriod($start, $end, $key);
+        if ($ret !== false) {
+            $ret = array();
+            do {
+                $ret[] = $o->toArray();
+            } while ($o->nextInto());
+        }
+        $this->assertSame($expect, $ret);
     }
     /**
     * Tests for verbosity
@@ -823,12 +992,12 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                     "id" => 10,
                     "name" => "This is a name",
-                    "value" => "YTo4OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToi"
-                        ."Zmx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW"
-                        ."5ncyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwL"
-                        ."TAxLTAxIDAwOjAwOjAwIjtzOjExOiJteU90aGVyRGF0ZSI7aTowO3M6"
-                        ."NDoibmFtZSI7czo0OiJOYW1lIjtzOjU6InZhbHVlIjtkOjEyO30=",
-                ),
+                    "value" => "YTo4OntzOjU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NToiZ"
+                        ."mx1ZmYiO3M6NjoiblN0dWZmIjtzOjU6Im90aGVyIjtzOjY6InRoaW5n"
+                        ."cyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwLTA"
+                        ."xLTAxIDAwOjAwOjAwIjtzOjExOiJteU90aGVyRGF0ZSI7aTowO3M6ND"
+                        ."oibmFtZSI7czo0OiJOYW1lIjtzOjU6InZhbHVlIjtkOjEyO30=",
+             ),
             ),
         );
     }
@@ -874,6 +1043,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => 0,
                     "name" => "Name",
                     "value" => 12.0,
+                    "myOtherDate" => 0,
                 ),
             ),
             array(
@@ -890,6 +1060,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "id" => 6,
                     "name" => "Obi-wan",
                     "value" => 325.0,
+                    "myOtherDate" => 0,
                 ),
                 array(
                     "group" => "default",
@@ -900,6 +1071,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => 0,
                     "name" => "Obi-wan",
                     "value" => 325.0,
+                    "myOtherDate" => 0,
                 ),
             ),
             array(
@@ -923,6 +1095,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => 0,
                     "name" => "Obi-wan",
                     "value" => 325.0,
+                    "myOtherDate" => 0,
                 ),
             ),
         );
@@ -995,7 +1168,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return array
     */
-    public static function dataFromArray()
+    public static function dataFromCSV()
     {
         return array(
             array(
@@ -1021,7 +1194,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     *
-    * @dataProvider dataFromArray
+    * @dataProvider dataFromCSV
     */
     public function testFromCSV($array, $expect)
     {
@@ -1111,6 +1284,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => "0",
                     "name" => "Name",
                     "value" => "12",
+                    "myOtherDate" => "0",
                 ),
             ),
             array(
@@ -1125,6 +1299,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => "0",
                     "name" => "Name",
                     "value" => "12",
+                    "myOtherDate" => "0",
                 ),
             ),
             array(
@@ -1238,6 +1413,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => "myOtherDate",
                     "name" => "name",
                     "value" => "value",
+                    "myOtherDate" => "myOtherDate",
                 ),
             ),
             array(
@@ -1252,6 +1428,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "myOtherDate" => "myOtherDate",
                     "name" => "name",
                     "value" => "value",
+                    "myOtherDate" => "myOtherDate",
                 ),
             ),
             array(
@@ -1278,7 +1455,6 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testToOutputHeader2($preload, $cols, $expect)
     {
-        
         $o = new HUGnetDBTableTestStub2($preload);
         $ret = $o->toOutputHeader($cols);
         $this->assertSame(
@@ -1421,9 +1597,11 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
 class HUGnetDBTableTestStub2 extends HUGnetDBTable
 {
     /** @var string This is the table we should use */
-    public $sqlTable = "myTable";
+    public $sqlTable = "myTable2";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = "id";
+    /** @var string This is the date field of the table.  Leave blank if none  */
+    public $dateField = "myOtherDate";
     /**
     * @var array This is the definition of the columns
     *
@@ -1458,6 +1636,11 @@ class HUGnetDBTableTestStub2 extends HUGnetDBTable
         ),
         "name" => array("Name" => "name", "Type" => "varchar", "Default" => "Name"),
         "value" => array("Name" => "value", "Type" => "float", "Default" => 12.0),
+        "myOtherDate" => array(
+            "Name" => "myOtherDate",
+            "Type" => "int",
+            "Default" => 0
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -1477,7 +1660,7 @@ class HUGnetDBTableTestStub2 extends HUGnetDBTable
         "stuff" => array(
             "Name" => "stuff",
             "Unique" => true,
-            "Columns" => array("id", "value"),
+            "Columns" => array("id", "value", "myOtherDate"),
         ),
     );
 
