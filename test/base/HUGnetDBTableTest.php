@@ -1462,6 +1462,51 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataLabels()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "id"    => "First Column",
+                    "myDate" => "Next One",
+                    "myOtherDate" => "Skipped One",
+                ),
+            ),
+            array(
+                array(),
+                array("id", "myDate", "value"),
+                array("id", "myDate", "value"),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataLabels
+    */
+    public function testLabels($preload, $cols, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $ret = $o->labels($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

@@ -352,7 +352,29 @@ class DeviceContainer extends DevicesTable
     public function &historyFactory($data)
     {
         $class = $this->historyTable();
-        return new $class($data);
+        $obj = new $class($data);
+        $obj->labels($this->historyHeader());
+        return $obj;
+    }
+
+    /**
+    * returns the header for the history table
+    *
+    * @return array
+    */
+    public function historyHeader()
+    {
+        $ret = array("Date" => "Date");
+        for ($i = 0; $i < $this->sensors->Sensors; $i++) {
+            if ($this->sensors->sensor($i)->dataType != DataPointBase::TYPE_IGNORE) {
+                $loc = $this->sensors->sensor($i)->location;
+                if (empty($loc) && !is_numeric($loc)) {
+                    $loc = "Sensor ".($i+1);
+                }
+                $ret["Data".$i] = $loc;
+            }
+        }
+        return $ret;
     }
 
 

@@ -110,17 +110,6 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     {
         return "";
     }
-    /**
-    * Returns the object as a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return string
-    */
-    public function toString($default = true)
-    {
-        return print_r($this->output, true);
-    }
 
 
 }

@@ -127,6 +127,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    protected $labels = array(
+    );
 
     /**
     * This is the constructor
@@ -218,17 +220,21 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * Sets the extra attributes field
     *
-    * @param int   $start The start of the time
-    * @param int   $end   The end of the time
-    * @param mixed $id    The ID to use.  None if null
+    * @param int   $start    The start of the time
+    * @param int   $end      The end of the time
+    * @param mixed $id       The ID to use.  None if null
+    * @param string $idField The ID Field to use.  Table Primary id if left blank
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod($start, $end = null, $id = null)
+    public function getPeriod($start, $end = null, $id = null, $idField = null)
     {
         // If date field doesn't exist return
         if (empty($this->dateField)) {
             return false;
+        }
+        if (is_null($idField)) {
+            $idField = $this->sqlId;
         }
         // Make sure the start and end dates are in the correct form
         $start = $this->unixDate($start);
@@ -240,7 +246,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
         $data = array($start, $end);
         if (!is_null($id)) {
-            $where .= " AND `".$this->sqlId."` = ?";
+            $where .= " AND `".$idField."` = ?";
             $data[] = $id;
         }
         return $this->selectInto(
@@ -535,6 +541,21 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         return $ret;
     }
+    /**
+    * This sets the labels, or gets them if no argument
+    *
+    * @param array $cols The columns with their labels
+    *
+    * @return array
+    */
+    public function labels($cols = null)
+    {
+        if (is_array($cols)) {
+            $this->labels = $cols;
+        }
+        return $this->labels;
+    }
+
 }
 
 

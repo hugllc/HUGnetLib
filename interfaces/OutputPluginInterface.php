@@ -78,6 +78,14 @@ interface OutputPluginInterface
     * @return String the text to output
     */
     public function row($output = null);
+    /**
+    * Returns the object as a string
+    *
+    * @param array $array The array of header information.
+    *
+    * @return string
+    */
+    public function header($array = array());
 
 }
 ?>

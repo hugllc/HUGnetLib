@@ -103,6 +103,12 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 "preArray
 (
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
     [a] => 1
     [c] => 3
     [d] => 4
@@ -113,6 +119,12 @@ post"
                 array(),
                 array("a" => 3, "c" => 8, "d" => 9),
                 "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
 (
     [a] => 3
     [c] => 8
@@ -128,6 +140,12 @@ post"
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
                 "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
 (
     [a] => 1
     [c] => 3
@@ -150,6 +168,12 @@ post"
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
                 "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
 (
     [a] => 1
     [c] => 3

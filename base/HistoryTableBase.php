@@ -59,6 +59,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public $sqlTable = "";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
+    /** @var string This is the date field for the table.  Leave blank if none  */
+    public $dateField = "Date";
     /**
     * @var array This is the definition of the columns
     *

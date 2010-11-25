@@ -131,6 +131,53 @@ class HTMLListOutputTest extends OutputPluginTestBase
     }
 
     /**
+    * Data provider for testHeader
+    *
+    * @return array
+    */
+    public static function dataHeader()
+    {
+        return array(
+            array(
+                array(),
+                array("a" => "First"),
+                "    <tr>\n    </tr>\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array(),
+                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array("a" => "q"),
+                "    <tr>\n        <th>q</th>\n        <th>b</th>\n    </tr>\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array("a" => "0"),
+                "    <tr>\n        <th>0</th>\n        <th>b</th>\n    </tr>\n",
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the class
+    * @param mixed $array   The array to feed the header
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataHeader
+    *
+    * @return null
+    */
+    public function testHeader($preload, $array, $expect)
+    {
+        $o = new HTMLListOutput($preload);
+        $this->assertSame($expect, $o->header($array));
+    }
+
+    /**
     * Data provider for testPre
     *
     * @return array

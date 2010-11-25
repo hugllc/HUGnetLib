@@ -98,6 +98,27 @@ class HTMLListOutput extends OutputPluginBase
         $text = "</table>\n";
         return $text;
     }
+    /**
+    * Returns the object as a string
+    *
+    * @param array $array The array of header information.
+    *
+    * @return string
+    */
+    public function header($array = array())
+    {
+        $text  = "    <tr>\n";
+        foreach (array_keys((array)$this->output) as $key) {
+            if (empty($array[$key]) && !is_numeric($array[$key])) {
+                $val = $key;
+            } else {
+                $val = $array[$key];
+            }
+            $text .= "        <th>".$val."</th>\n";
+        }
+        $text  .= "    </tr>\n";
+        return $text;
+    }
 
 }
 ?>
