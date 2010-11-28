@@ -176,7 +176,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         } else {
             $vals["id"] = (int)$data;
         }
-        $good = $this->checkSensor($vals["id"], $vals["type"], $this->sensor($key));
+        $good = $this->checkSensor($vals["id"], $vals["type"], $this->sensor[$key]);
         if ($good && !$force) {
             $this->sensor($key)->fromArray($vals);
         } else {

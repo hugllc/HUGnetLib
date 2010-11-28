@@ -371,6 +371,9 @@ class DeviceContainer extends DevicesTable
                 if (empty($loc) && !is_numeric($loc)) {
                     $loc = "Sensor ".($i+1);
                 }
+                if (!empty($this->sensors->sensor($i)->units)) {
+                    $loc .= " (".$this->sensors->sensor($i)->units.")";
+                }
                 $ret["Data".$i] = $loc;
             }
         }

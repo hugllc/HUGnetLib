@@ -511,7 +511,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         $ret = array();
         foreach ($cols as $col) {
-            $ret[$col] = (string)$this->$col;
+            if ($col == $this->dateField) {
+                $ret[$col] = date($this->myConfig->dateFormat, $this->$col);
+            } else {
+                $ret[$col] = (string)$this->$col;
+            } 
         }
         return $ret;
     }

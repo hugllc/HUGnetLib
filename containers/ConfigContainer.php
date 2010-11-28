@@ -96,6 +96,7 @@ class ConfigContainer extends HUGnetContainer
         "PluginSkipDir"   => array(),
         "useSocket"       => "default",    // What kind of socket to use
         "verbose"         => 0,            // The verbosity level
+        "dateFormat"      => "Y-m-d H:i:s",
         "test"            => false,        // Test mode enabled.
     );
     /** @var array This is where the data is stored */

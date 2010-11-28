@@ -424,12 +424,34 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "Driver" => "e00392100",
                     "sensors" => array(
                         "Sensors" => 6,
-                        0 => array("id" => 2, "type" => "BCTherm2322640"),
-                        1 => array("id" => 2, "type" => "BCTherm2322640"),
-                        3 => array("id" => 2, "type" => "BCTherm2322640"),
-                        4 => array("id" => 2, "type" => "BCTherm2322640"),
-                        2 => array("id" => 2, "type" => "BCTherm2322640"),
-                        5 => array("id" => 2, "type" => "BCTherm2322640"),
+                        0 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        1 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
+                        2 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                        ),
+                        3 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        4 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
+                        5 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640"
+                        ),
                     ),
                     "params" => array(
                         "DriverInfo" => array(
@@ -485,11 +507,30 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "Driver" => "e00392100",
                     "sensors" => array(
                         "Sensors" => 6,
-                        0 => array("id" => 2, "type" => "BCTherm2322640"),
-                        1 => array("id" => 2, "type" => "BCTherm2322640"),
-                        3 => array("id" => 2, "type" => "BCTherm2322640"),
-                        4 => array("id" => 2, "type" => "BCTherm2322640"),
-                        2 => array("id" => 2, "type" => "BCTherm2322640"),
+                        0 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        1 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
+                        2 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                        ),
+                        3 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        4 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
                         5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),
                     "params" => array(
@@ -516,11 +557,30 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "Driver" => "e00392100",
                     "sensors" => array(
                         "Sensors" => 6,
-                        0 => array("id" => 2, "type" => "BCTherm2322640"),
-                        1 => array("id" => 2, "type" => "BCTherm2322640"),
-                        3 => array("id" => 2, "type" => "BCTherm2322640"),
-                        4 => array("id" => 2, "type" => "BCTherm2322640"),
-                        2 => array("id" => 2, "type" => "BCTherm2322640"),
+                        0 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        1 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
+                        2 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                        ),
+                        3 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "V"
+                        ),
+                        4 => array(
+                            "id" => 2,
+                            "type" => "BCTherm2322640",
+                            "units" => "mA"
+                        ),
                         5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),
                     "params" => array(

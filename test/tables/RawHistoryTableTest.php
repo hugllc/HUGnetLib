@@ -431,6 +431,15 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 1 => 7,
                             ),
                         ),
+                        2 => array(
+                            'id' => 2,
+                            'type' => 'BCTherm2322640',
+                            'location' => 'HUGnet 1 FET Temperature',
+                            'extra' => array(
+                                0 => 100,
+                                1 => 10,
+                            ),
+                        ),
                         3 => array(
                             'id' => 64,
                             'type' => 'Controller',
@@ -449,13 +458,14 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 1 => 7,
                             ),
                         ),
-                        2 => array(
-                            'id' => 0,
-                            'type' => 'BCTherm2322640',
-                        ),
                         5 => array(
-                            'id' => 0,
+                            'id' => 2,
                             'type' => 'BCTherm2322640',
+                            'location' => 'HUGnet 2 FET Temperature',
+                            'extra' => array(
+                                0 => 100,
+                                1 => 10,
+                            ),
                         ),
                     ),
                     'params' => array(

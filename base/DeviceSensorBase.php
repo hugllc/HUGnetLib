@@ -106,6 +106,12 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     public function __construct($data, &$device)
     {
+        if (empty($this->default["units"])) {
+            $this->default["units"] = $this->fixed["storageUnit"];
+        }
+        if (empty($data["units"])) {
+            unset($data["units"]);
+        }
         // Set up my device
         $this->myDevice = &$device;
         // Setup our configuration

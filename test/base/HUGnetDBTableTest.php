@@ -1281,10 +1281,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id"    => "5",
                     "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => "0",
+                    "myOtherDate" => "1969-12-31 18:00:00",
                     "name" => "Name",
                     "value" => "12",
-                    "myOtherDate" => "0",
                 ),
             ),
             array(
@@ -1296,10 +1295,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     "other" => "things",
                     "id"    => "5",
                     "myDate" => "1970-01-01 00:00:00",
-                    "myOtherDate" => "0",
+                    "myOtherDate" => "1969-12-31 18:00:00",
                     "name" => "Name",
                     "value" => "12",
-                    "myOtherDate" => "0",
                 ),
             ),
             array(
