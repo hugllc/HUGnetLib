@@ -117,46 +117,6 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-                    'datapoint' => array (
-                        'moreUnit' => array (
-                            'Name' => 'Test2DataPoint',
-                            'Type' => 'datapoint',
-                            'Class' => 'Test2DataPoint',
-                            'Flags' => array (
-                                0 => 'moreUnit',
-                                1 => 'DEFAULT',
-                            ),
-                        ),
-                        'DEFAULT' => array (
-                            'Name' => 'Test2DataPoint',
-                            'Type' => 'datapoint',
-                            'Class' => 'Test2DataPoint',
-                            'Flags' => array (
-                                0 => 'moreUnit',
-                                1 => 'DEFAULT',
-                            ),
-                        ),
-                        'firstUnit' => array (
-                            'Name' => 'TestDataPoint',
-                            'Type' => 'datapoint',
-                            'Class' => 'TestDataPoint',
-                            'Flags' =>
-                            array (
-                                0 => 'firstUnit',
-                                1 => 'testUnit',
-                            ),
-                        ),
-                        'testUnit' => array (
-                            'Name' => 'TestDataPoint',
-                            'Type' => 'datapoint',
-                            'Class' => 'TestDataPoint',
-                            'Flags' =>
-                            array (
-                                0 => 'firstUnit',
-                                1 => 'testUnit',
-                            ),
-                        ),
-                    ),
                     'deviceProcess' => array (
                         'DeviceProcessAnalysis' => array (
                             'Name' => 'DeviceProcessAnalysis',
@@ -376,6 +336,46 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
 
                         ),
 
+                    ),
+                    'Units' => array (
+                        'moreUnit' => array (
+                            'Name' => 'Test2Units',
+                            'Type' => 'Units',
+                            'Class' => 'Test2Units',
+                            'Flags' => array (
+                                0 => 'moreUnit',
+                                1 => 'DEFAULT',
+                            ),
+                        ),
+                        'DEFAULT' => array (
+                            'Name' => 'Test2Units',
+                            'Type' => 'Units',
+                            'Class' => 'Test2Units',
+                            'Flags' => array (
+                                0 => 'moreUnit',
+                                1 => 'DEFAULT',
+                            ),
+                        ),
+                        'firstUnit' => array (
+                            'Name' => 'TestUnits',
+                            'Type' => 'Units',
+                            'Class' => 'TestUnits',
+                            'Flags' =>
+                            array (
+                                0 => 'firstUnit',
+                                1 => 'testUnit',
+                            ),
+                        ),
+                        'testUnit' => array (
+                            'Name' => 'TestUnits',
+                            'Type' => 'Units',
+                            'Class' => 'TestUnits',
+                            'Flags' =>
+                            array (
+                                0 => 'firstUnit',
+                                1 => 'testUnit',
+                            ),
+                        ),
                     ),
                 ),
             ),

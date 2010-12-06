@@ -308,7 +308,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "GatewayIP" => "127.0.0.1",
                     "GatewayPort" => "80",
                 ),
-                devInfo::hexifyStr("GET\r\n"),
+                HUGnetClass::hexifyStr("GET\r\n"),
                 @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
                 50,
             ),
@@ -336,7 +336,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
         sleep(1);
         $read = $this->o->read($chars);
         if (is_string($expect)) {
-            $read = devInfo::dehexify($read);
+            $read = HUGnetClass::dehexify($read);
             //$this->assertFalse(is_bool(stristr($read, $expect)));
             $this->assertSame($expect, $read);
         } else {
@@ -434,7 +434,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     "GatewayIP" => "127.0.0.1",
                     "GatewayPort" => "80",
                 ),
-                devInfo::hexifyStr("GET\r\n"),
+                HUGnetClass::hexifyStr("GET\r\n"),
                 false,
                 new PacketContainer(array("Timeout" => 5)),
                 @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
@@ -467,7 +467,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
             $read = $this->readAttribute($this->o, "buffer");
             // Since we can't control the read length, we will make the strings
             // The same size.
-            $read = devInfo::dehexify($read);
+            $read = HUGnetClass::dehexify($read);
             $read = substr($read, 0, strlen($buffer));
             $buffer = substr($buffer, 0, strlen($read));
             $this->assertSame($buffer, $read);

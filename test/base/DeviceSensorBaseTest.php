@@ -73,6 +73,11 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                     "dummy" => true,
                 ),
             ),
+            "plugins" => array(
+                "dir" => realpath(
+                    dirname(__FILE__)."/../files/plugins/"
+                ),
+            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -108,7 +113,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                     "location" => "f",
                     "id" => 0,
                     "type" => "sensor",
-                    "units" => "q",
+                    "units" => "otherUnit",
                     "unitType" => "unknown",
                     "dataType" => "raw",
                     "extra" => array(),
@@ -196,34 +201,34 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataDataPoint()
+    public static function dataUnits()
     {
         return array(
             array(
                 array(
                 ),
                 1,
-                2,
-                5,
+                "d",
+                "c",
                 array(
                     "value" => 1,
-                    "units" => "unknown",
+                    "units" => "moreUnit",
                     "unitType" => "unknown",
-                    "dataType" => DataPointBase::TYPE_RAW,
+                    "dataType" => UnitsBase::TYPE_RAW,
                 ),
             ),
             array(
                 array(
-                    "dataType" => DataPointBase::TYPE_DIFF,
+                    "dataType" => UnitsBase::TYPE_DIFF,
                 ),
                 1,
                 2,
                 5,
                 array(
                     "value" => -4,
-                    "units" => "unknown",
+                    "units" => "moreUnit",
                     "unitType" => "unknown",
-                    "dataType" => DataPointBase::TYPE_DIFF,
+                    "dataType" => UnitsBase::TYPE_DIFF,
                     "raw" => 1,
                 ),
             ),
@@ -241,14 +246,78 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataDataPoint
+    * @dataProvider dataUnits
     */
-    public function testGetDataPoint($preload, $A, $deltaT, $prev, $expect)
+    public function testGetUnits($preload, $A, $deltaT, $prev, $expect)
     {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->getDataPoint($A, $deltaT, $prev));
+        $this->assertSame($expect, $this->o->getUnits($A, $deltaT, $prev));
     }
+    /**
+    * data provider for testConvertUnits
+    *
+    * @return array
+    */
+    public static function dataConvertUnits()
+    {
+        return array(
+            array(
+                array(
+                ),
+                12,
+                "moreUnit",
+                "otherUnit",
+                4,
+                true,
+            ),
+            array(
+                array(
+                ),
+                12,
+                "badUnit",
+                "otherUnit",
+                12,
+                false,
+            ),
+            array(
+                array(
+                ),
+                12,
+                null,
+                null,
+                36,
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $data    The value to send
+    * @param string $to      The units to convert to
+    * @param mixed  $from    The units to convert from
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataConvertUnits
+    */
+    public function testConvertUnits($preload, $data, $to, $from, $expect, $ret)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame(
+            $ret,
+            $this->o->convertUnits($data, $to, $from),
+            "The return value is wrong"
+        );
+        $this->assertSame($expect, $data, "Data is wrong");
+    }
+
+
     /**
     * data provider for testSet
     *
@@ -312,7 +381,7 @@ class TestDeviceSensor extends DeviceSensorBase
         "id" => 0,                      // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "sensor",                    // The type of the sensors
-        "units" => "q",                   // The units the values are stored in
+        "units" => "otherUnit",                   // The units the values are stored in
         "unitType" => "unknown",         // The type of units that this uses
         "dataType" => "raw",             // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
@@ -324,14 +393,14 @@ class TestDeviceSensor extends DeviceSensorBase
     protected $fixed = array(
         "longName" => "Unknown Sensor",
         "unitType" => "unknown",
-        "storageUnit" => 'unknown',
+        "storageUnit" => 'moreUnit',
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
     );
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b");
     /** @var object This is where we store our configuration */
-    protected $unitsValues = array("d");
+    protected $unitsValues = array("d", "otherUnit", "moreUnit");
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
     /**

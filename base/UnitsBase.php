@@ -36,9 +36,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
-// Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once dirname(__FILE__)."/HUGnetClass.php";
+require_once dirname(__FILE__)."/../interfaces/UnitsInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,66 +52,61 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test2Sensor extends DeviceSensorBase
+abstract class UnitsBase extends HUGnetClass implements UnitsInterface
 {
-    /** @var This is to register the class */
-    public static $registerPlugin = array(
-        "Name" => "Test2Sensor",
-        "Type" => "sensor",
-        "Class" => "Test2Sensor",
-        "Flags" => array("02","03:Hello","04","05"),
-    );
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "c", "e", "Test2Sensor", "Hello");
-    /** @var object This is where we store our configuration */
-    protected $idValues = array(2, 3, 4, 5);
-    /**
-    * This is the array of sensor information.
-    */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "secondUnit",
-        "storageUnit" => 'anotherUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
-    );
+    /** This is a raw record */
+    const TYPE_RAW = "raw";
+    /** This is a differential record */
+    const TYPE_DIFF = "diff";
+    /** This is a raw record */
+    const TYPE_IGNORE = "ignore";
+
+    /** @var The units of this point */
+    protected $to = "Unknown";
+    /** @var The type of this point */
+    protected $from = "Unknown";
+    /** @var The original values given to us */
+    protected $type = self::TYPE_RAW;
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
-    */
-    public function __construct($data, &$device)
-    {
-        $this->default["dataType"] = UnitsBase::TYPE_DIFF;
-        parent::__construct($data, $device);
-        if ($this->id == 3) {
-            $this->data["type"] = "Hello";
-        }
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
-    */
-    function getReading($A, $deltaT = 0)
-    {
-        return $A * 2;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
+    * @param array $data The data to start with
     *
     * @return null
     */
-    protected function setType($value)
+    public function __construct($data)
     {
-        $this->data["type"] = $value;
+        foreach (array("from", "to", "type") as $t) {
+            if (!empty($data[$t])) {
+                $this->$t = $data[$t];
+            }
+        }
+    }
+
+
+    /**
+    * Does the actual conversion
+    *
+    * @param mixed  &$data The data to convert
+    * @param string $to    The units to convert to
+    * @param string $from  The units to convert from
+    *
+    * @return mixed The value returned
+    */
+    public function convert(&$data, $to=null, $from=null)
+    {
+        if (!is_null($from)) {
+            $this->from = $from;
+        }
+        if (!is_null($to)) {
+            $this->to = $to;
+        }
+        if ($this->from == $this->to) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

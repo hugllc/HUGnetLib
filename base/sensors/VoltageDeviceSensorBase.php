@@ -58,7 +58,7 @@ abstract class VoltageDeviceSensorBase extends DeviceSensorBase
         "id" => null,                    // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "",                    // The type of the sensors
-        "dataType" => DataPointBase::TYPE_RAW,     // The datatype of each sensor
+        "dataType" => UnitsBase::TYPE_RAW,     // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "units" => "",                   // The units to put the data into by default
         "rawCalibration" => "",          // The raw calibration string

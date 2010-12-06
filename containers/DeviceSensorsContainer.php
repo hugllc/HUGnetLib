@@ -311,7 +311,7 @@ class DeviceSensorsContainer extends HUGnetContainer
             "deltaT" => $data["deltaT"],
         );
         for($i = 0; $i < $this->Sensors; $i++) {
-            $ret[$i] = $this->sensor($i)->getDataPoint(
+            $ret[$i] = $this->sensor($i)->getUnits(
                 $data[$i], $data["deltaT"], $prev[$i]
             );
         }

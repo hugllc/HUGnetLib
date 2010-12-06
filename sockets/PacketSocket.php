@@ -40,7 +40,7 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../tables/PacketSocketTable.php";
 require_once dirname(__FILE__)."/../interfaces/HUGnetSocketInterface.php";
-require_once dirname(__FILE__)."/../devInfo.php";
+//require_once dirname(__FILE__)."/../devInfo.php";
 
 /**
  * This class has functions that relate to the manipulation of elements

@@ -36,9 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
-// Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once dirname(__FILE__)."/../../base/UnitsBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,66 +51,26 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test2Sensor extends DeviceSensorBase
+class GenericUnits extends UnitsBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test2Sensor",
-        "Type" => "sensor",
-        "Class" => "Test2Sensor",
-        "Flags" => array("02","03:Hello","04","05"),
-    );
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "c", "e", "Test2Sensor", "Hello");
-    /** @var object This is where we store our configuration */
-    protected $idValues = array(2, 3, 4, 5);
-    /**
-    * This is the array of sensor information.
-    */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "secondUnit",
-        "storageUnit" => 'anotherUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
+        "Name" => "GenericUnits",
+        "Type" => "units",
+        "Class" => "GenericUnits",
+        "Flags" => array("DEFAULT"),
     );
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
-    */
-    public function __construct($data, &$device)
-    {
-        $this->default["dataType"] = UnitsBase::TYPE_DIFF;
-        parent::__construct($data, $device);
-        if ($this->id == 3) {
-            $this->data["type"] = "Hello";
-        }
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
-    */
-    function getReading($A, $deltaT = 0)
-    {
-        return $A * 2;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
+    * @param array $data The data to start with
     *
     * @return null
     */
-    protected function setType($value)
+    public function __construct($data)
     {
-        $this->data["type"] = $value;
+        parent::__construct($data);
     }
 
 }

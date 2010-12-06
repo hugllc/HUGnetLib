@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../base/DataPointBase.php';
+require_once dirname(__FILE__).'/../../base/UnitsBase.php';
 require_once dirname(__FILE__).'/../../containers/DeviceSensorsContainer.php';
 require_once dirname(__FILE__).'/../../containers/DeviceParamsContainer.php';
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
@@ -403,13 +403,13 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "units" => "anotherUnit",
                     ),
                     array(
                         "id" => 2,
                         "type" => "",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                         "units" => "testUnit",
                     ),
                 ),
@@ -433,7 +433,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0x10,
                         "type" => "multiInput",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "units" => "anotherUnit",
                     ),
                     array(
@@ -553,7 +553,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "units" => "anotherUnit",
                     ),
                     array(
@@ -583,13 +583,13 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0,
                         "type" => "Hello",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "units" => "anotherUnit",
                     ),
                     array(
                         "id" => 3,
                         "type" => "",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "rawCalibration" => "abcd",
                         "units" => "anotherUnit",
                     ),
@@ -749,20 +749,20 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "value" => 5,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     1 => array(
                         "value" => 30,
                         "units" => "anotherUnit",
                         "unitType" => "secondUnit",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "raw" => 40,
                     ),
                     2 => array(
                         "value" => 15,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                 ),
             ),

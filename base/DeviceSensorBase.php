@@ -37,7 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/HUGnetContainer.php";
-require_once dirname(__FILE__)."/DataPointBase.php";
+require_once dirname(__FILE__)."/UnitsBase.php";
 require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
 
 /**
@@ -57,11 +57,11 @@ abstract class DeviceSensorBase extends HUGnetContainer
     implements DeviceSensorInterface
 {
     /** This is a raw record */
-    const TYPE_RAW = DataPointBase::TYPE_RAW;
+    const TYPE_RAW = UnitsBase::TYPE_RAW;
     /** This is a differential record */
-    const TYPE_DIFF = DataPointBase::TYPE_DIFF;
+    const TYPE_DIFF = UnitsBase::TYPE_DIFF;
     /** This is a raw record */
-    const TYPE_IGNORE = DataPointBase::TYPE_IGNORE;
+    const TYPE_IGNORE = UnitsBase::TYPE_IGNORE;
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -69,7 +69,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
                                          // Stored in the device  It will be an int
         "type" => "",                    // The type of the sensors
         "location" => "",                // The location of the sensors
-        "dataType" => DataPointBase::TYPE_RAW,      // The datatype of each sensor
+        "dataType" => UnitsBase::TYPE_RAW,      // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "",          // The raw calibration string
         "units" => "",                   // The units to put the data into by default
@@ -85,13 +85,16 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "extraDefault" => array(),
     );
 
+    /** @var object This is where our unit conversion is stored */
+    protected $unitConvert = null;
+
     /** @var object This is the device I am attached to */
     protected $myDevice = null;
     /** @var object This is where we store our configuration */
     protected $myConfig = null;
     /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array(
-        DataPointBase::TYPE_RAW, DataPointBase::TYPE_DIFF, DataPointBase::TYPE_IGNORE
+        UnitsBase::TYPE_RAW, UnitsBase::TYPE_DIFF, UnitsBase::TYPE_IGNORE
     );
     /** @var object These are the valid values for unitType */
     protected $unitTypeValues = array();
@@ -161,7 +164,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     *
     * @return float The direction in degrees
     */
-    public function getDataPoint($A, $deltaT = 0, $prev = null)
+    public function getUnits($A, $deltaT = 0, $prev = null)
     {
         $val = $this->getReading($A, $deltaT);
         $ret = array(
@@ -170,11 +173,36 @@ abstract class DeviceSensorBase extends HUGnetContainer
             "unitType" => $this->unitType,
             "dataType" => $this->dataType,
         );
-        if ($this->dataType == DataPointBase::TYPE_DIFF) {
+        if ($this->dataType == UnitsBase::TYPE_DIFF) {
             $ret["raw"] = $val;
             $ret["value"] = ($val - $prev);
         }
         return $ret;
+    }
+    /**
+    * Converts data between units
+    *
+    * @param mixed  &$data The data to convert
+    * @param string $to    The units to convert to 
+    * @param string $from  The units to convert from
+    *
+    * @return true on success, false on failure
+    */
+    public function convertUnits(&$data, $to=null, $from=null)
+    {
+        $from = (empty($from)) ? $this->storageUnit : $from;
+        $to = (empty($to)) ? $this->units : $to;
+        if (empty($this->unitConvert)) {
+            $driver = $this->myConfig->plugins->getPlugin("Units", $this->unitType);
+            $class = $driver["Class"];
+            $d = array(
+                "to" => $to,
+                "from" => $from,
+                "type" => $this->dataType,
+            );
+            $this->unitConvert = new $class($d);
+        }
+        return $this->unitConvert->convert($data, $to, $from);
     }
     /******************************************************************
      ******************************************************************

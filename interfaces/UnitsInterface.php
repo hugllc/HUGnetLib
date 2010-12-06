@@ -1,10 +1,9 @@
 <?php
 /**
- * Main HUGnet include.  Include this file and you should get everything that
- * you need.
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2010 Hunt Utilities Group, LLC
@@ -22,12 +21,13 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Base
+ * @category   Misc
  * @package    HUGnetLib
- * @subpackage Base
+ * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2010 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,29 +35,32 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** The base path to all the files included for HUGnet */
-if (!defined("HUGNET_INCLUDE_PATH")) {
-    define("HUGNET_INCLUDE_PATH", dirname(__FILE__));
+/**
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
+ *
+ * @category   Containers
+ * @package    HUGnetLib
+ * @subpackage Database
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2010 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+interface UnitsInterface
+{
+
+    /**
+    * Does the actual conversion
+    *
+    * @param mixed  &$data The data to convert
+    * @param string $from  The units to convert from
+    * @param string $to    The units to convert to
+    *
+    * @return mixed The value returned
+    */
+    public function convert(&$data, $from, $to);
+
 }
-/** The directory Separator */
-if (!defined("DS")) {
-    /** The name of the default HUGnet Database */
-    define("DS", "/");
-}
-
-/** The version define for all of HUGnetLib */
-define(
-    "HUGNET_LIB_VERSION",
-    trim(file_get_contents(HUGNET_INCLUDE_PATH.DS."VERSION.TXT"))
-);
-/** This is for backward compatibility with some older stuff */
-define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
-
-if (!defined("HUGNET_DATABASE")) {
-    /** The name of the default HUGnet Database */
-    define("HUGNET_DATABASE", "HUGnet");
-}
-
-$temp_dir = sys_get_temp_dir();
-
 ?>

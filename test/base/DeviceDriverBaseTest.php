@@ -37,7 +37,7 @@
  */
 
 /** Include the stuff we need */
-require_once dirname(__FILE__).'/../../base/DataPointBase.php';
+require_once dirname(__FILE__).'/../../base/UnitsBase.php';
 require_once dirname(__FILE__).'/../../base/DeviceDriverBase.php';
 require_once dirname(__FILE__).'/../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
@@ -1297,7 +1297,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         1 => array(
                         ),
                         2 => array(
-                            "dataType" => DataPointBase::TYPE_DIFF,
+                            "dataType" => UnitsBase::TYPE_DIFF,
                         ),
                         3 => array(
                         ),
@@ -1317,38 +1317,38 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "value" => 1,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     1 => array(
                         "value" => 2,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     2 => array(
                         "value" => 2,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_DIFF,
+                        "dataType" => UnitsBase::TYPE_DIFF,
                         "raw" => 4,
                     ),
                     3 => array(
                         "value" => 8,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     4 => array(
                         "value" => 16,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     5 => array(
                         "value" => 32,
                         "units" => "testUnit",
                         "unitType" => "firstUnit",
-                        "dataType" => DataPointBase::TYPE_RAW,
+                        "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     "DataIndex" => 127,
                     "timeConstant" => 5,

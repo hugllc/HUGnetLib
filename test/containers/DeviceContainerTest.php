@@ -1632,7 +1632,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors" => array(
                         "Sensors" => 2,
                         0 => array(
-                            "dataType" => DataPointBase::TYPE_IGNORE,
+                            "dataType" => UnitsBase::TYPE_IGNORE,
                         ),
                         1 => array(
                             "location" => "Hello",

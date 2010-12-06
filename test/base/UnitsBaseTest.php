@@ -38,8 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
-require_once dirname(__FILE__).'/../../base/OutputPluginBase.php';
-require_once dirname(__FILE__).'/../files/containers/TestOutputContainer.php';
+require_once dirname(__FILE__).'/../../base/UnitsBase.php';
 
 /**
  * Test class for filter.
@@ -54,7 +53,7 @@ require_once dirname(__FILE__).'/../files/containers/TestOutputContainer.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
+class UnitsBaseTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -68,14 +67,14 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
-            "PluginDir" => realpath(
-                dirname(__FILE__)."/../files/plugins/"
+            "plugins" => array(
+                "dir" => realpath(
+                    dirname(__FILE__)."/../files/plugins/"
+                ),
             ),
         );
-        $this->output = new TestOutputContainer();
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new OutputPluginBaseTestClass($this->output);
     }
 
     /**
@@ -100,9 +99,15 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array("1" => "2"),
                 array(
-                    "output" => array("1" => "2"),
+                    "to" => "&deg;C",
+                    "from" => "&deg;C",
+                    "type" => UnitsBase::TYPE_RAW,
+                ),
+                array(
+                    "to" => "&deg;C",
+                    "from" => "&deg;C",
+                    "type" => UnitsBase::TYPE_RAW,
                 ),
             ),
         );
@@ -120,66 +125,90 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($data, $expect)
     {
-        $o = new OutputPluginBaseTestClass($data);
+        $o = new UnitsBaseTestClass($data);
         foreach ((array)$expect as $key => $value) {
             $this->assertAttributeSame($value, $key, $o);
         }
     }
+
     /**
-     * Data provider for testConvertTo
+     * Data provider for testConvert
      *
      * @return array
      */
-    public static function dataRow()
+    public static function dataConvert()
     {
         return array(
             array(
-                array(),
-                array("1" => "2"),
-                "Array\n(\n    [1] => 2\n)\n",
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                18,
+                "&#176;C",
+                "&#176;C",
+                18,
+                true,
             ),
             array(
-                array("1" => "2"),
+                array(
+                    "to" => "&#176;C",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                18,
+                "&#176;F",
+                "&#176;C",
+                18,
+                false,
+            ),
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                18,
                 null,
-                "Array\n(\n    [1] => 2\n)\n",
+                null,
+                18,
+                false,
+            ),
+            array(
+                array(
+                    "to" => "&#176;C",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                18,
+                null,
+                null,
+                18,
+                true,
             ),
         );
     }
     /**
-    * test Row()
+    * test CtoF()
     *
-    * @param array  $preload the stuff to preload into the plugin
-    * @param array  $output  The output to load into the plugin
-    * @param string $expect  The value to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataRow
-    */
-    public function testRow($preload, $output, $expect)
-    {
-        $this->o = new OutputPluginBaseTestClass($preload);
-        $this->assertSame($expect, $this->o->row($output));
-    }
-
-    /**
-    * test Pre()
+    * @param array  $preload the stuff to preload into the Units
+    * @param mixed  $data    The data to use
+    * @param string $from    The units to convert from
+    * @param string $to      The units to convert to
+    * @param mixed  $expect  The value to expect
+    * @param bool   $return  The expected return value
     *
     * @return null
-    */
-    public function testPre()
-    {
-        $this->assertSame("", $this->o->pre());
-    }
-
-    /**
-    * test Row()
     *
-    * @return null
+    * @dataProvider dataConvert
     */
-    public function testPost()
+    public function testConvert($preload, $data, $to, $from, $expect, $return)
     {
-        $this->assertSame("", $this->o->post());
+        $this->o = new UnitsBaseTestClass($preload);
+        $ret = $this->o->convert($data, $to, $from);
+        $this->assertSame($expect, $data, "The data is wrong");
+        $this->assertSame($return, $ret, "Return Wrong");
     }
 
 }
@@ -195,30 +224,7 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
 */
-class OutputPluginBaseTestClass extends OutputPluginBase
+class UnitsBaseTestClass extends UnitsBase
 {
-    /**
-    * Returns the object as a string
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return string
-    */
-    public function toString($default = true)
-    {
-        return print_r($this->output, true);
-    }
-
-    /**
-    * Returns the object as a string
-    *
-    * @param array $array The array of header information.
-    *
-    * @return string
-    */
-    public function header($array = array())
-    {
-        return print_r($array, true);
-    }
 }
 ?>

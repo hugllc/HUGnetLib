@@ -39,11 +39,11 @@
 require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../interfaces/HUGnetSocketInterface.php";
-require_once dirname(__FILE__)."/../devInfo.php";
+//require_once dirname(__FILE__)."/../HUGnetClass.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * of the HUGnetClass array.
  *
  * @category   Containers
  * @package    HUGnetLib
@@ -238,7 +238,7 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
             return false;
         }
         usleep(mt_rand(500, 10000));
-        $string = devInfo::dehexify($string);
+        $string = HUGnetClass::dehexify($string);
         $return = @fwrite($this->socket, $string);
         $this->vprint("Wrote: $return chars ($string) on ".$this->socket, 5);
         return($return);
@@ -275,10 +275,10 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
         }
         $this->vprint(
             "read: ".strlen($string)." chars on ".$this->socket
-            ." (".devInfo::hexifyStr($string).")",
+            ." (".HUGnetClass::hexifyStr($string).")",
             HUGnetClass::VPRINT_DEBUG
         );
-        return devInfo::hexifyStr($string);
+        return HUGnetClass::hexifyStr($string);
     }
 
     /**
