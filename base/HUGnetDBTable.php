@@ -237,11 +237,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
             $idField = $this->sqlId;
         }
         // Make sure the start and end dates are in the correct form
-        $start = $this->unixDate($start);
+        $start = self::unixDate($start);
         if (empty($end)) {
             $end = $start;
         }
-        $end = $this->unixDate($end);
+        $end = self::unixDate($end);
         // Set up the where and data fields
         $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
         $data = array($start, $end);
@@ -458,17 +458,18 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This routine takes any date and turns it into an SQL date
     *
-    * @param mixed $value The value to set
+    * @param mixed  $value The value to set
+    * @param string $TZ    The time zone to use.  Defaults to UTC
     *
     * @return null
     */
-    protected function sqlDate($value)
+    static public function sqlDate($value, $TZ = "UTC")
     {
         if (is_numeric($value)) {
             $value = date("Y-m-d H:i:s", (int)$value);
         }
         try {
-            $date = new DateTime($value, new DateTimeZone("UTC"));
+            $date = new DateTime($value, new DateTimeZone($TZ));
         } catch (exception $e) {
             return "1970-01-01 00:00:00";
         }
@@ -477,17 +478,18 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This routine takes any date and turns it into an SQL date
     *
-    * @param mixed $value The value to set
+    * @param mixed  $value The value to set
+    * @param string $TZ    The time zone to use.  Defaults to UTC
     *
     * @return null
     */
-    protected function unixDate($value)
+    static public function unixDate($value, $TZ = "UTC")
     {
         if (is_numeric($value)) {
             return (int)$value;
         }
         try {
-            $date = new DateTime($value, new DateTimeZone("UTC"));
+            $date = new DateTime($value, new DateTimeZone($TZ));
         } catch (exception $e) {
             return 0;
         }

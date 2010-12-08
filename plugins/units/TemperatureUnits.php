@@ -54,14 +54,14 @@ class TemperatureUnits extends UnitsBase
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "Temperature",
-        "Type" => "units",
+        "Type" => "Units",
         "Class" => "TemperatureUnits",
         "Flags" => array('Temperature'),
     );
     /** @var The units of this point */
-    protected $to = "&#176;F";
+    public $to = "&#176;F";
     /** @var The type of this point */
-    protected $from = "&#176;C";
+    public $from = "&#176;C";
 
     /**
     * Does the actual conversion

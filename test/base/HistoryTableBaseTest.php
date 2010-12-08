@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../base/HistoryTableBase.php';
+require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__)."/../tables/HUGnetDBTableTestBase.php";
 
 /**
@@ -628,6 +629,167 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
         $stmt = $this->pdo->query("SELECT * FROM `History`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 0,
+                    "Data1"  => 1,
+                    "Data2"  => 2,
+                    "Data3"  => 3,
+                    "Data4"  => 4,
+                    "Data5"  => 5,
+                    "Data6"  => 6,
+                    "Data7"  => 7,
+                    "Data8"  => 8,
+                    "Data9"  => 9,
+                    "Data10"  => 10,
+                    "Data11"  => 11,
+                    "Data12"  => 12,
+                    "Data13"  => 13,
+                    "Data14"  => 14,
+                ),
+                null,
+                null,
+                array(
+                    "group" => "default",
+                    "raw" => "Array",
+                    "id"  => "41",
+                    "Date"   => "2003-02-27 19:59:00",
+                    "deltaT"  => "5.2",
+                    "Data0"  => "0",
+                    "Data1"  => "1",
+                    "Data2"  => "2",
+                    "Data3"  => "3",
+                    "Data4"  => "4",
+                    "Data5"  => "5",
+                    "Data6"  => "6",
+                    "Data7"  => "7",
+                    "Data8"  => "8",
+                    "Data9"  => "9",
+                    "Data10"  => "10",
+                    "Data11"  => "11",
+                    "Data12"  => "12",
+                    "Data13"  => "13",
+                    "Data14"  => "14",
+                ),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 0,
+                    "Data1"  => 1,
+                    "Data2"  => 2,
+                    "Data3"  => 3,
+                    "Data4"  => 4,
+                    "Data5"  => 5,
+                    "Data6"  => 6,
+                    "Data7"  => 7,
+                    "Data8"  => 8,
+                    "Data9"  => 9,
+                    "Data10"  => 10,
+                    "Data11"  => 11,
+                    "Data12"  => 12,
+                    "Data13"  => 13,
+                    "Data14"  => 14,
+                ),
+                array(),
+                null,
+                array(
+                    "group" => "default",
+                    "raw" => "Array",
+                    "id"  => "41",
+                    "Date"   => "2003-02-27 19:59:00",
+                    "deltaT"  => "5.2",
+                    "Data0"  => "0",
+                    "Data1"  => "1",
+                    "Data2"  => "2",
+                    "Data3"  => "3",
+                    "Data4"  => "4",
+                    "Data5"  => "5",
+                    "Data6"  => "6",
+                    "Data7"  => "7",
+                    "Data8"  => "8",
+                    "Data9"  => "9",
+                    "Data10"  => "10",
+                    "Data11"  => "11",
+                    "Data12"  => "12",
+                    "Data13"  => "13",
+                    "Data14"  => "14",
+                ),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 0,
+                    "Data1"  => 1,
+                    "Data2"  => 2,
+                    "Data3"  => 3,
+                    "Data4"  => 4,
+                    "Data5"  => 5,
+                    "Data6"  => 6,
+                    "Data7"  => 7,
+                    "Data8"  => 8,
+                    "Data9"  => 9,
+                    "Data10"  => 10,
+                    "Data11"  => 11,
+                    "Data12"  => 12,
+                    "Data13"  => 13,
+                    "Data14"  => 14,
+
+                ),
+                array("id", "Date", "Data0", "Data1", "Data2"),
+                array(),
+                array(
+                    "id"  => "41",
+                    "Date"   => "2003-02-27 19:59:00",
+                    "Data0"  => "32",
+                    "Data1"  => "33.8",
+                    "Data2"  => "35.6",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param array  $device  The device to use.  None if null
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $cols, $device, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
     }
 }
 /**

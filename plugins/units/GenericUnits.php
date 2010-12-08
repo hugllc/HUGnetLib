@@ -56,7 +56,7 @@ class GenericUnits extends UnitsBase
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "GenericUnits",
-        "Type" => "units",
+        "Type" => "Units",
         "Class" => "GenericUnits",
         "Flags" => array("DEFAULT"),
     );

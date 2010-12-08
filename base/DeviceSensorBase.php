@@ -109,9 +109,6 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     public function __construct($data, &$device)
     {
-        if (empty($this->default["units"])) {
-            $this->default["units"] = $this->fixed["storageUnit"];
-        }
         if (empty($data["units"])) {
             unset($data["units"]);
         }
@@ -119,6 +116,15 @@ abstract class DeviceSensorBase extends HUGnetContainer
         $this->myDevice = &$device;
         // Setup our configuration
         $this->myConfig = &ConfigContainer::singleton();
+        // Set up the default units
+        if (empty($this->default["units"])) {
+            $this->setupUnits();
+            if (strtolower($this->unitConvert->to) == "unknown") {
+                $this->default["units"] = $this->storageUnit;
+            } else {
+                $this->default["units"] = $this->unitConvert->to;
+            }
+        }
         // Set up the class
         parent::__construct($data);
     }
@@ -154,7 +160,6 @@ abstract class DeviceSensorBase extends HUGnetContainer
             parent::toArray($default)
         );
     }
-
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
@@ -179,6 +184,34 @@ abstract class DeviceSensorBase extends HUGnetContainer
         }
         return $ret;
     }
+
+    /**
+    * Sets up the unit conversion
+    *
+    * @param string $to    The units to convert to
+    * @param string $from  The units to convert from
+    *
+    * @return true on success, false on failure
+    */
+    protected function setupUnits($to = null, $from = null)
+    {
+        if (empty($this->unitConvert)) {
+            $driver = $this->myConfig->plugins->getPlugin("Units", $this->unitType);
+            $class = $driver["Class"];
+            $d = array(
+                "to" => $to,
+                "from" => $from,
+                "type" => $this->dataType,
+            );
+            $this->throwException(
+                "No default unit class found",
+                -5,
+                !class_exists($class)
+            );
+            $this->unitConvert = new $class($d);
+        }
+
+    }
     /**
     * Converts data between units
     *
@@ -192,16 +225,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     {
         $from = (empty($from)) ? $this->storageUnit : $from;
         $to = (empty($to)) ? $this->units : $to;
-        if (empty($this->unitConvert)) {
-            $driver = $this->myConfig->plugins->getPlugin("Units", $this->unitType);
-            $class = $driver["Class"];
-            $d = array(
-                "to" => $to,
-                "from" => $from,
-                "type" => $this->dataType,
-            );
-            $this->unitConvert = new $class($d);
-        }
+        $this->setupUnits($to, $from);
         return $this->unitConvert->convert($data, $to, $from);
     }
     /******************************************************************

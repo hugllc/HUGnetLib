@@ -61,6 +61,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public $sqlId = null;
     /** @var string This is the date field for the table.  Leave blank if none  */
     public $dateField = "Date";
+    /** @var string The orderby clause for this table */
+    public $sqlOrderBy = "Date desc";
     /**
     * @var array This is the definition of the columns
     *
@@ -136,6 +138,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public $datacols = 15;
     /** @var This is the  raw data for differential mode */
     public $raw = array();
+    /** @var This is the  raw data for differential mode */
+    public $device = null;
 
     /**
     * This is the constructor
@@ -219,6 +223,25 @@ abstract class HistoryTableBase extends HUGnetDBTable
             );
         }
     }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        if (is_a($this->device, "DeviceContainer")) {
+            for ($i = 0; $i < $this->datacols; $i++) {
+                $col = "Data".$i;
+                $this->device->sensors->sensor($i)->convertUnits(
+                    $this->data[$col]
+                );
+            }
+        }
+        return parent::toOutput($cols);
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
@@ -233,7 +256,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     protected function setDate($value)
     {
-        $this->data["Date"] = $this->unixDate($value);
+        $this->data["Date"] = self::unixDate($value);
     }
     /**
     * function to set id

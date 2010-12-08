@@ -62,9 +62,9 @@ abstract class UnitsBase extends HUGnetClass implements UnitsInterface
     const TYPE_IGNORE = "ignore";
 
     /** @var The units of this point */
-    protected $to = "Unknown";
+    public $to = "Unknown";
     /** @var The type of this point */
-    protected $from = "Unknown";
+    public $from = "Unknown";
     /** @var The original values given to us */
     protected $type = self::TYPE_RAW;
 
