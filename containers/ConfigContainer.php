@@ -67,27 +67,7 @@ class ConfigContainer extends HUGnetContainer
         "hooks"           => array(),      // The hooks that are available.
         "hugnet_database" => "HUGnet",     // The database to use
         "script_gateway"  => 0,            // The gateway for the scripts
-        "poll"            => array(        // Configuration for the poll script
-            "enable"  => false,       // Enable this script
-        ),
-        "config"          => array(        // Configuration for the config script
-            "enable"  => false,       // Enable this script
-            "deactivate" => 50,      //  How many failed attempts before disabling
-                                       // The device.
-        ),
-        "control"         => array(        // Configuration for the control script
-            "enable"  => false,       // Enable this script
-        ),
-        "check"           => array(        // Configuration for the check script
-            "enable"      => false,   // Enable this script
-            "send_daily"  => false,
-        ),
-        "analysis"        => array(        // Configuration for the analysis script
-            "enable"  => false,       // Enable this script
-        ),
-        "sync"        => array(        // Configuration for the analysis script
-            "downloads"  => "http://downloads.hugllc.com",   // Where to get stuff
-            "firmware"   => "firmware",       // The firmware directory
+        "pluginData"      => array(
         ),
         "admin_email"     => "",           // Administrator Email
         "plugins"         => array(

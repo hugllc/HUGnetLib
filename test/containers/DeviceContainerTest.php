@@ -415,7 +415,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                 ),
             ),
-            // #6
+            // #8
             array(
                 "",
                 array(
@@ -439,7 +439,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup"       => "FFFFFF",
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
-                        "RawDriverInfo" => "",
                     ),
                     "params"            => array(
                     ),

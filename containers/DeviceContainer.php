@@ -83,7 +83,7 @@ class DeviceContainer extends DevicesTable
     /** @var object This is the endpoint driver */
     protected $epDriver = null;
     /** @var object This is the endpoint driver */
-    public $params = null;
+    public $params = "";
     /** @var object This is the endpoint driver */
     public $sensors = null;
     /** @var object This is the endpoint driver */
@@ -243,6 +243,16 @@ class DeviceContainer extends DevicesTable
         } else {
             parent::fromAny($data);
         }
+        $this->_setupClasses();
+    }
+    /**
+    * Sets the extra attributes field
+    *
+    * @return mixed The value of the attribute
+    */
+    public function clearData()
+    {
+        parent::clearData();
         $this->_setupClasses();
     }
     /**

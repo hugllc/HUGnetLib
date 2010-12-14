@@ -497,8 +497,9 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "PollInterval"      => "0",
                         "ActiveSensors"     => "0",
                         "DeviceGroup"       => "FFFFFF",
-                        "sensors"           => "",
-                        "params"            => "",
+                        "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
+                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "params"            => "YTowOnt9",
                     ),
                 ),
                 "",

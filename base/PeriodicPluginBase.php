@@ -65,6 +65,8 @@ abstract class PeriodicPluginBase extends HUGnetClass
     protected $created = 0;
     /** @var This is when we were last run */
     protected $last = 0;
+    /** @var This says if we are enabled or not */
+    protected $enable = true;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -80,6 +82,8 @@ abstract class PeriodicPluginBase extends HUGnetClass
         parent::__construct($config);
         $this->created = time();
         $this->control = &$obj;
+        $class = get_class($this);
+        $this->enable = (boolean)$this->control->myConfig->pluginData[$class]["enable"];
     }
     /**
     * This function checks to see if it is ready to run again
@@ -91,7 +95,7 @@ abstract class PeriodicPluginBase extends HUGnetClass
     public function ready()
     {
         // Run every 24 hours
-        return (time() >= ($this->last + 86400));
+        return $this->enable && (time() >= ($this->last + 86400));
     }
 
 }

@@ -315,7 +315,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         if (is_object($pkt->Reply)) {
             $this->data["ReplyPkts"]++;
             $this->data["ReplyTotal"] += $pkt->replyTime();
-            $ret = RawHistoryTable::insertRecord(
+            $hist = new RawHistoryTable(
                 array(
                     "id" => (int)$this->myDriver->id,
                     "Date" => $pkt->Date,
@@ -325,7 +325,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
                     "dataIndex" => $this->dataIndex($pkt->Reply->Data),
                 )
             );
-            return $ret;
+            return $hist->insertRow();
         }
         $this->data["NoReplyPkts"]++;
         return false;

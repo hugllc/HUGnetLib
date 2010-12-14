@@ -174,21 +174,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "hugnet_database" => "HUGNet",
                     "script_gateway" => 4,
-                    "poll" => array(
-                        "enable" => true,
-                    ),
-                    "config"          => array(
-                        "enable" => true,
-                    ),
-                    "control" => array(
-                        "enable" => true,
-                    ),
-                    "check" => array(
-                        "enable" => true,
-                        "send_daily" => true,
-                    ),
-                    "analysis" => array(
-                        "enable" => false,
+                    "pluginData" => array(
+                        5 => "h",
                     ),
                     "admin_email" => "example@yourdomain.com",
                     "useSocket" => "dummy",
@@ -209,18 +196,8 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "hugnet_database" => "HUGNet",
                     "script_gateway" => 4,
-                    "poll" => array(
-                        "enable" => true,
-                    ),
-                    "config"          => array(
-                        "enable" => true,
-                    ),
-                    "control" => array(
-                        "enable" => true,
-                    ),
-                    "check" => array(
-                        "enable" => true,
-                        "send_daily" => true,
+                    "pluginData" => array(
+                        5 => "h",
                     ),
                     "admin_email" => "example@yourdomain.com",
                     "useSocket" => "dummy",

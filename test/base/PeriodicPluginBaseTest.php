@@ -69,6 +69,11 @@ class PeriodicPluginBaseTest extends PHPUnit_Framework_TestCase
         $this->config->forceConfig(
             array(
                 "script_gateway" => 13,
+                "pluginData" => array(
+                    "PeriodicPluginBaseTestStub" => array(
+                        "enable" => true,
+                    ),
+                ),
             )
         );
         $this->device = array(

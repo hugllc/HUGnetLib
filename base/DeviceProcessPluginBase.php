@@ -81,6 +81,8 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
         parent::__construct($config);
         $this->created = time();
         $this->control = &$obj;
+        $class = get_class($this);
+        $this->enable = (boolean)$this->control->myConfig->pluginData[$class]["enable"];
     }
     /**
     * This function does the stuff in the class.
