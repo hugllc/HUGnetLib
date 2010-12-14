@@ -62,6 +62,10 @@ class RawHistoryTable extends HUGnetDBTable
     public $sqlTable = "rawHistory";
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
+    /** @var string This is the date field for the table.  Leave blank if none  */
+    public $dateField = "Date";
+    /** @var string The orderby clause for this table */
+    public $sqlOrderBy = "Date desc";
     /**
     * @var array This is the definition of the columns
     *

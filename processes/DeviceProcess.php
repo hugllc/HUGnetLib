@@ -155,8 +155,10 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     {
         foreach ($this->priority as $p) {
             foreach ($p as $n) {
-                if ($this->active[$n]->$fct($dev) === false) {
-                    return;
+                if ($this->active[$n]->ready($dev)) {
+                    if ($this->active[$n]->$fct($dev) === false) {
+                        return;
+                    }
                 }
             }
         }
