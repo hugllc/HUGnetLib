@@ -79,12 +79,7 @@ class DeviceParamsContainer extends HUGnetContainer
     */
     public function toString($default = false)
     {
-        $ret = parent::toString($default);
-        if (empty($ret)) {
-            return "";
-        } else {
-            return $ret;
-        }
+        return parent::toString($default);
     }
     /**
     * Sets all of the endpoint attributes from an array

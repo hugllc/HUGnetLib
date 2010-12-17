@@ -228,11 +228,20 @@ class GenericTableTest extends HUGnetDBTableTestBase
                         "Null" => true,
                     ),
                 ),
+                array(
+                    "group" => "default",
+                    "id" => null,
+                    "name" => null,
+                    "value" => null,
+                ),
             ),
             array(
                 "",
                 "table",
                 array(
+                ),
+                array(
+                    "group" => "default",
                 ),
             ),
         );
@@ -244,17 +253,19 @@ class GenericTableTest extends HUGnetDBTableTestBase
     * @param string $table       The table to use
     * @param string $tableExpect The expected table
     * @param mixed  $expect      The expected return
+    * @param array  $default     What the default array should be.
     *
     * @return null
     *
     * @dataProvider dataForceTable
     */
-    public function testForceTable($table, $tableExpect, $expect)
+    public function testForceTable($table, $tableExpect, $expect, $default)
     {
         $o = new GenericTable();
         $o->forceTable($table);
-        $this->assertAttributeSame($tableExpect, "sqlTable", $o);
-        $this->assertAttributeSame($expect, "sqlColumns", $o);
+        $this->assertAttributeSame($tableExpect, "sqlTable", $o, "table wrong");
+        $this->assertAttributeSame($expect, "sqlColumns", $o, "columns wrong");
+        $this->assertAttributeSame($default, "default", $o, "default wrong");
     }
     /**
     * data provider for testCheckTables
@@ -290,6 +301,113 @@ class GenericTableTest extends HUGnetDBTableTestBase
         $o = new GenericTable();
         $o->checkTables($tables);
         $this->assertAttributeSame($tableExpect, "sqlTable", $o);
+    }
+    /**
+    * Data provider for testUpdate
+    *
+    * @return array
+    */
+    public static function dataUpdate()
+    {
+        return array(
+            // This one would just set the query up
+            array( // #0
+                array(),
+                "",
+                array(),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "Another THing",
+                        "value" => "22.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+            // Normal update
+            array(
+                array("id" => 2, "name" => "a name", "value" => 10),
+                "id = ?",
+                array(2),
+                array(),
+                array(
+                    array(
+                        "id" => "-5",
+                        "name" => "Something Negative",
+                        "value" => "-25.0",
+                    ),
+                    array(
+                        "id" => "1",
+                        "name" => "Something Here",
+                        "value" => "25.0",
+                    ),
+                    array(
+                        "id" => "2",
+                        "name" => "a name",
+                        "value" => "10.0",
+                    ),
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array  $data      The data to use.  It just sets up the query if this is
+    *                          empty.
+    * @param string $where     The where clause to use
+    * @param array  $whereData The data to use for the where clause
+    * @param array  $keys      The columns to insert.  Uses all of this is blank.
+    * @param string $expect    The query created
+    * @param bool   $ret       The expected return value
+    * @param bool   $ret2      The expected return value of the second call
+    * @param string $id        The id column to use
+    * @param array  $indexes   The indexes array to use
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdate
+    */
+    public function testUpdate(
+        $data,
+        $where,
+        $whereData,
+        $keys,
+        $expect,
+        $ret,
+        $ret2 = true,
+        $id = "id",
+        $indexes = array()
+    ) {
+        $this->table->sqlId = $id;
+        $this->table->sqlIndexes = $indexes;
+        $r = $this->o->update($data, $where, $whereData, $keys);
+        $this->assertSame($ret, $r);
+        $stmt = $this->pdo->query("SELECT * FROM `myTable`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
     }
 
 }

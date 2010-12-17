@@ -137,15 +137,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     function __construct($data="")
     {
-        // This loads any columns that are not already in $this->default into
-        // that array so that they will be picked up by the database.  This must
-        // happen before any calls to the parent constructor or to from***().
-        foreach ((array)$this->sqlColumns as $col) {
-            if (!isset($this->default[$col["Name"]])) {
-                $this->default[$col["Name"]] = $col["Default"];
-            }
-        }
-        $this->clearData();
+        $this->setupColsDefault();
         parent::__construct($data);
         // Get our config.
         $this->myConfig = &ConfigContainer::singleton();
@@ -165,6 +157,23 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         // @codeCoverageIgnoreEnd
         $this->verbose($this->myConfig->verbose);
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    protected function setupColsDefault()
+    {
+        // This loads any columns that are not already in $this->default into
+        // that array so that they will be picked up by the database.  This must
+        // happen before any calls to the parent constructor or to from***().
+        foreach ((array)$this->sqlColumns as $col) {
+            if (!isset($this->default[$col["Name"]])) {
+                $this->default[$col["Name"]] = $col["Default"];
+            }
+        }
+        $this->clearData();
     }
     /**
     * Sets all of the endpoint attributes from an array

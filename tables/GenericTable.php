@@ -55,14 +55,6 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  */
 class GenericTable extends HUGnetDBTable
 {
-    /** @var notice level severity */
-    const SEVERITY_NOTICE = 1;
-    /** @var warning level severity */
-    const SEVERITY_WARNING = 2;
-    /** @var error level severity */
-    const SEVERITY_ERROR = 4;
-    /** @var critical level severity */
-    const SEVERITY_CRITICAL = 8;
     /** @var string This is the table we should use */
     public $sqlTable = "table";
     /** @var string This is the primary key of the table.  Leave blank if none  */
@@ -145,6 +137,7 @@ class GenericTable extends HUGnetDBTable
         }
         $this->sqlTable = $table;
         $this->sqlColumns = $this->myDriver->columns();
+        $this->setupColsDefault();
     }
     /**
     * Check all database tables
@@ -164,6 +157,24 @@ class GenericTable extends HUGnetDBTable
             $this->myDriver->check();
         }
         $this->sqlTable = $oldTable;
+    }
+    /**
+    * Updates a row in the database.
+    *
+    * @param array  $data      The data to update
+    * @param string $where     Where clause
+    * @param array  $whereData Data for query
+    * @param array  $columns   The columns to select
+    *
+    * @return mixed
+    */
+    public function update(
+        $data,
+        $where = "",
+        $whereData = array(),
+        $columns = array()
+    ) {
+        return $this->myDriver->updateOnce($data, $where, $whereData, $columns);
     }
 }
 ?>
