@@ -38,7 +38,7 @@
 // Need to make sure this file is not added to the code coverage
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/HistoryTableBase.php";
+require_once dirname(__FILE__)."/../../../../tables/HistoryTableBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements

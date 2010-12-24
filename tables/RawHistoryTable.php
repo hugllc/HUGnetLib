@@ -144,7 +144,13 @@ class RawHistoryTable extends HUGnetDBTable
             "Unique" => true,
             "Columns" => array("Date", "id", "dataIndex", "command"),
         ),
+        "idDate"  => array(
+            "Name" => "idDate",
+            "Unique" => false,
+            "Columns" => array("Date", "id"),
+        ),
     );
+    
 
     /** @var array This is the default values for the data */
     protected $default = array(

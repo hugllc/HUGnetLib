@@ -37,7 +37,7 @@
  */
 
 
-require_once dirname(__FILE__).'/../../base/AverageTableBase.php';
+require_once dirname(__FILE__).'/../../tables/AverageTableBase.php';
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__)."/../tables/HUGnetDBTableTestBase.php";
 

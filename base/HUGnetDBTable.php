@@ -127,8 +127,11 @@ abstract class HUGnetDBTable extends HUGnetContainer
     protected $default = array(
         "group" => "default",    // Server group to use
     );
+    /** @var The labels for the output columns */
     protected $labels = array(
     );
+    /** @var This is the date field for this record */
+    public $dateField = null;
 
     /**
     * This is the constructor
@@ -313,7 +316,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return bool True on success, False on failure
     */
-    public function insertRow($replace = false)
+    public function insert($replace = false)
     {
         if ($this->isEmpty()) {
             return false;
@@ -322,8 +325,32 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->default[$this->sqlId] === $this->$id) {
             $cols = $this->myDriver->autoIncrement();
         }
-        $ret = $this->myDriver->insertOnce($this->toDB(), (array)$cols, $replace);
+        $ret = $this->myDriver->insert($this->toDB(), (array)$cols, $replace);
+        return $ret;
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @param bool $replace Replace any records found that collide with this one.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertEnd($replace = false)
+    {
         $this->myDriver->reset();
+    }
+    /**
+    * This function updates the record currently in this table
+    *
+    * @param bool $replace Replace any records found that collide with this one.
+    *
+    * @return bool True on success, False on failure
+    */
+    public function insertRow($replace = false)
+    {
+        $this->myDriver->reset();
+        $ret = $this->insert($replace);
+        $this->insertEnd();
         return $ret;
     }
 

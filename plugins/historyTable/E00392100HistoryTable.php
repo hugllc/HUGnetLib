@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../base/HistoryTableBase.php";
+require_once dirname(__FILE__)."/../../tables/HistoryTableBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements

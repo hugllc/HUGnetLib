@@ -111,7 +111,6 @@ class GenericTable extends HUGnetDBTable
     public $packet = null;
     /** @var This is the device */
     public $device = null;
-
     /**
     * This is the constructor
     *
