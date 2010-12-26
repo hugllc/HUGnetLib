@@ -117,6 +117,24 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'averageTable' => array (
+                        'DEFAULT' => array (
+                            'Name' => 'Test1AverageTable',
+                            'Type' => 'averageTable',
+                            'Class' => 'Test1AverageTable',
+                            'Flags' => array (
+                                0 => 'DEFAULT',
+                            ),
+                        ),
+                        'testDriver' => array (
+                            'Name' => 'Test2AverageTable',
+                            'Type' => 'averageTable',
+                            'Class' => 'Test2AverageTable',
+                            'Flags' => array (
+                                0 => 'testDriver',
+                            ),
+                        ),
+                    ),
                     'deviceProcess' => array (
                         'DeviceProcessAnalysis' => array (
                             'Name' => 'DeviceProcessAnalysis',
