@@ -117,6 +117,16 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'analysisPeriodic' => array (
+                        'testAnalysisPeriodic' => array (
+                            'Name' => 'testAnalysisPeriodic',
+                            'Type' => 'analysisPeriodic',
+                            'Class' => 'TestAnalysisPeriodicPlugin',
+                            'Flags' => array (
+                                0 => 'testAnalysisPeriodic',
+                            ),
+                        ),
+                    ),
                     'averageTable' => array (
                         'DEFAULT' => array (
                             'Name' => 'Test1AverageTable',

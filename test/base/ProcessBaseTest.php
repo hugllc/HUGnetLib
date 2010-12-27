@@ -126,6 +126,18 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     */
+    public function testConstructTableExec2()
+    {
+        $config = array(
+        );
+        $this->config->forceConfig($config);
+        $o = new ProcessBaseClassTest(array("GatewayKey" => "all"), $this->devArray);
+    }
+    /**
+    * Tests for exceptions
+    *
+    * @return null
+    */
     public function testPacketConsumer()
     {
         $this->o->packetConsumer(new PacketContainer());

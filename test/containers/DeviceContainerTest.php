@@ -1593,7 +1593,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceJob" => "",
                     "Driver" => "eDEFAULT",
                     "PollInterval" => 0,
-                    "ActiveSensors" => 0,
+                    "ActiveSensors" => 2,
                     "DeviceGroup" => "FFFFFF",
                     "params" => "",
                     "sensors" => array(
@@ -1625,7 +1625,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceJob" => "",
                     "Driver" => "eDEFAULT",
                     "PollInterval" => 0,
-                    "ActiveSensors" => 0,
+                    "ActiveSensors" => 2,
                     "DeviceGroup" => "FFFFFF",
                     "params" => "",
                     "sensors" => array(

@@ -457,6 +457,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function nextInto()
     {
+        $this->clearData();
         $ret = $this->myDriver->fetchInto();
         if ($ret === false) {
             $this->myDriver->reset();

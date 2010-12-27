@@ -375,7 +375,7 @@ class DeviceContainer extends DevicesTable
     public function historyHeader()
     {
         $ret = array("Date" => "Date");
-        for ($i = 0; $i < $this->sensors->Sensors; $i++) {
+        for ($i = 0; $i < $this->ActiveSensors; $i++) {
             if ($this->sensors->sensor($i)->dataType != UnitsBase::TYPE_IGNORE) {
                 $loc = $this->sensors->sensor($i)->location;
                 if (empty($loc) && !is_numeric($loc)) {

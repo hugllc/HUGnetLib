@@ -67,8 +67,6 @@ class DeviceParamsContainer extends HUGnetContainer
         "ProcessInfo" => array(),       // Persistant storage for the processes
         "LastContact" => 0,             // The last time the dev was contacted
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /**
     * Returns the object as a string

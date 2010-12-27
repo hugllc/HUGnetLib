@@ -59,8 +59,6 @@ class DeviceSensorsContainer extends HUGnetContainer
         "RawCalibration" => "",             // The raw calibration string
         "Sensors" => 0,                     // The number of sensors
     );
-    /** @var array This is where the data is stored */
-    protected $data = array();
 
     /** @var object This is the device I am attached to */
     protected $myDevice = null;
