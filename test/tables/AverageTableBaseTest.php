@@ -757,9 +757,9 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "id"  => "41",
                     "Date"   => "2003-02-27 19:59:00",
-                    "Data0"  => "89.6",
-                    "Data1"  => "92.84",
-                    "Data2"  => "96.08",
+                    "Data0"  => "32",
+                    "Data1"  => "33.8",
+                    "Data2"  => "35.6",
                 ),
             ),
         );

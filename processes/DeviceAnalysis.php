@@ -53,6 +53,10 @@ require_once dirname(__FILE__)."/DeviceProcess.php";
  */
 class DeviceAnalysis extends DeviceProcess
 {
+    /** @var array Array of objects that are our plugins */
+    protected $periodic = array();
+    /** @var array Array of objects that are our plugins */
+    protected $periodicPriority = array();
     /**
     * Builds the class
     *
@@ -67,6 +71,57 @@ class DeviceAnalysis extends DeviceProcess
             $data["PluginType"] = "analysis";
         }
         parent::__construct($data, $device);
+    }
+    /**
+    * This function gets setup information from all of the devices
+    *
+    * This function should be called periodically as often as possible.  It will
+    * check all plugins before returning
+    *
+    * @return null
+    */
+    protected function registerPlugins()
+    {
+        parent::registerPlugins();
+        // Do the periodic stuff
+        $this->periodic = array();
+        $this->periodicPriority = array();
+        $classes = $this->myPlugins->getPlugin($this->PluginType."Periodic");
+        $data = array(
+            "verbose" => $this->verbose,
+        );
+        foreach ((array)$classes as $class) {
+            $c = $class["Class"];
+            $n = $class["Name"];
+            $p = (!is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
+            if (is_subclass_of($c, "DeviceProcessPluginInterface")) {
+                $this->periodic[$n] = new $c($data, $this);
+                $this->periodicPriority[$p][$n] = $n;
+            }
+        }
+    }
+    /**
+    * This process runs analysis plugins on the data
+    *
+    * This function should be called periodically as often as possible.  It will
+    * go through the whole list of devices before returning.
+    *
+    * @param string $fct The function to call
+    *
+    * @return null
+    */
+    public function main($fct = "main")
+    {
+        parent::main($fct);
+        $dev = new DeviceContainer();
+        foreach ($this->periodicPriority as $p) {
+            foreach ($p as $n) {
+                if ($this->periodic[$n]->ready($dev)) {
+                    $this->periodic[$n]->main($dev);
+                }
+            }
+        }
+
     }
 }
 ?>

@@ -178,7 +178,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     protected function requireGateway()
     {
         // We need a GatewayKey
-        if ($this->GatewayKey <= 0) {
+        if (($this->GatewayKey <= 0) && ($this->GatewayKey != "all")) {
             $this->throwException(
                 "A GatewayKey must be specified.", -3
             );

@@ -95,7 +95,6 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     protected function registerPlugins()
     {
         $this->active = array();
-        $this->active = array();
         $this->myPlugins = new PluginsContainer(array(
             "dir" => $this->PluginDir,
             "extension" => $this->PluginExtension,
@@ -127,9 +126,16 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     public function main($fct = "main")
     {
         // Get the devices
+        $where = "id <> ?";
+        $data = array($this->myDevice->id);
+        
+        if ($this->GatewayKey != "all") {
+            $where .= " AND GatewayKey = ?";
+            $data[] = $this->GatewayKey;
+        }
         $devs = $this->device->selectIDs(
-            "GatewayKey = ? AND id <> ?",
-            array($this->GatewayKey, $this->myDevice->id)
+            $where,
+            $data
         );
         shuffle($devs);
         // Go through the devices
