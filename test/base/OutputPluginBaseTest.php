@@ -159,7 +159,8 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     public function testRow($preload, $output, $expect)
     {
         $this->o = new OutputPluginBaseTestClass($preload);
-        $this->assertSame($expect, $this->o->row($output));
+        $this->o->row($output);
+        $this->assertSame($expect, $this->o->body());
     }
 
     /**
@@ -169,7 +170,8 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testPre()
     {
-        $this->assertSame("", $this->o->pre());
+        $this->o->pre();
+        $this->assertSame("pre", $this->o->body());
     }
 
     /**
@@ -179,7 +181,8 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testPost()
     {
-        $this->assertSame("", $this->o->post());
+        $this->o->post();
+        $this->assertSame("post", $this->o->body());
     }
 
 }
@@ -206,7 +209,7 @@ class OutputPluginBaseTestClass extends OutputPluginBase
     */
     public function toString($default = true)
     {
-        return print_r($this->output, true);
+        $this->text .= print_r($this->output, true);
     }
 
     /**
@@ -218,7 +221,7 @@ class OutputPluginBaseTestClass extends OutputPluginBase
     */
     public function header($array = array())
     {
-        return print_r($array, true);
+        $this->text .= print_r($array, true);
     }
 }
 ?>

@@ -72,7 +72,7 @@ class Test1Output extends OutputPluginBase
     */
     public function toString($default = true)
     {
-        return print_r($this->output, true);
+        $this->text .= print_r($this->output, true);
     }
 
     /**
@@ -102,7 +102,7 @@ class Test1Output extends OutputPluginBase
     */
     public function header($array = array())
     {
-        return print_r($array, true);
+        $this->text .= print_r($array, true);
     }
 
 }

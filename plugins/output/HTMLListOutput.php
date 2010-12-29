@@ -70,12 +70,11 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function toString($default = true)
     {
-        $text  = "    <tr>\n";
+        $this->text  = "    <tr>\n";
         foreach ($this->output as $key => $value) {
-            $text .= "        <td>".$value."</td>\n";
+            $this->text .= "        <td>".$value."</td>\n";
         }
-        $text  .= "    </tr>\n";
-        return $text;
+        $this->text  .= "    </tr>\n";
     }
 
     /**
@@ -107,17 +106,16 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function header($array = array())
     {
-        $text  = "    <tr>\n";
+        $this->text  = "    <tr>\n";
         foreach (array_keys((array)$this->output) as $key) {
             if (empty($array[$key]) && !is_numeric($array[$key])) {
                 $val = $key;
             } else {
                 $val = $array[$key];
             }
-            $text .= "        <th>".$val."</th>\n";
+            $this->text .= "        <th>".$val."</th>\n";
         }
-        $text  .= "    </tr>\n";
-        return $text;
+        $this->text  .= "    </tr>\n";
     }
 
 }

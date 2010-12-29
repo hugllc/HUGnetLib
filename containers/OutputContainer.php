@@ -117,11 +117,12 @@ class OutputContainer extends HUGnetContainer
         $class = $this->getPlugin();
         $this->throwException("No default 'output' plugin found", -6, empty($class));
         $out  = new $class($this->toArray());
-        $ret  = $out->pre();
-        $ret .= $out->header($this->container->toOutputHeader());
+        $out->header($this->container->toOutputHeader());
         do {
-            $ret .= $out->row($this->toArray());
+            $out->row($this->toArray());
         } while ($this->iterate && $this->container->nextInto());
+        $ret  = $out->pre();
+        $ret .= $out->body();
         $ret .= $out->post();
         return $ret;
     }

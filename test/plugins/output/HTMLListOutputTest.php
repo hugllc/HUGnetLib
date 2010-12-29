@@ -127,7 +127,8 @@ class HTMLListOutputTest extends OutputPluginTestBase
     public function test2String($preload, $default, $expect)
     {
         $o = new HTMLListOutput($preload);
-        $this->assertSame($expect, $o->toString($default));
+        $o->toString($default);
+        $this->assertSame($expect, $o->body());
     }
 
     /**
@@ -174,7 +175,8 @@ class HTMLListOutputTest extends OutputPluginTestBase
     public function testHeader($preload, $array, $expect)
     {
         $o = new HTMLListOutput($preload);
-        $this->assertSame($expect, $o->header($array));
+        $o->header($array);
+        $this->assertSame($expect, $o->body());
     }
 
     /**

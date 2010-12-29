@@ -81,6 +81,16 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     }
 
     /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function body()
+    {
+        return $this->text;
+    }
+
+    /**
     * This function implements the output before the data
     *
     * @param array $output The array to output
@@ -90,7 +100,7 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     public function row($output = null)
     {
         $this->setOutput($output);
-        return $this->toString();
+        $this->toString();
     }
     /**
     * This function implements the output before the data
@@ -99,7 +109,7 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     */
     public function pre()
     {
-        return "";
+        $this->text .= "pre";
     }
     /**
     * This function implements the output after the data
@@ -108,7 +118,7 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     */
     public function post()
     {
-        return "";
+        $this->text .= "post";
     }
 
 
