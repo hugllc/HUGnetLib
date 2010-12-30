@@ -62,6 +62,10 @@ class TestUnits extends UnitsBase
         "Class" => "TestUnits",
         "Flags" => array("firstUnit", "testUnit"),
     );
+    /** @var The units that are valid for conversion */
+    protected $valid = array("firstUnit", "testUnit");
+    /** @var The units of this point */
+    public $to = "testUnit";
 
     /**
     * Sets everything up

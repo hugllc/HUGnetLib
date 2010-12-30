@@ -74,6 +74,7 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
         "storageUnit" => '&#176;C',
         "extraText" => array("Bias Resistor in k Ohms"),
         "extraDefault" => array(100),
+        "maxDecimals" => 2,
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(

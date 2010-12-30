@@ -74,6 +74,7 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
         "storageUnit" => '&#176;C',
         "extraText" => array("Bias Resistor in k Ohms"),
         "extraDefault" => array(10),
+        "maxDecimals" => 2,
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(

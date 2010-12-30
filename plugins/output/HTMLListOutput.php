@@ -60,19 +60,25 @@ class HTMLListOutput extends OutputPluginBase
         "Class" => "HTMLListOutput",
         "Flags" => array("DEFAULT"),
     );
+    /** @var  These are the graph colors that will be used, in order */
+    public $params = array(
+        "rowStyle" => array("", ""),
+        "headerRowStyle" => "",
+        
+    );
 
     /**
     * Returns the object as a string
     *
-    * @param bool $default Return items set to their default?
+    * @param array $array the data array
     *
     * @return string
     */
-    public function toString($default = true)
+    public function row($array = array())
     {
-        $this->text  = "    <tr>\n";
-        foreach ($this->output as $key => $value) {
-            $this->text .= "        <td>".$value."</td>\n";
+        $this->text  .= "    <tr>\n";
+        foreach (array_keys((array)$this->header) as $key) {
+            $this->text .= "        <td>".$array[$key]."</td>\n";
         }
         $this->text  .= "    </tr>\n";
     }
@@ -106,13 +112,9 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function header($array = array())
     {
-        $this->text  = "    <tr>\n";
-        foreach (array_keys((array)$this->output) as $key) {
-            if (empty($array[$key]) && !is_numeric($array[$key])) {
-                $val = $key;
-            } else {
-                $val = $array[$key];
-            }
+        $this->text  .= "    <tr>\n";
+        $this->setHeader($array);
+        foreach ($this->header as $key => $val) {
             $this->text .= "        <th>".$val."</th>\n";
         }
         $this->text  .= "    </tr>\n";

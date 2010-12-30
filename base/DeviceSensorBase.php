@@ -73,6 +73,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "",          // The raw calibration string
         "units" => "",                   // The units to put the data into by default
+        "decimals" => 2,                 // The number of decimal places to use
     );
     /**
     * This is the array of sensor information.
@@ -83,6 +84,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "storageUnit" => 'unknown',     // This is how the data is stored
         "extraText" => array(),
         "extraDefault" => array(),
+        "maxDecimals" => 2,
     );
 
     /** @var object This is where our unit conversion is stored */
@@ -109,21 +111,28 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     public function __construct($data, &$device)
     {
-        if (empty($data["units"])) {
-            unset($data["units"]);
-        }
         // Set up my device
         $this->myDevice = &$device;
         // Setup our configuration
         $this->myConfig = &ConfigContainer::singleton();
         // Set up the default units
+        $this->setupUnits();
         if (empty($this->default["units"])) {
-            $this->setupUnits();
             if (strtolower($this->unitConvert->to) == "unknown") {
                 $this->default["units"] = $this->storageUnit;
             } else {
                 $this->default["units"] = $this->unitConvert->to;
             }
+        }
+        if (!$this->unitConvert->valid($data["units"])) {
+            unset($data["units"]);
+        }
+        if (is_null($this->default["decimals"])
+            || ($this->default["decimals"] > $this->maxDecimals)) {
+            $this->default["decimals"] = (int)$this->maxDecimals;
+        }
+        if ($data["decimals"] > $this->maxDecimals) {
+            unset($data["decimals"]);
         }
         // Set up the class
         parent::__construct($data);
@@ -188,19 +197,18 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /**
     * Sets up the unit conversion
     *
-    * @param string $to    The units to convert to
-    * @param string $from  The units to convert from
-    *
     * @return true on success, false on failure
     */
-    protected function setupUnits($to = null, $from = null)
+    protected function setupUnits()
     {
         if (empty($this->unitConvert)) {
-            $driver = $this->myConfig->plugins->getPlugin("Units", $this->unitType);
+            $driver = $this->myConfig->plugins->getPlugin(
+                "Units", $this->unitType
+            );
             $class = $driver["Class"];
             $d = array(
-                "to" => $to,
-                "from" => $from,
+                "to" => $this->units,
+                "from" => $this->storageUnit,
                 "type" => $this->dataType,
             );
             $this->throwException(
@@ -216,17 +224,20 @@ abstract class DeviceSensorBase extends HUGnetContainer
     * Converts data between units
     *
     * @param mixed  &$data The data to convert
-    * @param string $to    The units to convert to 
-    * @param string $from  The units to convert from
     *
     * @return true on success, false on failure
     */
-    public function convertUnits(&$data, $to=null, $from=null)
+    public function convertUnits(&$data)
     {
-        $from = (empty($from)) ? $this->storageUnit : $from;
-        $to = (empty($to)) ? $this->units : $to;
-        $this->setupUnits($to, $from);
-        return $this->unitConvert->convert($data, $to, $from);
+        $this->setupUnits();
+        $ret = $this->unitConvert->convert($data, $this->units, $this->storageUnit);
+        if ($ret === false) {
+            $this->units = $this->storageUnit;
+        }
+        if (is_numeric($data)) {
+            $data = round($data, (int)$this->decimals);
+        }
+        return $ret;
     }
     /******************************************************************
      ******************************************************************

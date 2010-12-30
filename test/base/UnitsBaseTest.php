@@ -189,7 +189,7 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
-    /**
+   /**
     * test CtoF()
     *
     * @param array  $preload the stuff to preload into the Units
@@ -210,6 +210,59 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $data, "The data is wrong");
         $this->assertSame($return, $ret, "Return Wrong");
     }
+    /**
+     * Data provider for testValid
+     *
+     * @return array
+     */
+    public static function dataValid()
+    {
+        return array(
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "&#176;C",
+                true,
+            ),
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_DIFF,
+                ),
+                "&#176;F",
+                true,
+            ),
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "&#176;Q",
+                false,
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array  $preload the stuff to preload into the Units
+    * @param mixed  $units    The units to check
+    * @param mixed  $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataValid
+    */
+    public function testValid($preload, $units, $expect)
+    {
+        $this->o = new UnitsBaseTestClass($preload);
+        $this->assertSame($expect, $this->o->valid($units));
+    }
 
 }
 /**
@@ -226,5 +279,8 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
 */
 class UnitsBaseTestClass extends UnitsBase
 {
+    /** @var The units that are valid for conversion */
+    protected $valid = array("&#176;F", "&#176;C");
+
 }
 ?>

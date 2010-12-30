@@ -76,6 +76,7 @@ class FETBoardVoltageDeviceSensor extends VoltageDeviceSensorBase
             "R2 in kOhms"
         ),
         "extraDefault" => array(150, 17),
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database

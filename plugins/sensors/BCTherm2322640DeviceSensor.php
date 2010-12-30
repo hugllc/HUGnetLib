@@ -77,6 +77,7 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
             "Thermistor Value @25C"
         ),
         "extraDefault" => array(10, 10),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database

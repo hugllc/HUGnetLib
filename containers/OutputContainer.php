@@ -121,10 +121,7 @@ class OutputContainer extends HUGnetContainer
         do {
             $out->row($this->toArray());
         } while ($this->iterate && $this->container->nextInto());
-        $ret  = $out->pre();
-        $ret .= $out->body();
-        $ret .= $out->post();
-        return $ret;
+        return $out->toString();
     }
     /**
     * Creates a sensor object

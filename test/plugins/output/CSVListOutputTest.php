@@ -37,7 +37,7 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/output/HTMLListOutput.php';
+require_once dirname(__FILE__).'/../../../plugins/output/CSVListOutput.php';
 require_once dirname(__FILE__).'/OutputPluginTestBase.php';
 
 /**
@@ -53,7 +53,7 @@ require_once dirname(__FILE__).'/OutputPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HTMLListOutputTest extends OutputPluginTestBase
+class CSVListOutputTest extends OutputPluginTestBase
 {
 
     /**
@@ -89,12 +89,12 @@ class HTMLListOutputTest extends OutputPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("HTMLListOutput"),
+            array("CSVListOutput"),
         );
     }
 
     /**
-    * Data provider for testRow
+    * Data provider for test2string
     *
     * @return array
     */
@@ -104,12 +104,27 @@ class HTMLListOutputTest extends OutputPluginTestBase
             array(
                 array(),
                 array(),
-                "    <tr>\n    </tr>\n",
+                "\r\n",
             ),
             array(
-                array("a" => 5, "b" => 6),
+                array("a" => 1, "b" => "a"),
                 array("a" => 1, "b" => 2),
-                "    <tr>\n        <td>1</td>\n        <td>2</td>\n    </tr>\n",
+                '1,2'."\r\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array("a" => 1, "b" => "q"),
+                '1,"q"'."\r\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array("a" => 1, "b" => "<b>&nbsp;q</b>"),
+                '1," q"'."\r\n",
+            ),
+            array(
+                array("a" => 1, "b" => 2),
+                array("a" => 1, "b" => "<b>&#176;q</b>"),
+                '1,"°q"'."\r\n",
             ),
         );
     }
@@ -117,7 +132,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     * Tests for verbosity
     *
     * @param array $preload The array to preload into the class
-    * @param mixed $row     The row to use
+    * @param mixed $row     The row to load
     * @param array $expect  The expected return
     *
     * @dataProvider dataRow
@@ -126,7 +141,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testRow($preload, $row, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
+        $o = new CSVListOutput(null, $preload);
         $o->row($row);
         $this->assertSame($expect, $o->body());
     }
@@ -140,38 +155,43 @@ class HTMLListOutputTest extends OutputPluginTestBase
     {
         return array(
             array(
-                array("a" => "a", "b" => "b"),
                 array(),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                array("a" => "First"),
+                '"First"'."\r\n",
+                array("a" => "First"),
             ),
             array(
                 array("a" => "a", "b" => "b"),
-                array("a" => 1, "b" => 2),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                array(),
+                '"a","b"'."\r\n",
+                array("a" => "a", "b" => "b"),
             ),
             array(
-                array(),
-                array("a" => "q", "b" => "b"),
-                "    <tr>\n        <th>q</th>\n        <th>b</th>\n    </tr>\n",
+                null,
+                array("a" => "<b>tag</b>", "b" => "<b>&#176;q</b>"),
+                '"tag","°q"'."\r\n",
+                array("a" => "<b>tag</b>", "b" => "<b>&#176;q</b>"),
             ),
         );
     }
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param mixed $array   The array to feed the header
-    * @param array $expect  The expected return
+    * @param array  $preload The array to preload into the class
+    * @param mixed  $array   The array to feed the header
+    * @param string $body    The body to expect
+    * @param array  $expect  The expected return
     *
     * @dataProvider dataHeader
     *
     * @return null
     */
-    public function testHeader($preload, $array, $expect)
+    public function testHeader($preload, $array, $body, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
+        $o = new CSVListOutput(null, $preload);
         $o->header($array);
-        $this->assertSame($expect, $o->body());
+        $this->assertSame($body, $o->body(), "Body Wrong");
+        $this->assertAttributeSame($expect, "header", $o, "Header Wrong");
     }
 
     /**
@@ -184,7 +204,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
         return array(
             array(
                 array(),
-                "<table>\n",
+                "",
             ),
         );
     }
@@ -200,7 +220,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testPre($preload, $expect)
     {
-        $o = new HTMLListOutput($preload);
+        $o = new CSVListOutput($preload);
         $this->assertSame($expect, $o->pre());
     }
 
@@ -214,7 +234,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
         return array(
             array(
                 array(),
-                "</table>\n",
+                "",
             ),
         );
     }
@@ -230,7 +250,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testPost($preload, $expect)
     {
-        $o = new HTMLListOutput($preload);
+        $o = new CSVListOutput($preload);
         $this->assertSame($expect, $o->post());
     }
 

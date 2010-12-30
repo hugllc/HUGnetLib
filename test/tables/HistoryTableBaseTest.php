@@ -168,6 +168,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "raw" => array(),
+                    "converted" => false,
                     "id"  => 41,
                     "Date"   => 1046397540,
                     "deltaT"  => 5.2,
@@ -272,6 +273,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         13  => null,
                         14  => null,
                     ),
+                    "converted" => false,
                     "id"  => 0,
                     "Date"   => 0,
                     "deltaT"  => 1,
@@ -355,6 +357,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         13  => null,
                         14  => null,
                     ),
+                    "converted" => false,
                     "id"  => 21,
                     "Date"   => 1234,
                     "deltaT"  => 1,
@@ -445,6 +448,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "group" => "default",
+                    "converted" => false,
                     "id"  => 0,
                     "Date"   => 0,
                     "deltaT"  => 1,
@@ -488,6 +492,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "group" => "default",
+                    "converted" => false,
                     "id"  => 41,
                     "Date"   => 1046397540,
                     "deltaT"  => 5.2,
@@ -664,6 +669,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "raw" => "Array",
+                    "converted" => "",
                     "id"  => "41",
                     "Date"   => "2003-02-27 19:59:00",
                     "deltaT"  => "5.2",
@@ -710,6 +716,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "group" => "default",
                     "raw" => "Array",
+                    "converted" => "",
                     "id"  => "41",
                     "Date"   => "2003-02-27 19:59:00",
                     "deltaT"  => "5.2",

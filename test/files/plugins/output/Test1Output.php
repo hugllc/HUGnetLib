@@ -62,17 +62,16 @@ class Test1Output extends OutputPluginBase
         "Class" => "Test1Output",
         "Flags" => array("DEFAULT"),
     );
-
     /**
     * Returns the object as a string
     *
-    * @param bool $default Return items set to their default?
+    * @param array $array The array of header information.
     *
     * @return string
     */
-    public function toString($default = true)
+    public function row($array = array())
     {
-        $this->text .= print_r($this->output, true);
+        $this->text .= print_r($array, true);
     }
 
     /**

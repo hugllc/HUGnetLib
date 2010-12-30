@@ -108,13 +108,71 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                "TestDeviceSensor",
                 array(),
                 array(
                     "location" => "f",
                     "id" => 0,
                     "type" => "sensor",
-                    "units" => "otherUnit",
-                    "unitType" => "unknown",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "cali",
+                ),
+            ),
+            array(
+                "TestDeviceSensor2",
+                array(),
+                array(
+                    "units" => "testUnit",
+                ),
+            ),
+            array(
+                "TestDeviceSensor3",
+                array(),
+                array(
+                    "units" => "moreUnit",
+                ),
+            ),
+            array(
+                "TestDeviceSensor",
+                array(
+                    "location" => "f",
+                    "id" => 0,
+                    "type" => "sensor",
+                    "units" => "badUnit",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "cali",
+                    "decimals" => 10,
+                ),
+                array(
+                    "location" => "f",
+                    "id" => 0,
+                    "type" => "sensor",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
+                ),
+            ),
+            array(
+                "TestDeviceSensor",
+                array(
+                    "location" => "f",
+                    "id" => 0,
+                    "type" => "sensor",
+                    "units" => "badUnit",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "cali",
+                ),
+                array(
+                    "location" => "f",
+                    "id" => 0,
+                    "type" => "sensor",
+                    "units" => "testUnit",
                     "dataType" => "raw",
                     "extra" => array(),
                     "rawCalibration" => "cali",
@@ -133,9 +191,9 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect)
+    public function testConstructor($class, $preload, $expect)
     {
-        $o = new TestDeviceSensor($data, $this->d);
+        $o = new $class($preload, $this->d);
         foreach ($expect as $key => $value) {
             $this->assertSame($value, $o->$key, "Bad Value in key $key");
         }
@@ -148,6 +206,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
             get_class($this->d), get_class($device), "Wrong device class"
         );
     }
+
     /**
     * data provider for testGetExtra
     *
@@ -212,8 +271,8 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 "c",
                 array(
                     "value" => 1,
-                    "units" => "moreUnit",
-                    "unitType" => "unknown",
+                    "units" => "firstUnit",
+                    "unitType" => "firstUnit",
                     "dataType" => UnitsBase::TYPE_RAW,
                 ),
             ),
@@ -226,8 +285,8 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 5,
                 array(
                     "value" => -4,
-                    "units" => "moreUnit",
-                    "unitType" => "unknown",
+                    "units" => "firstUnit",
+                    "unitType" => "firstUnit",
                     "dataType" => UnitsBase::TYPE_DIFF,
                     "raw" => 1,
                 ),
@@ -264,30 +323,29 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "units" => "firstUnit",
                 ),
                 12,
-                "moreUnit",
-                "otherUnit",
-                4,
-                true,
-            ),
-            array(
-                array(
-                ),
-                12,
-                "badUnit",
-                "otherUnit",
-                12,
+                12.0,
                 false,
+                "firstUnit",
+            ),
+            array(
+                array(
+                    "units" => "badUnit",
+                ),
+                12,
+                12.0,
+                false,
+                "firstUnit",
             ),
             array(
                 array(
                 ),
                 12,
-                null,
-                null,
-                36,
+                24.0,
                 true,
+                "testUnit",
             ),
         );
     }
@@ -297,24 +355,25 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @param mixed  $preload The stuff to give to the constructor
     * @param mixed  $data    The value to send
-    * @param string $to      The units to convert to
-    * @param mixed  $from    The units to convert from
     * @param string $expect  The expected data
+    * @param bool   $ret     The return value expected
+    * @param string $units   The expected units
     *
     * @return null
     *
     * @dataProvider dataConvertUnits
     */
-    public function testConvertUnits($preload, $data, $to, $from, $expect, $ret)
+    public function testConvertUnits($preload, $data, $expect, $ret, $units)
     {
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->assertSame(
             $ret,
-            $this->o->convertUnits($data, $to, $from),
+            $this->o->convertUnits($data),
             "The return value is wrong"
         );
         $this->assertSame($expect, $data, "Data is wrong");
+        $this->assertSame($units, $this->o->units, "Units are wrong");
     }
 
 
@@ -381,8 +440,7 @@ class TestDeviceSensor extends DeviceSensorBase
         "id" => 0,                      // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "sensor",                    // The type of the sensors
-        "units" => "otherUnit",                   // The units the values are stored in
-        "unitType" => "unknown",         // The type of units that this uses
+        "units" => "testUnit",                   // The units the values are stored in
         "dataType" => "raw",             // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "cali",          // The raw calibration string
@@ -392,15 +450,134 @@ class TestDeviceSensor extends DeviceSensorBase
     */
     protected $fixed = array(
         "longName" => "Unknown Sensor",
-        "unitType" => "unknown",
-        "storageUnit" => 'moreUnit',
+        "unitType" => "firstUnit",
+        "storageUnit" => 'firstUnit',
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
+        "maxDecimals" => 2,
     );
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b");
     /** @var object This is where we store our configuration */
-    protected $unitsValues = array("d", "otherUnit", "moreUnit");
+    protected $typeValues = array("j");
+    /**
+    * Gets the extra values
+    *
+    * @param array $index The extra index to use
+    *
+    * @return mixed the extra value
+    */
+    public function getExtra($index)
+    {
+        return parent::getExtra($index);
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *
+    * @return float The direction in degrees
+    */
+    public function getReading($A, $deltaT = 0)
+    {
+        return $A;
+    }
+}
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TestDeviceSensor2 extends DeviceSensorBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "testSensor",
+        "Type" => "sensor",
+        "Class" => "TestSensor",
+        "Sensors" => array(),
+    );
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Unknown Sensor",
+        "unitType" => "firstUnit",
+        "storageUnit" => 'firstUnit',
+        "extraText" => array(),
+        "extraDefault" => array(0,1,2,3,4,5,6,7),
+        "maxDecimals" => 2,
+    );
+    /** @var object This is where we store our configuration */
+    protected $unitTypeValues = array("b");
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("j");
+    /**
+    * Gets the extra values
+    *
+    * @param array $index The extra index to use
+    *
+    * @return mixed the extra value
+    */
+    public function getExtra($index)
+    {
+        return parent::getExtra($index);
+    }
+    /**
+    * Gets the direction from a direction sensor made out of a POT.
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *
+    * @return float The direction in degrees
+    */
+    public function getReading($A, $deltaT = 0)
+    {
+        return $A;
+    }
+}
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2010 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TestDeviceSensor3 extends DeviceSensorBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "testSensor",
+        "Type" => "sensor",
+        "Class" => "TestSensor",
+        "Sensors" => array(),
+    );
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Unknown Sensor",
+        "unitType" => "moreUnit",
+        "storageUnit" => 'moreUnit',
+        "extraText" => array(),
+        "extraDefault" => array(0,1,2,3,4,5,6,7),
+        "maxDecimals" => 2,
+    );
+    /** @var object This is where we store our configuration */
+    protected $unitTypeValues = array("b");
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
     /**

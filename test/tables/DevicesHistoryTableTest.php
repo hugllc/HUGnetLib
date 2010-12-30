@@ -427,12 +427,12 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         0 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         1 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         2 => array(
                             "id" => 2,
@@ -441,16 +441,16 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         3 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         4 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         5 => array(
                             "id" => 2,
-                            "type" => "BCTherm2322640"
+                            "type" => "BCTherm2322640",
                         ),
                     ),
                     "params" => array(
@@ -510,12 +510,12 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         0 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         1 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         2 => array(
                             "id" => 2,
@@ -524,12 +524,12 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         3 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         4 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),
@@ -560,12 +560,12 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         0 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         1 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         2 => array(
                             "id" => 2,
@@ -574,12 +574,12 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         3 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "V"
+                            "decimals" => 0,
                         ),
                         4 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
-                            "units" => "mA"
+                            "decimals" => 0,
                         ),
                         5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),

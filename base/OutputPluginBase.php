@@ -60,24 +60,66 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     /**
     * Disconnects from the database
     *
-    * @param array $output The array to output
+    * @param array $params The parameter array
+    * @param array $header The header to use.  This defines the data shown
     */
-    public function __construct(&$output = null)
+    public function __construct($params = null, $header = null)
     {
-        $this->setOutput($output);
+        $this->setParams($params);
+        $this->setHeader($header);
     }
     /**
     * This function implements the output before the data
     *
-    * @param array $output The array to output
+    * @param array $header The array to define the output
+    *
+    * @return String the text to output
+    */
+    public function setHeader($header)
+    {
+        if (is_array($header) && empty($this->header)) {
+            $this->header = $header;
+        }
+    }
+    /**
+    * This function implements the output before the data
+    *
+    * @param array $params the parameter array to save
     * 
     * @return String the text to output
     */
-    protected function setOutput($output)
+    protected function setParams($params)
     {
-        if (!is_null($output)) {
-            $this->output = $output;
+        if (is_array($params)) {
+            foreach ($params as $key => $val) {
+                $this->setParam($key, $val);
+            }
         }
+    }
+    /**
+    * This function implements the output before the data
+    *
+    * @param string $name The name of the variable
+    * @param mixed  $val  The value to set
+    *
+    * @return String the text to output
+    */
+    protected function setParam($name, $val)
+    {
+        if (isset($this->params[$name])) {
+            $this->params[$name] = $val;
+        }
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param bool $default Return items set to their default?
+    *
+    * @return string
+    */
+    public function toString($default = true)
+    {
+        return $this->pre().$this->body().$this->post();
     }
 
     /**
@@ -93,23 +135,11 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     /**
     * This function implements the output before the data
     *
-    * @param array $output The array to output
-    *
-    * @return String the text to output
-    */
-    public function row($output = null)
-    {
-        $this->setOutput($output);
-        $this->toString();
-    }
-    /**
-    * This function implements the output before the data
-    *
     * @return String the text to output
     */
     public function pre()
     {
-        $this->text .= "pre";
+        return "pre";
     }
     /**
     * This function implements the output after the data
@@ -118,9 +148,8 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     */
     public function post()
     {
-        $this->text .= "post";
+        return "post";
     }
-
 
 }
 ?>

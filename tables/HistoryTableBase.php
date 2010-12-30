@@ -133,6 +133,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     protected $default = array(
         "group" => "default",    // Server group to use
         "raw" => array(),
+        "converted" => false,    //  Says whether the unit conversion has been done
     );
     /** @var This is the dataset */
     public $datacols = 15;
@@ -232,13 +233,14 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     public function toOutput($cols = null)
     {
-        if (is_a($this->device, "DeviceContainer")) {
+        if (is_a($this->device, "DeviceContainer") && !$this->converted) {
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
                 $this->device->sensors->sensor($i)->convertUnits(
                     $this->data[$col]
                 );
             }
+            $this->converted = true;
         }
         return parent::toOutput($cols);
     }

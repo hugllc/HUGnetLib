@@ -36,9 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/UnitsBase.php";
-// Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once dirname(__FILE__)."/../../base/OutputPluginBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,63 +51,79 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test2Units extends UnitsBase
+class CSVListOutput extends OutputPluginBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test2Units",
-        "Type" => "Units",
-        "Class" => "Test2Units",
-        "Flags" => array("moreUnit", "DEFAULT"),
+        "Name" => "CSVListOutput",
+        "Type" => "output",
+        "Class" => "CSVListOutput",
+        "Flags" => array("CSVList"),
     );
-
+    /** @var  These are the graph colors that will be used, in order */
+    public $params = array(
+        "separator" => ",",
+        "eol" => "\r\n",
+    );
+    /** @var This is where our text is stored */
+    protected $text = "";
     /**
-    * Sets everything up
+    * Returns the object as a string
     *
-    * @param array $data The data to start with
+    * @param array $array The data array for the row
     *
-    * @return null
+    * @return string
     */
-    public function __construct($data)
+    public function row($array = array())
     {
-        parent::__construct($data);
-    }
-
-    /**
-    * Does the actual conversion
-    *
-    * @param mixed  &$data The data to convert
-    * @param string $to    The units to convert to
-    * @param string $from  The units to convert from
-    *
-    * @return mixed The value returned
-    */
-    public function convert(&$data, $to=null, $from=null)
-    {
-        if (($to == "moreUnit") && ($from == "otherUnit")) {
-            $data = $data / 3;
-        } else if (($to == "otherUnit") && ($from == "moreUnit")) {
-            $data = $data * 3;
-        } else if (($to == "thirdUnit") && ($from == "moreUnit")) {
-            $data = $data / 3;
-        } else {
-            return false;
+        $sep = "";
+        foreach (array_keys((array)$this->header) as $key) {
+            $value = $array[$key];
+            if (!is_numeric($value)) {
+                $value = '"'.strip_tags($value).'"';
+            }
+            $this->text .= $sep.html_entity_decode($value, ENT_COMPAT, "UTF-8");
+            $sep = $this->params["separator"];
         }
-        return true;
+        $this->text .= $this->params["eol"];
     }
 
     /**
-    * Checks to see if units are valid
+    * This function implements the output before the data
     *
-    * @param string $units The units to check for validity
-    *
-    * @return mixed The value returned
+    * @return String the text to output
     */
-    public function valid($units)
+    public function pre()
     {
-        return true;
+        return "";
     }
-
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function post()
+    {
+        return "";
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param array $array The array of header information.
+    *
+    * @return string
+    */
+    public function header($array = array())
+    {
+        $sep = "";
+        $this->setHeader($array);
+        foreach ($this->header as $key => $val) {
+            $val = '"'.strip_tags($val).'"';
+            $this->text .= $sep.html_entity_decode($val, ENT_COMPAT, "UTF-8");
+            $sep = $this->params["separator"];
+        }
+        $this->text .= $this->params["eol"];
+    }
 
 }
 ?>

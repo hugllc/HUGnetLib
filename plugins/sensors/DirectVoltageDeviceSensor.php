@@ -75,6 +75,7 @@ class DirectVoltageDeviceSensor extends VoltageDeviceSensorBase
             "AtoD Ref Voltage"
         ),
         "extraDefault" => array(5),
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database

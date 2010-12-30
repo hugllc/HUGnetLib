@@ -100,9 +100,9 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array("1" => "2"),
+                array("p1" => "2"),
                 array(
-                    "output" => array("1" => "2"),
+                    "params" => array("p1" => "2", "p2" => "there"),
                 ),
             ),
         );
@@ -130,17 +130,13 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function dataRow()
+    public static function dataBody()
     {
         return array(
             array(
                 array(),
+                array("1" => "head"),
                 array("1" => "2"),
-                "Array\n(\n    [1] => 2\n)\n",
-            ),
-            array(
-                array("1" => "2"),
-                null,
                 "Array\n(\n    [1] => 2\n)\n",
             ),
         );
@@ -149,18 +145,55 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     * test Row()
     *
     * @param array  $preload the stuff to preload into the plugin
+    * @param array  $header  The output header to use
     * @param array  $output  The output to load into the plugin
     * @param string $expect  The value to expect
     *
     * @return null
     *
-    * @dataProvider dataRow
+    * @dataProvider dataBody
     */
-    public function testRow($preload, $output, $expect)
+    public function testBody($preload, $header, $output, $expect)
     {
-        $this->o = new OutputPluginBaseTestClass($preload);
+        $this->o = new OutputPluginBaseTestClass($preload, $header);
         $this->o->row($output);
-        $this->assertSame($expect, $this->o->body());
+        $body = $this->o->body();
+        $this->assertSame($expect, $body);
+    }
+    /**
+     * Data provider for test2String
+     *
+     * @return array
+     */
+    public static function data2String()
+    {
+        return array(
+            array(
+                array(),
+                array("1" => "head"),
+                array("1" => "2"),
+                "preArray\n(\n    [1] => 2\n)\npost",
+            ),
+        );
+    }
+    /**
+    * test Row()
+    *
+    * @param array  $preload the stuff to preload into the plugin
+    * @param array  $header  The output header to use
+    * @param array  $output  The output to load into the plugin
+    * @param string $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider data2String
+    */
+    public function test2String($preload, $header, $output, $expect)
+    {
+        $this->o = new OutputPluginBaseTestClass($preload, $header);
+        $this->o->row($output);
+        $body = $this->o->toString();
+        $this->assertSame($expect, $body);
     }
 
     /**
@@ -170,8 +203,7 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testPre()
     {
-        $this->o->pre();
-        $this->assertSame("pre", $this->o->body());
+        $this->assertSame("pre", $this->o->pre());
     }
 
     /**
@@ -181,8 +213,7 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testPost()
     {
-        $this->o->post();
-        $this->assertSame("post", $this->o->body());
+        $this->assertSame("post", $this->o->post());
     }
 
 }
@@ -200,16 +231,21 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
 */
 class OutputPluginBaseTestClass extends OutputPluginBase
 {
+    /** @var  These are the graph colors that will be used, in order */
+    public $params = array(
+        "p1" => "hello",
+        "p2" => "there",
+    );
     /**
     * Returns the object as a string
     *
-    * @param bool $default Return items set to their default?
+    * @param array $array The array of header information.
     *
     * @return string
     */
-    public function toString($default = true)
+    public function row($array = array())
     {
-        $this->text .= print_r($this->output, true);
+        $this->text .= print_r($array, true);
     }
 
     /**

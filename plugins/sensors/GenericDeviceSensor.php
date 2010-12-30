@@ -72,7 +72,6 @@ class GenericDeviceSensor extends DeviceSensorBase
         "units" => "",                   // The units to put the data into by default
         "rawCalibration" => "",          // The raw calibration string
         "longName" => "Unknown Sensor",
-        "unitType" => "unknown",
         "units" => 'unknown',
         "extraText" => array(),
         "extraDefault" => array(),
@@ -82,6 +81,7 @@ class GenericDeviceSensor extends DeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
+        "unitType" => "Generic",
     );
 
     /**
@@ -125,17 +125,6 @@ class GenericDeviceSensor extends DeviceSensorBase
     protected function setUnits($value)
     {
         $this->data["units"] = (string)$value;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = (string)$value;
     }
     /**
     * function to set type

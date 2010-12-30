@@ -1403,6 +1403,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "raw" => array(),
+                    "converted" => false,
                     "id" => 51,
                     "Date" => 1234567890,
                     "deltaT" => 12,
@@ -1454,6 +1455,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "group" => "default",
                     "raw" => array(),
+                    "converted" => false,
                     "id" => 51,
                     "Date" => 1234567890,
                     "deltaT" => 12,
@@ -1535,6 +1537,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "raw" => array(
                         null,null,null,null,null
                     ),
+                    "converted" => false,
                     "id" => 385,
                     "Date" => 1281389816,
                     "deltaT" => 593,

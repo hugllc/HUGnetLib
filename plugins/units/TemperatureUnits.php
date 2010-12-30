@@ -62,6 +62,8 @@ class TemperatureUnits extends UnitsBase
     public $to = "&#176;F";
     /** @var The type of this point */
     public $from = "&#176;C";
+    /** @var The units that are valid for conversion */
+    protected $valid = array("&#176;F", "&#176;C");
 
     /**
     * Does the actual conversion

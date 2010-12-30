@@ -37,7 +37,7 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/output/HTMLListOutput.php';
+require_once dirname(__FILE__).'/../../../plugins/output/JPGraphListOutput.php';
 require_once dirname(__FILE__).'/OutputPluginTestBase.php';
 
 /**
@@ -53,7 +53,7 @@ require_once dirname(__FILE__).'/OutputPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class HTMLListOutputTest extends OutputPluginTestBase
+class JPGraphListOutputTest extends OutputPluginTestBase
 {
 
     /**
@@ -89,45 +89,35 @@ class HTMLListOutputTest extends OutputPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("HTMLListOutput"),
+            array("JPGraphListOutput"),
         );
     }
 
     /**
-    * Data provider for testRow
+    * Data provider for test2string
     *
     * @return array
     */
-    public static function dataRow()
+    public static function dataBody()
     {
         return array(
-            array(
-                array(),
-                array(),
-                "    <tr>\n    </tr>\n",
-            ),
-            array(
-                array("a" => 5, "b" => 6),
-                array("a" => 1, "b" => 2),
-                "    <tr>\n        <td>1</td>\n        <td>2</td>\n    </tr>\n",
-            ),
         );
     }
     /**
     * Tests for verbosity
     *
     * @param array $preload The array to preload into the class
-    * @param mixed $row     The row to use
+    * @param mixed $default Load default values
     * @param array $expect  The expected return
     *
-    * @dataProvider dataRow
+    * @dataProvider dataBody
     *
     * @return null
     */
-    public function testRow($preload, $row, $expect)
+    public function testBody($preload, $default, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
-        $o->row($row);
+        $o = new JPGraphListOutput($preload);
+        $o->row($default);
         $this->assertSame($expect, $o->body());
     }
 
@@ -140,19 +130,19 @@ class HTMLListOutputTest extends OutputPluginTestBase
     {
         return array(
             array(
-                array("a" => "a", "b" => "b"),
                 array(),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                array("a" => "First"),
+                array("a" => "First"),
             ),
             array(
-                array("a" => "a", "b" => "b"),
                 array("a" => 1, "b" => 2),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                array(),
+                array("a" => 1, "b" => 2),
             ),
             array(
-                array(),
-                array("a" => "q", "b" => "b"),
-                "    <tr>\n        <th>q</th>\n        <th>b</th>\n    </tr>\n",
+                array("a" => 1, "b" => 2),
+                array("a" => "q"),
+                array("a" => 1, "b" => 2),
             ),
         );
     }
@@ -169,9 +159,9 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testHeader($preload, $array, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
+        $o = new JPGraphListOutput(null, $preload);
         $o->header($array);
-        $this->assertSame($expect, $o->body());
+        $this->assertAttributeSame($expect, "header", $o);
     }
 
     /**
@@ -184,7 +174,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
         return array(
             array(
                 array(),
-                "<table>\n",
+                "",
             ),
         );
     }
@@ -200,7 +190,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testPre($preload, $expect)
     {
-        $o = new HTMLListOutput($preload);
+        $o = new JPGraphListOutput($preload);
         $this->assertSame($expect, $o->pre());
     }
 
@@ -214,7 +204,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
         return array(
             array(
                 array(),
-                "</table>\n",
+                "",
             ),
         );
     }
@@ -230,7 +220,7 @@ class HTMLListOutputTest extends OutputPluginTestBase
     */
     public function testPost($preload, $expect)
     {
-        $o = new HTMLListOutput($preload);
+        $o = new JPGraphListOutput($preload);
         $this->assertSame($expect, $o->post());
     }
 

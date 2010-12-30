@@ -68,7 +68,7 @@ class IndirectVoltageDeviceSensor extends VoltageDeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Indirect Board Voltage Sensor",
+        "longName" => "Indirect Voltage Sensor",
         "unitType" => "Voltage",
         "storageUnit" => 'V',
         "extraText" => array(
@@ -77,6 +77,7 @@ class IndirectVoltageDeviceSensor extends VoltageDeviceSensorBase
             "AtoD Ref Voltage"
         ),
         "extraDefault" => array(150, 10, 5),
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database

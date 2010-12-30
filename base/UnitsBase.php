@@ -68,6 +68,9 @@ abstract class UnitsBase extends HUGnetClass implements UnitsInterface
     /** @var The original values given to us */
     protected $type = self::TYPE_RAW;
 
+    /** @var The units that are valid for conversion */
+    protected $valid = array();
+    
     /**
     * Sets everything up
     *
@@ -107,6 +110,18 @@ abstract class UnitsBase extends HUGnetClass implements UnitsInterface
         } else {
             return false;
         }
+    }
+
+    /**
+    * Checks to see if units are valid
+    *
+    * @param string $units The units to check for validity
+    *
+    * @return mixed The value returned
+    */
+    public function valid($units)
+    {
+        return in_array($units, (array)$this->valid);
     }
 
 }

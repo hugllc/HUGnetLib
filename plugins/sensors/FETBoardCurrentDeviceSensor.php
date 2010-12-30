@@ -76,6 +76,7 @@ class FETBoardCurrentDeviceSensor extends CurrentDeviceSensorBase
             "Gain"
         ),
         "extraDefault" => array(0.5, 1),
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database
