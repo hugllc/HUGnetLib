@@ -1390,6 +1390,54 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputParams()
+    {
+        return array(
+            array(
+                array(),
+                "a",
+                null,
+                array(
+                    "b" => "b",
+                ),
+            ),
+            array(
+                array(),
+                "b",
+                array(),
+                array(
+                    "a" => "a",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $type    The output type
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputParams
+    */
+    public function testOutputParams($preload, $type, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->outputParams($type, $cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
     /**
     * data provider for testDeviceID
@@ -1599,6 +1647,11 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
         "id" => "First Column",
         "myDate" => "Next One",
         "myOtherDate" => "Skipped One",
+    );
+    /** @var This is the output parameters */
+    protected $outputParams = array(
+        "a" => array("b" => "b"),
+        "b" => array("a" => "a"),
     );
     /**
     * function to set To

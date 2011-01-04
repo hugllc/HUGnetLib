@@ -413,7 +413,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "id" => 2,
                         "type" => "",
                         "dataType" => UnitsBase::TYPE_RAW,
-                        "units" => "testUnit",
+                        "units" => "firstUnit",
                     ),
                 ),
                 array(

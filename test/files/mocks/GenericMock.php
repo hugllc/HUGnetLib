@@ -25,56 +25,58 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interfaces
+ * @category   Test
  * @package    HUGnetLib
  * @subpackage Endpoints
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+// Need to make sure this file is not added to the code coverage
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Interfaces
+ * @category   Mocks
  * @package    HUGnetLib
  * @subpackage Database
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2010 Hunt Utilities Group, LLC
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface OutputInterface
+class GenericMock
 {
+    /** @var array This saves all of the calls to functions */
+    public $calls = array();
+    /** @var array This saves all of the calls to functions */
+    public $construct = array();
+    
     /**
-    * There should only be a single instance of this class
+    * Build everything
     *
-    * @param array $cols The columns to get
-    *
-    * @return array
+    * @param array $config The configuration array.
     */
-    public function toOutput($cols = null);
+    public function __construct()
+    {
+        $this->construct = func_get_args();
+    }
     /**
-    * There should only be a single instance of this class
+    * Tries to run a function defined by what is called..
     *
-    * @param array $cols The columns to get
+    * @param string $name The name of the function to call
+    * @param array  $args The array of arguments
     *
-    * @return array
+    * @return mixed
     */
-    public function toOutputHeader($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param string $type The output plugin type
-    * @param array  $cols The columns to get
-    *
-    * @return array
-    */
-    public function outputParams($type, $cols = null);
-
+    public function __call($name, $args)
+    {
+        $this->calls[$name][] = $args;
+    }
 }
-?>

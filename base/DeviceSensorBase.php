@@ -230,12 +230,16 @@ abstract class DeviceSensorBase extends HUGnetContainer
     public function convertUnits(&$data)
     {
         $this->setupUnits();
-        $ret = $this->unitConvert->convert($data, $this->units, $this->storageUnit);
-        if ($ret === false) {
-            $this->units = $this->storageUnit;
-        }
-        if (is_numeric($data)) {
-            $data = round($data, (int)$this->decimals);
+        if (!is_null($data)) {
+            $ret = $this->unitConvert->convert($data, $this->units, $this->storageUnit);
+            if ($ret === false) {
+                $this->units = $this->storageUnit;
+            }
+            if (is_numeric($data)) {
+                $data = round($data, (int)$this->decimals);
+            }
+        } else {
+            $ret = true;
         }
         return $ret;
     }

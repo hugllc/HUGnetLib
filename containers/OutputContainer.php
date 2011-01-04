@@ -60,6 +60,7 @@ class OutputContainer extends HUGnetContainer
     protected $default = array(
         "type" => "DEFAULT",
         "iterate" => true,
+        "params" => array(),
     );
     /** @var object The data container class */
     public $container = null;
@@ -116,7 +117,11 @@ class OutputContainer extends HUGnetContainer
         }
         $class = $this->getPlugin();
         $this->throwException("No default 'output' plugin found", -6, empty($class));
-        $out  = new $class($this->toArray());
+        $params = array_merge(
+            $this->container->outputParams($this->type),
+            $this->params
+        );
+        $out  = new $class($params);
         $out->header($this->container->toOutputHeader());
         do {
             $out->row($this->toArray());
@@ -133,7 +138,6 @@ class OutputContainer extends HUGnetContainer
     */
     protected function getPlugin()
     {
-        $this->myConfig->plugins->verbose(10);
         $driver = $this->myConfig->plugins->getPlugin(
             "output", $this->type
         );

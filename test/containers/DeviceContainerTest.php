@@ -1605,8 +1605,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Date" => "Date",
-                    "Data0" => "Sensor 1 (testUnit)",
-                    "Data1" => "Sensor 2 (testUnit)",
+                    "Data0" => "Sensor 1 (firstUnit)",
+                    "Data1" => "Sensor 2 (firstUnit)",
                 ),
             ),
             array(
@@ -1643,7 +1643,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Date" => "Date",
-                    "Data1" => "Hello (testUnit)",
+                    "Data1" => "Hello (firstUnit)",
                 ),
             ),
         );

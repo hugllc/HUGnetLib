@@ -85,6 +85,7 @@ class Test1Sensor extends DeviceSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->default["units"] = "firstUnit";
         parent::__construct($data, $device);
     }
     /**

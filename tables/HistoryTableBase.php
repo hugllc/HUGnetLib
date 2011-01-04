@@ -141,7 +141,18 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public $raw = array();
     /** @var This is the  raw data for differential mode */
     public $device = null;
-
+    /** @var This is the output parameters */
+    protected $outputParams = array(
+        "JPGraphDatLin" => array(
+            "units" => array(1 => "", 2 => ""),
+            "unitTypes" => array(1 => "", 2 => ""),
+            "dateField" => "Date",
+            "fields" => array(
+                1 => array(),
+                2 => array(),
+            ),
+        ),
+    );
     /**
     * This is the constructor
     *
@@ -243,6 +254,42 @@ abstract class HistoryTableBase extends HUGnetDBTable
             $this->converted = true;
         }
         return parent::toOutput($cols);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        if (is_a($this->device, "DeviceContainer")) {
+            $params = &$this->outputParams["JPGraphDatLin"];
+            $cols = $this->getOutputCols($cols);
+            foreach ($cols as $col) {
+                if (substr($col,0, 4) == "Data") {
+                    $key = (int)substr($col, 4);
+                    $units = $this->device->sensors->sensor($key)->units;
+                    $unitType = $this->device->sensors->sensor($key)->unitType;
+                    if ($units == $params["units"][1]) {
+                        $params["fields"][1][] = $col;
+                    } else if ($units == $params["units"][2]) {
+                        $params["fields"][2][] = $col;
+                    } else if (empty($params["units"][1])) {
+                        $params["units"][1] = $units;
+                        $params["unitTypes"][1] = $unitType;
+                        $params["fields"][1][] = $col;
+                    } else if (empty($params["units"][2])) {
+                        $params["units"][2] = $units;
+                        $params["unitTypes"][2] = $unitType;
+                        $params["fields"][2][] = $col;
+                    }
+                }
+            }
+        }
+        return parent::outputParams($type, $cols);
     }
     /******************************************************************
      ******************************************************************

@@ -62,10 +62,19 @@ class HTMLListOutput extends OutputPluginBase
     );
     /** @var  These are the graph colors that will be used, in order */
     public $params = array(
-        "rowStyle" => array("", ""),
+        "tableStyle" => "",
+        "rowStyle" => array('class="row1"', 'class="row2"'),
         "headerRowStyle" => "",
-        
+        "dataStyle" => array(
+            0 => array(),
+            1 => array(),
+            "DEFAULT" => 'align="center"'
+        ),
+        "headerStyle" => array("DEFAULT" => 'align="center"'),
+        "headerTag" => "th",
     );
+    /** @var This is the row index.  It oscilates between 0 and 1. */
+    private $_row = 1;
 
     /**
     * Returns the object as a string
@@ -76,9 +85,12 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function row($array = array())
     {
-        $this->text  .= "    <tr>\n";
+        $this->_row = 1 - $this->_row;
+        $this->text .= "    <tr ".$this->params["rowStyle"][$this->_row].">\n";
         foreach (array_keys((array)$this->header) as $key) {
-            $this->text .= "        <td>".$array[$key]."</td>\n";
+            $this->text .= "        <td ".$this->_dataStyle($key).">";
+            $this->text .= $array[$key];
+            $this->text .= "</td>\n";
         }
         $this->text  .= "    </tr>\n";
     }
@@ -90,7 +102,7 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function pre()
     {
-        $text = "<table>\n";
+        $text = "<table ".$this->params["tableStyle"].">\n";
         return $text;
     }
     /**
@@ -112,12 +124,48 @@ class HTMLListOutput extends OutputPluginBase
     */
     public function header($array = array())
     {
-        $this->text  .= "    <tr>\n";
+        $this->text .= "    <tr ".$this->params["headerRowStyle"].">\n";
         $this->setHeader($array);
         foreach ($this->header as $key => $val) {
-            $this->text .= "        <th>".$val."</th>\n";
+            $this->text .= "        <".$this->params["headerTag"];
+            $this->text .= " ".$this->_headerStyle($key).">";
+            $this->text .= $val;
+            $this->text .= "</".$this->params["headerTag"].">\n";
         }
         $this->text  .= "    </tr>\n";
+    }
+
+    /**
+    * This function implements the output after the data
+    *
+    * @param string $field The data field to have the style for
+    *
+    * @return String the text to output
+    */
+    private function _dataStyle($field)
+    {
+        if (isset($this->params["dataStyle"][$this->_row][$field])) {
+            return $this->params["dataStyle"][$this->_row][$field];
+        } else if (isset($this->params["dataStyle"][$this->_row]["DEFAULT"])) {
+            return $this->params["dataStyle"][$this->_row]["DEFAULT"];
+        } else if (isset($this->params["dataStyle"][$field])) {
+            return $this->params["dataStyle"][$field];
+        }
+        return $this->params["dataStyle"]["DEFAULT"];
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @param string $field The data field to have the style for
+    *
+    * @return String the text to output
+    */
+    private function _headerStyle($field)
+    {
+        if (isset($this->params["headerStyle"][$field])) {
+            return $this->params["headerStyle"][$field];
+        }
+        return $this->params["headerStyle"]["DEFAULT"];
     }
 
 }

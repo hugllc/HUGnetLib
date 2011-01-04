@@ -68,6 +68,10 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     protected function setUp()
     {
         $config = array(
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
+            ),
+
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -742,21 +746,21 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "id"  => 41,
                     "Date"   => "2003-02-28 01:59:00",
                     "deltaT"  => 5.2,
-                    "Data0"  => 0,
-                    "Data1"  => 1,
-                    "Data2"  => 2,
-                    "Data3"  => 3,
-                    "Data4"  => 4,
-                    "Data5"  => 5,
-                    "Data6"  => 6,
-                    "Data7"  => 7,
-                    "Data8"  => 8,
-                    "Data9"  => 9,
-                    "Data10"  => 10,
-                    "Data11"  => 11,
-                    "Data12"  => 12,
-                    "Data13"  => 13,
-                    "Data14"  => 14,
+                    "Data0"  => 2,
+                    "Data1"  => 4,
+                    "Data2"  => 6,
+                    "Data3"  => 8,
+                    "Data4"  => 10,
+                    "Data5"  => 12,
+                    "Data6"  => 14,
+                    "Data7"  => 16,
+                    "Data8"  => 18,
+                    "Data9"  => 20,
+                    "Data10"  => 22,
+                    "Data11"  => 24,
+                    "Data12"  => 26,
+                    "Data13"  => 28,
+                    "Data14"  => 30,
 
                 ),
                 array("id", "Date", "Data0", "Data1", "Data2"),
@@ -764,9 +768,9 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "id"  => "41",
                     "Date"   => "2003-02-27 19:59:00",
-                    "Data0"  => "32",
-                    "Data1"  => "33.8",
-                    "Data2"  => "35.6",
+                    "Data0"  => "1",
+                    "Data1"  => "2",
+                    "Data2"  => "3",
                 ),
             ),
         );
@@ -793,6 +797,109 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
             $this->o->device = new DeviceContainer($device);
         }
         $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputParams()
+    {
+        return array(
+            array(
+                array(),
+                "JPGraphDatLin",
+                null,
+                array(),
+                array(
+                    "units" => array(
+                        1 => "firstUnit",
+                        2 => "",
+                    ),
+                    "unitTypes" => array(
+                        1 => "firstUnit",
+                        2 => "",
+                    ),
+                    "dateField" => "Date",
+                    "fields" => array(
+                        1 => array(
+                            0 => "Data0",
+                            1 => "Data1",
+                            2 => "Data2",
+                            3 => "Data3",
+                            4 => "Data4",
+                            5 => "Data5",
+                            6 => "Data6",
+                            7 => "Data7",
+                            8 => "Data8",
+                            9 => "Data9",
+                            10 => "Data10",
+                            11 => "Data11",
+                            12 => "Data12",
+                            13 => "Data13",
+                            14 => "Data14",
+                        ),
+                        2 => array(),
+                    )
+                ),
+            ),
+            array(
+                array(),
+                "JPGraphDatLin",
+                array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
+                array(
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        array("id" => 0),
+                        array("id" => 2),
+                        array("id" => 0),
+                        array("id" => 2),
+                    ),
+                ),
+                array(
+                    "units" => array(
+                        1 => "firstUnit",
+                        2 => "anotherUnit",
+                    ),
+                    "unitTypes" => array(
+                        1 => "firstUnit",
+                        2 => "secondUnit",
+                    ),
+                    "dateField" => "Date",
+                    "fields" => array(
+                        1 => array("Data0", "Data2"),
+                        2 => array("Data1", "Data3"),
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $type    The output type
+    * @param array  $cols    The columns to use
+    * @param array  $device  The device to use.  None if null
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputParams
+    */
+    public function testOutputParams($preload, $type, $cols, $device, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $ret = $this->o->outputParams($type, $cols);
         $this->assertSame(
             $expect,
             $ret

@@ -347,6 +347,14 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 true,
                 "testUnit",
             ),
+            array(
+                array(
+                ),
+                null,
+                null,
+                true,
+                "testUnit",
+            ),
         );
     }
 

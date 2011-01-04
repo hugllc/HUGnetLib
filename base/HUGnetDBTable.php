@@ -132,6 +132,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     );
     /** @var This is the date field for this record */
     public $dateField = null;
+    /** @var This is the output parameters */
+    protected $outputParams = array();
 
     /**
     * This is the constructor
@@ -539,7 +541,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return array
     */
-    public function toOutput($cols = null)
+    protected function getOutputCols($cols = null)
     {
         if (!is_array($cols) || empty($cols)) {
             if (empty($this->labels)) {
@@ -548,6 +550,18 @@ abstract class HUGnetDBTable extends HUGnetContainer
                 $cols = array_keys($this->labels);
             }
         }
+        return $cols;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $cols = $this->getOutputCols($cols);
         $ret = array();
         foreach ($cols as $col) {
             if ($col == $this->dateField) {
@@ -584,6 +598,19 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         return $ret;
     }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        return (array)$this->outputParams[$type];
+    }
+    
     /**
     * This sets the labels, or gets them if no argument
     *

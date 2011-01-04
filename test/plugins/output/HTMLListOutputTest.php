@@ -104,18 +104,42 @@ class HTMLListOutputTest extends OutputPluginTestBase
             array(
                 array(),
                 array(),
-                "    <tr>\n    </tr>\n",
+                array(array()),
+                "    <tr class=\"row1\">\n    </tr>\n",
             ),
             array(
-                array("a" => 5, "b" => 6),
-                array("a" => 1, "b" => 2),
-                "    <tr>\n        <td>1</td>\n        <td>2</td>\n    </tr>\n",
+                array(
+                    "rowStyle" => array('class="row3"', 'class="row4"'),
+                    "dataStyle" => array(
+                        array("a" => 'class="hello1"'),
+                        array("DEFAULT" => 'class="hello2"'),
+                        "b" => 'class="there"',
+                        "DEFAULT" => 'class="world"',
+                    ),
+                ),
+                array("a" => 5, "b" => 6, "c" => 1),
+                array(
+                    array("a" => 1, "b" => 2, "c" => 3),
+                    array("a" => 3, "b" => 4, "c" => 5),
+                ),
+                "    <tr class=\"row3\">
+        <td class=\"hello1\">1</td>
+        <td class=\"there\">2</td>
+        <td class=\"world\">3</td>
+    </tr>
+    <tr class=\"row4\">
+        <td class=\"hello2\">3</td>
+        <td class=\"hello2\">4</td>
+        <td class=\"hello2\">5</td>
+    </tr>
+"
             ),
         );
     }
     /**
     * Tests for verbosity
     *
+    * @param array $params  The parameters to use
     * @param array $preload The array to preload into the class
     * @param mixed $row     The row to use
     * @param array $expect  The expected return
@@ -124,10 +148,12 @@ class HTMLListOutputTest extends OutputPluginTestBase
     *
     * @return null
     */
-    public function testRow($preload, $row, $expect)
+    public function testRow($params, $preload, $row, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
-        $o->row($row);
+        $o = new HTMLListOutput($params, $preload);
+        foreach ($row as $r) {
+            $o->row($r);
+        }
         $this->assertSame($expect, $o->body());
     }
 
@@ -140,25 +166,46 @@ class HTMLListOutputTest extends OutputPluginTestBase
     {
         return array(
             array(
+                array(),
                 array("a" => "a", "b" => "b"),
                 array(),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                "    <tr >
+        <th align=\"center\">a</th>
+        <th align=\"center\">b</th>
+    </tr>
+",
             ),
             array(
+                array(
+                    "headerStyle" => array(
+                        "a" => 'align="left"',
+                        "DEFAULT" => 'align="center"'
+                    ),
+                ),
                 array("a" => "a", "b" => "b"),
                 array("a" => 1, "b" => 2),
-                "    <tr>\n        <th>a</th>\n        <th>b</th>\n    </tr>\n",
+                "    <tr >
+        <th align=\"left\">a</th>
+        <th align=\"center\">b</th>
+    </tr>
+",
             ),
             array(
                 array(),
+                array(),
                 array("a" => "q", "b" => "b"),
-                "    <tr>\n        <th>q</th>\n        <th>b</th>\n    </tr>\n",
+                "    <tr >
+        <th align=\"center\">q</th>
+        <th align=\"center\">b</th>
+    </tr>
+",
             ),
         );
     }
     /**
     * Tests for verbosity
     *
+    * @param array $params  The parameters to use
     * @param array $preload The array to preload into the class
     * @param mixed $array   The array to feed the header
     * @param array $expect  The expected return
@@ -167,9 +214,9 @@ class HTMLListOutputTest extends OutputPluginTestBase
     *
     * @return null
     */
-    public function testHeader($preload, $array, $expect)
+    public function testHeader($params, $preload, $array, $expect)
     {
-        $o = new HTMLListOutput(null, $preload);
+        $o = new HTMLListOutput($params, $preload);
         $o->header($array);
         $this->assertSame($expect, $o->body());
     }
@@ -184,7 +231,11 @@ class HTMLListOutputTest extends OutputPluginTestBase
         return array(
             array(
                 array(),
-                "<table>\n",
+                "<table >\n",
+            ),
+            array(
+                array("tableStyle" => 'class="hello"'),
+                "<table class=\"hello\">\n",
             ),
         );
     }
