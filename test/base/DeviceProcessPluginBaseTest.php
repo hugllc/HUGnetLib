@@ -97,26 +97,40 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
-            array(array("verbose" => 12), array("verbose" => 12)),
-            array(array(), array("verbose" => 0)),
+            array(
+                array("verbose" => 12),
+                array("verbose" => 12),
+                array("enable" => true, "this" => "that"),
+            ),
+            array(
+                array(),
+                array("verbose" => 0),
+                array("enable" => true, "this" => "that"),
+            ),
         );
     }
     /**
     * test
     *
-    * @param array $config The configuration to use
-    * @param array $expect Associative array of properties to check
+    * @param array $config    The configuration to use
+    * @param array $expect    Associative array of properties to check
+    * @param array $expectCfg What the configuration should look like
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($config, $expect)
+    public function testConstructor($config, $expect, $expectCfg)
     {
         $o = new DeviceProcessPluginBaseTestStub($config, $this->p);
         foreach ($expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o);
+            $this->assertAttributeSame($value, $key, $o, "$key wrong");
         }
+        $this->assertSame(
+            $expectCfg,
+            $this->config->pluginData["DeviceProcessPluginBaseTestStub"],
+            "Config Wrong"
+        );
     }
     /**
     * Data provider for testReady
@@ -177,6 +191,11 @@ class DeviceProcessPluginBaseTestStub extends DeviceProcessPluginBase
         "Name" => "Test Stub",
         "Type" => "analysis",
         "Class" => "DeviceProcessPluginBaseTestStub",
+    );
+    /** @var This is our configuration */
+    protected $defConf = array(
+        "enable" => true,
+        "this" => "that",
     );
     /**
     * This function does the stuff in the class.
