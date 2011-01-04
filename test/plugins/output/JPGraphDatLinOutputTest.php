@@ -205,6 +205,7 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
                         ),
                     ),
                 ),
+                array(600, 500, "auto"),
             ),
             array(
                 array(
@@ -289,22 +290,24 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
                         ),
                     ),
                 ),
+                array(600, 500, "auto"),
             ),
         );
     }
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param mixed $header  The header data
-    * @param mixed $rows    The rows to add
-    * @param array $expect  The expected return
+    * @param array $preload   The array to preload into the class
+    * @param mixed $header    The header data
+    * @param mixed $rows      The rows to add
+    * @param array $expect    The expected return
+    * @param array $construct The constructor arguments
     *
     * @dataProvider dataBody
     *
     * @return null
     */
-    public function testBody($preload, $header, $rows, $expect)
+    public function testBody($preload, $header, $rows, $expect, $construct)
     {
         $o = new JPGraphDatLinOutput($preload);
         $o->header($header);
@@ -314,6 +317,7 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
         $o->body();
         $graph = $this->readAttribute($o, "graph");
         $this->assertSame($expect, $graph->calls);
+        $this->assertSame($construct, $graph->construct);
     }
 
     /**
