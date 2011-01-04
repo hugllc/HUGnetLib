@@ -66,6 +66,8 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
     protected $created = 0;
     /** @var This is when we were last run */
     protected $last = 0;
+    /** @var This is our configuration */
+    protected $conf = null;
 
     /**
     * This function sets up the driver object, and the database object.  The
@@ -82,7 +84,8 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
         $this->created = time();
         $this->control = &$obj;
         $class = get_class($this);
-        $this->enable = (boolean)$this->control->myConfig->pluginData[$class]["enable"];
+        $this->conf = &$this->control->myConfig->pluginData[$class];
+        $this->enable = (boolean)$this->conf["enable"];
     }
     /**
     * This function does the stuff in the class.
