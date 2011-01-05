@@ -67,7 +67,6 @@ class Graph extends GenericMock
     /**
     * Build everything
     *
-    * @param array $config The configuration array.
     */
     public function __construct()
     {
@@ -82,11 +81,9 @@ class Graph extends GenericMock
     /**
     * Build everything
     *
-    * @param array $config The configuration array.
-    *
     * @return None
     */
-    public function Stroke()
+    public function stroke()
     {
         foreach ($this->subs as $sub) {
             $this->calls[$sub] = $this->$sub->calls;
@@ -102,7 +99,7 @@ class Graph extends GenericMock
     *
     * @return None
     */
-    public function Add(GenericMock $Line)
+    public function add(GenericMock $Line)
     {
         $this->calls["Add"][] = $Line->calls;
     }
@@ -113,7 +110,7 @@ class Graph extends GenericMock
     *
     * @return None
     */
-    public function AddY2(GenericMock $Line)
+    public function addY2(GenericMock $Line)
     {
         $this->calls["AddY2"][] = $Line->calls;
     }

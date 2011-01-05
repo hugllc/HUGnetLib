@@ -221,7 +221,10 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
         $plug = $this->readAttribute($this->o, "active");
         foreach (array_keys((array)$plug) as $k) {
             // If the return type is int then array_search found the item
-            $this->assertInternalType("int", array_search(get_class($plug[$k]), $plugins));
+            $this->assertInternalType(
+                "int",
+                array_search(get_class($plug[$k]), $plugins)
+            );
         }
     }
     /**

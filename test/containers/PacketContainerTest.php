@@ -2014,7 +2014,11 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         unset($ret["Time"]);
         // Now check the reply, if there is one
         if (is_array($ret["Reply"])) {
-            $this->assertInternalType("int", $ret["Reply"]["Date"], "Date must be an int");
+            $this->assertInternalType(
+                "int",
+                $ret["Reply"]["Date"],
+                "Date must be an int"
+            );
             if ($checkTime) {
                 $this->assertThat(
                     $ret["Reply"]["Date"],

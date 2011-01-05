@@ -81,8 +81,9 @@ class OutputContainer extends HUGnetContainer
     /**
     * This is the constructor
     *
-    * @param mixed  $data       This is an array or string to create the object from
     * @param object &$container the container to use for data
+    * 
+    * @return none
     */
     public function setContainer(&$container)
     {
@@ -130,9 +131,6 @@ class OutputContainer extends HUGnetContainer
     }
     /**
     * Creates a sensor object
-    *
-    * @param int    $id   The ID for the sensor to use
-    * @param string $type The type to check
     *
     * @return string The class for this sensor
     */

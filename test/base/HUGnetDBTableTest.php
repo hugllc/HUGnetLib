@@ -365,6 +365,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     * Tests for verbosity
     *
     * @param array $preload The array to preload into the class
+    * @param int   $start   The first date
+    * @param int   $end     The last date
     * @param mixed $key     The key to use
     * @param array $expect  The expected return
     *
@@ -406,6 +408,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     * Tests for verbosity
     *
     * @param array $preload The array to preload into the class
+    * @param int   $start   The first date
+    * @param int   $end     The last date
     * @param mixed $key     The key to use
     * @param array $expect  The expected return
     *

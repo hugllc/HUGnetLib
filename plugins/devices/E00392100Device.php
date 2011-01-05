@@ -287,12 +287,12 @@ class E00392100Device extends DeviceDriverLoadableBase
     /**
     * This decodes the senor data
     *
-    * @param string $string  The string of sensor data
-    * @param float  $deltaT  The time difference between this packet and the next
+    * @param string $string The string of sensor data
+    * @param float  $deltaT The time difference between this packet and the next
     *
     * @return null
     */
-    public function _decodeSensorData($string, $deltaT)
+    private function _decodeSensorData($string, $deltaT)
     {
         $this->myDriver->DriverInfo["TimeConstant"] = 1;
         if (!is_object($this->actualSensors)) {
@@ -330,6 +330,8 @@ class E00392100Device extends DeviceDriverLoadableBase
     }
 
     /**
+    * Decodes the sensor string
+    * 
     * @param string $string The string of sensor data
     *
     * @return null

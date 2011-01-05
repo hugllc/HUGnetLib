@@ -28,7 +28,7 @@ clean:
 
 style:
 	mkdir -p ${BASE_DIR}Documentation
-	${PHPCS} --standard=PHPCS --report=full --standard=Pear --ignore="Documentation/,JoomlaMock/,tmpl/" .
+	${PHPCS} --standard=PHPCS --report=full --standard=Pear --ignore="Documentation/,JoomlaMock/,tmpl/,old/,contrib/" .
 
 
 setup:

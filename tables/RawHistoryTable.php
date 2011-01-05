@@ -289,7 +289,7 @@ class RawHistoryTable extends HUGnetDBTable
     }
 
     /**
-    *
+    * This gets the previos record if needed
     *
     * @param int   &$lastTime This is the time of the last packet.
     * @param array &$prev     The previous records data

@@ -184,6 +184,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param string $class   The class to use
     * @param mixed  $preload The stuff to give to the constructor
     * @param string $expect  The expected data
     *
@@ -448,7 +449,7 @@ class TestDeviceSensor extends DeviceSensorBase
         "id" => 0,                      // The id of the sensor.  This is the value
                                          // Stored in the device  It will be an int
         "type" => "sensor",                    // The type of the sensors
-        "units" => "testUnit",                   // The units the values are stored in
+        "units" => "testUnit",             // The units the values are stored in
         "dataType" => "raw",             // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "rawCalibration" => "cali",          // The raw calibration string

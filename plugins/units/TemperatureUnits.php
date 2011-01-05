@@ -94,6 +94,8 @@ class TemperatureUnits extends UnitsBase
     * for an absolute temperature.  This is because it is already factored
     * out by the subtraction in the difference.
     *
+    * @param float &$data The temperature to convert
+    *
     * @return null
     */
     protected function cToF(&$data)
@@ -111,6 +113,8 @@ class TemperatureUnits extends UnitsBase
     * If the temperature is differential we can't subtract 32 like we would
     * for an absolute temperature.  This is because it is already factored
     * out by the subtraction in the difference.
+    *
+    * @param float &$data The temperature to convert
     *
     * @return null
     */

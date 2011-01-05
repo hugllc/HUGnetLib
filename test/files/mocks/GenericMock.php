@@ -61,7 +61,6 @@ class GenericMock
     /**
     * Build everything
     *
-    * @param array $config The configuration array.
     */
     public function __construct()
     {

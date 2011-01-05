@@ -74,7 +74,11 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             "Flags is not an array"
         );
         foreach ($var["Flags"] as $key => $sensor) {
-            $this->assertInternalType("string", $sensor, "Sensor $key is not a string");
+            $this->assertInternalType(
+                "string",
+                $sensor,
+                "Sensor $key is not a string"
+            );
             $this->assertRegExp(
                 "/([0-9A-F]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",
                 $sensor,

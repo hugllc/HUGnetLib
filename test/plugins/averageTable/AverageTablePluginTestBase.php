@@ -74,7 +74,11 @@ abstract class AverageTablePluginTestBase extends PluginTestBase
             "Flags is not an array"
         );
         foreach ($var["Flags"] as $key => $type) {
-            $this->assertInternalType("string", $type, "Sensor $key is not a string");
+            $this->assertInternalType(
+                "string",
+                $type,
+                "Sensor $key is not a string"
+            );
         }
     }
     /**

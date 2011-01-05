@@ -128,7 +128,8 @@ abstract class DeviceSensorBase extends HUGnetContainer
             unset($data["units"]);
         }
         if (is_null($this->default["decimals"])
-            || ($this->default["decimals"] > $this->maxDecimals)) {
+            || ($this->default["decimals"] > $this->maxDecimals)
+        ) {
             $this->default["decimals"] = (int)$this->maxDecimals;
         }
         if ($data["decimals"] > $this->maxDecimals) {
@@ -223,7 +224,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /**
     * Converts data between units
     *
-    * @param mixed  &$data The data to convert
+    * @param mixed &$data The data to convert
     *
     * @return true on success, false on failure
     */
@@ -231,7 +232,9 @@ abstract class DeviceSensorBase extends HUGnetContainer
     {
         $this->setupUnits();
         if (!is_null($data)) {
-            $ret = $this->unitConvert->convert($data, $this->units, $this->storageUnit);
+            $ret = $this->unitConvert->convert(
+                $data, $this->units, $this->storageUnit
+            );
             if ($ret === false) {
                 $this->units = $this->storageUnit;
             }

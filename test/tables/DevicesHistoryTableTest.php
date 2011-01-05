@@ -543,8 +543,9 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     /**
     * test the forceTable routine
     *
-    * @param array $preload The device to use
-    * @param mixed $expect  The expected return
+    * @param int   $id     The ID of the device to use
+    * @param int   $date   The date to use
+    * @param mixed $expect The expected return
     *
     * @return null
     *

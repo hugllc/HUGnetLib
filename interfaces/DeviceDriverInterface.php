@@ -67,6 +67,7 @@ interface DeviceDriverInterface
     */
     public function toSetupString($default = true);
     /**
+    * This decodes the data returned from the endpoint
     *
     * @param string $string  The string of sensor data
     * @param string $command The command that was used to get the data

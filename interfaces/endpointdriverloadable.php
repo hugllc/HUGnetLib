@@ -41,7 +41,6 @@
 *
 * This is for devices that new code can be loaded into.
 *
-*
 * @category   Interfaces
 * @package    HUGnetLib
 * @subpackage Endpoints
@@ -135,7 +134,7 @@ interface EndpointDriverLoadableInterface extends EndpointDriverInterface
     /**
     * Runs the application
     *
-    * @param array $Info        Infomation about the device to use
+    * @param array $Info Infomation about the device to use
     *
     * @return string The part number for the firmware to use
     */

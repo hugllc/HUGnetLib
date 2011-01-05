@@ -567,6 +567,8 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     }
 
     /**
+    * Decodes the sensor string
+    *
     * @param string $string The string of sensor data
     *
     * @return null

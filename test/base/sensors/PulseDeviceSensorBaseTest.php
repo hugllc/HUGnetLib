@@ -275,7 +275,7 @@ class TestPulseDeviceSensor extends PulseDeviceSensorBase
     /**
     * Returns whether the reading is valid
     *
-    * @param int    $value  The current sensor value
+    * @param int $value The current sensor value
     *
     * @return bool
     */

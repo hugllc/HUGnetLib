@@ -189,13 +189,13 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
-   /**
+    /**
     * test CtoF()
     *
     * @param array  $preload the stuff to preload into the Units
     * @param mixed  $data    The data to use
-    * @param string $from    The units to convert from
     * @param string $to      The units to convert to
+    * @param string $from    The units to convert from
     * @param mixed  $expect  The value to expect
     * @param bool   $return  The expected return value
     *
@@ -250,9 +250,9 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test CtoF()
     *
-    * @param array  $preload the stuff to preload into the Units
-    * @param mixed  $units    The units to check
-    * @param mixed  $expect  The value to expect
+    * @param array $preload The stuff to preload into the Units
+    * @param mixed $units   The units to check
+    * @param mixed $expect  The value to expect
     *
     * @return null
     *

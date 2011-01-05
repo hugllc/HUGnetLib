@@ -142,7 +142,7 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     * @param array $preload The array to preload into the class
     * @param mixed $row     The row to use
     * @param array $expect  The expected return
-    * @param array $expect  The expected date array
+    * @param array $dates   The expected date array
     *
     * @dataProvider dataRow
     *

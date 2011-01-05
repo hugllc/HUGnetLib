@@ -107,6 +107,7 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     *   properly.
     *
     * @param int   $bitField This is an 8 bit bit field returned by the sensor
+    * @param float $deltaT   The difference in time between records
     *
     * @return float
     */

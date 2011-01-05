@@ -218,6 +218,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     /**
     * Sets all of the endpoint attributes from an array
     *
+    * @param int $datacols The number of columns of data that we have
+    *
     * @return null
     */
     protected function setupColumns($datacols = null)
@@ -269,7 +271,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
             $params = &$this->outputParams["JPGraphDatLin"];
             $cols = $this->getOutputCols($cols);
             foreach ($cols as $col) {
-                if (substr($col,0, 4) == "Data") {
+                if (substr($col, 0, 4) == "Data") {
                     $key = (int)substr($col, 4);
                     $units = $this->device->sensors->sensor($key)->units;
                     $unitType = $this->device->sensors->sensor($key)->unitType;

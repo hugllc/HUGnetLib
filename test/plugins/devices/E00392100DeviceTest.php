@@ -747,9 +747,9 @@ class E00392100DeviceTest extends DevicePluginTestBase
     * test the set routine when an extra class exists
     *
     * @param string $data    The raw data
-    * @param array  $expect  The expected return
     * @param string $command The command that was used to get the data
     * @param float  $deltaT  The time difference between this packet and the next
+    * @param array  $expect  The expected return
     *
     * @return null
     *

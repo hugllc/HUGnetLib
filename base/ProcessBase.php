@@ -142,6 +142,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     {
         $this->vprint("Finding my DeviceID...", HUGnetClass::VPRINT_NORMAL);
         // If this is a restart, pull all the old device info.
+        var_dump($this->myDevice->toArray());
         $ret = $this->myDevice->selectOneInto(
             "HWPartNum = ? AND DeviceLocation = ?",
             array(

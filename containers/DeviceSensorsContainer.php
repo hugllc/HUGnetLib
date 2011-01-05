@@ -160,7 +160,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return null
     */
-    public function _setSensor($data, &$key, $force=false)
+    private function _setSensor($data, &$key, $force=false)
     {
         if (is_object($this->sensor[$key])) {
             $vals = $this->sensor($key)->toArray();
@@ -186,11 +186,11 @@ class DeviceSensorsContainer extends HUGnetContainer
     /**
     * Creates a sensor object, or updates the one in place
     *
-    * @param int   &$key  The key to use for the sensor array
+    * @param int &$key The key to use for the sensor array
     *
     * @return null
     */
-    public function _setSensorInputSize(&$key)
+    private function _setSensorInputSize(&$key)
     {
         $inputSize = $this->sensor($key)->inputSize;
         for ($j = 1; $j < $inputSize; $j++) {
@@ -308,7 +308,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         $ret = array(
             "deltaT" => $data["deltaT"],
         );
-        for($i = 0; $i < $this->Sensors; $i++) {
+        for ($i = 0; $i < $this->Sensors; $i++) {
             $ret[$i] = $this->sensor($i)->getUnits(
                 $data[$i], $data["deltaT"], $prev[$i]
             );
