@@ -207,6 +207,11 @@ class DevicesTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
+        "IDIndex" => array(
+            "Name" => "IDIndex",
+            "Unique" => true,
+            "Columns" => array("id"),
+        ),
     );
 
     /** @var array This is the default values for the data */

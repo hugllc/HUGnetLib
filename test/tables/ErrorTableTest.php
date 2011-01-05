@@ -135,57 +135,6 @@ class ErrorTableTest extends HUGnetDBTableTestBase
     }
 
     /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataConstructor()
-    {
-        return array(
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataConstructor
-    */
-    public function testConstructor($preload, $expect)
-    {
-        $o = new PacketLogTable($preload);
-        $this->assertAttributeSame($expect, "data", $o);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromArray()
-    {
-        return array(
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromArray
-    */
-    public function testFromArray($preload, $expect)
-    {
-        $this->o->fromArray($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
-    }
-    /**
     * data provider for testSet
     *
     * @return array

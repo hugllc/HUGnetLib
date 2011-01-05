@@ -152,7 +152,7 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
         } else if (is_null($expect)) {
             $this->assertNull($pdo);
         } else {
-            $this->assertType("object", $pdo);
+            $this->assertInternalType("object", $pdo);
             $this->assertSame($expect, get_class($pdo));
         }
     }

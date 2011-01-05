@@ -145,59 +145,6 @@ class GenericTableTest extends HUGnetDBTableTestBase
     }
 
     /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataConstructor()
-    {
-        return array(
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataConstructor
-    */
-    public function testConstructor($preload, $expect)
-    {
-        $o = new GenericTable($preload);
-        $this->assertSame($expect, $o->toArray());
-    }
-    /**
-    * data provider for testSet
-    *
-    * @return array
-    */
-    public static function dataSet()
-    {
-        return array(
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $var    The variable to set
-    * @param mixed  $value  The value to set
-    * @param mixed  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataSet
-    */
-    public function testSet($var, $value, $expect)
-    {
-        $this->o->$var = $value;
-        $data = $this->readAttribute($this->o, "data");
-        $this->assertSame($expect, $data[$var]);
-    }
-    /**
     * data provider for testForceTable
     *
     * @return array
@@ -239,9 +186,14 @@ class GenericTableTest extends HUGnetDBTableTestBase
                 "",
                 "table",
                 array(
+                    "id" => array(
+                        "Name" => "id",
+                        "Type" => "int",
+                    ),
                 ),
                 array(
                     "group" => "default",
+                    "id" => null,
                 ),
             ),
         );

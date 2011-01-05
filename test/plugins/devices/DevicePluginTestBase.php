@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once dirname(__FILE__)."/../PluginTestBase.php";
 /**
  * Test class for device drivers
@@ -65,7 +65,7 @@ abstract class DevicePluginTestBase extends PluginTestBase
     public function testRegisterPluginDevices($class)
     {
         $var = eval("return $class::\$registerPlugin;");
-        $this->assertType(
+        $this->assertInternalType(
             "array",
             $var["Flags"],
             "Flags is not an array"

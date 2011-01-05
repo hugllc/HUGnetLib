@@ -232,7 +232,7 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     {
         $o = new HooksContainer($preload);
         $ret = &$o->hook($name, $interface);
-        $this->assertType("object", $ret);
+        $this->assertInternalType("object", $ret);
         $this->assertSame($expect, $ret->toArray());
     }
     /**

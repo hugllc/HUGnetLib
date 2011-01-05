@@ -38,7 +38,7 @@
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements

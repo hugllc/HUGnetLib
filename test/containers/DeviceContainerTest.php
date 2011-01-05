@@ -40,7 +40,7 @@
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../../containers/PacketContainer.php';
 // This removes the test plugin files that we load from the code coverage report
-PHPUnit_Util_Filter::addDirectoryToFilter(
+PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(
     dirname(__FILE__)."/../files/plugins/devices", ".php"
 );
 
@@ -460,14 +460,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect)
     {
         $o = new DeviceContainer($preload);
-        $this->assertType("object", $o->params);
+        $this->assertInternalType("object", $o->params);
         $this->assertSame(
             $expect["params"],
             $o->params->toArray(false),
             "Params are wrong"
         );
         unset($expect["params"]);
-        $this->assertType("object", $o->sensors);
+        $this->assertInternalType("object", $o->sensors);
         $this->assertSame(
             $expect["sensors"],
             $o->sensors->toArray(false),
@@ -649,14 +649,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o->clearData();
         $this->o->fromArray($preload);
-        $this->assertType("object", $this->o->params);
+        $this->assertInternalType("object", $this->o->params);
         $this->assertSame(
             $expect["params"],
             $this->o->params->toArray(false),
             "Params are wrong"
         );
         unset($expect["params"]);
-        $this->assertType("object", $this->o->sensors);
+        $this->assertInternalType("object", $this->o->sensors);
         $this->assertSame(
             $expect["sensors"],
             $this->o->sensors->toArray(false),
@@ -857,14 +857,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     public function testFromSetupString($preload, $expect)
     {
         $this->o->fromSetupString($preload);
-        $this->assertType("object", $this->o->params);
+        $this->assertInternalType("object", $this->o->params);
         $this->assertSame(
             $expect["params"],
             $this->o->params->toArray(false),
             "Params are wrong"
         );
         unset($expect["params"]);
-        $this->assertType("object", $this->o->sensors);
+        $this->assertInternalType("object", $this->o->sensors);
         $this->assertSame(
             $expect["sensors"],
             $this->o->sensors->toArray(false),

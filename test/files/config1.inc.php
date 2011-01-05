@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 $hugnet_config["hugnet_database"] = "MyDatabase";
 $hugnet_config["script_gatewaykey"] = 2;

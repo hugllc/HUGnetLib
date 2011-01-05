@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * Test class for filter.
@@ -73,7 +73,7 @@ abstract class PluginTestBase extends PHPUnit_Framework_TestCase
     public function testRegisterPlugin($class)
     {
         $var = eval("return $class::\$registerPlugin;");
-        $this->assertType(
+        $this->assertInternalType(
             "array",
             $var,
             "registerPlugins is not an array"
@@ -82,7 +82,7 @@ abstract class PluginTestBase extends PHPUnit_Framework_TestCase
             empty($var["Name"]),
             "Name is empty"
         );
-        $this->assertType(
+        $this->assertInternalType(
             "string",
             $var["Type"],
             "Type is not a string"

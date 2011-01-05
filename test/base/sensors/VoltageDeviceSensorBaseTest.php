@@ -95,32 +95,6 @@ class VoltageDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     }
 
 
-    /**
-    * data provider for testConstructor
-    *
-    * @return array
-    */
-    public static function dataConstructor()
-    {
-        return array(
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param mixed  $preload The stuff to give to the constructor
-    * @param string $expect  The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataConstructor
-    */
-    public function testConstructor($preload, $expect)
-    {
-        $o = new TestVoltageDeviceSensor($data, $this->d);
-        $this->assertAttributeSame($expect, "data", $o, "Wrong data in class");
-    }
 
     /**
     * data provider for testSet
@@ -130,6 +104,7 @@ class VoltageDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public static function dataSet()
     {
         return array(
+            array("location", "six", "six"),
         );
     }
     /**

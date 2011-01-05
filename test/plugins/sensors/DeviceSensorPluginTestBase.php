@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once dirname(__FILE__)."/../PluginTestBase.php";
 require_once dirname(__FILE__).'/../../../containers/DeviceContainer.php';
 /**
@@ -68,13 +68,13 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $d = new DeviceContainer();
         $var = eval("return $class::\$registerPlugin;");
         $obj = new $class($data, $d);
-        $this->assertType(
+        $this->assertInternalType(
             "array",
             $var["Flags"],
             "Flags is not an array"
         );
         foreach ($var["Flags"] as $key => $sensor) {
-            $this->assertType("string", $sensor, "Sensor $key is not a string");
+            $this->assertInternalType("string", $sensor, "Sensor $key is not a string");
             $this->assertRegExp(
                 "/([0-9A-F]{2}[:]{0,1}[0-9A-Za-z]{0,})|DEFAULT/",
                 $sensor,
@@ -119,6 +119,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public static function dataSet()
     {
         return array(
+            array("location", "test", "test"),
         );
     }
 
@@ -155,8 +156,8 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $obj = new $class($data, $d);
         $default = $this->readAttribute($obj, "default");
         $fixed = $this->readAttribute($obj, "fixed");
-        $this->assertType("array", $default, "default is not an array");
-        $this->assertType("array", $fixed, "fixed is not an array");
+        $this->assertInternalType("array", $default, "default is not an array");
+        $this->assertInternalType("array", $fixed, "fixed is not an array");
         $this->assertSame(
             array(),
             array_intersect(array_keys($fixed), array_keys($default)),
@@ -204,7 +205,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         );
         foreach ($fields as $f) {
             $val = $obj->$f;
-            $this->assertType(
+            $this->assertInternalType(
                 "array",
                 $val,
                 "field $f is not an array"

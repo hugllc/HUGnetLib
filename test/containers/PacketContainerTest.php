@@ -1971,7 +1971,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     ) {
         if (is_array($expect)) {
             // First make sure we got an object back.
-            $this->assertType("object", $o);
+            $this->assertInternalType("object", $o);
             $ret = $o->toArray();
             $this->checkDateTime($ret);
             $this->assertSame($expect, $ret);
@@ -1993,7 +1993,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function checkDateTime(&$ret, $checkTime = true)
     {
         // Test the date separately
-        $this->assertType("int", $ret["Date"], "Date must be an int");
+        $this->assertInternalType("int", $ret["Date"], "Date must be an int");
         if ($checkTime) {
             $this->assertThat(
                 $ret["Date"],
@@ -2003,7 +2003,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         }
         unset($ret["Date"]);
         // Test the time separately
-        $this->assertType("float", $ret["Time"], "Time must be a float");
+        $this->assertInternalType("float", $ret["Time"], "Time must be a float");
         if ($checkTime) {
             $this->assertThat(
                 $ret["Time"],
@@ -2014,7 +2014,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         unset($ret["Time"]);
         // Now check the reply, if there is one
         if (is_array($ret["Reply"])) {
-            $this->assertType("int", $ret["Reply"]["Date"], "Date must be an int");
+            $this->assertInternalType("int", $ret["Reply"]["Date"], "Date must be an int");
             if ($checkTime) {
                 $this->assertThat(
                     $ret["Reply"]["Date"],
@@ -2024,7 +2024,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             }
             unset($ret["Reply"]["Date"]);
             // Test the time separately
-            $this->assertType(
+            $this->assertInternalType(
                 "float",
                 $ret["Reply"]["Time"],
                 "Reply Time must be a float"

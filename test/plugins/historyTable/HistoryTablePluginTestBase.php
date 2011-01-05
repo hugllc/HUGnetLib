@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once dirname(__FILE__)."/../PluginTestBase.php";
 require_once dirname(__FILE__).'/../../../containers/DeviceContainer.php';
 /**
@@ -68,13 +68,13 @@ abstract class HistoryTablePluginTestBase extends PluginTestBase
         $d = new DeviceContainer();
         $var = eval("return $class::\$registerPlugin;");
         $obj = new $class($data, $d);
-        $this->assertType(
+        $this->assertInternalType(
             "array",
             $var["Flags"],
             "Flags is not an array"
         );
         foreach ($var["Flags"] as $key => $type) {
-            $this->assertType("string", $type, "Sensor $key is not a string");
+            $this->assertInternalType("string", $type, "Sensor $key is not a string");
         }
     }
     /**
@@ -89,7 +89,7 @@ abstract class HistoryTablePluginTestBase extends PluginTestBase
     public function testSqlTableType($class)
     {
         $obj = new $class($data);
-        $this->assertType("string", $obj->sqlTable, "sqlTable not a string");
+        $this->assertInternalType("string", $obj->sqlTable, "sqlTable not a string");
         $this->assertFalse(
             empty($obj->sqlTable),
             "sqlTable is not set"
@@ -107,7 +107,7 @@ abstract class HistoryTablePluginTestBase extends PluginTestBase
     public function testDatacolsType($class)
     {
         $obj = new $class($data);
-        $this->assertType("int", $obj->datacols, "datacols not a int");
+        $this->assertInternalType("int", $obj->datacols, "datacols not a int");
         $this->assertFalse(
             empty($obj->datacols),
             "datacols is not set"
@@ -134,6 +134,7 @@ abstract class HistoryTablePluginTestBase extends PluginTestBase
     public static function dataSet()
     {
         return array(
+            array("group", "test", "test"),
         );
     }
 

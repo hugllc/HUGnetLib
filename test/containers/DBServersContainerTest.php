@@ -200,7 +200,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
         } else if (is_null($expect)) {
             $this->assertNull($pdo);
         } else {
-            $this->assertType("object", $pdo);
+            $this->assertInternalType("object", $pdo);
             $this->assertSame($expect, get_class($pdo));
             $this->assertSame(
                 $expectDriver,
@@ -394,7 +394,7 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
         } else if (is_null($expect)) {
             $this->assertNull($pdo);
         } else {
-            $this->assertType("object", $pdo);
+            $this->assertInternalType("object", $pdo);
             $this->assertSame($expect, get_class($pdo));
         }
     }

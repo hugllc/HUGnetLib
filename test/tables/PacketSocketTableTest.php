@@ -229,32 +229,6 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
         $o = new PacketSocketTable($preload);
         $this->assertAttributeSame($expect, "data", $o);
     }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromArray()
-    {
-        return array(
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromArray
-    */
-    public function testFromArray($preload, $expect)
-    {
-        $this->o->fromArray($preload);
-        $this->assertAttributeSame($expect, "data", $this->o);
-    }
 
     /**
     * Data provider for testInsertRow

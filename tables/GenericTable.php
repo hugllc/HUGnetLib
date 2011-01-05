@@ -85,6 +85,10 @@ class GenericTable extends HUGnetDBTable
     * fields.  The index of the base array should be the same as the "Name" field.
     */
     public $sqlColumns = array(
+        "id" => array(
+            "Name" => "id",
+            "Type" => "int",
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -101,6 +105,11 @@ class GenericTable extends HUGnetDBTable
     *   ),
     */
     public $sqlIndexes = array(
+        "IDIndex" => array(
+            "Name" => "IDIndex",
+            "Unique" => true,
+            "Columns" => array("id"),
+        ),
     );
 
     /** @var array This is the default values for the data */

@@ -1460,7 +1460,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $ret = array();
         $res = $this->o->fetchAll();
         foreach ((array)$res as $row) {
-            $this->assertType("object", $row);
+            $this->assertInternalType("object", $row);
             $this->assertSame(get_class($this->table), get_class($row));
             $rows[] = $row->toArray();
         }

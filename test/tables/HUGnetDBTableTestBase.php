@@ -37,7 +37,7 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 require_once dirname(__FILE__).'/../../tables/PacketLogTable.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
@@ -110,7 +110,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             $col["Name"],
             "Column Name '$name' does not match 'Name' in array ('".$col["Name"]."')"
         );
-        $this->assertType(
+        $this->assertInternalType(
             "string",
             $col["Name"],
             "In column '$name' Name is not a string"
@@ -119,7 +119,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             empty($col["Name"]),
             "In column '$name' Name is empty"
         );
-        $this->assertType(
+        $this->assertInternalType(
             "string",
             $col["Type"],
             "In column '$name' Type is not a string"
@@ -129,7 +129,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             "In column '$name' Type is empty"
         );
         if (!is_null($col["AutoIncrement"])) {
-            $this->assertType(
+            $this->assertInternalType(
                 "bool",
                 $col["AutoIncrement"],
                 "In column '$name' AutoIncrement is not true, false, or null"
@@ -143,14 +143,14 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             }
         }
         if (!is_null($col["Primary"])) {
-            $this->assertType(
+            $this->assertInternalType(
                 "bool",
                 $col["Primary"],
                 "In column '$name' Primary is not true, false, or null"
             );
         }
         if (!is_null($col["Unique"])) {
-            $this->assertType(
+            $this->assertInternalType(
                 "bool",
                 $col["Unique"],
                 "In column '$name' Unique is not true, false, or null"
@@ -181,7 +181,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             $index["Name"],
             "Index Name '$name' does not match 'Name' in array ('".$col["Name"]."')"
         );
-        $this->assertType(
+        $this->assertInternalType(
             "string",
             $index["Name"],
             "In index '$name' Name is not a string"
@@ -191,13 +191,13 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
             "In index '$name' Name is empty"
         );
         if (!is_null($index["Unique"])) {
-            $this->assertType(
+            $this->assertInternalType(
                 "bool",
                 $index["Unique"],
                 "In index '$name' Unique is not true, false, or null"
             );
         }
-        $this->assertType(
+        $this->assertInternalType(
             "array",
             $index["Columns"],
             "In index '$name' Columns is not an array"
@@ -234,7 +234,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
     public function testSqlId($obj)
     {
         if (!empty($obj->sqlId)) {
-            $this->assertType(
+            $this->assertInternalType(
                 "string",
                 $obj->sqlId,
                 "sqlId is not a string"
@@ -256,7 +256,7 @@ abstract class HUGnetDBTableTestBase extends PHPUnit_Extensions_Database_TestCas
     */
     public function testSqlTable($obj)
     {
-        $this->assertType(
+        $this->assertInternalType(
             "string",
             $obj->sqlTable,
             "sqlTable is not a string"

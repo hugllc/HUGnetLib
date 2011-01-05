@@ -139,31 +139,6 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     *
     * @return array
     */
-    public static function dataConstructor()
-    {
-        return array(
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataConstructor
-    */
-    public function testConstructor($preload, $expect)
-    {
-        $o = new RawHistoryTable($preload);
-        $this->assertSame($expect, $o->toArray());
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
     public static function dataFromArray()
     {
         return array(
