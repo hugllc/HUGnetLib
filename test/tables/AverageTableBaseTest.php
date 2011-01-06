@@ -40,6 +40,8 @@
 require_once dirname(__FILE__).'/../../tables/AverageTableBase.php';
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__)."/../tables/HUGnetDBTableTestBase.php";
+require_once dirname(__FILE__)."/../files/mocks/AverageTableMock.php";
+require_once dirname(__FILE__)."/../files/mocks/HistoryTableMock.php";
 
 /**
  * Test class for filter.
@@ -790,6 +792,262 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
             $expect,
             $ret
         );
+    }
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataCalcAverage()
+    {
+        return array(
+            array(   // #0 No input
+                array(
+                ),
+                array(
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(  // #1 basic input.  All the same.
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 01, 12, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 1.0,
+                        "Data2" => 1.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 06, 12, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 1.0,
+                        "Data2" => 1.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 11, 12, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 1.0,
+                        "Data2" => 1.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 16, 12, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 1.0,
+                        "Data2" => 1.0,
+                    ),
+                       
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                    "Data0" => 1.0,
+                    "Data1" => 1.0,
+                    "Data2" => 1.0,
+                ),
+                true,
+            ),
+            array(  // #2 basic input.  Everything present
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 20, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 25, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #3 basic input. missing bits
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 20, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 1.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 25, 00, 1, 22, 09),
+                        "Data0" => 4.0,
+                        "Data1" => null,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => null,
+                        "Data1" => 7.0,
+                        "Data2" => 2.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                    "Data0" => 4.0,
+                    "Data1" => 5.0,
+                    "Data2" => 3.33,
+                ),
+                true,
+            ),
+            array(  // #4 basic input. missing bits
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 35, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 1.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 40, 00, 1, 22, 09),
+                        "Data0" => 4.0,
+                        "Data1" => null,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 46, 00, 1, 22, 09),
+                        "Data0" => null,
+                        "Data1" => 7.0,
+                        "Data2" => 2.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 51, 12, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                    "Data0" => 3.0,
+                    "Data1" => 5.0,
+                    "Data2" => 3.33,
+                ),
+                true,
+            ),
+            array(  // #5 basic input. missing bits.  Next record too old
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 50, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 1.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 55, 00, 1, 22, 09),
+                        "Data0" => 4.0,
+                        "Data1" => null,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(11, 17, 00, 1, 22, 09),
+                        "Data0" => null,
+                        "Data1" => 7.0,
+                        "Data2" => 2.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(11, 21, 12, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 45, 00, 1, 22, 09),
+                    "Data0" => 3.0,
+                    "Data1" => 1.0,
+                    "Data2" => 4.0,
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload     The data to preload into the object
+    * @param mixed  $preloadData The data to feed the data object
+    * @param string $class       The class of the data object
+    * @param array  $device      The device to do the averages with
+    * @param array  $expect      The expected average (from toArray())
+    * @param array  $expect      The expected return value from calcAverage
+    *
+    * @return null
+    *
+    * @dataProvider dataCalcAverage
+    */
+    public function testCalcAverage(
+        $preload, $preloadData, $class, $device, $expect, $expectRet
+    ) {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $data = new $class($preloadData);
+        $ret = $this->o->calcAverage($data);
+        $this->assertSame($expectRet, $ret, "Return Wrong");
+        $this->assertSame($expect, $this->o->toArray(false));
     }
 }
 /**

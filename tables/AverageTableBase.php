@@ -153,6 +153,97 @@ abstract class AverageTableBase extends HistoryTableBase
         parent::__construct($data);
         $this->create();
     }
+    /**
+    * This calculates the averages
+    * 
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * 
+    * @return bool True on success, false on failure
+    */
+    function calcAverage(HistoryTableBase $data)
+    {
+        if ($data->isEmpty()) {
+            return false;
+        }
+        $this->clearData();
+        $this->Date = $this->_get15MinTimePeriod($data->Date);
+        $end = $this->Date + 900;   // 900 seconds in 15 minutes
+        $tooOld = $end + 900;       // After another 900 seconds we don't use this
+        $divisors = array();
+        $ret = true;
+        $last = array();
+        while (($data->Date < $tooOld) && $ret) {
+            // This is the difference in seconds between this record and the start
+            for ($i = 0; $i < $this->datacols; $i++) {
+                $col = "Data".$i;
+                if (empty($last[$col])) {
+                    $last[$col] = $this->Date;
+                }
+                if ($last[$col] >= $end) {
+                    continue;
+                }
+                if ($data->Date <= $end) {
+                    $mult = $data->Date - $last[$col];
+                } else {
+                    $mult = $end - $last[$col];
+                }
+                if (!is_null($data->$col)) {
+                    $this->$col += ($mult * $data->$col);
+                    $divisors[$col] += $mult;
+                    $last[$col] = $data->Date;
+                }
+            }
+            if ($data->Date <= $end) {
+                $ret = $data->nextInto();
+            } else {
+                break;
+            }
+        }
+        // Settle  out the multipliers
+        for ($i = 0; $i < $this->datacols; $i++) {
+            $col = "Data".$i;
+            if (!is_null($this->$col)) {
+                $this->$col = round(
+                    $this->$col / $divisors[$col],
+                    $this->device->sensors->sensor($i)->maxDecimals
+                );
+            }
+        }
+        return true;
+    }
+
+    /**
+    * This sets the time correctly
+    *
+    * @param int $time
+    *
+    * @return bool True on success, false on failure
+    */
+    private function _get15MinTimePeriod($time)
+    {
+        $min = gmdate("i",  $time);
+        if ($min < 15) {
+            $min = 0;
+        } else if ($min < 30) {
+            $min = 15;
+        } else if ($min < 45) {
+            $min = 30;
+        } else {
+            $min = 45;
+        }
+        return gmmktime(
+            gmdate("H", $time),
+            $min,
+            0,
+            gmdate("m", $time),
+            gmdate("d", $time),
+            gmdate("Y", $time)
+        );
+    }
 
 }
 ?>
