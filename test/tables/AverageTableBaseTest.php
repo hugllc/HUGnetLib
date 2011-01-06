@@ -1029,7 +1029,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     * @param string $class       The class of the data object
     * @param array  $device      The device to do the averages with
     * @param array  $expect      The expected average (from toArray())
-    * @param array  $expect      The expected return value from calcAverage
+    * @param array  $expectRet   The expected return value from calcAverage
     *
     * @return null
     *

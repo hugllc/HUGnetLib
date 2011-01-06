@@ -219,13 +219,13 @@ abstract class AverageTableBase extends HistoryTableBase
     /**
     * This sets the time correctly
     *
-    * @param int $time
+    * @param int $time The time we are currently at
     *
     * @return bool True on success, false on failure
     */
     private function _get15MinTimePeriod($time)
     {
-        $min = gmdate("i",  $time);
+        $min = gmdate("i", $time);
         if ($min < 15) {
             $min = 0;
         } else if ($min < 30) {
