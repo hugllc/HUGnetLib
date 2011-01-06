@@ -82,6 +82,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             "id"        => 0x19,
             "DeviceID"  => "000019",
             "HWPartNum" => "0039-26-01-P",
+            "FWPartNum" => "0039-26-01-P",
+            "FWVersion" => "0.6.99",
             "GatewayKey" => "1",
         );
         $this->o = new ProcessBaseClassTest(array(), $this->devArray);
@@ -104,7 +106,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, SIG_DFL);
         }
-
+        $this->pdo->query("drop table devices;");
     }
     /**
     * Tests for exceptions
@@ -158,6 +160,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "group" => "default",
                     "GatewayKey" => 1,
                 ),
+                array(
+                    "RawSetup" => "000000000000000000000000000000000000FFFFFF00",
+                    "sensors" => array(),
+                    "params" => array(),
+                ),
             ),
            array(
                 array(
@@ -166,10 +173,25 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "id"       => 0x19,
+                    "HWPartNum" => "0039-26-02-P",
+                    "FWPartNum" => "0039-26-02-P",
+                    "FWVersion" => "0.6.99",
                 ),
                 array(
                     "group" => "test",
                     "GatewayKey" => 3,
+                ),
+                array(
+                    "HWPartNum" => "0039-26-02-P",
+                    "FWPartNum" => "0039-26-02-P",
+                    "FWVersion" => "0.6.99",
+                    "Driver" => "e00392600",
+                    "id" => 0x19,
+                    "RawSetup" => "000000001900392602500039260250000699FFFFFF000"
+                        ."000000000000000000000000000000000000000000000000000000"
+                        ."000000000000000000000",
+                    "sensors" => array(),
+                    "params" => array(),
                 ),
             ),
            array(
@@ -184,31 +206,60 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "group" => "test",
                     "GatewayKey" => 1,
                 ),
+                array(
+                    "id" => 0x19,
+                    "HWPartNum" => "0039-26-01-P",
+                    "FWPartNum" => "0039-26-01-P",
+                    "FWVersion" => "0.6.99",
+                    "Driver" => "e00392600",
+                    "sensors" => array(),
+                    "params" => array(),
+                ),
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $device  The device array to use
-    * @param array $expect  The expected return
+    * @param array $preload   The value to preload
+    * @param array $device    The device array to use
+    * @param array $expect    The expected data
+    * @param array $expectDev The expected device
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $device, $expect)
+    public function testConstructor($preload, $device, $expect, $expectDev)
     {
         $o = new ProcessBaseClassTest($preload, $device);
         $ret = $this->readAttribute($o, "data");
-        $this->assertSame($expect, $ret);
+        $this->assertSame($expect, $ret, "Data is wrong");
         // Check the configuration is set correctly
         $config = $this->readAttribute($o, "myConfig");
-        $this->assertSame("ConfigContainer", get_class($config));
+        $this->assertSame(
+            "ConfigContainer",
+            get_class($config),
+            "Config wrong class"
+        );
         // Check the configuration is set correctly
         $device = $this->readAttribute($o, "device");
-        $this->assertSame("DeviceContainer", get_class($device));
+        $this->assertSame(
+            "DeviceContainer",
+            get_class($device),
+            "Device wrong class"
+        );
+        // Check the configuration is set correctly
+        $myDevice = $this->readAttribute($o, "myDevice");
+        $this->assertSame(
+            "DeviceContainer",
+            get_class($myDevice),
+            "myDevice wrong class"
+        );
+        $dev = $myDevice->toArray(false);
+        foreach ($expectDev as $key => $value) {
+            $this->assertSame($value, $dev[$key], "$key in myDevice is wrong");
+        }
     }
 
     /**
