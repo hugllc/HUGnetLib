@@ -122,10 +122,15 @@ abstract class AverageTableBase extends HistoryTableBase
     *   ),
     */
     public $sqlIndexes = array(
-        "DateIDIndex" => array(
-            "Name" => "DateIDIndex",
+        "DateIDTypeIndex" => array(
+            "Name" => "DateIDTypeIndex",
             "Unique" => true,
             "Columns" => array("Date", "id", "Type"),
+        ),
+        "DateIDIndex" => array(
+            "Name" => "DateIDIndex",
+            "Unique" => false,
+            "Columns" => array("Date", "id"),
         ),
     );
 
@@ -140,6 +145,21 @@ abstract class AverageTableBase extends HistoryTableBase
     public $raw = array();
     /** @var This is the  raw data for differential mode */
     public $device = null;
+    /** @var string The start time for the average */
+    protected $startTime = null;
+    /** @var string The end time for the average */
+    protected $endTime = null;
+    /** @var int The divisors for the average*/
+    protected $divisors = array();
+    /** @var string The base type for the averages */
+    protected $baseType = "";
+    /** @var array The next type for the averages*/
+    protected $nextAverage = array(
+        "15MIN" => "HOURLY",
+        "HOURLY" => "DAILY",
+        "DAILY" => "MONTHLY",
+        "MONTHLY" => "YEARLY"
+    );
 
     /**
     * This is the constructor
@@ -155,6 +175,26 @@ abstract class AverageTableBase extends HistoryTableBase
     }
     /**
     * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    *
+    * @return bool True on success, false on failure
+    */
+    public function calcAverage(HistoryTableBase $data)
+    {
+        if ($data->isEmpty()) {
+            return false;
+        } else if (is_a($data, "AverageTableBase")) {
+            return $this->calcOtherAverage($data);
+        }
+        return $this->calc15MinAverage($data);
+    }
+    /**
+    * This calculates the averages
     * 
     * It will return once for each average that it calculates.  The average will be
     * stored in the instance this is called from.  If this is fed history table
@@ -164,16 +204,14 @@ abstract class AverageTableBase extends HistoryTableBase
     * 
     * @return bool True on success, false on failure
     */
-    function calcAverage(HistoryTableBase $data)
+    protected function calc15MinAverage(HistoryTableBase $data)
     {
-        if ($data->isEmpty()) {
-            return false;
-        }
         $this->clearData();
-        $this->Date = $this->_get15MinTimePeriod($data->Date);
-        $end = $this->Date + 900;   // 900 seconds in 15 minutes
-        $tooOld = $end + 900;       // After another 900 seconds we don't use this
-        $divisors = array();
+        $this->Type = "15MIN";
+        $this->_get15MinTimePeriod($data->Date);
+        $this->Date = $this->startTime;
+        $tooOld = $this->endTime + 900;       // After another 900 seconds we don't use this
+        $this->divisors = array();
         $ret = true;
         $last = array();
         while (($data->Date < $tooOld) && $ret) {
@@ -183,36 +221,24 @@ abstract class AverageTableBase extends HistoryTableBase
                 if (empty($last[$col])) {
                     $last[$col] = $this->Date;
                 }
-                if ($last[$col] >= $end) {
-                    continue;
-                }
-                if ($data->Date <= $end) {
+                if ($data->Date <= $this->endTime) {
                     $mult = $data->Date - $last[$col];
                 } else {
-                    $mult = $end - $last[$col];
+                    $mult = $this->endTime - $last[$col];
                 }
                 if (!is_null($data->$col)) {
                     $this->$col += ($mult * $data->$col);
-                    $divisors[$col] += $mult;
+                    $this->divisors[$col] += $mult;
                     $last[$col] = $data->Date;
                 }
             }
-            if ($data->Date <= $end) {
+            if ($data->Date <= $this->endTime) {
                 $ret = $data->nextInto();
             } else {
                 break;
             }
         }
-        // Settle  out the multipliers
-        for ($i = 0; $i < $this->datacols; $i++) {
-            $col = "Data".$i;
-            if (!is_null($this->$col)) {
-                $this->$col = round(
-                    $this->$col / $divisors[$col],
-                    $this->device->sensors->sensor($i)->maxDecimals
-                );
-            }
-        }
+        $this->settleDivisors();
         return true;
     }
 
@@ -235,14 +261,112 @@ abstract class AverageTableBase extends HistoryTableBase
         } else {
             $min = 45;
         }
-        return gmmktime(
-            gmdate("H", $time),
-            $min,
-            0,
-            gmdate("m", $time),
-            gmdate("d", $time),
-            gmdate("Y", $time)
+        $this->startTime = gmmktime(
+            gmdate("H", $time), $min, 0,
+            gmdate("m", $time), gmdate("d", $time), gmdate("Y", $time)
         );
+        $this->endTime = gmmktime(
+            gmdate("H", $time), $min + 15, 0,
+            gmdate("m", $time), gmdate("d", $time), gmdate("Y", $time)
+        );
+    }
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    *
+    * @return bool True on success, false on failure
+    */
+    protected function calcOtherAverage(HistoryTableBase $data)
+    {
+
+        $this->clearData();
+        if (empty($this->baseType)) {
+            $this->baseType = $data->Type;
+        }
+        $ret = $this->_getOtherTimePeriod(
+            $this->nextAverage[$this->baseType], $data->Date
+        );
+        if (!$ret) {
+            return false;
+        }
+        $this->Type = $this->nextAverage[$this->baseType];
+        $this->Date = $this->startTime;
+        $this->divisors = array();
+        $ret = true;
+        while (($data->Date < $this->endTime) && $ret) {
+            if ($data->Type == $this->baseType) {
+                for ($i = 0; $i < $this->datacols; $i++) {
+                    $col = "Data".$i;
+                    if (!is_null($data->$col)) {
+                        $this->$col += $data->$col;
+                        $this->divisors[$col]++;
+                    }
+                }
+            }
+            $ret = $data->nextInto();
+        }
+        $this->settleDivisors();
+        return true;
+    }
+    /**
+    * This settles the averages
+    *
+    * @return none
+    */
+    protected function settleDivisors()
+    {
+        // Settle  out the multipliers
+        for ($i = 0; $i < $this->datacols; $i++) {
+            $col = "Data".$i;
+            if ($this->divisors[$col] == 0) {
+                $this->divisors[$col] = 1;
+            }
+            if (!is_null($this->$col)) {
+                $this->$col = round(
+                    $this->$col / $this->divisors[$col],
+                    $this->device->sensors->sensor($i)->maxDecimals
+                );
+            }
+        }
+    }
+
+    /**
+    * This sets the time correctly
+    *
+    * @param int    $time The time we are currently at
+    * @param string $type The type of average to calculate
+    *
+    * @return bool True on success, false on failure
+    */
+    private function _getOtherTimePeriod($type, $time)
+    {
+        $H = gmdate("H", $time);
+        $m = gmdate("m", $time);
+        $d = gmdate("d", $time);
+        $Y = gmdate("Y", $time);
+        if ($type == "HOURLY") {
+            $this->startTime = gmmktime($H, 0, 0,$m, $d, $Y);
+            $this->endTime = gmmktime($H + 1, 0, 0, $m, $d, $Y);
+            return true;
+        } else if ($type == "DAILY") {
+            $this->startTime = gmmktime(0, 0, 0, $m, $d, $Y);
+            $this->endTime = gmmktime(0, 0, 0, $m, $d + 1, $Y);
+            return true;
+        } else if ($type == "MONTHLY") {
+            $this->startTime = gmmktime(0, 0, 0, $m, 1, $Y);
+            $this->endTime = gmmktime(0, 0, 0, $m + 1, 1, $Y);
+            return true;
+        } else if ($type == "YEARLY") {
+            $this->startTime = gmmktime(0, 0, 0, 1, 1, $Y);
+            $this->endTime = gmmktime(0, 0, 0, 1, 1, $Y + 1);
+            return true;
+        }
+        return false;
     }
 
 }

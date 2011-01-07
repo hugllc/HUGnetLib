@@ -798,22 +798,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     *
     * @return array
     */
-    public static function dataCalcAverage()
+    public static function dataCalc15MinAverage()
     {
         return array(
-            array(   // #0 No input
-                array(
-                ),
-                array(
-                ),
-                "HistoryTableMock",
-                array(
-                ),
-                array(
-                ),
-                false,
-            ),
-            array(  // #1 basic input.  All the same.
+            array(  // #0 basic input.  All the same.
                 array(
                 ),
                 array(
@@ -854,7 +842,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
-            array(  // #2 basic input.  Everything present
+            array(  // #1 basic input.  Everything present
                 array(
                 ),
                 array(
@@ -895,7 +883,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
-            array(  // #3 basic input. missing bits
+            array(  // #2 basic input. missing bits
                 array(
                 ),
                 array(
@@ -936,7 +924,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
-            array(  // #4 basic input. missing bits
+            array(  // #3 basic input. missing bits
                 array(
                 ),
                 array(
@@ -977,7 +965,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
-            array(  // #5 basic input. missing bits.  Next record too old
+            array(  // #4 basic input. missing bits.  Next record too old
                 array(
                 ),
                 array(
@@ -1018,6 +1006,427 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 true,
             ),
+            array(  // #5 basic input.  One column has no data
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 20, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 25, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => null,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload     The data to preload into the object
+    * @param mixed  $preloadData The data to feed the data object
+    * @param string $class       The class of the data object
+    * @param array  $device      The device to do the averages with
+    * @param array  $expect      The expected average (from toArray())
+    * @param array  $expectRet   The expected return value from calcAverage
+    *
+    * @return null
+    *
+    * @dataProvider dataCalc15MinAverage
+    */
+    public function testCalc15MinAverage(
+        $preload, $preloadData, $class, $device, $expect, $expectRet
+    ) {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $data = new $class($preloadData);
+        $ret = $this->o->calc15MinAverage($data);
+        $this->assertSame($expectRet, $ret, "Return Wrong");
+        $this->assertSame($expect, $this->o->toArray(false));
+    }
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataCalcAverage()
+    {
+        return array(
+            array(   // #0 No input
+                array(
+                ),
+                array(
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(   // #1 No input
+                array(
+                ),
+                array(
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(  // #2 basic input.  Everything present
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 20, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 25, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 09),
+                        "Data0" => 12.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #3 basic input.  15MIN average
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 45, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                    "Type" => "HOURLY",
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #4 basic input.  HOURLY average.  Extra 15MIN average here
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(11, 00, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(12, 00, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(12, 15, 00, 1, 22, 09),
+                        "Data0" => 16.0,
+                        "Data1" => 17.0,
+                        "Data2" => 18.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(13, 00, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(0, 00, 00, 1, 22, 09),
+                    "Type" => "DAILY",
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #5 basic input.  HOURLY average.  Extra 15MIN average here
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "DAILY",
+                        "Date" => gmmktime(00, 00, 00, 1, 12, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "DAILY",
+                        "Date" => gmmktime(00, 00, 00, 1, 18, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "DAILY",
+                        "Date" => gmmktime(00, 00, 00, 1, 23, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "DAILY",
+                        "Date" => gmmktime(00, 00, 00, 1, 31, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(0, 00, 00, 1, 1, 09),
+                    "Type" => "MONTHLY",
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #6 basic input.  HOURLY average.  Extra 15MIN average here
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 1, 1, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 2, 1, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 8, 1, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 11, 1, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(0, 00, 00, 1, 1, 09),
+                    "Type" => "YEARLY",
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                    "Data2" => 5.0,
+                ),
+                true,
+            ),
+            array(  // #7 basic input.  HOURLY average.  Extra 15MIN average here
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "BAD",
+                        "Date" => gmmktime(00, 00, 00, 1, 1, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 2, 1, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 8, 1, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "MONTHLY",
+                        "Date" => gmmktime(00, 00, 00, 11, 1, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(  // #8 basic input.  15MIN average. Stuff missing
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 1.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => null,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => null,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(10, 45, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => null,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                    "Type" => "HOURLY",
+                    "Data0" => 3.0,
+                    "Data1" => 4.0,
+                ),
+                true,
+            ),
         );
     }
 
@@ -1049,6 +1458,238 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
         $this->assertSame($expectRet, $ret, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray(false));
     }
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataCalcAverageMulti()
+    {
+        return array(
+            array(   // #0 No input
+                array(
+                ),
+                array(
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(  // #1 basic input.  Everything present
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 20, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 25, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(10, 15, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 09),
+                        "Data0" => 11.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+                ),
+            ),
+            array(  // #4 basic input.  HOURLY average.  Extra 15MIN average here
+                array(
+                ),
+                array(
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(10, 00, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(11, 00, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(12, 00, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(13, 00, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(14, 00, 00, 1, 22, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(15, 00, 00, 1, 22, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(16, 00, 00, 1, 22, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(17, 00, 00, 1, 22, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(0, 00, 00, 1, 23, 09),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(1, 00, 00, 1, 23, 09),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(2, 00, 00, 1, 23, 09),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(3, 00, 00, 1, 23, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Type" => "15MIN",
+                        "Date" => gmmktime(0, 15, 00, 1, 24, 09),
+                        "Data0" => 16.0,
+                        "Data1" => 17.0,
+                        "Data2" => 18.0,
+                    ),
+                    array(
+                        "Type" => "HOURLY",
+                        "Date" => gmmktime(1, 00, 00, 1, 24, 09),
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+
+                ),
+                "AverageTableMock",
+                array(
+                ),
+                array(
+                    array(
+                        "Date" => gmmktime(0, 00, 00, 1, 22, 09),
+                        "Type" => "DAILY",
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(0, 00, 00, 1, 23, 09),
+                        "Type" => "DAILY",
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                    array(
+                        "Date" => gmmktime(0, 00, 00, 1, 24, 09),
+                        "Type" => "DAILY",
+                        "Data0" => 3.0,
+                        "Data1" => 4.0,
+                        "Data2" => 5.0,
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload     The data to preload into the object
+    * @param mixed  $preloadData The data to feed the data object
+    * @param string $class       The class of the data object
+    * @param array  $device      The device to do the averages with
+    * @param array  $expect      The expected average (from toArray())
+    *
+    * @return null
+    *
+    * @dataProvider dataCalcAverageMulti
+    */
+    public function testCalcAverageMulti(
+        $preload, $preloadData, $class, $device, $expect
+    ) {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $data = new $class($preloadData);
+        $ret = array();
+        while ($this->o->calcAverage($data)) {
+            $ret[] = $this->o->toArray(false);
+        }
+        $this->assertSame($expect, $ret);
+    }
 }
 /**
  * Test class for HUGnetDB.
@@ -1067,5 +1708,20 @@ class AverageTableBaseTestStub extends AverageTableBase
 {
     /** @var string This is the table we should use */
     public $sqlTable = "Average";
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    *
+    * @return bool True on success, false on failure
+    */
+    public function calc15MinAverage(HistoryTableBase $data)
+    {
+        return parent::calc15MinAverage($data);
+    }
 }
 ?>
