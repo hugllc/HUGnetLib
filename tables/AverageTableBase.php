@@ -210,7 +210,7 @@ abstract class AverageTableBase extends HistoryTableBase
         $this->Type = "15MIN";
         $this->_get15MinTimePeriod($data->Date);
         $this->Date = $this->startTime;
-        $tooOld = $this->endTime + 900;       // After another 900 seconds we don't use this
+        $tooOld = $this->endTime + 900;// After another 900 seconds we don't use this
         $this->divisors = array();
         $ret = true;
         $last = array();
@@ -289,7 +289,7 @@ abstract class AverageTableBase extends HistoryTableBase
             $this->baseType = $data->Type;
         }
         $ret = $this->_getOtherTimePeriod(
-            $this->nextAverage[$this->baseType], $data->Date
+            $data->Date, $this->nextAverage[$this->baseType]
         );
         if (!$ret) {
             return false;
@@ -343,14 +343,14 @@ abstract class AverageTableBase extends HistoryTableBase
     *
     * @return bool True on success, false on failure
     */
-    private function _getOtherTimePeriod($type, $time)
+    private function _getOtherTimePeriod($time, $type)
     {
         $H = gmdate("H", $time);
         $m = gmdate("m", $time);
         $d = gmdate("d", $time);
         $Y = gmdate("Y", $time);
         if ($type == "HOURLY") {
-            $this->startTime = gmmktime($H, 0, 0,$m, $d, $Y);
+            $this->startTime = gmmktime($H, 0, 0, $m, $d, $Y);
             $this->endTime = gmmktime($H + 1, 0, 0, $m, $d, $Y);
             return true;
         } else if ($type == "DAILY") {
