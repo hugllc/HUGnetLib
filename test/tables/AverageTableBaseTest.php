@@ -806,24 +806,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 15,
                         "Date" => gmmktime(10, 01, 12, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 1.0,
                         "Data2" => 1.0,
                     ),
                     array(
+                        "id" => 15,
                         "Date" => gmmktime(10, 06, 12, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 1.0,
                         "Data2" => 1.0,
                     ),
                     array(
+                        "id" => 15,
                         "Date" => gmmktime(10, 11, 12, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 1.0,
                         "Data2" => 1.0,
                     ),
                     array(
+                        "id" => 15,
                         "Date" => gmmktime(10, 16, 12, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 1.0,
@@ -833,8 +837,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 15,
                 ),
                 array(
+                    "id" => 15,
                     "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                     "Data0" => 1.0,
                     "Data1" => 1.0,
@@ -847,24 +853,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 18,
                         "Date" => gmmktime(10, 20, 00, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 2.0,
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 18,
                         "Date" => gmmktime(10, 25, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 3.0,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 18,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
                         "Data1" => 7.0,
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 18,
                         "Date" => gmmktime(10, 33, 12, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -874,8 +884,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 18,
                 ),
                 array(
+                    "id" => 18,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                     "Data0" => 3.0,
                     "Data1" => 4.0,
@@ -888,24 +900,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 21,
                         "Date" => gmmktime(10, 20, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 1.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 21,
                         "Date" => gmmktime(10, 25, 00, 1, 22, 09),
                         "Data0" => 4.0,
                         "Data1" => null,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 21,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => null,
                         "Data1" => 7.0,
                         "Data2" => 2.0,
                     ),
                     array(
+                        "id" => 21,
                         "Date" => gmmktime(10, 33, 12, 1, 22, 09),
                         "Data0" => 6.0,
                         "Data1" => 12.0,
@@ -915,8 +931,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 21,
                 ),
                 array(
+                    "id" => 21,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                     "Data0" => 4.0,
                     "Data1" => 5.0,
@@ -929,24 +947,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 22,
                         "Date" => gmmktime(10, 35, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 1.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 22,
                         "Date" => gmmktime(10, 40, 00, 1, 22, 09),
                         "Data0" => 4.0,
                         "Data1" => null,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 22,
                         "Date" => gmmktime(10, 46, 00, 1, 22, 09),
                         "Data0" => null,
                         "Data1" => 7.0,
                         "Data2" => 2.0,
                     ),
                     array(
+                        "id" => 22,
                         "Date" => gmmktime(10, 51, 12, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -956,8 +978,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 22,
                 ),
                 array(
+                    "id" => 22,
                     "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                     "Data0" => 3.0,
                     "Data1" => 5.0,
@@ -970,24 +994,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 23,
                         "Date" => gmmktime(10, 50, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 1.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 23,
                         "Date" => gmmktime(10, 55, 00, 1, 22, 09),
                         "Data0" => 4.0,
                         "Data1" => null,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 23,
                         "Date" => gmmktime(11, 17, 00, 1, 22, 09),
                         "Data0" => null,
                         "Data1" => 7.0,
                         "Data2" => 2.0,
                     ),
                     array(
+                        "id" => 23,
                         "Date" => gmmktime(11, 21, 12, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -997,8 +1025,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 23,
                 ),
                 array(
+                    "id" => 23,
                     "Date" => gmmktime(10, 45, 00, 1, 22, 09),
                     "Data0" => 3.0,
                     "Data1" => 1.0,
@@ -1011,24 +1041,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 24,
                         "Date" => gmmktime(10, 20, 00, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 2.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 24,
                         "Date" => gmmktime(10, 25, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 3.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 24,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
                         "Data1" => 7.0,
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 24,
                         "Date" => gmmktime(10, 33, 12, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -1038,8 +1072,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 24,
                 ),
                 array(
+                    "id" => 24,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                     "Data0" => 3.0,
                     "Data1" => 4.0,
@@ -1114,24 +1150,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 25,
                         "Date" => gmmktime(10, 20, 00, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 2.0,
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 25,
                         "Date" => gmmktime(10, 25, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 3.0,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 25,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
                         "Data1" => 7.0,
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 25,
                         "Date" => gmmktime(10, 33, 12, 1, 22, 09),
                         "Data0" => 12.0,
                         "Data1" => 12.0,
@@ -1141,8 +1181,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 25,
                 ),
                 array(
+                    "id" => 25,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                     "Data0" => 3.0,
                     "Data1" => 4.0,
@@ -1155,6 +1197,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 26,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                         "Data0" => 1.0,
@@ -1162,6 +1205,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 26,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                         "Data0" => 2.0,
@@ -1169,6 +1213,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 26,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
@@ -1176,6 +1221,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 26,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 45, 00, 1, 22, 09),
                         "Data0" => 3.0,
@@ -1186,8 +1232,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 26,
                 ),
                 array(
+                    "id" => 26,
                     "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                     "Type" => "HOURLY",
                     "Data0" => 3.0,
@@ -1201,6 +1249,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 27,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                         "Data0" => 1.0,
@@ -1208,6 +1257,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 27,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(11, 00, 00, 1, 22, 09),
                         "Data0" => 2.0,
@@ -1215,6 +1265,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 27,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(12, 00, 00, 1, 22, 09),
                         "Data0" => 6.0,
@@ -1222,6 +1273,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 27,
                         "Type" => "15MIN",
                         "Date" => gmmktime(12, 15, 00, 1, 22, 09),
                         "Data0" => 16.0,
@@ -1229,6 +1281,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 18.0,
                     ),
                     array(
+                        "id" => 27,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(13, 00, 00, 1, 22, 09),
                         "Data0" => 3.0,
@@ -1239,8 +1292,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 27,
                 ),
                 array(
+                    "id" => 27,
                     "Date" => gmmktime(0, 00, 00, 1, 22, 09),
                     "Type" => "DAILY",
                     "Data0" => 3.0,
@@ -1254,6 +1309,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 28,
                         "Type" => "DAILY",
                         "Date" => gmmktime(00, 00, 00, 1, 12, 09),
                         "Data0" => 1.0,
@@ -1261,6 +1317,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 28,
                         "Type" => "DAILY",
                         "Date" => gmmktime(00, 00, 00, 1, 18, 09),
                         "Data0" => 2.0,
@@ -1268,6 +1325,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 28,
                         "Type" => "DAILY",
                         "Date" => gmmktime(00, 00, 00, 1, 23, 09),
                         "Data0" => 6.0,
@@ -1275,6 +1333,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 28,
                         "Type" => "DAILY",
                         "Date" => gmmktime(00, 00, 00, 1, 31, 09),
                         "Data0" => 3.0,
@@ -1285,8 +1344,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 28,
                 ),
                 array(
+                    "id" => 28,
                     "Date" => gmmktime(0, 00, 00, 1, 1, 09),
                     "Type" => "MONTHLY",
                     "Data0" => 3.0,
@@ -1300,6 +1361,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 29,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 1, 1, 09),
                         "Data0" => 1.0,
@@ -1307,6 +1369,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 29,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 2, 1, 09),
                         "Data0" => 2.0,
@@ -1314,6 +1377,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 29,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 8, 1, 09),
                         "Data0" => 6.0,
@@ -1321,6 +1385,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 29,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 11, 1, 09),
                         "Data0" => 3.0,
@@ -1331,8 +1396,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 29,
                 ),
                 array(
+                    "id" => 29,
                     "Date" => gmmktime(0, 00, 00, 1, 1, 09),
                     "Type" => "YEARLY",
                     "Data0" => 3.0,
@@ -1346,6 +1413,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 30,
                         "Type" => "BAD",
                         "Date" => gmmktime(00, 00, 00, 1, 1, 09),
                         "Data0" => 1.0,
@@ -1353,6 +1421,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 30,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 2, 1, 09),
                         "Data0" => 2.0,
@@ -1360,6 +1429,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 30,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 8, 1, 09),
                         "Data0" => 6.0,
@@ -1367,6 +1437,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 30,
                         "Type" => "MONTHLY",
                         "Date" => gmmktime(00, 00, 00, 11, 1, 09),
                         "Data0" => 3.0,
@@ -1377,6 +1448,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 30,
                 ),
                 array(
                 ),
@@ -1387,6 +1459,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 31,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                         "Data0" => 1.0,
@@ -1394,6 +1467,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 31,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                         "Data0" => 2.0,
@@ -1401,6 +1475,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 31,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
@@ -1408,6 +1483,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => null,
                     ),
                     array(
+                        "id" => 31,
                         "Type" => "15MIN",
                         "Date" => gmmktime(10, 45, 00, 1, 22, 09),
                         "Data0" => 3.0,
@@ -1418,8 +1494,10 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 31,
                 ),
                 array(
+                    "id" => 31,
                     "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                     "Type" => "HOURLY",
                     "Data0" => 3.0,
@@ -1483,24 +1561,28 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 20, 00, 1, 22, 09),
                         "Data0" => 1.0,
                         "Data1" => 2.0,
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 25, 00, 1, 22, 09),
                         "Data0" => 2.0,
                         "Data1" => 3.0,
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 6.0,
                         "Data1" => 7.0,
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 33, 12, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -1510,15 +1592,18 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "HistoryTableMock",
                 array(
+                    "id" => 32,
                 ),
                 array(
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 15, 00, 1, 22, 09),
                         "Data0" => 3.0,
                         "Data1" => 4.0,
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 32,
                         "Date" => gmmktime(10, 30, 00, 1, 22, 09),
                         "Data0" => 11.0,
                         "Data1" => 12.0,
@@ -1531,6 +1616,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(10, 00, 00, 1, 22, 09),
                         "Data0" => 1.0,
@@ -1538,6 +1624,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(11, 00, 00, 1, 22, 09),
                         "Data0" => 2.0,
@@ -1545,6 +1632,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(12, 00, 00, 1, 22, 09),
                         "Data0" => 6.0,
@@ -1552,6 +1640,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(13, 00, 00, 1, 22, 09),
                         "Data0" => 3.0,
@@ -1559,6 +1648,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(14, 00, 00, 1, 22, 09),
                         "Data0" => 1.0,
@@ -1566,6 +1656,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(15, 00, 00, 1, 22, 09),
                         "Data0" => 2.0,
@@ -1573,6 +1664,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(16, 00, 00, 1, 22, 09),
                         "Data0" => 6.0,
@@ -1580,6 +1672,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(17, 00, 00, 1, 22, 09),
                         "Data0" => 3.0,
@@ -1587,6 +1680,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(0, 00, 00, 1, 23, 09),
                         "Data0" => 1.0,
@@ -1594,6 +1688,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 3.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(1, 00, 00, 1, 23, 09),
                         "Data0" => 2.0,
@@ -1601,6 +1696,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 4.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(2, 00, 00, 1, 23, 09),
                         "Data0" => 6.0,
@@ -1608,6 +1704,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 8.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(3, 00, 00, 1, 23, 09),
                         "Data0" => 3.0,
@@ -1615,6 +1712,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "15MIN",
                         "Date" => gmmktime(0, 15, 00, 1, 24, 09),
                         "Data0" => 16.0,
@@ -1622,6 +1720,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 18.0,
                     ),
                     array(
+                        "id" => 33,
                         "Type" => "HOURLY",
                         "Date" => gmmktime(1, 00, 00, 1, 24, 09),
                         "Data0" => 3.0,
@@ -1632,9 +1731,11 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 "AverageTableMock",
                 array(
+                    "id" => 33,
                 ),
                 array(
                     array(
+                        "id" => 33,
                         "Date" => gmmktime(0, 00, 00, 1, 22, 09),
                         "Type" => "DAILY",
                         "Data0" => 3.0,
@@ -1642,6 +1743,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 33,
                         "Date" => gmmktime(0, 00, 00, 1, 23, 09),
                         "Type" => "DAILY",
                         "Data0" => 3.0,
@@ -1649,6 +1751,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                         "Data2" => 5.0,
                     ),
                     array(
+                        "id" => 33,
                         "Date" => gmmktime(0, 00, 00, 1, 24, 09),
                         "Type" => "DAILY",
                         "Data0" => 3.0,

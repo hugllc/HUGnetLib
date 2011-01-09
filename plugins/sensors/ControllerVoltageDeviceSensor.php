@@ -76,6 +76,7 @@ class ControllerVoltageDeviceSensor extends VoltageDeviceSensorBase
             "R2 in kOhms"
         ),
         "extraDefault" => array(180, 27),
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database

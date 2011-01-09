@@ -341,29 +341,40 @@ class DeviceContainer extends DevicesTable
     /**
     * Returns the name of the history table
     *
+    * @param bool $history History if true, average if false
+    *
     * @return string
     */
-    public function historyTable()
+    public function historyTable($history = true)
     {
-        $hist = $this->myConfig->plugins->getPlugin(
-            "historyTable",
-            $this->Driver
-        );
+        if ($history) {
+            $hist = $this->myConfig->plugins->getPlugin(
+                "historyTable",
+                $this->Driver
+            );
+        } else {
+            $hist = $this->myConfig->plugins->getPlugin(
+                "averageTable",
+                $this->Driver
+            );
+        }
         return $hist["Class"];
     }
 
     /**
     * returns a history object for this device
     *
-    * @param array $data The data to build the history record with.
+    * @param array $data    The data to build the history record with.
+    * @param bool  $history History if true, average if false
     *
     * @return string
     */
-    public function &historyFactory($data)
+    public function &historyFactory($data, $history = true)
     {
-        $class = $this->historyTable();
+        $class = $this->historyTable($history);
         $obj = new $class($data);
         $obj->labels($this->historyHeader());
+        $obj->device = &$this;
         return $obj;
     }
 

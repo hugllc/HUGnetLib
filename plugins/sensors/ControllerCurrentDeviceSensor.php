@@ -76,7 +76,8 @@ class ControllerCurrentDeviceSensor extends CurrentDeviceSensorBase
             "Gain"
         ),
         "extraDefault" => array(.5, 7),
-    );
+        "maxDecimals" => 4,
+   );
     /**
     * Disconnects from the database
     *

@@ -212,6 +212,7 @@ abstract class AverageTableBase extends HistoryTableBase
         $this->Date = $this->startTime;
         $tooOld = $this->endTime + 900;// After another 900 seconds we don't use this
         $this->divisors = array();
+        $this->id = $data->id;
         $ret = true;
         $last = array();
         while (($data->Date < $tooOld) && $ret) {
@@ -294,6 +295,7 @@ abstract class AverageTableBase extends HistoryTableBase
         if (!$ret) {
             return false;
         }
+        $this->id = $data->id;
         $this->Type = $this->nextAverage[$this->baseType];
         $this->Date = $this->startTime;
         $this->divisors = array();

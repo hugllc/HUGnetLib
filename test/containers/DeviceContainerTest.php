@@ -1400,6 +1400,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "Data5" => 6.0,
                     "Data6" => 7.0,
                 ),
+                true,
                 array(
                     "group" => "default",
                     "raw" => array(),
@@ -1415,6 +1416,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "Data5" => 6.0,
                     "Data6" => 7.0,
                 ),
+                "Test2HistoryTable",
             ),
             array(
                 array(
@@ -1452,6 +1454,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "Data5" => 6.0,
                     "Data6" => 7.0,
                 ),
+                true,
                 array(
                     "group" => "default",
                     "raw" => array(),
@@ -1465,6 +1468,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "Data3" => 4.0,
                     "Data4" => 5.0,
                 ),
+                "Test1HistoryTable",
             ),
             array(
                 array(
@@ -1532,6 +1536,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     'id' => 385,
                     'Date' => 1281389816,
                 ),
+                true,
                 array(
                     "group" => "default",
                     "raw" => array(
@@ -1547,7 +1552,196 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "Data3" => 10.951,
                     "Data4" => 20.3,
                 ),
+                "Test1HistoryTable",
             ),
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "Type" => "DAILY",
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+                false,
+                array(
+                    "group" => "default",
+                    "raw" => array(),
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "Type" => "DAILY",
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+                "Test2AverageTable",
+            ),
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-99-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                array(
+                    "group" => "default",
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "deltaT" => 12,
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                    "Data5" => 6.0,
+                    "Data6" => 7.0,
+                ),
+                false,
+                array(
+                    "group" => "default",
+                    "raw" => array(),
+                    "id" => 51,
+                    "Date" => 1234567890,
+                    "Type" => "15MIN",
+                    "Data0" => 1.0,
+                    "Data1" => 2.0,
+                    "Data2" => 3.0,
+                    "Data3" => 4.0,
+                    "Data4" => 5.0,
+                ),
+                "Test1AverageTable",
+            ),
+            array(
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-99-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 0,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 0,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                ),
+                array(
+                    'DataIndex' => 99,
+                    'timeConstant' => 1,
+                    'deltaT' => 593,
+                    0 => array(
+                        'value' => 10.749,
+                        'units' => 'V',
+                        'unitType' => 'Voltage',
+                        'dataType' => 'raw',
+                    ),
+                    1 => array(
+                        'value' => 11.7,
+                        'units' => 'mA',
+                        'unitType' => 'Current',
+                        'dataType' => 'raw',
+                    ),
+                    2 => array(
+                        'value' => 33.3514,
+                        'units' => '&#176;C',
+                        'unitType' => 'Temperature',
+                        'dataType' => 'raw',
+                    ),
+                    3 => array(
+                        'value' => 10.951,
+                        'units' => 'V',
+                        'unitType' => 'Voltage',
+                        'dataType' => 'raw',
+                    ),
+                    4 => array(
+                        'value' => 20.3,
+                        'units' => 'mA',
+                        'unitType' => 'Current',
+                        'dataType' => 'raw',
+                    ),
+                    5 => array(
+                        'value' => 35.2126,
+                        'units' => '&#176;C',
+                        'unitType' => 'Temperature',
+                        'dataType' => 'raw',
+                    ),
+                    'id' => 385,
+                    'Date' => 1281389816,
+                ),
+                false,
+                array(
+                    "group" => "default",
+                    "raw" => array(
+                        null,null,null,null,null
+                    ),
+                    "id" => 385,
+                    "Date" => 1281389816,
+                    "Type" => "15MIN",
+                    "Data0" => 10.749,
+                    "Data1" => 11.7,
+                    "Data2" => 33.3514,
+                    "Data3" => 10.951,
+                    "Data4" => 20.3,
+                ),
+                "Test1AverageTable",
+            ),
+
         );
     }
 
@@ -1556,16 +1750,23 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     *
     * @param string $preload The values to preload
     * @param array  $data    The data to load into the history object
+    * @param bool   $history History if true, average if false
     * @param mixed  $expect  The expected return
+    * @param string $return  The expected class returned
     *
     * @return null
     *
     * @dataProvider dataHistoryFactory
     */
-    public function testHistoryFactory($preload, $data, $expect)
-    {
+    public function testHistoryFactory(
+        $preload, $data, $history, $expect, $return
+    ) {
         $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->historyFactory($data)->toArray());
+
+        $hist = $this->o->historyFactory($data, $history);
+        $this->assertSame($return, get_class($hist), "Class wrong");
+        $this->assertSame($expect, $hist->toArray(), "Data wrong");
+        $this->assertSame($this->o, $hist->device, "Device wrong");
     }
 
 
