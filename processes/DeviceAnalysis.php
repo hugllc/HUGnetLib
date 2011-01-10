@@ -117,7 +117,7 @@ class DeviceAnalysis extends DeviceProcess
         foreach ($this->periodicPriority as $p) {
             foreach ($p as $n) {
                 if ($this->periodic[$n]->ready($dev)) {
-                    $this->periodic[$n]->main($dev);
+                    $this->periodic[$n]->$fct($dev);
                 }
             }
         }
