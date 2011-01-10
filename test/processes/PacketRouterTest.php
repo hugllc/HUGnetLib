@@ -283,6 +283,28 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 array(
                 ),
             ),
+            // One Packet to through then a reply
+            array(
+                array(),
+                true,
+                array(
+                    0 => array(
+                        "other" => "5A5A5A030000E10000200401020304C2",
+                    ),
+                    1 => array(
+                        "third" => "5A5A5A010000200000E10401020304C0",
+                    ),
+                ),
+                array(
+                    "other"   => "5A5A5A010000200000E10401020304C0",
+                    "third"   => "5A5A5A030000E10000200401020304C2",
+                    "default" => "5A5A5A030000E10000200401020304C2"
+                        ."5A5A5A010000200000E10401020304C0",
+                ),
+                array(
+                    "0000E1" => "third",
+                ),
+            ),
             // Two packets, one each interface
             array(
                 array(),

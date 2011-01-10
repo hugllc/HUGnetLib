@@ -401,7 +401,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         $this->Reply = null;
         // Send the packet out
         if (is_object($this->mySocket)) {
-            if ($this->From == "000000") {
+            if ($this->From === "000000") {
                 // Get our device ID.
                 $this->From = $this->mySocket->DeviceID;
             }
@@ -632,8 +632,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     public function myReply(PacketContainer &$pkt)
     {
         if ($this->_toMe($pkt)
-            && ($pkt->Command == self::COMMAND_REPLY)
-            && ($this->To == $pkt->From)
+            && ($pkt->Command === self::COMMAND_REPLY)
+            && ($this->To === $pkt->From)
             && ($this->Time < $pkt->Time)
         ) {
             return true;
@@ -712,8 +712,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     private function _toMe(PacketContainer &$pkt)
     {
-        if ((($pkt->To == $this->From)&&($this->From != "000000")&&($this != $pkt))
-            || ($pkt->To == $this->mySocket->DeviceID)
+        if ((($pkt->To === $this->From)&&($this->From !== "000000")&&($this != $pkt))
+            || ($pkt->To === $this->mySocket->DeviceID)
         ) {
             return true;
         }

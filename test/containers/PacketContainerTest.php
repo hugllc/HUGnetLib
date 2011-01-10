@@ -1101,6 +1101,36 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
+            // Good Reply
+            array(
+                "5A5A5A030000200000E10401020304C2",
+                "5A5A5A010000E10000200401020304C0",
+                "5A5A5A030000200000E10401020304C2",
+                array(
+                    "To" => "000020",
+                    "From" => "0000E1",
+                    "Command" => "03",
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "RawData" => "01020304",
+                    "Type" => "FINDPING",
+                    "Reply" => array(
+                        "To" => "0000E1",
+                        "From" => "000020",
+                        "Command" => "01",
+                        "Length"  => 4,
+                        "Data" => array(1,2,3,4),
+                        "RawData" => "01020304",
+                        "Type" => "REPLY",
+                        "Reply" => null,
+                        "Checksum" => "C0",
+                        "CalcChecksum" => "C0",
+                    ),
+                    "Checksum" => "C2",
+                    "CalcChecksum" => "C2",
+                ),
+                "default",
+            ),
             // Good Reply (Reply already loaded)
             array(
                 array(
@@ -1296,6 +1326,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testSend($preload, $readString, $writeString, $expect, $group)
     {
         $this->socket[$group]->readString = $readString;
+
         $o = new PacketContainer($preload);
         $o->send();
         $this->checkTestSend(
