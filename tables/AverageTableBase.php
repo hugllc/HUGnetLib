@@ -55,6 +55,17 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  */
 abstract class AverageTableBase extends HistoryTableBase
 {
+    /** @var string This is the label for 15 Minute averages*/
+    const AVERAGE_15MIN = "15MIN";
+    /** @var string This is the label for 15 Minute averages*/
+    const AVERAGE_HOURLY = "HOURLY";
+    /** @var string This is the label for 15 Minute averages*/
+    const AVERAGE_DAILY = "DAILY";
+    /** @var string This is the label for 15 Minute averages*/
+    const AVERAGE_MONTHLY = "MONTHLY";
+    /** @var string This is the label for 15 Minute averages*/
+    const AVERAGE_YEARLY = "YEARLY";
+
     /** @var string This is the table we should use */
     public $sqlTable = "";
     /** @var string This is the primary key of the table.  Leave blank if none  */
@@ -153,13 +164,6 @@ abstract class AverageTableBase extends HistoryTableBase
     protected $divisors = array();
     /** @var string The base type for the averages */
     protected $baseType = "";
-    /** @var array The next type for the averages*/
-    protected $nextAverage = array(
-        "15MIN" => "HOURLY",
-        "HOURLY" => "DAILY",
-        "DAILY" => "MONTHLY",
-        "MONTHLY" => "YEARLY"
-    );
 
     /**
     * This is the constructor
@@ -181,17 +185,18 @@ abstract class AverageTableBase extends HistoryTableBase
     * then it will calculate 15 minute averages.
     *
     * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * @param string           $type The type of average to calculate
     *
     * @return bool True on success, false on failure
     */
-    public function calcAverage(HistoryTableBase $data)
+    public function calcAverage(HistoryTableBase $data, $type)
     {
         if ($data->isEmpty()) {
             return false;
-        } else if (is_a($data, "AverageTableBase")) {
-            return $this->calcOtherAverage($data);
+        } else if ($type == self::AVERAGE_15MIN) {
+            return $this->calc15MinAverage($data);
         }
-        return $this->calc15MinAverage($data);
+        return $this->calcOtherAverage($data, $type);
     }
     /**
     * This calculates the averages
@@ -207,8 +212,8 @@ abstract class AverageTableBase extends HistoryTableBase
     protected function calc15MinAverage(HistoryTableBase $data)
     {
         $this->clearData();
-        $this->Type = "15MIN";
-        $this->_get15MinTimePeriod($data->Date);
+        $this->Type = self::AVERAGE_15MIN;
+        $this->_getTimePeriod($data->Date, self::AVERAGE_15MIN);
         $this->Date = $this->startTime;
         $tooOld = $this->endTime + 900;// After another 900 seconds we don't use this
         $this->divisors = array();
@@ -244,34 +249,6 @@ abstract class AverageTableBase extends HistoryTableBase
     }
 
     /**
-    * This sets the time correctly
-    *
-    * @param int $time The time we are currently at
-    *
-    * @return bool True on success, false on failure
-    */
-    private function _get15MinTimePeriod($time)
-    {
-        $min = gmdate("i", $time);
-        if ($min < 15) {
-            $min = 0;
-        } else if ($min < 30) {
-            $min = 15;
-        } else if ($min < 45) {
-            $min = 30;
-        } else {
-            $min = 45;
-        }
-        $this->startTime = gmmktime(
-            gmdate("H", $time), $min, 0,
-            gmdate("m", $time), gmdate("d", $time), gmdate("Y", $time)
-        );
-        $this->endTime = gmmktime(
-            gmdate("H", $time), $min + 15, 0,
-            gmdate("m", $time), gmdate("d", $time), gmdate("Y", $time)
-        );
-    }
-    /**
     * This calculates the averages
     *
     * It will return once for each average that it calculates.  The average will be
@@ -279,24 +256,23 @@ abstract class AverageTableBase extends HistoryTableBase
     * then it will calculate 15 minute averages.
     *
     * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * @param string           $type The type of average to calculate
     *
     * @return bool True on success, false on failure
     */
-    protected function calcOtherAverage(HistoryTableBase $data)
+    protected function calcOtherAverage(HistoryTableBase $data, $type)
     {
 
         $this->clearData();
         if (empty($this->baseType)) {
             $this->baseType = $data->Type;
         }
-        $ret = $this->_getOtherTimePeriod(
-            $data->Date, $this->nextAverage[$this->baseType]
-        );
+        $ret = $this->_getTimePeriod($data->Date, $type);
         if (!$ret) {
             return false;
         }
         $this->id = $data->id;
-        $this->Type = $this->nextAverage[$this->baseType];
+        $this->Type = $type;
         $this->Date = $this->startTime;
         $this->divisors = array();
         $ret = true;
@@ -345,31 +321,59 @@ abstract class AverageTableBase extends HistoryTableBase
     *
     * @return bool True on success, false on failure
     */
-    private function _getOtherTimePeriod($time, $type)
+    private function _getTimePeriod($time, $type)
     {
         $H = gmdate("H", $time);
         $m = gmdate("m", $time);
         $d = gmdate("d", $time);
         $Y = gmdate("Y", $time);
-        if ($type == "HOURLY") {
+        if ($type == self::AVERAGE_15MIN) {
+            $min = gmdate("i", $time);
+            if ($min < 15) {
+                $min = 0;
+            } else if ($min < 30) {
+                $min = 15;
+            } else if ($min < 45) {
+                $min = 30;
+            } else {
+                $min = 45;
+            }
+            $this->startTime = gmmktime($H, $min, 0, $m, $d, $Y);
+            $this->endTime = gmmktime($H, $min + 15, 0, $m, $d, $Y);
+        } else if ($type == self::AVERAGE_HOURLY) {
             $this->startTime = gmmktime($H, 0, 0, $m, $d, $Y);
             $this->endTime = gmmktime($H + 1, 0, 0, $m, $d, $Y);
             return true;
-        } else if ($type == "DAILY") {
+        } else if ($type == self::AVERAGE_DAILY) {
             $this->startTime = gmmktime(0, 0, 0, $m, $d, $Y);
             $this->endTime = gmmktime(0, 0, 0, $m, $d + 1, $Y);
             return true;
-        } else if ($type == "MONTHLY") {
+        } else if ($type == self::AVERAGE_MONTHLY) {
             $this->startTime = gmmktime(0, 0, 0, $m, 1, $Y);
             $this->endTime = gmmktime(0, 0, 0, $m + 1, 1, $Y);
             return true;
-        } else if ($type == "YEARLY") {
+        } else if ($type == self::AVERAGE_YEARLY) {
             $this->startTime = gmmktime(0, 0, 0, 1, 1, $Y);
             $this->endTime = gmmktime(0, 0, 0, 1, 1, $Y + 1);
             return true;
         }
         return false;
     }
-
+    /**
+    * Sets the extra attributes field
+    *
+    * @param int    $start The start of the time
+    * @param int    $end   The end of the time
+    * @param mixed  $id    The ID to use.  None if null
+    * @param string $type  The type of record
+    *
+    * @return mixed The value of the attribute
+    */
+    public function getPeriod($start, $end = null, $id = null, $type = "15MIN")
+    {
+        return parent::getPeriod(
+            $start, $end, $id, "id", "Type = ?", array($type)
+        );
+    }
 }
 ?>

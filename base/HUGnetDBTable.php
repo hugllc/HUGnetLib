@@ -234,15 +234,23 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * Sets the extra attributes field
     *
-    * @param int    $start   The start of the time
-    * @param int    $end     The end of the time
-    * @param mixed  $id      The ID to use.  None if null
-    * @param string $idField The ID Field to use.  Table Primary id if left blank
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $id         The ID to use.  None if null
+    * @param string $idField    The ID Field to use.  Table Primary id if left blank
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod($start, $end = null, $id = null, $idField = null)
-    {
+    public function getPeriod(
+        $start,
+        $end = null,
+        $id = null,
+        $idField = null,
+        $extraWhere = null,
+        $extraData = null
+    ) {
         // If date field doesn't exist return
         if (empty($this->dateField)) {
             return false;
@@ -262,6 +270,12 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if (!is_null($id)) {
             $where .= " AND `".$idField."` = ?";
             $data[] = $id;
+        }
+        if (!empty($extraWhere)) {
+            $where .= " AND ".$extraWhere;
+        }
+        if (is_array($extraData)) {
+            $data = array_merge($data, $extraData);
         }
         return $this->selectInto(
             $where,

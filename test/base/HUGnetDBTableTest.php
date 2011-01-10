@@ -278,6 +278,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 3,
                 6,
                 32,
+                null,
                 array(
                     array(
                         "group" => "default",
@@ -317,6 +318,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 5,
                 6,
                 32,
+                "id",
                 array(
                     array(
                         "group" => "default",
@@ -346,6 +348,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                 5,
                 null,
                 32,
+                null,
                 array(
                     array(
                         "group" => "default",
@@ -359,25 +362,58 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                     ),
                 ),
             ),
+            array(
+                array(
+                ),
+                5,
+                6,
+                32,
+                "id",
+                array(
+                    array(
+                        "group" => "default",
+                        "fluff" => "nStuff",
+                        "other" => "things",
+                        "id" => "32",
+                        "myDate" => "1970-01-01 00:00:00",
+                        "myOtherDate" => 6,
+                        "name" => "A way up here thing",
+                        "value" => "25.0",
+                    ),
+                ),
+                "value = ?",
+                array(25.0),
+            ),
         );
     }
     /**
     * Tests for verbosity
     *
-    * @param array $preload The array to preload into the class
-    * @param int   $start   The first date
-    * @param int   $end     The last date
-    * @param mixed $key     The key to use
-    * @param array $expect  The expected return
+    * @param array  $preload    The array to preload into the class
+    * @param int    $start      The first date
+    * @param int    $end        The last date
+    * @param mixed  $key        The key to use
+    * @param string $id         The id field to use
+    * @param array  $expect     The expected return
+    * @param string $extraWhere The extra where clause to use
+    * @param array  $extraData  The data for the extra where clause
     *
     * @dataProvider dataGetPeriod
     *
     * @return null
     */
-    public function testGetPeriod($preload, $start, $end, $key, $expect)
-    {
+    public function testGetPeriod(
+        $preload,
+        $start,
+        $end,
+        $key,
+        $id,
+        $expect,
+        $extraWhere = null,
+        $extraData = null
+    ) {
         $o = new HUGnetDBTableTestStub2($preload);
-        $ret = $o->getPeriod($start, $end, $key);
+        $ret = $o->getPeriod($start, $end, $key, $id, $extraWhere, $extraData);
         if ($ret !== false) {
             $ret = array();
             do {

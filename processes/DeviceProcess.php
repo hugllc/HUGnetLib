@@ -106,12 +106,13 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
             $n = $class["Name"];
-            $p = (!is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
+            $p = (is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
             if (is_subclass_of($c, "DeviceProcessPluginInterface")) {
                 $this->active[$n] = new $c($data, $this);
                 $this->priority[$p][$n] = $n;
             }
         }
+        ksort($this->priority);
     }
     /**
     * This process runs analysis plugins on the data
@@ -159,7 +160,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     */
     private function _check(DeviceContainer &$dev, $fct = "main")
     {
-        foreach ($this->priority as $p) {
+        foreach ($this->priority as $k => $p) {
             foreach ($p as $n) {
                 if ($this->active[$n]->ready($dev)) {
                     if ($this->active[$n]->$fct($dev) === false) {

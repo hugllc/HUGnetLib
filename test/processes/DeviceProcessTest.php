@@ -134,7 +134,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     public static function dataConstructor()
     {
         return array(
-           array(
+            array(
                 array(),
                 array(
                     "group" => "default",
@@ -144,7 +144,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "PluginType"      => "deviceProcess",
                 ),
             ),
-           array(
+            array(
                 array(
                     "group" => "test",
                     "GatewayKey" => 3,
@@ -229,9 +229,18 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
                 array(
-                    hexdec("123456") => 1,
-                    hexdec("654321") => null,
-                    hexdec("234567") => 1
+                    hexdec("123456") => array(
+                        "TestDeviceProcessPlugin" => 1,
+                        "TestDeviceProcessPlugin2" => 1,
+                    ),
+                    hexdec("654321") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("234567") => array(
+                        "TestDeviceProcessPlugin" => 1,
+                        "TestDeviceProcessPlugin2" => 1,
+                    ),
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
@@ -272,9 +281,18 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 true,
                 array(
-                    hexdec("BADBAD") => 1,
-                    hexdec("654321") => null,
-                    hexdec("234567") => 1
+                    hexdec("BADBAD") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => 1,
+                    ),
+                    hexdec("654321") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("234567") => array(
+                        "TestDeviceProcessPlugin" => 1,
+                        "TestDeviceProcessPlugin2" => 1,
+                    ),
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
@@ -314,9 +332,18 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 false,
                 array(
-                    hexdec("123456") => null,
-                    hexdec("654321") => null,
-                    hexdec("234567") => null
+                    hexdec("123456") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("654321") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("234567") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
@@ -353,7 +380,9 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
             $info = &$d->params->DriverInfo;
             foreach ($plugins as $p) {
                 $this->assertSame(
-                    $expect[$d->id], $info[$p], "$p didn't run enough"
+                    $expect[$d->id][$p],
+                    $info[$p],
+                    "$p didn't run enough on ".$d->DeviceID
                 );
             }
         }

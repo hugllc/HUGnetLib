@@ -93,7 +93,7 @@ class DeviceAnalysis extends DeviceProcess
         foreach ((array)$classes as $class) {
             $c = $class["Class"];
             $n = $class["Name"];
-            $p = (!is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
+            $p = (is_null($class["Priority"])) ? 50 : (int)$class["Priority"];
             if (is_subclass_of($c, "DeviceProcessPluginInterface")) {
                 $this->periodic[$n] = new $c($data, $this);
                 $this->periodicPriority[$p][$n] = $n;

@@ -240,16 +240,26 @@ abstract class HistoryTableBase extends HUGnetDBTable
     /**
     * Sets the extra attributes field
     *
-    * @param int    $start   The start of the time
-    * @param int    $end     The end of the time
-    * @param mixed  $id      The ID to use.  None if null
-    * @param string $idField The ID Field to use.  Table Primary id if left blank
+    * @param int    $start      The start of the time
+    * @param int    $end        The end of the time
+    * @param mixed  $id         The ID to use.  None if null
+    * @param string $idField    The ID Field to use.  Table Primary id if left blank
+    * @param string $extraWhere Extra where clause
+    * @param array  $extraData  Data for the extraWhere clause
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod($start, $end = null, $id = null, $idField = "id")
-    {
-        return parent::getPeriod($start, $end, $id, $idField);
+    public function getPeriod(
+        $start,
+        $end = null,
+        $id = null,
+        $idField = "id",
+        $extraWhere = null,
+        $extraData = null
+    ) {
+        return parent::getPeriod(
+            $start, $end, $id, $idField, $extraWhere, $extraData
+        );
     }
     /**
     * There should only be a single instance of this class
