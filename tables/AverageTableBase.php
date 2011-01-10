@@ -57,13 +57,15 @@ abstract class AverageTableBase extends HistoryTableBase
 {
     /** @var string This is the label for 15 Minute averages*/
     const AVERAGE_15MIN = "15MIN";
-    /** @var string This is the label for 15 Minute averages*/
+    /** @var string This is the label for hourly averages*/
     const AVERAGE_HOURLY = "HOURLY";
-    /** @var string This is the label for 15 Minute averages*/
+    /** @var string This is the label for daily averages*/
     const AVERAGE_DAILY = "DAILY";
-    /** @var string This is the label for 15 Minute averages*/
+    /** @var string This is the label for weekly averages*/
+    const AVERAGE_WEEKLY = "WEEKLY";
+    /** @var string This is the label for monthly averages*/
     const AVERAGE_MONTHLY = "MONTHLY";
-    /** @var string This is the label for 15 Minute averages*/
+    /** @var string This is the label for yearly averages*/
     const AVERAGE_YEARLY = "YEARLY";
 
     /** @var string This is the table we should use */
@@ -347,6 +349,11 @@ abstract class AverageTableBase extends HistoryTableBase
         } else if ($type == self::AVERAGE_DAILY) {
             $this->startTime = gmmktime(0, 0, 0, $m, $d, $Y);
             $this->endTime = gmmktime(0, 0, 0, $m, $d + 1, $Y);
+            return true;
+        } else if ($type == self::AVERAGE_WEEKLY) {
+            $w = gmdate("w", $time);
+            $this->startTime = gmmktime(0, 0, 0, $m, ($d - $w), $Y);
+            $this->endTime = gmmktime(0, 0, 0, $m, ($d - $w + 7), $Y);
             return true;
         } else if ($type == self::AVERAGE_MONTHLY) {
             $this->startTime = gmmktime(0, 0, 0, $m, 1, $Y);
