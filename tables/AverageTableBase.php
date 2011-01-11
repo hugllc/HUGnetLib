@@ -382,5 +382,25 @@ abstract class AverageTableBase extends HistoryTableBase
             $start, $end, $id, "id", "Type = ?", array($type)
         );
     }
+    /**
+    * By default it outputs the date in the format specified in myConfig
+    * 
+    * This function fixes the time offset due to the time zone for
+    * monthly and yearly averages.
+    *
+    * @param string $field The field to output
+    *
+    * @return string The date as a formatted string
+    */
+    protected function outputDate($field)
+    {
+        $tzoffset = 0;
+        if (($this->Type == self::AVERAGE_MONTHLY)
+            || ($this->Type == self::AVERAGE_YEARLY)
+        ) {
+            $tzoffset = (int)date("Z") + ((int)date("I", $this->$field)*3600);
+        }
+        return date($this->myConfig->dateFormat, ($this->$field - $tzoffset));
+    }
 }
 ?>

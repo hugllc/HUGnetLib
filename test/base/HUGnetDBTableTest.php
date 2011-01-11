@@ -1593,6 +1593,43 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataOutputDate()
+    {
+        return array(
+            array(
+                array(
+                    "id"  => 41,
+                    "value"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "name"  => "Date",
+                ),
+                "value",
+                "2010-01-01 00:00:00",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The data to preload into the object
+    * @param string $field   The field to choose
+    * @param string $expect  The expected average (from toArray())
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputDate
+    */
+    public function testOutputDate($preload, $field, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->outputDate($field));
+    }
 
 }
 
@@ -1714,6 +1751,17 @@ class HUGnetDBTableTestStub extends HUGnetDBTable
     protected function setMyOtherDate($value)
     {
         $this->data["myOtherDate"] = self::unixDate($value);
+    }
+    /**
+    * By default it outputs the date in the format specified in myConfig
+    *
+    * @param string $field The field to output
+    *
+    * @return string The date as a formatted string
+    */
+    public function outputDate($field)
+    {
+        return parent::outputDate($field);
     }
 
 }

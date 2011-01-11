@@ -70,6 +70,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     protected function setUp()
     {
         $config = array(
+            "dateFormat" => "Y-m-d H:i:s",
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -1891,6 +1892,90 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
         }
         $this->assertSame($expect, $ret);
     }
+
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataOutputDate()
+    {
+        return array(
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_15MIN,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_HOURLY,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_DAILY,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_WEEKLY,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+            array( // Note the use of gmmktime instead of mktime
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_MONTHLY,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+            array( // Note the use of gmmktime instead of mktime
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_YEARLY,
+                ),
+                "Date",
+                "2010-01-01 00:00:00",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The data to preload into the object
+    * @param string $field   The field to choose
+    * @param string $expect  The expected average (from toArray())
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputDate
+    */
+    public function testOutputDate($preload, $field, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->outputDate($field));
+    }
+
 }
 /**
  * Test class for HUGnetDB.
@@ -1923,6 +2008,17 @@ class AverageTableBaseTestStub extends AverageTableBase
     public function calc15MinAverage(HistoryTableBase $data)
     {
         return parent::calc15MinAverage($data);
+    }
+    /**
+    * By default it outputs the date in the format specified in myConfig
+    *
+    * @param string $field The field to output
+    *
+    * @return string The date as a formatted string
+    */
+    public function outputDate($field)
+    {
+        return parent::outputDate($field);
     }
 }
 ?>

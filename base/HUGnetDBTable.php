@@ -567,6 +567,17 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $cols;
     }
     /**
+    * By default it outputs the date in the format specified in myConfig
+    *
+    * @param string $field The field to output
+    *
+    * @return string The date as a formatted string
+    */
+    protected function outputDate($field)
+    {
+        return date($this->myConfig->dateFormat, $this->$field);
+    }
+    /**
     * There should only be a single instance of this class
     *
     * @param array $cols The columns to get
@@ -579,7 +590,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $ret = array();
         foreach ($cols as $col) {
             if ($col == $this->dateField) {
-                $ret[$col] = date($this->myConfig->dateFormat, $this->$col);
+                $ret[$col] = $this->outputDate($col);
             } else {
                 $ret[$col] = (string)$this->$col;
             } 
