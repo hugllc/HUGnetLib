@@ -321,7 +321,7 @@ class DeviceContainer extends DevicesTable
     public function isEmpty()
     {
         return (bool)(empty($this->data["DeviceID"])
-            || ($this->data["DeviceID"] == '000000'));
+            || ($this->data["DeviceID"] === '000000'));
     }
     /**
     * Consumes packets and returns some stuff.

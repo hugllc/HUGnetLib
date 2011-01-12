@@ -1200,6 +1200,12 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 false,
             ),
+            array(
+                array(
+                    "DeviceID" => "0000E1",
+                ),
+                false,
+            ),
         );
     }
 
