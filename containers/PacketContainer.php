@@ -695,7 +695,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     */
     private function _unsolicited(PacketContainer &$pkt)
     {
-        if (($pkt->To == self::UNSOLICITED_TO)
+        if (($pkt->To === self::UNSOLICITED_TO)
             && ($pkt->Command !== self::COMMAND_REPLY)
             && ($pkt->Command !== "00")
         ) {

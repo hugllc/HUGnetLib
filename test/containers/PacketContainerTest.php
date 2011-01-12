@@ -890,6 +890,16 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
+                    "To" => "0000E1",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                ),
+                false,
+            ),
+            array(
+                array(
                     "To" => "000000",
                     "From" => "000020",
                     "Command" => "01",

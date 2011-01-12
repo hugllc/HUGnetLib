@@ -298,10 +298,10 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 array(
                     "other"   => "5A5A5A010000200000E10401020304C0",
                     "third"   => "5A5A5A030000E10000200401020304C2",
-                    "default" => "5A5A5A030000E10000200401020304C2"
-                        ."5A5A5A010000200000E10401020304C0",
+                    "default" => "5A5A5A030000E10000200401020304C2",
                 ),
                 array(
+                    "000020" => "other",
                     "0000E1" => "third",
                 ),
             ),
