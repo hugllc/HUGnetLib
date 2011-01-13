@@ -107,7 +107,10 @@ abstract class DeviceDriverLoadableBase extends DeviceDriverBase
     {
         $this->data = &$this->myDriver->params->DriverInfo;
         // This is what would normally be our time.  Every 12 hours.
-        if (($this->data["LastConfig"] + ($interval * 60)) > time()) {
+        if ($this->data["LastConfig"] > time()) {
+            // If our time is in the future we have a clock problem.  Go now
+            return true;
+        } else if (($this->data["LastConfig"] + ($interval * 60)) > time()) {
             return false;
         } else if (($this->data["LastConfigTry"] + 60) > time()) {
             return false;

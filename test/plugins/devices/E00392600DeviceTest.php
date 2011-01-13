@@ -222,6 +222,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
             array(time(), 60, false),
             array("2004-01-01 00:00:00", 12, true),
             array(time()-70, 1, true),
+            array(time()+86400, 1, true),
         );
     }
     /**

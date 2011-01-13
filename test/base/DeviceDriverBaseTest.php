@@ -517,6 +517,12 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 12,
                 false,
             ),
+            array(
+                time() + (10*86400),
+                array(),
+                12,
+                true,
+            ),
         );
     }
     /**
@@ -555,6 +561,12 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 array("PollFail" => 60, "LastPollTry" => (time() + 300)),
                 12,
                 false,
+            ),
+            array(
+                time() + (10*86400),
+                array(),
+                12,
+                true,
             ),
         );
     }

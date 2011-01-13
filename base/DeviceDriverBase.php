@@ -138,7 +138,10 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     {
         $this->data = &$this->myDriver->params->DriverInfo;
         // This is what would normally be our time.  Every 12 hours.
-        if (($this->data["LastConfig"] + ($interval * 3600)) > time()) {
+        if ($this->data["LastConfig"] > time()) {
+            // If our time is in the future we have a clock problem.  Go now
+            return true;
+        } else if (($this->data["LastConfig"] + ($interval * 3600)) > time()) {
             return false;
         } else if (($this->data["LastConfigTry"] + 300) > time()) {
             return false;
@@ -275,8 +278,11 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
             // No polling if the interval is set to 0
             return false;
         }
-        // The '-  30' is so that it can poll slightly before the interval is over
-        if (($this->data["LastPoll"] + ($interval * 60) - 30) > time()) {
+        if ($this->data["LastPoll"] > time()) {
+            // If our time is in the future we have a clock problem.  Go now
+            return true;
+        } else if (($this->data["LastPoll"] + ($interval * 60) - 30) > time()) {
+            // The '-  30' is so that it can poll slightly before the interval ends
             return false;
         } else if (($this->data["LastPollTry"] + 60) > time()) {
             return false;

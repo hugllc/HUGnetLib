@@ -114,6 +114,12 @@ class DeviceDriverLoadableBaseTest extends PHPUnit_Framework_TestCase
             array(time(), 0, 60, false),
             array(strtotime("2004-01-01 00:00:00"), -10000, 12, true),
             array(time()-700, 0, 1, false),
+            array(
+                time() + (10*86400),
+                0,
+                12,
+                true,
+            ),
         );
     }
     /**

@@ -221,6 +221,10 @@ class E00392600Device extends DeviceDriverBase
     */
     public function readSetupTime($interval = 10)
     {
+        if ($this->data["LastConfig"] > time()) {
+            // If our time is in the future we have a clock problem.  Go now
+            return true;
+        }
         // This is what would normally be our time.  Every 10 minutes
         $base = $this->data["LastConfig"] < (time() - $interval*60);
         if ($base === false) {
