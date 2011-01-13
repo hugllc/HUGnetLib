@@ -95,6 +95,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     const COMMAND_POWERUP = "5E";
     /** The placeholder for the Write E2 command */
     const COMMAND_RECONFIG = "5D";
+    /** The placeholder for the Write E2 command */
+    const COMMAND_BOREDOM = "5F";
     /** The placeholder for the reply command */
     const COMMAND_REPLY = self::COMMAND_ACK;
 
@@ -130,6 +132,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
         self::COMMAND_POWERUP             => "POWERUP",
         self::COMMAND_RECONFIG            => "RECONFIG",
         self::COMMAND_REPLY               => "REPLY",
+        self::COMMAND_BOREDOM             => "BOREDOM",
     );
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
