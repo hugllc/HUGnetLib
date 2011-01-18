@@ -35,6 +35,8 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+// Need to make sure this file is not added to the code coverage
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 /**
  * Color
  *

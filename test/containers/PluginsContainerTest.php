@@ -274,6 +274,14 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
+                    'image' => array(
+                        "DEFAULT" => array(
+                            "Name" => "Test1Image",
+                            "Type" => "image",
+                            "Class" => "Test1Image",
+                            "Flags" => array("DEFAULT"),
+                        ),
+                    ),
                     'output' => array(
                         "DEFAULT" => array(
                             "Name" => "Test1Output",
