@@ -84,7 +84,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
     */
     protected $fixed = array(
         "longName" => "OSRAM BPW-34 Photodiode",
-        "unitType" => "Light",
+        "unitType" => "Heat/Unit Area",
         "storageUnit" => 'W/m^2',
         "extraText" => array(
         ),
