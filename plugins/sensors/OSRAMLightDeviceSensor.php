@@ -83,7 +83,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "OSRAM BPW-34 Photo Diode",
+        "longName" => "OSRAM BPW-34 Photodiode",
         "unitType" => "Light",
         "storageUnit" => 'W/m^2',
         "extraText" => array(
@@ -99,7 +99,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
     public function __construct($data, &$device)
     {
         $this->default["id"] = 0x30;
-        $this->default["type"] = "maximum-inc";
+        $this->default["type"] = "OSRAM BPW-34";
         parent::__construct($data, $device);
     }
 
