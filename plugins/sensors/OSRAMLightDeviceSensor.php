@@ -83,7 +83,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Maximum Inc Wind Direction Sensor",
+        "longName" => "OSRAM BPW-34 Photo Diode",
         "unitType" => "Light",
         "storageUnit" => 'W/m^2',
         "extraText" => array(
