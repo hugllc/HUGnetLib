@@ -221,6 +221,11 @@ class ImageContainerTest extends PHPUnit_Framework_TestCase
                 $out,
                 "return is wrong"
             );
+            $this->assertSame(
+                $point,
+                $ret->id,
+                "id is wrong"
+            );
         }
     }
 

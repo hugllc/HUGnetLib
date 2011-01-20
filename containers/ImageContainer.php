@@ -60,12 +60,15 @@ class ImageContainer extends HUGnetContainer
 {
     /** @var array This is the default values for the data */
     protected $default = array(
+        "id" => 0,
         "type" => "DEFAULT",
         "iterate" => true,
         "imageLoc" => "",
         "height" => 0,
         "width" => 0,
         "pointCount" => 0,
+        "description" => "",
+        "dataType" => "15MIN",
     );
     /** @var object The data container class */
     protected $points = array();
@@ -114,6 +117,7 @@ class ImageContainer extends HUGnetContainer
         } else {
             return false;
         }
+        $this->points[$this->pointCount]->id = $this->pointCount;
         return $this->pointCount++;
     }
     /**

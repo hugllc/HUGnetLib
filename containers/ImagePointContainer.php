@@ -61,8 +61,8 @@ class ImagePointContainer extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "text" => "",
-        "color" => "000000",
-        "fill"  => "FFFFFF",
+        "color" => "#000000",
+        "fill"  => "transparent",
         "x" => 0,
         "y" => 0,
         "fontsize" => "9pt",
@@ -70,6 +70,9 @@ class ImagePointContainer extends HUGnetContainer
         "colorValueMin" => 0,
         "colorMax" => "FF0001",
         "colorMin" => "0000FF",
+        "link" => "",
+        "linkTitle" => "",
+        "id" => 0,
     );
 
     /**
@@ -100,6 +103,12 @@ class ImagePointContainer extends HUGnetContainer
         if (!is_null($valueMax)) {
             $this->colorValueMax = $valueMax;
         }
+        if ($value < $this->colorValueMin) {
+            return str_replace("#", "", $this->colorMin);
+        }
+        if ($value > $this->colorValueMax) {
+            return str_replace("#", "", $this->colorMax);
+        }
         $diff = ($value - $this->colorValueMin);
         $denom = ($this->colorValueMax - $this->colorValueMin);
         if ($denom === 0) {
@@ -124,14 +133,13 @@ class ImagePointContainer extends HUGnetContainer
      */
     public function autoFill($value, $valueMin = null, $valueMax = null)
     {
-        $this->fill = $this->_autoColor($value, $valueMin, $valueMax);
-
+        $this->fill = "#".$this->_autoColor($value, $valueMin, $valueMax);
         // Now check the foreground color
-        $bF = $this->_colorBrightness($this->fill);
-        $bC = $this->_colorBrightness($this->color);
+        $bF = (bool)($this->_colorBrightness($this->fill) > 80);
+        $bC = (bool)($this->_colorBrightness($this->color) > 80);
         // if $bF and $bC are the same then invert the color
-        if (($bF && $bC) || (!$bF && !$bC)) {
-            $this->color = $this->_colorInvert($this->color);
+        if ($bF === $bC) {
+            $this->color = "#".$this->_colorInvert($this->color);
         }
     }
     /**
@@ -145,13 +153,13 @@ class ImagePointContainer extends HUGnetContainer
      */
     public function autoColor($value, $valueMin = null, $valueMax = null)
     {
-        $this->color = $this->_autoColor($value, $valueMin, $valueMax);
+        $this->color = "#".$this->_autoColor($value, $valueMin, $valueMax);
 
         // Now check the background color
-        $bF = $this->_colorBrightness($this->fill, true);
-        $bC = $this->_colorBrightness($this->color, true);
+        $bF = (bool)($this->_colorBrightness($this->fill) > 90);
+        $bC = (bool)($this->_colorBrightness($this->color) > 90);
         if ($bF === $bC) {
-            $this->fill = $this->_colorInvert($this->fill);
+            $this->fill = "#".$this->_colorInvert($this->fill);
         }
     }
     /**
@@ -163,7 +171,7 @@ class ImagePointContainer extends HUGnetContainer
      */
     private function _color2RGB($color)
     {
-        str_replace("#", "", $color);
+        $color = str_replace("#", "", $color);
         $ret['r'] = hexdec(substr($color, 0, 2));
         $ret['g'] = hexdec(substr($color, 2, 2));
         $ret['b'] = hexdec(substr($color, 4, 2));
@@ -179,7 +187,7 @@ class ImagePointContainer extends HUGnetContainer
      */
     private function _color2HSV($color)
     {
-        str_replace("#", "", $color);
+        $color = str_replace("#", "", $color);
         return Color::hex2hsv($color);
     }
     /**
@@ -203,20 +211,15 @@ class ImagePointContainer extends HUGnetContainer
      * The algorithm was found at:
      * http://particletree.com/notebook/calculating-color-contrast-for-legible-text/
      *
-     * @param string $color  The color value to use.  Should be RRGGBB
-     * @param bool   $binary if true return 1 for dark and 0 for light
+     * @param string $color The color value to use.  Should be RRGGBB
      *
      * @return int Range: 0 - 255
      */
-    private function _colorBrightness($color, $binary = false)
+    private function _colorBrightness($color)
     {
         $c = $this->_color2RGB($color);
         $bright = (($c['r'] * 299) + ($c['g'] * 587) + ($c['b'] * 114)) / 1000;
-        if ($binary) {
-            return $bright >= 128;
-        } else {
-            return (int)$bright;
-        }
+        return (int)$bright;
     }
 
     /**
