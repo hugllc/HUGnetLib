@@ -66,6 +66,8 @@ class DeviceParamsContainer extends HUGnetContainer
         "DriverInfo" => array(),        // Persistant storage for the driver
         "ProcessInfo" => array(),       // Persistant storage for the processes
         "LastContact" => 0,             // The last time the dev was contacted
+        "LastModified" => 0,            // The last time we were modified.
+        "LastModifiedBy" => "",         // The name of the last person to modify me
     );
 
     /**
