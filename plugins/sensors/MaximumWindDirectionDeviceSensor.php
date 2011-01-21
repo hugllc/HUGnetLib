@@ -68,7 +68,7 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     protected $fixed = array(
         "longName" => "Maximum Inc Wind Direction Sensor",
         "unitType" => "Direction",
-        "storageUnit" => '&#176',
+        "storageUnit" => '&#176;',
         "extraText" => array(
         ),
         "extraDefault" => array(),
