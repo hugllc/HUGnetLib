@@ -79,6 +79,7 @@ class ChsMssDeviceSensor extends VoltageDeviceSensorBase
             "AtoD Reference Voltage (V)"
         ),
         "extraDefault" => array(0, 1, 0, 100, 1.1),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database
