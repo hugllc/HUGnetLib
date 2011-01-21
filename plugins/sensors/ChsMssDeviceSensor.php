@@ -69,7 +69,7 @@ class ChsMssDeviceSensor extends VoltageDeviceSensorBase
     */
     protected $fixed = array(
         "longName" => "TDK CHS-MSS",
-        "unitType" => "RelativeHumidity",
+        "unitType" => "Relative Humidity",
         "storageUnit" => '%',
         "extraText" => array(
             "Min Voltage (V)",

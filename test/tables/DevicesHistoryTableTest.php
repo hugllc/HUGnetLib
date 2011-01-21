@@ -369,6 +369,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
+                    "ActiveSensors" => 6,
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(
@@ -448,6 +449,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
+                    "ActiveSensors" => 6,
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(
@@ -494,6 +496,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
+                    "ActiveSensors" => 6,
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(

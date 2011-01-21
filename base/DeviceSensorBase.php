@@ -147,7 +147,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     protected function getExtra($index)
     {
-        if (isset($this->extra[$index])) {
+        if (is_array($this->extra) && isset($this->extra[$index])) {
             return $this->extra[$index];
         }
         return $this->extraDefault[$index];

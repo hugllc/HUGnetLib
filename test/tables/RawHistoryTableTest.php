@@ -386,6 +386,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'FWVersion' => '0.0.0',
                     'RawSetup' => '000000001200392102410039201443000000FFFFFF00',
                     'Driver' => 'e00392100',
+                    'ActiveSensors' => 6,
                     'sensors' => array(
                         'Sensors' => 6,
                         0 => array(

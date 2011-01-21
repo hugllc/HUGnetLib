@@ -387,7 +387,7 @@ class DeviceContainer extends DevicesTable
     {
         $ret = array("Date" => "Date");
         for ($i = 0; $i < $this->ActiveSensors; $i++) {
-            if ($this->sensors->sensor($i)->dataType != UnitsBase::TYPE_IGNORE) {
+            if ($this->sensors->sensor($i)->dataType !== UnitsBase::TYPE_IGNORE) {
                 $loc = $this->sensors->sensor($i)->location;
                 if (empty($loc) && !is_numeric($loc)) {
                     $loc = "Sensor ".($i+1);

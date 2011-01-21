@@ -246,7 +246,7 @@ class RawHistoryTable extends HUGnetDBTable
     public function &getDevice()
     {
         $dev = &DevicesHistoryTable::deviceFactory(
-            $this->id, $this->devicesHistoryDate
+            $this->id, $this->devicesHistoryDate, array("group" => $this->group)
         );
         return $dev;
 
@@ -299,8 +299,11 @@ class RawHistoryTable extends HUGnetDBTable
     private function _getPrev(&$lastTime, &$prev)
     {
         if (!is_array($prev) || empty($prev)) {
-            $raw = new RawHistoryTable();
+            $raw = new RawHistoryTable(
+                $this->toArray()
+            );
             $raw->sqlOrderBy = "Date DESC";
+            $raw->sqlLimit = 1;
             $raw->selectInto(
                 "`id` = ? AND `Date` < ?",
                 array($this->id, $this->Date)

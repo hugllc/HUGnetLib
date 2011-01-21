@@ -200,6 +200,9 @@ class DevicesHistoryTable extends HUGnetDBTable
         $dev = new DeviceContainer();
         $dev->fromSetupString($this->SetupString);
         $dev->sensors->fromString($this->SensorString);
+        if (empty($dev->ActiveSensors)) {
+            $dev->ActiveSensors = $dev->sensors->Sensors;
+        }
         return $dev;
     }
     /**
@@ -207,15 +210,17 @@ class DevicesHistoryTable extends HUGnetDBTable
     *
     * @param int $id   The id of the record to get
     * @param int $date The date to use
+    * @param int $data The data to load into the history table
     *
     * @return null
     */
-    static public function &deviceFactory($id, $date = 0)
+    static public function &deviceFactory($id, $date = 0, $data = array())
     {
-        $hist = new DevicesHistoryTable();
+        $hist = new DevicesHistoryTable($data);
         if (empty($date)) {
             $date = time();
         }
+        $hist->sqlLimit = 1;
         $hist->selectOneInto(
             "id = ? AND SaveDate <= ?",
             array($id, $date)
