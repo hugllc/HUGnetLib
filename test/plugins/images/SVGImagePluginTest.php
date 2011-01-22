@@ -118,8 +118,8 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="200px" height="100px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="/home/hugnet/devel/HUGnet/HUGnetLib/test/files/images/pink.'
-            .'png" height="100" width="133" x="0" y="0" ></image>
+    <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
+            .'" height="100" width="133" x="0" y="0" ></image>
 </svg>
 
 ',
@@ -139,8 +139,8 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="100px" height="200px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="/home/hugnet/devel/HUGnet/HUGnetLib/test/files/images/pink.'
-            .'png" height="75" width="100" x="0" y="0" ></image>
+    <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
+            .'" height="75" width="100" x="0" y="0" ></image>
 </svg>
 
 ',
@@ -160,8 +160,8 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="2000px" height="1000px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="/home/hugnet/devel/HUGnet/HUGnetLib/test/files/images/pink.'
-            .'png" height="480" width="640" x="0" y="0" ></image>
+    <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
+            .'" height="480" width="640" x="0" y="0" ></image>
 </svg>
 
 ',
