@@ -1051,7 +1051,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public static function dataSend()
     {
         return array(
-            // packet timeout
+            // #0 packet timeout
             array(
                 array(
                     "To" => "000ABC",
@@ -1080,7 +1080,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // Good Reply
+            // #1 Good Reply
             array(
                 "5A5A5A55000ABC0000200401020304C3",
                 "5A5A5A55000ABC0000200401020304C3A134389105239258"
@@ -1111,7 +1111,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // Good Reply
+            // #2 Good Reply
             array(
                 "5A5A5A030000200000E10401020304C2",
                 "5A5A5A010000E10000200401020304C0",
@@ -1141,7 +1141,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // Good Reply (Reply already loaded)
+            // #3 Good Reply (Reply already loaded)
             array(
                 array(
                     "To" => "000ABC",
@@ -1189,7 +1189,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // Good Reply alt socket
+            // #4 Good Reply alt socket
             array(
                 array(
                     "To" => "000ABC",
@@ -1198,10 +1198,9 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "C3",
                     "group" => "other",
-                    "Timeout" => 1,
+                    "Timeout" => 3,
                 ),
-                "5A5A5A55000ABC0000200401020304C3A134389105239258"
-                ."5A5A5A01000020000ABC040102030497",
+                "5A5A5A01000020000ABC040102030497",
                 "5A5A5A55000ABC0000200401020304C3",
                 array(
                     "To" => "000ABC",
@@ -1228,7 +1227,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "other",
             ),
-            // No reply expected (Bad reply already loaded)
+            // #5 No reply expected (Bad reply already loaded)
             array(
                 array(
                     "To" => "000ABC",
@@ -1263,7 +1262,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // No reply expected
+            // #6 No reply expected
             array(
                 array(
                     "To" => "000ABC",
@@ -1289,7 +1288,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 "default",
             ),
-            // No reply expected (find ping sent)
+            // #7 No reply expected (find ping sent)
             array(
                 array(
                     "To" => "000ABC",
@@ -2012,11 +2011,15 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     ) {
         if (is_array($expect)) {
             // First make sure we got an object back.
-            $this->assertInternalType("object", $o);
+            $this->assertInternalType("object", $o, "Type wrong");
             $ret = $o->toArray();
             $this->checkDateTime($ret);
-            $this->assertSame($expect, $ret);
-            $this->assertSame($writeString, $this->socket[$group]->writeString);
+            $this->assertSame($expect, $ret, "Incorrect Date");
+            $this->assertSame(
+                $writeString,
+                $this->socket[$group]->writeString,
+                "Write string wrong"
+            );
         } else {
             $this->assertFalse($o);
         }
