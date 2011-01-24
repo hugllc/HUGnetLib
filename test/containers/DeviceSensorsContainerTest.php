@@ -192,6 +192,45 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     "Test2Sensor",
                 ),
             ),
+            array(
+                array(
+                    0 => array("id" => 0),
+                    1 => array("id" => 2),
+                ),
+                array(
+                    "DriverInfo" => array("NumSensors" => 3),
+                    "params" => array(
+                        "sensorType" => array("Test1Sensor", "a"),
+                        "dType" => array("raw", "diff"),
+                        "Loc" => array("Here", "There"),
+                        "Extra" => array(array(1,2), array(3,4)),
+                    )
+                ),
+                array(
+                    "Sensors" => 3,
+                    array(
+                        "id" => 0,
+                        "type" => "Test1Sensor",
+                        "location" => "Here",
+                        "extra" => array(1,2),
+                    ),
+                    array(
+                        "id" => 2,
+                        "type" => "a",
+                        "location" => "There",
+                        "extra" => array(3,4),
+                    ),
+                    array(
+                        "id" => 0,
+                        "type" => "",
+                    ),
+                ),
+                array(
+                    "Test1Sensor",
+                    "Test2Sensor",
+                    "Test1Sensor",
+                ),
+            ),
         );
     }
 
@@ -210,6 +249,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     public function testFromArray(
         $preload, $devPreload, $expect, $sensors
     ) {
+        $this->d->clearData();
         $this->d->fromArray($devPreload);
         $this->o->clearData();
         $this->o->fromArray($preload);

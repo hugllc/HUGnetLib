@@ -95,7 +95,9 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Set up everything else
         parent::fromArray($array);
         // Clear the number of sensors
-        if (empty($this->Sensors)) {
+        if (empty($this->Sensors)
+            || 0 //($this->Sensors < (int)$this->myDevice->DriverInfo["NumSensors"])
+        ) {
             $this->Sensors = (int)$this->myDevice->DriverInfo["NumSensors"];
         }
         // Now setup our sensors
