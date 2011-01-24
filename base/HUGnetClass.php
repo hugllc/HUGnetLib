@@ -122,7 +122,7 @@ abstract class HUGnetClass
             $class  = get_class($this);
             print "(".$class.") ";
         }
-        print $str."\n";
+        print $str.PHP_EOL;
         flush();
     }
     /**
