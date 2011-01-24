@@ -111,8 +111,8 @@ class ImagePointContainer extends HUGnetContainer
         }
         $diff = ($value - $this->colorValueMin);
         $denom = ($this->colorValueMax - $this->colorValueMin);
-        if ($denom === 0) {
-            return $this->colorMax;
+        if ($denom <= 0) {
+            return str_replace("#", "", $this->colorMax);
         }
         $diff = $diff/$denom;
         $min = $this->_color2HSV($this->colorMin);
