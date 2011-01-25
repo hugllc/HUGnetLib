@@ -475,6 +475,59 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+    * data provider for testGetAllDataTypes
+    *
+    * @return array
+    */
+    public static function dataGetAllDataTypes()
+    {
+        return array(
+            array(
+                array(
+                    "units" => "firstUnit",
+                ),
+                "TestDeviceSensor",
+                array(
+                    DeviceSensorBase::TYPE_RAW => DeviceSensorBase::TYPE_RAW,
+                    DeviceSensorBase::TYPE_DIFF => DeviceSensorBase::TYPE_DIFF,
+                    DeviceSensorBase::TYPE_IGNORE => DeviceSensorBase::TYPE_IGNORE,
+                ),
+            ),
+            array(
+                array(
+                    "units" => "firstUnit",
+                ),
+                "TestDeviceSensor2",
+                array(
+                    DeviceSensorBase::TYPE_RAW => DeviceSensorBase::TYPE_RAW,
+                    DeviceSensorBase::TYPE_DIFF => DeviceSensorBase::TYPE_DIFF,
+                    DeviceSensorBase::TYPE_IGNORE => DeviceSensorBase::TYPE_IGNORE,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $class   The class to use for this test
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAllDataTypes
+    */
+    public function testGetAllDataTypes($preload, $class, $expect)
+    {
+        $o = new $class($preload, $this->d);
+        $this->assertSame(
+            $expect,
+            $o->getAllDataTypes()
+        );
+    }
+
 
     /**
     * data provider for testSet

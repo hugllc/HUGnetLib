@@ -138,6 +138,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         // Set up the class
         parent::__construct($data);
     }
+
     /**
     * Gets the extra values
     *
@@ -255,6 +256,20 @@ abstract class DeviceSensorBase extends HUGnetContainer
     {
         $this->setupUnits();
         return $this->unitConvert->getValid();
+    }
+    /**
+    * Converts data between units
+    *
+    * @return arry of units in array("unit" => "unit") format
+    */
+    public function getAllDataTypes()
+    {
+        $ret = array();
+        foreach ((array)$this->dataTypeValues as $value) {
+            $ret[$value] = $value;
+        }
+        return $ret;
+        
     }
     /******************************************************************
      ******************************************************************
