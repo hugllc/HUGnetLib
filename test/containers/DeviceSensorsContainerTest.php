@@ -194,6 +194,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
+                    "Sensors" => 2,
                     0 => array("id" => 0),
                     1 => array("id" => 2),
                 ),

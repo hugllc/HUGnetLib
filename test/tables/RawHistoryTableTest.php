@@ -601,6 +601,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'Data2' => 2.5029,
                     'Data3' => 3.0073,
                     'Data4' => 92.0645,
+                    'Data7' => -25.4877,
                 ),
             ),
             array(
@@ -729,6 +730,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'Data2' => 1.6131,
                     'Data3' => 1.7878,
                     'Data4' => 92.0645,
+                    'Data7' => -25.4877,
                 ),
             ),
         );
