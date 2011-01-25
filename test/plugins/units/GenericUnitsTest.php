@@ -102,6 +102,39 @@ class GenericUnitsTest extends UnitsPluginTestBase
             array("GenericUnits"),
         );
     }
+    /**
+     * Data provider for testValid
+     *
+     * @return array
+     */
+    public static function dataGetValid()
+    {
+        return array(
+            array(
+                array("to" => "&#176;F", "from" => "&#176;C"),
+                array("&#176;F" => "&#176;F", "&#176;C" => "&#176;C"),
+            ),
+            array(
+                array("to" => "&#176;F", "from" => "&#176;F"),
+                array("&#176;F" => "&#176;F"),
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array $preload The stuff to preload into the Units
+    * @param mixed $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetValid
+    */
+    public function testGetValid($preload, $expect)
+    {
+        $this->o = new GenericUnits($preload);
+        $this->assertSame($expect, $this->o->getValid());
+    }
 
 
 }

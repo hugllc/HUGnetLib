@@ -246,6 +246,16 @@ abstract class DeviceSensorBase extends HUGnetContainer
         }
         return $ret;
     }
+    /**
+    * Converts data between units
+    *
+    * @return arry of units in array("unit" => "unit") format
+    */
+    public function getAllUnits()
+    {
+        $this->setupUnits();
+        return $this->unitConvert->getValid();
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

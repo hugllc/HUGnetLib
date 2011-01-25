@@ -72,6 +72,18 @@ class GenericUnits extends UnitsBase
     {
         parent::__construct($data);
     }
+    /**
+    * Checks to see if units are valid
+    *
+    * @return array Array of units returned
+    */
+    public function getValid()
+    {
+        return array(
+            $this->to => $this->to,
+            $this->from => $this->from,
+        );
+    }
 
 }
 ?>

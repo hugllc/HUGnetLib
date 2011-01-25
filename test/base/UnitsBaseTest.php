@@ -264,6 +264,41 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->valid($units));
     }
 
+    /**
+     * Data provider for testValid
+     *
+     * @return array
+     */
+    public static function dataGetValid()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+            ),
+            array(
+                array("&#176;F", "&#176;C"),
+                array("&#176;F" => "&#176;F", "&#176;C" => "&#176;C"),
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array $preload The stuff to preload into the Units
+    * @param mixed $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetValid
+    */
+    public function testGetValid($preload, $expect)
+    {
+        $this->o = new UnitsBaseTestClass(array());
+        $this->o->setValid($preload);
+        $this->assertSame($expect, $this->o->getValid());
+    }
+
 }
 /**
 * Driver for the polling script (0039-26-01-P)
@@ -281,6 +316,21 @@ class UnitsBaseTestClass extends UnitsBase
 {
     /** @var The units that are valid for conversion */
     protected $valid = array("&#176;F", "&#176;C");
+
+    /**
+    * Checks to see if units are valid
+    *
+    * @param array $array The array to set it to
+    *
+    * @return null
+    */
+    public function setValid($array)
+    {
+        if (!is_null($array)) {
+            $this->valid = (array)$array;
+        }
+    }
+    
 
 }
 ?>

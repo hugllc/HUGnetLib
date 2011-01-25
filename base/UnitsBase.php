@@ -124,5 +124,19 @@ abstract class UnitsBase extends HUGnetClass implements UnitsInterface
         return in_array($units, (array)$this->valid);
     }
 
+    /**
+    * Checks to see if units are valid
+    *
+    * @return array Array of units returned
+    */
+    public function getValid()
+    {
+        $ret = array();
+        foreach ((array)$this->valid as $valid) {
+            $ret[$valid] = $valid;
+        }
+        return $ret;
+    }
+
 }
 ?>

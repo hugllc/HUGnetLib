@@ -257,6 +257,45 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->getExtra($index));
     }
     /**
+    * data provider for testToArray
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                false,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "extra" => array(6,5,4),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param bool   $default Whether to include default values or not
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($preload, $default, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->toArray($index));
+    }
+    /**
     * data provider for testGetExtra
     *
     * @return array
@@ -383,6 +422,57 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         );
         $this->assertSame($expect, $data, "Data is wrong");
         $this->assertSame($units, $this->o->units, "Units are wrong");
+    }
+
+    /**
+    * data provider for testConvertUnits
+    *
+    * @return array
+    */
+    public static function dataGetAllUnits()
+    {
+        return array(
+            array(
+                array(
+                    "units" => "firstUnit",
+                ),
+                "TestDeviceSensor",
+                array(
+                    "firstUnit" => "firstUnit",
+                    "testUnit" => "testUnit",
+                ),
+            ),
+            array(
+                array(
+                    "units" => "firstUnit",
+                ),
+                "TestDeviceSensor2",
+                array(
+                    "firstUnit" => "firstUnit",
+                    "testUnit" => "testUnit",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $class   The class to use for this test
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAllUnits
+    */
+    public function testGetAllUnits($preload, $class, $expect)
+    {
+        $o = new $class($preload, $this->d);
+        $this->assertSame(
+            $expect,
+            $o->getAllUnits()
+        );
     }
 
 
