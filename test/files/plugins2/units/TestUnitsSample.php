@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../../../base/UnitsBase.php";
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
@@ -53,97 +53,52 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test1Sensor extends DeviceSensorBase
+class TestUnitsSample extends UnitsBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test1Sensor",
-        "Type" => "sensor",
-        "Class" => "Test1Sensor",
-        "Flags" => array("DEFAULT", "03:DEFAULT"),
+        "Name" => "TestUnitsSample",
+        "Type" => "UnitsSample",
+        "Class" => "TestUnitsSample",
+        "Flags" => array("firstUnit", "testUnit"),
     );
-    /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b", "resistance");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "b", "resistive");
-    /**
-    * This is the array of sensor information.
-    */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "firstUnit",
-        "storageUnit" => 'testUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
-    );
+    /** @var The units that are valid for conversion */
+    protected $valid = array("firstUnit", "testUnit");
+    /** @var The units of this point */
+    public $to = "testUnit";
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
-    */
-    public function __construct($data, &$device)
-    {
-        $this->default["units"] = "firstUnit";
-        parent::__construct($data, $device);
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
-    */
-    function getReading($A, $deltaT = 0)
-    {
-        return $A/(abs($deltaT)+1);
-    }
-    /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
+    * @param array $data The data to start with
     *
     * @return null
     */
-    protected function setUnits($value)
+    public function __construct($data)
     {
-        $this->data["units"] = $value;
+        parent::__construct($data);
     }
     /**
-    * function to set unitType
+    * Does the actual conversion
     *
-    * @param mixed $value The value to set
+    * @param mixed  &$data The data to convert
+    * @param string $to    The units to convert to
+    * @param string $from  The units to convert from
     *
-    * @return null
+    * @return mixed The value returned
     */
-    protected function setUnitType($value)
+    public function convert(&$data, $to=null, $from=null)
     {
-        $this->data["unitType"] = $value;
+        if (($to == "firstUnit") && ($from == "testUnit")) {
+            $data = $data / 2;
+        } else if (($to == "testUnit") && ($from == "firstUnit")) {
+            $data = $data * 2;
+        } else {
+            return false;
+        }
+        return true;
     }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setType($value)
-    {
-        $this->data["type"] = $value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = $value;
-    }
+
 
 }
 ?>

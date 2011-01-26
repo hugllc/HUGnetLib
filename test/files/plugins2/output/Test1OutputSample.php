@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../../../base/OutputPluginBase.php";
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
@@ -53,96 +53,55 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test1Sensor extends DeviceSensorBase
+class Test1OutputSample extends OutputPluginBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test1Sensor",
-        "Type" => "sensor",
-        "Class" => "Test1Sensor",
-        "Flags" => array("DEFAULT", "03:DEFAULT"),
+        "Name" => "Test1OutputSample",
+        "Type" => "outputSample",
+        "Class" => "Test1OutputSample",
+        "Flags" => array("DEFAULT"),
     );
-    /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b", "resistance");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "b", "resistive");
     /**
-    * This is the array of sensor information.
+    * Returns the object as a string
+    *
+    * @param array $array The array of header information.
+    *
+    * @return string
     */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "firstUnit",
-        "storageUnit" => 'testUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
-    );
+    public function row($array = array())
+    {
+        $this->text .= print_r($array, true);
+    }
 
     /**
-    * Disconnects from the database
+    * This function implements the output before the data
     *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
+    * @return String the text to output
     */
-    public function __construct($data, &$device)
+    public function pre()
     {
-        $this->default["units"] = "firstUnit";
-        parent::__construct($data, $device);
+        return "pre";
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * This function implements the output after the data
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
+    * @return String the text to output
     */
-    function getReading($A, $deltaT = 0)
+    public function post()
     {
-        return $A/(abs($deltaT)+1);
+        return "post";
     }
     /**
-    * function to set units
+    * Returns the object as a string
     *
-    * @param mixed $value The value to set
+    * @param array $array The array of header information.
     *
-    * @return null
+    * @return string
     */
-    protected function setUnits($value)
+    public function header($array = array())
     {
-        $this->data["units"] = $value;
-    }
-    /**
-    * function to set unitType
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnitType($value)
-    {
-        $this->data["unitType"] = $value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setType($value)
-    {
-        $this->data["type"] = $value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = $value;
+        $this->text .= print_r($array, true);
     }
 
 }

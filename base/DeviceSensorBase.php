@@ -271,6 +271,23 @@ abstract class DeviceSensorBase extends HUGnetContainer
         return $ret;
         
     }
+    /**
+    * Converts data between units
+    *
+    * @return arry of units in array("unit" => "unit") format
+    */
+    public function getAllTypes()
+    {
+        $ret = array();
+        $type = $this->stringSize(dechex($this->id), 2);
+        $plugins = $this->myConfig->plugins->searchPlugins("sensor", $type);
+        foreach ((array)$plugins as $key => $value) {
+            list($id, $type) = explode(":", $key);
+            $ret[$type] = $value["Name"];
+        }
+        return $ret;
+
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

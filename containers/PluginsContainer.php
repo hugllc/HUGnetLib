@@ -234,6 +234,33 @@ class PluginsContainer extends HUGnetContainer
     }
 
     /**
+    * Returns an array of plugins where the flag given matches the first part of
+    * a flag in the plugin.
+    *
+    * @param string $type The type to get
+    * @param string $flag The flag to check for
+    * @param bool   $bad  Return things flagged as bad
+    *
+    * @return array The array of stuff
+    */
+    public function searchPlugins($type, $flag=null, $bad = false)
+    {
+        $plugins = $this->getType($type);
+        if (empty($flag)) {
+            return $plugins;
+        }
+        $ret = array();
+        foreach ((array)$plugins as $key => $value) {
+            if ((stripos($key, $flag) === 0)
+                && ($bad || (stripos($key, "BAD") === false))
+            ) {
+                $ret[$key] = $value;
+            }
+        }
+        return $ret;
+    }
+
+    /**
     * Returns an array of plugins of the proper type
     *
     * @param string &$type The type to get
