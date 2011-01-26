@@ -104,7 +104,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Now setup our sensors
         for ($i = 0; $i < $this->Sensors; $i++) {
             $this->upgradeArray($array[$i], $i);
-            $this->_setSensor($array[$i], $i, true);
+            $this->updateSensor($array[$i], $i, true);
             //$this->sensor[$i] = &$this->sensorFactory($array[$i]);
         }
     }
@@ -150,7 +150,7 @@ class DeviceSensorsContainer extends HUGnetContainer
             return;
         }
         for ($key = 0; $key < $this->Sensors; $key++) {
-            $this->_setSensor($array[$key], $key);
+            $this->updateSensor($array[$key], $key);
         }
     }
 
@@ -163,7 +163,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return null
     */
-    private function _setSensor($data, &$key, $force=false)
+    public function updateSensor($data, &$key, $force=false)
     {
         if (is_object($this->sensor[$key])) {
             $vals = $this->sensor($key)->toArray();
@@ -183,7 +183,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         } else {
             $this->sensor[$key] = &$this->sensorFactory($vals);
         }
-        $this->_setSensorInputSize($key);
+        $this->_updateSensorInputSize($key);
     }
 
     /**
@@ -193,7 +193,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return null
     */
-    private function _setSensorInputSize(&$key)
+    private function _updateSensorInputSize(&$key)
     {
         $inputSize = $this->sensor($key)->inputSize;
         for ($j = 1; $j < $inputSize; $j++) {

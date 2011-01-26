@@ -528,6 +528,54 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+    * data provider for testGetAllTypes
+    *
+    * @return array
+    */
+    public static function dataGetAllTypes()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "TestDeviceSensor2",
+                array(
+                    "DEFAULT" => "Test1Sensor",
+                    "Hello" => "Test2Sensor",
+                ),
+            ),
+            array(
+                array(
+                ),
+                "TestDeviceSensor3",
+                array(
+                    "" => "Test2Sensor",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $class   The class to use for this test
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAllTypes
+    */
+    public function testGetAllTypes($preload, $class, $expect)
+    {
+        $o = new $class($preload, $this->d);
+        $this->assertSame(
+            $expect,
+            $o->getAllTypes()
+        );
+    }
+
 
     /**
     * data provider for testSet
@@ -673,6 +721,17 @@ class TestDeviceSensor2 extends DeviceSensorBase
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
     /**
+    * Disconnects from the database
+    *
+    * @param array  $data    The servers to use
+    * @param object &$device The device we are attached to
+    */
+    public function __construct($data, &$device)
+    {
+        $this->default["id"] = 3;
+        parent::__construct($data, $device);
+    }
+    /**
     * Gets the extra values
     *
     * @param array $index The extra index to use
@@ -732,6 +791,17 @@ class TestDeviceSensor3 extends DeviceSensorBase
     protected $unitTypeValues = array("b");
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
+    /**
+    * Disconnects from the database
+    *
+    * @param array  $data    The servers to use
+    * @param object &$device The device we are attached to
+    */
+    public function __construct($data, &$device)
+    {
+        $this->default["id"] = 5;
+        parent::__construct($data, $device);
+    }
     /**
     * Gets the extra values
     *

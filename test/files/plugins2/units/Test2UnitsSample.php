@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../../../base/UnitsBase.php";
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
@@ -53,97 +53,63 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test1Sensor extends DeviceSensorBase
+class Test2UnitsSample extends UnitsBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test1Sensor",
-        "Type" => "sensor",
-        "Class" => "Test1Sensor",
-        "Flags" => array("DEFAULT", "03:DEFAULT"),
-    );
-    /** @var object This is where we store our configuration */
-    protected $unitTypeValues = array("b", "resistance");
-    /** @var object This is where we store our configuration */
-    protected $typeValues = array("a", "b", "resistive");
-    /**
-    * This is the array of sensor information.
-    */
-    protected $fixed = array(
-        "longName" => "Unknown Sensor",
-        "unitType" => "firstUnit",
-        "storageUnit" => 'testUnit',
-        "extraText" => array(),
-        "extraDefault" => array(),
+        "Name" => "Test2UnitsSample",
+        "Type" => "UnitsSample",
+        "Class" => "Test2UnitsSample",
+        "Flags" => array("moreUnit", "DEFAULT"),
     );
 
     /**
-    * Disconnects from the database
+    * Sets everything up
     *
-    * @param array  $data    The servers to use
-    * @param object &$device The device we are attached to
-    */
-    public function __construct($data, &$device)
-    {
-        $this->default["units"] = "firstUnit";
-        parent::__construct($data, $device);
-    }
-    /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
-    */
-    function getReading($A, $deltaT = 0)
-    {
-        return $A/(abs($deltaT)+1);
-    }
-    /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
+    * @param array $data The data to start with
     *
     * @return null
     */
-    protected function setUnits($value)
+    public function __construct($data)
     {
-        $this->data["units"] = $value;
+        parent::__construct($data);
     }
+
     /**
-    * function to set unitType
+    * Does the actual conversion
     *
-    * @param mixed $value The value to set
+    * @param mixed  &$data The data to convert
+    * @param string $to    The units to convert to
+    * @param string $from  The units to convert from
     *
-    * @return null
+    * @return mixed The value returned
     */
-    protected function setUnitType($value)
+    public function convert(&$data, $to=null, $from=null)
     {
-        $this->data["unitType"] = $value;
+        if (($to == "moreUnit") && ($from == "otherUnit")) {
+            $data = $data / 3;
+        } else if (($to == "otherUnit") && ($from == "moreUnit")) {
+            $data = $data * 3;
+        } else if (($to == "thirdUnit") && ($from == "moreUnit")) {
+            $data = $data / 3;
+        } else {
+            return false;
+        }
+        return true;
     }
+
     /**
-    * function to set type
+    * Checks to see if units are valid
     *
-    * @param mixed $value The value to set
+    * @param string $units The units to check for validity
     *
-    * @return null
+    * @return mixed The value returned
     */
-    protected function setType($value)
+    public function valid($units)
     {
-        $this->data["type"] = $value;
+        return true;
     }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = $value;
-    }
+
 
 }
 ?>

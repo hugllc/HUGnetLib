@@ -79,10 +79,13 @@ class GenericUnits extends UnitsBase
     */
     public function getValid()
     {
-        return array(
-            $this->to => $this->to,
-            $this->from => $this->from,
-        );
+        $ret = array();
+        foreach (array("to", "from") as $var) {
+            if (strtolower($this->$var) !== "unknown") {
+                $ret[$this->$var] = $this->$var;
+            }
+        }
+        return $ret;
     }
 
 }

@@ -118,6 +118,14 @@ class GenericUnitsTest extends UnitsPluginTestBase
                 array("to" => "&#176;F", "from" => "&#176;F"),
                 array("&#176;F" => "&#176;F"),
             ),
+            array(
+                array("to" => "Unknown", "from" => "&#176;F"),
+                array("&#176;F" => "&#176;F"),
+            ),
+            array(
+                array("to" => "&#176;F", "from" => "Unknown"),
+                array("&#176;F" => "&#176;F"),
+            ),
         );
     }
     /**

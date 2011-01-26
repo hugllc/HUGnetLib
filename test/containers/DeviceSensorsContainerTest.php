@@ -760,6 +760,125 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $this->assertSame($expect, get_class($this->o->sensor($num)));
     }
+
+
+    /**
+    * data provider for testFromCalString
+    *
+    * @return array
+    */
+    public static function dataFromCalString()
+    {
+        return array(
+            array(
+                array(
+                    0 => array("id" => 3, "type" => "Hello"),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                "",
+                3,
+                null,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $string  The string to use for the input
+    * @param int    $sensors The total number of sensors
+    * @param array  $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataFromCalString
+    */
+    public function testFromCalString($preload, $string, $sensors, $expect)
+    {
+        $this->d->DriverInfo["NumSensors"] = $sensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, $this->o->fromCalString($string));
+    }
+
+    /**
+    * data provider for testUpdateSensor
+    *
+    * @return array
+    */
+    public static function dataUpdateSensor()
+    {
+        return array(
+            array(
+                array(
+                    "Sensors" => 3,
+                    0 => array("id" => 3, "type" => "Hello"),
+                    1 => array("id" => 2),
+                    2 => array("id" => 8),
+                ),
+                array(
+                    "id" => 2,
+                ),
+                2,
+                array(
+                    0 => array("id" => 3, "type" => "Hello"),
+                    1 => array("id" => 2, "type" => ""),
+                    2 => array(
+                        "id" => 2,
+                        "type" => "",
+                        "dataType" => UnitsBase::TYPE_RAW,
+                        "units" => "firstUnit",
+                    ),
+                ),
+                2,
+                array(
+                    "Test2Sensor",
+                    "Test2Sensor",
+                    "Test2Sensor",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload   The stuff to give to the constructor
+    * @param array $data      The data to use for the sensor
+    * @param int   $key       The key to put the sensor in
+    * @param array $expect    The expected data
+    * @param int   $expectKey The expected key returned
+    * @param array $classes   The classes our sensors should be
+    *
+    * @return null
+    *
+    * @dataProvider dataUpdateSensor
+    */
+    public function testUpdateSensor(
+        $preload, $data, $key, $expect, $expectKey, $classes
+    ) {
+        $this->d->DriverInfo["NumSensors"] = $sensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->o->updateSensor($data, $key);
+        $sensors = $this->readAttribute($this->o, "sensor");
+        $ret = array();
+        foreach (array_keys($sensors) as $k) {
+            $this->assertSame(
+                $classes[$k],
+                get_class($sensors[$k]),
+                "Sensor $k has the wrong class"
+            );
+            $ret[$k] = $sensors[$k]->toArray(false);
+        }
+        $this->assertSame(
+            $expect, $ret, "Sensors are wrong"
+        );
+        $this->assertSame($expectKey, $key, "The key returned is wrong");
+    }
+
     /**
     * data provider for testSensor
     *

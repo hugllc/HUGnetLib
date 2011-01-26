@@ -91,311 +91,45 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "dir" => dirname(__FILE__)."/../files/plugins2/",
                     "extension" => "php",
                 ),
                 array(
-                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "dir" => dirname(__FILE__)."/../files/plugins2/",
                     "extension" => ".php",
                 ),
                 array (
-                    'analysis' => array (
-                        'testAnalysis' => array (
-                            'Name' => 'testAnalysis',
-                            'Type' => 'analysis',
-                            'Class' => 'TestAnalysisPlugin',
-                            'Flags' => array (
-                                0 => 'testAnalysis',
-                            ),
-                        ),
-                        'TestAnalysis2' => array (
-                            'Name' => 'TestAnalysis2',
-                            'Type' => 'analysis',
-                            'Class' => 'TestAnalysisPlugin2',
-                            'Flags' => array (
-                                0 => 'TestAnalysis2',
-                            ),
-                        ),
-                    ),
-                    'analysisPeriodic' => array (
-                        'testAnalysisPeriodic' => array (
-                            'Name' => 'testAnalysisPeriodic',
-                            'Type' => 'analysisPeriodic',
-                            'Class' => 'TestAnalysisPeriodicPlugin',
-                            'Flags' => array (
-                                0 => 'testAnalysisPeriodic',
-                            ),
-                        ),
-                    ),
-                    'averageTable' => array (
-                        'DEFAULT' => array (
-                            'Name' => 'Test1AverageTable',
-                            'Type' => 'averageTable',
-                            'Class' => 'Test1AverageTable',
-                            'Flags' => array (
-                                0 => 'DEFAULT',
-                            ),
-                        ),
-                        'testDriver' => array (
-                            'Name' => 'Test2AverageTable',
-                            'Type' => 'averageTable',
-                            'Class' => 'Test2AverageTable',
-                            'Flags' => array (
-                                0 => 'testDriver',
-                            ),
-                        ),
-                    ),
-                    'deviceProcess' => array (
-                        'DeviceProcessAnalysis' => array (
-                            'Name' => 'DeviceProcessAnalysis',
-                            'Type' => 'deviceProcess',
-                            'Class' => 'TestDeviceProcessPlugin',
-                            'Flags' => array (
-                                0 => 'DeviceProcessAnalysis',
-                            ),
-                        ),
-                        'DeviceProcessAnalysis2' => array (
-                            'Name' => 'DeviceProcessAnalysis2',
-                            'Type' => 'deviceProcess',
-                            'Class' => 'TestDeviceProcessPlugin2',
-                            'Priority' => 1,
-                            'Flags' => array (
-                                0 => 'DeviceProcessAnalysis2',
-                            ),
-                        ),
-                    ),
-                    'device' => array (
-                        "0039-24-67-C:0039-CE-01-A:DEFAULT" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-
-                        "0039-24-67-C:0039-CF-01-A:0.1.2" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-
-                        "0039-24-67-C:0039-CF-01-A:0.2.3" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-
-                        "DEFAULT:0039-CB-01-A:DEFAULT" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-
-                        "DEFAULT:0039-CD-01-A:DEFAULT" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-                        "0039-25-67-C:0039-CC-01-A:BAD" => array (
-                            'Name' => 'testDriver',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin',
-                            "Flags" => array(
-                                "0039-24-67-C:0039-CE-01-A:DEFAULT",
-                                "0039-24-67-C:0039-CF-01-A:0.1.2",
-                                "0039-24-67-C:0039-CF-01-A:0.2.3",
-                                "DEFAULT:0039-CB-01-A:DEFAULT",
-                                "DEFAULT:0039-CD-01-A:DEFAULT",
-                                "0039-25-67-C:0039-CC-01-A:BAD",
-                            ),
-                        ),
-                        "DEFAULT" => array (
-                            'Name' => 'eDEFAULT',
-                            'Type' => 'device',
-                            'Class' => 'TestDriverPlugin2',
-                            "Flags" => array(
-                                "DEFAULT",
-                            ),
-                        ),
-                    ),
-                    "historyTable" => array(
+                    'outputSample' => array(
                         "DEFAULT" => array(
-                            "Name" => "Test1HistoryTable",
-                            "Type" => "historyTable",
-                            "Class" => "Test1HistoryTable",
-                            "Flags" => array(
-                                "DEFAULT",
-                            ),
-                        ),
-                        "testDriver" => array(
-                            "Name" => "Test2HistoryTable",
-                            "Type" => "historyTable",
-                            "Class" => "Test2HistoryTable",
-                            "Flags" => array(
-                                "testDriver",
-                            ),
-                        ),
-                    ),
-                    'image' => array(
-                        "DEFAULT" => array(
-                            "Name" => "Test1Image",
-                            "Type" => "image",
-                            "Class" => "Test1Image",
+                            "Name" => "Test1OutputSample",
+                            "Type" => "outputSample",
+                            "Class" => "Test1OutputSample",
                             "Flags" => array("DEFAULT"),
                         ),
                     ),
-                    'output' => array(
-                        "DEFAULT" => array(
-                            "Name" => "Test1Output",
-                            "Type" => "output",
-                            "Class" => "Test1Output",
-                            "Flags" => array("DEFAULT"),
-                        ),
-                    ),
-                    'periodic' => array (
-                        'testPeriodic' => array (
-                            'Name' => 'testPeriodic',
-                            'Type' => 'periodic',
-                            'Class' => 'TestPeriodicPlugin',
-                            'Flags' => array (
-                                0 => 'testPeriodic',
-                            ),
-                        ),
-                        'testPeriodic2' => array (
-                            'Name' => 'testPeriodic2',
-                            'Type' => 'periodic',
-                            'Class' => 'TestPeriodicPlugin2',
-                            'Flags' => array (
-                                0 => 'testPeriodic2',
-                            ),
-                        ),
-                    ),
-                    'sensor' => array (
-                        'DEFAULT' => array (
-                            'Name' => 'Test1Sensor',
-                            'Type' => 'sensor',
-                            'Class' => 'Test1Sensor',
-                            'Flags' => array (
-                                0 => 'DEFAULT',
-                            ),
-                        ),
-                        '02' => array (
-                            'Name' => 'Test2Sensor',
-                            'Type' => 'sensor',
-                            'Class' => 'Test2Sensor',
-                            'Flags' => array (
-                                0 => '02',
-                                1 => '03:Hello',
-                                2 => '04',
-                                3 => '05',
-                            ),
-                        ),
-                        '03:Hello' => array (
-                            'Name' => 'Test2Sensor',
-                            'Type' => 'sensor',
-                            'Class' => 'Test2Sensor',
-                            'Flags' =>
-                            array (
-                                0 => '02',
-                                1 => '03:Hello',
-                                2 => '04',
-                                3 => '05',
-                            ),
-                        ),
-                        '04' => array (
-                            'Name' => 'Test2Sensor',
-                            'Type' => 'sensor',
-                            'Class' => 'Test2Sensor',
-                            'Flags' => array (
-                                0 => '02',
-                                1 => '03:Hello',
-                                2 => '04',
-                                3 => '05',
-                            ),
-                        ),
-                        '05' => array (
-                            'Name' => 'Test2Sensor',
-                            'Type' => 'sensor',
-                            'Class' => 'Test2Sensor',
-                            'Flags' => array (
-                                0 => '02',
-                                1 => '03:Hello',
-                                2 => '04',
-                                3 => '05',
-                            ),
-                        ),
-                        '10' => array (
-                            "Name" => "Test3Sensor",
-                            "Type" => "sensor",
-                            "Class" => "Test3Sensor",
-                            "Flags" => array (
-                                0 => "10"
-                            ),
-
-                        ),
-
-                    ),
-                    'Units' => array (
+                    'UnitsSample' => array (
                         'moreUnit' => array (
-                            'Name' => 'Test2Units',
-                            'Type' => 'Units',
-                            'Class' => 'Test2Units',
+                            'Name' => 'Test2UnitsSample',
+                            'Type' => 'UnitsSample',
+                            'Class' => 'Test2UnitsSample',
                             'Flags' => array (
                                 0 => 'moreUnit',
                                 1 => 'DEFAULT',
                             ),
                         ),
                         'DEFAULT' => array (
-                            'Name' => 'Test2Units',
-                            'Type' => 'Units',
-                            'Class' => 'Test2Units',
+                            'Name' => 'Test2UnitsSample',
+                            'Type' => 'UnitsSample',
+                            'Class' => 'Test2UnitsSample',
                             'Flags' => array (
                                 0 => 'moreUnit',
                                 1 => 'DEFAULT',
                             ),
                         ),
                         'firstUnit' => array (
-                            'Name' => 'TestUnits',
-                            'Type' => 'Units',
-                            'Class' => 'TestUnits',
+                            'Name' => 'TestUnitsSample',
+                            'Type' => 'UnitsSample',
+                            'Class' => 'TestUnitsSample',
                             'Flags' =>
                             array (
                                 0 => 'firstUnit',
@@ -403,9 +137,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
                             ),
                         ),
                         'testUnit' => array (
-                            'Name' => 'TestUnits',
-                            'Type' => 'Units',
-                            'Class' => 'TestUnits',
+                            'Name' => 'TestUnitsSample',
+                            'Type' => 'UnitsSample',
+                            'Class' => 'TestUnitsSample',
                             'Flags' =>
                             array (
                                 0 => 'firstUnit',
@@ -620,6 +354,199 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $o->getPlugin($type, $flag), "Run 2 failed");
         // This checks the type cache
         $this->assertAttributeSame($typeCache, "typeCache", $o);
+    }
+
+    /**
+    * data provider for testSearchPlugins
+    *
+    * @return array
+    */
+    public static function dataSearchPlugins()
+    {
+        return array(
+            array( // #0
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "periodic",
+                null,
+                false,
+                array (
+                    'testPeriodic' => array (
+                        'Name' => 'testPeriodic',
+                        'Type' => 'periodic',
+                        'Class' => 'TestPeriodicPlugin',
+                        'Flags' => array (
+                            0 => 'testPeriodic',
+                        ),
+                    ),
+                    'testPeriodic2' => array (
+                        'Name' => 'testPeriodic2',
+                        'Type' => 'periodic',
+                        'Class' => 'TestPeriodicPlugin2',
+                        'Flags' => array (
+                            0 => 'testPeriodic2',
+                        ),
+                    ),
+                ),
+            ),
+            array( // #1
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "bogusType",
+                null,
+                false,
+                array (
+                ),
+            ),
+            array( // #2
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-24-67-C",
+                false,
+                array (
+                    "0039-24-67-C:0039-CE-01-A:DEFAULT" => array(
+                        'Name' => 'testDriver',
+                        'Type' => 'device',
+                        'Class' => 'TestDriverPlugin',
+                        "Flags" => array(
+                            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                            "0039-24-67-C:0039-CF-01-A:0.1.2",
+                            "0039-24-67-C:0039-CF-01-A:0.2.3",
+                            "DEFAULT:0039-CB-01-A:DEFAULT",
+                            "DEFAULT:0039-CD-01-A:DEFAULT",
+                            "0039-25-67-C:0039-CC-01-A:BAD",
+                        ),
+                    ),
+                    "0039-24-67-C:0039-CF-01-A:0.1.2" => array(
+                        'Name' => 'testDriver',
+                        'Type' => 'device',
+                        'Class' => 'TestDriverPlugin',
+                        "Flags" => array(
+                            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                            "0039-24-67-C:0039-CF-01-A:0.1.2",
+                            "0039-24-67-C:0039-CF-01-A:0.2.3",
+                            "DEFAULT:0039-CB-01-A:DEFAULT",
+                            "DEFAULT:0039-CD-01-A:DEFAULT",
+                            "0039-25-67-C:0039-CC-01-A:BAD",
+                        ),
+                    ),
+                    "0039-24-67-C:0039-CF-01-A:0.2.3" => array(
+                        'Name' => 'testDriver',
+                        'Type' => 'device',
+                        'Class' => 'TestDriverPlugin',
+                        "Flags" => array(
+                            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                            "0039-24-67-C:0039-CF-01-A:0.1.2",
+                            "0039-24-67-C:0039-CF-01-A:0.2.3",
+                            "DEFAULT:0039-CB-01-A:DEFAULT",
+                            "DEFAULT:0039-CD-01-A:DEFAULT",
+                            "0039-25-67-C:0039-CC-01-A:BAD",
+                        ),
+                    ),
+                ),
+            ),
+            array( // #3
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-24-67-C:0039-CF-01-A:0.1.2",
+                false,
+                array (
+                    "0039-24-67-C:0039-CF-01-A:0.1.2" => array(
+                        'Name' => 'testDriver',
+                        'Type' => 'device',
+                        'Class' => 'TestDriverPlugin',
+                        "Flags" => array(
+                            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                            "0039-24-67-C:0039-CF-01-A:0.1.2",
+                            "0039-24-67-C:0039-CF-01-A:0.2.3",
+                            "DEFAULT:0039-CB-01-A:DEFAULT",
+                            "DEFAULT:0039-CD-01-A:DEFAULT",
+                            "0039-25-67-C:0039-CC-01-A:BAD",
+                        ),
+                    ),
+                ),
+            ),
+            array( // #4
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-25-67-C",
+                false,
+                array (
+                ),
+            ),
+            array( // #5
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "device",
+                "0039-25-67-C",
+                true,
+                array (
+                    "0039-25-67-C:0039-CC-01-A:BAD" => array(
+                        'Name' => 'testDriver',
+                        'Type' => 'device',
+                        'Class' => 'TestDriverPlugin',
+                        "Flags" => array(
+                            "0039-24-67-C:0039-CE-01-A:DEFAULT",
+                            "0039-24-67-C:0039-CF-01-A:0.1.2",
+                            "0039-24-67-C:0039-CF-01-A:0.2.3",
+                            "DEFAULT:0039-CB-01-A:DEFAULT",
+                            "DEFAULT:0039-CD-01-A:DEFAULT",
+                            "0039-25-67-C:0039-CC-01-A:BAD",
+                        ),
+                    ),
+                ),
+            ),
+            array( // #6
+                array(
+                    "dir" => dirname(__FILE__)."/../files/plugins/",
+                    "extension" => "php",
+                ),
+                "sensor",
+                "04:bogusType",
+                false,
+                array (
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to preload
+    * @param string $type    The type to get
+    * @param string $flag    The flag to use
+    * @param bool   $bad     Show bad records
+    * @param mixed  $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSearchPlugins
+    */
+    public function testSearchPlugins($preload, $type, $flag, $bad, $expect)
+    {
+        $o = new PluginsContainer($preload);
+        $this->assertSame(
+            $expect, $o->searchPlugins($type, $flag, $bad), "Run 1 failed"
+        );
+        // Do the same thing again to make sure of the same result.
+        $this->assertSame(
+            $expect, $o->searchPlugins($type, $flag, $bad), "Run 2 failed"
+        );
     }
 
 
