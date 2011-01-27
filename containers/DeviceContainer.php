@@ -401,6 +401,20 @@ class DeviceContainer extends DevicesTable
         return $ret;
     }
 
+    /**
+    * returns an object with the controller of this device in it
+    *
+    * @return DeviceContainer
+    */
+    public function &getController()
+    {
+        static $cache;
+        if (!is_object($cache[$this->ControllerKey])) {
+            $cache[$this->ControllerKey] = new DeviceContainer();
+            $cache[$this->ControllerKey]->getRow($this->ControllerKey);
+        }
+        return $cache[$this->ControllerKey];
+    }
 
 }
 ?>

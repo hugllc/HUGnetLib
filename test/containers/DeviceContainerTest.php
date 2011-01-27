@@ -1873,6 +1873,210 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->historyHeader());
     }
 
+    /**
+    * data provider for testGetController
+    *
+    * @return array
+    */
+    public static function dataGetController()
+    {
+        return array(
+            array( // #0
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(),
+                        "id" => 232,
+                        "DeviceID" => "0000E8",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-CF-01-A",
+                        "FWPartNum" => "0039-24-67-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                        "Active" => 1,
+                        "GatewayKey" => 0,
+                        "ControllerKey" => 0,
+                        "ControllerIndex" => 0,
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => 0,
+                        "ActiveSensors" => 2,
+                        "DeviceGroup" => "FFFFFF",
+                        "params" => "",
+                        "sensors" => array(
+                            "Sensors" => 2,
+                        ),
+                    ),
+                ),
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 233,
+                    "DeviceID" => "0000E9",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 232,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 2,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                    ),
+                ),
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "2",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                        0 => array("id" => 0, "type" => ""),
+                        1 => array("id" => 0, "type" => ""),
+                    ),
+                    "params" => array(),
+                ),
+            ),
+            array(  // #1 This is a cache hit. (Requires the previous test)
+                array(
+                ),
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 233,
+                    "DeviceID" => "0000E9",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 232,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 2,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                    ),
+                ),
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "2",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                        0 => array("id" => 0, "type" => ""),
+                        1 => array("id" => 0, "type" => ""),
+                    ),
+                    "params" => array(),
+                ),
+            ),
+            array(  // #2 Not found.
+                array(
+                ),
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(),
+                    "id" => 233,
+                    "DeviceID" => "0000E9",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => 1,
+                    "GatewayKey" => 0,
+                    "ControllerKey" => 238,
+                    "ControllerIndex" => 0,
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "eDEFAULT",
+                    "PollInterval" => 0,
+                    "ActiveSensors" => 2,
+                    "DeviceGroup" => "FFFFFF",
+                    "params" => "",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                    ),
+                ),
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                    ),
+                    "id" => 0,
+                    "RawSetup"  => "000000000000000000000000000000000000FFFFFF00",
+                    "sensors" => array(
+                    ),
+                    "params" => array(),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $load    The stuff to load into the database.
+    * @param array $preload The values to preload
+    * @param mixed $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetController
+    */
+    public function testGetController($load, $preload, $expect)
+    {
+        foreach ($load as $l) {
+            $this->o->clearData();
+            $this->o->fromAny($l);
+            $this->o->insertRow(true);
+        }
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->getController()->toArray(false));
+    }
+
 }
 
 ?>
