@@ -54,17 +54,37 @@ require_once dirname(__FILE__)."/../interfaces/ImagePluginInterface.php";
  */
 abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterface
 {
-    /** @var This is to register the class */
+    /** @var This is the image class */
     protected $image = null;
+    /** @var This is the image output file descriptor  */
+    protected $img = null;
 
     /**
     * Disconnects from the database
     *
     * @param ImageContainer &$container The image cointainer to output as an image
+    * @param array          $data       The data to use
     */
-    public function __construct(ImageContainer &$container)
+    public function __construct(ImageContainer &$container, $data = array())
     {
         $this->image =& $container;
+        if (!is_null($data["fontFile"])) {
+            $this->_fontFile = $data["fontFile"];
+        } else {
+            $this->_fontFile = realpath(
+                dirname(__FILE__)."/../contrib/fonts/bitstream-vera/Vera.ttf"
+            );
+        }
+    }
+    /**
+    * Disconnects from the database
+    *
+    */
+    public function __destruct()
+    {
+        if (!is_null($this->img)) {
+            imagedestroy($this->img);
+        }
     }
     /**
     * This function implements the output after the data
@@ -74,6 +94,126 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
     public function output()
     {
         return "Please replace this function";
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @return string
+    */
+    protected function gdBuildImage()
+    {
+        $this->gdStartImage();
+        for ($i = 0; $i < $this->image->pointCount; $i++) {
+            $this->gdImagePoint($this->image->point($i));
+        }
+    }
+
+    /**
+     * Gets a remote image and sets $this->_image to the resource
+     *
+     * @return none
+     */
+    protected function gdStartImage()
+    {
+
+        $this->img  = imagecreatetruecolor(
+            $this->image->width, $this->image->height
+        );
+        $color     = $this->gdAllocateColor("#FFFFFF");
+        imagefill($this->img, 0, 0, $color);
+        if ($this->fileExists($this->image->imageLoc)) {
+            list($imageWidth, $imageHeight) = getimagesize($this->image->imageLoc);
+            $contents  = file_get_contents($this->image->imageLoc);
+            $img = imagecreatefromstring($contents);
+            imagecopyresized(
+                $this->img, $img, 0, 0, 0, 0,
+                $this->image->width, $this->image->height,
+                $imageWidth, $imageHeight
+            );
+            imagedestroy($img);
+        }
+
+    }
+
+    /**
+    * Gets a remote image and sets $this->_image to the resource
+    *
+    * @param ImagePointContainer &$point The point to add
+    *
+    * @return none
+    */
+    protected function gdImagePoint(ImagePointContainer &$point)
+    {
+
+        $color = $this->gdAllocateColor($point->color);
+        $text  = html_entity_decode($point->text);
+        $box = imagettfbbox($point->fontsize, 0, $this->_fontFile, $text);
+        if (!is_null($point->fill)
+            && (strtolower($point->fill) !== "none")
+            && (strtolower($point->fill) !== "transparent")
+        ) {
+            $bcolor = $this->gdAllocateColor($point->fill);
+            imagefilledrectangle(
+                $this->img,
+                $point->x + $box[6] - 3,
+                $point->y + $box[7] - 3,
+                $point->x + $box[2] + 3,
+                $point->y + $box[3] + 3,
+                $bcolor
+            );
+        }
+
+        //$ret   = imagestring($this->img, $font, $x, $y, $text, $color);
+        $ret = imagettftext(
+            $this->img,
+            $point->fontsize,
+            0,
+            $point->x,
+            $point->y,
+            $color,
+            $this->_fontFile,
+            $text
+        );
+
+    }
+
+    /**
+     * Converts an HTML color into RGB
+     *
+     * @param string $color The color in HTML format (#RRGGBB)
+     *
+     * @return array The rgb information
+     */
+    protected function gdAllocateColor($color)
+    {
+
+        $color = trim(strtoupper($color));
+        if (empty($this->colors[$color])) {
+            $r = hexdec(substr($color, 1, 2));
+            $g = hexdec(substr($color, 3, 2));
+            $b = hexdec(substr($color, 5, 2));
+
+            $this->colors[$color] = imagecolorallocate($this->img, $r, $g, $b);
+            $this->RGB[$color]    = array("R" => $r, "G" => $g, "B" => $b);
+        }
+        return $this->colors[$color];
+    }
+    /**
+    * This calculates the size of the background image if its size does not match
+    * the size of the image we are building
+    *
+    * @param string $file The file to check
+    *
+    * @return string
+    */
+    protected function fileExists($file)
+    {
+        $f = @fopen($file, 'r');
+        if ($f) {
+            fclose($f);
+            return true;
+        }
+        return false;
     }
 }
 ?>

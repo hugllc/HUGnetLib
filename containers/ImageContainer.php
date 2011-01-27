@@ -61,6 +61,7 @@ class ImageContainer extends HUGnetContainer
     /** @var array This is the default values for the data */
     protected $default = array(
         "id" => 0,
+        "name" => "image",
         "type" => "DEFAULT",
         "iterate" => true,
         "imageLoc" => "",

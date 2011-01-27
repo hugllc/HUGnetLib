@@ -207,23 +207,6 @@ class SVGImagePlugin extends ImagePluginBase
     * This calculates the size of the background image if its size does not match
     * the size of the image we are building
     *
-    * @param string $file The file to check
-    *
-    * @return string
-    */
-    private function _fileExists($file)
-    {
-        $f = @fopen($file, 'r');
-        if ($f) {
-            fclose($f);
-            return true;
-        }
-        return false;
-    }
-    /**
-    * This calculates the size of the background image if its size does not match
-    * the size of the image we are building
-    *
     * @param string $indent The indent to use
     * @param string $end    The end to use
     * 
@@ -231,7 +214,7 @@ class SVGImagePlugin extends ImagePluginBase
     */
     private function _backgroundImage($indent = "", $end = "")
     {
-        if (!$this->_fileExists($this->image->imageLoc)) {
+        if (!$this->fileExists($this->image->imageLoc)) {
             return;
         }
         list($imageWidth, $imageHeight) = getimagesize($this->image->imageLoc);

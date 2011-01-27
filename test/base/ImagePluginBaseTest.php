@@ -88,6 +88,11 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        // This removes all created files
+        foreach ((array)$this->_files as $key => $file) {
+            unlink($file);
+            unset($this->_files[$key]);
+        }
     }
 
 
@@ -101,9 +106,15 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array("p1" => "2"),
-                array(
-                    "params" => array("p1" => "2", "p2" => "there"),
+                array(),
+                realpath(
+                    dirname(__FILE__)."/../../contrib/fonts/bitstream-vera/Vera.ttf"
                 ),
+            ),
+            array(
+                array("p1" => "2"),
+                array("fontFile" => "test"),
+                "test",
             ),
         );
     }
@@ -111,17 +122,20 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $data The data to use
+    * @param array  $preload The data to create the image with
+    * @param array  $data    The data to use
+    * @param string $font    The font to expect
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($data)
+    public function testConstructor($preload, $data, $font)
     {
-        $img = new ImageContainer($data);
-        $o = new ImagePluginBaseTestClass($img);
-        $this->assertAttributeSame($img, "image", $o);
+        $img = new ImageContainer($preload);
+        $o = new ImagePluginBaseTestClass($img, $data);
+        $this->assertAttributeSame($img, "image", $o, "Image wrong");
+        $this->assertAttributeSame($font, "_fontFile", $o, "Font wrong");
     }
     /**
      * Data provider for testConvertTo
@@ -133,6 +147,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(),
+                array(),
                 "Please replace this function",
             ),
         );
@@ -141,18 +156,98 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     * test Row()
     *
     * @param array  $preload the stuff to preload into the plugin
+    * @param array  $data    The data to use
     * @param string $expect  The value to expect
     *
     * @return null
     *
     * @dataProvider dataOutput
     */
-    public function testOutput($preload, $expect)
+    public function testOutput($preload, $data, $expect)
     {
-        $img = new ImageContainer($data);
-        $o = new ImagePluginBaseTestClass($img);
+        $img = new ImageContainer($preload);
+        $o = new ImagePluginBaseTestClass($img, $data);
         $body = $o->output();
         $this->assertSame($expect, $body);
+    }
+    /**
+    * Data provider for testOutputTest
+    *
+    * @return array
+    */
+    public static function dataOutputTest()
+    {
+        return array(
+            array(
+                array("height" => 100, "width" => 100),
+                array(),
+                realpath(
+                    dirname(__FILE__)
+                    ."/../files/images/ImagePluginsBaseTestBlank.png"
+                ),
+            ),
+            array(
+                array(
+                    "height" => 640,
+                    "width" => 640,
+                    "imageLoc" => realpath(
+                        dirname(__FILE__)."/../files/images/pink.png"
+                    ),
+                ),
+                array(),
+                realpath(
+                    dirname(__FILE__)."/../files/images/pinkSq.png"
+                ),
+            ),
+            array(
+                array(
+                    "height" => 100,
+                    "width" => 150,
+                    "imageLoc" => realpath(
+                        dirname(__FILE__)."/../files/images/pink.png"
+                    ),
+                    "points" => array(
+                        array(
+                            "x" => 10,
+                            "y" => 50,
+                            "text" => "Hello",
+                            "color" => "#000000",
+                            "fill" => "#FFFFFF",
+                        ),
+                        array(
+                            "x" => 10,
+                            "y" => 75,
+                            "text" => "Where are we?",
+                            "color" => "#0000FF",
+                        ),
+                    ),
+                ),
+                array(),
+                realpath(
+                    dirname(__FILE__)
+                    ."/../files/images/ImagePluginsBaseTestText1.png"
+                ),
+            ),
+        );
+    }
+    /**
+    * test Row()
+    *
+    * @param array  $preload the stuff to preload into the plugin
+    * @param array  $data    The data to use
+    * @param string $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputTest
+    */
+    public function testOutputTest($preload, $data, $expect)
+    {
+        $img = new ImageContainer($preload);
+        $o = new ImagePluginBaseTestClass($img, $data);
+        $file = $o->outputTest();
+        $this->_files[] = $file;
+        $this->assertFileEquals($expect, $file);
     }
 
 }
@@ -178,25 +273,14 @@ class ImagePluginBaseTestClass extends ImagePluginBase
     /**
     * Returns the object as a string
     *
-    * @param array $array The array of header information.
-    *
     * @return string
     */
-    public function row($array = array())
+    public function outputTest()
     {
-        $this->text .= print_r($array, true);
-    }
-
-    /**
-    * Returns the object as a string
-    *
-    * @param array $array The array of header information.
-    *
-    * @return string
-    */
-    public function header($array = array())
-    {
-        $this->text .= print_r($array, true);
+        $this->gdBuildImage();
+        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
+        imagepng($this->img, $name);
+        return $name;
     }
 }
 ?>
