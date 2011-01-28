@@ -100,6 +100,7 @@ class DeviceAnalysis extends DeviceProcess
             }
         }
     }
+    
     /**
     * This process runs analysis plugins on the data
     *
@@ -122,6 +123,20 @@ class DeviceAnalysis extends DeviceProcess
             }
         }
 
+    }
+    /**
+    * This is called just before the device update to set anything that needs to
+    * be before the device is updated
+    *
+    * @param string $fct The function to call
+    *
+    * @return string
+    */
+    protected function preUpdate($fct = "main")
+    {
+        if ($fct === "main") {
+            $this->device->params->DriverInfo["LastAnalysis"] = time();
+        }
     }
 }
 ?>

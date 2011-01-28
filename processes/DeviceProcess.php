@@ -146,6 +146,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             }
             $this->device->getRow($key);
             $this->_check($this->device, $fct);
+            $this->preUpdate($fct);
             $this->device->updateRow();
         }
 
@@ -169,6 +170,17 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
                 }
             }
         }
+    }
+    /**
+    * This is called just before the device update to set anything that needs to
+    * be before the device is updated
+    *
+    * @param string $fct The function to call
+    *
+    * @return string
+    */
+    protected function preUpdate($fct = "main")
+    {
     }
     /**
     * This deals with Unsolicited Packets
