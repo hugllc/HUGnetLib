@@ -148,6 +148,18 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
         $color = $this->gdAllocateColor($point->color);
         $text  = html_entity_decode($point->text);
         $box = imagettfbbox($point->fontsize, 0, $this->_fontFile, $text);
+        if (!is_null($point->outline)) {
+            $ocolor = $this->gdAllocateColor($point->outline);
+            imagefilledrectangle(
+                $this->img,
+                $point->x + $box[6] - 6,
+                $point->y + $box[7] - 6,
+                $point->x + $box[2] + 6,
+                $point->y + $box[3] + 6,
+                $ocolor
+            );
+        }
+        
         if (!is_null($point->fill)
             && (strtolower($point->fill) !== "none")
             && (strtolower($point->fill) !== "transparent")
@@ -162,8 +174,6 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
                 $bcolor
             );
         }
-
-        //$ret   = imagestring($this->img, $font, $x, $y, $text, $color);
         $ret = imagettftext(
             $this->img,
             $point->fontsize,

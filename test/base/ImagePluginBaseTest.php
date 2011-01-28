@@ -90,7 +90,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     {
         // This removes all created files
         foreach ((array)$this->_files as $key => $file) {
-            unlink($file);
+            //unlink($file);
             unset($this->_files[$key]);
         }
     }
@@ -226,6 +226,36 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                 realpath(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText1.png"
+                ),
+            ),
+            array(
+                array(
+                    "height" => 100,
+                    "width" => 150,
+                    "imageLoc" => realpath(
+                        dirname(__FILE__)."/../files/images/pink.png"
+                    ),
+                    "points" => array(
+                        array(
+                            "x" => 10,
+                            "y" => 50,
+                            "text" => "Hello",
+                            "color" => "#000000",
+                            "fill" => "#FFFFFF",
+                            "outline" => "#0000FF",
+                        ),
+                        array(
+                            "x" => 10,
+                            "y" => 75,
+                            "text" => "Try Again?",
+                            "color" => "#0000FF",
+                        ),
+                    ),
+                ),
+                array(),
+                realpath(
+                    dirname(__FILE__)
+                    ."/../files/images/ImagePluginsBaseTestText2.png"
                 ),
             ),
         );

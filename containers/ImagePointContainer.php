@@ -70,6 +70,7 @@ class ImagePointContainer extends HUGnetContainer
         "colorValueMin" => 0,
         "colorMax" => "FF0001",
         "colorMin" => "0000FF",
+        "outline" => null,
         "link" => "",
         "linkTitle" => "",
         "id" => 0,
