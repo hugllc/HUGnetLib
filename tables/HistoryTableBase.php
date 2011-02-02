@@ -187,13 +187,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     public function fromDataArray($array)
     {
-        if (!empty($array["id"])) {
-            $this->id = $array["id"];
-        }
-        if (!empty($array["Date"])) {
-            $this->Date = $array["Date"];
-        }
-        $this->deltaT = $array["deltaT"];
+        parent::fromArray($array);
         for ($i = 0; $i < $this->datacols; $i++) {
             $key = "Data$i";
             $this->$key = $array[$i]["value"];

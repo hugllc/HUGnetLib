@@ -197,7 +197,7 @@ class DevicesHistoryTable extends HUGnetDBTable
     */
     public function &toDeviceContainer()
     {
-        $dev = new DeviceContainer();
+        $dev = new DeviceContainer(array("group" => $this->group));
         $dev->fromSetupString($this->SetupString);
         $dev->sensors->fromString($this->SensorString);
         if (empty($dev->ActiveSensors)) {

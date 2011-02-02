@@ -216,6 +216,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
         return array(
             array(
                 array(
+                    "group" => "remote",
                     "deltaT" => 1,
                     0 => array(
                         "value" => 1,
@@ -259,7 +260,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "timeConstant" => 5,
                 ),
                 array(
-                    "group" => "default",
+                    "group" => "remote",
                     "raw" => array(
                         0  => null,
                         1  => null,

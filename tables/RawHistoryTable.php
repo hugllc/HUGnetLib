@@ -150,7 +150,7 @@ class RawHistoryTable extends HUGnetDBTable
             "Columns" => array("Date", "id"),
         ),
     );
-    
+
 
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -284,6 +284,7 @@ class RawHistoryTable extends HUGnetDBTable
             );
             $data["id"] = $this->id;
             $data["Date"] = $this->Date;
+            $data["group"] = $this->group;
         }
         return $dev->historyFactory($data);
     }
