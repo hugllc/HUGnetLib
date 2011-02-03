@@ -73,6 +73,7 @@ class Test3Sensor extends DeviceSensorBase
         "longName" => "Multi Input Sensor",
         "unitType" => "secondUnit",
         "storageUnit" => 'anotherUnit2',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
         "inputSize" => 3,

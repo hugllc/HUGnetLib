@@ -71,6 +71,7 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
         "longName" => "All Sensors GA100 Differential Pressure Sensor",
         "unitType" => "Pressure",
         "storageUnit" => 'psi',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "Min Voltage (V)",
             "Max Voltage (V)",

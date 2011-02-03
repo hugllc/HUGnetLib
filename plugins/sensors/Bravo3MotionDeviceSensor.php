@@ -69,9 +69,14 @@ class Bravo3MotionDeviceSensor extends PulseDeviceSensorBase
         "longName" => "DSC Bravo 3 Motion Sensor",
         "unitType" => "Frequency",
         "storageUnit" => "counts",
+        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(
         ),
         "extraDefault" => array(),
+    );
+    /** @var object These are the valid values for dataType */
+    protected $dataTypeValues = array(
+        UnitsBase::TYPE_DIFF, UnitsBase::TYPE_IGNORE
     );
     /**
     * Disconnects from the database
@@ -83,6 +88,7 @@ class Bravo3MotionDeviceSensor extends PulseDeviceSensorBase
     {
         $this->default["id"] = 0x70;
         $this->default["type"] = "bravo3motion";
+        $this->default["dataType"] = UnitsBase::TYPE_DIFF;
         parent::__construct($data, $device);
     }
 

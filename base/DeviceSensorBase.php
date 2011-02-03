@@ -82,6 +82,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "longName" => "Unknown Sensor",
         "unitType" => "Generic",
         "storageUnit" => 'unknown',     // This is how the data is stored
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
         "maxDecimals" => 2,
@@ -182,17 +183,19 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     public function getUnits($A, $deltaT = 0, $prev = null)
     {
-        $val = $this->getReading($A, $deltaT);
+
         $ret = array(
-            "value" => $val,
-            "units" => $this->storageUnit,
-            "unitType" => $this->unitType,
-            "dataType" => $this->dataType,
         );
-        if ($this->dataType == UnitsBase::TYPE_DIFF) {
-            $ret["raw"] = $val;
-            $ret["value"] = ($val - $prev);
+        $val = $this->getReading($A, $deltaT);
+        if ($this->storageType == UnitsBase::TYPE_DIFF) {
+            $ret["value"] = $this->getReading(($A - $prev), $deltaT);
+            $ret["raw"] = $A;
+        } else {
+            $ret["value"] = $this->getReading($A, $deltaT);
         }
+        $ret["units"] = $this->storageUnit;
+        $ret["unitType"] = $this->unitType;
+        $ret["dataType"] = $this->storageType;
         return $ret;
     }
 
@@ -269,7 +272,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
             $ret[$value] = $value;
         }
         return $ret;
-        
+
     }
     /**
     * Converts data between units

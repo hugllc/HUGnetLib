@@ -71,6 +71,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
         "longName" => "Hitachi VFD Fan Speed",
         "unitType" => "Pulses",
         "storageUnit" => 'RPM',
+        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(
             "R1 in kOhms",
             "R2 in kOhms",

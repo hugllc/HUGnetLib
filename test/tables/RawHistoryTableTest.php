@@ -478,7 +478,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     public static function dataToHistoryTable()
     {
         return array(
-            array(
+            array(  // #0
                 array(),
                 array(
                     "id" => 18,
@@ -521,7 +521,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'Data5' => 35.2126,
                 ),
             ),
-            array(
+            array(  // #1
                 array(),
                 array(
                     "id" => 18,
@@ -548,7 +548,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                 ),
             ),
-            array(
+            array(  // #2
                 array(),
                 array(
                     "id" => 18,
@@ -578,8 +578,16 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                             "Sensors" => 5,
                             0 => array(),
                             1 => array(),
-                            2 => array("dataType" => UnitsBase::TYPE_DIFF),
-                            3 => array("dataType" => UnitsBase::TYPE_DIFF),
+                            2 => array(
+                                "id" => 0x70,
+                                //"dataType" => UnitsBase::TYPE_DIFF,
+                                "type" => "maximumAnemometer",
+                            ),
+                            3 => array(
+                                "id" => 0x70,
+                                //"dataType" => UnitsBase::TYPE_DIFF,
+                                "type" => "maximumRainGauge",
+                            ),
                             4 => array(),
                         ),
                     ),
@@ -587,24 +595,24 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     "dataIndex" => 123,
                 ),
                 1048472184,
-                array(null, null, 91.4234, 90.5231, null),
+                array(null, null, 4825, 4912, null),
                 array(
                     "id" => 18,
                     "raw" => array(
-                        2 => 93.9263,
-                        3 => 93.5304,
+                        2 => 4914,
+                        3 => 4969,
                     ),
                     "Date" => 1048472484,
                     'deltaT' => 300,
                     'Data0' => 93.1399,
                     'Data1' => 93.5384,
-                    'Data2' => 2.5029,
-                    'Data3' => 3.0073,
+                    'Data2' => 0.4033,
+                    'Data3' => 0.57,
                     'Data4' => 92.0645,
                     'Data7' => -25.4877,
                 ),
             ),
-            array(
+            array(  // #3
                 array(
                     array(
                         "id" => 18,
@@ -620,8 +628,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 "From" => "000012",
                                 "Date" => 1048472185,
                                 "Command" => "01",
-                                "Data" => "C80001A013006813001614006914003A14008313"
-                                    ."0102025D029200BF00EC",
+                                "Data" => "C80001A013006813003213006913003A1400831"
+                                ."30102025D029200BF00EC",
                             ),
                         ),
                         "device" => array(
@@ -634,8 +642,12 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 "Sensors" => 5,
                                 0 => array(),
                                 1 => array(),
-                                2 => array("dataType" => UnitsBase::TYPE_DIFF),
-                                3 => array("dataType" => UnitsBase::TYPE_DIFF),
+                                2 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                3 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
                                 4 => array(),
                             ),
                         ),
@@ -670,8 +682,12 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 "Sensors" => 5,
                                 0 => array(),
                                 1 => array(),
-                                2 => array("dataType" => UnitsBase::TYPE_DIFF),
-                                3 => array("dataType" => UnitsBase::TYPE_DIFF),
+                                2 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
+                                3 => array(
+                                    "id" => 0x70, "type" => "genericRevolver"
+                                ),
                                 4 => array(),
                             ),
                         ),
@@ -693,8 +709,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                             "From" => "000012",
                             "Date" => 1048472485,
                             "Command" => "01",
-                            "Data" => "C80001A013006813003213006913003A140083130102"
-                                ."025D029200BF00EC",
+                            "Data" => "C80001A013006813001614006914003A14008313"
+                                    ."0102025D029200BF00EC",
                         ),
                     ),
                     "device" => array(
@@ -707,8 +723,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                             "Sensors" => 5,
                             0 => array(),
                             1 => array(),
-                            2 => array("dataType" => UnitsBase::TYPE_DIFF),
-                            3 => array("dataType" => UnitsBase::TYPE_DIFF),
+                            2 => array("id" => 0x70, "type" => "genericRevolver"),
+                            3 => array("id" => 0x70, "type" => "genericRevolver"),
                             4 => array(),
                         ),
                     ),
@@ -720,15 +736,15 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "id" => 18,
                     "raw" => array(
-                        2 => 93.9263,
-                        3 => 93.5304,
+                        2 => 5142,
+                        3 => 5225,
                     ),
                     "Date" => 1048472484,
                     'deltaT' => 300,
                     'Data0' => 93.1399,
                     'Data1' => 93.5384,
-                    'Data2' => 1.6131,
-                    'Data3' => 1.7878,
+                    'Data2' => 45.6,
+                    'Data3' => 51.2,
                     'Data4' => 92.0645,
                     'Data7' => -25.4877,
                 ),

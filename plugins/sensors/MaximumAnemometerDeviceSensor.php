@@ -69,9 +69,14 @@ class MaximumAnemometerDeviceSensor extends PulseDeviceSensorBase
         "longName" => "Maximum Inc Hall Effect Anemometer",
         "unitType" => "Speed",
         "storageUnit" => "MPH",
+        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(
         ),
         "extraDefault" => array(),
+    );
+    /** @var object These are the valid values for dataType */
+    protected $dataTypeValues = array(
+        UnitsBase::TYPE_DIFF, UnitsBase::TYPE_IGNORE
     );
     /**
     * Disconnects from the database
@@ -83,6 +88,7 @@ class MaximumAnemometerDeviceSensor extends PulseDeviceSensorBase
     {
         $this->default["id"] = 0x70;
         $this->default["type"] = "maximumAnemometer";
+        $this->default["dataType"] = UnitsBase::TYPE_DIFF;
         parent::__construct($data, $device);
     }
 

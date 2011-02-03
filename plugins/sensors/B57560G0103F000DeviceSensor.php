@@ -72,6 +72,7 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
         "longName" => "EPCOS B57560G0103F000",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array("Bias Resistor in k Ohms"),
         "extraDefault" => array(10),
         "maxDecimals" => 2,

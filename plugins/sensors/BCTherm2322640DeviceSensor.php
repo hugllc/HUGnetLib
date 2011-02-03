@@ -72,6 +72,7 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
         "longName" => "BC Components Thermistor #2322640 ",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "Bias Resistor in k Ohms",
             "Thermistor Value @25C"

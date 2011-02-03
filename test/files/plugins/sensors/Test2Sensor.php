@@ -73,6 +73,7 @@ class Test2Sensor extends DeviceSensorBase
         "longName" => "Unknown Sensor",
         "unitType" => "secondUnit",
         "storageUnit" => 'anotherUnit',
+        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
     );

@@ -69,10 +69,15 @@ class GenericRevolvingDeviceSensor extends PulseDeviceSensorBase
         "longName" => "Generic Revolving Thingy",
         "unitType" => "Frequency",
         "storageUnit" => 'RPM',
+        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(
             "Counts Per Revolution",
         ),
         "extraDefault" => array(1),
+    );
+    /** @var object These are the valid values for dataType */
+    protected $dataTypeValues = array(
+        UnitsBase::TYPE_DIFF, UnitsBase::TYPE_IGNORE
     );
     /**
     * Disconnects from the database
@@ -84,6 +89,7 @@ class GenericRevolvingDeviceSensor extends PulseDeviceSensorBase
     {
         $this->default["id"] = 0x70;
         $this->default["type"] = "genericRevolver";
+        $this->default["dataType"] = UnitsBase::TYPE_DIFF;
         parent::__construct($data, $device);
     }
 

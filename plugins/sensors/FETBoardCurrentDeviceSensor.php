@@ -71,6 +71,7 @@ class FETBoardCurrentDeviceSensor extends CurrentDeviceSensorBase
         "longName" => "FETBoard Board Current Sensor",
         "unitType" => "Current",
         "storageUnit" => 'mA',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "R in kOhms",
             "Gain"

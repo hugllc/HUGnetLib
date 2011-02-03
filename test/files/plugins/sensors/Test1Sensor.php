@@ -73,6 +73,7 @@ class Test1Sensor extends DeviceSensorBase
         "longName" => "Unknown Sensor",
         "unitType" => "firstUnit",
         "storageUnit" => 'testUnit',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
     );

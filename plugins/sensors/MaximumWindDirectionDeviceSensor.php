@@ -69,6 +69,7 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
         "longName" => "Maximum Inc Wind Direction Sensor",
         "unitType" => "Direction",
         "storageUnit" => '&#176;',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
         ),
         "extraDefault" => array(),

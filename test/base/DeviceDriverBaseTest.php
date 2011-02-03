@@ -1309,6 +1309,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         1 => array(
                         ),
                         2 => array(
+                            "id" => 2,
                             "dataType" => UnitsBase::TYPE_DIFF,
                         ),
                         3 => array(
@@ -1338,11 +1339,11 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     2 => array(
-                        "value" => 2,
-                        "units" => "testUnit",
-                        "unitType" => "firstUnit",
+                        "value" => 12,
+                        "raw" => 8,
+                        "units" => "anotherUnit",
+                        "unitType" => "secondUnit",
                         "dataType" => UnitsBase::TYPE_DIFF,
-                        "raw" => 4,
                     ),
                     3 => array(
                         "value" => 8,

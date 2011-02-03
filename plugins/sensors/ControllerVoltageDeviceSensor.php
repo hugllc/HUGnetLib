@@ -71,6 +71,7 @@ class ControllerVoltageDeviceSensor extends VoltageDeviceSensorBase
         "longName" => "Controller Board Voltage Sensor",
         "unitType" => "Voltage",
         "storageUnit" => 'V',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "R1 in kOhms",
             "R2 in kOhms"

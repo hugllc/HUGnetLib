@@ -68,7 +68,8 @@ class GenericPulseDeviceSensor extends PulseDeviceSensorBase
     protected $fixed = array(
         "longName" => "Generic Pulse Counter",
         "unitType" => "Frequency",
-        "storageUnit" => 'PPM',
+        "storageUnit" => 'Pulses',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
         ),
         "extraDefault" => array(),

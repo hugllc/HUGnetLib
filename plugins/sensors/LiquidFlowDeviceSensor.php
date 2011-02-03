@@ -69,6 +69,7 @@ class LiquidFlowDeviceSensor extends PulseDeviceSensorBase
         "longName" => "Liquid Flow Meter",
         "unitType" => "Volume",
         "storageUnit" => 'gal',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "Gallons / Pulse",
         ),

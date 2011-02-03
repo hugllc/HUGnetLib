@@ -69,6 +69,7 @@ class WattNodeDeviceSensor extends PulseDeviceSensorBase
         "longName" => "CCS WattNode Pulse Output Power Meter",
         "unitType" => "Power",
         "storageUnit" => 'kWh',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "Watt Hours / Pulse",
         ),

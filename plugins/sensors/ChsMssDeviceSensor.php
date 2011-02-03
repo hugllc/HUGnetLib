@@ -71,6 +71,7 @@ class ChsMssDeviceSensor extends VoltageDeviceSensorBase
         "longName" => "TDK CHS-MSS",
         "unitType" => "Relative Humidity",
         "storageUnit" => '%',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "Min Voltage (V)",
             "Max Voltage (V)",

@@ -86,6 +86,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
         "longName" => "OSRAM BPW-34 Photodiode",
         "unitType" => "Heat/Unit Area",
         "storageUnit" => 'W/m^2',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
         ),
         "extraDefault" => array(),

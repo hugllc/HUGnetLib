@@ -304,6 +304,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                "TestDeviceSensor",
                 array(
                 ),
                 1,
@@ -317,18 +318,19 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                "TestDeviceSensor2",
                 array(
-                    "dataType" => UnitsBase::TYPE_DIFF,
+                    "dataType" => UnitsBase::TYPE_RAW,
                 ),
                 1,
                 2,
                 5,
                 array(
                     "value" => -4,
+                    "raw" => 1,
                     "units" => "firstUnit",
                     "unitType" => "firstUnit",
                     "dataType" => UnitsBase::TYPE_DIFF,
-                    "raw" => 1,
                 ),
             ),
         );
@@ -337,6 +339,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
+    * @param string $class   The class to use
     * @param mixed  $preload The stuff to give to the constructor
     * @param mixed  $A       The value to send
     * @param int    $deltaT  The delta Time
@@ -347,11 +350,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataUnits
     */
-    public function testGetUnits($preload, $A, $deltaT, $prev, $expect)
+    public function testGetUnits($class, $preload, $A, $deltaT, $prev, $expect)
     {
-        $this->o->clearData();
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->getUnits($A, $deltaT, $prev));
+        $o = new $class($preload, $this->d);
+        $this->assertSame($expect, $o->getUnits($A, $deltaT, $prev));
     }
     /**
     * data provider for testConvertUnits
@@ -652,6 +654,7 @@ class TestDeviceSensor extends DeviceSensorBase
         "longName" => "Unknown Sensor",
         "unitType" => "firstUnit",
         "storageUnit" => 'firstUnit',
+        "storageType" => UnitsBase::TYPE_RAW,
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
         "maxDecimals" => 2,
@@ -712,6 +715,7 @@ class TestDeviceSensor2 extends DeviceSensorBase
         "longName" => "Unknown Sensor",
         "unitType" => "firstUnit",
         "storageUnit" => 'firstUnit',
+        "storageType" => UnitsBase::TYPE_DIFF,
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
         "maxDecimals" => 2,
@@ -783,6 +787,7 @@ class TestDeviceSensor3 extends DeviceSensorBase
         "longName" => "Unknown Sensor",
         "unitType" => "moreUnit",
         "storageUnit" => 'moreUnit',
+        "storageType" => UnitsBase::TYPE_RAW,
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
         "maxDecimals" => 2,

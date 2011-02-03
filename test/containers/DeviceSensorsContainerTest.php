@@ -912,11 +912,11 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => UnitsBase::TYPE_RAW,
                     ),
                     1 => array(
-                        "value" => 30,
+                        "value" => 20,
+                        "raw" => 20,
                         "units" => "anotherUnit",
                         "unitType" => "secondUnit",
                         "dataType" => UnitsBase::TYPE_DIFF,
-                        "raw" => 40,
                     ),
                     2 => array(
                         "value" => 15,
