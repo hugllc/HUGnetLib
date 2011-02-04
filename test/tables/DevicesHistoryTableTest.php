@@ -373,28 +373,40 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         1 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Current",
+                            "extra" => array(0.5, 7),
                         ),
                         2 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 1 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
                         3 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         4 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Current",
+                            "extra" => array(0.5, 7),
                         ),
                         5 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 2 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
                     ),
                     "params" => array(
@@ -453,26 +465,41 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         1 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Current",
+                            "extra" => array(0.5, 7),
                         ),
                         2 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 1 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
                         3 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         4 => array(
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Current",
+                            "extra" => array(0.5, 7),
+                        ),
+                        5 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 2 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
-                        5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),
                     "params" => array(
                         "DriverInfo" => array(
@@ -500,26 +527,41 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         1 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 1 Current",
+                            "extra" => array(0.5, 7),
                         ),
                         2 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 1 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
                         3 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
+                            "id" => 0x40,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Voltage",
+                            "extra" => array(180, 27),
                         ),
                         4 => array(
+                            "id" => 0x50,
+                            "type" => "Controller",
+                            "location" => "HUGnet 2 Current",
+                            "extra" => array(0.5, 7),
+                        ),
+                        5 => array(
                             "id" => 2,
                             "type" => "BCTherm2322640",
+                            "location" => "HUGnet 2 FET Temperature",
+                            "extra" => array(100, 10),
                         ),
-                        5 => array("id" => 2, "type" => "BCTherm2322640"),
                     ),
                     "params" => array(
                         "DriverInfo" => array(

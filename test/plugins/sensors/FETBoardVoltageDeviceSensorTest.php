@@ -117,7 +117,7 @@ class FETBoardVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
                 1000,
                 1,
                 array(),
-                0.7502
+                1.2219
             ),
             array(
                 null,
@@ -135,7 +135,7 @@ class FETBoardVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
                 65535,
                 1,
                 array(),
-                49.1649
+                80.077,
             ),
         );
     }

@@ -94,6 +94,107 @@ class E00391201Device extends DeviceDriverBase
         $this->fromSetupString($string);
     }
 
+    /**
+    * Decodes the sensor data
+    *
+    * @param string $string  The string of sensor data
+    * @param string $command The command that was used to get the data
+    * @param float  $deltaT  The time difference between this packet and the next
+    * @param float  $prev    The previous record
+    *
+    * @return null
+    */
+    public function decodeData($string, $command="", $deltaT = 0, $prev = null)
+    {
+        $ret = parent::decodeData($string, $command, $deltaT, $prev);
+        foreach (array(1, 3, 5, 7) as $key) {
+            $ret[$key]["value"] = $ret[8]["value"] - $ret[$key]["value"];
+        }
+        return $ret;
+    }
+    /**
+    * This always forces the sensors to the same thing (world view)
+    *
+    * This is always the sensor array:
+    *    Input 0: Out1 Current
+    *    Input 1: Out1 Voltage
+    *    Input 2: Out2 Current
+    *    Input 3: Out2 Voltage
+    *    Input 4: Out3 Current
+    *    Input 5: Out3 Voltage
+    *    Input 6: Out4 Current
+    *    Input 7: Out4 Voltage
+    *    Input 8: Main Voltage
+    *
+    * @param string $string This is totally ignored.
+    *
+    * @return null
+    */
+    public function fromSetupString($string)
+    {
+        $this->myDriver->DriverInfo["TimeConstant"] = 1;
+        if (is_object($this->myDriver->sensors)) {
+            $this->myDriver->sensors->Sensors = 9;
+            $this->myDriver->sensors->fromTypeArray(
+                array(
+                    0 => $this->_currentSensor("Out1 Current"),
+                    1 => $this->_voltageSensor("Out1 Voltage"),
+                    2 => $this->_currentSensor("Out2 Current"),
+                    3 => $this->_voltageSensor("Out2 Voltage"),
+                    4 => $this->_currentSensor("Out3 Current"),
+                    5 => $this->_voltageSensor("Out3 Voltage"),
+                    6 => $this->_currentSensor("Out4 Current"),
+                    7 => $this->_voltageSensor("Out4 Voltage"),
+                    8 => $this->_voltageSensor("Main Voltage"),
+                )
+            );
+        }
+    }
+    /**
+    * This returns an array to build a voltage sensor for the controller
+    *
+    * @param string $location The location to add to the sensors
+    *
+    * @return array The array of sensor information
+    */
+    private function _voltageSensor($location)
+    {
+        return array(
+            "id" => 0x40,
+            "type" => "fetBoard",
+            "location" => $location,
+        );
+    }
+    /**
+    * This returns an array to build a voltage sensor for the controller
+    *
+    * @param string $location The location to add to the sensors
+    *
+    * @return array The array of sensor information
+    */
+    private function _currentSensor($location)
+    {
+        return array(
+            "id" => 0x50,
+            "type" => "fetBoard",
+            "location" => $location,
+        );
+
+    }
+    /**
+    * Decodes the sensor string
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    protected function decodeSensorString($string)
+    {
+        $ret = $this->sensorStringArrayToInts(str_split(substr($string, 2), 4));
+        $ret["DataIndex"] = hexdec(substr($string, 0, 2));
+        $ret["timeConstant"] = 1;
+        return $ret;
+    }
 
 }
 

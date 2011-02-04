@@ -563,7 +563,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     */
     public function decodeData($string, $command="", $deltaT = 0, $prev = null)
     {
-        $data = $this->_decodeSensorString($string);
+        $data = $this->decodeSensorString($string);
         $data["deltaT"] = $deltaT;
         $ret = $this->myDriver->sensors->decodeSensorData($data, $prev);
         $ret["DataIndex"] = $data["DataIndex"];
@@ -579,7 +579,7 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
     *
     * @return null
     */
-    private function _decodeSensorString($string)
+    protected function decodeSensorString($string)
     {
         $ret = $this->sensorStringArrayToInts(str_split(substr($string, 6), 6));
         $ret["DataIndex"] = hexdec(substr($string, 0, 2));

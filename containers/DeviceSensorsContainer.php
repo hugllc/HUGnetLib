@@ -95,7 +95,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Set up everything else
         parent::fromArray($array);
         // Clear the number of sensors
-        
+
         if (empty($this->Sensors)
             || ($this->Sensors < (int)$this->myDevice->DriverInfo["NumSensors"])
         ) {
@@ -167,6 +167,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     {
         if (is_object($this->sensor[$key])) {
             $vals = $this->sensor($key)->toArray();
+            unset($vals["decimals"]);
         } else {
             $vals = array();
         }
