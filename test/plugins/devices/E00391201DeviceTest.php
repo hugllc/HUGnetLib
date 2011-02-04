@@ -149,10 +149,19 @@ class E00391201DeviceTest extends DevicePluginTestBase
     {
         return array(
             array(
-                "0102020202020202027070707070707070",
+                "010203040506070809",
                 array(
                     "NumSensors" => 9,
                     "TimeConstant" => 1,
+                    "Setup" => 1,
+                    "FET0" => 2,
+                    "FET1" => 3,
+                    "FET2" => 4,
+                    "FET3" => 5,
+                    "FET0Mult" => 6,
+                    "FET1Mult" => 7,
+                    "FET2Mult" => 8,
+                    "FET3Mult" => 9,
                 ),
                 array(
                     "Sensors" => 9,

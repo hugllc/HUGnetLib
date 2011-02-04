@@ -132,7 +132,18 @@ class E00391201Device extends DeviceDriverBase
     */
     public function fromSetupString($string)
     {
-        $this->myDriver->DriverInfo["TimeConstant"] = 1;
+        $Info = &$this->myDriver->DriverInfo;
+        $Info["NumSensors"]   = 9;
+        $Info["TimeConstant"] = 1;
+        $Info["Setup"]        = hexdec(substr($string, 0, 2));
+        $Info["FET0"]         = hexdec(substr($string, 2, 2));
+        $Info["FET1"]         = hexdec(substr($string, 4, 2));
+        $Info["FET2"]         = hexdec(substr($string, 6, 2));
+        $Info["FET3"]         = hexdec(substr($string, 8, 2));
+        $Info["FET0Mult"]     = hexdec(substr($string, 10, 2));
+        $Info["FET1Mult"]     = hexdec(substr($string, 12, 2));
+        $Info["FET2Mult"]     = hexdec(substr($string, 14, 2));
+        $Info["FET3Mult"]     = hexdec(substr($string, 16, 2));
         if (is_object($this->myDriver->sensors)) {
             $this->myDriver->sensors->Sensors = 9;
             $this->myDriver->sensors->fromTypeArray(
