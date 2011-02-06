@@ -149,19 +149,35 @@ class E00391201DeviceTest extends DevicePluginTestBase
     {
         return array(
             array(
-                "010203040506070809",
+                "E40203040506070809",
                 array(
                     "NumSensors" => 9,
                     "TimeConstant" => 1,
-                    "Setup" => 1,
-                    "FET0" => 2,
-                    "FET1" => 3,
-                    "FET2" => 4,
-                    "FET3" => 5,
-                    "FET0Mult" => 6,
-                    "FET1Mult" => 7,
-                    "FET2Mult" => 8,
-                    "FET3Mult" => 9,
+                    "Setup" => 0xE4,
+                    "FET0" => array(
+                        "mode" => 0,
+                        "name" => "Digital",
+                        "value" => 2,
+                        "multiplier" => 6,
+                    ),
+                    "FET1" => array(
+                        "mode" => 1,
+                        "name" => "Analog - High Z",
+                        "value" => 3,
+                        "multiplier" => 7,
+                    ),
+                    "FET2" => array(
+                        "mode" => 2,
+                        "name" => "Analog - Voltage",
+                        "value" => 4,
+                        "multiplier" => 8,
+                    ),
+                    "FET3" => array(
+                        "mode" => 3,
+                        "name" => "Analog - Current",
+                        "value" => 5,
+                        "multiplier" => 9,
+                    ),
                 ),
                 array(
                     "Sensors" => 9,

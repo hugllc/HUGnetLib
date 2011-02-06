@@ -57,6 +57,14 @@ require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 class E00391201Device extends DeviceDriverBase
     implements DeviceDriverInterface
 {
+    /** @var This is the digital mode */
+    const MODE_DIGITAL = 0;
+    /** @var This is the digital mode */
+    const MODE_HIGHZ = 1;
+    /** @var This is the digital mode */
+    const MODE_VOLTAGE = 2;
+    /** @var This is the digital mode */
+    const MODE_CURRENT = 3;
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00391201",
@@ -78,6 +86,13 @@ class E00391201Device extends DeviceDriverBase
             "0039-20-04-C:0039-12-02-B:DEFAULT",
             "0039-20-05-C:0039-12-02-B:DEFAULT",
         ),
+    );
+    /** Modes for the FET */
+    var $modes = array(
+        self::MODE_DIGITAL => 'Digital',
+        self::MODE_HIGHZ => 'Analog - High Z',
+        self::MODE_VOLTAGE => 'Analog - Voltage',
+        self::MODE_CURRENT => 'Analog - Current'
     );
     /**
     * Builds the class
@@ -136,14 +151,15 @@ class E00391201Device extends DeviceDriverBase
         $Info["NumSensors"]   = 9;
         $Info["TimeConstant"] = 1;
         $Info["Setup"]        = hexdec(substr($string, 0, 2));
-        $Info["FET0"]         = hexdec(substr($string, 2, 2));
-        $Info["FET1"]         = hexdec(substr($string, 4, 2));
-        $Info["FET2"]         = hexdec(substr($string, 6, 2));
-        $Info["FET3"]         = hexdec(substr($string, 8, 2));
-        $Info["FET0Mult"]     = hexdec(substr($string, 10, 2));
-        $Info["FET1Mult"]     = hexdec(substr($string, 12, 2));
-        $Info["FET2Mult"]     = hexdec(substr($string, 14, 2));
-        $Info["FET3Mult"]     = hexdec(substr($string, 16, 2));
+        for ($i = 0; $i < 4; $i++) {
+            $mode           = (($Info["Setup"]>>($i*2)) & 3);
+            $Info["FET".$i] = array(
+                "mode"       => $mode,
+                "name"       => $this->modes[$mode],
+                "value"      => hexdec(substr($string, (2+(2*$i)), 2)),
+                "multiplier" => hexdec(substr($string, (10+(2*$i)), 2)),
+            );
+        }
         if (is_object($this->myDriver->sensors)) {
             $this->myDriver->sensors->Sensors = 9;
             $this->myDriver->sensors->fromTypeArray(
