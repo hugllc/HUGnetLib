@@ -152,6 +152,15 @@ abstract class HistoryTableBase extends HUGnetDBTable
                 2 => array(),
             ),
         ),
+        "FLotDatLin" => array(
+            "units" => array(1 => "", 2 => ""),
+            "unitTypes" => array(1 => "", 2 => ""),
+            "dateField" => "Date",
+            "fields" => array(
+                1 => array(),
+                2 => array(),
+            ),
+        ),
     );
     /**
     * This is the constructor
@@ -287,7 +296,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public function outputParams($type, $cols = null)
     {
         if (is_a($this->device, "DeviceContainer")) {
-            $params = &$this->outputParams["JPGraphDatLin"];
+            $params = &$this->outputParams[$type];
             $cols = $this->getOutputCols($cols);
             foreach ($cols as $col) {
                 if (substr($col, 0, 4) == "Data") {

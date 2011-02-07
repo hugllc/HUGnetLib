@@ -90,6 +90,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
         "extraText" => array(
         ),
         "extraDefault" => array(),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database
