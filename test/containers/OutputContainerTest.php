@@ -208,6 +208,137 @@ post"
     }
 
     /**
+    * data provider for testGetOutput
+    *
+    * @return array
+    */
+    public static function dataGetOutput()
+    {
+        return array(
+            array(
+                array(),
+                array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                array(),
+                array(),
+                "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+post"
+            ),
+            array(
+                array(),
+                array("a" => 3, "c" => 8, "d" => 9),
+                array(),
+                array(),
+                "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 3
+    [c] => 8
+    [d] => 9
+)
+post"
+            ),
+            array(
+                array(
+                ),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                array(),
+                array(),
+                "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+Array
+(
+    [a] => 3
+    [c] => 8
+    [d] => 9
+)
+post"
+            ),
+            array(
+                array(
+                    "iterate" => false,
+                ),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                array(),
+                array(),
+                array(),
+                "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+post"
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload   Data to preload
+    * @param array  $container The container data to use
+    * @param array  $type      array of strings: The type of output
+    * @param array  $params    an array of the params to use
+    * @param string $expect    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetOutput
+    */
+    public function testGetOutput($preload, $container, $type, $params, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->cont->clearData();
+        $this->cont->loadData($container);
+        foreach ((array)$type as $t) {
+            $ret = $this->o->getOutput($t, $params[$t]);
+            $this->assertSame(
+                $expect[$t],
+                $ret,
+                "type $t didn't work"
+            );
+        }
+    }
+
+    /**
     * test the set routine when an extra class exists
     *
     * @return null

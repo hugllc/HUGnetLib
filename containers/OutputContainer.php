@@ -64,6 +64,8 @@ class OutputContainer extends HUGnetContainer
     );
     /** @var object The data container class */
     public $container = null;
+    /** @var array of output rows */
+    public $out = array();
     
     /**
     * This is the constructor
@@ -103,7 +105,21 @@ class OutputContainer extends HUGnetContainer
         }
         return $this->container->toOutput();
     }
-    
+
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    private function _getData()
+    {
+        if (empty($this->out)) {
+            do {
+                $this->out[] = $this->toArray();
+            } while ($this->iterate && $this->container->nextInto());
+        }
+    }
+
     /**
     * Returns the object as a string
     *
@@ -113,31 +129,46 @@ class OutputContainer extends HUGnetContainer
     */
     public function toString($default = true)
     {
+        return $this->getOutput($this->type, $this->params);
+    }
+    /**
+    * Returns the object as a string
+    *
+    * @param string $type   The type of output to get
+    * @param array  $params The parameters to use
+    *
+    * @return string
+    */
+    public function getOutput($type, $params = array())
+    {
         if (!is_a($this->container, "OutputInterface")) {
             return "";
         }
-        $class = $this->getPlugin();
+        $class = $this->getPlugin($type);
         $this->throwException("No default 'output' plugin found", -6, empty($class));
-        $params = array_merge(
-            $this->container->outputParams($this->type),
-            $this->params
+        $p = array_merge(
+            $this->container->outputParams($type),
+            $params
         );
-        $out  = new $class($params);
+        $out  = new $class($p);
         $out->header($this->container->toOutputHeader());
-        do {
-            $out->row($this->toArray());
-        } while ($this->iterate && $this->container->nextInto());
+        $this->_getData();
+        foreach ((array)$this->out as $o) {
+            $out->row($o);
+        }
         return $out->toString();
     }
     /**
     * Creates a sensor object
     *
+    * @param string $type The type of output to get
+    *
     * @return string The class for this sensor
     */
-    protected function getPlugin()
+    protected function getPlugin($type)
     {
         $driver = $this->myConfig->plugins->getPlugin(
-            "output", $this->type
+            "output", $type
         );
         return $driver["Class"];
     }
