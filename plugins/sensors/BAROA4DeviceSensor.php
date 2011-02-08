@@ -80,6 +80,7 @@ class BAROA4DeviceSensor extends VoltageDeviceSensorBase
                     "AtoD Reference Voltage (V)"
         ),
         "extraDefault" => array(.25, 4.25, 600, 1100, 5),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database

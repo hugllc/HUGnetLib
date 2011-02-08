@@ -262,13 +262,13 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $default = $this->readAttribute($obj, "default");
         $fixed = $this->readAttribute($obj, "fixed");
         $fields = array(
-            "id",
+            "id", "maxDecimals",
         );
         foreach ($fields as $f) {
             $val = $obj->$f;
             $this->assertTrue(
                 is_int($val),
-                "field $f can not be empty"
+                "field $f must be set to an integer"
             );
         }
     }

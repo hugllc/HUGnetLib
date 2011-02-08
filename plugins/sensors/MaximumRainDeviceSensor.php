@@ -73,6 +73,7 @@ class MaximumRainDeviceSensor extends PulseDeviceSensorBase
         "extraText" => array(
         ),
         "extraDefault" => array(),
+        "maxDecimals" => 2,
     );
     /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array(

@@ -74,6 +74,7 @@ class GenericRevolvingDeviceSensor extends PulseDeviceSensorBase
             "Counts Per Revolution",
         ),
         "extraDefault" => array(1),
+        "maxDecimals" => 2,
     );
     /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array(

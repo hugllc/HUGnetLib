@@ -73,6 +73,7 @@ class GenericPulseDeviceSensor extends PulseDeviceSensorBase
         "extraText" => array(
         ),
         "extraDefault" => array(),
+        "maxDecimals" => 0,
     );
     /**
     * Disconnects from the database

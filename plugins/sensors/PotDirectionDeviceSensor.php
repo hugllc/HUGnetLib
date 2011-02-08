@@ -81,6 +81,7 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
             "Resistance 2 in kOhms",
         ),
         "extraDefault" => array(25,0, 0, 180, 25),
+        "maxDecimals" => 1,
     );
     /**
     * Disconnects from the database

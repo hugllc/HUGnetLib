@@ -82,6 +82,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
             "AtoD Reference Voltage (V)"
         ),
         "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
+        "maxDecimals" => 1,
     );
     /**
     * Disconnects from the database

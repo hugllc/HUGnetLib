@@ -74,6 +74,7 @@ class WattNodeDeviceSensor extends PulseDeviceSensorBase
             "Watt Hours / Pulse",
         ),
         "extraDefault" => array(5),
+        "maxDecimals" => 3,
     );
     /**
     * Disconnects from the database

@@ -77,6 +77,8 @@ class GenericDeviceSensor extends DeviceSensorBase
         "extraDefault" => array(),
         "storageUnit" => "unknown",
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
+        "decimals" => 2,
+        "maxDecimals" => 2,
     );
     /**
     * This is the array of sensor information.

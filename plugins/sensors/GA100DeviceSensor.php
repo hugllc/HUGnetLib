@@ -80,6 +80,7 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
             "AtoD Reference Voltage (V)"
         ),
         "extraDefault" => array(.5, 4.5, 0, 1, 5),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database

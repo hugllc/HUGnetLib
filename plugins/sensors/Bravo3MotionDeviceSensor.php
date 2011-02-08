@@ -73,6 +73,7 @@ class Bravo3MotionDeviceSensor extends PulseDeviceSensorBase
         "extraText" => array(
         ),
         "extraDefault" => array(),
+        "maxDecimals" => 0,
     );
     /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array(

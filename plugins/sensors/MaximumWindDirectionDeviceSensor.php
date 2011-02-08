@@ -74,6 +74,7 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
         ),
         "extraDefault" => array(),
         "inputSize" => 5,
+        "maxDecimals" => 0,
     );
     /**
     * Disconnects from the database

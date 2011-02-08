@@ -74,6 +74,7 @@ class LiquidFlowDeviceSensor extends PulseDeviceSensorBase
             "Gallons / Pulse",
         ),
         "extraDefault" => array(1000),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database
