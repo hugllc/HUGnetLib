@@ -141,6 +141,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public $raw = array();
     /** @var This is the  raw data for differential mode */
     public $device = null;
+    /** @var This is where we store the previous record for differential mode */
+    public $prev = array();
     /** @var This is the output parameters */
     protected $outputParams = array(
         "JPGraphDatLin" => array(
@@ -152,7 +154,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
                 2 => array(),
             ),
         ),
-        "FLotDatLin" => array(
+        "FlotDatLin" => array(
             "units" => array(1 => "", 2 => ""),
             "unitTypes" => array(1 => "", 2 => ""),
             "dateField" => "Date",
@@ -275,13 +277,24 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public function toOutput($cols = null)
     {
         if (is_a($this->device, "DeviceContainer") && !$this->converted) {
+            $prev = $this->toArray();
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
-                $this->device->sensors->sensor($i)->convertUnits(
-                    $this->data[$col]
-                );
+                $sensor = &$this->device->sensors->sensor($i);
+                // This changes raw mode into differential mode
+                if (($sensor->storageType === UnitsBase::TYPE_RAW)
+                    && ($sensor->dataType === UnitsBase::TYPE_DIFF)
+                ) {
+                    if (is_null($this->prev[$col])) {
+                        $this->data[$col] = null;
+                    } else {
+                        $this->data[$col] = $this->data[$col] - $this->prev[$col];
+                    }
+                }
+                $sensor->convertUnits($this->data[$col]);
             }
             $this->converted = true;
+            $this->prev = $prev;
         }
         return parent::toOutput($cols);
     }

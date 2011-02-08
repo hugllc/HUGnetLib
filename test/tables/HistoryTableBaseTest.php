@@ -39,6 +39,7 @@
 
 require_once dirname(__FILE__).'/../../tables/HistoryTableBase.php';
 require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
+require_once dirname(__FILE__).'/../../base/UnitsBase.php';
 require_once dirname(__FILE__)."/../tables/HUGnetDBTableTestBase.php";
 
 /**
@@ -650,7 +651,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     public static function dataToOutput()
     {
         return array(
-            array(
+            array(   // #0
                 array(
                     "id"  => 41,
                     "Date"   => "2003-02-28 01:59:00",
@@ -673,6 +674,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 null,
                 null,
+                array(),
                 array(
                     "group" => "default",
                     "raw" => "Array",
@@ -697,7 +699,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "Data14"  => "14",
                 ),
             ),
-            array(
+            array(   // #1
                 array(
                     "id"  => 41,
                     "Date"   => "2003-02-28 01:59:00",
@@ -720,6 +722,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(),
                 null,
+                array(),
                 array(
                     "group" => "default",
                     "raw" => "Array",
@@ -744,7 +747,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "Data14"  => "14",
                 ),
             ),
-            array(
+            array(   // #2
                 array(
                     "id"  => 41,
                     "Date"   => "2003-02-28 01:59:00",
@@ -768,10 +771,111 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array("id", "Date", "Data0", "Data1", "Data2"),
                 array(),
+                array(),
                 array(
                     "id"  => "41",
                     "Date"   => "2003-02-27 19:59:00",
                     "Data0"  => "1",
+                    "Data1"  => "2",
+                    "Data2"  => "3",
+                ),
+            ),
+            array(   // #3
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 2,
+                    "Data1"  => 4,
+                    "Data2"  => 6,
+                    "Data3"  => 8,
+                    "Data4"  => 10,
+                    "Data5"  => 12,
+                    "Data6"  => 14,
+                    "Data7"  => 16,
+                    "Data8"  => 18,
+                    "Data9"  => 20,
+                    "Data10"  => 22,
+                    "Data11"  => 24,
+                    "Data12"  => 26,
+                    "Data13"  => 28,
+                    "Data14"  => 30,
+
+                ),
+                array("id", "Date", "Data0", "Data1", "Data2"),
+                array(
+                    "sensors" => array(
+                        "Sensors" => 1,
+                        0 => array(
+                            "id" => 0,
+                            "dataType" => UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "id"  => "41",
+                    "Date"   => "2003-02-27 19:59:00",
+                    "Data0"  => "",
+                    "Data1"  => "2",
+                    "Data2"  => "3",
+                ),
+            ),
+            array(   // #4
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:59:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 8,
+                    "Data1"  => 4,
+                    "Data2"  => 6,
+                    "Data3"  => 8,
+                    "Data4"  => 10,
+                    "Data5"  => 12,
+                    "Data6"  => 14,
+                    "Data7"  => 16,
+                    "Data8"  => 18,
+                    "Data9"  => 20,
+                    "Data10"  => 22,
+                    "Data11"  => 24,
+                    "Data12"  => 26,
+                    "Data13"  => 28,
+                    "Data14"  => 30,
+                ),
+                array("id", "Date", "Data0", "Data1", "Data2"),
+                array(
+                    "sensors" => array(
+                        "Sensors" => 1,
+                        0 => array(
+                            "id" => 0,
+                            "dataType" => UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
+                ),
+                array(
+                    "id"  => 41,
+                    "Date"   => "2003-02-28 01:54:00",
+                    "deltaT"  => 5.2,
+                    "Data0"  => 2,
+                    "Data1"  => 2,
+                    "Data2"  => 4,
+                    "Data3"  => 6,
+                    "Data4"  => 8,
+                    "Data5"  => 10,
+                    "Data6"  => 12,
+                    "Data7"  => 14,
+                    "Data8"  => 16,
+                    "Data9"  => 18,
+                    "Data10"  => 20,
+                    "Data11"  => 22,
+                    "Data12"  => 24,
+                    "Data13"  => 26,
+                    "Data14"  => 28,
+                ),
+                array(
+                    "id"  => "41",
+                    "Date"   => "2003-02-27 19:59:00",
+                    "Data0"  => "3",
                     "Data1"  => "2",
                     "Data2"  => "3",
                 ),
@@ -785,20 +889,27 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     * @param string $preload The data to preload into the class
     * @param array  $cols    The columns to use
     * @param array  $device  The device to use.  None if null
+    * @param array  $prev    The previous record
     * @param int    $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataToOutput
     */
-    public function testToOutput($preload, $cols, $device, $expect)
+    public function testToOutput($preload, $cols, $device, $prev, $expect)
     {
         $this->o->clearData();
-        $this->o->fromAny($preload);
         $this->o->device = null;
         if (!is_null($device)) {
             $this->o->device = new DeviceContainer($device);
         }
+        if (!empty($prev)) {
+            // This preloads the previous data
+            $this->o->fromAny($prev);
+            $this->o->toOutput($cols);
+            $this->o->converted = false;
+        }
+        $this->o->fromAny($preload);
         $ret = $this->o->toOutput($cols);
         $this->assertSame(
             $expect,
@@ -853,6 +964,35 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
             array(
                 array(),
                 "JPGraphDatLin",
+                array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
+                array(
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        array("id" => 0),
+                        array("id" => 2),
+                        array("id" => 0),
+                        array("id" => 2),
+                    ),
+                ),
+                array(
+                    "units" => array(
+                        1 => "firstUnit",
+                        2 => "anotherUnit",
+                    ),
+                    "unitTypes" => array(
+                        1 => "firstUnit",
+                        2 => "secondUnit",
+                    ),
+                    "dateField" => "Date",
+                    "fields" => array(
+                        1 => array("Data0", "Data2"),
+                        2 => array("Data1", "Data3"),
+                    )
+                ),
+            ),
+            array(
+                array(),
+                "FlotDatLin",
                 array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
                 array(
                     "sensors" => array(
