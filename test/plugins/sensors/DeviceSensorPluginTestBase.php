@@ -262,7 +262,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $default = $this->readAttribute($obj, "default");
         $fixed = $this->readAttribute($obj, "fixed");
         $fields = array(
-            "id", "maxDecimals",
+            "id", "maxDecimals", "decimals"
         );
         foreach ($fields as $f) {
             $val = $obj->$f;
