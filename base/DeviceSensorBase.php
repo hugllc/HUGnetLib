@@ -136,7 +136,8 @@ abstract class DeviceSensorBase extends HUGnetContainer
         if ($data["decimals"] > $this->maxDecimals) {
             unset($data["decimals"]);
         }
-        // Set up the class
+        // This is temporary to fix a database problem
+        unset($data["decimals"]);
         parent::__construct($data);
     }
 

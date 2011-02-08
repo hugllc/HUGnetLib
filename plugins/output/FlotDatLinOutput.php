@@ -63,12 +63,18 @@ class FlotDatLinOutput extends OutputPluginBase
     );
     /** @var  These are the graph colors that will be used, in order */
     public $params = array(
-        "width" => 600,
-        "height" => 500,
         "doLegend" => true,
         "units" => array(1 => "", 2 => ""),
         "unitTypes" => array(1 => "", 2 => ""),
         "dateField" => "Date",
+        "margin" => array(
+            "top"    => 20,
+            "bottom" => 60,
+            "left"   => 50,
+            "right"  => 50,
+        ),
+        "width" => 600,
+        "height" => 500,
         "fields" => array(
             1 => array(),
             2 => array(),
@@ -76,6 +82,11 @@ class FlotDatLinOutput extends OutputPluginBase
         "title" => "",
         "tag" => "placeholder",
         "legendTag" => "legend",
+        "doToolTip" => true,
+        "doZoom" => true,
+        "doPan" => true,
+        "doSelect" => true,
+        "background" => "#EEE",
     );
     /** @var This is the data to graph */
     protected $graphData = array();
@@ -152,7 +163,7 @@ class FlotDatLinOutput extends OutputPluginBase
     */
     private function _createLine($line, $field)
     {
-        $ret = "    var $field = [";
+        $ret = "[";
         $sep = "";
         ksort($this->graphData[$line][$field]);
         foreach ($this->graphData[$line][$field] as $date => $value) {
@@ -160,7 +171,7 @@ class FlotDatLinOutput extends OutputPluginBase
             $sep = ", ";
         }
 
-        $ret .= "];\n";
+        $ret .= "]";
         return $ret;
     }
     
@@ -171,11 +182,12 @@ class FlotDatLinOutput extends OutputPluginBase
     */
     private function _createXaxis()
     {
-        return "            xaxis: {
-                mode: 'time',
-                label: 'Test',
-                timeformat: '%y/%m/%d %H:%M:%S'
-            },\n";
+        $ret  = "xaxis: {";
+        $ret .= " mode: 'time'";
+        $ret .= ", label: 'Test'";
+        $ret .= ", timeformat: '%m/%d %y %H:%M'";
+        $ret .= " }";
+        return $ret;
     }
     /**
     * This function implements the output after the data
@@ -184,10 +196,118 @@ class FlotDatLinOutput extends OutputPluginBase
     */
     private function _createLegend()
     {
-        return "            legend: {
-                position: 'nw',
-                container: '#".$this->params["legendTag"]."'
-            }\n";
+        $ret  = "legend: {";
+        $ret .= " position: 'nw'";
+        $ret .= ", container: '#".$this->params["legendTag"]."'";
+        $ret .= ", noColumns: 3";
+        $ret .= " }";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createSelection()
+    {
+        $ret  = "selection: { ";
+        if ($this->params["doSelect"]) {
+            $ret .= "mode: 'x'";
+        }
+        $ret .= " }";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createOptions()
+    {
+        $ret  = "    var options = {
+        ".$this->_createXaxis().",
+        ".$this->_createLegend().",
+        ".$this->_createSelection().",
+        ".$this->_createGrid().",
+        ".$this->_createZoom().",
+        ".$this->_createPan()."
+    };\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createData()
+    {
+        $ret  = "    var data = [";
+        $sep = "";
+        foreach ((array) $this->params["fields"] as $line => $fields) {
+            foreach ((array) $fields as $field) {
+                $ret .= $sep."\n        {";
+                $ret .= "\n            data: ".$this->_createLine($line, $field);
+                $ret .= ",\n            label: '".$this->header[$field]."'";
+                $ret .= ",\n            yaxis: ".$line;
+                $ret .= "\n        }";
+                $sep = ",";
+            }
+        }
+        $ret .= "\n    ];\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createPlaceholder()
+    {
+        $ret  = "    var placeholder = $('#".$this->params["tag"]."');\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createZoom()
+    {
+        $ret .= "zoom: { ";
+        if ($this->params["doZoom"]) {
+            $ret .= "interactive: true";
+        }
+        $ret .= " }";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createGrid()
+    {
+        $ret .= "grid: { ";
+        $ret .= "backgroundColor: '".$this->params["background"]."'";
+        if ($this->params["doToolTip"]) {
+            $ret .= ", hoverable: true";
+        }
+        $ret .= " }";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createPan()
+    {
+        $ret .= "pan: { ";
+        if ($this->params["doPan"]) {
+            $ret .= "interactive: true";
+        }
+        $ret .= " }";
+        return $ret;
     }
     /**
     * This function implements the output after the data
@@ -196,22 +316,154 @@ class FlotDatLinOutput extends OutputPluginBase
     */
     private function _createPlot()
     {
-        $ret .= '    $.plot($("#'.$this->params["tag"].'"),'."\n".'       [';
-        $sep = "";
-        foreach ((array) $this->params["fields"][1] as $field) {
-            $ret .= $sep."{ data: $field, label: \"".$this->header[$field]."\" }";
-            $sep = ", ";
+        $ret .= 'var plot = $.plot(placeholder, data, options);';
+        $ret .= "\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createHover()
+    {
+        if (!$this->params["doToolTip"]) {
+            return "";
         }
-        foreach ((array) $this->params["fields"][2] as $field) {
-            $ret .= $sep."{ data: $field, label: \"";
-            $ret .= $this->header[$field]."\" , yaxis: 2}";
-            $sep = ", ";
+        $ret  = "    function showTooltip(x, y, contents) {
+        $('<div id=\"tooltip\">' + contents + '</div>').css( {
+            position: 'absolute',
+            display: 'none',
+            top: y + 10,
+            left: x + 10,
+            border: '1px solid #fdd',
+            padding: '2px',
+            'background-color': '#fee',
+            opacity: 0.80
+        }).appendTo(\"body\").fadeIn(200);
+    }
+    var previousPoint = null;
+    $('#".$this->params["tag"]."').bind('plothover', function (event, pos, item) {
+        if (item) {
+            if (previousPoint != item.datapoint) {
+                previousPoint = item.datapoint;
+                $('#tooltip').remove();
+                var x = item.datapoint[0].toFixed(2),
+                   y = item.datapoint[1].toFixed(2);
+                showTooltip(item.pageX, item.pageY, y);
+            }
         }
-        $ret .= "],\n";
-        $ret .= "        {\n";
-        $ret .= $this->_createXaxis();
-        $ret .= $this->_createLegend();
-        $ret .= "    });\n";
+        else {
+            $('#tooltip').remove();
+            previousPoint = null;
+        }
+    });\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createSelectZoom()
+    {
+        if (!$this->params["doSelect"]) {
+            return "";
+        }
+        $ret .= "    placeholder.bind('plotselected', function (event, ranges) {
+        var select = $('#flotSel').attr('checked');
+        if (select)
+            plot = $.plot(placeholder, data,
+                          $.extend(true, {}, options, {
+                              xaxis: { min: ranges.xaxis.from, ";
+        $ret .= "max: ranges.xaxis.to }
+                          }));
+    });
+    $('#flotSel').click(function () {selectSwitch();});
+    function selectSwitch() {
+        var select = $('#flotSel').attr('checked');
+        if (select) {
+            document.getElementById('flotZoom').checked = false;
+            document.getElementById('flotPan').checked = false;
+            options.selection.mode = 'x';
+            options.zoom.interactive = false;
+            options.pan.interactive = false;
+        } else {
+            options.selection.mode = null;
+        }
+        ".$this->_createPlot();
+        $ret .= "    }
+    selectSwitch();\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createPanPan()
+    {
+        if (!$this->params["doPan"]) {
+            return "";
+        }
+        $ret .= "    $('#flotPan').click(function () {selectPan();});
+    function selectPan() {
+        var select = $('#flotPan').attr('checked');
+        if (select) {
+            document.getElementById('flotSel').checked = false;
+            options.pan.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.pan.interactive = false;
+        }
+        ".$this->_createPlot();
+        $ret .= "    };
+    selectPan();\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    private function _createPanZoom()
+    {
+        if (!$this->params["doZoom"]) {
+            return "";
+        }
+        $ret .= "    $('#flotZoom').click(function () {selectZoom();});
+    function selectZoom() {
+        var select = $('#flotZoom').attr('checked');
+        if (select) {
+            document.getElementById('flotSel').checked = false;
+            options.zoom.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.zoom.interactive = false;
+        }
+        ".$this->_createPlot()."    };
+    selectZoom();\n";
+        return $ret;
+    }
+    /**
+    * This function implements the output after the data
+    *
+    * @return String the text to output
+    */
+    public function graph()
+    {
+        $ret  = '<script id="source" language="javascript" type="text/javascript">';
+        $ret .= "\n\$(function () {\n";
+        $ret .= $this->_createData();
+        $ret .= $this->_createOptions();
+        $ret .= $this->_createPlaceholder();
+        $ret .= "    ".$this->_createPlot();
+        $ret .= $this->_createHover();
+        $ret .= $this->_createSelectZoom();
+        $ret .= $this->_createPanPan();
+        $ret .= $this->_createPanZoom();
+        $ret .= "});\n";
+        $ret .= "</script>\n";
         return $ret;
     }
     /**
@@ -221,19 +473,104 @@ class FlotDatLinOutput extends OutputPluginBase
     */
     public function body()
     {
-        $ret  = '<script id="source" language="javascript" type="text/javascript">';
-        $ret .= "\n\$(function () {\n";
-        foreach ($this->graphData as $line => $fields) {
-            foreach (array_keys($fields) as $field) {
-                $ret .= $this->_createLine($line, $field);
-            }
+        $this->y2 = !empty($this->params["fields"][2]);
+        $p = &$this->params;
+        $yaxis = $p["unitTypes"][1]." (".$p["units"][1].")";
+        if ($this->y2) {
+            $yaxis2 = $p["unitTypes"][2]." (".$p["units"][2].")";
+        } else {
+            $yaxis2 = "&nbsp;";
         }
-        $ret .= $this->_createPlot();
-        $ret .= "});\n";
-        $ret .= "</script>\n";
+        if ($p["doSelect"]) {
+            $controls .= '<label for="flotSel">';
+            $controls .= '<input id="flotSel" type="checkbox">Select</input>';
+            $controls .= '</label>';
+            $controls .= "<br/>\n";
+        }
+        if ($p["doPan"]) {
+            $controls .= '<label for="flotPan">';
+            $controls .= '<input id="flotPan" type="checkbox">Pan</input>';
+            $controls .= '</label>';
+            $controls .= "<br/>\n";
+        }
+        if ($p["doPan"]) {
+            $controls .= '<label for="flotZoom">';
+            $controls .= '<input id="flotZoom" type="checkbox">Zoom</input>';
+            $controls .= '</label>';
+            $controls .= "<br/>\n";
+        }
+        $graphWidth = $p["width"] - $p["margin"]["left"] - $p["margin"]["right"];
+        $graphHeight = $p["height"] - $p["margin"]["top"] - $p["margin"]["bottom"];
+        $ret = '
+    <style>
+        #placeholder {
+            width: '.$graphWidth.'px;
+            height: '.$graphHeight.'px;
+            margin: 10px auto;
+        }
+        #legend {
+            height: '.$p["margin"]["bottom"].'px;
+            margin: 0px auto;
+            padding-left: 30px;
+        }
+        .flotRotate {
+            /* This is css3 */
+            rotation: 90deg !important;
+            /* This is for mozilla */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            /* This is for IE  */
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+        .yTitle {
+            width: '.$p["margin"]["left"].'px !important;
+        }
+        .y2Title {
+            width: '.$p["margin"]["right"].'px !important;
+        }
+        .flotTitle {
+            text-align: center;
+            font-weight: bold;
+            height: '.$p["margin"]["top"].'px;
+        }
+        #flotDiv {
+            width: '.$p["width"].'px;
+            margin: auto;
+        }
+        #flotTable {
+            background: #DDD;
+            margin: 10px;
+        }
+    </style>
+    <div id="flotDiv">
+        <table id="flotTable">
+            <tr>
+                <td class="yTitle">&nbsp;</td>
+                <td class="flotTitle">
+                    '.$p["title"].'
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle flotRotate">'.$yaxis.'</td>
+                <td>
+                    <div id="placeholder"></div>
+                </td>
+                <td class="y2Title flotRotate">'.$yaxis2.'</td>
+            </tr>
+            <tr>
+                <td class="yTitle" style="white-space:nowrap;">'.$controls.'</td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+';
+        $ret .= $this->graph();
         return $ret;
     }
-
 }
 
 ?>

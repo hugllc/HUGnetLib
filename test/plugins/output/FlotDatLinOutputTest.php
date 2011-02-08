@@ -176,21 +176,262 @@ class FlotDatLinOutputTest extends OutputPluginTestBase
                 array(),
                 array(),
                 array(),
-                '<script id="source" language="javascript" type="text/javascript">
+                '
+    <style>
+        #placeholder {
+            width: 500px;
+            height: 420px;
+            margin: 10px auto;
+        }
+        #legend {
+            height: 60px;
+            margin: 0px auto;
+            padding-left: 30px;
+        }
+        .flotRotate {
+            /* This is css3 */
+            rotation: 90deg !important;
+            /* This is for mozilla */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            /* This is for IE  */
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+        .yTitle {
+            width: 50px !important;
+        }
+        .y2Title {
+            width: 50px !important;
+        }
+        .flotTitle {
+            text-align: center;
+            font-weight: bold;
+            height: 20px;
+        }
+        #flotDiv {
+            width: 600px;
+            margin: auto;
+        }
+        #flotTable {
+            background: #DDD;
+            margin: 10px;
+        }
+    </style>
+    <div id="flotDiv">
+        <table id="flotTable">
+            <tr>
+                <td class="yTitle">&nbsp;</td>
+                <td class="flotTitle">
+'.'                    '.'
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle flotRotate"> ()</td>
+                <td>
+                    <div id="placeholder"></div>
+                </td>
+                <td class="y2Title flotRotate">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle" style="white-space:nowrap;"><label '
+        .'for="flotSel"><input id="flotSel" type="checkbox">Select</input>'
+        .'</label><br/>
+<label for="flotPan"><input id="flotPan" type="checkbox">Pan</input></label><br/>
+<label for="flotZoom"><input id="flotZoom" type="checkbox">Zoom</input></label><br/>
+</td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+<script id="source" language="javascript" type="text/javascript">
 $(function () {
-    $.plot($("#placeholder"),
-       [],
-        {
-            xaxis: {
-                mode: \'time\',
-                label: \'Test\',
-                timeformat: \'%y/%m/%d %H:%M:%S\'
-            },
-            legend: {
-                position: \'nw\',
-                container: \'#legend\'
+    var data = [
+    ];
+    var options = {
+        xaxis: { mode: \'time\', label: \'Test\', timeformat: \'%m/%d %y %H:%M\' },
+        legend: { position: \'nw\', container: \'#legend\', noColumns: 3 },
+        selection: { mode: \'x\' },
+        grid: { backgroundColor: \'#EEE\', hoverable: true },
+        zoom: { interactive: true },
+        pan: { interactive: true }
+    };
+    var placeholder = $(\'#placeholder\');
+    var plot = $.plot(placeholder, data, options);
+    function showTooltip(x, y, contents) {
+        $(\'<div id="tooltip">\' + contents + \'</div>\').css( {
+            position: \'absolute\',
+            display: \'none\',
+            top: y + 10,
+            left: x + 10,
+            border: \'1px solid #fdd\',
+            padding: \'2px\',
+            \'background-color\': \'#fee\',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+    var previousPoint = null;
+    $(\'#placeholder\').bind(\'plothover\', function (event, pos, item) {
+        if (item) {
+            if (previousPoint != item.datapoint) {
+                previousPoint = item.datapoint;
+                $(\'#tooltip\').remove();
+                var x = item.datapoint[0].toFixed(2),
+                   y = item.datapoint[1].toFixed(2);
+                showTooltip(item.pageX, item.pageY, y);
             }
+        }
+        else {
+            $(\'#tooltip\').remove();
+            previousPoint = null;
+        }
     });
+    placeholder.bind(\'plotselected\', function (event, ranges) {
+        var select = $(\'#flotSel\').attr(\'checked\');
+        if (select)
+            plot = $.plot(placeholder, data,
+                          $.extend(true, {}, options, {
+                              xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                          }));
+    });
+    $(\'#flotSel\').click(function () {selectSwitch();});
+    function selectSwitch() {
+        var select = $(\'#flotSel\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotZoom\').checked = false;
+            document.getElementById(\'flotPan\').checked = false;
+            options.selection.mode = \'x\';
+            options.zoom.interactive = false;
+            options.pan.interactive = false;
+        } else {
+            options.selection.mode = null;
+        }
+        var plot = $.plot(placeholder, data, options);
+    }
+    selectSwitch();
+    $(\'#flotPan\').click(function () {selectPan();});
+    function selectPan() {
+        var select = $(\'#flotPan\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotSel\').checked = false;
+            options.pan.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.pan.interactive = false;
+        }
+        var plot = $.plot(placeholder, data, options);
+    };
+    selectPan();
+    $(\'#flotZoom\').click(function () {selectZoom();});
+    function selectZoom() {
+        var select = $(\'#flotZoom\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotSel\').checked = false;
+            options.zoom.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.zoom.interactive = false;
+        }
+        var plot = $.plot(placeholder, data, options);
+    };
+    selectZoom();
+});
+</script>
+',
+            ),
+            array(
+                array(
+                    "doZoom" => false,
+                    "doToolTip" => false,
+                    "doPan" => false,
+                    "doSelect" => false,
+                    "title" => "Hello",
+                ),
+                array(),
+                array(),
+                '
+    <style>
+        #placeholder {
+            width: 500px;
+            height: 420px;
+            margin: 10px auto;
+        }
+        #legend {
+            height: 60px;
+            margin: 0px auto;
+            padding-left: 30px;
+        }
+        .flotRotate {
+            /* This is css3 */
+            rotation: 90deg !important;
+            /* This is for mozilla */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            /* This is for IE  */
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+        .yTitle {
+            width: 50px !important;
+        }
+        .y2Title {
+            width: 50px !important;
+        }
+        .flotTitle {
+            text-align: center;
+            font-weight: bold;
+            height: 20px;
+        }
+        #flotDiv {
+            width: 600px;
+            margin: auto;
+        }
+        #flotTable {
+            background: #DDD;
+            margin: 10px;
+        }
+    </style>
+    <div id="flotDiv">
+        <table id="flotTable">
+            <tr>
+                <td class="yTitle">&nbsp;</td>
+                <td class="flotTitle">
+                    Hello
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle flotRotate"> ()</td>
+                <td>
+                    <div id="placeholder"></div>
+                </td>
+                <td class="y2Title flotRotate">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle" style="white-space:nowrap;"></td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+<script id="source" language="javascript" type="text/javascript">
+$(function () {
+    var data = [
+    ];
+    var options = {
+        xaxis: { mode: \'time\', label: \'Test\', timeformat: \'%m/%d %y %H:%M\' },
+        legend: { position: \'nw\', container: \'#legend\', noColumns: 3 },
+        selection: {  },
+        grid: { backgroundColor: \'#EEE\' },
+        zoom: {  },
+        pan: {  }
+    };
+    var placeholder = $(\'#placeholder\');
+    var plot = $.plot(placeholder, data, options);
 });
 </script>
 ',
@@ -225,25 +466,183 @@ $(function () {
                     array("Date" => 1, "Data0" => 5, "Data1" => 6, "Data2" => 7),
                     array("Date" => 3, "Data0" => 7, "Data1" => 8, "Data2" => 9),
                 ),
-                '<script id="source" language="javascript" type="text/javascript">
+                '
+    <style>
+        #placeholder {
+            width: 460px;
+            height: 300px;
+            margin: 10px auto;
+        }
+        #legend {
+            height: 180px;
+            margin: 0px auto;
+            padding-left: 30px;
+        }
+        .flotRotate {
+            /* This is css3 */
+            rotation: 90deg !important;
+            /* This is for mozilla */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            /* This is for IE  */
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        }
+        .yTitle {
+            width: 70px !important;
+        }
+        .y2Title {
+            width: 70px !important;
+        }
+        .flotTitle {
+            text-align: center;
+            font-weight: bold;
+            height: 20px;
+        }
+        #flotDiv {
+            width: 600px;
+            margin: auto;
+        }
+        #flotTable {
+            background: #DDD;
+            margin: 10px;
+        }
+    </style>
+    <div id="flotDiv">
+        <table id="flotTable">
+            <tr>
+                <td class="yTitle">&nbsp;</td>
+                <td class="flotTitle">
+                    Test Graph
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle flotRotate">Temperature (C)</td>
+                <td>
+                    <div id="placeholder"></div>
+                </td>
+                <td class="y2Title flotRotate">Temperature (F)</td>
+            </tr>
+            <tr>
+                <td class="yTitle" style="white-space:nowrap;"><label '
+        .'for="flotSel"><input id="flotSel" type="checkbox">Select</input>'
+        .'</label><br/>
+<label for="flotPan"><input id="flotPan" type="checkbox">Pan</input></label><br/>
+<label for="flotZoom"><input id="flotZoom" type="checkbox">Zoom</input></label><br/>
+</td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+<script id="source" language="javascript" type="text/javascript">
 $(function () {
-    var Data0 = [[1000, 5], [3000, 7]];
-    var Data2 = [[1000, 7], [3000, 9]];
-    var Data1 = [[1000, 6], [3000, 8]];
-    $.plot($("#placeholder"),
-       [{ data: Data0, label: "First" }, { data: Data2, label: "Third" }, '
-        .'{ data: Data1, label: "Second" , yaxis: 2}],
+    var data = [
         {
-            xaxis: {
-                mode: \'time\',
-                label: \'Test\',
-                timeformat: \'%y/%m/%d %H:%M:%S\'
-            },
-            legend: {
-                position: \'nw\',
-                container: \'#legend\'
+            data: [[1000, 5], [3000, 7]],
+            label: \'First\',
+            yaxis: 1
+        },
+        {
+            data: [[1000, 7], [3000, 9]],
+            label: \'Third\',
+            yaxis: 1
+        },
+        {
+            data: [[1000, 6], [3000, 8]],
+            label: \'Second\',
+            yaxis: 2
+        }
+    ];
+    var options = {
+        xaxis: { mode: \'time\', label: \'Test\', timeformat: \'%m/%d %y %H:%M\' },
+        legend: { position: \'nw\', container: \'#legend\', noColumns: 3 },
+        selection: { mode: \'x\' },
+        grid: { backgroundColor: \'#EEE\', hoverable: true },
+        zoom: { interactive: true },
+        pan: { interactive: true }
+    };
+    var placeholder = $(\'#placeholder\');
+    var plot = $.plot(placeholder, data, options);
+    function showTooltip(x, y, contents) {
+        $(\'<div id="tooltip">\' + contents + \'</div>\').css( {
+            position: \'absolute\',
+            display: \'none\',
+            top: y + 10,
+            left: x + 10,
+            border: \'1px solid #fdd\',
+            padding: \'2px\',
+            \'background-color\': \'#fee\',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+    var previousPoint = null;
+    $(\'#placeholder\').bind(\'plothover\', function (event, pos, item) {
+        if (item) {
+            if (previousPoint != item.datapoint) {
+                previousPoint = item.datapoint;
+                $(\'#tooltip\').remove();
+                var x = item.datapoint[0].toFixed(2),
+                   y = item.datapoint[1].toFixed(2);
+                showTooltip(item.pageX, item.pageY, y);
             }
+        }
+        else {
+            $(\'#tooltip\').remove();
+            previousPoint = null;
+        }
     });
+    placeholder.bind(\'plotselected\', function (event, ranges) {
+        var select = $(\'#flotSel\').attr(\'checked\');
+        if (select)
+            plot = $.plot(placeholder, data,
+                          $.extend(true, {}, options, {
+                              xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                          }));
+    });
+    $(\'#flotSel\').click(function () {selectSwitch();});
+    function selectSwitch() {
+        var select = $(\'#flotSel\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotZoom\').checked = false;
+            document.getElementById(\'flotPan\').checked = false;
+            options.selection.mode = \'x\';
+            options.zoom.interactive = false;
+            options.pan.interactive = false;
+        } else {
+            options.selection.mode = null;
+        }
+        var plot = $.plot(placeholder, data, options);
+    }
+    selectSwitch();
+    $(\'#flotPan\').click(function () {selectPan();});
+    function selectPan() {
+        var select = $(\'#flotPan\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotSel\').checked = false;
+            options.pan.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.pan.interactive = false;
+        }
+        var plot = $.plot(placeholder, data, options);
+    };
+    selectPan();
+    $(\'#flotZoom\').click(function () {selectZoom();});
+    function selectZoom() {
+        var select = $(\'#flotZoom\').attr(\'checked\');
+        if (select) {
+            document.getElementById(\'flotSel\').checked = false;
+            options.zoom.interactive = true;
+            options.selection.mode = null;
+        } else {
+            options.zoom.interactive = false;
+        }
+        var plot = $.plot(placeholder, data, options);
+    };
+    selectZoom();
 });
 </script>
 ',
