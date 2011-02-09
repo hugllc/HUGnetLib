@@ -66,6 +66,8 @@ class OutputContainer extends HUGnetContainer
     public $container = null;
     /** @var array of output rows */
     public $out = array();
+    /** @var object The data container class */
+    protected $callbacks = array();
     
     /**
     * This is the constructor
@@ -103,7 +105,16 @@ class OutputContainer extends HUGnetContainer
         if (!is_a($this->container, "OutputInterface")) {
             return array();
         }
-        return $this->container->toOutput();
+        $ret = $this->container->toOutput();
+        foreach (array_keys($this->callbacks) as $field) {
+            $ret[$field] = call_user_func(
+                $this->callbacks[$field],
+                $field,
+                $ret[$field],
+                $this->container
+            );
+        }
+        return $ret;
     }
 
     /**
@@ -171,6 +182,28 @@ class OutputContainer extends HUGnetContainer
             "output", $type
         );
         return $driver["Class"];
+    }
+    /**
+    * Creates a sensor object
+    *
+    * Function should have the following form:
+    *    string myFunction ($field, &$container);
+    * 
+    *  The function should return whatever string that you want to be displayed
+    *  in the field.
+    * 
+    * @param string   $field     The field to use the callback on
+    * @param callback &$function The callback for the function 
+    *
+    * @return bool True if successful, false on failure
+    */
+    public function addFunction($field, &$function)
+    {
+        if (is_callable($function)) {
+            $this->callbacks[$field] = &$function;
+            return true;
+        }
+        return false;
     }
 }
 ?>

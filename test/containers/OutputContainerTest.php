@@ -363,13 +363,23 @@ post"
         return array(
             array(
                 array(),
+                array(),
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 array("a" => "1", "c" => "3", "d" => "4")
             ),
             array(
                 array(),
+                array(
+                    "a" => "outputContainerTestAddFunction1",
+                    "q" => "outputContainerTestAddFunction2",
+                ),
                 array("a" => 3, "c" => 8, "d" => 9),
-                array("a" => "3", "c" => "8", "d" => "9")
+                array(
+                    "a" => "3_a_TestOutputContainer",
+                    "c" => "8",
+                    "d" => "9",
+                    "q" => "q__TestOutputContainer",
+                ),
             ),
         );
     }
@@ -377,6 +387,7 @@ post"
     * test the set routine when an extra class exists
     *
     * @param array  $preload   Data to preload
+    * @param array  $functions The functions to call
     * @param array  $container The container data to use
     * @param string $expect    The expected return
     *
@@ -384,12 +395,15 @@ post"
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($preload, $container, $expect)
+    public function testToArray($preload, $functions, $container, $expect)
     {
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->cont->clearData();
         $this->cont->loadData($container);
+        foreach (array_keys((array)$functions) as $field) {
+            $this->o->AddFunction($field, $functions[$field]);
+        }
         $ret = $this->o->toArray();
         $this->assertSame(
             $expect,
@@ -413,6 +427,86 @@ post"
         );
     }
 
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataAddFunction()
+    {
+        return array(
+            array(
+                array(),
+                "asdf",
+                "outputContainerTestAddFunction1",
+                array("asdf" => "outputContainerTestAddFunction1"),
+                true,
+            ),
+            array(
+                array(),
+                "asdf",
+                "SomeBadFunctionNameThatDoesntExist",
+                array(),
+                false,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload  Data to preload
+    * @param string $field    The field to use
+    * @param mixed  $function The function to call
+    * @param array  $expect   The expected callbacks array
+    * @param bool   $return   The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataAddFunction
+    */
+    public function testAddFunction($preload, $field, $function, $expect, $return)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->AddFunction($field, $function);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertAttributeSame(
+            $expect, "callbacks", $this->o, "Callbacks Wrong"
+        );
+    }
 
 }
+
+/**
+* test the set routine when an extra class exists
+*
+* @param string $field The field to use
+* @param string $data  Data to preload
+* @param object $obj   The field to use
+*
+* @return string
+*
+* @dataProvider dataAddFunction
+*/
+function outputContainerTestAddFunction1($field, $data, $obj)
+{
+    return $data."_".$field."_".get_class($obj);
+}
+
+/**
+* test the set routine when an extra class exists
+*
+* @param string $field The field to use
+* @param string $data  Data to preload
+* @param object $obj   The field to use
+*
+* @return string
+*
+* @dataProvider dataAddFunction
+*/
+function outputContainerTestAddFunction2($field, $data, $obj)
+{
+    return $field."_".$data."_".get_class($obj);
+}
+
 ?>
