@@ -263,6 +263,47 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * data provider for testOutputFactory
+    *
+    * @return array
+    */
+    public static function dataOutputFactory()
+    {
+        return array(
+            array(
+                "HUGnetContainerTestClass",
+                array(
+                    "type" => "hello",
+                ),
+                array(
+                    "type" => "hello",
+                    "iterate" => true,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param string $class      The class or object to use
+    * @param array  $data       The data to feed to the outputcontainer class
+    * @param array  $expectData The data to expect in the outputcontainer class
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputFactory
+    */
+    public function testOutputFactory($class, $data, $expectData)
+    {
+        $o = new $class();
+        $ret = &$o->outputFactory($data);
+        $this->assertSame("OutputContainer", get_class($ret), "Class is wrong");
+        $this->assertAttributeSame($o, "container", $ret, "Container is wrong");
+        $this->assertAttributeSame($expectData, "data", $ret, "Data is wrong");
+    }
+
+    /**
     * data provider for testDeviceID
     *
     * @return array

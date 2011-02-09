@@ -119,6 +119,18 @@ abstract class HUGnetContainer extends HUGnetClass
         return null;
     }
     /**
+    * Registers extra vars
+    *
+    * @param mixed $data The data to import into the class
+    *
+    * @return null
+    */
+    public function &outputFactory($data = array())
+    {
+        include_once dirname(__FILE__)."/../containers/OutputContainer.php";
+        return new OutputContainer($data, $this);
+    }
+    /**
     * Load a class file if possible
     *
     * @param string $class The class or object to use
