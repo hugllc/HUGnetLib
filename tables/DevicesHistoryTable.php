@@ -61,7 +61,7 @@ class DevicesHistoryTable extends HUGnetDBTable
     /** @var string This is the primary key of the table.  Leave blank if none  */
     public $sqlId = null;
     /** @var string The orderby clause for this table */
-    public $sqlOrderBy = "SaveDate ASC";
+    public $sqlOrderBy = "SaveDate DESC";
     /**
     * @var array This is the definition of the columns
     *
@@ -221,6 +221,7 @@ class DevicesHistoryTable extends HUGnetDBTable
             $date = time();
         }
         $hist->sqlLimit = 1;
+        $hist->sqlOrderBy = "SaveDate DESC";
         $hist->selectOneInto(
             "id = ? AND SaveDate <= ?",
             array($id, $date)
