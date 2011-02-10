@@ -68,6 +68,11 @@ class OutputContainer extends HUGnetContainer
     public $out = array();
     /** @var object The data container class */
     protected $callbacks = array();
+    /** @var array Our data to display */
+    protected $dataOut = array();
+    /** @var array Our header information */
+    protected $headerOut = array();
+    
     
     /**
     * This is the constructor
@@ -93,29 +98,6 @@ class OutputContainer extends HUGnetContainer
     {
         $this->container = $container;
     }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param bool $default Return items set to their default?
-    *
-    * @return null
-    */
-    public function toArray($default = true)
-    {
-        if (!is_a($this->container, "OutputInterface")) {
-            return array();
-        }
-        $ret = $this->container->toOutput();
-        foreach (array_keys($this->callbacks) as $field) {
-            $ret[$field] = call_user_func(
-                $this->callbacks[$field],
-                $field,
-                $ret[$field],
-                $this->container
-            );
-        }
-        return $ret;
-    }
 
     /**
     * Sets all of the endpoint attributes from an array
@@ -126,11 +108,44 @@ class OutputContainer extends HUGnetContainer
     {
         if (empty($this->out)) {
             do {
-                $this->out[] = $this->toArray();
+                $ret = $this->container->toOutput();
+                foreach (array_keys($this->callbacks) as $field) {
+                    if (array_key_exists($field, $this->headerOut)) {
+                        $ret[$field] = call_user_func(
+                            $this->callbacks[$field],
+                            $field,
+                            $ret[$field],
+                            $this->container
+                        );
+                    }
+                }
+                $this->dataOut[] = $ret;
             } while ($this->iterate && $this->container->nextInto());
         }
     }
 
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param array $cols The columns to use in $field => $name format
+    *
+    * @return null
+    */
+    private function _getHeader($cols = array())
+    {
+        $cCols = $this->container->toOutputHeader();
+        if (empty($cols)) {
+            $this->headerOut = $cCols;
+        } else {
+            foreach ($cols as $col => $name) {
+                if (isset($cCols[$col]) && empty($name)) {
+                    $name = $cCols[$col];
+                }
+                $this->headerOut[$col] = $name;
+            }
+        }
+        
+    }
     /**
     * Returns the object as a string
     *
@@ -143,14 +158,26 @@ class OutputContainer extends HUGnetContainer
         return $this->getOutput($this->type, $this->params);
     }
     /**
+    * Clears all of the data out of the object
+    *
+    * @return string
+    */
+    public function clearData()
+    {
+        $this->dataOut = array();
+        $this->headerOut = array();
+        return parent::clearData();
+    }
+    /**
     * Returns the object as a string
     *
     * @param string $type   The type of output to get
     * @param array  $params The parameters to use
+    * @param array  $cols   The columns to us in $field => $name format
     *
     * @return string
     */
-    public function getOutput($type, $params = array())
+    public function getOutput($type, $params = array(), $cols = array())
     {
         if (!is_a($this->container, "OutputInterface")) {
             return "";
@@ -159,12 +186,13 @@ class OutputContainer extends HUGnetContainer
         $this->throwException("No default 'output' plugin found", -6, empty($class));
         $p = array_merge(
             $this->container->outputParams($type),
-            $params
+            (array)$params
         );
-        $out  = new $class($p);
-        $out->header($this->container->toOutputHeader());
+        $out = new $class($p);
+        $this->_getHeader($cols);
         $this->_getData();
-        foreach ((array)$this->out as $o) {
+        $out->header($this->headerOut);
+        foreach ((array)$this->dataOut as $o) {
             $out->row($o);
         }
         return $out->toString();

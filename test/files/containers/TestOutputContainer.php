@@ -130,6 +130,36 @@ class TestOutputContainer extends HUGnetDBTable
             return false;
         }
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $field The field to use
+    * @param string $data  Data to preload
+    * @param object $obj   The field to use
+    *
+    * @return string
+    *
+    * @dataProvider dataAddFunction
+    */
+    public function testAddFunction1($field, $data, $obj)
+    {
+        return $field."_".$data."_".get_class($obj)."_".get_class($this);
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $field The field to use
+    * @param string $data  Data to preload
+    * @param object $obj   The field to use
+    *
+    * @return string
+    *
+    * @dataProvider dataAddFunction
+    */
+    static public function testAddFunction2($field, $data, $obj)
+    {
+        return $data."_".$field."_".get_class($obj)."_static";
+    }
 
 }
 ?>

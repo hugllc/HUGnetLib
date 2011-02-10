@@ -217,10 +217,13 @@ post"
         return array(
             array(
                 array(),
+                array(),
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                array("DEFAULT"),
                 array(),
                 array(),
-                "preArray
+                array(
+                    "DEFAULT" => "preArray
 (
     [a] => First Column
     [c] => Third
@@ -233,13 +236,17 @@ Array
     [d] => 4
 )
 post"
+                ),
             ),
             array(
                 array(),
+                array(),
                 array("a" => 3, "c" => 8, "d" => 9),
+                array("DEFAULT"),
                 array(),
                 array(),
-                "preArray
+                array(
+                    "DEFAULT" => "preArray
 (
     [a] => First Column
     [c] => Third
@@ -252,17 +259,21 @@ Array
     [d] => 9
 )
 post"
+                ),
             ),
             array(
                 array(
                 ),
+                array(),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
+                array("DEFAULT"),
                 array(),
                 array(),
-                "preArray
+                array(
+                    "DEFAULT" => "preArray
 (
     [a] => First Column
     [c] => Third
@@ -281,19 +292,25 @@ Array
     [d] => 9
 )
 post"
+                ),
             ),
             array(
                 array(
                     "iterate" => false,
                 ),
                 array(
+                    "a" => "outputContainerTestAddFunction1",
+                    "q" => "outputContainerTestAddFunction2",
+                ),
+                array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
+                array("DEFAULT"),
                 array(),
                 array(),
-                array(),
-                "preArray
+                array(
+                    "DEFAULT" => "preArray
 (
     [a] => First Column
     [c] => Third
@@ -301,11 +318,47 @@ post"
 )
 Array
 (
-    [a] => 1
+    [a] => 1_a_TestOutputContainer
     [c] => 3
     [d] => 4
 )
 post"
+                ),
+            ),
+            array(
+                array(
+                    "iterate" => false,
+                ),
+                array(
+                    "a" => array(new TestOutputContainer, "testAddFunction1"),
+                    "b" => array(new TestOutputContainer, "SomeBadFunctionName"),
+                    "c" => "anotherBadFunctionThatDoesntExist",
+                    "q" => array("TestOutputContainer", "testAddFunction2"),
+                ),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                array("DEFAULT"),
+                array(),
+                array("a" => "Name Here", "c" => null, "d" => "", "q" => "Quality"),
+                array(
+                    "DEFAULT" => "preArray
+(
+    [a] => Name Here
+    [c] => Third
+    [d] => Another Column
+    [q] => Quality
+)
+Array
+(
+    [a] => a_1_TestOutputContainer_TestOutputContainer
+    [c] => 3
+    [d] => 4
+    [q] => _q_TestOutputContainer_static
+)
+post"
+                ),
             ),
         );
     }
@@ -313,23 +366,29 @@ post"
     * test the set routine when an extra class exists
     *
     * @param array  $preload   Data to preload
+    * @param array  $functions The functions to call
     * @param array  $container The container data to use
     * @param array  $type      array of strings: The type of output
     * @param array  $params    an array of the params to use
+    * @param array  $cols      Array of columns in the form $field => $name
     * @param string $expect    The expected return
     *
     * @return null
     *
     * @dataProvider dataGetOutput
     */
-    public function testGetOutput($preload, $container, $type, $params, $expect)
-    {
+    public function testGetOutput(
+        $preload, $functions, $container, $type, $params, $cols, $expect
+    ) {
         $this->o->clearData();
         $this->o->fromAny($preload);
         $this->cont->clearData();
         $this->cont->loadData($container);
+        foreach (array_keys((array)$functions) as $field) {
+            $this->o->AddFunction($field, $functions[$field]);
+        }
         foreach ((array)$type as $t) {
-            $ret = $this->o->getOutput($t, $params[$t]);
+            $ret = $this->o->getOutput($t, $params[$t], $cols);
             $this->assertSame(
                 $expect[$t],
                 $ret,
@@ -337,7 +396,6 @@ post"
             );
         }
     }
-
     /**
     * test the set routine when an extra class exists
     *
@@ -350,79 +408,6 @@ post"
         $ret = $o->toString();
         $this->assertSame(
             "",
-            $ret
-        );
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataToArray()
-    {
-        return array(
-            array(
-                array(),
-                array(),
-                array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
-                array("a" => "1", "c" => "3", "d" => "4")
-            ),
-            array(
-                array(),
-                array(
-                    "a" => "outputContainerTestAddFunction1",
-                    "q" => "outputContainerTestAddFunction2",
-                ),
-                array("a" => 3, "c" => 8, "d" => 9),
-                array(
-                    "a" => "3_a_TestOutputContainer",
-                    "c" => "8",
-                    "d" => "9",
-                    "q" => "q__TestOutputContainer",
-                ),
-            ),
-        );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload   Data to preload
-    * @param array  $functions The functions to call
-    * @param array  $container The container data to use
-    * @param string $expect    The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataToArray
-    */
-    public function testToArray($preload, $functions, $container, $expect)
-    {
-        $this->o->clearData();
-        $this->o->fromAny($preload);
-        $this->cont->clearData();
-        $this->cont->loadData($container);
-        foreach (array_keys((array)$functions) as $field) {
-            $this->o->AddFunction($field, $functions[$field]);
-        }
-        $ret = $this->o->toArray();
-        $this->assertSame(
-            $expect,
-            $ret
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @return null
-    *
-    */
-    public function testToArray2()
-    {
-        $o = new OutputContainer(array());
-        $ret = $o->toArray();
-        $this->assertSame(
-            array(),
             $ret
         );
     }
