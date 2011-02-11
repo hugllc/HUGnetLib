@@ -72,6 +72,8 @@ class OutputContainer extends HUGnetContainer
     protected $dataOut = array();
     /** @var array Our header information */
     protected $headerOut = array();
+    /** @var array parameters */
+    protected $paramsOut = array();
     
     
     /**
@@ -106,7 +108,7 @@ class OutputContainer extends HUGnetContainer
     */
     private function _getData()
     {
-        if (empty($this->out)) {
+        if (empty($this->dataOut)) {
             do {
                 $ret = $this->container->toOutput();
                 foreach (array_keys($this->callbacks) as $field) {
@@ -123,28 +125,57 @@ class OutputContainer extends HUGnetContainer
             } while ($this->iterate && $this->container->nextInto());
         }
     }
-
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param array $cols The columns to use in $field => $name format
+    * @param array $cols  The columns to use in $field => $name format
+    * @param bool  $force Force the header to rewrite
     *
     * @return null
     */
-    private function _getHeader($cols = array())
+    public function header($cols = array(), $force = false)
     {
-        $cCols = $this->container->toOutputHeader();
-        if (empty($cols)) {
-            $this->headerOut = $cCols;
-        } else {
-            foreach ($cols as $col => $name) {
-                if (isset($cCols[$col]) && empty($name)) {
-                    $name = $cCols[$col];
+        if (!is_a($this->container, "OutputInterface")) {
+            return;
+        }
+        if (empty($this->headerOut) || $force) {
+            $cCols = $this->container->toOutputHeader();
+            if (empty($cols)) {
+                $this->headerOut = $cCols;
+            } else {
+                $this->headerOut = array();
+                foreach ($cols as $col => $name) {
+                    if (isset($cCols[$col]) && empty($name)) {
+                        $name = $cCols[$col];
+                    }
+                    $this->headerOut[$col] = $name;
                 }
-                $this->headerOut[$col] = $name;
             }
         }
-        
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param string $type   The type of output to get
+    * @param array  $params The parameters to use
+    *
+    * @return null
+    */
+    public function params($type, $params = array())
+    {
+        if (!is_a($this->container, "OutputInterface")) {
+            return;
+        }
+        if (empty($this->paramsOut[$type])) {
+            $this->paramsOut[$type] = array_merge(
+                $this->container->outputParams($type),
+                (array)$params
+            );
+        } else if (is_array($this->paramsOut[$type])) {
+            $this->paramsOut[$type] = array_merge(
+                $this->paramsOut[$type], (array)$params
+            );
+        }
     }
     /**
     * Returns the object as a string
@@ -166,6 +197,7 @@ class OutputContainer extends HUGnetContainer
     {
         $this->dataOut = array();
         $this->headerOut = array();
+        $this->paramsOut = array();
         return parent::clearData();
     }
     /**
@@ -180,16 +212,13 @@ class OutputContainer extends HUGnetContainer
     public function getOutput($type, $params = array(), $cols = array())
     {
         if (!is_a($this->container, "OutputInterface")) {
-            return "";
+            return "Container doesn't implement OutputInterface";
         }
         $class = $this->getPlugin($type);
         $this->throwException("No default 'output' plugin found", -6, empty($class));
-        $p = array_merge(
-            $this->container->outputParams($type),
-            (array)$params
-        );
-        $out = new $class($p);
-        $this->_getHeader($cols);
+        $this->params($type, $params);
+        $out = new $class($this->paramsOut[$type]);
+        $this->header($cols, (is_array($cols) && !empty($cols)));
         $this->_getData();
         $out->header($this->headerOut);
         foreach ((array)$this->dataOut as $o) {

@@ -89,6 +89,160 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataParams()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+                array("test" => array("a" => "5", "b" => "6")),
+                array("test" => array("a" => "6", "c" => "9")),
+                array("test" => array("a" => "6", "b" => "6", "c" => "9")),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload   Data to preload
+    * @param array $container The container data to use
+    * @param array $params    Array of parameter arrays
+    * @param array $params2   Array of parameter arrays
+    * @param array $expect    The function to call
+    *
+    * @return null
+    *
+    * @dataProvider dataParams
+    */
+    public function testParams($preload, $container, $params, $params2, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->cont->clearData();
+        $this->cont->loadData($container);
+        foreach ((array)$params as $k => $p) {
+            $this->o->params($k, $p);
+        }
+        foreach ((array)$params2 as $k => $p) {
+            $this->o->params($k, $p);
+        }
+        $this->assertAttributeSame(
+            $expect, "paramsOut", $this->o
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    *
+    */
+    public function testParams2()
+    {
+        $o = new OutputContainer(array());
+        $o->params("type", array());
+        $this->assertAttributeSame(
+            array(), "paramsOut", $this->o
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataHeader()
+    {
+        return array(
+            array(
+                array(),
+                array(),
+                array(
+                    array("a" => "5", "b" => "6"),
+                    array("c" => "5", "d" => "6"),
+                ),
+                false,
+                array("a" => "5", "b" => "6"),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    array("a" => "5", "b" => "6"),
+                    array("c" => "5", "d" => "6"),
+                ),
+                true,
+                array("c" => "5", "d" => "6"),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    null,
+                    array("c" => "5", "d" => "6"),
+                ),
+                false,
+                array(
+                    "a" => "First Column",
+                    "c" => "Third",
+                    "d" => "Another Column",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    null,
+                    array("c" => "5", "d" => "6"),
+                ),
+                true,
+                array("c" => "5", "d" => "6"),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload   Data to preload
+    * @param array $container The container data to use
+    * @param array $headers   Array of header arrays
+    * @param bool  $force     Whether to force our new header
+    * @param array $expect    The function to call
+    *
+    * @return null
+    *
+    * @dataProvider dataHeader
+    */
+    public function testHeader($preload, $container, $headers, $force, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->cont->clearData();
+        $this->cont->loadData($container);
+        foreach ((array)$headers as $h) {
+            $this->o->header($h, $force);
+        }
+        $this->assertAttributeSame(
+            $expect, "headerOut", $this->o
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    *
+    */
+    public function testHeader2()
+    {
+        $o = new OutputContainer(array());
+        $o->header();
+        $this->assertAttributeSame(
+            array(), "headerOut", $this->o
+        );
+    }
 
     /**
     * data provider for testDeviceID
@@ -407,7 +561,7 @@ post"
         $o = new OutputContainer(array());
         $ret = $o->toString();
         $this->assertSame(
-            "",
+            "Container doesn't implement OutputInterface",
             $ret
         );
     }
