@@ -115,7 +115,7 @@ class OutputContainer extends HUGnetContainer
                             $this->callbacks[$field],
                             $field,
                             $ret[$field],
-                            $this->container
+                            &$this->container
                         );
                     }
                 }
@@ -220,12 +220,12 @@ class OutputContainer extends HUGnetContainer
     *  The function should return whatever string that you want to be displayed
     *  in the field.
     * 
-    * @param string   $field     The field to use the callback on
-    * @param callback &$function The callback for the function 
+    * @param string   $field    The field to use the callback on
+    * @param callback $function The callback for the function
     *
     * @return bool True if successful, false on failure
     */
-    public function addFunction($field, &$function)
+    public function addFunction($field, $function)
     {
         if (is_callable($function)) {
             $this->callbacks[$field] = &$function;
