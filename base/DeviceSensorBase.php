@@ -136,8 +136,6 @@ abstract class DeviceSensorBase extends HUGnetContainer
         if ($data["decimals"] > $this->maxDecimals) {
             unset($data["decimals"]);
         }
-        // This is temporary to fix a database problem
-        unset($data["decimals"]);
         parent::__construct($data);
     }
 
@@ -159,19 +157,26 @@ abstract class DeviceSensorBase extends HUGnetContainer
     * Sets all of the endpoint attributes from an array
     *
     * @param bool $default Return items set to their default?
+    * @param bool $fixed   Return items in the fixed array?
     *
     * @return null
     */
-    public function toArray($default = true)
+    public function toArray($default = true, $fixed = false)
     {
+        $ret = parent::toArray($default);
+        // Return the fixed stuff if asked
+        if ($fixed) {
+            $ret = array_merge($this->fixed, $ret);
+        }
         // Always return the type and id
-        return array_merge(
+        $ret = array_merge(
             array(
                 "id"   => $this->id,
                 "type" => $this->type,
             ),
-            parent::toArray($default)
+            $ret
         );
+        return $ret;
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.

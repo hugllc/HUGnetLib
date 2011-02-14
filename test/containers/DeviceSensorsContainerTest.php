@@ -306,7 +306,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "extra" => array(),
                         "rawCalibration" => "",
                         "units" => "testUnit",
-                        "decimals" => 0,
+                        "decimals" => 2,
                     ),
                     1 => array(
                         "id" => 0,
@@ -316,7 +316,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "extra" => array(),
                         "rawCalibration" => "",
                         "units" => "testUnit",
-                        "decimals" => 0,
+                        "decimals" => 2,
                     ),
                 ),
 
@@ -357,7 +357,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "extra" => array(),
                         "rawCalibration" => "",
                         "units" => "testUnit",
-                        "decimals" => 0,
+                        "decimals" => 2,
                     ),
                     1 => array(
                         "id" => 8,
@@ -367,7 +367,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "extra" => array("Here"),
                         "rawCalibration" => "12345",
                         "units" => "testUnit",
-                        "decimals" => 0,
+                        "decimals" => 2,
                     ),
                 ),
             ),
@@ -482,12 +482,14 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     array(
                         "id" => 0xFF,
-                        "type" => "null",
+                        "type" => "Placeholder",
+                        "location" => "Used by sensor 0",
                         "dataType" => "ignore",
                     ),
                     array(
                         "id" => 0xFF,
-                        "type" => "null",
+                        "type" => "Placeholder",
+                        "location" => "Used by sensor 0",
                         "dataType" => "ignore",
                     ),
                     array(
@@ -947,6 +949,276 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $data = $this->o->decodeSensorData($data, $prev);
         $this->assertSame($expect, $data);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "id" => null,
+                    "type" => "",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "testUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    "maxDecimals" => 2,
+                    "location" => "",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "",
+                    "units" => "firstUnit",
+                    "decimals" => 2,
+                    "num" => 0,
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "id" => null,
+                    "type" => "",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "testUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    "maxDecimals" => 2,
+                    "location" => "",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "",
+                    "units" => "firstUnit",
+                    "decimals" => 2,
+                    "num" => 0,
+                ),
+            ),
+            array(
+                array(),
+                array("dataType", "decimals", "type", "units"),
+                array(
+                    "id" => null,
+                    "type" => "",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "testUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(),
+                    "maxDecimals" => 2,
+                    "location" => "",
+                    "dataType" => "raw",
+                    "extra" => array(),
+                    "rawCalibration" => "",
+                    "units" => "firstUnit",
+                    "decimals" => 2,
+                    "num" => 0,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutputHeader()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "num" => "#",
+                    "location" => "Location",
+                    "type" => "Type",
+                    "dataType" => "Data Type",
+                    "units" => "Units",
+                    "decimals" => "Decimal Places",
+                ),
+            ),
+            array(
+                array(),
+                array(),
+                array(
+                    "num" => "#",
+                    "location" => "Location",
+                    "type" => "Type",
+                    "dataType" => "Data Type",
+                    "units" => "Units",
+                    "decimals" => "Decimal Places",
+                ),
+            ),
+            array(
+                array(),
+                array("action", "dataType", "decimals", "type", "units"),
+                array(
+                    "action" => "action",
+                    "dataType" => "Data Type",
+                    "decimals" => "Decimal Places",
+                    "type" => "Type",
+                    "units" => "Units",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutputHeader
+    */
+    public function testToOutputHeader($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutputHeader($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputParams()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                ),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $type    The output type
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputParams
+    */
+    public function testOutputParams($preload, $type, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->outputParams($type, $cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testNextInto
+    *
+    * @return array
+    */
+    public static function dataNextInto()
+    {
+        return array(
+            array(
+                array(
+                    "Sensors" => 2,
+                ),
+                2
+            ),
+            array(
+                array(
+                    "Sensors" => 20,
+                ),
+                20
+            ),
+            array(
+                array(
+                    "Sensors" => 0,
+                ),
+                1
+            ),
+            array(
+                array(
+                    "Sensors" => 1,
+                ),
+                1
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param int    $expect  The number of runs to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataNextInto
+    */
+    public function testNextInto($preload, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $count = 1; // There is always the first record to start with
+        while ($this->o->nextInto()) {
+            $count++;
+            // Just in case we have an infinite loop
+            if ($count > 100) {
+                break;
+            }
+        }
+        $this->assertSame(
+            $expect,
+            $count,
+            "Count is wrong"
+        );
+        $this->assertAttributeSame(
+            $expect,
+            "_sensorIndex", $this->o,
+            "sensorIndex is wrong"
+        );
     }
 }
 

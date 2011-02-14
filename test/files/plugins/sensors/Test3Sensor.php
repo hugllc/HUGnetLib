@@ -77,6 +77,7 @@ class Test3Sensor extends DeviceSensorBase
         "extraText" => array(),
         "extraDefault" => array(),
         "inputSize" => 3,
+        "maxDecimals"=> 4,
     );
 
     /**

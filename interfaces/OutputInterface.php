@@ -75,6 +75,12 @@ interface OutputInterface
     * @return array
     */
     public function outputParams($type, $cols = null);
+    /**
+    * This puts the next result into the object
+    *
+    * @return bool True on success, False on failure
+    */
+    public function nextInto();
 
 }
 ?>

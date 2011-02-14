@@ -37,6 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,7 +52,7 @@ require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceSensorsContainer extends HUGnetContainer
+class DeviceSensorsContainer extends HUGnetContainer implements OutputInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -68,7 +69,17 @@ class DeviceSensorsContainer extends HUGnetContainer
     protected $sensor = array();
     /** @var object This is where we store our sensor driver listing */
     protected $drivers = array();
-
+    /** @var int The index of the sensor we are currently looking at */
+    private $_sensorIndex = 0;
+    /** @var array The labels for the column headers */
+    protected $labels = array(
+        "num" => "#",
+        "location" => "Location",
+        "type" => "Type",
+        "dataType" => "Data Type",
+        "units" => "Units",
+        "decimals" => "Decimal Places",
+    );
     /**
     * Disconnects from the database
     *
@@ -200,7 +211,8 @@ class DeviceSensorsContainer extends HUGnetContainer
         for ($j = 1; $j < $inputSize; $j++) {
             $this->sensor[$key+$j] = &$this->sensorFactory(
                 array(
-                    "id" => 0xFF, "type" => "null", "dataType" => "ignore",
+                    "id" => 0xFF, "type" => "Placeholder", "dataType" => "ignore",
+                    "location" => "Used by sensor $key",
                 )
             );
         }
@@ -319,6 +331,65 @@ class DeviceSensorsContainer extends HUGnetContainer
         }
         return $ret;
     }
-
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = $this->sensor($this->_sensorIndex)->toArray(true, true);
+        $ret["num"] = $this->_sensorIndex;
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutputHeader($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            return $this->labels;
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            if (isset($this->labels[$col])) {
+                $ret[$col] = $this->labels[$col];
+            } else {
+                $ret[$col] = $col;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        return array();
+    }
+    /**
+    * This puts the next result into the object
+    *
+    * @return bool True on success, False on failure
+    */
+    public function nextInto()
+    {
+        $this->_sensorIndex++;
+        if ($this->_sensorIndex < $this->Sensors) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>

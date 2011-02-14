@@ -76,6 +76,7 @@ class Test2Sensor extends DeviceSensorBase
         "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
+        "maxDecimals"=> 3,
     );
 
     /**

@@ -269,10 +269,71 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                     "extra" => array(6,5,4),
                 ),
                 false,
+                false,
                 array(
                     "id" => 0,
                     "type" => "sensor",
                     "extra" => array(6,5,4),
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                false,
+                true,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "firstUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(0,1,2,3,4,5,6,7),
+                    "maxDecimals" => 2,
+                    "extra" => array(6,5,4),
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                true,
+                true,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "firstUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(0,1,2,3,4,5,6,7),
+                    "maxDecimals" => 2,
+                    "location" => "f",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                true,
+                false,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "location" => "f",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
                 ),
             ),
         );
@@ -283,17 +344,18 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @param mixed  $preload The stuff to give to the constructor
     * @param bool   $default Whether to include default values or not
+    * @param bool   $fixed   Return items in the fixed array?
     * @param string $expect  The expected data
     *
     * @return null
     *
     * @dataProvider dataToArray
     */
-    public function testToArray($preload, $default, $expect)
+    public function testToArray($preload, $default, $fixed, $expect)
     {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->toArray($index));
+        $this->assertSame($expect, $this->o->toArray($default, $fixed));
     }
     /**
     * data provider for testGetExtra

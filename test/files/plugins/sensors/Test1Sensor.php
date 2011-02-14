@@ -76,6 +76,7 @@ class Test1Sensor extends DeviceSensorBase
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(),
         "extraDefault" => array(),
+        "maxDecimals"=> 2,
     );
 
     /**
