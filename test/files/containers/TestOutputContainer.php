@@ -36,7 +36,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../base/HUGnetDBTable.php";
+require_once dirname(__FILE__)."/../../../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../../../interfaces/OutputInterface.php";
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
@@ -53,7 +54,7 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class TestOutputContainer extends HUGnetDBTable
+class TestOutputContainer extends HUGnetContainer implements OutputInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -113,14 +114,14 @@ class TestOutputContainer extends HUGnetDBTable
             $array = array($array);
         }
         $this->myData = $array;
-        $this->nextInto();
+        $this->nextIntoP();
     }
     /**
     * This puts the next result into the object
     *
     * @return bool True on success, False on failure
     */
-    public function nextInto()
+    protected function nextIntoP()
     {
         if (is_array($this->myData[$this->index])) {
             $this->fromArray($this->myData[$this->index]);
@@ -159,6 +160,93 @@ class TestOutputContainer extends HUGnetDBTable
     static public function testAddFunction2($field, $data, $obj)
     {
         return $data."_".$field."_".get_class($obj)."_static";
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    protected function getOutputCols($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            if (empty($this->labels)) {
+                $cols = array_keys($this->default);
+            } else {
+                $cols = array_keys($this->labels);
+            }
+        }
+        return $cols;
+    }
+    /**
+    * By default it outputs the date in the format specified in myConfig
+    *
+    * @param string $field The field to output
+    *
+    * @return string The date as a formatted string
+    */
+    protected function outputDate($field)
+    {
+        return date($this->myConfig->dateFormat, $this->$field);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $cols = $this->getOutputCols($cols);
+        $ret = array();
+        foreach ($cols as $col) {
+            if ($col == $this->dateField) {
+                $ret[$col] = $this->outputDate($col);
+            } else {
+                $ret[$col] = (string)$this->$col;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutputHeader($cols = null)
+    {
+        if (!is_array($cols) || empty($cols)) {
+            if (empty($this->labels)) {
+                $cols = array_keys($this->default);
+            } else {
+                $cols = array_keys($this->labels);
+            }
+        }
+        $ret = array();
+        foreach ($cols as $col) {
+            if (isset($this->labels[$col])) {
+                $ret[$col] = $this->labels[$col];
+            } else {
+                $ret[$col] = $col;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        return (array)$this->outputParams[$type];
     }
 
 }

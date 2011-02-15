@@ -48,32 +48,13 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface OutputInterface
+interface IteratorInterface
 {
     /**
-    * There should only be a single instance of this class
+    * This puts the next result into the object
     *
-    * @param array $cols The columns to get
-    *
-    * @return array
+    * @return bool True on success, False on failure
     */
-    public function toOutput($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function toOutputHeader($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param string $type The output plugin type
-    * @param array  $cols The columns to get
-    *
-    * @return array
-    */
-    public function outputParams($type, $cols = null);
+    public function nextInto();
 }
 ?>

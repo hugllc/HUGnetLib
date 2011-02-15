@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interfaces
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,45 +35,34 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+// Need to make sure this file is not added to the code coverage
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
+
 /**
- * This class has functions that relate to the manipulation of elements
- * of the devInfo array.
+ * This class keeps track of hooks that can be defined and used other places in the
+ * code to cause custom functions to happen.
  *
- * @category   Interfaces
+ * @category   Containers
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface OutputInterface
+class TestOutputContainer3
 {
     /**
-    * There should only be a single instance of this class
+    * Sets all of the endpoint attributes from an array
     *
-    * @param array $cols The columns to get
+    * @param array $array This is an array of this class's attributes
     *
-    * @return array
+    * @return null
     */
-    public function toOutput($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param array $cols The columns to get
-    *
-    * @return array
-    */
-    public function toOutputHeader($cols = null);
-    /**
-    * There should only be a single instance of this class
-    *
-    * @param string $type The output plugin type
-    * @param array  $cols The columns to get
-    *
-    * @return array
-    */
-    public function outputParams($type, $cols = null);
+    public function loadData($array)
+    {
+    }
 }
 ?>

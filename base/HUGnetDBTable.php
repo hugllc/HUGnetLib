@@ -40,6 +40,7 @@ require_once dirname(__FILE__)."/HUGnetClass.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
+require_once dirname(__FILE__)."/../interfaces/IteratorInterface.php";
 /**
  * Base class for all database work
  *
@@ -58,7 +59,7 @@ require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class HUGnetDBTable extends HUGnetContainer
-    implements OutputInterface
+    implements OutputInterface, IteratorInterface
 {
     /** @var int This is where we store the limit */
     public $sqlLimit = 0;

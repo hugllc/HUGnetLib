@@ -39,6 +39,8 @@
 
 require_once dirname(__FILE__).'/../../containers/OutputContainer.php';
 require_once dirname(__FILE__).'/../files/containers/TestOutputContainer.php';
+require_once dirname(__FILE__).'/../files/containers/TestOutputContainer2.php';
+require_once dirname(__FILE__).'/../files/containers/TestOutputContainer3.php';
 
 /**
  * Test class for filter.
@@ -252,8 +254,9 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
     public static function data2String()
     {
         return array(
-            array(
+            array( // #0
                 array(),
+                "TestOutputContainer2",
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 "preArray
 (
@@ -269,8 +272,9 @@ Array
 )
 post"
             ),
-            array(
+            array( // #1
                 array(),
+                "TestOutputContainer",
                 array("a" => 3, "c" => 8, "d" => 9),
                 "preArray
 (
@@ -286,9 +290,10 @@ Array
 )
 post"
             ),
-            array(
+            array( // #2
                 array(
                 ),
+                "TestOutputContainer2",
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
@@ -313,10 +318,10 @@ Array
 )
 post"
             ),
-            array(
+            array( // #3
                 array(
-                    "iterate" => false,
                 ),
+                "TestOutputContainer",
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
@@ -335,12 +340,47 @@ Array
 )
 post"
             ),
+            array( // #4
+                array(
+                    "iterate" => false,
+                ),
+                "TestOutputContainer2",
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+post"
+            ),
+            array( // #5
+                array(
+                    "iterate" => false,
+                ),
+                "TestOutputContainer3",
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                "Container doesn't implement OutputInterface"
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
     * @param array  $preload   Data to preload
+    * @param array  $class     The container class to use
     * @param array  $container The container data to use
     * @param string $expect    The expected return
     *
@@ -348,12 +388,11 @@ post"
     *
     * @dataProvider data2String
     */
-    public function testToString($preload, $container, $expect)
+    public function testToString($preload, $class, $container, $expect)
     {
-        $this->o->clearData();
-        $this->o->fromAny($preload);
-        $this->cont->clearData();
+        $this->cont = new $class();
         $this->cont->loadData($container);
+        $this->o = new OutputContainer($preload, $this->cont);
         $ret = $this->o->toString();
         $this->assertSame(
             $expect,
@@ -369,8 +408,9 @@ post"
     public static function dataGetOutput()
     {
         return array(
-            array(
+            array( // #0
                 array(),
+                "TestOutputContainer",
                 array(),
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 array("DEFAULT"),
@@ -392,8 +432,9 @@ Array
 post"
                 ),
             ),
-            array(
+            array( // #1
                 array(),
+                "TestOutputContainer",
                 array(),
                 array("a" => 3, "c" => 8, "d" => 9),
                 array("DEFAULT"),
@@ -415,9 +456,10 @@ Array
 post"
                 ),
             ),
-            array(
+            array( // #2
                 array(
                 ),
+                "TestOutputContainer2",
                 array(),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
@@ -448,10 +490,39 @@ Array
 post"
                 ),
             ),
-            array(
+            array( // #2
+                array(
+                ),
+                "TestOutputContainer",
+                array(),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                array("DEFAULT"),
+                array(),
+                array(),
+                array(
+                    "DEFAULT" => "preArray
+(
+    [a] => First Column
+    [c] => Third
+    [d] => Another Column
+)
+Array
+(
+    [a] => 1
+    [c] => 3
+    [d] => 4
+)
+post"
+                ),
+            ),
+            array( // #3
                 array(
                     "iterate" => false,
                 ),
+                "TestOutputContainer",
                 array(
                     "a" => "outputContainerTestAddFunction1",
                     "q" => "outputContainerTestAddFunction2",
@@ -479,10 +550,11 @@ Array
 post"
                 ),
             ),
-            array(
+            array( // #4
                 array(
                     "iterate" => false,
                 ),
+                "TestOutputContainer",
                 array(
                     "a" => array(new TestOutputContainer, "testAddFunction1"),
                     "b" => array(new TestOutputContainer, "SomeBadFunctionName"),
@@ -514,12 +586,29 @@ Array
 post"
                 ),
             ),
+            array( // #5
+                array(
+                ),
+                "TestOutputContainer3",
+                array(),
+                array(
+                    array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
+                    array("a" => 3, "c" => 8, "d" => 9),
+                ),
+                array("DEFAULT"),
+                array(),
+                array(),
+                array(
+                    "DEFAULT" => "Container doesn't implement OutputInterface"
+                ),
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
     * @param array  $preload   Data to preload
+    * @param array  $class     The container class to use
     * @param array  $functions The functions to call
     * @param array  $container The container data to use
     * @param array  $type      array of strings: The type of output
@@ -532,12 +621,11 @@ post"
     * @dataProvider dataGetOutput
     */
     public function testGetOutput(
-        $preload, $functions, $container, $type, $params, $cols, $expect
+        $preload, $class, $functions, $container, $type, $params, $cols, $expect
     ) {
-        $this->o->clearData();
-        $this->o->fromAny($preload);
-        $this->cont->clearData();
+        $this->cont = new $class();
         $this->cont->loadData($container);
+        $this->o = new OutputContainer($preload, $this->cont);
         foreach (array_keys((array)$functions) as $field) {
             $this->o->AddFunction($field, $functions[$field]);
         }

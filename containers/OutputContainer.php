@@ -109,6 +109,7 @@ class OutputContainer extends HUGnetContainer
     private function _getData()
     {
         if (empty($this->dataOut)) {
+            $iterate = is_a($this->container, "IteratorInterface");
             do {
                 $ret = $this->container->toOutput();
                 foreach (array_keys($this->callbacks) as $field) {
@@ -122,7 +123,7 @@ class OutputContainer extends HUGnetContainer
                     }
                 }
                 $this->dataOut[] = $ret;
-            } while ($this->iterate && $this->container->nextInto());
+            } while ($iterate && $this->iterate && $this->container->nextInto());
         }
     }
     /**
