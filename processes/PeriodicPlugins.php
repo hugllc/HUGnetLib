@@ -128,6 +128,11 @@ class PeriodicPlugins extends ProcessBase
                     "Memory Usage: ".memory_get_usage(true),
                     HUGnetClass::VPRINT_NORMAL
                 );
+            } else {
+                self::vprint(
+                    get_class($this->active[$key])." Not ready",
+                    HUGnetClass::VPRINT_NORMAL
+                );
             }
         }
     }
