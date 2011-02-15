@@ -212,10 +212,7 @@ class DeviceSensorsContainer extends HUGnetContainer
         $inputSize = $this->sensor($key)->inputSize;
         for ($j = 1; $j < $inputSize; $j++) {
             $this->sensor[$key+$j] = &$this->sensorFactory(
-                array(
-                    "id" => 0xFF, "type" => "Placeholder", "dataType" => "ignore",
-                    "location" => "Used by sensor $key",
-                )
+                array("id" => 0xFF, "location" => $this->sensor($key)->location)
             );
         }
         $key += $j - 1;

@@ -465,7 +465,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    0 => array("id" => 3, "type" => "Hello"),
+                    0 => array("id" => 3, "type" => "Hello", "location" => "here"),
                     1 => array("id" => 8),
                     2 => array("id" => 4),
                     3 => array("id" => 5),
@@ -477,20 +477,19 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     array(
                         "id" => 0x10,
                         "type" => "multiInput",
+                        "location" => "here",
                         "dataType" => UnitsBase::TYPE_DIFF,
                         "units" => "anotherUnit",
                     ),
                     array(
                         "id" => 0xFF,
-                        "type" => "Placeholder",
-                        "location" => "Used by sensor 0",
-                        "dataType" => "ignore",
+                        "type" => "",
+                        "location" => "here",
                     ),
                     array(
                         "id" => 0xFF,
-                        "type" => "Placeholder",
-                        "location" => "Used by sensor 0",
-                        "dataType" => "ignore",
+                        "type" => "",
+                        "location" => "here",
                     ),
                     array(
                         "id" => 2,
