@@ -55,7 +55,7 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "BCTherm2322640DeviceSensor",
+        "Name" => "BC Components Thermistor #2322640",
         "Type" => "sensor",
         "Class" => "BCTherm2322640DeviceSensor",
         "Flags" => array("00", "02", "02:BCTherm2322640"),
@@ -69,7 +69,7 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "BC Components Thermistor #2322640 ",
+        "longName" => "BC Components Thermistor #2322640",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored

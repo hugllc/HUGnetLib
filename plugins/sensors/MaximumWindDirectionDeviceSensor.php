@@ -53,7 +53,7 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "MaximumWindDirectionDeviceSensor",
+        "Name" => "Maximum Inc Wind Direction Sensor",
         "Type" => "sensor",
         "Class" => "MaximumWindDirectionDeviceSensor",
         "Flags" => array("6F", "6F:maximum-inc"),

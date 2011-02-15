@@ -53,7 +53,7 @@ class GenericRevolvingDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "GenericRevolvingDeviceSensor",
+        "Name" => "Generic Revolving Thingy Sensor",
         "Type" => "sensor",
         "Class" => "GenericRevolvingDeviceSensor",
         "Flags" => array("70:genericRevolver", "7F:hsRevolver"),

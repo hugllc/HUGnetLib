@@ -55,7 +55,7 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "B57560G0103F000DeviceSensor",
+        "Name" => "EPCOS B57560G0103F000 Thermistor",
         "Type" => "sensor",
         "Class" => "B57560G0103F000DeviceSensor",
         "Flags" => array("02:B57560G0103F000"),

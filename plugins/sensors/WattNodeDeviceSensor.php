@@ -53,7 +53,7 @@ class WattNodeDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "WattNodeDeviceSensor",
+        "Name" => "WattNode kWh Meter",
         "Type" => "sensor",
         "Class" => "WattNodeDeviceSensor",
         "Flags" => array("70:wattnode"),

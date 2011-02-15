@@ -55,7 +55,7 @@ class DirectVoltageDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "DirectVoltageDeviceSensor",
+        "Name" => "Direct Voltage Sensor",
         "Type" => "sensor",
         "Class" => "DirectVoltageDeviceSensor",
         "Flags" => array("40:Direct"),

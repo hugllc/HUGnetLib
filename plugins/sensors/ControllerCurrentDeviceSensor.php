@@ -55,7 +55,7 @@ class ControllerCurrentDeviceSensor extends CurrentDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "ControllerCurrentDeviceSensor",
+        "Name" => "Controller Board Current Sensor",
         "Type" => "sensor",
         "Class" => "ControllerCurrentDeviceSensor",
         "Flags" => array("50:Controller"),

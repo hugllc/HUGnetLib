@@ -55,7 +55,7 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "PotDirectionDeviceSensor",
+        "Name" => "Pot Direction Sensor",
         "Type" => "sensor",
         "Class" => "PotDirectionDeviceSensor",
         "Flags" => array("02:potDirection"),

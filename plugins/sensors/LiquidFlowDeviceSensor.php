@@ -53,7 +53,7 @@ class LiquidFlowDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "LiquidFlowDeviceSensor",
+        "Name" => "Liquid Flow Sensor",
         "Type" => "sensor",
         "Class" => "LiquidFlowDeviceSensor",
         "Flags" => array("70:liquidflowmeter", "7F:hsliquidflowmeter"),

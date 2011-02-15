@@ -53,7 +53,7 @@ class MaximumAnemometerDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "MaximumAnemometerDeviceSensor",
+        "Name" => "Maximum Inc Hall Effect Anemometer",
         "Type" => "sensor",
         "Class" => "MaximumAnemometerDeviceSensor",
         "Flags" => array("70:maximumAnemometer"),

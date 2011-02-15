@@ -55,7 +55,7 @@ class FETBoardCurrentDeviceSensor extends CurrentDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "FETBoardCurrentDeviceSensor",
+        "Name" => "FETBoard Current Sensor",
         "Type" => "sensor",
         "Class" => "FETBoardCurrentDeviceSensor",
         "Flags" => array("50", "50:fetBoard"),

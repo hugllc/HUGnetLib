@@ -55,7 +55,7 @@ class BAROA4DeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "BAROA4DeviceSensor",
+        "Name" => "BARO-A-4V Barometric Pressure Sensor",
         "Type" => "sensor",
         "Class" => "BAROA4DeviceSensor",
         "Flags" => array("40:BAROA4"),

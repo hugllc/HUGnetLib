@@ -55,7 +55,7 @@ class GenericDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "GenericDeviceSensor",
+        "Name" => "Generic Sensor",
         "Type" => "sensor",
         "Class" => "GenericDeviceSensor",
         "Flags" => array("DEFAULT"),

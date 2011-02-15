@@ -55,7 +55,7 @@ class ControllerVoltageDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "ControllerVoltageDeviceSensor",
+        "Name" => "Controller Board Voltage Sensor",
         "Type" => "sensor",
         "Class" => "ControllerVoltageDeviceSensor",
         "Flags" => array("40:Controller"),

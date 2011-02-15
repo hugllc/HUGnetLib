@@ -55,7 +55,7 @@ class ChsMssDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "ChsMssDeviceSensor",
+        "Name" => "TDK ChsMss Relative Humidity Sensor",
         "Type" => "sensor",
         "Class" => "ChsMssDeviceSensor",
         "Flags" => array("10", "10:chsMss"),

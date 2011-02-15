@@ -53,7 +53,7 @@ class Bravo3MotionDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Bravo3MotionDeviceSensor",
+        "Name" => "Bravo3 Motion Sensor",
         "Type" => "sensor",
         "Class" => "Bravo3MotionDeviceSensor",
         "Flags" => array("70:bravo3motion"),

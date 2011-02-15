@@ -53,7 +53,7 @@ class MaximumRainDeviceSensor extends PulseDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "MaximumRainDeviceSensor",
+        "Name" => "Maximum Inc Rain Gauge",
         "Type" => "sensor",
         "Class" => "MaximumRainDeviceSensor",
         "Flags" => array("70:maximumRainGauge"),

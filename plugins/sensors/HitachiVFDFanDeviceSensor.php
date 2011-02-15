@@ -55,7 +55,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "HitachiVFDFanDeviceSensor",
+        "Name" => "Hitachi VFD Fan Speed Sensor",
         "Type" => "sensor",
         "Class" => "HitachiVFDFanDeviceSensor",
         "Flags" => array("40:HitachiVFDFan"),

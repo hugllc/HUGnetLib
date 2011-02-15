@@ -55,7 +55,7 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "IMCSolarDeviceSensor",
+        "Name" => "IMCSolar Thermistor",
         "Type" => "sensor",
         "Class" => "IMCSolarDeviceSensor",
         "Flags" => array("02:imcSolar"),

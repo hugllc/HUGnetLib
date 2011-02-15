@@ -53,7 +53,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "OSRAMLightDeviceSensor",
+        "Name" => "OSRAM Photodiode",
         "Type" => "sensor",
         "Class" => "OSRAMLightDeviceSensor",
         "Flags" => array("30", "30:OSRAM BPW-34"),

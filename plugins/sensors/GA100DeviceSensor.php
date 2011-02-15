@@ -55,7 +55,7 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "GA100DeviceSensor",
+        "Name" => "GA100 Differential Pressure Sensor",
         "Type" => "sensor",
         "Class" => "GA100DeviceSensor",
         "Flags" => array("40:GA100"),

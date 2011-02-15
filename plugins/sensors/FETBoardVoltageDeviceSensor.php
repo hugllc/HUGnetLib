@@ -55,7 +55,7 @@ class FETBoardVoltageDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "FETBoardVoltageDeviceSensor",
+        "Name" => "FETBoard Voltage Sensor",
         "Type" => "sensor",
         "Class" => "FETBoardVoltageDeviceSensor",
         "Flags" => array("40:fetBoard"),
