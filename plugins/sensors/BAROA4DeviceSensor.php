@@ -68,7 +68,7 @@ class BAROA4DeviceSensor extends VoltageDeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "All Sensors BARO-A-4V Barometric Pressure Sensor",
+        "longName" => "BARO-A-4V Barometric Pressure Sensor",
         "unitType" => "Pressure",
         "storageUnit" => 'mBar',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
