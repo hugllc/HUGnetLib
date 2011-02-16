@@ -292,6 +292,30 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             "ExtraDefault and extraText need to have the same number of entries"
         );
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultNameSize($class)
+    {
+        $size = 40;
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $this->assertTrue(
+            (strlen($var["Name"]) < $size),
+            "\$registerPlugin::Name must be less than $size characters"
+        );
+        $this->assertTrue(
+            (strlen($obj->longName) < $size),
+            "longName must be less than $size characters"
+        );
+    }
 }
 
 ?>

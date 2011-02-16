@@ -68,7 +68,7 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "All Sensors GA100 Differential Pressure Sensor",
+        "longName" => "GA100 Differential Pressure Sensor",
         "unitType" => "Pressure",
         "storageUnit" => 'psi',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
