@@ -37,6 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
+require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -51,23 +52,26 @@ require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DeviceParamsContainer extends HUGnetContainer
+class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
 {
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
         "graphUnits" => array(),        // The units to use in the graph
+        "DriverInfo" => array(),        // Persistant storage for the driver
+        "ProcessInfo" => array(),       // Persistant storage for the processes
+        "LastContact" => 0,             // The last time the dev was contacted
+        "LastModified" => 0,            // The last time we were modified.
+        "LastModifiedBy" => "",         // The name of the last person to modify me
+
+        // These are for backwards compatibility and upgrading the database.
+        // They will be removed in a few versions.
         "Loc" => array(),               // The location of the sensors
         "sensorType" => array(),        // The type of the sensors
         "Units" => array(),             // The units to use on the sensors
         "dType" => array(),             // The datatype of each sensor
         "Extra" => array(),             // Extra input for crunching numbers
         "Raw"   => array(),             // Array of raw setup stuff
-        "DriverInfo" => array(),        // Persistant storage for the driver
-        "ProcessInfo" => array(),       // Persistant storage for the processes
-        "LastContact" => 0,             // The last time the dev was contacted
-        "LastModified" => 0,            // The last time we were modified.
-        "LastModifiedBy" => "",         // The name of the last person to modify me
     );
 
     /**
@@ -91,6 +95,45 @@ class DeviceParamsContainer extends HUGnetContainer
     public function toArray($default = false)
     {
         return parent::toArray($default);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = array_merge((array)$this->ProcessInfo, (array)$this->DriverInfo);
+        $headers = array("LastContact", "LastModified", "LastModifiedBy");
+        foreach ($headers as $key) {
+            $ret[$key] = $this->$key;
+        }
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutputHeader($cols = null)
+    {
+        return (array)$cols;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        return array();
     }
 
 }

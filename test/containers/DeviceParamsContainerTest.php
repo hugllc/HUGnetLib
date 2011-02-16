@@ -163,7 +163,139 @@ class DeviceParamsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->toArray());
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                    "LastContact" => 1234,
+                    "LastModified" => 4321,
+                    "LastModifiedBy" => "Me",
+                    "DriverInfo" => array(
+                        "Test" => "one",
+                        "Test2" => "two",
+                    ),
+                    "ProcessInfo" => array(
+                        "PTest" => "one",
+                        "PTest2" => "two",
+                    ),
+                ),
+                null,
+                array(
+                    "PTest" => "one",
+                    "PTest2" => "two",
+                    "Test" => "one",
+                    "Test2" => "two",
+                    "LastContact" => 1234,
+                    "LastModified" => 4321,
+                    "LastModifiedBy" => "Me",
+                ),
+            ),
+        );
+    }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutputHeader()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutputHeader
+    */
+    public function testToOutputHeader($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->toOutputHeader($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputParams()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                ),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $type    The output type
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputParams
+    */
+    public function testOutputParams($preload, $type, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->outputParams($type, $cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 
