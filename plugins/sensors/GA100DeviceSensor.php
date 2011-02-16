@@ -75,9 +75,9 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
         "extraText" => array(
             "Min Voltage (V)",
             "Max Voltage (V)",
-            "Pressure at Min Voltage (mBar)",
-            "Pressure at Max Voltage (mBar)",
-            "AtoD Reference Voltage (V)"
+            "Read @ Min Voltage (mBar)",
+            "Read @ Max Voltage (mBar)",
+            "AtoD Ref Voltage (V)"
         ),
         "extraDefault" => array(.5, 4.5, 0, 1, 5),
         "maxDecimals" => 2,

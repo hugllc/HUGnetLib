@@ -75,9 +75,9 @@ class ChsMssDeviceSensor extends VoltageDeviceSensorBase
         "extraText" => array(
             "Min Voltage (V)",
             "Max Voltage (V)",
-            "Relative at Min Voltage (%)",
-            "Relative at Max Voltage (%)",
-            "AtoD Reference Voltage (V)"
+            "Read @ Min Voltage (%)",
+            "Read @ Max Voltage (%)",
+            "AtoD Ref Voltage (V)"
         ),
         "extraDefault" => array(0, 1, 0, 100, 1.1),
         "maxDecimals" => 2,

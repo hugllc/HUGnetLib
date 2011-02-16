@@ -73,7 +73,7 @@ class ControllerCurrentDeviceSensor extends CurrentDeviceSensorBase
         "storageUnit" => 'mA',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
-            "R in kOhms",
+            "Sense Resistor (kOhms)",
             "Gain"
         ),
         "extraDefault" => array(.5, 7),

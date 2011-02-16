@@ -73,8 +73,8 @@ class IndirectVoltageDeviceSensor extends VoltageDeviceSensorBase
         "storageUnit" => 'V',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
-            "R1 in kOhms",
-            "R2 in kOhms",
+            "R1 to Source (kOhms)",
+            "R2 to Ground (kOhms)",
             "AtoD Ref Voltage"
         ),
         "extraDefault" => array(150, 10, 5),

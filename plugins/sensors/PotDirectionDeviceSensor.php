@@ -75,10 +75,10 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "POT Resistance in kOhms",
-            "Direction 1 in degrees",
-            "Resistance 1 in kOhms",
-            "Direction 2 in degrees",
-            "Resistance 2 in kOhms",
+            "Direction 1 (&#176;)",
+            "Resistance 1 (kOhms)",
+            "Direction 2 (&#176;)",
+            "Resistance 2 (kOhms)",
         ),
         "extraDefault" => array(25,0, 0, 180, 25),
         "maxDecimals" => 1,

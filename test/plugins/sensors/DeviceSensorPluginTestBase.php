@@ -316,6 +316,27 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             "longName must be less than $size characters"
         );
     }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultExtraTextSize($class)
+    {
+        $size = 26;
+        $d = new DeviceContainer();
+        $obj = new $class($data, $d);
+        foreach ($obj->extraText as $key => $val) {
+            $this->assertTrue(
+                (strlen($val) < $size),
+                "extraText[$key] must be less than $size characters"
+            );
+        }
+    }
 }
 
 ?>

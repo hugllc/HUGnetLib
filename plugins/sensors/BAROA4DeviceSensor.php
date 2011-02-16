@@ -75,9 +75,9 @@ class BAROA4DeviceSensor extends VoltageDeviceSensorBase
         "extraText" => array(
                     "Min Voltage (V)",
                     "Max Voltage (V)",
-                    "Pressure at Min Voltage (mBar)",
-                    "Pressure at Max Voltage (mBar)",
-                    "AtoD Reference Voltage (V)"
+                    "Read @ Min Voltage (mBar)",
+                    "Read @ Max Voltage (mBar)",
+                    "AtoD Ref Voltage (V)"
         ),
         "extraDefault" => array(.25, 4.25, 600, 1100, 5),
         "maxDecimals" => 2,

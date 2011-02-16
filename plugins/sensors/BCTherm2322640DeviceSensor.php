@@ -74,8 +74,8 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
-            "Bias Resistor in k Ohms",
-            "Thermistor Value @25C"
+            "Bias Resistor (kOhms)",
+            "Value @25&#176;C (kOhms)"
         ),
         "extraDefault" => array(10, 10),
         "maxDecimals" => 2,

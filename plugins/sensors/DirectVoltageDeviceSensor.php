@@ -73,7 +73,7 @@ class DirectVoltageDeviceSensor extends VoltageDeviceSensorBase
         "storageUnit" => 'V',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
-            "AtoD Ref Voltage"
+            "AtoD Ref Voltage (V)"
         ),
         "extraDefault" => array(5),
         "maxDecimals" => 4,

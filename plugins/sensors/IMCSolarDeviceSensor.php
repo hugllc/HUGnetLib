@@ -73,7 +73,7 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "extraText" => array("Bias Resistor in k Ohms"),
+        "extraText" => array("Bias Resistor (kOhms)"),
         "extraDefault" => array(100),
         "maxDecimals" => 2,
     );

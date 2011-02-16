@@ -77,9 +77,9 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
             "R2 in kOhms",
             "Min Voltage (V)",
             "Max Voltage (V)",
-            "Pressure at Min Voltage (mBar)",
-            "Pressure at Max Voltage (mBar)",
-            "AtoD Reference Voltage (V)"
+            "Read @ Min Voltage (RPM)",
+            "Read @ Max Voltage (RPM)",
+            "AtoD Ref Voltage (V)"
         ),
         "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
         "maxDecimals" => 1,
