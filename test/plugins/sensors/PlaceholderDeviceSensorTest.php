@@ -117,6 +117,41 @@ class PlaceholderDeviceSensorTest extends DeviceSensorPluginTestBase
         );
     }
     /**
+    * Data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(
+                array('extra'=>array(10)),
+                array("id" => 0xFF, "type" => "Placeholder", "location" => null),
+            ),
+            array(
+                array('location' => "Hello"),
+                array("id" => 0xFF, "type" => "Placeholder", "location" => "Hello"),
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $preload The data to preload into the class
+    * @param mixed $expect  The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor()
+    */
+    public function testConstructor($preload, $expect)
+    {
+        $o = new PlaceholderDeviceSensor($preload, $this->d);
+        $this->assertSame($expect, $o->toArray());
+    }
+    /**
     * Data provider for testGetReading
     *
     * @return array
