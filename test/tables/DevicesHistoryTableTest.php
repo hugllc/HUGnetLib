@@ -281,8 +281,10 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "id" => 12,
                     "SaveDate" => 0,
                     "SetupString" => "000000000C00392102410039200141000102FFFFFF00",
-                    "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
-                        ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "SensorString" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOi"
+                        ."IiO3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO"
+                        ."2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0"
+                        ."dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
                 ),
             ),
         );
@@ -360,7 +362,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
-                        "NumSensors"   => 6,
+                        "PhysicalSensors"   => 6,
+                        "VirtualSensors"   => 0,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",
@@ -452,7 +455,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
-                        "NumSensors"   => 6,
+                        "PhysicalSensors"   => 6,
+                        "VirtualSensors"   => 0,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",
@@ -514,7 +518,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
-                        "NumSensors"   => 6,
+                        "PhysicalSensors"   => 6,
+                        "VirtualSensors"   => 0,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",

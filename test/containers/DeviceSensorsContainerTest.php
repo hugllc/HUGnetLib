@@ -112,6 +112,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "RawCalibration" => "",
                     "Sensors" => 0,
+                    "ActiveSensors" => 0,
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 0,
+                    "forceSensors" => false,
                 ),
             ),
             array(
@@ -122,6 +126,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "RawCalibration" => "Hello There",
                     "Sensors" => 10,
+                    "ActiveSensors" => 0,
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 0,
+                    "forceSensors" => false,
                 ),
             ),
         );
@@ -164,7 +172,11 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     1 => array("id" => 2),
                 ),
                 array(
-                    "DriverInfo" => array("NumSensors" => 2),
+                    "ActiveSensors" => 2,
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
+                    ),
                     "params" => array(
                         "sensorType" => array("Test1Sensor", "a"),
                         "dType" => array("raw", "diff"),
@@ -174,6 +186,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Sensors" => 2,
+                    "ActiveSensors" => 2,
+                    "PhysicalSensors" => 2,
                     array(
                         "id" => 0,
                         "type" => "Test1Sensor",
@@ -199,7 +213,11 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     1 => array("id" => 2),
                 ),
                 array(
-                    "DriverInfo" => array("NumSensors" => 3),
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 0,
+                    ),
+                    "ActiveSensors" => 3,
                     "params" => array(
                         "sensorType" => array("Test1Sensor", "a"),
                         "dType" => array("raw", "diff"),
@@ -209,6 +227,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     "Sensors" => 3,
+                    "ActiveSensors" => 3,
+                    "PhysicalSensors" => 3,
                     array(
                         "id" => 0,
                         "type" => "Test1Sensor",
@@ -298,6 +318,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "RawCalibration" => "",
                     "Sensors" => 2,
+                    "ActiveSensors" => 0,
+                    "PhysicalSensors" => 2,
+                    "VirtualSensors" => 0,
+                    "forceSensors" => false,
                     0 => array(
                         "id" => 0,
                         "type" => "",
@@ -349,6 +373,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "RawCalibration" => "abcd",
                     "Sensors" => 2,
+                    "ActiveSensors" => 0,
+                    "PhysicalSensors" => 2,
+                    "VirtualSensors" => 0,
+                    "forceSensors" => false,
                     0 => array(
                         "id" => 0,
                         "type" => "resistive",
@@ -396,6 +424,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 false,
                 array(
                     "Sensors" => 2,
+                    "PhysicalSensors" => 2,
                     array(
                         "id" => 0,
                         "type" => "",
@@ -423,7 +452,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $TotalSensors, $default, $expect)
     {
-        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $TotalSensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, $this->o->toArray($default));
@@ -445,6 +475,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 2,
                 array(
                     "Sensors" => 2,
+                    "PhysicalSensors" => 2,
                     array(
                         "id" => 0,
                         "type" => "Hello",
@@ -474,6 +505,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 4,
                 array(
                     "Sensors" => 4,
+                    "PhysicalSensors" => 4,
                     array(
                         "id" => 0x10,
                         "type" => "multiInput",
@@ -514,6 +546,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 3,
                 array(
                     "Sensors" => 3,
+                    "PhysicalSensors" => 3,
                     array(
                         "id" => 3,
                         "type" => "Hello",
@@ -554,7 +587,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     public function testFromTypeString(
         $preload, $string, $TotalSensors, $expect, $sensors, $types
     ) {
-        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $TotalSensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->fromTypeString($string);
@@ -595,6 +629,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 2,
                 array(
                     "Sensors" => 2,
+                    "PhysicalSensors" => 2,
                     array(
                         "id" => 0,
                         "type" => "Hello",
@@ -624,6 +659,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 2,
                 array(
                     "Sensors" => 2,
+                    "PhysicalSensors" => 2,
                     array(
                         "id" => 0,
                         "type" => "Hello",
@@ -651,6 +687,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 2,
                 array(
                     "Sensors" => 2,
+                    "PhysicalSensors" => 2,
                     0 => array("id" => 2, "type" => "Hello", ),
                     1 => array("id" => 2, "type" => "", "rawCalibration" => "abcd"),
                 ),
@@ -680,7 +717,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     public function testFromTypeArray(
         $preload, $array, $TotalSensors, $expect, $sensors, $types
     ) {
-        $this->d->DriverInfo["NumSensors"] = $TotalSensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $TotalSensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->fromTypeArray($array);
@@ -756,7 +794,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSensor($preload, $num, $sensors, $expect)
     {
-        $this->d->DriverInfo["NumSensors"] = $sensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $sensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, get_class($this->o->sensor($num)));
@@ -798,7 +837,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFromCalString($preload, $string, $sensors, $expect)
     {
-        $this->d->DriverInfo["NumSensors"] = $sensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $sensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->assertSame($expect, $this->o->fromCalString($string));
@@ -860,7 +900,8 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     public function testUpdateSensor(
         $preload, $data, $key, $expect, $expectKey, $classes
     ) {
-        $this->d->DriverInfo["NumSensors"] = $sensors;
+        $this->d->DriverInfo["PhysicalSensors"] = $sensors;
+        $this->d->DriverInfo["VirtualSensors"] = 0;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->updateSensor($data, $key);

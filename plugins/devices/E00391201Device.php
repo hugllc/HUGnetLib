@@ -105,7 +105,8 @@ class E00391201Device extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["NumSensors"] = 9;
+        $this->myDriver->DriverInfo["PhysicalSensors"] = 9;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
         $this->fromSetupString($string);
     }
 
@@ -148,7 +149,6 @@ class E00391201Device extends DeviceDriverBase
     public function fromSetupString($string)
     {
         $Info = &$this->myDriver->DriverInfo;
-        $Info["NumSensors"]   = 9;
         $Info["TimeConstant"] = 1;
         $Info["Setup"]        = hexdec(substr($string, 0, 2));
         for ($i = 0; $i < 4; $i++) {

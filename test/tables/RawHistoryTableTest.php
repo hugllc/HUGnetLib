@@ -377,7 +377,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                 array(
                     'DriverInfo' => array(
                         'TimeConstant' => 1,
-                        'NumSensors' => 6,
+                        'PhysicalSensors' => 6,
+                        "VirtualSensors"   => 0,
                     ),
                     'id' => 18,
                     'DeviceID' => '000012',

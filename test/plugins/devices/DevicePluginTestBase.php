@@ -35,7 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
+require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once dirname(__FILE__)."/../PluginTestBase.php";
@@ -103,6 +103,42 @@ abstract class DevicePluginTestBase extends PluginTestBase
     public function testParent($class)
     {
         $this->assertTrue(is_subclass_of($class, "DeviceDriverBase"));
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testPhysicalSensors($class)
+    {
+        $d = new DummyDeviceContainer();
+        $obj = new $class($d, "");
+        $this->assertFalse(
+            is_null($d->DriverInfo["PhysicalSensors"]),
+            'DriverInfo["PhysicalSensors"] must be set'
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testVirtualSensors($class)
+    {
+        $d = new DummyDeviceContainer();
+        $obj = new $class($d, "");
+        $this->assertFalse(
+            is_null($d->DriverInfo["VirtualSensors"]),
+            'DriverInfo["VirtualSensors"] must be set'
+        );
     }
 }
 

@@ -80,6 +80,8 @@ class TestDriverPlugin extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
+        $this->myDriver->DriverInfo["PhysicalSensors"] = 2;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
         $this->fromSetupString($string);
     }
     /**

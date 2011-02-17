@@ -163,6 +163,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo"    => "",
                     ),
                     "params" => array(
@@ -197,6 +199,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo"    => "",
                     ),
                     "params" => array(
@@ -231,6 +235,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo"    => "",
                     ),
                     "params" => array(
@@ -319,6 +325,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo"    => "",
                     ),
                     "params" => array(
@@ -534,6 +542,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => 0,
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "",
                     ),
                     "params" => array(
@@ -567,6 +577,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup"       => "FFFFFF",
                     "DriverInfo"        => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "",
                     ),
                     "params"            => array(
@@ -699,6 +711,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "",
                     ),
                     "params" => array(
@@ -732,6 +746,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "",
                     ),
                     "params" => array(
@@ -765,6 +781,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "",
                     ),
                     "params" => array(
@@ -799,6 +817,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "0123456789",
                     ),
                     "params" => array(
@@ -832,6 +852,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "DriverInfo" => array(
                         "PacketTimeout" => 0,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                         "RawDriverInfo" => "01",
                     ),
                     "params" => array(
@@ -1937,6 +1959,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "DriverInfo" => array(
                         "RawDriverInfo" => "",
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                     ),
                     "id" => 232,
                     "DeviceID" => "0000E8",
@@ -1953,6 +1977,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => "2",
                     "sensors" => array(
                         "Sensors" => 2,
+                        "ActiveSensors" => 2,
+                        "PhysicalSensors" => 2,
                         0 => array("id" => 0, "type" => ""),
                         1 => array("id" => 0, "type" => ""),
                     ),
@@ -1990,6 +2016,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "DriverInfo" => array(
                         "RawDriverInfo" => "",
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
                     ),
                     "id" => 232,
                     "DeviceID" => "0000E8",
@@ -2006,6 +2034,8 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "ActiveSensors" => "2",
                     "sensors" => array(
                         "Sensors" => 2,
+                        "ActiveSensors" => 2,
+                        "PhysicalSensors" => 2,
                         0 => array("id" => 0, "type" => ""),
                         1 => array("id" => 0, "type" => ""),
                     ),

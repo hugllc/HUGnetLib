@@ -127,7 +127,8 @@ class E00392600DeviceTest extends DevicePluginTestBase
         return array(
             array(
                 array(
-                    "NumSensors" => 0,
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 0,
                     "Job" => 6,
                     "GatewayKey" => 12,
                     "Name" => "Scott's Device Here",
@@ -169,7 +170,8 @@ class E00392600DeviceTest extends DevicePluginTestBase
                 "06000C53636F747427732044657669636520486572650000000000000000000000"
                     ."01020304E7",
                 array(
-                    "NumSensors" => 0,
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 0,
                     "PacketTimeout" => 10,
                     "Job" => 6,
                     "Function" => "Config",
@@ -183,7 +185,8 @@ class E00392600DeviceTest extends DevicePluginTestBase
                 "0A000C53636F747427732044657669636520486572650000000000000000000000"
                     ."0102030412",
                 array(
-                    "NumSensors" => 0,
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 0,
                     "PacketTimeout" => 10,
                     "Job" => 10,
                     "Function" => "Unknown",

@@ -61,6 +61,12 @@ class DeviceSensorsContainer extends HUGnetContainer
     protected $default = array(
         "RawCalibration" => "",             // The raw calibration string
         "Sensors" => 0,                     // The number of sensors
+        "ActiveSensors" => 0,               // The number of active physical sensors
+        "PhysicalSensors" => 0,             // The number of actual sensors
+        "VirtualSensors" => 0,              // The number of virtual sensors
+        "forceSensors" => false,            // Force the Physical and Virtual
+                                            // sensor numbers to be different than
+                                            // the driver gives us.
     );
 
     /** @var object This is the device I am attached to */
@@ -109,10 +115,15 @@ class DeviceSensorsContainer extends HUGnetContainer
         parent::fromArray($array);
         // Clear the number of sensors
 
-        if (empty($this->Sensors)
-            || ($this->Sensors < (int)$this->myDevice->DriverInfo["NumSensors"])
-        ) {
-            $this->Sensors = (int)$this->myDevice->DriverInfo["NumSensors"];
+        $driverInfo =& $this->myDevice->DriverInfo;
+        $this->ActiveSensors = (int)$this->myDevice->ActiveSensors;
+        if (!$this->forceSensors) {
+            $this->PhysicalSensors = (int)$driverInfo["PhysicalSensors"];
+            $this->VirtualSensors = (int)$driverInfo["VirtualSensors"];
+        }
+        $sensors = $this->PhysicalSensors + $this->VirtualSensors;
+        if (empty($this->Sensors) || ($this->Sensors < $sensors)) {
+            $this->Sensors = $sensors;
         }
         // Now setup our sensors
         for ($i = 0; $i < $this->Sensors; $i++) {

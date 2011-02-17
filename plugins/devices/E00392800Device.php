@@ -85,7 +85,8 @@ class E00392800Device extends DeviceDriverBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["NumSensors"] = 16;
+        $this->myDriver->DriverInfo["PhysicalSensors"] = 16;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
         $this->fromSetupString($string);
     }
     /**

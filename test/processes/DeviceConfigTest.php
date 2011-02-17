@@ -458,8 +458,11 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "PollInterval"      => "0",
                         "ActiveSensors"     => "0",
                         "DeviceGroup"       => "FFFFFF",
-                        "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
-                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors"           => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvb"
+                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2Z"
+                            ."VNlbnNvcnMiO2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6M"
+                            ."DtzOjE0OiJWaXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU"
+                            ."2Vuc29ycyI7YjowO30=",
                         "params"            => "YToyOntzOjEwOiJEcml2ZXJJbmZvIjthOj"
                             ."M6e3M6MTA6Ikxhc3RDb25maWciO2k6MDtzOjEwOiJDb25maWdGYW"
                             ."lsIjtpOjA7czoxMzoiTGFzdENvbmZpZ1RyeSI7aTowO31zOjExOi"
@@ -497,8 +500,11 @@ class DeviceConfigTest extends PHPUnit_Framework_TestCase
                         "PollInterval"      => "0",
                         "ActiveSensors"     => "0",
                         "DeviceGroup"       => "FFFFFF",
-                        "sensors"           => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvb"
-                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors"           => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvb"
+                            ."iI7czowOiIiO3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2"
+                            ."ZVNlbnNvcnMiO2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k"
+                            ."6MDtzOjE0OiJWaXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcm"
+                            ."NlU2Vuc29ycyI7YjowO30=",
                         "params"            => "YTowOnt9",
                     ),
                 ),

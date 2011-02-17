@@ -84,7 +84,8 @@ class E00392100Device extends DeviceDriverLoadableBase
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["NumSensors"] = 6;
+        $this->myDriver->DriverInfo["PhysicalSensors"] = 6;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
         $this->fromSetupString($string);
     }
     /**
@@ -298,7 +299,9 @@ class E00392100Device extends DeviceDriverLoadableBase
         if (!is_object($this->actualSensors)) {
             $this->actualSensors = new DeviceSensorsContainer(
                 array(
-                    "Sensors" => 8,
+                    "PhysicalSensors" => 8,
+                    "VirtualSensors" => 0,
+                    "forceSensors" => true,
                     0 => $this->_currentSensor("HUGnet 1 Current"),
                     1 => $this->_tempSensor("HUGnet 1 FET Temperature"),
                     2 => $this->_voltageSensor("HUGnet 1 Voltage Low"),

@@ -154,7 +154,8 @@ class E00392100DeviceTest extends DevicePluginTestBase
                 array(
                     "PacketTimeout" => 0,
                     "TimeConstant" => 1,
-                    "NumSensors" => 6,
+                    "PhysicalSensors" => 6,
+                    "VirtualSensors" => 0,
                 ),
             ),
         );
@@ -342,8 +343,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                     array(
@@ -365,8 +369,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                     array(
@@ -388,8 +395,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                 ),
@@ -512,8 +522,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                     array(
@@ -535,8 +548,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                     array(
@@ -558,8 +574,11 @@ class E00392100DeviceTest extends DevicePluginTestBase
                         "PollInterval" => "0",
                         "ActiveSensors" => "0",
                         "DeviceGroup" => "FFFFFF",
-                        "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO"
-                            ."3M6NzoiU2Vuc29ycyI7aTowO30=",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
+                            ."O3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMi"
+                            ."O2k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJW"
+                            ."aXJ0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7"
+                            ."YjowO30=",
                         "params" => "YTowOnt9",
                     ),
                 ),
@@ -757,6 +776,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
     */
     public function testDecodeData($data, $command, $deltaT, $expect)
     {
+        $d = $this->readAttribute($this->o, "myDriver");
         $ret = $this->o->decodeData($data, $command, $deltaT);
         $this->assertEquals($expect, $ret, "Arrays are not the same", 0.1);
     }
