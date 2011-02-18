@@ -67,6 +67,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
         "dataType" => UnitsBase::TYPE_RAW,       // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "units" => "",                   // The units to put the data into by default
+        "bound" => false,                // This says if this sensor is changeable
         "rawCalibration" => "",          // The raw calibration string
         "timeConstant" => 1,             // The time constant
         "Am" => 1023,                    // The maximum value for the AtoD convertor

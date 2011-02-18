@@ -205,6 +205,7 @@ class E00391201Device extends DeviceDriverBase
             "id" => 0x40,
             "type" => "fetBoard",
             "location" => $location,
+            "bound" => true,
         );
     }
     /**
@@ -220,6 +221,7 @@ class E00391201Device extends DeviceDriverBase
             "id" => 0x50,
             "type" => "fetBoard",
             "location" => $location,
+            "bound" => true,
         );
 
     }

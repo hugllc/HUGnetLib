@@ -139,8 +139,9 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "", "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
                     ),
                     "units" => "",
-                    "rawCalibration" => "",
                     "units" => '&#176;F',
+                    "bound" => false,
+                    "rawCalibration" => "",
                     "decimals" => 3,
                 ),
             ),
@@ -159,8 +160,9 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "", "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
                     ),
                     "units" => "",
-                    "rawCalibration" => "",
                     "units" => '&#176;C',
+                    "bound" => false,
+                    "rawCalibration" => "",
                     "decimals" => 3,
                 ),
             ),

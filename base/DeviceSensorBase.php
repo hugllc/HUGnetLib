@@ -74,6 +74,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "rawCalibration" => "",          // The raw calibration string
         "units" => "",                   // The units to put the data into by default
         "decimals" => 2,                 // The number of decimal places to use
+        "bound" => false,                // This says if this sensor is changeable
     );
     /**
     * This is the array of sensor information.

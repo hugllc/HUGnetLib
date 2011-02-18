@@ -78,6 +78,7 @@ class PlaceholderVirtualSensor extends VirtualSensorBase
         "rawCalibration" => "",          // The raw calibration string
         "longName" => "Empty Virtual Sensor",
         "units" => '-',
+        "bound" => false,                // This says if this sensor is changeable
         "extraText" => array(),
         "extraDefault" => array(),
         "extraValues" => array(),

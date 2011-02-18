@@ -367,6 +367,7 @@ class E00392100Device extends DeviceDriverLoadableBase
             "type" => "Controller",
             "location" => $location,
             "extra" => array(180, 27),
+            "bound" => true,
         );
     }
     /**
@@ -383,6 +384,7 @@ class E00392100Device extends DeviceDriverLoadableBase
             "type" => "Controller",
             "location" => $location,
             "extra" => array(0.5, 7),
+            "bound" => true,
         );
 
     }
@@ -400,6 +402,7 @@ class E00392100Device extends DeviceDriverLoadableBase
             "type" => "BCTherm2322640",
             "location" => $location,
             "extra" => array(100, 10),
+            "bound" => true,
         );
 
     }

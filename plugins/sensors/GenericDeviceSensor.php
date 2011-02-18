@@ -73,6 +73,7 @@ class GenericDeviceSensor extends DeviceSensorBase
         "rawCalibration" => "",          // The raw calibration string
         "longName" => "Unknown Sensor",
         "units" => 'unknown',
+        "bound" => false,                // This says if this sensor is changeable
         "extraText" => array(),
         "extraDefault" => array(),
         // Integer is the size of the field needed to edit

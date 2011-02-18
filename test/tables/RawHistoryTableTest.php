@@ -400,6 +400,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 180,
                                 1 => 27,
                             ),
+                            "bound" => true,
                         ),
                         1 => array(
                             'id' => 80,
@@ -409,6 +410,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 0.5,
                                 1 => 7,
                             ),
+                            "bound" => true,
                         ),
                         2 => array(
                             'id' => 2,
@@ -418,6 +420,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 100,
                                 1 => 10,
                             ),
+                            "bound" => true,
                         ),
                         3 => array(
                             'id' => 64,
@@ -427,6 +430,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 180,
                                 1 => 27,
                             ),
+                            "bound" => true,
                         ),
                         4 => array(
                             'id' => 80,
@@ -436,6 +440,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 0.5,
                                 1 => 7,
                             ),
+                            "bound" => true,
                         ),
                         5 => array(
                             'id' => 2,
@@ -445,6 +450,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 100,
                                 1 => 10,
                             ),
+                            "bound" => true,
                         ),
                         6 => array(
                             "id" => 0xFE,

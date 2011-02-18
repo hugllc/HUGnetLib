@@ -282,6 +282,31 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     *
     * @dataProvider dataRegisterPlugin
     */
+    public function testDefaultFixedBool($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $fields = array(
+            "bound"
+        );
+        foreach ($fields as $f) {
+            $val = $obj->$f;
+            $this->assertTrue(
+                is_bool($val),
+                "field $f must be set to an boolean"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
     public function testDefaultFixedExtraText($class)
     {
         $d = new DeviceContainer();

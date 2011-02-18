@@ -157,6 +157,97 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "PhysicalSensors" => 6,
                     "VirtualSensors" => 4,
                 ),
+                array(
+                    'Sensors' => 10,
+                    'PhysicalSensors' => 6,
+                    'VirtualSensors' => 4,
+                    0 => array(
+                        'id' => 64,
+                        'type' => 'Controller',
+                        'location' => 'HUGnet 1 Voltage',
+                        'extra' =>
+                        array (
+                        0 => 180,
+                        1 => 27,
+                        ),
+                        'bound' => true,
+                    ),
+                    1 => array(
+                        'id' => 80,
+                        'type' => 'Controller',
+                        'location' => 'HUGnet 1 Current',
+                        'extra' =>
+                        array (
+                        0 => 0.5,
+                        1 => 7,
+                        ),
+                        'bound' => true,
+                    ),
+                    2 => array(
+                        'id' => 2,
+                        'type' => 'BCTherm2322640',
+                        'location' => 'HUGnet 1 FET Temperature',
+                        'extra' =>
+                        array (
+                        0 => 100,
+                        1 => 10,
+                        ),
+                        'bound' => true,
+                    ),
+                    3 => array(
+                        'id' => 64,
+                        'type' => 'Controller',
+                        'location' => 'HUGnet 2 Voltage',
+                        'extra' =>
+                        array (
+                        0 => 180,
+                        1 => 27,
+                        ),
+                        'bound' => true,
+                    ),
+                    4 => array(
+                        'id' => 80,
+                        'type' => 'Controller',
+                        'location' => 'HUGnet 2 Current',
+                        'extra' =>
+                        array (
+                        0 => 0.5,
+                        1 => 7,
+                        ),
+                        'bound' => true,
+                    ),
+                    5 => array(
+                        'id' => 2,
+                        'type' => 'BCTherm2322640',
+                        'location' => 'HUGnet 2 FET Temperature',
+                        'extra' =>
+                        array (
+                        0 => 100,
+                        1 => 10,
+                        ),
+                        'bound' => true,
+                    ),
+                    6 => array(
+                        'id' => 254,
+                        'type' => 'Placeholder',
+                        'location' => null,
+                    ),
+                    7 => array(
+                        'id' => 254,
+                        'type' => 'Placeholder',
+                        'location' => null,
+                    ),
+                    8 => array(
+                        'id' => 254,
+                        'type' => 'Placeholder',
+                        'location' => null,
+                    ),
+                    9 => array(
+                        'id' => 254,
+                        'type' => 'Placeholder',
+                        'location' => null,
+                    ),
+                ),
             ),
         );
     }
@@ -166,15 +257,17 @@ class E00392100DeviceTest extends DevicePluginTestBase
     *
     * @param array  $preload This is the attribute to set
     * @param string $expect  The expected return
+    * @param array  $sensors The expected sensor array
     *
     * @return null
     *
     * @dataProvider dataFromSetupString
     */
-    public function testFromSetupString($preload, $expect)
+    public function testFromSetupString($preload, $expect, $sensors)
     {
         $this->o->fromSetupString($preload);
-        $this->assertSame($expect, $this->d->DriverInfo);
+        $this->assertSame($expect, $this->d->DriverInfo, "DriverInfo Wrong");
+        $this->assertSame($sensors, $this->d->sensors->toArray(), "Sensors Wrong");
     }
     /**
     * test the loadable routine.

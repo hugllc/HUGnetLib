@@ -86,6 +86,7 @@ class PlaceholderDeviceSensor extends DeviceSensorBase
         "decimals" => 0,
         "maxDecimals" => 0,
         "unitType" => "-",
+        "bound" => true,
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(0xFF);

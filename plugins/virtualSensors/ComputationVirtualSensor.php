@@ -70,6 +70,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
         "dataType" => UnitsBase::TYPE_RAW,      // The datatype of each sensor
         "extra" => array(),              // Extra input for crunching numbers
         "units" => "",                   // The units to put the data into by default
+        "bound" => false,                // This says if this sensor is changeable
         "rawCalibration" => "",          // The raw calibration string
         "decimals" => null,
     );

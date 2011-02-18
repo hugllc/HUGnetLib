@@ -373,6 +373,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     {
         $ret = $this->sensor($this->_sensorIndex)->toArray(true, true);
         $ret["num"] = $this->_sensorIndex;
+        $ret["bound"] = $this->sensor($this->_sensorIndex)->bound;
         return $ret;
     }
     /**
