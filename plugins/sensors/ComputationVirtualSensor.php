@@ -161,7 +161,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
     {
         $pattern = preg_quote('+*)(');
         $string = preg_replace(
-            '/[^0-9\-\/\+\*\(\)\^]+/',
+            '/[^0-9\-\/\+\*\(\)\^\.]+/',
             "",
             $string
         );

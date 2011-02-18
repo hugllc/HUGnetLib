@@ -264,10 +264,25 @@ class ComputationVirtualSensorTest extends DeviceSensorPluginTestBase
                     ),
                 ),
                 array(
-                    0 => array("value" => 4),
+                    0 => array("value" => 4.1),
                     1 => array("value" => 3),
                 ),
-                4.0
+                4.1
+            ),
+            array(
+                array(
+                    "extra" => array(
+                        "{1} + {2}",
+                        "&#176;C",
+                        "Temperature",
+                        "3"
+                    ),
+                ),
+                array(
+                    0 => array("value" => 4.1576),
+                    1 => array("value" => 3.8253),
+                ),
+                7.983
             ),
         );
     }
