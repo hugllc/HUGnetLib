@@ -76,6 +76,10 @@ class FETBoardVoltageDeviceSensor extends VoltageDeviceSensorBase
             "R1 to Source (kOhms)",
             "R2 to Ground (kOhms)"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5),
         "extraDefault" => array(150, 10),
         "maxDecimals" => 4,
     );

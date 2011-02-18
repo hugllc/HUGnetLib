@@ -73,6 +73,10 @@ class GenericRevolvingDeviceSensor extends PulseDeviceSensorBase
         "extraText" => array(
             "Counts Per Revolution",
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5),
         "extraDefault" => array(1),
         "maxDecimals" => 2,
     );

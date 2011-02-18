@@ -79,6 +79,10 @@ class GA100DeviceSensor extends VoltageDeviceSensorBase
             "Read @ Max Voltage (mBar)",
             "AtoD Ref Voltage (V)"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5, 5, 5, 5),
         "extraDefault" => array(.5, 4.5, 0, 1, 5),
         "maxDecimals" => 2,
     );

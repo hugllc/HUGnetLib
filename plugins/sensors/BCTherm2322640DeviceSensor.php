@@ -77,6 +77,10 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
             "Bias Resistor (kOhms)",
             "Value @25&#176;C (kOhms)"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5),
         "extraDefault" => array(10, 10),
         "maxDecimals" => 2,
     );

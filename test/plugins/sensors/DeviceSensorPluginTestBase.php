@@ -206,6 +206,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
         $fields = array(
             "extraText",
             "extraDefault",
+            "extraValues",
         );
         foreach ($fields as $f) {
             $val = $obj->$f;
@@ -281,13 +282,33 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     *
     * @dataProvider dataRegisterPlugin
     */
-    public function testDefaultFixedExtra($class)
+    public function testDefaultFixedExtraText($class)
     {
         $d = new DeviceContainer();
         $var = eval("return $class::\$registerPlugin;");
         $obj = new $class($data, $d);
         $this->assertSame(
             count($obj->extraText),
+            count($obj->extraDefault),
+            "ExtraDefault and extraText need to have the same number of entries"
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultFixedExtraValues($class)
+    {
+        $d = new DeviceContainer();
+        $var = eval("return $class::\$registerPlugin;");
+        $obj = new $class($data, $d);
+        $this->assertSame(
+            count($obj->extraValues),
             count($obj->extraDefault),
             "ExtraDefault and extraText need to have the same number of entries"
         );
@@ -334,6 +355,30 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             $this->assertTrue(
                 (strlen($val) < $size),
                 "extraText[$key] must be less than $size characters"
+            );
+        }
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $class The class to use
+    *
+    * @return null
+    *
+    * @dataProvider dataRegisterPlugin
+    */
+    public function testDefaultExtraValuesCheck($class)
+    {
+        $size = 26;
+        $d = new DeviceContainer();
+        $obj = new $class($data, $d);
+        foreach (array_keys((array)$obj->extraDefault) as $key) {
+            $ret = is_null($obj->extraValues[$key]);
+            $ret = $ret || is_array($obj->extraValues[$key]);
+            $ret = $ret || is_int($obj->extraValues[$key]);
+            $this->assertTrue(
+                $ret,
+                "extraValues[$key] must be null, an array, or an int"
             );
         }
     }

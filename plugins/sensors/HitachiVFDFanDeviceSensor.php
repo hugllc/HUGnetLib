@@ -81,6 +81,10 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
             "Read @ Max Voltage (RPM)",
             "AtoD Ref Voltage (V)"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5, 5, 5, 7, 7, 5),
         "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
         "maxDecimals" => 1,
     );

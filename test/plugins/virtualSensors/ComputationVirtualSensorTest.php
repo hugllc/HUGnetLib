@@ -125,13 +125,19 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
     {
         return array(
             array(
-                array('extra'=>array("", "&#176;C", "Temperature", 3)),
+                array(
+                    'extra' => array(
+                        "", "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
+                    )
+                ),
                 array(
                     "id" => 0xFE,
                     "type" => "computation",
                     "location" => "",
                     "dataType" => UnitsBase::TYPE_RAW,
-                    "extra" => array("", "&#176;C", "Temperature", 3),
+                    'extra' => array(
+                        "", "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
+                    ),
                     "units" => "",
                     "rawCalibration" => "",
                     "units" => '&#176;F',
@@ -139,13 +145,19 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
             ),
             array(
-                array('extra'=>array("", "&#176;C", "Generic", 3)),
+                array(
+                    'extra'=>array(
+                        "", "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
+                    )
+                ),
                 array(
                     "id" => 0xFE,
                     "type" => "computation",
                     "location" => "",
                     "dataType" => UnitsBase::TYPE_RAW,
-                    "extra" => array("", "&#176;C", "Generic", 3),
+                    'extra' => array(
+                        "", "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
+                    ),
                     "units" => "",
                     "rawCalibration" => "",
                     "units" => '&#176;C',
@@ -185,6 +197,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "(({1} - {2}) / 3) + 1",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),
@@ -200,6 +213,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "({1} + {2}) + 1",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),
@@ -215,6 +229,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "({1} / {2})",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),
@@ -230,6 +245,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "({1} / ",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),
@@ -245,6 +261,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "badfunction();",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW, 
                         "3"
                     ),
                 ),
@@ -260,6 +277,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "sqrt({1});",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),
@@ -275,6 +293,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "{1} + {2}",
                         "&#176;C",
                         "Temperature",
+                        UnitsBase::TYPE_RAW,
                         "3"
                     ),
                 ),

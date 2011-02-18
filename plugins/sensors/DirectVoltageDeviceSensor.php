@@ -75,6 +75,10 @@ class DirectVoltageDeviceSensor extends VoltageDeviceSensorBase
         "extraText" => array(
             "AtoD Ref Voltage (V)"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5),
         "extraDefault" => array(5),
         "maxDecimals" => 4,
     );

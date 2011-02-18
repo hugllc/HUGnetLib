@@ -81,11 +81,22 @@ class ComputationVirtualSensor extends VirtualSensorBase
     protected $fixed = array(
         "longName" => "Computation Virtual Sensor",
         "unitType" => "Generic",
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(
+            20, 10, 15,
+            array(
+                UnitsBase::TYPE_RAW => UnitsBase::TYPE_RAW,
+                UnitsBase::TYPE_DIFF => UnitsBase::TYPE_DIFF
+            ),
+            3,
+        ),
         "extraText" => array(
-            "Math", "Storage Unit", "Unit Type", "maxDecimals"
+            "Math", "Storage Unit", "Unit Type", "Data Type", "Max Decimals"
         ),
         "extraDefault" => array(
-            "", "unknown", "Generic", 4
+            "", "unknown", "Generic", UnitsBase::TYPE_RAW, 4
         ),
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "storageUnit" => "unknown",
@@ -109,7 +120,10 @@ class ComputationVirtualSensor extends VirtualSensorBase
             $this->fixed["unitType"] = $data["extra"][2];
         }
         if (isset($data["extra"][3])) {
-            $this->fixed["maxDecimals"] = $data["extra"][3];
+            $this->fixed["storageType"] = $data["extra"][3];
+        }
+        if (isset($data["extra"][4])) {
+            $this->fixed["maxDecimals"] = $data["extra"][4];
         }
         parent::__construct($data, $device);
     }

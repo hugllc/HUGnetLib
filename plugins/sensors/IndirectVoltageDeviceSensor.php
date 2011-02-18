@@ -77,6 +77,10 @@ class IndirectVoltageDeviceSensor extends VoltageDeviceSensorBase
             "R2 to Ground (kOhms)",
             "AtoD Ref Voltage"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 5, 5),
         "extraDefault" => array(150, 10, 5),
         "maxDecimals" => 4,
     );

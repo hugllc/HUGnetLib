@@ -73,6 +73,10 @@ class LiquidFlowDeviceSensor extends PulseDeviceSensorBase
         "extraText" => array(
             "Gallons / Pulse",
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(10),
         "extraDefault" => array(1000),
         "maxDecimals" => 2,
     );

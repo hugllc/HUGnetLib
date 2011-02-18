@@ -87,8 +87,11 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
         "unitType" => "Heat/Unit Area",
         "storageUnit" => 'W/m^2',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "extraText" => array(
-        ),
+        "extraText" => array(),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(),
         "extraDefault" => array(),
         "maxDecimals" => 2,
     );

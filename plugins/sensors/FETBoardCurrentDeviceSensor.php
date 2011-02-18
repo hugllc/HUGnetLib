@@ -76,6 +76,10 @@ class FETBoardCurrentDeviceSensor extends CurrentDeviceSensorBase
             "Sense Resistor (kOhms)",
             "Gain"
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5, 7),
         "extraDefault" => array(0.5, 1),
         "maxDecimals" => 4,
     );

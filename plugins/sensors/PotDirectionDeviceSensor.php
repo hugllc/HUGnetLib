@@ -80,6 +80,10 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
             "Direction 2 (&#176;)",
             "Resistance 2 (kOhms)",
         ),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(7, 4, 7, 4, 7),
         "extraDefault" => array(25,0, 0, 180, 25),
         "maxDecimals" => 1,
     );

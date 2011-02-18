@@ -74,6 +74,10 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array("Bias Resistor (kOhms)"),
+        // Integer is the size of the field needed to edit
+        // Array   is the values that the extra can take
+        // Null    nothing
+        "extraValues" => array(5),
         "extraDefault" => array(100),
         "maxDecimals" => 2,
     );

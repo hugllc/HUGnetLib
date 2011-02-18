@@ -80,6 +80,7 @@ class PlaceholderDeviceSensor extends DeviceSensorBase
         "units" => '-',
         "extraText" => array(),
         "extraDefault" => array(),
+        "extraValues" => array(),
         "storageUnit" => "-",
         "storageType" => UnitsBase::TYPE_IGNORE,  // This is the dataType as stored
         "decimals" => 0,
