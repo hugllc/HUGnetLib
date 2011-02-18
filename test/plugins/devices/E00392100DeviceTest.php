@@ -780,6 +780,56 @@ class E00392100DeviceTest extends DevicePluginTestBase
         $ret = $this->o->decodeData($data, $command, $deltaT);
         $this->assertEquals($expect, $ret, "Arrays are not the same", 0.1);
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "",
+                null,
+                array(
+                    'PacketTimeout' => 0,
+                    'TimeConstant' => 1,
+                    'PhysicalSensors' => 6,
+                    'VirtualSensors' => 4,
+                    'CPU' => 'Atmel Mega16',
+                    'SensorConfig' => 'Fixed',
+                    'bootloader' => "No",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $setup   The setup string to use
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $setup, $cols, $expect)
+    {
+        $this->d->DriverInfo = array_merge(
+            (array)$this->d->DriverInfo, (array)$preload
+        );
+        $this->o->fromSetupString($setup);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

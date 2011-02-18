@@ -74,6 +74,13 @@ class E00392800Device extends DeviceDriverBase
             "DEFAULT:0039-28-01-C:DEFAULT",
         ),
     );
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+        "CPU" => "CPU",
+        "SensorConfig" => "Sensor Configuration",
+    );
     /**
     * Builds the class
     *
@@ -101,6 +108,20 @@ class E00392800Device extends DeviceDriverBase
             $ret = $this->readCalibration();
         }
         return $this->setLastConfig($ret);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = parent::toOutput($cols);
+        $ret["CPU"] = "Atmel Mega168";
+        $ret["SensorConfig"] = "1-8 analog or digital, 9-16 digital only";
+        return $ret;
     }
 
 }

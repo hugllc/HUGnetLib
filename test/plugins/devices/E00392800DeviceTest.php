@@ -313,6 +313,54 @@ class E00392800DeviceTest extends DevicePluginTestBase
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "0102020202020202027070707070707070",
+                null,
+                array(
+                    'PhysicalSensors' => 16,
+                    'VirtualSensors' => 4,
+                    'TimeConstant' => 1,
+                    'CPU' => 'Atmel Mega168',
+                    'SensorConfig' => '1-8 analog or digital, 9-16 digital only',
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $setup   The setup string to use
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $setup, $cols, $expect)
+    {
+        $this->d->DriverInfo = array_merge(
+            (array)$this->d->DriverInfo, (array)$preload
+        );
+        $this->o->fromSetupString($setup);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

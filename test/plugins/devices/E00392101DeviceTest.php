@@ -1273,6 +1273,54 @@ S9030000FC",
         $this->assertSame($string, $this->d->string, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "",
+                null,
+                array(
+                    'PhysicalSensors' => 0,
+                    'VirtualSensors' => 0,
+                    'CPU' => 'Atmel Mega16',
+                    'SensorConfig' => 'None',
+                    'bootloader' => 'Yes',
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $setup   The setup string to use
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $setup, $cols, $expect)
+    {
+        $this->d->DriverInfo = array_merge(
+            (array)$this->d->DriverInfo, (array)$preload
+        );
+        $this->o->fromSetupString($setup);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

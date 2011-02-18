@@ -98,7 +98,7 @@ class OutputContainer extends HUGnetContainer
     */
     public function setContainer(&$container)
     {
-        $this->container = $container;
+        $this->container = &$container;
     }
 
     /**
@@ -106,7 +106,7 @@ class OutputContainer extends HUGnetContainer
     *
     * @return null
     */
-    private function _getData()
+    public function preloadData()
     {
         if (empty($this->dataOut)) {
             $iterate = is_a($this->container, "IteratorInterface");
@@ -201,6 +201,7 @@ class OutputContainer extends HUGnetContainer
         $this->paramsOut = array();
         return parent::clearData();
     }
+
     /**
     * Returns the object as a string
     *
@@ -220,7 +221,7 @@ class OutputContainer extends HUGnetContainer
         $this->params($type, $params);
         $out = new $class($this->paramsOut[$type]);
         $this->header($cols, (is_array($cols) && !empty($cols)));
-        $this->_getData();
+        $this->preloadData();
         $out->header($this->headerOut);
         foreach ((array)$this->dataOut as $o) {
             $out->row($o);

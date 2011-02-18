@@ -1395,6 +1395,190 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->decodeData($data, $command, $deltaT, $prev);
         $this->assertSame($expect, $ret, "Arrays are not the same");
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                    "LastContact" => 1234,
+                    "LastModified" => 4321,
+                    "LastModifiedBy" => "Me",
+                    "DriverInfo" => array(
+                        "Test" => "one",
+                        "Test2" => "two",
+                        "PhysicalSensors" => 1,
+                        "VirtualSensors" => 5,
+                    ),
+                ),
+                null,
+                array(
+                    "Test" => "one",
+                    "Test2" => "two",
+                    "PhysicalSensors" => 1,
+                    "VirtualSensors" => 5,
+                    "RawDriverInfo" => "",
+                    "TimeConstant" => 0,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $device The data to preload into the class
+    * @param array  $cols   The columns to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($device, $cols, $expect)
+    {
+        $this->d = new DeviceContainer($device);
+        $this->o = new TestDevice($this->d);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutputHeader()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                    "PhysicalSensors" => "Physical Sensors",
+                    "VirtualSensors" => "Virtual Sensors",
+                ),
+            ),
+            array(
+                array(),
+                array(
+                    "test" => "Column 1",
+                    "test2" => "Column 2",
+                ),
+                array(
+                    "test" => "Column 1",
+                    "test2" => "Column 2",
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $device The data to preload into the class
+    * @param array  $cols   The columns to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutputHeader
+    */
+    public function testToOutputHeader($device, $cols, $expect)
+    {
+        $this->d = new DeviceContainer($device);
+        $this->o = new TestDevice($this->d);
+        $ret = $this->o->toOutputHeader($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputParams()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(
+                ),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $device The data to preload into the class
+    * @param string $type   The output type
+    * @param array  $cols   The columns to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputParams
+    */
+    public function testOutputParams($device, $type, $cols, $expect)
+    {
+        $this->d = new DeviceContainer($device);
+        $this->o = new TestDevice($this->d);
+        $ret = $this->o->outputParams($type, $cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testOutputFactory
+    *
+    * @return array
+    */
+    public static function dataOutputFactory()
+    {
+        return array(
+            array(
+                "TestDevice",
+                array(
+                    "type" => "hello",
+                ),
+                array(
+                    "type" => "hello",
+                    "iterate" => true,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the register function
+    *
+    * @param string $class      The class or object to use
+    * @param array  $data       The data to feed to the outputcontainer class
+    * @param array  $expectData The data to expect in the outputcontainer class
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputFactory
+    */
+    public function testOutputFactory($class, $data, $expectData)
+    {
+        $this->d = new DeviceContainer($device);
+        $o = new $class($this->d);
+        $ret = &$o->outputFactory($data);
+        $this->assertSame("OutputContainer", get_class($ret), "Class is wrong");
+        $this->assertAttributeSame($o, "container", $ret, "Container is wrong");
+        $this->assertAttributeSame($expectData, "data", $ret, "Data is wrong");
+    }
 
 }
 /**

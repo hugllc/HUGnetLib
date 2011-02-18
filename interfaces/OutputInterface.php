@@ -75,5 +75,13 @@ interface OutputInterface
     * @return array
     */
     public function outputParams($type, $cols = null);
+    /**
+    * Registers extra vars
+    *
+    * @param mixed $data The data to import into the class
+    *
+    * @return null
+    */
+    public function &outputFactory($data = array());
 }
 ?>

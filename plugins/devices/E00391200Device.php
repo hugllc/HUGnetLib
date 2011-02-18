@@ -86,6 +86,13 @@ class E00391200Device extends DeviceDriverBase
             "DEFAULT:0039-12-02-B:DEFAULT",
         ),
     );
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+        "CPU" => "CPU",
+        "SensorConfig" => "Sensor Configuration",
+    );
     /**
     * Builds the class
     *
@@ -100,6 +107,21 @@ class E00391200Device extends DeviceDriverBase
         $this->myDriver->DriverInfo["PhysicalSensors"] = 9;
         $this->myDriver->DriverInfo["VirtualSensors"] = 4;
         $this->fromSetupString($string);
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = parent::toOutput($cols);
+        $ret["CPU"] = "Atmel Tiny26";
+        $ret["SensorConfig"] = "1-9 Analog or Digital";
+        
+        return $ret;
     }
 
 }

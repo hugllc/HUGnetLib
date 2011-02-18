@@ -72,6 +72,14 @@ class E00392100Device extends DeviceDriverLoadableBase
     );
     /** This is where we store the actual view sensors */
     protected $actualSensors = null;
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+        "CPU" => "CPU",
+        "SensorConfig" => "Sensor Configuration",
+        "bootloader" => "In Bootloader",
+    );
 
     /**
     * Builds the class
@@ -394,6 +402,21 @@ class E00392100Device extends DeviceDriverLoadableBase
             "extra" => array(100, 10),
         );
 
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = parent::toOutput($cols);
+        $ret["CPU"] = "Atmel Mega16";
+        $ret["SensorConfig"] = "Fixed";
+        $ret["bootloader"] = "No";
+        return $ret;
     }
 }
 

@@ -73,6 +73,14 @@ class E00392101Device extends DeviceDriverLoadableBase
         "0039-21-01-A" => "0039-20-01-C",
         "0039-21-02-A" => "0039-20-14-C",
     );
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+        "CPU" => "CPU",
+        "SensorConfig" => "Sensor Configuration",
+        "bootloader" => "In Bootloader",
+    );
     /**
     * Builds the class
     *
@@ -318,6 +326,21 @@ class E00392101Device extends DeviceDriverLoadableBase
             )
         );
         $this->myFirmware->getLatest();
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = parent::toOutput($cols);
+        $ret["CPU"] = "Atmel Mega16";
+        $ret["SensorConfig"] = "None";
+        $ret["bootloader"] = "Yes";
+        return $ret;
     }
 }
 

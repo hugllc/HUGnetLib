@@ -140,6 +140,7 @@ abstract class DevicePluginTestBase extends PluginTestBase
             'DriverInfo["VirtualSensors"] must be set'
         );
     }
+
 }
 
 ?>

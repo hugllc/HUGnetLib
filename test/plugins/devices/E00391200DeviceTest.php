@@ -77,7 +77,7 @@ class E00391200DeviceTest extends DevicePluginTestBase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
+        $this->d = new DummyDeviceContainer();
         $this->o = new E00391200Device($this->d);
     }
 
@@ -172,6 +172,54 @@ class E00391200DeviceTest extends DevicePluginTestBase
     {
         $this->o->fromSetupString($preload);
         $this->assertSame($expect, $this->d->DriverInfo);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "0102020202020202027070707070707070",
+                null,
+                array(
+                    "PhysicalSensors" => 9,
+                    "VirtualSensors" => 4,
+                    "TimeConstant" => 1,
+                    "CPU" => "Atmel Tiny26",
+                    "SensorConfig" => "1-9 Analog or Digital",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $setup   The setup string to use
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $setup, $cols, $expect)
+    {
+        $this->d->DriverInfo = array_merge(
+            (array)$this->d->DriverInfo, (array)$preload
+        );
+        $this->o->fromSetupString($setup);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
     }
 
 }

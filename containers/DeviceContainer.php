@@ -415,6 +415,14 @@ class DeviceContainer extends DevicesTable
         }
         return $cache[$this->ControllerKey];
     }
-
+    /**
+    * returns a reference to our driver
+    *
+    * @return DeviceContainer
+    */
+    public function &driver()
+    {
+        return $this->epDriver;
+    }
 }
 ?>

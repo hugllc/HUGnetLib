@@ -395,6 +395,141 @@ class E00391201DeviceTest extends DevicePluginTestBase
         $ret = $this->o->decodeData($data, $command, $deltaT, $prev);
         $this->assertSame($expect, $ret, "Arrays are not the same");
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataToOutput()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "E40203040506070809",
+                null,
+                array(
+                    'PhysicalSensors' => 9,
+                    'VirtualSensors' => 4,
+                    'TimeConstant' => 1,
+                    'Setup' => 228,
+                    'FET0' =>
+                    array (
+                        'mode' => 0,
+                        'name' => 'Digital',
+                        'value' => 2,
+                        'multiplier' => 6,
+                    ),
+                    'FET1' =>
+                    array (
+                        'mode' => 1,
+                        'name' => 'Analog - High Z',
+                        'value' => 3,
+                        'multiplier' => 7,
+                    ),
+                    'FET2' =>
+                    array (
+                        'mode' => 2,
+                        'name' => 'Analog - Voltage',
+                        'value' => 4,
+                        'multiplier' => 8,
+                    ),
+                    'FET3' =>
+                    array (
+                        'mode' => 3,
+                        'name' => 'Analog - Current',
+                        'value' => 5,
+                        'multiplier' => 9,
+                    ),
+                    'FET0Mode' => 'Digital',
+                    'FET0Value' => 'Off',
+                    'FET1Mode' => 'Analog - High Z',
+                    'FET1Value' => 'None',
+                    'FET2Mode' => 'Analog - Voltage',
+                    'FET2Value' => '4 Multiplier: 8',
+                    'FET3Mode' => 'Analog - Current',
+                    'FET3Value' => '5 Multiplier: 9',
+                    'CPU' => 'Atmel Tiny26',
+                    'SensorConfig' => 'Fixed',
+                ),
+            ),
+            array(
+                array(
+                ),
+                "E48003040506070809",
+                null,
+                array(
+                    'PhysicalSensors' => 9,
+                    'VirtualSensors' => 4,
+                    'TimeConstant' => 1,
+                    'Setup' => 228,
+                    'FET0' =>
+                    array (
+                        'mode' => 0,
+                        'name' => 'Digital',
+                        'value' => 128,
+                        'multiplier' => 6,
+                    ),
+                    'FET1' =>
+                    array (
+                        'mode' => 1,
+                        'name' => 'Analog - High Z',
+                        'value' => 3,
+                        'multiplier' => 7,
+                    ),
+                    'FET2' =>
+                    array (
+                        'mode' => 2,
+                        'name' => 'Analog - Voltage',
+                        'value' => 4,
+                        'multiplier' => 8,
+                    ),
+                    'FET3' =>
+                    array (
+                        'mode' => 3,
+                        'name' => 'Analog - Current',
+                        'value' => 5,
+                        'multiplier' => 9,
+                    ),
+                    'FET0Mode' => 'Digital',
+                    'FET0Value' => 'On',
+                    'FET1Mode' => 'Analog - High Z',
+                    'FET1Value' => 'None',
+                    'FET2Mode' => 'Analog - Voltage',
+                    'FET2Value' => '4 Multiplier: 8',
+                    'FET3Mode' => 'Analog - Current',
+                    'FET3Value' => '5 Multiplier: 9',
+                    'CPU' => 'Atmel Tiny26',
+                    'SensorConfig' => 'Fixed',
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param string $setup   The setup string to use
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataToOutput
+    */
+    public function testToOutput($preload, $setup, $cols, $expect)
+    {
+        $this->d->DriverInfo = array_merge(
+            (array)$this->d->DriverInfo, (array)$preload
+        );
+        $this->o->fromSetupString($setup);
+        $ret = $this->o->toOutput($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

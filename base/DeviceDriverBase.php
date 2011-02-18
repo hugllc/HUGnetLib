@@ -40,6 +40,7 @@
 require_once dirname(__FILE__).'/../base/HUGnetClass.php';
 require_once dirname(__FILE__).'/../containers/DeviceContainer.php';
 require_once dirname(__FILE__).'/../interfaces/DeviceDriverInterface.php';
+require_once dirname(__FILE__).'/../interfaces/OutputInterface.php';
 require_once dirname(__FILE__).'/../containers/PacketContainer.php';
 require_once dirname(__FILE__).'/../tables/RawHistoryTable.php';
 
@@ -56,12 +57,18 @@ require_once dirname(__FILE__).'/../tables/RawHistoryTable.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInterface
+abstract class DeviceDriverBase extends HUGnetClass
+    implements DeviceDriverInterface, OutputInterface
 {
     /** @var This is to register the class */
     public static $registerPlugin = array();
     /** @var This is to register the class */
     protected $myDriver = null;
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+    );
     /**
     * Builds the class
     *
@@ -586,5 +593,58 @@ abstract class DeviceDriverBase extends HUGnetClass implements DeviceDriverInter
         $ret["timeConstant"] = hexdec(substr($string, 4, 2));
         return $ret;
     }
-
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = array_merge(
+            (array)$this->myDriver->params->DriverInfo,
+            (array)$this->myDriver->DriverInfo
+        );
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutputHeader($cols = null)
+    {
+        if (empty($cols)) {
+            return $this->outputLabels;
+        } else {
+            return (array)$cols;
+        }
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param string $type The output plugin type
+    * @param array  $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputParams($type, $cols = null)
+    {
+        return array();
+    }
+    /**
+    * Registers extra vars
+    *
+    * @param mixed $data The data to import into the class
+    *
+    * @return null
+    */
+    public function &outputFactory($data = array())
+    {
+        include_once dirname(__FILE__)."/../containers/OutputContainer.php";
+        return new OutputContainer($data, $this);
+    }
 }

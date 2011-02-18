@@ -94,6 +94,21 @@ class E00391201Device extends DeviceDriverBase
         self::MODE_VOLTAGE => 'Analog - Voltage',
         self::MODE_CURRENT => 'Analog - Current'
     );
+    /** @var This is to register the class */
+    protected $outputLabels = array(
+        "PhysicalSensors" => "Physical Sensors",
+        "VirtualSensors" => "Virtual Sensors",
+        "CPU" => "CPU",
+        "SensorConfig" => "Sensor Configuration",
+        "FET0Mode" => "FET0 Mode",
+        "FET0Value" => "FET0 Value",
+        "FET1Mode" => "FET1 Mode",
+        "FET1Value" => "FET1 Value",
+        "FET2Mode" => "FET2 Mode",
+        "FET2Value" => "FET2 Value",
+        "FET3Mode" => "FET3 Mode",
+        "FET3Value" => "FET3 Value",
+    );
     /**
     * Builds the class
     *
@@ -222,7 +237,45 @@ class E00391201Device extends DeviceDriverBase
         $ret["timeConstant"] = 1;
         return $ret;
     }
-
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function toOutput($cols = null)
+    {
+        $ret = parent::toOutput($cols);
+        foreach (array("FET0", "FET1", "FET2", "FET3") as $fet) {
+            $ret[$fet."Mode"] = $ret[$fet]["name"];
+            $ret[$fet."Value"] = $this->getOutputValue($ret[$fet]);
+        }
+        $ret["CPU"] = "Atmel Tiny26";
+        $ret["SensorConfig"] = "Fixed";
+        return $ret;
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $info The info array on the fet to get the value of
+    *
+    * @return string
+    */
+    protected function getOutputValue($info)
+    {
+        if ($info["mode"] == self::MODE_DIGITAL) {
+            if ($info["value"] >= 0x80) {
+                return "On";
+            } else {
+                return "Off";
+            }
+        } else if ($info["mode"] == self::MODE_HIGHZ) {
+            return "None";
+        } else {
+            return $info["value"]." Multiplier: ".$info["multiplier"];
+        }
+    }
 }
 
 ?>
