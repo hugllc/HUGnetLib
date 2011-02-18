@@ -135,6 +135,9 @@ class DeviceSensorsContainer extends HUGnetContainer
             $this->PhysicalSensors = (int)$driverInfo["PhysicalSensors"];
             $this->VirtualSensors = (int)$driverInfo["VirtualSensors"];
         }
+        if (empty($this->ActiveSensors)) {
+            $this->ActiveSensors = $this->PhysicalSensors;
+        }
         $sensors = $this->PhysicalSensors + $this->VirtualSensors;
         if (empty($this->Sensors) || ($this->Sensors < $sensors)) {
             $this->Sensors = $sensors;
@@ -215,6 +218,9 @@ class DeviceSensorsContainer extends HUGnetContainer
         if ($key >= $this->PhysicalSensors) {
             // This is forced to be a virtual sensor.
             $vals["id"] = 0xFE;
+        } else if ($key >= $this->ActiveSensors) {
+            // This is to help in the transition away from "ActiveSensors"
+            $vals["dataType"] = UnitsBase::TYPE_IGNORE;
         }
         $good = $this->checkSensor($vals["id"], $vals["type"], $this->sensor[$key]);
         if ($good && !$force) {

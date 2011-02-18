@@ -390,6 +390,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'ActiveSensors' => 10,
                     'sensors' => array(
                         'Sensors' => 10,
+                        'ActiveSensors' => 6,
                         "PhysicalSensors" => 6,
                         "VirtualSensors" => 4,
                         0 => array(

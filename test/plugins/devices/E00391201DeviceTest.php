@@ -182,6 +182,7 @@ class E00391201DeviceTest extends DevicePluginTestBase
                 ),
                 array(
                     "Sensors" => 13,
+                    'ActiveSensors' => 9,
                     "PhysicalSensors" => 9,
                     "VirtualSensors" => 4,
                     0 => array(
