@@ -38,9 +38,9 @@
 
 /** Get our classes */
 require_once dirname(__FILE__)
-    .'/../../../plugins/sensors/ComputationVirtualSensor.php';
+    .'/../../../plugins/virtualSensors/ComputationVirtualSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
-require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
+require_once dirname(__FILE__).'/VirtualSensorPluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -55,7 +55,7 @@ require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class ComputationVirtualSensorTest extends DeviceSensorPluginTestBase
+class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
 {
 
     /**
