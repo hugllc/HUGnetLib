@@ -155,7 +155,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
                     "PacketTimeout" => 0,
                     "TimeConstant" => 1,
                     "PhysicalSensors" => 6,
-                    "VirtualSensors" => 0,
+                    "VirtualSensors" => 4,
                 ),
             ),
         );

@@ -35,6 +35,11 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
+/** This is for the base class */
+require_once dirname(__FILE__)."/../../../../base/VirtualSensorBase.php";
+// Need to make sure this file is not added to the code coverage
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
+
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
@@ -48,52 +53,66 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface DeviceSensorInterface
+class TestVirtualSensor extends VirtualSensorBase
 {
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "TestVirtualSensor",
+        "Type" => "sensor",
+        "Class" => "TestVirtualSensor",
+        "Flags" => array("FE"),
+    );
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("a", "c", "e", "Test3Sensor", "Hello");
+    /** @var object This is where we store our configuration */
+    protected $idValues = array(0xFE);
     /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array $prev   The previous reading
-    *
-    * @return float The direction in degrees
+    * This is the array of sensor information.
     */
-    public function getUnits($A, $deltaT = 0, $prev = null);
+    protected $fixed = array(
+        "longName" => "Virtual Sensor",
+        "unitType" => "secondUnit",
+        "storageUnit" => 'anotherUnit2',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
+        "extraText" => array(),
+        "extraDefault" => array(),
+        "maxDecimals"=> 4,
+    );
+
+    /**
+    * Disconnects from the database
+    *
+    * @param array  $data    The servers to use
+    * @param object &$device The device we are attached to
+    */
+    public function __construct($data, &$device)
+    {
+        $data["type"] = "Virtual";
+        parent::__construct($data, $device);
+    }
     /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0);
+    function getVirtualReading($A, $deltaT = 0, $data = array())
+    {
+    }
     /**
-    * Converts data between units
+    * function to set unitType
     *
-    * @param mixed &$data The data to convert
+    * @param mixed $value The value to set
     *
-    * @return true on success, false on failure
+    * @return null
     */
-    public function convertUnits(&$data);
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllUnits();
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllDataTypes();
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllTypes();
+    protected function setType($value)
+    {
+        $this->data["type"] = $value;
+    }
+
 }
 ?>

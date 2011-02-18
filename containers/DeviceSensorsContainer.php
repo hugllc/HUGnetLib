@@ -114,7 +114,21 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Set up everything else
         parent::fromArray($array);
         // Clear the number of sensors
+        $this->setupSensorNumbers();
+        // Now setup our sensors
+        for ($i = 0; $i < $this->Sensors; $i++) {
+            $this->upgradeArray($array[$i], $i);
+            $this->updateSensor($array[$i], $i, true);
+        }
+    }
 
+    /**
+    * Sets the number of sensors
+    *
+    * @return null
+    */
+    protected function setupSensorNumbers()
+    {
         $driverInfo =& $this->myDevice->DriverInfo;
         $this->ActiveSensors = (int)$this->myDevice->ActiveSensors;
         if (!$this->forceSensors) {
@@ -124,12 +138,6 @@ class DeviceSensorsContainer extends HUGnetContainer
         $sensors = $this->PhysicalSensors + $this->VirtualSensors;
         if (empty($this->Sensors) || ($this->Sensors < $sensors)) {
             $this->Sensors = $sensors;
-        }
-        // Now setup our sensors
-        for ($i = 0; $i < $this->Sensors; $i++) {
-            $this->upgradeArray($array[$i], $i);
-            $this->updateSensor($array[$i], $i, true);
-            //$this->sensor[$i] = &$this->sensorFactory($array[$i]);
         }
     }
     /**
@@ -173,6 +181,8 @@ class DeviceSensorsContainer extends HUGnetContainer
         if (empty($array) || !is_array($array)) {
             return;
         }
+        // Clear the number of sensors
+        $this->setupSensorNumbers();
         for ($key = 0; $key < $this->Sensors; $key++) {
             $this->updateSensor($array[$key], $key);
         }
@@ -201,6 +211,10 @@ class DeviceSensorsContainer extends HUGnetContainer
             $vals["id"] = hexdec($data);
         } else {
             $vals["id"] = (int)$data;
+        } 
+        if ($key >= $this->PhysicalSensors) {
+            // This is forced to be a virtual sensor.
+            $vals["id"] = 0xFE;
         }
         $good = $this->checkSensor($vals["id"], $vals["type"], $this->sensor[$key]);
         if ($good && !$force) {
@@ -334,9 +348,16 @@ class DeviceSensorsContainer extends HUGnetContainer
         $ret = array(
             "deltaT" => $data["deltaT"],
         );
-        for ($i = 0; $i < $this->Sensors; $i++) {
+        // This is for the physical sensors
+        for ($i = 0; $i < $this->PhysicalSensors; $i++) {
             $ret[$i] = $this->sensor($i)->getUnits(
                 $data[$i], $data["deltaT"], $prev[$i]
+            );
+        }
+        // This is for the virtual sensors
+        for (;$i < $this->Sensors; $i++) {
+            $ret[$i] = $this->sensor($i)->getVirtualUnits(
+                $data[$i], $data["deltaT"], $prev[$i], $ret
             );
         }
         return $ret;

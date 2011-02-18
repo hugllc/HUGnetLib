@@ -195,44 +195,66 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "id" => "404",
                     "SaveDate" => "1280251875",
                     "SetupString" => "000000019400392102410039201443000008FFFFFF50",
-                    "SensorString" => "YTo4OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
-                        ."O3M6NzoiU2Vuc29ycyI7aTo2O2k6MDthOjEyOntzOjI6ImlkIjtpOjI7"
-                        ."czo0OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2Nh"
-                        ."dGlvbiI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6"
-                        ."ImV4dHJhIjthOjA6e31zOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIi"
-                        ."O3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztz"
-                        ."OjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6"
-                        ."NjQ7czozOiJWY2MiO2k6NTt9aToxO2E6MTI6e3M6MjoiaWQiO2k6Mjtz"
-                        ."OjQ6InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0"
-                        ."aW9uIjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToi"
-                        ."ZXh0cmEiO2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7"
-                        ."czoxMjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6"
-                        ."MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2"
-                        ."NDtzOjM6IlZjYyI7aTo1O31pOjI7YToxMjp7czoyOiJpZCI7aToyO3M6"
-                        ."NDoidHlwZSI7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRp"
-                        ."b24iO3M6MDoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJl"
-                        ."eHRyYSI7YTowOnt9czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtz"
-                        ."OjEyOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoy"
-                        ."OiJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0"
-                        ."O3M6MzoiVmNjIjtpOjU7fWk6MzthOjEyOntzOjI6ImlkIjtpOjI7czo0"
-                        ."OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlv"
-                        ."biI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4"
-                        ."dHJhIjthOjA6e31zOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6"
-                        ."MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6"
-                        ."IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7"
-                        ."czozOiJWY2MiO2k6NTt9aTo0O2E6MTI6e3M6MjoiaWQiO2k6MjtzOjQ6"
-                        ."InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9u"
-                        ."IjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0"
-                        ."cmEiO2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czox"
-                        ."MjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6Mjoi"
-                        ."VGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtz"
-                        ."OjM6IlZjYyI7aTo1O31pOjU7YToxMjp7czoyOiJpZCI7aToyO3M6NDoi"
-                        ."dHlwZSI7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24i"
-                        ."O3M6MDoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRy"
-                        ."YSI7YTowOnt9czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEy"
-                        ."OiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJU"
-                        ."ZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6"
-                        ."MzoiVmNjIjtpOjU7fX0=",
+                    "SensorString" => "YToxNjp7czoxNDoiUmF3Q2FsaWJyYXRpb24iO3M6M"
+                        ."DoiIjtzOjc6IlNlbnNvcnMiO2k6MTA7czoxMzoiQWN0aXZlU2Vuc29"
+                        ."ycyI7aTo2O3M6MTU6IlBoeXNpY2FsU2Vuc29ycyI7aTo2O3M6MTQ6I"
+                        ."lZpcnR1YWxTZW5zb3JzIjtpOjQ7czoxMjoiZm9yY2VTZW5zb3JzIjt"
+                        ."iOjA7aTowO2E6MTQ6e3M6MjoiaWQiO2k6NjQ7czo0OiJ0eXBlIjtzO"
+                        ."jEwOiJDb250cm9sbGVyIjtzOjg6ImxvY2F0aW9uIjtzOjE2OiJIVUd"
+                        ."uZXQgMSBWb2x0YWdlIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7c"
+                        ."zo1OiJleHRyYSI7YToyOntpOjA7aToxODA7aToxO2k6Mjc7fXM6NTo"
+                        ."idW5pdHMiO3M6MToiViI7czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6M"
+                        ."DoiIjtzOjEyOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjE"
+                        ."wMjM7czoyOiJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxO"
+                        ."iJzIjtpOjY0O3M6MzoiVmNjIjtpOjU7czo4OiJkZWNpbWFscyI7aTo"
+                        ."0O31pOjE7YToxNDp7czoyOiJpZCI7aTo4MDtzOjQ6InR5cGUiO3M6M"
+                        ."TA6IkNvbnRyb2xsZXIiO3M6ODoibG9jYXRpb24iO3M6MTY6IkhVR25"
+                        ."ldCAxIEN1cnJlbnQiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzO"
+                        ."jU6ImV4dHJhIjthOjI6e2k6MDtkOjAuNTtpOjE7aTo3O31zOjU6InV"
+                        ."uaXRzIjtzOjI6Im1BIjtzOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowO"
+                        ."iIiO3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTA"
+                        ."yMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6I"
+                        ."nMiO2k6NjQ7czozOiJWY2MiO2k6NTtzOjg6ImRlY2ltYWxzIjtpOjQ"
+                        ."7fWk6MjthOjE0OntzOjI6ImlkIjtpOjI7czo0OiJ0eXBlIjtzOjE0O"
+                        ."iJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlvbiI7czoyNDoiSFV"
+                        ."HbmV0IDEgRkVUIFRlbXBlcmF0dXJlIjtzOjg6ImRhdGFUeXBlIjtzO"
+                        ."jM6InJhdyI7czo1OiJleHRyYSI7YToyOntpOjA7aToxMDA7aToxO2k"
+                        ."6MTA7fXM6NToidW5pdHMiO3M6NzoiJiMxNzY7RiI7czoxNDoicmF3Q"
+                        ."2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc3RhbnQiO2k"
+                        ."6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTUzNjtzOjE6I"
+                        ."kQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNjIjtpOjU7czo"
+                        ."4OiJkZWNpbWFscyI7aToyO31pOjM7YToxNDp7czoyOiJpZCI7aTo2N"
+                        ."DtzOjQ6InR5cGUiO3M6MTA6IkNvbnRyb2xsZXIiO3M6ODoibG9jYXR"
+                        ."pb24iO3M6MTY6IkhVR25ldCAyIFZvbHRhZ2UiO3M6ODoiZGF0YVR5c"
+                        ."GUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjI6e2k6MDtpOjE4MDt"
+                        ."pOjE7aToyNzt9czo1OiJ1bml0cyI7czoxOiJWIjtzOjE0OiJyYXdDY"
+                        ."WxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aTo"
+                        ."xO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiR"
+                        ."CI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTtzOjg"
+                        ."6ImRlY2ltYWxzIjtpOjQ7fWk6NDthOjE0OntzOjI6ImlkIjtpOjgwO"
+                        ."3M6NDoidHlwZSI7czoxMDoiQ29udHJvbGxlciI7czo4OiJsb2NhdGl"
+                        ."vbiI7czoxNjoiSFVHbmV0IDIgQ3VycmVudCI7czo4OiJkYXRhVHlwZ"
+                        ."SI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6Mjp7aTowO2Q6MC41O2k"
+                        ."6MTtpOjc7fXM6NToidW5pdHMiO3M6MjoibUEiO3M6MTQ6InJhd0Nhb"
+                        ."GlicmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN0YW50IjtpOjE"
+                        ."7czoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1MzY7czoxOiJEI"
+                        ."jtpOjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7aTo1O3M6ODo"
+                        ."iZGVjaW1hbHMiO2k6NDt9aTo1O2E6MTQ6e3M6MjoiaWQiO2k6MjtzO"
+                        ."jQ6InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F"
+                        ."0aW9uIjtzOjI0OiJIVUduZXQgMiBGRVQgVGVtcGVyYXR1cmUiO3M6O"
+                        ."DoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjI6e2k"
+                        ."6MDtpOjEwMDtpOjE7aToxMDt9czo1OiJ1bml0cyI7czo3OiImIzE3N"
+                        ."jtGIjtzOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InR"
+                        ."pbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmI"
+                        ."jtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czo"
+                        ."zOiJWY2MiO2k6NTtzOjg6ImRlY2ltYWxzIjtpOjI7fWk6NjthOjM6e"
+                        ."3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToiUGxhY2Vob2x"
+                        ."kZXIiO3M6ODoibG9jYXRpb24iO047fWk6NzthOjM6e3M6MjoiaWQiO"
+                        ."2k6MjU0O3M6NDoidHlwZSI7czoxMToiUGxhY2Vob2xkZXIiO3M6ODo"
+                        ."ibG9jYXRpb24iO047fWk6ODthOjM6e3M6MjoiaWQiO2k6MjU0O3M6N"
+                        ."DoidHlwZSI7czoxMToiUGxhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24"
+                        ."iO047fWk6OTthOjM6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7c"
+                        ."zoxMToiUGxhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24iO047fX0=",
                 ),
                 dirname(__FILE__).'/../files/DevicesHistoryTableTest.xml',
                 404,
@@ -320,50 +342,76 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "id" => "404",
                     "SaveDate" => "1280251875",
                     "SetupString" => "000000019400392102410039201443000008FFFFFF50",
-                    "SensorString" => "YTo4OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIi"
-                        ."O3M6NzoiU2Vuc29ycyI7aTo2O2k6MDthOjEyOntzOjI6ImlkIjtpOjI7"
-                        ."czo0OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2Nh"
-                        ."dGlvbiI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6"
-                        ."ImV4dHJhIjthOjA6e31zOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIi"
-                        ."O3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztz"
-                        ."OjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6"
-                        ."NjQ7czozOiJWY2MiO2k6NTt9aToxO2E6MTI6e3M6MjoiaWQiO2k6Mjtz"
-                        ."OjQ6InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0"
-                        ."aW9uIjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToi"
-                        ."ZXh0cmEiO2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7"
-                        ."czoxMjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6"
-                        ."MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2"
-                        ."NDtzOjM6IlZjYyI7aTo1O31pOjI7YToxMjp7czoyOiJpZCI7aToyO3M6"
-                        ."NDoidHlwZSI7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRp"
-                        ."b24iO3M6MDoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJl"
-                        ."eHRyYSI7YTowOnt9czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtz"
-                        ."OjEyOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoy"
-                        ."OiJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0"
-                        ."O3M6MzoiVmNjIjtpOjU7fWk6MzthOjEyOntzOjI6ImlkIjtpOjI7czo0"
-                        ."OiJ0eXBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlv"
-                        ."biI7czowOiIiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4"
-                        ."dHJhIjthOjA6e31zOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6"
-                        ."MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6"
-                        ."IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7"
-                        ."czozOiJWY2MiO2k6NTt9aTo0O2E6MTI6e3M6MjoiaWQiO2k6MjtzOjQ6"
-                        ."InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9u"
-                        ."IjtzOjA6IiI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0"
-                        ."cmEiO2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czox"
-                        ."MjoidGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6Mjoi"
-                        ."VGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7aTo2NDtz"
-                        ."OjM6IlZjYyI7aTo1O31pOjU7YToxMjp7czoyOiJpZCI7aToyO3M6NDoi"
-                        ."dHlwZSI7czoxNDoiQkNUaGVybTIzMjI2NDAiO3M6ODoibG9jYXRpb24i"
-                        ."O3M6MDoiIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRy"
-                        ."YSI7YTowOnt9czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEy"
-                        ."OiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJU"
-                        ."ZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6"
-                        ."MzoiVmNjIjtpOjU7fX0=",
+                    "SensorString" => "YToxNjp7czoxNDoiUmF3Q2FsaWJyYXRpb24iO3"
+                        ."M6MDoiIjtzOjc6IlNlbnNvcnMiO2k6MTA7czoxMzoiQWN0aXZlU"
+                        ."2Vuc29ycyI7aTo2O3M6MTU6IlBoeXNpY2FsU2Vuc29ycyI7aTo2"
+                        ."O3M6MTQ6IlZpcnR1YWxTZW5zb3JzIjtpOjQ7czoxMjoiZm9yY2V"
+                        ."TZW5zb3JzIjtiOjA7aTowO2E6MTQ6e3M6MjoiaWQiO2k6NjQ7cz"
+                        ."o0OiJ0eXBlIjtzOjEwOiJDb250cm9sbGVyIjtzOjg6ImxvY2F0a"
+                        ."W9uIjtzOjE2OiJIVUduZXQgMSBWb2x0YWdlIjtzOjg6ImRhdGFU"
+                        ."eXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YToyOntpOjA7aTo"
+                        ."xODA7aToxO2k6Mjc7fXM6NToidW5pdHMiO3M6MToiViI7czoxND"
+                        ."oicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc"
+                        ."3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2"
+                        ."NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6Mzo"
+                        ."iVmNjIjtpOjU7czo4OiJkZWNpbWFscyI7aTo0O31pOjE7YToxND"
+                        ."p7czoyOiJpZCI7aTo4MDtzOjQ6InR5cGUiO3M6MTA6IkNvbnRyb"
+                        ."2xsZXIiO3M6ODoibG9jYXRpb24iO3M6MTY6IkhVR25ldCAxIEN1"
+                        ."cnJlbnQiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV"
+                        ."4dHJhIjthOjI6e2k6MDtkOjAuNTtpOjE7aTo3O31zOjU6InVuaX"
+                        ."RzIjtzOjI6Im1BIjtzOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowO"
+                        ."iIiO3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6"
+                        ."MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjt"
+                        ."zOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTtzOjg6ImRlY2ltYW"
+                        ."xzIjtpOjQ7fWk6MjthOjE0OntzOjI6ImlkIjtpOjI7czo0OiJ0e"
+                        ."XBlIjtzOjE0OiJCQ1RoZXJtMjMyMjY0MCI7czo4OiJsb2NhdGlv"
+                        ."biI7czoyNDoiSFVHbmV0IDEgRkVUIFRlbXBlcmF0dXJlIjtzOjg"
+                        ."6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YToyOn"
+                        ."tpOjA7aToxMDA7aToxO2k6MTA7fXM6NToidW5pdHMiO3M6NzoiJ"
+                        ."iMxNzY7RiI7czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6MDoiIjtz"
+                        ."OjEyOiJ0aW1lQ29uc3RhbnQiO2k6MTtzOjI6IkFtIjtpOjEwMjM"
+                        ."7czoyOiJUZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOi"
+                        ."JzIjtpOjY0O3M6MzoiVmNjIjtpOjU7czo4OiJkZWNpbWFscyI7a"
+                        ."ToyO31pOjM7YToxNDp7czoyOiJpZCI7aTo2NDtzOjQ6InR5cGUi"
+                        ."O3M6MTA6IkNvbnRyb2xsZXIiO3M6ODoibG9jYXRpb24iO3M6MTY"
+                        ."6IkhVR25ldCAyIFZvbHRhZ2UiO3M6ODoiZGF0YVR5cGUiO3M6Mz"
+                        ."oicmF3IjtzOjU6ImV4dHJhIjthOjI6e2k6MDtpOjE4MDtpOjE7a"
+                        ."ToyNzt9czo1OiJ1bml0cyI7czoxOiJWIjtzOjE0OiJyYXdDYWxp"
+                        ."YnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aTo"
+                        ."xO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MT"
+                        ."oiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6N"
+                        ."TtzOjg6ImRlY2ltYWxzIjtpOjQ7fWk6NDthOjE0OntzOjI6Imlk"
+                        ."IjtpOjgwO3M6NDoidHlwZSI7czoxMDoiQ29udHJvbGxlciI7czo"
+                        ."4OiJsb2NhdGlvbiI7czoxNjoiSFVHbmV0IDIgQ3VycmVudCI7cz"
+                        ."o4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO2E6M"
+                        ."jp7aTowO2Q6MC41O2k6MTtpOjc7fXM6NToidW5pdHMiO3M6Mjoi"
+                        ."bUEiO3M6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjA6IiI7czoxMjo"
+                        ."idGltZUNvbnN0YW50IjtpOjE7czoyOiJBbSI7aToxMDIzO3M6Mj"
+                        ."oiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1NTM2O3M6MToicyI7a"
+                        ."To2NDtzOjM6IlZjYyI7aTo1O3M6ODoiZGVjaW1hbHMiO2k6NDt9"
+                        ."aTo1O2E6MTQ6e3M6MjoiaWQiO2k6MjtzOjQ6InR5cGUiO3M6MTQ"
+                        ."6IkJDVGhlcm0yMzIyNjQwIjtzOjg6ImxvY2F0aW9uIjtzOjI0Oi"
+                        ."JIVUduZXQgMiBGRVQgVGVtcGVyYXR1cmUiO3M6ODoiZGF0YVR5c"
+                        ."GUiO3M6MzoicmF3IjtzOjU6ImV4dHJhIjthOjI6e2k6MDtpOjEw"
+                        ."MDtpOjE7aToxMDt9czo1OiJ1bml0cyI7czo3OiImIzE3NjtGIjt"
+                        ."zOjE0OiJyYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbW"
+                        ."VDb25zdGFudCI7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmI"
+                        ."jtpOjY1NTM2O3M6MToiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7"
+                        ."czozOiJWY2MiO2k6NTtzOjg6ImRlY2ltYWxzIjtpOjI7fWk6Njt"
+                        ."hOjM6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToiUG"
+                        ."xhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24iO047fWk6NzthOjM6e"
+                        ."3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToiUGxhY2Vo"
+                        ."b2xkZXIiO3M6ODoibG9jYXRpb24iO047fWk6ODthOjM6e3M6Mjo"
+                        ."iaWQiO2k6MjU0O3M6NDoidHlwZSI7czoxMToiUGxhY2Vob2xkZX"
+                        ."IiO3M6ODoibG9jYXRpb24iO047fWk6OTthOjM6e3M6MjoiaWQiO"
+                        ."2k6MjU0O3M6NDoidHlwZSI7czoxMToiUGxhY2Vob2xkZXIiO3M6"
+                        ."ODoibG9jYXRpb24iO047fX0=",
                 ),
                 array(
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
                         "PhysicalSensors"   => 6,
-                        "VirtualSensors"   => 0,
+                        "VirtualSensors"   => 4,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",
@@ -372,9 +420,11 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
-                    "ActiveSensors" => 6,
+                    "ActiveSensors" => 10,
                     "sensors" => array(
-                        "Sensors" => 6,
+                        "Sensors" => 10,
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 4,
                         0 => array(
                             "id" => 0x40,
                             "type" => "Controller",
@@ -410,6 +460,26 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                             "type" => "BCTherm2322640",
                             "location" => "HUGnet 2 FET Temperature",
                             "extra" => array(100, 10),
+                        ),
+                        6 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        7 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        8 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        9 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
                         ),
                     ),
                     "params" => array(
@@ -456,7 +526,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
                         "PhysicalSensors"   => 6,
-                        "VirtualSensors"   => 0,
+                        "VirtualSensors"   => 4,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",
@@ -465,9 +535,11 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
-                    "ActiveSensors" => 6,
+                    "ActiveSensors" => 10,
                     "sensors" => array(
-                        "Sensors" => 6,
+                        "Sensors" => 10,
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 4,
                         0 => array(
                             "id" => 0x40,
                             "type" => "Controller",
@@ -503,6 +575,26 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                             "type" => "BCTherm2322640",
                             "location" => "HUGnet 2 FET Temperature",
                             "extra" => array(100, 10),
+                        ),
+                        6 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        7 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        8 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        9 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
                         ),
                     ),
                     "params" => array(
@@ -519,7 +611,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "DriverInfo" => array(
                         "TimeConstant" => 1,
                         "PhysicalSensors"   => 6,
-                        "VirtualSensors"   => 0,
+                        "VirtualSensors"   => 4,
                     ),
                     "id" => 404,
                     "DeviceID" => "000194",
@@ -528,9 +620,11 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "FWVersion" => "0.0.8",
                     "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
                     "Driver" => "e00392100",
-                    "ActiveSensors" => 6,
+                    "ActiveSensors" => 10,
                     "sensors" => array(
-                        "Sensors" => 6,
+                        "Sensors" => 10,
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 4,
                         0 => array(
                             "id" => 0x40,
                             "type" => "Controller",
@@ -566,6 +660,26 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                             "type" => "BCTherm2322640",
                             "location" => "HUGnet 2 FET Temperature",
                             "extra" => array(100, 10),
+                        ),
+                        6 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        7 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        8 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        9 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
                         ),
                     ),
                     "params" => array(

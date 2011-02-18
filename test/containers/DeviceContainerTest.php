@@ -1861,18 +1861,24 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "DeviceGroup" => "FFFFFF",
                     "params" => "",
                     "sensors" => array(
-                        "Sensors" => 2,
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 1,
+                        "Sensors" => 3,
                         0 => array(
                             "dataType" => UnitsBase::TYPE_IGNORE,
                         ),
                         1 => array(
                             "location" => "Hello",
                         ),
+                        2 => array(
+                            "location" => "Hello2",
+                        ),
                     ),
                 ),
                 array(
                     "Date" => "Date",
                     "Data1" => "Hello (firstUnit)",
+                    "Data2" => "Hello2 (anotherUnit2)",
                 ),
             ),
         );

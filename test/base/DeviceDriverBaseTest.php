@@ -1302,6 +1302,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 0,
+                    ),
                     "sensors" => array(
                         "Sensors" => 6,
                         0 => array(

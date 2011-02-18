@@ -36,9 +36,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/HUGnetContainer.php";
-require_once dirname(__FILE__)."/UnitsBase.php";
-require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
+require_once dirname(__FILE__)."/DeviceSensorBase.php";
+require_once dirname(__FILE__)."/../interfaces/VirtualSensorInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,8 +52,8 @@ require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class DeviceSensorBase extends HUGnetContainer
-    implements DeviceSensorInterface
+abstract class VirtualSensorBase extends DeviceSensorBase
+    implements VirtualSensorInterface
 {
     /** This is a raw record */
     const TYPE_RAW = UnitsBase::TYPE_RAW;
@@ -87,6 +86,8 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "extraDefault" => array(),
         "maxDecimals" => 2,
     );
+    /** @var object These are the valid values for units */
+    protected $idValues = array(0xFE);
 
     /** @var object This is where our unit conversion is stored */
     protected $unitConvert = null;
@@ -97,7 +98,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     protected $myConfig = null;
     /** @var object These are the valid values for dataType */
     protected $dataTypeValues = array(
-        UnitsBase::TYPE_RAW, UnitsBase::TYPE_DIFF, UnitsBase::TYPE_IGNORE
+        UnitsBase::TYPE_RAW, UnitsBase::TYPE_IGNORE
     );
     /** @var object These are the valid values for unitType */
     protected $unitTypeValues = array();
@@ -112,190 +113,39 @@ abstract class DeviceSensorBase extends HUGnetContainer
     */
     public function __construct($data, &$device)
     {
-        // Set up my device
-        $this->myDevice = &$device;
-        // Setup our configuration
-        $this->myConfig = &ConfigContainer::singleton();
-        // Set up the default units
-        $this->setupUnits();
-        if (empty($this->default["units"])) {
-            if (strtolower($this->unitConvert->to) == "unknown") {
-                $this->default["units"] = $this->storageUnit;
-            } else {
-                $this->default["units"] = $this->unitConvert->to;
-            }
-        }
-        if (!$this->unitConvert->valid($data["units"])) {
-            unset($data["units"]);
-        }
-        if (is_null($this->default["decimals"])
-            || ($this->default["decimals"] > $this->maxDecimals)
-        ) {
-            $this->default["decimals"] = (int)$this->maxDecimals;
-        }
-        if ($data["decimals"] > $this->maxDecimals) {
-            unset($data["decimals"]);
-        }
-        parent::__construct($data);
-    }
-
-    /**
-    * Gets the extra values
-    *
-    * @param array $index The extra index to use
-    *
-    * @return The extra value (or default if empty)
-    */
-    protected function getExtra($index)
-    {
-        if (is_array($this->extra) && isset($this->extra[$index])) {
-            return $this->extra[$index];
-        }
-        return $this->extraDefault[$index];
-    }
-    /**
-    * Sets all of the endpoint attributes from an array
-    *
-    * @param bool $default Return items set to their default?
-    * @param bool $fixed   Return items in the fixed array?
-    *
-    * @return null
-    */
-    public function toArray($default = true, $fixed = false)
-    {
-        $ret = parent::toArray($default);
-        // Return the fixed stuff if asked
-        if ($fixed) {
-            $ret = array_merge($this->fixed, $ret);
-        }
-        // Always return the type and id
-        $ret = array_merge(
-            array(
-                "id"   => $this->id,
-                "type" => $this->type,
-            ),
-            $ret
-        );
-        return $ret;
+        parent::__construct($data, $device);
     }
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array $prev   The previous reading
+    * @param array $data The data from the other sensors that were crunched
+    * @param array $prev The previous reading
     *
     * @return float The direction in degrees
     */
-    public function getUnits($A, $deltaT = 0, $prev = null)
+    public function getVirtualUnits($data, $prev = null)
     {
-
         $ret = array(
+            "value" => $this->getVirtualReading($data),
+            "units" => $this->storageUnit,
+            "unitType" => $this->unitType,
+            "dataType" => $this->storageType,
         );
-        if ($this->storageType == UnitsBase::TYPE_DIFF) {
-            $ret["value"] = $this->getReading(($A - $prev), $deltaT);
-            $ret["raw"] = $A;
-        } else {
-            $ret["value"] = $this->getReading($A, $deltaT);
-        }
-        $ret["units"] = $this->storageUnit;
-        $ret["unitType"] = $this->unitType;
-        $ret["dataType"] = $this->storageType;
-        return $ret;
-    }
-
-    /**
-    * Sets up the unit conversion
-    *
-    * @return true on success, false on failure
-    */
-    protected function setupUnits()
-    {
-        if (empty($this->unitConvert)) {
-            $driver = $this->myConfig->plugins->getPlugin(
-                "Units", $this->unitType
-            );
-            $class = $driver["Class"];
-            $d = array(
-                "to" => $this->units,
-                "from" => $this->storageUnit,
-                "type" => $this->dataType,
-            );
-            $this->throwException(
-                "No default unit class found",
-                -5,
-                !class_exists($class)
-            );
-            $this->unitConvert = new $class($d);
-        }
-
-    }
-    /**
-    * Converts data between units
-    *
-    * @param mixed &$data The data to convert
-    *
-    * @return true on success, false on failure
-    */
-    public function convertUnits(&$data)
-    {
-        $this->setupUnits();
-        if (!is_null($data)) {
-            $ret = $this->unitConvert->convert(
-                $data, $this->units, $this->storageUnit
-            );
-            if ($ret === false) {
-                $this->units = $this->storageUnit;
-            }
-            if (is_numeric($data)) {
-                $data = round($data, (int)$this->decimals);
-            }
-        } else {
-            $ret = true;
-        }
         return $ret;
     }
     /**
-    * Converts data between units
+    * This is just a dummy, as it is needed for the DeviceSensorInterface
     *
-    * @return arry of units in array("unit" => "unit") format
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    *
+    * @return float The direction in degrees
     */
-    public function getAllUnits()
+    function getReading($A, $deltaT = 0)
     {
-        $this->setupUnits();
-        return $this->unitConvert->getValid();
+        return null;
     }
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllDataTypes()
-    {
-        $ret = array();
-        foreach ((array)$this->dataTypeValues as $value) {
-            $ret[$value] = $value;
-        }
-        return $ret;
 
-    }
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllTypes()
-    {
-        $ret = array();
-        $type = $this->stringSize(dechex($this->id), 2);
-        $plugins = $this->myConfig->plugins->searchPlugins("sensor", $type);
-        foreach ((array)$plugins as $key => $value) {
-            list($id, $type) = explode(":", $key);
-            $ret[$type] = $value["Name"];
-        }
-        return $ret;
-
-    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

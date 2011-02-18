@@ -804,6 +804,10 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array("id", "Date", "Data0", "Data1", "Data2"),
                 array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 1,
+                        "VirtualSensors" => 0,
+                    ),
                     "sensors" => array(
                         "Sensors" => 1,
                         0 => array(
@@ -844,6 +848,10 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array("id", "Date", "Data0", "Data1", "Data2"),
                 array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 1,
+                        "VirtualSensors" => 0,
+                    ),
                     "sensors" => array(
                         "Sensors" => 1,
                         0 => array(
@@ -966,6 +974,10 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 "JPGraphDatLin",
                 array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
                 array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 4,
+                        "VirtualSensors" => 0,
+                    ),
                     "sensors" => array(
                         "Sensors" => 4,
                         array("id" => 0),
@@ -995,6 +1007,10 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 "FlotDatLin",
                 array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
                 array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 4,
+                        "VirtualSensors" => 0,
+                    ),
                     "sensors" => array(
                         "Sensors" => 4,
                         array("id" => 0),

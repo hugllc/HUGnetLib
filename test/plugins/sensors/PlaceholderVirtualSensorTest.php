@@ -26,7 +26,7 @@
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Endpoint
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -37,9 +37,10 @@
  */
 
 /** Get our classes */
-require_once dirname(__FILE__).'/../../../plugins/devices/E00391200Device.php';
+require_once dirname(__FILE__)
+    .'/../../../plugins/sensors/PlaceholderVirtualSensor.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
-require_once dirname(__FILE__).'/DevicePluginTestBase.php';
+require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -47,14 +48,14 @@ require_once dirname(__FILE__).'/DevicePluginTestBase.php';
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Endpoint
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00391200DeviceTest extends DevicePluginTestBase
+class PlaceholderVirtualSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -68,17 +69,16 @@ class E00391200DeviceTest extends DevicePluginTestBase
     protected function setUp()
     {
         $config = array(
-            "sockets" => array(
-                array(
-                    "dummy" => true,
-                ),
-            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
-         $this->d = new DummyDeviceContainer();
-        $this->o = new E00391200Device($this->d);
+        $this->d = new DummyDeviceContainer();
+        $this->o = new PlaceholderVirtualSensor(
+            array(
+            ),
+            $this->d
+        );
     }
 
     /**
@@ -102,76 +102,94 @@ class E00391200DeviceTest extends DevicePluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("E00391200Device"),
+            array("PlaceholderVirtualSensor"),
         );
     }
-
     /**
-    * data provider for testDeviceID
+    * data provider for testSet
     *
     * @return array
     */
-    public static function dataToSetupString()
+    public static function dataSet()
+    {
+        return array(
+            array("location", "raw", "raw"),
+        );
+    }
+    /**
+    * Data provider for testConstructor
+    *
+    * @return array
+    */
+    public static function dataConstructor()
     {
         return array(
             array(
-                array(
-                ),
-                "",
+                array('extra'=>array(10)),
+                array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+            ),
+            array(
+                array('location' => "Hello"),
+                array("id" => 0xFE, "type" => "Placeholder", "location" => "Hello"),
             ),
         );
     }
-
     /**
-    * test the set routine when an extra class exists
+    * Generic function for testing sensor routines
     *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $preload The data to preload into the class
+    * @param mixed $expect  The return data to expect
     *
     * @return null
     *
-    * @dataProvider dataToSetupString
+    * @dataProvider dataConstructor()
     */
-    public function testToSetupString($preload, $expect)
+    public function testConstructor($preload, $expect)
     {
-        $this->d->DriverInfo = $preload;
-        $this->d->GatewayKey = (int)$preload["GatewayKey"];
-        $ret = $this->o->toSetupString();
+        $o = new PlaceholderVirtualSensor($preload, $this->d);
+        $this->assertSame($expect, $o->toArray());
+    }
+    /**
+    * Data provider for testGetReading
+    *
+    * @return array
+    */
+    public static function dataGetVirtualReading()
+    {
+        return array(
+            array(
+                array('extra'=>array(10)),
+                63630,
+                null
+            ),
+            array(
+                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+                5000,
+                null
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $preload The data to preload into the class
+    * @param mixed $data    The data for the sensor to work with 
+    * @param mixed $expect  The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetVirtualReading()
+    */
+    public function testGetVirtualReading($preload, $data, $expect)
+    {
+
+        $o = new PlaceholderVirtualSensor($preload, $this->d);
+        $ret = $o->getVirtualReading($data);
         $this->assertSame($expect, $ret);
-    }
-    /**
-    * data provider for testDeviceID
-    *
-    * @return array
-    */
-    public static function dataFromSetupString()
-    {
-        return array(
-            array(
-                "0102020202020202027070707070707070",
-                array(
-                    "PhysicalSensors" => 9,
-                    "VirtualSensors" => 4,
-                    "TimeConstant" => 1,
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload This is the attribute to set
-    * @param string $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromSetupString
-    */
-    public function testFromSetupString($preload, $expect)
-    {
-        $this->o->fromSetupString($preload);
-        $this->assertSame($expect, $this->d->DriverInfo);
     }
 
 }

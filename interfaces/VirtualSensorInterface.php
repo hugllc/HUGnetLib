@@ -48,52 +48,24 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-interface DeviceSensorInterface
+interface VirtualSensorInterface
 {
     /**
     * Gets the direction from a direction sensor made out of a POT.
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    * @param array $prev   The previous reading
+    * @param array $data The data from the other sensors that were crunched
+    * @param array $prev The previous reading
     *
     * @return float The direction in degrees
     */
-    public function getUnits($A, $deltaT = 0, $prev = null);
+    public function getVirtualUnits($data, $prev = null);
     /**
     * Changes a raw reading into a output value
     *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
+    * @param array $data The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0);
-    /**
-    * Converts data between units
-    *
-    * @param mixed &$data The data to convert
-    *
-    * @return true on success, false on failure
-    */
-    public function convertUnits(&$data);
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllUnits();
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllDataTypes();
-    /**
-    * Converts data between units
-    *
-    * @return arry of units in array("unit" => "unit") format
-    */
-    public function getAllTypes();
+    function getVirtualReading($data);
 }
 ?>

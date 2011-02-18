@@ -152,7 +152,7 @@ class E00391201DeviceTest extends DevicePluginTestBase
                 "E40203040506070809",
                 array(
                     "PhysicalSensors" => 9,
-                    "VirtualSensors" => 0,
+                    "VirtualSensors" => 4,
                     "TimeConstant" => 1,
                     "Setup" => 0xE4,
                     "FET0" => array(
@@ -181,7 +181,9 @@ class E00391201DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 array(
-                    "Sensors" => 9,
+                    "Sensors" => 13,
+                    "PhysicalSensors" => 9,
+                    "VirtualSensors" => 4,
                     0 => array(
                         "id" => 0x50,
                         "type" => "fetBoard",
@@ -227,6 +229,27 @@ class E00391201DeviceTest extends DevicePluginTestBase
                         "type" => "fetBoard",
                         "location" => "Main Voltage",
                     ),
+                    9 => array(
+                        "id" => 0xFE,
+                        "type" => "Placeholder",
+                        "location" => null,
+                    ),
+                    10 => array(
+                        "id" => 0xFE,
+                        "type" => "Placeholder",
+                        "location" => null,
+                    ),
+                    11 => array(
+                        "id" => 0xFE,
+                        "type" => "Placeholder",
+                        "location" => null,
+                    ),
+                    12 => array(
+                        "id" => 0xFE,
+                        "type" => "Placeholder",
+                        "location" => null,
+                    ),
+                    
                 ),
             ),
         );
@@ -319,6 +342,30 @@ class E00391201DeviceTest extends DevicePluginTestBase
                         "units" => "V",
                         "unitType" => "Voltage",
                         "dataType" => UnitsBase::TYPE_RAW,
+                    ),
+                    9 => array(
+                        "value" => null,
+                        "units" => "-",
+                        "unitType" => "-",
+                        "dataType" => UnitsBase::TYPE_IGNORE,
+                    ),
+                    10 => array(
+                        "value" => null,
+                        "units" => "-",
+                        "unitType" => "-",
+                        "dataType" => UnitsBase::TYPE_IGNORE,
+                    ),
+                    11 => array(
+                        "value" => null,
+                        "units" => "-",
+                        "unitType" => "-",
+                        "dataType" => UnitsBase::TYPE_IGNORE,
+                    ),
+                    12 => array(
+                        "value" => null,
+                        "units" => "-",
+                        "unitType" => "-",
+                        "dataType" => UnitsBase::TYPE_IGNORE,
                     ),
                     "DataIndex" => 55,
                     "timeConstant" => 1,

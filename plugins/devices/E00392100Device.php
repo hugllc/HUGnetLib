@@ -85,7 +85,7 @@ class E00392100Device extends DeviceDriverLoadableBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["PhysicalSensors"] = 6;
-        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 4;
         $this->fromSetupString($string);
     }
     /**

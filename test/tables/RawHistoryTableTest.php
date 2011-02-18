@@ -378,7 +378,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'DriverInfo' => array(
                         'TimeConstant' => 1,
                         'PhysicalSensors' => 6,
-                        "VirtualSensors"   => 0,
+                        "VirtualSensors"   => 4,
                     ),
                     'id' => 18,
                     'DeviceID' => '000012',
@@ -387,9 +387,11 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                     'FWVersion' => '0.0.0',
                     'RawSetup' => '000000001200392102410039201443000000FFFFFF00',
                     'Driver' => 'e00392100',
-                    'ActiveSensors' => 6,
+                    'ActiveSensors' => 10,
                     'sensors' => array(
-                        'Sensors' => 6,
+                        'Sensors' => 10,
+                        "PhysicalSensors" => 6,
+                        "VirtualSensors" => 4,
                         0 => array(
                             'id' => 64,
                             'type' => 'Controller',
@@ -443,6 +445,26 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                                 0 => 100,
                                 1 => 10,
                             ),
+                        ),
+                        6 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        7 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        8 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
+                        ),
+                        9 => array(
+                            "id" => 0xFE,
+                            "type" => "Placeholder",
+                            "location" => null,
                         ),
                     ),
                     'params' => array(

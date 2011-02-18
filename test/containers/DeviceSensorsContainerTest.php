@@ -862,6 +862,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array(
                     "id" => 2,
                 ),
+                array(
+                    "PhysicalSensors" => 3,
+                    "VirtualSensors" => 1,
+                ),
                 2,
                 array(
                     0 => array("id" => 3, "type" => "Hello"),
@@ -872,12 +876,14 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                         "dataType" => UnitsBase::TYPE_RAW,
                         "units" => "firstUnit",
                     ),
+                    3 => array("id" => 0xFE, "type" => "Virtual"),
                 ),
                 2,
                 array(
                     "Test2Sensor",
                     "Test2Sensor",
                     "Test2Sensor",
+                    "TestVirtualSensor",
                 ),
             ),
         );
@@ -886,22 +892,22 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed $preload   The stuff to give to the constructor
-    * @param array $data      The data to use for the sensor
-    * @param int   $key       The key to put the sensor in
-    * @param array $expect    The expected data
-    * @param int   $expectKey The expected key returned
-    * @param array $classes   The classes our sensors should be
+    * @param mixed $preload    The stuff to give to the constructor
+    * @param array $data       The data to use for the sensor
+    * @param array $driverInfo The driver info for the device
+    * @param int   $key        The key to put the sensor in
+    * @param array $expect     The expected data
+    * @param int   $expectKey  The expected key returned
+    * @param array $classes    The classes our sensors should be
     *
     * @return null
     *
     * @dataProvider dataUpdateSensor
     */
     public function testUpdateSensor(
-        $preload, $data, $key, $expect, $expectKey, $classes
+        $preload, $data, $driverInfo, $key, $expect, $expectKey, $classes
     ) {
-        $this->d->DriverInfo["PhysicalSensors"] = $sensors;
-        $this->d->DriverInfo["VirtualSensors"] = 0;
+        $this->d->DriverInfo = $driverInfo;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $this->o->updateSensor($data, $key);
@@ -935,6 +941,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                     0 => array("id" => 3),
                     1 => array("id" => 2),
                     2 => array("id" => 8),
+                ),
+                array(
+                    "PhysicalSensors" => 3,
+                    "VirtualSensors" => 0,
                 ),
                 array(
                     "deltaT" => 1,
@@ -974,17 +984,20 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $preload The stuff to give to the constructor
-    * @param string $data    The data to use
-    * @param array  $prev    The previous reading
-    * @param array  $expect  The expected data
+    * @param mixed  $preload    The stuff to give to the constructor
+    * @param array  $driverInfo The driver info for the device
+    * @param string $data       The data to use
+    * @param array  $prev       The previous reading
+    * @param array  $expect     The expected data
     *
     * @return null
     *
     * @dataProvider dataDecodeSensorData
     */
-    public function testDecodeSensorData($preload, $data, $prev, $expect)
-    {
+    public function testDecodeSensorData(
+        $preload, $driverInfo, $data, $prev, $expect
+    ) {
+        $this->d->DriverInfo = $driverInfo;
         $this->o->clearData();
         $this->o->fromArray($preload);
         $data = $this->o->decodeSensorData($data, $prev);
