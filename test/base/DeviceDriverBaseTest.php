@@ -514,7 +514,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(
                 time()-86400,
                 array("ConfigFail" => 60, "LastConfigTry" => time()),
-                12,
+                120,
                 false,
             ),
             array(
