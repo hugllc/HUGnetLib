@@ -2156,7 +2156,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $load    The stuff to load into the database.
     * @param array $preload The values to preload
     * @param mixed $expect  The expected return
     *

@@ -508,13 +508,13 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     public static function dataReadSetupTime()
     {
         return array(
-            array(time(), array(), 10, false),
+            array("now", array(), 10, false),
             array("2004-01-01 00:00:00", array(), 12, true),
             array(time()-3600, array(), 1, true),
             array(
                 time()-86400,
-                array("ConfigFail" => 60, "LastConfigTry" => time()),
-                120,
+                array("ConfigFail" => 60, "LastConfigTry" => "now"),
+                12,
                 false,
             ),
             array(
@@ -540,7 +540,14 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     function testReadSetupTime($lastConfig, $persist, $interval, $expect)
     {
         $this->d->params->DriverInfo = $persist;
-        $this->d->params->DriverInfo["LastConfig"] = $lastConfig;
+        if ($lastConfig === "now") {
+            $this->d->params->DriverInfo["LastConfig"] = time();
+        } else {
+            $this->d->params->DriverInfo["LastConfig"] = $lastConfig;
+        }
+        if ($this->d->params->DriverInfo["LastConfigTry"] === "now") {
+            $this->d->params->DriverInfo["LastConfigTry"] = time();
+        }
         $ret = $this->o->readSetupTime($interval);
         $this->assertSame($expect, $ret);
     }
