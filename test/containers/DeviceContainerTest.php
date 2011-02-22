@@ -2112,6 +2112,64 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->getController()->toArray(false));
     }
+    /**
+    * data provider for testGetController
+    *
+    * @return array
+    */
+    public static function dataDriver()
+    {
+        return array(
+            array( // #0
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                        "PhysicalSensors" => 2,
+                        "VirtualSensors" => 0,
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "2",
+                    "sensors" => array(
+                        "Sensors" => 2,
+                        "ActiveSensors" => 2,
+                        "PhysicalSensors" => 2,
+                        0 => array("id" => 0, "type" => ""),
+                        1 => array("id" => 0, "type" => ""),
+                    ),
+                    "params" => array(),
+                ),
+                "TestDriverPlugin",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $load    The stuff to load into the database.
+    * @param array $preload The values to preload
+    * @param mixed $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataDriver
+    */
+    public function testDriver($preload, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, get_class($this->o->driver()));
+    }
 
 }
 
