@@ -113,6 +113,8 @@ abstract class VirtualSensorBase extends DeviceSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->dataTypeValues = array($this->storageType);
+        $this->dataType = $this->storageType;
         parent::__construct($data, $device);
     }
     /**

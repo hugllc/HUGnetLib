@@ -122,6 +122,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
         }
         if (isset($data["extra"][3])) {
             $this->fixed["storageType"] = $data["extra"][3];
+            $this->default["dataType"] = $data["extra"][3];
         }
         if (isset($data["extra"][4])) {
             $this->fixed["maxDecimals"] = $data["extra"][4];

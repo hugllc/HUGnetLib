@@ -244,7 +244,7 @@ class VirtualSensorBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("dataType", "raw", "raw"),
-            array("dataType", "Ignore", "ignore"),
+            array("dataType", "Ignore", "raw"),
             array("dataType", "diff", "raw"),
             array("dataType", "SomethingElse", "raw"),
             array("type", "SomethingElse", "sensor"),
