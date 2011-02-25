@@ -139,7 +139,8 @@ class ComputationVirtualSensor extends VirtualSensorBase
     function getVirtualReading($data)
     {
         $fct = $this->createFunction($this->getExtra(0), $data);
-        if ($ret = @eval( "return $fct;")) {
+        $ret = @eval("return $fct;");
+        if (!is_bool($ret)) {
             $ret = round($ret, $this->decimals);
         } else {
             $ret = null;

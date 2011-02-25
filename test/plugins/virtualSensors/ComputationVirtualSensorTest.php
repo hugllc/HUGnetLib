@@ -191,7 +191,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
     public static function dataGetVirtualReading()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "extra" => array(
                         "(({1} - {2}) / 3) + 1",
@@ -207,7 +207,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 2.0
             ),
-            array(
+            array( // #1
                 array(
                     "extra" => array(
                         "({1} + {2}) + 1",
@@ -223,7 +223,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 8.0
             ),
-            array(
+            array( // #2
                 array(
                     "extra" => array(
                         "({1} / {2})",
@@ -239,7 +239,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 1.667
             ),
-            array(
+            array( // #3
                 array(
                     "extra" => array(
                         "({1} / ",
@@ -255,7 +255,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 null
             ),
-            array(
+            array( // #4
                 array(
                     "extra" => array(
                         "badfunction();",
@@ -271,7 +271,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 null
             ),
-            array(
+            array( // #5
                 array(
                     "extra" => array(
                         "sqrt({1});",
@@ -287,7 +287,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 4.1
             ),
-            array(
+            array( // #6
                 array(
                     "extra" => array(
                         "{1} + {2}",
@@ -302,6 +302,22 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                     1 => array("value" => 3.8253),
                 ),
                 7.983
+            ),
+            array( // #7
+                array(
+                    "extra" => array(
+                        "{1} - {2}",
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_DIFF,
+                        "3"
+                    ),
+                ),
+                array(
+                    0 => array("value" => 4.1),
+                    1 => array("value" => 4.1),
+                ),
+                0.0
             ),
         );
     }
