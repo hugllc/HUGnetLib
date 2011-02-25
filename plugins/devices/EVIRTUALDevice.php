@@ -64,6 +64,7 @@ class EVIRTUALDevice extends DeviceDriverBase
         "Class" => "EVIRTUALDevice",
         "Flags" => array(
             "DEFAULT:VIRTUAL:DEFAULT",
+            "DEFAULT:0039-24-02-P:DEFAULT",
         ),
     );
     /**
@@ -78,7 +79,8 @@ class EVIRTUALDevice extends DeviceDriverBase
     {
         parent::__construct($obj, $string);
         $this->myDriver->DriverInfo["PhysicalSensors"] = 0;
-        $this->myDriver->DriverInfo["VirtualSensors"] = 0;
+        $this->myDriver->DriverInfo["VirtualSensors"] = 20;
+        $this->myDriver->PollInterval = 0;
     }
 
 }
