@@ -117,7 +117,7 @@ class HitachiVFDFanDeviceSensorTest extends DeviceSensorPluginTestBase
                 10000,
                 1,
                 array(),
-                202.1656
+                19.439
             ),
             array(
                 null,
@@ -135,7 +135,7 @@ class HitachiVFDFanDeviceSensorTest extends DeviceSensorPluginTestBase
                 50000,
                 1,
                 array(),
-                1010.8384
+                97.196
             ),
 
         );

@@ -69,23 +69,23 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
     */
     protected $fixed = array(
         "longName" => "Hitachi VFD Fan Speed",
-        "unitType" => "Pulses",
-        "storageUnit" => 'RPM',
-        "storageType" => UnitsBase::TYPE_DIFF,  // This is the dataType as stored
+        "unitType" => "Percent",
+        "storageUnit" => '%',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "R1 in kOhms",
             "R2 in kOhms",
             "Min Voltage (V)",
             "Max Voltage (V)",
-            "Read @ Min Voltage (RPM)",
-            "Read @ Max Voltage (RPM)",
+            "Read @ Min Voltage (%)",
+            "Read @ Max Voltage (%)",
             "AtoD Ref Voltage (V)"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5, 5, 7, 7, 5),
-        "extraDefault" => array(51, 33, 0, 10, 0, 1040, 5),
+        "extraDefault" => array(51, 33, 0, 10, 0, 100, 5),
         "maxDecimals" => 1,
     );
     /**
