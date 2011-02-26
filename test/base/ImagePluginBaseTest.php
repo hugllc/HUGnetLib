@@ -56,7 +56,8 @@ require_once dirname(__FILE__).'/../../containers/ImageContainer.php';
  */
 class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
 {
-
+    /** @var array Array of file names to delete */
+    private $_files = array();
     /**
     * Sets up the fixture, for example, open a network connection.
     * This method is called before a test is executed.
@@ -90,7 +91,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     {
         // This removes all created files
         foreach ((array)$this->_files as $key => $file) {
-            //unlink($file);
+            unlink($file);
             unset($this->_files[$key]);
         }
     }
@@ -263,6 +264,10 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test Row()
     *
+    * The extra gd stuff is because GD imbeds version information and other things
+    * into the files, so this normalizes the file to whatever version of GD is being
+    * used to create them.
+    *
     * @param array  $preload the stuff to preload into the plugin
     * @param array  $data    The data to use
     * @param string $expect  The value to expect
@@ -277,7 +282,11 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $o = new ImagePluginBaseTestClass($img, $data);
         $file = $o->outputTest();
         $this->_files[] = $file;
-        $this->assertFileEquals($expect, $file);
+        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
+        $image = imagecreatefrompng($expect);
+        imagepng($image, $name);
+        $this->_files[] = $name;
+        $this->assertFileEquals($name, $file);
     }
 
 }

@@ -56,6 +56,8 @@ require_once dirname(__FILE__).'/ImagePluginTestBase.php';
  */
 class WBMPImagePluginTest extends ImagePluginTestBase
 {
+    /** @var array Array of file names to delete */
+    private $_files = array();
 
     /**
     * Sets up the fixture, for example, open a network connection.
@@ -80,6 +82,10 @@ class WBMPImagePluginTest extends ImagePluginTestBase
     */
     protected function tearDown()
     {
+        foreach ((array)$this->_files as $key => $file) {
+            unlink($file);
+            unset($this->_files[$key]);
+        }
         unset($this->o);
     }
 
@@ -119,6 +125,10 @@ class WBMPImagePluginTest extends ImagePluginTestBase
     /**
     * Tests for verbosity
     *
+    * The extra gd stuff is because GD imbeds version information and other things
+    * into the files, so this normalizes the file to whatever version of GD is being
+    * used to create them.
+    *
     * @param array $preload The array to preload into the class
     * @param array $expect  The expected return
     *
@@ -131,6 +141,15 @@ class WBMPImagePluginTest extends ImagePluginTestBase
         $c = new ImageContainer($preload);
         $o = new WBMPImagePlugin($c);
         $ret = $o->output();
+        $image = imagecreatefromstring($expect);
+        $name = tempnam(sys_get_temp_dir(), "WBMPImagePluginTest");
+        imagewbmp($image, $name);
+        $this->_files[] = $name;
+        $image2 = imagecreatefromstring($ret);
+        $name2 = tempnam(sys_get_temp_dir(), "WBMPImagePluginTest");
+        imagewbmp($image2, $name2);
+        $this->_files[] = $name2;
+        $this->assertSame(file_get_contents($name), file_get_contents($name2));
         $this->assertSame($expect, $ret);
     }
 
