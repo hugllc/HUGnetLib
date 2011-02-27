@@ -253,7 +253,12 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                array(),
+                array(
+                    "fontFile" => realpath(
+                        dirname(__FILE__)
+                        ."/../../contrib/fonts/bitstream-vera/Vera.ttf"
+                    )
+                ),
                 realpath(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText2.png"
@@ -281,6 +286,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $img = new ImageContainer($preload);
         $o = new ImagePluginBaseTestClass($img, $data);
         $ret = $o->outputTest();
+        $this->_files[] = $ret;
         $image = imagecreatefrompng($expect);
         $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
         imagegd($image, $name);
@@ -324,7 +330,6 @@ class ImagePluginBaseTestClass extends ImagePluginBase
         $this->gdBuildImage();
         $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
         imagegd($this->img, $name);
-        $this->_files[] = $name;
         return $name;
     }
 }
