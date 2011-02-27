@@ -286,18 +286,26 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $img = new ImageContainer($preload);
         $o = new ImagePluginBaseTestClass($img, $data);
         $ret = $o->outputTest();
-        $this->_files[] = $ret;
         $image = imagecreatefrompng($expect);
-        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
-        imagegd($image, $name);
+        $x = imagesx($image);
+        $y = imagesy($image);
+        $retx = imagesx($ret);
+        $rety = imagesy($ret);
+        $count = 0;
+        // Check to see if all of the pixels are the same color
+        for ($i = 0; $i < $x; $i++) {
+            for ($j = 0; $j < $y; $j++) {
+                if (imagecolorat($image, $i, $j) !== imagecolorat($ret, $i, $j)
+                ) {
+                    $count++;
+                }
+            }
+        }
         imagedestroy($image);
-        $this->_files[] = $name;
-        $image2 = imagecreatefromgd($ret);
-        $name2 = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
-        imagegd($image2, $name2);
-        imagedestroy($image2);
-        $this->_files[] = $name2;
-        $this->assertFileEquals($name, $name2);
+        //imagedestroy($ret);
+        $this->assertSame($x, $retx, "Different widths");
+        $this->assertSame($y, $rety, "Different widths");
+        $this->assertSame(0, $count, "$count pixels are different");
     }
 
 }
@@ -328,9 +336,9 @@ class ImagePluginBaseTestClass extends ImagePluginBase
     public function outputTest()
     {
         $this->gdBuildImage();
-        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
-        imagegd($this->img, $name);
-        return $name;
+        //$name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
+        //imagegd($this->img, $name);
+        return $this->img;
     }
 }
 ?>
