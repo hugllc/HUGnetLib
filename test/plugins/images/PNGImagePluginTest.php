@@ -144,10 +144,12 @@ class PNGImagePluginTest extends ImagePluginTestBase
         $image = imagecreatefromstring($expect);
         $name = tempnam(sys_get_temp_dir(), "PNGImagePluginTest");
         imagepng($image, $name);
+        imagedestroy($image);
         $this->_files[] = $name;
         $image2 = imagecreatefromstring($ret);
         $name2 = tempnam(sys_get_temp_dir(), "PNGImagePluginTest");
         imagepng($image2, $name2);
+        imagedestroy($image2);
         $this->_files[] = $name2;
         $this->assertSame(file_get_contents($name), file_get_contents($name2));
         //$this->assertSame($expect, $ret);

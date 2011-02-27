@@ -182,7 +182,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
             array( // #0
                 array("height" => 100, "width" => 100),
                 array(),
-                file_get_contents(
+                realpath(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestBlank.png"
                 ),
@@ -196,7 +196,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                file_get_contents(
+                realpath(
                     dirname(__FILE__)."/../files/images/pinkSq.png"
                 ),
             ),
@@ -224,7 +224,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                file_get_contents(
+                realpath(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText1.png"
                 ),
@@ -254,7 +254,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                file_get_contents(
+                realpath(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText2.png"
                 ),
@@ -281,13 +281,15 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $img = new ImageContainer($preload);
         $o = new ImagePluginBaseTestClass($img, $data);
         $ret = $o->outputTest();
-        $image = imagecreatefromstring($expect);
+        $image = imagecreatefrompng($expect);
         $name = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
         imagepng($image, $name);
+        imagedestroy($image);
         $this->_files[] = $name;
         $image2 = imagecreatefromstring($ret);
         $name2 = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
         imagepng($image2, $name2);
+        imagedestroy($image2);
         $this->_files[] = $name2;
         $this->assertSame(file_get_contents($name), file_get_contents($name2));
     }
