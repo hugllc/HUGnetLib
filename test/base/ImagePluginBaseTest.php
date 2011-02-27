@@ -179,7 +179,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     public static function dataOutputTest()
     {
         return array(
-            array(
+            array( // #0
                 array("height" => 100, "width" => 100),
                 array(),
                 file_get_contents(
@@ -187,7 +187,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ."/../files/images/ImagePluginsBaseTestBlank.png"
                 ),
             ),
-            array(
+            array( // #1
                 array(
                     "height" => 640,
                     "width" => 640,
@@ -200,7 +200,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     dirname(__FILE__)."/../files/images/pinkSq.png"
                 ),
             ),
-            array(
+            array( // #2
                 array(
                     "height" => 100,
                     "width" => 150,
@@ -229,7 +229,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ."/../files/images/ImagePluginsBaseTestText1.png"
                 ),
             ),
-            array(
+            array( // #3
                 array(
                     "height" => 100,
                     "width" => 150,
@@ -283,11 +283,11 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $ret = $o->outputTest();
         $image = imagecreatefromstring($expect);
         $name = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
-        imagejpeg($image, $name);
+        imagepng($image, $name);
         $this->_files[] = $name;
         $image2 = imagecreatefromstring($ret);
         $name2 = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
-        imagejpeg($image2, $name2);
+        imagepng($image2, $name2);
         $this->_files[] = $name2;
         $this->assertSame(file_get_contents($name), file_get_contents($name2));
     }
