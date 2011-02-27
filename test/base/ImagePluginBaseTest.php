@@ -282,16 +282,16 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         $o = new ImagePluginBaseTestClass($img, $data);
         $ret = $o->outputTest();
         $image = imagecreatefrompng($expect);
-        $name = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
+        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
         imagegd($image, $name);
         imagedestroy($image);
         $this->_files[] = $name;
-        $image2 = imagecreatefromstring($ret);
-        $name2 = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
+        $image2 = imagecreatefromgd($ret);
+        $name2 = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
         imagegd($image2, $name2);
         imagedestroy($image2);
         $this->_files[] = $name2;
-        $this->assertFileSame($name, $name2);
+        $this->assertFileEquals($name, $name2);
     }
 
 }
@@ -322,11 +322,10 @@ class ImagePluginBaseTestClass extends ImagePluginBase
     public function outputTest()
     {
         $this->gdBuildImage();
-        ob_start();
-        imagegd($this->img);
-        $img = ob_get_contents();
-        ob_end_clean();
-        return $img;
+        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
+        imagegd($this->img, $name);
+        $this->_files[] = $name;
+        return $name;
     }
 }
 ?>
