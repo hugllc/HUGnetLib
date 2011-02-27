@@ -182,7 +182,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
             array(
                 array("height" => 100, "width" => 100),
                 array(),
-                realpath(
+                file_get_contents(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestBlank.png"
                 ),
@@ -196,7 +196,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                realpath(
+                file_get_contents(
                     dirname(__FILE__)."/../files/images/pinkSq.png"
                 ),
             ),
@@ -224,7 +224,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                realpath(
+                file_get_contents(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText1.png"
                 ),
@@ -254,7 +254,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                realpath(
+                file_get_contents(
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText2.png"
                 ),
@@ -280,13 +280,16 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     {
         $img = new ImageContainer($preload);
         $o = new ImagePluginBaseTestClass($img, $data);
-        $file = $o->outputTest();
-        $this->_files[] = $file;
-        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
-        $image = imagecreatefrompng($expect);
-        imagepng($image, $name);
+        $ret = $o->outputTest();
+        $image = imagecreatefromstring($expect);
+        $name = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
+        imagejpeg($image, $name);
         $this->_files[] = $name;
-        $this->assertFileEquals($name, $file);
+        $image2 = imagecreatefromstring($ret);
+        $name2 = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
+        imagejpeg($image2, $name2);
+        $this->_files[] = $name2;
+        $this->assertSame(file_get_contents($name), file_get_contents($name2));
     }
 
 }
@@ -317,9 +320,11 @@ class ImagePluginBaseTestClass extends ImagePluginBase
     public function outputTest()
     {
         $this->gdBuildImage();
-        $name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
-        imagepng($this->img, $name);
-        return $name;
+        ob_start();
+        imagepng($this->img);
+        $img = ob_get_contents();
+        ob_end_clean();
+        return $img;
     }
 }
 ?>
