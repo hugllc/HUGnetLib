@@ -593,7 +593,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
             if ($col == $this->dateField) {
                 $ret[$col] = $this->outputDate($col);
             } else {
-                $ret[$col] = (string)$this->$col;
+                $ret[$col] = $this->$col;
             } 
         }
         return $ret;
