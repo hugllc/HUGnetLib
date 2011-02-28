@@ -64,6 +64,8 @@ class EVIRTUALAverageTable extends AverageTableBase
     public $sqlTable = "eVIRTUAL_average";
     /** @var This is the dataset */
     public $datacols = 20;
+    /** @var This how many times we have run */
+    public $runs = 0;
     /**
     * This calculates the averages
     *
@@ -71,28 +73,29 @@ class EVIRTUALAverageTable extends AverageTableBase
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
     *
     * @return bool True on success, false on failure
     */
-    protected function calc15MinAverage(HistoryTableBase $data)
+    protected function calc15MinAverage(HistoryTableBase &$data)
     {
         // This gets us to our next average
-        $last = &$this->device->params->DriverInfo["LastAverage15MIN"];
-        if (is_null($last)) {
-            $date = $this->getAverageDate("First");
+        if (empty($data->Date)) {
+            $data->Date = $this->getAverageDate("First");
         } else {
-            $date = $last + 900;
+            $data->Date += 900;
         }
-        if ($date > $this->getAverageDate("Last")) {
+        if ((($this->runs++ > $data->sqlLimit) && !empty($data->sqlLimit))
+            || ($data->Date > $this->getAverageDate("Last"))
+        ) {
             return false;
         }
-        $ret = array("id" => $this->device->id, "Date" => $date);
+        $ret = array("id" => $this->device->id, "Date" => $data->Date);
         $this->Type = self::AVERAGE_15MIN;
-        $this->Date = $date;
+        $this->Date = $data->Date;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
             $sensor = &$this->device->sensors->sensor($i);
-            $ret[$i] = $sensor->get15MINAverage($date, $ret);
+            $ret[$i] = $sensor->get15MINAverage($data->Date, $ret);
         }
         $this->fromDataArray($ret);
         return true;

@@ -71,8 +71,7 @@ class EVIRTUALHistoryTable extends HistoryTableBase
      ******************************************************************
      ******************************************************************/
     /**
-    * This is a dummy function to fool it into thinking that it always has new
-    * history
+    * Sets the extra attributes field
     *
     * @param int    $start      The start of the time
     * @param int    $end        The end of the time
@@ -94,7 +93,7 @@ class EVIRTUALHistoryTable extends HistoryTableBase
         return true;
     }
     /**
-    * It only ever has 1 row of new history.
+    * This puts the next result into the object
     *
     * @return bool True on success, False on failure
     */

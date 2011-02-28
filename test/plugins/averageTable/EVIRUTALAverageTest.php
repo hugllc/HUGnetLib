@@ -242,6 +242,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                     ),
                 ),
                 array(
+                ),
+                array(
                     "id" => 0x1000,
                     "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
                     "Data0" => "1.0",
@@ -363,6 +365,9 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                     ),
                 ),
                 array(
+                    "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                ),
+                array(
                 ),
                 false,
             ),
@@ -377,6 +382,7 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
     * @param mixed $preload     The data to preload into the object
     * @param mixed $preloadData The data to feed the data object
     * @param array $device      The device to do the averages with
+    * @param array $mockData    Mock data to use
     * @param array $expect      The expected average (from toArray())
     * @param array $expectRet   The expected return value from calcAverage
     *
@@ -385,7 +391,7 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
     * @dataProvider dataCalc15MinAverage
     */
     public function testCalc15MinAverage(
-        $devs, $preload, $preloadData, $device, $expect, $expectRet
+        $devs, $preload, $preloadData, $device, $mockData, $expect, $expectRet
     ) {
         $dev = new DeviceContainer();
         foreach ((array)$devs as $d) {
@@ -405,10 +411,350 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
         if (!is_null($device)) {
             $this->o->device = new DeviceContainer($device);
         }
-        $data = new HistoryTableMock();
+        $data = new HistoryTableMock(array($mockData));
         $ret = $this->o->calcAverage($data, AverageTableBase::AVERAGE_15MIN);
         $this->assertSame($expectRet, $ret, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray(false));
+    }
+
+    /**
+    * data provider for testCalcAverage
+    *
+    * @return array
+    */
+    public static function dataCalc15MinAverageMulti()
+    {
+        return array(
+            array(  // #0 basic input.  LastAverage15MIN not set
+                array(
+                    array(
+                        "id" => 0xE10,
+                        "DeviceID" => "000E10",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 30, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        "id" => 0xE20,
+                        "DeviceID" => "000E20",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 30, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    0xE10 => array(
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 4.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                            "Data0" => 3.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 30, 00, 1, 22, 2009),
+                            "Data0" => 2.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                    0xE20 => array(
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 1.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                            "Data0" => 2.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 30, 00, 1, 22, 2009),
+                            "Data0" => 3.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x1000,
+                    "DeviceID" => "001000",
+                    "HWPartNum" => "0039-24-02-P",
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 0,
+                        "VirtualSensors" => 3,
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E20", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E10", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "{2} - {1}", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 0x1000,
+                        "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                        "Data0" => "1.0",
+                        "Data1" => "4.0",
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "id" => 0x1000,
+                        "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                        "Data0" => "2.0",
+                        "Data1" => "3.0",
+                        "Data2" => 1.0,
+                    ),
+                    array(
+                        "id" => 0x1000,
+                        "Date" => gmmktime(15, 30, 00, 1, 22, 2009),
+                        "Data0" => "3.0",
+                        "Data1" => "2.0",
+                        "Data2" => -1.0,
+                    ),
+                ),
+                true,
+            ),
+            array(  // #1 Nothing to do
+                array(
+                    array(
+                        "id" => 0xE10,
+                        "DeviceID" => "000E10",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 00, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        "id" => 0xE20,
+                        "DeviceID" => "000E20",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 00, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    0xE10 => array(
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 4.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                    0xE20 => array(
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 1.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x1000,
+                    "DeviceID" => "001000",
+                    "HWPartNum" => "0039-24-02-P",
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 0,
+                        "VirtualSensors" => 3,
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E20", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E10", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "{2} - {1}", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                    ),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastAverage15MIN" => gmmktime(15, 00, 00, 1, 22, 2009),
+                        ),
+                    ),
+                ),
+                array(
+                    "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                ),
+                array(
+                ),
+                false,
+            ),
+
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $devs        Array of device information
+    * @param mixed $preload     The data to preload into the object
+    * @param mixed $preloadData The data to feed the data object
+    * @param array $device      The device to do the averages with
+    * @param array $mockData    Mock data to use
+    * @param array $expect      The expected average (from toArray())
+    *
+    * @return null
+    *
+    * @dataProvider dataCalc15MinAverageMulti
+    */
+    public function testCalc15MinAverageMulti(
+        $devs, $preload, $preloadData, $device, $mockData, $expect
+    ) {
+        $dev = new DeviceContainer();
+        foreach ((array)$devs as $d) {
+            $dev->clearData();
+            $dev->fromAny($d);
+            $dev->insertRow();
+            $avg = &$dev->historyFactory(array(), false);
+            foreach ((array) $preloadData[$dev->id] as $pd) {
+                $avg->clearData();
+                $avg->fromAny($pd);
+                $avg->insertRow();
+            }
+        }
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $data = new HistoryTableMock(array($mockData));
+        $ret = array();
+        while ($this->o->calcAverage($data, AverageTableBase::AVERAGE_15MIN)) {
+            $ret[] = $this->o->toArray(false);
+        }
+        $this->assertSame($expect, $ret);
     }
 
 }

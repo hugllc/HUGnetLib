@@ -194,7 +194,10 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         $avg = &$dev->historyFactory(array(), false);
         $avg->sqlLimit = 1;
         $avg->sqlOrderBy = "Date ASC";
-        $avg->selectInto("1");
+        $avg->selectInto(
+            "id = ? AND Type = ?",
+            array($dev->id, "15MIN")
+        );
         return $avg->Date;
     }
     /**

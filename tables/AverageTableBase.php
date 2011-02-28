@@ -186,12 +186,12 @@ abstract class AverageTableBase extends HistoryTableBase
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase $data This is the data to use to calculate the averages
-    * @param string           $type The type of average to calculate
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
+    * @param string           $type  The type of average to calculate
     *
     * @return bool True on success, false on failure
     */
-    public function calcAverage(HistoryTableBase $data, $type)
+    public function calcAverage(HistoryTableBase &$data, $type)
     {
         if ($type == self::AVERAGE_15MIN) {
             return $this->calc15MinAverage($data);
@@ -205,11 +205,11 @@ abstract class AverageTableBase extends HistoryTableBase
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
     * 
     * @return bool True on success, false on failure
     */
-    protected function calc15MinAverage(HistoryTableBase $data)
+    protected function calc15MinAverage(HistoryTableBase &$data)
     {
         if ($data->isEmpty()) {
             return false;
@@ -258,12 +258,12 @@ abstract class AverageTableBase extends HistoryTableBase
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
-    * @param HistoryTableBase $data This is the data to use to calculate the averages
-    * @param string           $type The type of average to calculate
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
+    * @param string           $type  The type of average to calculate
     *
     * @return bool True on success, false on failure
     */
-    protected function calcOtherAverage(HistoryTableBase $data, $type)
+    protected function calcOtherAverage(HistoryTableBase &$data, $type)
     {
         if ($data->isEmpty()) {
             return false;

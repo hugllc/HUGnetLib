@@ -374,7 +374,25 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 array(
                     array(
-                        "id" => hexdec("0000E1"),
+                        "id" => 0xE0,
+                        "Type" => "15MIN",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "HOURLY",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
                         "Type" => "15MIN",
                         "Date" => 123456789,
                         "Data0" => 0,
@@ -448,7 +466,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     "params" => array(
                         "DriverInfo" => array(
                             "Test" => 2,
-                            "LastAverage15MIN" => 123456789,
+                            "LastAverage15MIN" => 1234567890,
                         ),
                     ),
                 ),
@@ -462,13 +480,22 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                         "Data2" => 3,
                         "Data3" => 5,
                     ),
+                    array(
+                        "id" => 0xE2,
+                        "Type" => "15MIN",
+                        "Date" => 123457890,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
                 ),
                 array(
                     'extra' => array(
                         "0000E2", 3
                     )
                 ),
-                123456789,
+                1234567890,
             ),
             array(
                 array(
