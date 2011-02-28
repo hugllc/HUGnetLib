@@ -76,6 +76,8 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     );
     /** @var object These are the valid values for type */
     protected $typeValues = array("physicalpoint");
+    /** @var object These are the valid values for type */
+    protected $devs = null;
     /**
     * This is the array of sensor information.
     */
@@ -137,13 +139,13 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         if (empty($DeviceID)) {
             $DeviceID = $this->getExtra(0);
         }
-        //if (!is_a($devs[$DeviceID], "DeviceContainer")) {
-            $devs[$DeviceID] = new DeviceContainer(
+        if (!is_a($this->devs[$DeviceID], "DeviceContainer")) {
+            $this->devs[$DeviceID] = new DeviceContainer(
                 array("group" => $this->myDevice->group)
             );
-            $devs[$DeviceID]->getRow(hexdec($DeviceID));
-        //}
-        return $devs[$DeviceID];
+            $this->devs[$DeviceID]->getRow(hexdec($DeviceID));
+        }
+        return $this->devs[$DeviceID];
     }
     /**
     * Changes a raw reading into a output value
