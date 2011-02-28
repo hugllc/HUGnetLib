@@ -68,7 +68,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Hitachi VFD Fan Speed",
+        "longName" => "Hitachi VFD Fan Speed Sensor",
         "unitType" => "Percent",
         "storageUnit" => '%',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
