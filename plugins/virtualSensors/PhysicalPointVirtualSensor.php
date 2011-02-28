@@ -108,17 +108,18 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     public function __construct($data, &$device)
     {
     
-        if (is_int($data["extra"][1]) && is_string($data["extra"][0])) {
-            $dev = &$this->getDevice($data["extra"][0]);
-            $sensor = &$dev->sensors->sensor($data["extra"][1] - 1);
-            $fixed = array("unitType", "storageUnit", "maxDecimals", "storageType");
-            foreach ($fixed as $f) {
-                $this->fixed[$f] = $sensor->$f;
-            }
-            $default = array("dataType", "decimals", "units", "location");
-            foreach ($default as $d) {
-                $this->default[$d] = $sensor->$d;
-            }
+        $dev = &$this->getDevice($data["extra"][0]);
+        $sensor = &$dev->sensors->sensor($data["extra"][1] - 1);
+        $fixed = array("unitType", "storageUnit", "maxDecimals", "storageType");
+        foreach ($fixed as $f) {
+            $this->fixed[$f] = $sensor->$f;
+        }
+        $default = array("dataType", "decimals", "units", "location");
+        foreach ($default as $d) {
+            $this->default[$d] = $sensor->$d;
+        }
+        if (empty($data["location"])) {
+            unset($data["location"]);
         }
         parent::__construct($data, $device);
     }
@@ -132,16 +133,16 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     protected function &getDevice($DeviceID = null)
     {
-        static $devs;
+        //static $devs;
         if (empty($DeviceID)) {
             $DeviceID = $this->getExtra(0);
         }
-        if (!is_a($devs[$DeviceID], "DeviceContainer")) {
+        //if (!is_a($devs[$DeviceID], "DeviceContainer")) {
             $devs[$DeviceID] = new DeviceContainer(
                 array("group" => $this->myDevice->group)
             );
             $devs[$DeviceID]->getRow(hexdec($DeviceID));
-        }
+        //}
         return $devs[$DeviceID];
     }
     /**
@@ -173,9 +174,37 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
             array(hexdec($this->getExtra(0)), "15MIN", $date)
         );
         $col = "Data".($this->getExtra(1) - 1);
-        return $avg->$col;
+        return array(
+            "value" => $avg->$col,
+            "units" => $this->storageUnit,
+            "unitType" => $this->unitType,
+            "dataType" => $this->storageType,
+        );
     }
-
+    /**
+    * This returns the first average from this device
+    *
+    * @return null
+    */
+    public function getFirstAverage15Min()
+    {
+        $dev = &$this->getDevice();
+        $avg = &$dev->historyFactory(array(), false);
+        $avg->sqlLimit = 1;
+        $avg->sqlOrderBy = "Date ASC";
+        $avg->selectInto("1");
+        return $avg->Date;
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @return null
+    */
+    public function getLastAverage15Min()
+    {
+        $dev = &$this->getDevice();
+        return $dev->params->DriverInfo["LastAverage15MIN"];
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

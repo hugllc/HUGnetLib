@@ -64,6 +64,61 @@ class EVIRTUALAverageTable extends AverageTableBase
     public $sqlTable = "eVIRTUAL_average";
     /** @var This is the dataset */
     public $datacols = 20;
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase $data This is the data to use to calculate the averages
+    *
+    * @return bool True on success, false on failure
+    */
+    protected function calc15MinAverage(HistoryTableBase $data)
+    {
+        // This gets us to our next average
+        $last = &$this->device->params->DriverInfo["LastAverage15MIN"];
+        if (is_null($last)) {
+            $date = $this->getAverageDate("First");
+        } else {
+            $date = $last + 900;
+        }
+        if ($date > $this->getAverageDate("Last")) {
+            return false;
+        }
+        $ret = array("id" => $this->device->id, "Date" => $date);
+        $this->Type = self::AVERAGE_15MIN;
+        $this->Date = $date;
+        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
+            $sensor = &$this->device->sensors->sensor($i);
+            $ret[$i] = $sensor->get15MINAverage($date, $ret);
+        }
+        $this->fromDataArray($ret);
+        return true;
+    }
+    /**
+    * This returns the first average from this device
+    * 
+    * @param string $type Either "First" or "Last"
+    *
+    * @return null
+    */
+    protected function getAverageDate($type = "First")
+    {
+        $ret = null;
+        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
+            $sensor = &$this->device->sensors->sensor($i);
+            $fct = "get".$type."Average15Min";
+            if (method_exists($sensor, $fct)) {
+                $avg = $sensor->$fct();
+                if (is_null($ret) || ($avg < $ret)) {
+                    $ret = $avg;
+                }
+            }
+        }
+        return $ret;
+    }
 
     /******************************************************************
      ******************************************************************

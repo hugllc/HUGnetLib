@@ -77,12 +77,32 @@ class EVIRTUALDevice extends DeviceDriverBase
     */
     public function __construct(&$obj, $string = "")
     {
+        $obj->DriverInfo["PhysicalSensors"] = 0;
+        $obj->DriverInfo["VirtualSensors"] = 20;
+        if (empty($obj->FWPartNum)) {
+            $obj->FWPartNum = "0039-24-02-P";
+        }
+        $obj->FWVersion = HUGNET_LIB_VERSION;
+        $obj->PollInterval = 0;
         parent::__construct($obj, $string);
-        $this->myDriver->DriverInfo["PhysicalSensors"] = 0;
-        $this->myDriver->DriverInfo["VirtualSensors"] = 20;
-        $this->myDriver->PollInterval = 0;
     }
-
+    /**
+    * This always forces the sensors to the same thing.  All of the sensors
+    * here are virtual sensors.  The call to fromTypeArray sets that up.
+    *
+    * @param string $string This is totally ignored.
+    *
+    * @return null
+    */
+    public function fromSetupString($string)
+    {
+        if (is_object($this->myDriver->sensors)) {
+            $this->myDriver->sensors->Sensors = 20;
+            $this->myDriver->sensors->PhysicalSensors = 0;
+            $this->myDriver->sensors->VirtualSensors = 20;
+            $this->myDriver->sensors->fromTypeArray(array());
+        }
+    }
 }
 
 ?>

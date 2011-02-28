@@ -105,6 +105,92 @@ class EVIRTUALDeviceTest extends DevicePluginTestBase
             array("EVIRTUALDevice"),
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataConstructor()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    "PhysicalSensors" => 0,
+                    "VirtualSensors" => 20,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload This is the attribute to set
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataConstructor
+    */
+    public function testConstructor($preload, $expect)
+    {
+        $this->o = new EVIRTUALDevice($this->d, $preload);
+        $this->assertSame($expect, $this->d->DriverInfo);
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFromSetupString()
+    {
+        return array(
+            array(
+                "",
+                array(
+                    "Sensors" => 20,
+                    "VirtualSensors" => 20,
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                    array("id" => 0xFE, "type" => "Placeholder", "location" => null),
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload This is the attribute to set
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromSetupString
+    */
+    public function testFromSetupString($preload, $expect)
+    {
+        $this->o->fromSetupString($preload);
+        $this->assertSame($expect, $this->d->sensors->toArray(false));
+    }
 
 }
 

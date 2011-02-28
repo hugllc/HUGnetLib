@@ -193,9 +193,7 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     public function calcAverage(HistoryTableBase $data, $type)
     {
-        if ($data->isEmpty()) {
-            return false;
-        } else if ($type == self::AVERAGE_15MIN) {
+        if ($type == self::AVERAGE_15MIN) {
             return $this->calc15MinAverage($data);
         }
         return $this->calcOtherAverage($data, $type);
@@ -213,6 +211,9 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     protected function calc15MinAverage(HistoryTableBase $data)
     {
+        if ($data->isEmpty()) {
+            return false;
+        }
         $this->clearData();
         $this->Type = self::AVERAGE_15MIN;
         $this->_getTimePeriod($data->Date, self::AVERAGE_15MIN);
@@ -264,7 +265,9 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     protected function calcOtherAverage(HistoryTableBase $data, $type)
     {
-
+        if ($data->isEmpty()) {
+            return false;
+        }
         $this->clearData();
         if (empty($this->baseType)) {
             $this->baseType = $data->Type;

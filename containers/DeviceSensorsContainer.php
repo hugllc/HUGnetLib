@@ -181,7 +181,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     public function fromTypeArray($array)
     {
-        if (empty($array) || !is_array($array)) {
+        if (!is_array($array)) {
             return;
         }
         // Clear the number of sensors
