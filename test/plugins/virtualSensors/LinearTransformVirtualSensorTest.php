@@ -127,7 +127,8 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
             array(
                 array(
                     'extra' => array(
-                        1, 10, 5.5, "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
+                        1, 10, 5.5, 0, 60,
+                        "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
                     )
                 ),
                 array(
@@ -136,7 +137,8 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
                     "location" => "",
                     "dataType" => UnitsBase::TYPE_RAW,
                     'extra' => array(
-                        1, 10, 5.5, "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
+                        1, 10, 5.5, 0, 60,
+                        "&#176;C", "Temperature", UnitsBase::TYPE_RAW, 3
                     ),
                     "units" => '&#176;F',
                     "bound" => false,
@@ -147,7 +149,8 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
             array(
                 array(
                     'extra'=>array(
-                        "", "", "", "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
+                        "", "", "", "none", "none",
+                        "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
                     )
                 ),
                 array(
@@ -156,7 +159,8 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
                     "location" => "",
                     "dataType" => UnitsBase::TYPE_DIFF,
                     'extra' => array(
-                        "", "", "", "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
+                        "", "", "", "none", "none",
+                        "&#176;C", "Generic", UnitsBase::TYPE_DIFF, 3
                     ),
                     "units" => '&#176;C',
                     "bound" => false,
@@ -194,7 +198,7 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
             array( // #0
                 array(
                     "extra" => array(
-                        1, 10, 5.5,
+                        1, 10, 5.5, 0, 60,
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_RAW,
@@ -207,10 +211,10 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 55.5
             ),
-            array( // #0
+            array( // #1
                 array(
                     "extra" => array(
-                        1, 10, 5.5,
+                        1, 10, 5.5, 0, 60,
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_RAW,
@@ -223,10 +227,10 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 null
             ),
-            array( // #0
+            array( // #2
                 array(
                     "extra" => array(
-                        0, 10, 5.5,
+                        0, 10, 5.5, 0, 60,
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_RAW,
@@ -238,6 +242,38 @@ class LinearTransformVirtualSensorTest extends VirtualSensorPluginTestBase
                     1 => array("value" => 2),
                 ),
                 null
+            ),
+            array( // #3
+                array(
+                    "extra" => array(
+                        1, 20, 5.5, 0, 60,
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_RAW,
+                        "3"
+                    ),
+                ),
+                array(
+                    0 => array("value" => 5),
+                    1 => array("value" => 2),
+                ),
+                60.0
+            ),
+            array( // #3
+                array(
+                    "extra" => array(
+                        1, 1, -5.5, 0, 60,
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_RAW,
+                        "3"
+                    ),
+                ),
+                array(
+                    0 => array("value" => 5),
+                    1 => array("value" => 2),
+                ),
+                0.0
             ),
         );
     }

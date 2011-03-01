@@ -86,7 +86,7 @@ class LinearTransformVirtualSensor extends VirtualSensorBase
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(
-            5, 10, 10, 10, 15,
+            5, 10, 10, 15, 15, 10, 15,
             array(
                 UnitsBase::TYPE_RAW => UnitsBase::TYPE_RAW,
                 UnitsBase::TYPE_DIFF => UnitsBase::TYPE_DIFF
@@ -94,11 +94,11 @@ class LinearTransformVirtualSensor extends VirtualSensorBase
             3,
         ),
         "extraText" => array(
-            "Input", "Slope", "Y Intercept", "Storage Unit",
+            "Input", "Slope", "Y Intercept", "Y Min", "Y Max", "Storage Unit",
             "Unit Type", "Data Type", "Max Decimals"
         ),
         "extraDefault" => array(
-            "", 0, 0, "unknown", "Generic", UnitsBase::TYPE_RAW, 4
+            "", 0, 0, "none", "none", "unknown", "Generic", UnitsBase::TYPE_RAW, 4
         ),
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "storageUnit" => "unknown",
@@ -115,18 +115,18 @@ class LinearTransformVirtualSensor extends VirtualSensorBase
     {
         $this->default["id"] = 0xFE;
         $this->default["type"] = "lineartransform";
-        if (isset($data["extra"][3])) {
-            $this->fixed["storageUnit"] = $data["extra"][3];
-        }
-        if (isset($data["extra"][4])) {
-            $this->fixed["unitType"] = $data["extra"][4];
-        }
         if (isset($data["extra"][5])) {
-            $this->fixed["storageType"] = $data["extra"][5];
-            $this->default["dataType"] = $data["extra"][5];
+            $this->fixed["storageUnit"] = $data["extra"][5];
         }
         if (isset($data["extra"][6])) {
-            $this->fixed["maxDecimals"] = $data["extra"][6];
+            $this->fixed["unitType"] = $data["extra"][6];
+        }
+        if (isset($data["extra"][7])) {
+            $this->fixed["storageType"] = $data["extra"][7];
+            $this->default["dataType"] = $data["extra"][7];
+        }
+        if (isset($data["extra"][8])) {
+            $this->fixed["maxDecimals"] = $data["extra"][8];
         }
         parent::__construct($data, $device);
     }
@@ -147,6 +147,13 @@ class LinearTransformVirtualSensor extends VirtualSensorBase
         $m = $this->getExtra(1);
         $b = $this->getExtra(2);
         $x = ($m * $y) + $b;
+        $min = $this->getExtra(3);
+        $max = $this->getExtra(4);
+        if (is_numeric($min) && ($x < $min)) {
+            $x = $min;
+        } else if (is_numeric($max) && ($x > $max)) {
+            $x = $max;
+        }
         $x = round($x, $this->maxDecimals);
         return $x;
     }
