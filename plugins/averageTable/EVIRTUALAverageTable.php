@@ -80,37 +80,63 @@ class EVIRTUALAverageTable extends AverageTableBase
     protected function calc15MinAverage(HistoryTableBase &$data)
     {
         do {
-            // This gets us to our next average
-            if (empty($data->Date)) {
-                $last = $this->device->params->DriverInfo["LastAverage15MIN"];
-                if (empty($last)) {
-                    $data->Date = $this->getAverageDate("First");
-                } else {
-                    $data->Date = $last + 900;
-                }
-            } else {
-                $data->Date += 900;
-            }
+            $data->Date = $this->_get15MinAverageDate($data->Date);
             if ((($this->runs++ > $data->sqlLimit) && !empty($data->sqlLimit))
                 || ($data->Date > $this->getAverageDate("Last"))
                 || empty($data->Date)
             ) {
                 return false;
             }
-            $ret = array("id" => $this->device->id, "Date" => $data->Date);
-            $this->Type = self::AVERAGE_15MIN;
-            $this->Date = $data->Date;
-            $empty = true;
-            for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-                $sensor = &$this->device->sensors->sensor($i);
-                $ret[$i] = $sensor->get15MINAverage($data->Date, $ret);
-                if (!is_null($ret[$i]["value"])) {
-                    $empty = false;
-                }
-            }
-        } while ($empty);
+            $ret = $this->_get15MinAverage($data->Date);
+        } while ($ret === false);
         $this->fromDataArray($ret);
         return true;
+    }
+    /**
+    * This returns the first average from this device
+    *
+    * @param int $date The date to get the record for
+    *
+    * @return null
+    */
+    private function _get15MinAverageDate($date)
+    {
+        // This gets us to our next average
+        if (empty($date)) {
+            $last = $this->device->params->DriverInfo["LastAverage15MIN"];
+            if (empty($last)) {
+                $date = $this->getAverageDate("First");
+            } else {
+                $date = $last + 900;
+            }
+        } else {
+            $date += 900;
+        }
+        return $date;
+    }
+    /**
+    * This returns the first average from this device
+    * 
+    * @param int $date The date to get the record for
+    *
+    * @return null
+    */
+    private function _get15MinAverage($date)
+    {
+        $ret = array("id" => $this->device->id, "Date" => $date);
+        $this->Type = self::AVERAGE_15MIN;
+        $empty = true;
+        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
+            $sensor = &$this->device->sensors->sensor($i);
+            $ret[$i] = $sensor->get15MINAverage($date, $ret);
+            if (!is_null($ret[$i]["value"])) {
+                $empty = false;
+            }
+        }
+        if ($empty) {
+            return false;
+        }
+        return $ret;
     }
     /**
     * This returns the first average from this device
