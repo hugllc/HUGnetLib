@@ -79,24 +79,31 @@ class EVIRTUALAverageTable extends AverageTableBase
     */
     protected function calc15MinAverage(HistoryTableBase &$data)
     {
-        // This gets us to our next average
-        if (empty($data->Date)) {
-            $data->Date = $this->getAverageDate("First");
-        } else {
-            $data->Date += 900;
-        }
-        if ((($this->runs++ > $data->sqlLimit) && !empty($data->sqlLimit))
-            || ($data->Date > $this->getAverageDate("Last"))
-        ) {
-            return false;
-        }
-        $ret = array("id" => $this->device->id, "Date" => $data->Date);
-        $this->Type = self::AVERAGE_15MIN;
-        $this->Date = $data->Date;
-        for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = &$this->device->sensors->sensor($i);
-            $ret[$i] = $sensor->get15MINAverage($data->Date, $ret);
-        }
+        do {
+            // This gets us to our next average
+            if (empty($data->Date)) {
+                $data->Date = $this->getAverageDate("First");
+            } else {
+                $data->Date += 900;
+            }
+            if ((($this->runs++ > $data->sqlLimit) && !empty($data->sqlLimit))
+                || ($data->Date > $this->getAverageDate("Last"))
+                || empty($data->Date)
+            ) {
+                return false;
+            }
+            $ret = array("id" => $this->device->id, "Date" => $data->Date);
+            $this->Type = self::AVERAGE_15MIN;
+            $this->Date = $data->Date;
+            $empty = true;
+            for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
+                $sensor = &$this->device->sensors->sensor($i);
+                $ret[$i] = $sensor->get15MINAverage($data->Date, $ret);
+                if (!is_null($ret[$i]["value"])) {
+                    $empty = false;
+                }
+            }
+        } while ($empty);
         $this->fromDataArray($ret);
         return true;
     }
