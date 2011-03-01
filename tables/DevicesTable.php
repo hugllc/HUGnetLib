@@ -244,6 +244,32 @@ class DevicesTable extends HUGnetDBTable
         return false;
     }
     /**
+    * Inserts a device ID into the database if it isn't there already
+    *
+    * @param mixed $data The string or data to use to insert this row
+    *
+    * @return null
+    */
+    static public function insertVirtual($data)
+    {
+        $data["HWPartNum"] = "0039-24-02-P";
+        $data["GatewayKey"] = -1;
+        $dev = new DevicesTable($data);
+        $dev->DeviceID = dechex($dev->id);
+        while ($dev->exists() && ($dev->id < self::MIN_TEMP_SN)) {
+            $dev->id++;
+            $dev->DeviceID = dechex($dev->id);
+        }
+        $ret = false;
+        if ($dev->id < self::MIN_TEMP_SN) {
+            $ret = $dev->insertRow();
+            if ($ret) {
+                $ret = $dev->id;
+            }
+        }
+        return $ret;
+    }
+    /**
     * This function inserts this record in the table
     *
     * @param bool $replace Replace any records found that collide with this one.

@@ -189,6 +189,8 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                     "GatewayKey" => 23,
                 ),
                 array(
+                ),
+                array(
                     array(
                         "id" => "156",
                         "DeviceID" => "00009C",
@@ -215,8 +217,63 @@ class DevicesTableTest extends HUGnetDBTableTestBase
             ),
             array(
                 array(
+                    "DeviceID" => 156,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                    array(
+                        "id" => "156",
+                        "DeviceID" => "00009C",
+                        "DeviceName" => "",
+                        "HWPartNum" => "",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "23",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => "156",
+                        "DeviceID" => "00009C",
+                        "DeviceName" => "",
+                        "HWPartNum" => "",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "23",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
                     "DeviceID" => DevicesTable::MAX_GROUP_SN,
                     "GatewayKey" => 23,
+                ),
+                array(
                 ),
                 array(
                 ),
@@ -229,13 +286,6 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                 ),
-                false,
-            ),
-            array(
-                array(
-                    "DeviceID" => DevicesTable::MIN_TEMP_SN,
-                    "GatewayKey" => 23,
-                ),
                 array(
                 ),
                 false,
@@ -247,11 +297,26 @@ class DevicesTableTest extends HUGnetDBTableTestBase
                 ),
                 array(
                 ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "DeviceID" => DevicesTable::MIN_TEMP_SN,
+                    "GatewayKey" => 23,
+                ),
+                array(
+                ),
+                array(
+                ),
                 false,
             ),
             array(
                 array(
                     "GatewayKey" => 23,
+                ),
+                array(
                 ),
                 array(
                 ),
@@ -263,6 +328,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     * Tests the insert of a DeviceID
     *
     * @param mixed $data   The data to use
+    * @param array $devs   Other devices to load
     * @param array $expect The expected table row
     * @param bool  $ret    The expected return
     *
@@ -270,9 +336,207 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     *
     * @return null
     */
-    public function testInsertDeviceID($data, $expect, $ret)
+    public function testInsertDeviceID($data, $devs, $expect, $ret)
     {
+        $dev = new DevicesTable();
+        foreach ((array)$devs as $d) {
+            $dev->clearData();
+            $dev->fromAny($d);
+            $dev->insertRow();
+        }
         $return = DevicesTable::insertDeviceID($data);
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows);
+        $this->assertSame($ret, $return);
+    }
+    /**
+    * Data provider for testInsertRow
+    *
+    * @return array
+    */
+    public static function dataInsertVirtual()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 0x156,
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => (string)0x156,
+                        "DeviceID" => "000156",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                0x156,
+            ),
+            array(
+                array(
+                    "id" => DevicesTable::MIN_TEMP_SN,
+                ),
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "id" => 0x156,
+                ),
+                array(
+                    array(
+                        "id" => (string)0x156,
+                        "DeviceID" => "000156",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                    array(
+                        "id" => (string)0x157,
+                        "DeviceID" => "000157",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => (string)0x156,
+                        "DeviceID" => "000156",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                    array(
+                        "id" => (string)0x157,
+                        "DeviceID" => "000157",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                    array(
+                        "id" => (string)0x158,
+                        "DeviceID" => "000158",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-24-02-P",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup" => "",
+                        "Active" => "1",
+                        "GatewayKey" => "-1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                0x158,
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data   The data to use
+    * @param array $devs   Other devices to load
+    * @param array $expect The expected table row
+    * @param bool  $ret    The expected return
+    *
+    * @dataProvider dataInsertVirtual
+    *
+    * @return null
+    */
+    public function testInsertVirtual($data, $devs, $expect, $ret)
+    {
+        $dev = new DevicesTable();
+        foreach ((array)$devs as $d) {
+            $dev->clearData();
+            $dev->fromAny($d);
+            $dev->insertRow();
+        }
+        $return = DevicesTable::insertVirtual($data);
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
