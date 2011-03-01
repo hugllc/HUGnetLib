@@ -82,7 +82,12 @@ class EVIRTUALAverageTable extends AverageTableBase
         do {
             // This gets us to our next average
             if (empty($data->Date)) {
-                $data->Date = $this->getAverageDate("First");
+                $last = $this->device->params->DriverInfo["LastAverage15MIN"];
+                if (empty($last)) {
+                    $data->Date = $this->getAverageDate("First");
+                } else {
+                    $data->Date = $last + 900;
+                }
             } else {
                 $data->Date += 900;
             }
