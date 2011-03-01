@@ -70,7 +70,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
     protected $fixed = array(
         "longName" => "Hitachi VFD Fan Speed Sensor",
         "unitType" => "Percent",
-        "storageUnit" => '%',
+        "storageUnit" => 'decimal',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "extraText" => array(
             "R1 in kOhms",
@@ -110,7 +110,11 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
     */
     function getReading($A, $deltaT = 0)
     {
-        return $this->linearBoundedIndirect($A);
+        $ret = $this->linearBoundedIndirect($A);
+        if (!is_null($ret)) {
+            $ret = $ret / 100;
+        }
+        return $ret;
     }
 
     /******************************************************************

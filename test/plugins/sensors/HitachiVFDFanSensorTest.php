@@ -117,7 +117,7 @@ class HitachiVFDFanDeviceSensorTest extends DeviceSensorPluginTestBase
                 10000,
                 1,
                 array(),
-                19.439
+                0.19439
             ),
             array(
                 null,
@@ -135,7 +135,7 @@ class HitachiVFDFanDeviceSensorTest extends DeviceSensorPluginTestBase
                 50000,
                 1,
                 array(),
-                97.196
+                0.97196
             ),
 
         );
@@ -156,7 +156,7 @@ class HitachiVFDFanDeviceSensorTest extends DeviceSensorPluginTestBase
     {
         $this->o->fromAny($preload);
         $ret = $this->o->getReading($val, $deltaT);
-        $this->assertSame($expect, $ret);
+        $this->assertEquals($expect, $ret, "Wrong Output", 0.01);
     }
 
 }
