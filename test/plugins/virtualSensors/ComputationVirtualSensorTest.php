@@ -319,6 +319,22 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 0.0
             ),
+            array( // #8 Division by 0
+                array(
+                    "extra" => array(
+                        "({1} - {2}) / 0",
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_DIFF,
+                        "3"
+                    ),
+                ),
+                array(
+                    0 => array("value" => 4.1),
+                    1 => array("value" => 4.1),
+                ),
+                null,
+            ),
         );
     }
     /**
