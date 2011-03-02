@@ -156,16 +156,20 @@ class PlaceholderVirtualSensorTest extends VirtualSensorPluginTestBase
     *
     * @return array
     */
-    public static function dataGetVirtualReading()
+    public static function dataGetReading()
     {
         return array(
             array(
                 array('extra'=>array(10)),
+                0,
+                0,
                 63630,
                 null
             ),
             array(
                 array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+                0,
+                0,
                 5000,
                 null
             ),
@@ -177,18 +181,20 @@ class PlaceholderVirtualSensorTest extends VirtualSensorPluginTestBase
     * This is called by using parent::sensorTest()
     *
     * @param array $preload The data to preload into the class
+    * @param int   $A       Output of the A to D converter
+    * @param float $deltaT  The time delta in seconds between this record
     * @param mixed $data    The data for the sensor to work with 
     * @param mixed $expect  The return data to expect
     *
     * @return null
     *
-    * @dataProvider dataGetVirtualReading()
+    * @dataProvider dataGetReading()
     */
-    public function testGetVirtualReading($preload, $data, $expect)
+    public function testGetReading($preload, $A, $deltaT, $data, $expect)
     {
 
         $o = new PlaceholderVirtualSensor($preload, $this->d);
-        $ret = $o->getVirtualReading($data);
+        $ret = $o->getReading($A, $deltaT, $data);
         $this->assertSame($expect, $ret);
     }
 

@@ -236,14 +236,15 @@ class TestResistiveDeviceSensor extends ResistiveDeviceSensorBase
         return parent::getSweep($A, $R);
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
+    * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
-    * @return float The direction in degrees
+    * @return mixed The value in whatever the units are in the sensor
     */
-    function getReading($A, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
     }
 }

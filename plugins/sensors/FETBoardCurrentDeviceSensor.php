@@ -100,10 +100,11 @@ class FETBoardCurrentDeviceSensor extends CurrentDeviceSensorBase
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    function getReading($A, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         return $this->direct($A);
     }

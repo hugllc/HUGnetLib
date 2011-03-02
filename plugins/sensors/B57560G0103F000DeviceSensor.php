@@ -122,15 +122,15 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
         // This takes care of The older sensors with the 100k bias resistor
     }
     /**
-    * Converts resistance to temperature for IMCSolar thermistor
-    * 10K thermistor.
+    * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
-    * @return float The temperature in degrees C.
+    * @return mixed The value in whatever the units are in the sensor
     */
-    function getReading($A, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
             return null;

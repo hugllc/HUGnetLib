@@ -185,19 +185,20 @@ abstract class DeviceSensorBase extends HUGnetContainer
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array $prev   The previous reading
+    * @param array $data   The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
     */
-    public function getUnits($A, $deltaT = 0, $prev = null)
+    public function getUnits($A, $deltaT = 0, $prev = null, $data = array())
     {
 
         $ret = array(
         );
         if ($this->storageType == UnitsBase::TYPE_DIFF) {
-            $ret["value"] = $this->getReading(($A - $prev), $deltaT);
+            $ret["value"] = $this->getReading(($A - $prev), $deltaT, $data);
             $ret["raw"] = $A;
         } else {
-            $ret["value"] = $this->getReading($A, $deltaT);
+            $ret["value"] = $this->getReading($A, $deltaT, $data);
         }
         $ret["units"] = $this->storageUnit;
         $ret["unitType"] = $this->unitType;

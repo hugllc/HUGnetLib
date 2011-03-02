@@ -37,7 +37,6 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/DeviceSensorBase.php";
-require_once dirname(__FILE__)."/../interfaces/VirtualSensorInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,7 +52,7 @@ require_once dirname(__FILE__)."/../interfaces/VirtualSensorInterface.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class VirtualSensorBase extends DeviceSensorBase
-    implements VirtualSensorInterface
+    implements DeviceSensorInterface
 {
     /** This is a raw record */
     const TYPE_RAW = UnitsBase::TYPE_RAW;
@@ -118,24 +117,6 @@ abstract class VirtualSensorBase extends DeviceSensorBase
         parent::__construct($data, $device);
     }
     /**
-    * Gets the direction from a direction sensor made out of a POT.
-    *
-    * @param array $data The data from the other sensors that were crunched
-    * @param array $prev The previous reading
-    *
-    * @return float The direction in degrees
-    */
-    public function getVirtualUnits($data, $prev = null)
-    {
-        $ret = array(
-            "value" => $this->getVirtualReading($data),
-            "units" => $this->storageUnit,
-            "unitType" => $this->unitType,
-            "dataType" => $this->storageType,
-        );
-        return $ret;
-    }
-    /**
     * Changes a raw reading into a output value
     *
     * @param array $date The date of the reading to get
@@ -145,19 +126,7 @@ abstract class VirtualSensorBase extends DeviceSensorBase
     */
     public function get15MINAverage($date, $data = null)
     {
-        return $this->getVirtualUnits($data);
-    }
-    /**
-    * This is just a dummy, as it is needed for the DeviceSensorInterface
-    *
-    * @param int   $A      Output of the A to D converter
-    * @param float $deltaT The time delta in seconds between this record
-    *
-    * @return float The direction in degrees
-    */
-    function getReading($A, $deltaT = 0)
-    {
-        return null;
+        return $this->getUnits($A, $deltaT, $prev, $data);
     }
 
     /******************************************************************

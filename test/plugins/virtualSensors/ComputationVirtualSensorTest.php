@@ -188,7 +188,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
     *
     * @return array
     */
-    public static function dataGetVirtualReading()
+    public static function dataGetReading()
     {
         return array(
             array( // #0
@@ -201,6 +201,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 5),
                     1 => array("value" => 2),
@@ -217,6 +219,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 5),
                     1 => array("value" => 2),
@@ -233,6 +237,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 5),
                     1 => array("value" => 3),
@@ -249,6 +255,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 5),
                     1 => array("value" => 3),
@@ -265,6 +273,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 5),
                     1 => array("value" => 3),
@@ -281,6 +291,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 4.1),
                     1 => array("value" => 3),
@@ -297,6 +309,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 4.1576),
                     1 => array("value" => 3.8253),
@@ -313,6 +327,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 4.1),
                     1 => array("value" => 4.1),
@@ -329,6 +345,8 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                         "3"
                     ),
                 ),
+                0,
+                0,
                 array(
                     0 => array("value" => 4.1),
                     1 => array("value" => 4.1),
@@ -343,18 +361,20 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
     * This is called by using parent::sensorTest()
     *
     * @param array $preload The data to preload into the class
+    * @param int   $A       Output of the A to D converter
+    * @param float $deltaT  The time delta in seconds between this record
     * @param mixed $data    The data for the sensor to work with 
     * @param mixed $expect  The return data to expect
     *
     * @return null
     *
-    * @dataProvider dataGetVirtualReading()
+    * @dataProvider dataGetReading()
     */
-    public function testGetVirtualReading($preload, $data, $expect)
+    public function testGetReading($preload, $A, $deltaT, $data, $expect)
     {
 
         $o = new ComputationVirtualSensor($preload, $this->d);
-        $ret = $o->getVirtualReading($data);
+        $ret = $o->getReading($A, $deltaT, $data);
         $this->assertSame($expect, $ret);
     }
 

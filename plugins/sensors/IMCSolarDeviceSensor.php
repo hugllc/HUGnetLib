@@ -250,11 +250,11 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    *                      and the last one
+    * @param array $data   The data from the other sensors that were crunched
     *
-    * @return float The temperature in degrees C.
+    * @return mixed The value in whatever the units are in the sensor
     */
-    function getReading($A, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
             return null;

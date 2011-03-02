@@ -132,11 +132,13 @@ class ComputationVirtualSensor extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     *
-    * @param array $data The data from the other sensors that were crunched
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    function getVirtualReading($data)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         $fct = $this->createFunction($this->getExtra(0), $data);
         $ret = @eval("return $fct;");

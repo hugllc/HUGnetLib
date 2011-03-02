@@ -99,7 +99,7 @@ class TestVirtualSensor extends VirtualSensorBase
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    function getVirtualReading($A, $deltaT = 0, $data = array())
+    public function getReading($A, $deltaT = 0, $data = array())
     {
     }
     /**

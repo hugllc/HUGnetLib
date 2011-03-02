@@ -312,15 +312,15 @@ class TestPulseDeviceSensor extends PulseDeviceSensorBase
         return parent::getPPM($val, $deltaT);
     }
     /**
-    * This is for a generic pulse counter
+    * Changes a raw reading into a output value
     *
-    * @param int   $val    Output of the A to D converter
+    * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    *                      and the last one
+    * @param array $data   The data from the other sensors that were crunched
     *
-    * @return float
+    * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($val, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         return $val;
     }

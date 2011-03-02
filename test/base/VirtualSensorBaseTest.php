@@ -196,46 +196,6 @@ class VirtualSensorBaseTest extends PHPUnit_Framework_TestCase
 
 
     /**
-    * data provider for testGetExtra
-    *
-    * @return array
-    */
-    public static function dataGetVirtualUnits()
-    {
-        return array(
-            array(
-                "TestVirtualSensor1",
-                array(
-                ),
-                1,
-                array(
-                    "value" => 1,
-                    "units" => "firstUnit",
-                    "unitType" => "firstUnit",
-                    "dataType" => UnitsBase::TYPE_RAW,
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $class   The class to use
-    * @param mixed  $preload The stuff to give to the constructor
-    * @param mixed  $data    The data to use
-    * @param string $expect  The expected data
-    *
-    * @return null
-    *
-    * @dataProvider dataGetVirtualUnits
-    */
-    public function testGetVirtualUnits($class, $preload, $data, $expect)
-    {
-        $o = new $class($preload, $this->d);
-        $this->assertSame($expect, $o->getVirtualUnits($data));
-    }
-    /**
     * data provider for testSet
     *
     * @return array
@@ -267,49 +227,6 @@ class VirtualSensorBaseTest extends PHPUnit_Framework_TestCase
     {
         $this->o->$var = $value;
         $this->assertSame($expect, $this->o->$var);
-    }
-    /**
-    * Data provider for testGetReading
-    *
-    * @return array
-    */
-    public static function dataGetReading()
-    {
-        return array(
-            array(
-                array('extra'=>array(10)),
-                63630,
-                0,
-                null
-            ),
-            array(
-                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
-                5000,
-                0,
-                null
-            ),
-        );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $preload The data to preload into the class
-    * @param mixed $A       Data for the sensor to work on
-    * @param float $deltaT  The time differenct
-    * @param mixed $expect  The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetReading()
-    */
-    public function testGetReading($preload, $A, $deltaT, $expect)
-    {
-
-        $o = new TestVirtualSensor1($preload, $this->d);
-        $ret = $o->getReading($A, $deltaT);
-        $this->assertSame($expect, $ret);
     }
 
 }
@@ -376,11 +293,13 @@ class TestVirtualSensor1 extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     *
-    * @param array $data The data from the other sensors that were crunched
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array $data   The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    function getVirtualReading($data)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
         return $data;
     }

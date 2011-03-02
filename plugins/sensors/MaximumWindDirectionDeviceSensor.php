@@ -111,12 +111,13 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     *   direction needs to be changed to 360 for the averaging to work
     *   properly.
     *
-    * @param int   $bitField This is an 8 bit bit field returned by the sensor
-    * @param float $deltaT   The difference in time between records
+    * @param int   $A      This is an 8 bit bit field returned by the sensor
+    * @param float $deltaT The difference in time between records
+    * @param array $data   The data from the other sensors that were crunched
     *
-    * @return float
+    * @return mixed The value in whatever the units are in the sensor
     */
-    function getReading($bitField, $deltaT = 0)
+    public function getReading($A, $deltaT = 0, $data = array())
     {
 
         // Do the cardinal directions
@@ -125,14 +126,14 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
         $oDir        = null;
         foreach ($cDirections as $shift => $dir) {
             // Do the cardinal direction
-            if ($bitField & (1<<$shift)) {
+            if ($A & (1<<$shift)) {
                 if (!is_null($cDir)) {
                     return null;  // Can't have two cardinal directions!
                 }
                 $cDir = $dir;
             }
             // Do the ordinal direction that is +45deg from the cardinal
-            if ($bitField & (1<<($shift+1))) {
+            if ($A & (1<<($shift+1))) {
                 if (!is_null($oDir)) {
                     return null;  // Can't have two ordinal directions!
                 }
