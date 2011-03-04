@@ -119,7 +119,7 @@ class BaleMoistureV2DeviceSensorTest extends DeviceSensorPluginTestBase
                 ),
                 40000,
                 0,
-                1570.35
+                1570.352
             ),
             array(
                 array(

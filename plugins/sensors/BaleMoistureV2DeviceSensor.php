@@ -83,7 +83,7 @@ class BaleMoistureV2DeviceSensor extends ResistiveDeviceSensorBase
         // Null    nothing
         "extraValues" => array(10, 10, 10),
         "extraDefault" => array(1000, 10, 1000),
-        "maxDecimals" => 2,
+        "maxDecimals" => 3,
     );
     /** @var float Moisture red zone % */
     protected $Mr = 18;

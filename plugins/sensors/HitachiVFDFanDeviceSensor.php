@@ -86,7 +86,7 @@ class HitachiVFDFanDeviceSensor extends VoltageDeviceSensorBase
         // Null    nothing
         "extraValues" => array(5, 5, 5, 5, 7, 7, 5),
         "extraDefault" => array(51, 33, 0, 10, 0, 100, 5),
-        "maxDecimals" => 1,
+        "maxDecimals" => 4,
     );
     /**
     * Disconnects from the database
