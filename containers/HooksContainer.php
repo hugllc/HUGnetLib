@@ -60,6 +60,15 @@ class HooksContainer extends HUGnetContainer
     );
     /** @var array This is where the data is stored */
     public $hooks = array();
+    /**
+    * Builds the class
+    *
+    * @return null
+    */
+    public function __destruct()
+    {
+        unset($this->hooks);
+    }
 
     /**
     * Sets all of the endpoint attributes from an array

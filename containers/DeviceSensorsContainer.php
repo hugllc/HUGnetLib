@@ -103,6 +103,16 @@ class DeviceSensorsContainer extends HUGnetContainer
         parent::__construct($data);
     }
     /**
+    * Builds the class
+    *
+    * @return null
+    */
+    public function __destruct()
+    {
+        unset($this->sensor);
+        unset($this->myConfig);
+    }
+    /**
     * Sets all of the endpoint attributes from an array
     *
     * @param array $array This is an array of this class's attributes

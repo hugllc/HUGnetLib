@@ -77,7 +77,11 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     /** @var object These are the valid values for type */
     protected $typeValues = array("physicalpoint");
     /** @var object These are the valid values for type */
-    protected $devs = null;
+    protected $dev = null;
+    /** @var object These are the valid values for type */
+    protected $DeviceID = null;
+    /** @var object These are the valid values for type */
+    protected $avg = null;
     /**
     * This is the array of sensor information.
     */
@@ -125,7 +129,15 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         }
         parent::__construct($data, $device);
     }
-
+    /**
+    * Disconnects from the database
+    *
+    */
+    public function __destruct()
+    {
+        unset($this->dev);
+        unset($this->avg);
+    }
     /**
     * Changes a raw reading into a output value
     * 
@@ -135,17 +147,28 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     protected function &getDevice($DeviceID = null)
     {
-        //static $devs;
-        if (empty($DeviceID)) {
-            $DeviceID = $this->getExtra(0);
+        if (!empty($DeviceID)) {
+            $this->DeviceID = hexdec($DeviceID);
         }
-        if (!is_a($this->devs[$DeviceID], "DeviceContainer")) {
-            $this->devs[$DeviceID] = new DeviceContainer(
+        if (!is_a($this->dev, "DeviceContainer")) {
+            $this->dev = new DeviceContainer(
                 array("group" => $this->myDevice->group)
             );
-            $this->devs[$DeviceID]->getRow(hexdec($DeviceID));
+            $this->dev->getRow($this->DeviceID);
         }
-        return $this->devs[$DeviceID];
+        return $this->dev;
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    */
+    protected function &getAvg()
+    {
+        if (!is_a($this->avg, "AverageTableBase")) {
+            $this->avg = &$this->getDevice()->historyFactory(array(), false);
+        }
+        return $this->avg;
     }
     /**
     * Changes a raw reading into a output value
@@ -170,8 +193,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     function get15MINAverage($date, $data = null)
     {
-        $dev = &$this->getDevice();
-        $avg = &$dev->historyFactory(array(), false);
+        $avg = &$this->getAvg();
         $avg->sqlLimit = 1;
         $avg->selectInto(
             "`id` = ? and `Type`=? and `Date` = ?",
@@ -192,13 +214,12 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function getFirstAverage15Min()
     {
-        $dev = &$this->getDevice();
-        $avg = &$dev->historyFactory(array(), false);
+        $avg = &$this->getAvg();
         $avg->sqlLimit = 1;
         $avg->sqlOrderBy = "Date ASC";
         $avg->selectInto(
             "id = ? AND Type = ?",
-            array($dev->id, "15MIN")
+            array($avg->device->id, "15MIN")
         );
         return $avg->Date;
     }
@@ -209,47 +230,12 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function getLastAverage15Min()
     {
-        $dev = &$this->getDevice();
-        return $dev->params->DriverInfo["LastAverage15MIN"];
+        return $this->getDevice()->params->DriverInfo["LastAverage15MIN"];
     }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********
      ******************************************************************
      ******************************************************************/
-    /**
-    * function to set units
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setUnits($value)
-    {
-        $this->data["units"] = (string)$value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setType($value)
-    {
-        $this->data["type"] = (string)$value;
-    }
-    /**
-    * function to set type
-    *
-    * @param mixed $value The value to set
-    *
-    * @return null
-    */
-    protected function setId($value)
-    {
-        $this->data["id"] = (int)$value;
-    }
-
 }
 ?>

@@ -80,9 +80,10 @@ class EVIRTUALAverageTable extends AverageTableBase
     protected function calc15MinAverage(HistoryTableBase &$data)
     {
         do {
+            $last = $this->getAverageDate("Last");
             $data->Date = $this->_get15MinAverageDate($data->Date);
             if ((($this->runs++ > $data->sqlLimit) && !empty($data->sqlLimit))
-                || ($data->Date > $this->getAverageDate("Last"))
+                || ($data->Date > $last) || is_null($last)
                 || empty($data->Date)
             ) {
                 return false;

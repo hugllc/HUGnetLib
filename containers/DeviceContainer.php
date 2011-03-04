@@ -103,6 +103,18 @@ class DeviceContainer extends DevicesTable
         parent::__construct($data);
     }
     /**
+    * Builds the class
+    *
+    * @return null
+    */
+    public function __destruct()
+    {
+        unset($this->epDriver);
+        unset($this->sensors);
+        unset($this->params);
+        unset($this->myConfig);
+    }
+    /**
     * Tries to run a function defined by what is called..
     *
     * @param string $name The name of the function to call
