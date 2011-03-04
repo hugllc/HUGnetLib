@@ -177,6 +177,14 @@ abstract class HistoryTableBase extends HUGnetDBTable
         $this->create();
     }
     /**
+    * This is the destructor
+    */
+    function __destruct()
+    {
+        unset($this->device);
+        parent::__destruct();
+    }
+    /**
     * Inserts a record into the database if it isn't there already
     *
     * @param mixed $data The string or data to use to insert this row

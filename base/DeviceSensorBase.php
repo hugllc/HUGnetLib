@@ -139,7 +139,16 @@ abstract class DeviceSensorBase extends HUGnetContainer
         }
         parent::__construct($data);
     }
-
+    /**
+    * Disconnects from the database
+    *
+    */
+    public function __destruct()
+    {
+        unset($this->unitConvert);
+        unset($this->myConfig);
+        unset($this->myDevice);
+    }
     /**
     * Gets the extra values
     *

@@ -109,6 +109,9 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     public function __destruct()
     {
+        for ($i = 0; $i < $this->Sensors; $i++) {
+            unset($this->sensor[$i]);
+        }
         unset($this->sensor);
         unset($this->myConfig);
     }

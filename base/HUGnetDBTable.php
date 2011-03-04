@@ -165,6 +165,14 @@ abstract class HUGnetDBTable extends HUGnetContainer
         $this->verbose($this->myConfig->verbose);
     }
     /**
+    * This is the destructor
+    */
+    function __destruct()
+    {
+        unset($this->myDriver);
+        unset($this->myConfig);
+    }
+    /**
     * Sets all of the endpoint attributes from an array
     *
     * @return null
