@@ -134,11 +134,11 @@ class ComputationVirtualSensor extends VirtualSensorBase
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, $data = array())
+    public function getReading($A, $deltaT = 0, &$data = array())
     {
         $fct = $this->createFunction($this->getExtra(0), $data);
         $ret = @eval("return $fct;");
@@ -153,21 +153,28 @@ class ComputationVirtualSensor extends VirtualSensorBase
     /**
      * Creates a function to crunch numbers
      *
-     * @param string $math The math to use
-     * @param array  $data The data from the other sensors that were crunched
+     * @param string $math  The math to use
+     * @param array  &$data The data from the other sensors that were crunched
      *
-     * @return bool|string The name of the function created.
+     * @return string
      */
-    protected function createFunction($math, $data)
+    protected function createFunction($math, &$data)
     {
         $mathCode = $math;
         for ($i = 1; $i < 20; $i++) {
             $index = $i - 1;
             $mathCode = str_ireplace(
-                '{'.$i.'}', $data[$index]["value"], $mathCode
+                '{'.$i.'}', (float)$data[$index]["value"], $mathCode, $count
             );
+            if (is_null($data[$index]["value"]) && ($count > 0)) {
+                $mathCode = false;
+                break;
+            }
         }
-        return $this->sanatize($mathCode);
+        if (is_string($mathCode)) {
+            return $this->sanatize($mathCode);
+        }
+        return "false";
     }
     /**
      * Creates a function to crunch numbers
@@ -180,7 +187,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
     {
         $pattern = preg_quote('+*)(');
         $string = preg_replace(
-            '/[^0-9\-\/\+\*\(\)\^\.]+/',
+            '/[^0-9\-\/\+\*\(\)\.]+/',
             "",
             $string
         );
