@@ -145,7 +145,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    protected function &getDevice($DeviceID = null)
+    public function &getDevice($DeviceID = null)
     {
         if (!empty($DeviceID)) {
             $this->DeviceID = hexdec($DeviceID);
@@ -175,30 +175,34 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, $data = array())
+    public function getReading($A, $deltaT = 0, &$data = array())
     {
         return null;
     }
     /**
     * Changes a raw reading into a output value
     *
-    * @param array $date The date of the reading to get
-    * @param array $data The data from the other sensors that were crunched
+    * @param array $date      The date of the reading to get
+    * @param array &$data     The data from the other sensors that were crunched
+    * @param array &$avgTable The average table to get the readings from
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    function get15MINAverage($date, $data = null)
+    public function get15MINAverage($date, &$data, &$avgTable)
     {
-        $avg = &$this->getAvg();
-        $avg->sqlLimit = 1;
-        $avg->selectInto(
-            "`id` = ? and `Type`=? and `Date` = ?",
-            array(hexdec($this->getExtra(0)), "15MIN", $date)
-        );
+        $avg = &$avgTable[$this->DeviceID];
+        if (!is_a($avg, "AverageTableBase")) {
+            $avg = $this->getAvg();
+            $avg->sqlLimit = 1;
+            $avg->selectInto(
+                "`id` = ? and `Type`=? and `Date` = ?",
+                array(hexdec($this->getExtra(0)), "15MIN", $date)
+            );
+        }
         $col = "Data".($this->getExtra(1) - 1);
         return array(
             "value" => $avg->$col,

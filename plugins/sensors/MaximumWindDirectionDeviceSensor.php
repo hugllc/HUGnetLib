@@ -113,11 +113,11 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     *
     * @param int   $A      This is an 8 bit bit field returned by the sensor
     * @param float $deltaT The difference in time between records
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, $data = array())
+    public function getReading($A, $deltaT = 0, &$data = array())
     {
 
         // Do the cardinal directions

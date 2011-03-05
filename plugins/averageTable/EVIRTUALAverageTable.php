@@ -65,7 +65,8 @@ class EVIRTUALAverageTable extends AverageTableBase
     /** @var This is the dataset */
     public $datacols = 20;
     /** @var This how many times we have run */
-    public $runs = 0;
+    protected $runs = 0;
+    
     /**
     * This calculates the averages
     *
@@ -124,12 +125,13 @@ class EVIRTUALAverageTable extends AverageTableBase
     */
     private function _get15MinAverage($date)
     {
+        $avg = array();
         $ret = array("id" => $this->device->id, "Date" => $date);
         $this->Type = self::AVERAGE_15MIN;
         $empty = true;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
             $sensor = &$this->device->sensors->sensor($i);
-            $ret[$i] = $sensor->get15MINAverage($date, $ret);
+            $ret[$i] = $sensor->get15MINAverage($date, $ret, $avg);
             if (!is_null($ret[$i]["value"])) {
                 $empty = false;
             }

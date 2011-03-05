@@ -55,22 +55,22 @@ interface DeviceSensorInterface
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array $prev   The previous reading
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$prev  The previous reading
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
     */
-    public function getUnits($A, $deltaT = 0, $prev = null, $data = array());
+    public function getUnits($A, $deltaT = 0, &$prev = null, &$data = array());
     /**
     * Changes a raw reading into a output value
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, $data = array());
+    public function getReading($A, $deltaT = 0, &$data = array());
     /**
     * Converts data between units
     *

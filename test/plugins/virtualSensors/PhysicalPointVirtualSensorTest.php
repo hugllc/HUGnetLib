@@ -349,7 +349,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
             $avg->insertRow(true);
         }
         $o = new PhysicalPointVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->get15MINAverage($date, $data));
+        $this->assertSame($expect, $o->get15MINAverage($date, $data, $dummy));
     }
     /**
     * Data provider for testGet15MINAverage

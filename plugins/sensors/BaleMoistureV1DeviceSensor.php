@@ -131,11 +131,11 @@ class BaleMoistureV1DeviceSensor extends ResistiveDeviceSensorBase
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
-    * @param array $data   The data from the other sensors that were crunched
+    * @param array &$data  The data from the other sensors that were crunched
     *
     * @return float The temperature in degrees C.
     */
-    public function getReading($A, $deltaT = 0, $data = array())
+    public function getReading($A, $deltaT = 0, &$data = array())
     {
         $Bias = $this->getExtra(0);
         $Rr   = $this->getExtra(1);
