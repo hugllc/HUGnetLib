@@ -85,6 +85,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     */
     protected function calc15MinAverage(HistoryTableBase &$data)
     {
+        $this->device->params->DriverInfo["LastPoll"] = time();
         $runs = (empty($data->sqlLimit)) ? 100000 : $data->sqlLimit;
         do {
             $data->Date = $this->_get15MinAverageDate($data->Date);
@@ -92,6 +93,7 @@ class EVIRTUALAverageTable extends AverageTableBase
         } while (($ret === self::RECORD_EMPTY) && ($runs-- > 0));
         if ($ret === self::RECORD_GOOD) {
             $this->fromDataArray($rec);
+            $this->device->params->DriverInfo["LastHistory"] = $this->Date;
             return true;
         }
         return false;

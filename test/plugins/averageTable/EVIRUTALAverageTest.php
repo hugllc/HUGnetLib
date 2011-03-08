@@ -783,7 +783,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                         "Data2" => -1.0,
                     ),
                 ),
-                true,
+                gmmktime(15, 30, 00, 1, 22, 2009),
+                time(),
             ),
             array(  // #1 Gaps in the source averages
                 array(
@@ -947,7 +948,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                         "Data2" => 0.0,
                     ),
                 ),
-                true,
+                gmmktime(15, 45, 00, 1, 22, 2009),
+                time(),
             ),
             array(  // #2 Starting in the middle
                 array(
@@ -1137,7 +1139,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                         "Data2" => 0.0,
                     ),
                 ),
-                true,
+                gmmktime(15, 45, 00, 1, 22, 2009),
+                time(),
             ),
             array(  // #3 Nothing to do
                 array(
@@ -1256,7 +1259,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                 ),
                 array(
                 ),
-                false,
+                null,
+                time(),
             ),
             array(  // #4 BIG Gaps in the source averages
                 array(
@@ -1420,7 +1424,8 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                         "Data2" => 0.0,
                     ),
                 ),
-                true,
+                gmmktime(15, 45, 00, 1, 31, 2009),
+                time(),
             ),
 
         );
@@ -1435,13 +1440,16 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
     * @param array $device      The device to do the averages with
     * @param array $mockData    Mock data to use
     * @param array $expect      The expected average (from toArray())
+    * @param int   $lastHist    The expected last history date
+    * @param int   $lastPoll    The expected last poll date
     *
     * @return null
     *
     * @dataProvider dataCalc15MinAverageMulti
     */
     public function testCalc15MinAverageMulti(
-        $devs, $preload, $preloadData, $device, $mockData, $expect
+        $devs, $preload, $preloadData, $device,
+        $mockData, $expect, $lastHist, $lastPoll
     ) {
         $dev = new DeviceContainer();
         foreach ((array)$devs as $d) {
@@ -1466,7 +1474,17 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
         while ($this->o->calcAverage($data, AverageTableBase::AVERAGE_15MIN)) {
             $ret[] = $this->o->toArray(false);
         }
-        $this->assertSame($expect, $ret);
+        $this->assertSame($expect, $ret, "Data Wrong");
+        $this->assertSame(
+            $lastHist,
+            $this->o->device->params->DriverInfo["LastHistory"],
+            "LastHistory wrong"
+        );
+        $this->assertGreaterThan(
+            $lastPoll,
+            $this->o->device->params->DriverInfo["LastPoll"],
+            "LastPoll wrong"
+        );
     }
 
 }
