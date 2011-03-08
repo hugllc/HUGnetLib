@@ -416,10 +416,10 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
     *
     * @return array
     */
-    public static function dataGetFirstAverage15Min()
+    public static function dataGetNextAverage15Min()
     {
         return array(
-            array(
+            array(  // #0 The looking for the first average
                 array(
                     "DeviceID" => "0000E1",
                     "sensors" => array(
@@ -433,6 +433,11 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                             "id" => 0x02,
                             "location" => "Hello",
                             "dataType" => UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastAverage15MIN" => 123456799,
                         ),
                     ),
                 ),
@@ -458,6 +463,15 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     array(
                         "id" => 0xE1,
                         "Type" => "15MIN",
+                        "Date" => 123456799,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "15MIN",
                         "Date" => 123456789,
                         "Data0" => 0,
                         "Data1" => 2,
@@ -470,7 +484,144 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                         "0000E1", 3
                     )
                 ),
+                0,
                 123456789,
+            ),
+            array(  // #1 The looking for the next average
+                array(
+                    "DeviceID" => "0000E1",
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        "forceSensors" => true,
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 1,
+                        0 => array(),
+                        1 => array(),
+                        2 => array(
+                            "id" => 0x02,
+                            "location" => "Hello",
+                            "dataType" => UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastAverage15MIN" => 123456799,
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => 0xE0,
+                        "Type" => "15MIN",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "HOURLY",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "15MIN",
+                        "Date" => 123456799,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "15MIN",
+                        "Date" => 123456789,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                ),
+                array(
+                    'extra' => array(
+                        "0000E1", 3
+                    )
+                ),
+                123456790,
+                123456799,
+            ),
+            array(  // #2 The looking for an average that is in the future
+                array(
+                    "DeviceID" => "0000E1",
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        "forceSensors" => true,
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 1,
+                        0 => array(),
+                        1 => array(),
+                        2 => array(
+                            "id" => 0x02,
+                            "location" => "Hello",
+                            "dataType" => UnitsBase::TYPE_DIFF,
+                        ),
+                    ),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastAverage15MIN" => 123456799,
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => 0xE0,
+                        "Type" => "15MIN",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "HOURLY",
+                        "Date" => 1234,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "15MIN",
+                        "Date" => 123456799,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                    array(
+                        "id" => 0xE1,
+                        "Type" => "15MIN",
+                        "Date" => 123456789,
+                        "Data0" => 0,
+                        "Data1" => 2,
+                        "Data2" => 3,
+                        "Data3" => 5,
+                    ),
+                ),
+                array(
+                    'extra' => array(
+                        "0000E1", 3
+                    )
+                ),
+                123456800,
+                null,
             ),
         );
     }
@@ -482,14 +633,15 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
     * @param array $device   The device to load
     * @param array $averages The averages to have saved
     * @param array $preload  The data to preload into the class
+    * @param int   $date     The date to start with
     * @param mixed $expect   The return data to expect
     *
     * @return null
     *
-    * @dataProvider dataGetFirstAverage15Min()
+    * @dataProvider dataGetNextAverage15Min()
     */
-    public function testGetFirstAverage15Min(
-        $device, $averages, $preload, $expect
+    public function testGetNextAverage15Min(
+        $device, $averages, $preload, $date, $expect
     ) {
         $dev = new DeviceContainer();
         $dev->fromAny($device);
@@ -501,7 +653,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
             $avg->insertRow(true);
         }
         $o = new PhysicalPointVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->getFirstAverage15Min());
+        $this->assertSame($expect, $o->getNextAverage15Min($date));
     }
 
 }

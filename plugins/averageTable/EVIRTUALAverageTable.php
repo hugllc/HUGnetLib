@@ -53,13 +53,6 @@ require_once dirname(__FILE__)."/../../tables/AverageTableBase.php";
  */
 class EVIRTUALAverageTable extends AverageTableBase
 {
-    /** @var This signifies a good record */
-    const RECORD_GOOD = 0;
-    /** @var This signifies a bad record */
-    const RECORD_BAD = 1;
-    /** @var This signifies a missing record */
-    const RECORD_EMPTY = 2;
-    
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "EVIRTUALAverageTable",
@@ -71,6 +64,8 @@ class EVIRTUALAverageTable extends AverageTableBase
     public $sqlTable = "eVIRTUAL_average";
     /** @var This is the dataset */
     public $datacols = 20;
+    /** @var This is how many averages we have done */
+    public $runs = 0;
     
     /**
     * This calculates the averages
@@ -85,40 +80,22 @@ class EVIRTUALAverageTable extends AverageTableBase
     */
     protected function calc15MinAverage(HistoryTableBase &$data)
     {
+        if (($this->runs++ >= $data->sqlLimit) && !empty($data->sqlLimit)) {
+            return false;
+        }
+        if (empty($data->Date)) {
+            $data->Date = (int)$this->device->params->DriverInfo["LastAverage15MIN"];
+        }
         $this->device->params->DriverInfo["LastPoll"] = time();
-        $runs = (empty($data->sqlLimit)) ? 100000 : $data->sqlLimit;
-        do {
-            $data->Date = $this->_get15MinAverageDate($data->Date);
-            $ret = $this->_get15MinAverage($rec, $data->Date);
-        } while (($ret === self::RECORD_EMPTY) && ($runs-- > 0));
-        if ($ret === self::RECORD_GOOD) {
+        $data->Date = $this->getNextAverageDate($data->Date);
+        $ret = $this->_get15MinAverage($rec, $data->Date);
+
+        if ($ret) {
             $this->fromDataArray($rec);
             $this->device->params->DriverInfo["LastHistory"] = $this->Date;
             return true;
         }
         return false;
-    }
-    /**
-    * This returns the first average from this device
-    *
-    * @param int $date The date to get the record for
-    *
-    * @return null
-    */
-    private function _get15MinAverageDate($date)
-    {
-        // This gets us to our next average
-        if (empty($date)) {
-            $last = $this->device->params->DriverInfo["LastAverage15MIN"];
-            if (empty($last)) {
-                $date = $this->getFirstAverageDate();
-            } else {
-                $date = $last + 900;
-            }
-        } else {
-            $date += 900;
-        }
-        return $date;
     }
     /**
     * This returns the first average from this device
@@ -131,25 +108,24 @@ class EVIRTUALAverageTable extends AverageTableBase
     private function _get15MinAverage(&$rec, $date)
     {
         if (empty($date)) {
-            return self::RECORD_BAD;
+            return false;
         }
-        $avg = array();
         $rec = array("id" => $this->device->id, "Date" => $date);
         $this->Type = self::AVERAGE_15MIN;
-        $return = self::RECORD_EMPTY;
+        $return = false;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
             $sensor = &$this->device->sensors->sensor($i);
             if (method_exists($sensor, "get15MINAverage")) {
-                $ret = $sensor->get15MINAverage($i, $rec, $avg);
+                $ret = $sensor->get15MINAverage($i, $rec);
                 if ($ret == false) {
-                    $return = self::RECORD_BAD;
+                    $return = false;
                     break;
                 }
             } else {
                 $rec[$i] = $sensor->getUnits($A, $deltaT, $prev, $rec);
             }
             if (!is_null($rec[$i]["value"])) {
-                $return = self::RECORD_GOOD;
+                $return = true;
             }
         }
         return $return;
@@ -157,21 +133,23 @@ class EVIRTUALAverageTable extends AverageTableBase
     /**
     * This returns the first average from this device
     * 
+    * @param int $date The date to start with
+    *
     * @return null
     */
-    protected function getFirstAverageDate()
+    protected function getNextAverageDate($date)
     {
         $ret = null;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
             $sensor = &$this->device->sensors->sensor($i);
-            if (method_exists($sensor, "getFirstAverage15Min")) {
-                $avg = $sensor->getFirstAverage15Min();
+            if (method_exists($sensor, "getNextAverage15Min")) {
+                $avg = $sensor->getNextAverage15Min($date);
                 if (is_null($ret) || ($avg < $ret)) {
                     $ret = $avg;
                 }
             }
         }
-        return $ret;
+        return (int)$ret;
     }
 
     /******************************************************************

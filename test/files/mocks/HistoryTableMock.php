@@ -75,6 +75,12 @@ class HistoryTableMock extends HistoryTableBase
     {
         $this->index = 0;
         $this->preload = $data;
+        $keys = array("sqlTable", "sqlLimit", "sqlStart");
+        foreach ($keys as $key) {
+            if (isset($data[$key])) {
+                $this->$key = $data[$key];
+            }
+        }
         parent::__construct($this->preload[$this->index], $columns);
     }
 

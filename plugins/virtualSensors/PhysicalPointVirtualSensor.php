@@ -180,6 +180,8 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     {
         if (!is_a($this->avg, "AverageTableBase")) {
             $this->avg = &$this->getDevice()->historyFactory(array(), false);
+            $this->avg->sqlLimit = 1;
+            $this->avg->sqlOrderBy = "Date ASC";
         }
         return $this->avg;
     }
@@ -199,24 +201,26 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     *
-    * @param array $i         The point we are working on
-    * @param array &$data     The data from the other sensors that were crunched
-    * @param array &$avgTable The average table to get the readings from
+    * @param array $i     The point we are working on
+    * @param array &$data The data from the other sensors that were crunched
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function get15MINAverage($i, &$data, &$avgTable)
+    public function get15MINAverage($i, &$data)
     {
-        if ($data["Date"] > $this->dev->params->DriverInfo["LastAverage15MIN"]) {
+        $dev = $this->getDevice();
+        if ($data["Date"] > $dev->params->DriverInfo["LastAverage15MIN"]) {
             return false;
         }
-        $avg = &$avgTable[$this->DeviceID];
-        if (!is_a($avg, "AverageTableBase")) {
-            $avg = $this->getAvg();
-            $avg->sqlLimit = 1;
+        $avg = &$this->getAvg();
+        if (($avg->Date !== $data["Date"])) {
             $avg->selectInto(
                 "`id` = ? and `Type`=? and `Date` = ?",
-                array(hexdec($this->getExtra(0)), "15MIN", $data["Date"])
+                array(
+                    $avg->device->id,
+                    AverageTableBase::AVERAGE_15MIN,
+                    $data["Date"]
+                )
             );
         }
         $col = "Data".($this->getExtra(1) - 1);
@@ -229,19 +233,23 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         return true;
     }
     /**
-    * This returns the first average from this device
+    * This returns the next average from this device
+    *
+    * @param int $date The date to start with
     *
     * @return null
     */
-    public function getFirstAverage15Min()
+    public function getNextAverage15Min($date)
     {
         $avg = &$this->getAvg();
-        $avg->sqlLimit = 1;
-        $avg->sqlOrderBy = "Date ASC";
         $avg->selectInto(
-            "id = ? AND Type = ?",
-            array($avg->device->id, AverageTableBase::AVERAGE_15MIN)
+            "id = ? AND Type = ? AND Date > ?",
+            array($avg->device->id, AverageTableBase::AVERAGE_15MIN, $date)
         );
+        $dev = $this->getDevice();
+        if ($avg->Date == 0) {
+            return null;
+        }
         return $avg->Date;
     }
     /******************************************************************
