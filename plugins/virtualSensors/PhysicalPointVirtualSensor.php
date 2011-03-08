@@ -113,8 +113,25 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function __construct($data, &$device)
     {
-    
         $dev = &$this->getDevice($data["extra"][0]);
+        $this->cloneSensor($data);
+    
+        if (empty($data["location"])) {
+            unset($data["location"]);
+        }
+        parent::__construct($data, $device);
+    }
+
+    /**
+    * Clones a sensor
+    *
+    * @param array $data The servers to use
+    * 
+    * @return null
+    */
+    protected function cloneSensor($data)
+    {
+        $dev = &$this->getDevice();
         $sensor = &$dev->sensors->sensor($data["extra"][1] - 1);
         $fixed = array("unitType", "storageUnit", "maxDecimals", "storageType");
         foreach ($fixed as $f) {
@@ -124,10 +141,6 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         foreach ($default as $d) {
             $this->default[$d] = $sensor->$d;
         }
-        if (empty($data["location"])) {
-            unset($data["location"]);
-        }
-        parent::__construct($data, $device);
     }
     /**
     * Disconnects from the database
@@ -186,30 +199,34 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     *
-    * @param array $date      The date of the reading to get
+    * @param array $i         The point we are working on
     * @param array &$data     The data from the other sensors that were crunched
     * @param array &$avgTable The average table to get the readings from
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function get15MINAverage($date, &$data, &$avgTable)
+    public function get15MINAverage($i, &$data, &$avgTable)
     {
+        if ($data["Date"] > $this->dev->params->DriverInfo["LastAverage15MIN"]) {
+            return false;
+        }
         $avg = &$avgTable[$this->DeviceID];
         if (!is_a($avg, "AverageTableBase")) {
             $avg = $this->getAvg();
             $avg->sqlLimit = 1;
             $avg->selectInto(
                 "`id` = ? and `Type`=? and `Date` = ?",
-                array(hexdec($this->getExtra(0)), "15MIN", $date)
+                array(hexdec($this->getExtra(0)), "15MIN", $data["Date"])
             );
         }
         $col = "Data".($this->getExtra(1) - 1);
-        return array(
+        $data[$i] = array(
             "value" => $avg->$col,
             "units" => $this->storageUnit,
             "unitType" => $this->unitType,
             "dataType" => $this->storageType,
         );
+        return true;
     }
     /**
     * This returns the first average from this device
@@ -223,18 +240,9 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         $avg->sqlOrderBy = "Date ASC";
         $avg->selectInto(
             "id = ? AND Type = ?",
-            array($avg->device->id, "15MIN")
+            array($avg->device->id, AverageTableBase::AVERAGE_15MIN)
         );
         return $avg->Date;
-    }
-    /**
-    * This returns the first average from this device
-    *
-    * @return null
-    */
-    public function getLastAverage15Min()
-    {
-        return $this->getDevice()->params->DriverInfo["LastAverage15MIN"];
     }
     /******************************************************************
      ******************************************************************

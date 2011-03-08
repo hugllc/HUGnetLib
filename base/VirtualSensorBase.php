@@ -116,18 +116,6 @@ abstract class VirtualSensorBase extends DeviceSensorBase
         $this->dataType = $this->storageType;
         parent::__construct($data, $device);
     }
-    /**
-    * Changes a raw reading into a output value
-    *
-    * @param array $date The date of the reading to get
-    * @param array $data The data from the other sensors that were crunched
-    *
-    * @return mixed The value in whatever the units are in the sensor
-    */
-    public function get15MINAverage($date, $data = null)
-    {
-        return $this->getUnits($A, $deltaT, $prev, $data);
-    }
 
     /******************************************************************
      ******************************************************************
