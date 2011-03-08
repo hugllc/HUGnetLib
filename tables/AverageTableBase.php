@@ -230,11 +230,7 @@ abstract class AverageTableBase extends HistoryTableBase
                 if (empty($last[$col])) {
                     $last[$col] = $this->Date;
                 }
-                if ($data->Date <= $this->endTime) {
-                    $mult = $data->Date - $last[$col];
-                } else {
-                    $mult = $this->endTime - $last[$col];
-                }
+                $mult = $this->calc15MinAverageMult($data, $last[$col], $i);
                 if (!is_null($data->$col)) {
                     $this->$col += ($mult * $data->$col);
                     $this->divisors[$col] += $mult;
@@ -251,6 +247,38 @@ abstract class AverageTableBase extends HistoryTableBase
         return true;
     }
 
+    /**
+    * This calculates the averages
+    *
+    * It will return once for each average that it calculates.  The average will be
+    * stored in the instance this is called from.  If this is fed history table
+    * then it will calculate 15 minute averages.
+    *
+    * @param HistoryTableBase &$data This is the data to use to calculate the average
+    * @param int              $last  This is the last record that we used
+    * @param int              $col   The column to use
+    *
+    * @return float The number to multiply by for the weighted average.
+    */
+    protected function calc15MinAverageMult(HistoryTableBase &$data, $last, $col)
+    {
+        if ($this->device->sensors->sensor($col)->total()) {
+            if ($data->Date > $this->endTime) {
+                $mult = ($this->endTime - $last);
+                $denom = $data->Date - $last;
+                $mult = $mult / $denom;
+            } else {
+                $mult = 1;
+            }
+        } else {
+            if ($data->Date <= $this->endTime) {
+                $mult = $data->Date - $last;
+            } else {
+                $mult = $this->endTime - $last;
+            }
+        }
+        return $mult;
+    }
     /**
     * This calculates the averages
     *
@@ -310,10 +338,14 @@ abstract class AverageTableBase extends HistoryTableBase
                 $this->divisors[$col] = 1;
             }
             if (!is_null($this->$col)) {
+                if (!$this->device->sensors->sensor($i)->total()) {
+                    $this->$col = $this->$col / $this->divisors[$col];
+                }
                 $this->$col = round(
-                    $this->$col / $this->divisors[$col],
+                    $this->$col,
                     $this->device->sensors->sensor($i)->maxDecimals
                 );
+
             }
         }
     }

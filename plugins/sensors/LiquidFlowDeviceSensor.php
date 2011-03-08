@@ -114,6 +114,15 @@ class LiquidFlowDeviceSensor extends PulseDeviceSensorBase
         }
         return $ppm/$extra;
     }
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return true;
+    }
 
 }
 

@@ -104,6 +104,15 @@ class GenericPulseDeviceSensor extends PulseDeviceSensorBase
     {
         return $this->getPPM($A, $deltaT);
     }
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return true;
+    }
 
 }
 

@@ -71,6 +71,9 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     {
         $config = array(
             "dateFormat" => "Y-m-d H:i:s",
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/plugins/"),
+            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -784,9 +787,9 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 array(
                     "id"  => 41,
                     "Date"   => "2003-02-27 19:59:00",
-                    "Data0"  => 32.0,
-                    "Data1"  => 33.8,
-                    "Data2"  => 35.6,
+                    "Data0"  => 0.0,
+                    "Data1"  => 0.5,
+                    "Data2"  => 1.0,
                 ),
             ),
         );
@@ -862,13 +865,21 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 15,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 15,
                     "Date" => gmmktime(10, 00, 00, 1, 22, 2009),
                     "Data0" => 1.0,
                     "Data1" => 1.0,
-                    "Data2" => 1.0,
+                    "Data2" => 3.76,
                 ),
                 true,
             ),
@@ -909,13 +920,21 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 18,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 18,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 15.0,
                 ),
                 true,
             ),
@@ -956,13 +975,21 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 21,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 21,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
                     "Data0" => 4.0,
                     "Data1" => 5.0,
-                    "Data2" => 3.33,
+                    "Data2" => 6.0,
                 ),
                 true,
             ),
@@ -1003,13 +1030,21 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 22,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 22,
                     "Date" => gmmktime(10, 30, 00, 1, 22, 2009),
                     "Data0" => 3.0,
                     "Data1" => 5.0,
-                    "Data2" => 3.33,
+                    "Data2" => 5.667,
                 ),
                 true,
             ),
@@ -1050,6 +1085,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 23,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 23,
@@ -1097,6 +1140,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "HistoryTableMock",
                 array(
                     "id" => 24,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 24,
@@ -1209,13 +1260,21 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_15MIN,
                 array(
                     "id" => 25,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 25,
                     "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 15.0,
                 ),
                 true,
             ),
@@ -1261,6 +1320,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_HOURLY,
                 array(
                     "id" => 26,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 26,
@@ -1268,7 +1335,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type" => AverageTableBase::AVERAGE_HOURLY,
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 20.0,
                 ),
                 true,
             ),
@@ -1322,6 +1389,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_DAILY,
                 array(
                     "id" => 27,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 27,
@@ -1329,7 +1404,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type" => AverageTableBase::AVERAGE_DAILY,
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 20.0,
                 ),
                 true,
             ),
@@ -1375,6 +1450,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_MONTHLY,
                 array(
                     "id" => 28,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 28,
@@ -1382,7 +1465,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type" => AverageTableBase::AVERAGE_MONTHLY,
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 20.0,
                 ),
                 true,
             ),
@@ -1436,6 +1519,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_WEEKLY,
                 array(
                     "id" => 28,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 28,
@@ -1443,7 +1534,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type" => AverageTableBase::AVERAGE_WEEKLY,
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 20.0,
                 ),
                 true,
             ),
@@ -1489,6 +1580,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_YEARLY,
                 array(
                     "id" => 29,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 29,
@@ -1496,7 +1595,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type" => AverageTableBase::AVERAGE_YEARLY,
                     "Data0" => 3.0,
                     "Data1" => 4.0,
-                    "Data2" => 5.0,
+                    "Data2" => 20.0,
                 ),
                 true,
             ),
@@ -1542,6 +1641,14 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 AverageTableBase::AVERAGE_HOURLY,
                 array(
                     "id" => 31,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                     "id" => 31,
@@ -1594,10 +1701,88 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "BadType",
                 array(
                     "id" => 31,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
                 ),
                 array(
                 ),
                 false,
+            ),
+            array(  // #10 basic input.  Everything present, 5 records
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 18, 00, 1, 22, 2009),
+                        "Data0" => 1.0,
+                        "Data1" => 2.0,
+                        "Data2" => 3.0,
+                    ),
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 21, 00, 1, 22, 2009),
+                        "Data0" => 2.0,
+                        "Data1" => 3.0,
+                        "Data2" => 4.0,
+                    ),
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 24, 00, 1, 22, 2009),
+                        "Data0" => 6.0,
+                        "Data1" => 7.0,
+                        "Data2" => 8.0,
+                    ),
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 27, 00, 1, 22, 2009),
+                        "Data0" => 12.0,
+                        "Data1" => 12.0,
+                        "Data2" => 13.0,
+                    ),
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 30, 00, 1, 22, 2009),
+                        "Data0" => 14.0,
+                        "Data1" => 15.0,
+                        "Data2" => 16.0,
+                    ),
+                    array(
+                        "id" => 25,
+                        "Date" => gmmktime(10, 33, 12, 1, 22, 2009),
+                        "Data0" => 14.0,
+                        "Data1" => 15.0,
+                        "Data2" => 16.0,
+                    ),
+
+                ),
+                "HistoryTableMock",
+                AverageTableBase::AVERAGE_15MIN,
+                array(
+                    "id" => 25,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 3,
+                        "forceSensors" => true,
+                        0 => array(),
+                        1 => array(),
+                        2 => array("id" => 0x02),
+                    ),
+                ),
+                array(
+                    "id" => 25,
+                    "Date" => gmmktime(10, 15, 00, 1, 22, 2009),
+                    "Data0" => 7.0,
+                    "Data1" => 7.8,
+                    "Data2" => 44.0,
+                ),
+                true,
             ),
         );
     }

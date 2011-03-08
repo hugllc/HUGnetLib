@@ -111,7 +111,15 @@ class WattNodeDeviceSensor extends PulseDeviceSensorBase
         }
         return round($Wh / 1000, 4);
     }
-
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return true;
+    }
 }
 
 ?>

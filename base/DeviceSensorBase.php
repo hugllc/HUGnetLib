@@ -291,7 +291,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     /**
     * Converts data between units
     *
-    * @return arry of units in array("unit" => "unit") format
+    * @return array of units in array("unit" => "unit") format
     */
     public function getAllTypes()
     {
@@ -304,6 +304,15 @@ abstract class DeviceSensorBase extends HUGnetContainer
         }
         return $ret;
 
+    }
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return false;
     }
     /******************************************************************
      ******************************************************************

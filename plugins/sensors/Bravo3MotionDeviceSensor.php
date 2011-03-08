@@ -109,6 +109,15 @@ class Bravo3MotionDeviceSensor extends PulseDeviceSensorBase
     {
         return $A;
     }
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return true;
+    }
 
 }
 

@@ -117,6 +117,15 @@ class Test2Sensor extends DeviceSensorBase
     {
         $this->data["type"] = $value;
     }
+    /**
+    * Converts data between units
+    *
+    * @return bool True - Total instead of average, False, Average instead of total
+    */
+    public function total()
+    {
+        return true;
+    }
 
 }
 ?>

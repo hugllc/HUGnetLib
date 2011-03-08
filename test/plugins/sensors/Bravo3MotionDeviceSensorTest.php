@@ -139,6 +139,41 @@ class Bravo3MotionDeviceSensorTest extends DeviceSensorPluginTestBase
         $ret = $this->o->getReading($A, $deltaT);
         $this->assertEquals($expect, $ret, "", 0.1);
     }
+    /**
+    * data provider for testTotal
+    *
+    * @return array
+    */
+    public static function dataTotal()
+    {
+        return array(
+            array(
+                array(
+                ),
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataTotal
+    */
+    public function testTotal($preload, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame(
+            $expect,
+            $this->o->total()
+        );
+    }
 
 }
 

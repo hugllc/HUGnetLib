@@ -640,6 +640,42 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+    * data provider for testTotal
+    *
+    * @return array
+    */
+    public static function dataTotal()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "TestDeviceSensor",
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $class   The class to use for this test
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataTotal
+    */
+    public function testTotal($preload, $class, $expect)
+    {
+        $o = new $class($preload, $this->d);
+        $this->assertSame(
+            $expect,
+            $o->total()
+        );
+    }
 
     /**
     * data provider for testSet
@@ -674,6 +710,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->o->$var = $value;
         $this->assertSame($expect, $this->o->$var);
     }
+
 
 }
 /**
