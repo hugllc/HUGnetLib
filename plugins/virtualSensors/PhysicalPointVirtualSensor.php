@@ -80,8 +80,6 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     protected $dev = null;
     /** @var object These are the valid values for type */
     protected $DeviceID = null;
-    /** @var object These are the valid values for type */
-    protected $avg = null;
     /**
     * This is the array of sensor information.
     */
@@ -149,7 +147,6 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     public function __destruct()
     {
         unset($this->dev);
-        unset($this->avg);
     }
     /**
     * Changes a raw reading into a output value
@@ -158,7 +155,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function &getDevice($DeviceID = null)
+    protected function &getDevice($DeviceID = null)
     {
         if (!empty($DeviceID)) {
             $this->DeviceID = hexdec($DeviceID);
@@ -176,14 +173,11 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    protected function &getAvg()
+    public function &getAverageTable()
     {
-        if (!is_a($this->avg, "AverageTableBase")) {
-            $this->avg = &$this->getDevice()->historyFactory(array(), false);
-            $this->avg->sqlLimit = 1;
-            $this->avg->sqlOrderBy = "Date ASC";
-        }
-        return $this->avg;
+        $avg = &$this->getDevice()->historyFactory(array(), false);
+        $avg->sqlOrderBy = "Date ASC";
+        return $avg;
     }
     /**
     * Changes a raw reading into a output value
@@ -196,61 +190,8 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array())
     {
-        return null;
-    }
-    /**
-    * Changes a raw reading into a output value
-    *
-    * @param array $i     The point we are working on
-    * @param array &$data The data from the other sensors that were crunched
-    *
-    * @return mixed The value in whatever the units are in the sensor
-    */
-    public function get15MINAverage($i, &$data)
-    {
-        $dev = $this->getDevice();
-        if ($data["Date"] > $dev->params->DriverInfo["LastAverage15MIN"]) {
-            return false;
-        }
-        $avg = &$this->getAvg();
-        if (($avg->Date !== $data["Date"])) {
-            $avg->selectInto(
-                "`id` = ? and `Type`=? and `Date` = ?",
-                array(
-                    $avg->device->id,
-                    AverageTableBase::AVERAGE_15MIN,
-                    $data["Date"]
-                )
-            );
-        }
-        $col = "Data".($this->getExtra(1) - 1);
-        $data[$i] = array(
-            "value" => $avg->$col,
-            "units" => $this->storageUnit,
-            "unitType" => $this->unitType,
-            "dataType" => $this->storageType,
-        );
-        return true;
-    }
-    /**
-    * This returns the next average from this device
-    *
-    * @param int $date The date to start with
-    *
-    * @return null
-    */
-    public function getNextAverage15Min($date)
-    {
-        $avg = &$this->getAvg();
-        $avg->selectInto(
-            "id = ? AND Type = ? AND Date > ?",
-            array($avg->device->id, AverageTableBase::AVERAGE_15MIN, $date)
-        );
-        $dev = $this->getDevice();
-        if ($avg->Date == 0) {
-            return null;
-        }
-        return $avg->Date;
+        $col = ($this->getExtra(1) - 1);
+        return $data["Data".$col];
     }
     /******************************************************************
      ******************************************************************

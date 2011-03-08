@@ -475,8 +475,13 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                 array(
                 ),
                 array(
+                    "id" => 0x1000,
+                    "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                    "Data0" => "1.0",
+                    "Data1" => "4.0",
+                    "Data2" => 3.0,
                 ),
-                false,
+                true,
             ),
             array(  // #3 Missing device record
                 array(

@@ -230,7 +230,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
     public static function dataGetReading()
     {
         return array(
-            array( // #0
+            array( // #0 Nothing
                 array(
                     "extra" => array(
                         "0000E1",
@@ -242,6 +242,20 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                 array(
                 ),
                 null
+            ),
+            array( // #0 Nothing
+                array(
+                    "extra" => array(
+                        "0000E1",
+                        2,
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    "Data1" => 15,
+                ),
+                15,
             ),
         );
     }
@@ -267,393 +281,55 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
         $ret = $o->getReading($A, $deltaT, $data);
         $this->assertSame($expect, $ret);
     }
+
     /**
-    * Data provider for testGet15MINAverage
+    * Data provider for testGetReading
     *
     * @return array
     */
-    public static function dataGet15MINAverage()
+    public static function dataGetAverageTable()
     {
         return array(
-            array(  // #0 Everything works
+            array( // #0 Nothing
                 array(
+                    "id" => 0xE1,
                     "DeviceID" => "0000E1",
-                    "sensors" => array(
-                        "Sensors" => 4,
-                        "forceSensors" => true,
-                        "PhysicalSensors" => 3,
-                        "VirtualSensors" => 1,
-                        0 => array(),
-                        1 => array(),
-                        2 => array(
-                            "id" => 0x02,
-                            "location" => "Hello",
-                            "dataType" => UnitsBase::TYPE_DIFF,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "LastAverage15MIN" => 123456790,
-                        ),
+                    "HWPartNum" => "0039-28-01-A",
+                    "Driver" => "e00392800",
+                ),
+                array(
+                    "extra" => array(
+                        "0000E1",
+                        2,
                     ),
                 ),
-                array(
-                    array(
-                        "id" => hexdec("0000E1"),
-                        "Type" => "15MIN",
-                        "Date" => 123456789,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                ),
-                array(
-                    'extra' => array(
-                        "0000E1", 3
-                    )
-                ),
-                1,
-                array(
-                    "Date" => 123456789,
-                ),
-                array(
-                    "Date" => 123456789,
-                    1 => array(
-                        "value" => "3.0",
-                        "units" => "&#176;C",
-                        "unitType" => "Temperature",
-                        "dataType" => UnitsBase::TYPE_RAW,
-                    ),
-                ),
-                true,
-            ),
-            array(  // #1 date after LastAverage15MIN
-                array(
-                    "DeviceID" => "0000E1",
-                    "sensors" => array(
-                        "Sensors" => 4,
-                        "forceSensors" => true,
-                        "PhysicalSensors" => 3,
-                        "VirtualSensors" => 1,
-                        0 => array(),
-                        1 => array(),
-                        2 => array(
-                            "id" => 0x02,
-                            "location" => "Hello",
-                            "dataType" => UnitsBase::TYPE_DIFF,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "LastAverage15MIN" => 123456788,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => hexdec("0000E1"),
-                        "Type" => "15MIN",
-                        "Date" => 123456789,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                ),
-                array(
-                    'extra' => array(
-                        "0000E1", 3
-                    )
-                ),
-                1,
-                array(
-                    "Date" => 123456789,
-                ),
-                array(
-                    "Date" => 123456789,
-                ),
-                false,
+                "E00392800AverageTable",
+                0xE1,
             ),
         );
     }
     /**
     * Generic function for testing sensor routines
     *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $device   The device to load
-    * @param array $averages The averages to have saved
-    * @param array $preload  The data to preload into the class
-    * @param int   $index    The index of the sensor we are using
-    * @param array $data     The data to send
-    * @param mixed $expect   The return data to expect
-    * @param mixed $return   The expected return
+    * @param array  $device  The device to load
+    * @param array  $preload The data to preload into the class
+    * @param string $class   The class returned
+    * @param int    $id      The ID of the device we expect
     *
     * @return null
     *
-    * @dataProvider dataGet15MINAverage()
+    * @dataProvider dataGetAverageTable
     */
-    public function testGet15MINAverage(
-        $device, $averages, $preload, $index, $data, $expect, $return
-    ) {
-        $dev = new DeviceContainer();
-        $dev->fromAny($device);
-        $dev->insertRow(true);
-        $avg = &$dev->historyFactory(array(), false);
-        foreach ((array)$averages as $a) {
-            $avg->clearData();
-            $avg->fromAny($a);
-            $avg->insertRow(true);
-        }
-        $o = new PhysicalPointVirtualSensor($preload, $this->d);
-        $ret = $o->get15MINAverage($index, $data, $dummy);
-        $this->assertSame($return, $ret, "Return Wrong");
-        $this->assertSame($expect, $data, "Data Wrong");
-    }
-    /**
-    * Data provider for testGet15MINAverage
-    *
-    * @return array
-    */
-    public static function dataGetNextAverage15Min()
+    public function testGetAverageTable($device, $preload, $class, $id)
     {
-        return array(
-            array(  // #0 The looking for the first average
-                array(
-                    "DeviceID" => "0000E1",
-                    "sensors" => array(
-                        "Sensors" => 4,
-                        "forceSensors" => true,
-                        "PhysicalSensors" => 3,
-                        "VirtualSensors" => 1,
-                        0 => array(),
-                        1 => array(),
-                        2 => array(
-                            "id" => 0x02,
-                            "location" => "Hello",
-                            "dataType" => UnitsBase::TYPE_DIFF,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "LastAverage15MIN" => 123456799,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 0xE0,
-                        "Type" => "15MIN",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "HOURLY",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456799,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456789,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                ),
-                array(
-                    'extra' => array(
-                        "0000E1", 3
-                    )
-                ),
-                0,
-                123456789,
-            ),
-            array(  // #1 The looking for the next average
-                array(
-                    "DeviceID" => "0000E1",
-                    "sensors" => array(
-                        "Sensors" => 4,
-                        "forceSensors" => true,
-                        "PhysicalSensors" => 3,
-                        "VirtualSensors" => 1,
-                        0 => array(),
-                        1 => array(),
-                        2 => array(
-                            "id" => 0x02,
-                            "location" => "Hello",
-                            "dataType" => UnitsBase::TYPE_DIFF,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "LastAverage15MIN" => 123456799,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 0xE0,
-                        "Type" => "15MIN",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "HOURLY",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456799,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456789,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                ),
-                array(
-                    'extra' => array(
-                        "0000E1", 3
-                    )
-                ),
-                123456790,
-                123456799,
-            ),
-            array(  // #2 The looking for an average that is in the future
-                array(
-                    "DeviceID" => "0000E1",
-                    "sensors" => array(
-                        "Sensors" => 4,
-                        "forceSensors" => true,
-                        "PhysicalSensors" => 3,
-                        "VirtualSensors" => 1,
-                        0 => array(),
-                        1 => array(),
-                        2 => array(
-                            "id" => 0x02,
-                            "location" => "Hello",
-                            "dataType" => UnitsBase::TYPE_DIFF,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "LastAverage15MIN" => 123456799,
-                        ),
-                    ),
-                ),
-                array(
-                    array(
-                        "id" => 0xE0,
-                        "Type" => "15MIN",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "HOURLY",
-                        "Date" => 1234,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456799,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                    array(
-                        "id" => 0xE1,
-                        "Type" => "15MIN",
-                        "Date" => 123456789,
-                        "Data0" => 0,
-                        "Data1" => 2,
-                        "Data2" => 3,
-                        "Data3" => 5,
-                    ),
-                ),
-                array(
-                    'extra' => array(
-                        "0000E1", 3
-                    )
-                ),
-                123456800,
-                null,
-            ),
-        );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $device   The device to load
-    * @param array $averages The averages to have saved
-    * @param array $preload  The data to preload into the class
-    * @param int   $date     The date to start with
-    * @param mixed $expect   The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataGetNextAverage15Min()
-    */
-    public function testGetNextAverage15Min(
-        $device, $averages, $preload, $date, $expect
-    ) {
         $dev = new DeviceContainer();
         $dev->fromAny($device);
         $dev->insertRow(true);
-        $avg = &$dev->historyFactory(array(), false);
-        foreach ((array)$averages as $a) {
-            $avg->clearData();
-            $avg->fromAny($a);
-            $avg->insertRow(true);
-        }
+
         $o = new PhysicalPointVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->getNextAverage15Min($date));
+        $ret = &$o->getAverageTable();
+        $this->assertSame($class, get_class($ret), "Class Wrong");
+        $this->assertAttributeSame($id, "DeviceID", $o, "Id Wrong");
     }
 
 }
