@@ -654,7 +654,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
             array(   // #0
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-28 01:59:00",
+                    "Date"   => 1046397540,
                     "deltaT"  => 5.2,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -680,7 +680,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "raw" => array(),
                     "converted" => false,
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "deltaT"  => 5.2,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -728,7 +728,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "raw" => array(),
                     "converted" => false,
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "deltaT"  => 5.2,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -774,7 +774,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(),
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Data0"  => 1.0,
                     "Data1"  => 2.0,
                     "Data2"  => 3.0,
@@ -819,7 +819,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 array(),
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Data0"  => null,
                     "Data1"  => 2.0,
                     "Data2"  => 3.0,
@@ -882,7 +882,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                 ),
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Data0"  => 3.0,
                     "Data1"  => 2.0,
                     "Data2"  => 3.0,

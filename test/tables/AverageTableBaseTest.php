@@ -671,7 +671,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-28 01:59:00",
+                    "Date"   => 1046397540,
                     "deltaT"  => 5.2,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -695,7 +695,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "group" => "default",
                     "raw" => array(),
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -717,7 +717,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-28 01:59:00",
+                    "Date"   => 1046397540,
                     "deltaT"  => 5.2,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -741,7 +741,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "group" => "default",
                     "raw" => array(),
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                     "Data0"  => 0,
                     "Data1"  => 1,
@@ -786,7 +786,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 array(),
                 array(
                     "id"  => 41,
-                    "Date"   => "2003-02-27 19:59:00",
+                    "Date"   => 1046397540,
                     "Data0"  => 0.0,
                     "Data1"  => 0.5,
                     "Data2"  => 1.0,
@@ -2089,38 +2089,38 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
                     "Type"  => AverageTableBase::AVERAGE_15MIN,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                gmmktime(0, 0, 0, 1, 1, 2010),
             ),
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
                     "Type"  => AverageTableBase::AVERAGE_HOURLY,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                gmmktime(0, 0, 0, 1, 1, 2010),
             ),
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
                     "Type"  => AverageTableBase::AVERAGE_DAILY,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                gmmktime(0, 0, 0, 1, 1, 2010),
             ),
             array(
                 array(
                     "id"  => 41,
-                    "Date"   => mktime(0, 0, 0, 1, 1, 2010),
+                    "Date"   => gmmktime(0, 0, 0, 1, 1, 2010),
                     "Type"  => AverageTableBase::AVERAGE_WEEKLY,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                gmmktime(0, 0, 0, 1, 1, 2010),
             ),
             array( // Note the use of gmmktime instead of mktime
                 array(
@@ -2129,7 +2129,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type"  => AverageTableBase::AVERAGE_MONTHLY,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                mktime(0, 0, 0, 1, 1, 2010),
             ),
             array( // Note the use of gmmktime instead of mktime
                 array(
@@ -2138,7 +2138,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                     "Type"  => AverageTableBase::AVERAGE_YEARLY,
                 ),
                 "Date",
-                "2010-01-01 00:00:00",
+                mktime(0, 0, 0, 1, 1, 2010),
             ),
         );
     }

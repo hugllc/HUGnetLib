@@ -435,7 +435,7 @@ abstract class AverageTableBase extends HistoryTableBase
         ) {
             $tzoffset = (int)date("Z") + ((int)date("I", $this->$field)*3600);
         }
-        return date($this->myConfig->dateFormat, ($this->$field - $tzoffset));
+        return $this->$field - $tzoffset;
     }
 }
 ?>

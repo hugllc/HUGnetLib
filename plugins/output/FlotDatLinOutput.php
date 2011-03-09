@@ -37,7 +37,6 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/OutputPluginBase.php";
-require_once dirname(__FILE__)."/../../base/HUGnetDBTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -111,7 +110,7 @@ class FlotDatLinOutput extends OutputPluginBase
             return;
         }
         // We need the date in miliseconds since epoc
-        $date = HUGnetDBTable::unixDate($array[$dateField]) * 1000;
+        $date = (int)$array[$dateField] * 1000;
         foreach ((array) $this->params["fields"] as $line => $val) {
             foreach ((array) $val as $field) {
                 if (!is_null($array[$field])) {

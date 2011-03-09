@@ -37,6 +37,7 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/OutputPluginBase.php";
+require_once dirname(__FILE__)."/../../base/HUGnetDBTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -117,7 +118,7 @@ class JPGraphDatLinOutput extends OutputPluginBase
                     $this->graphData[$line][$field][$index] = null;
                 }
             }
-            $this->graphDates[$index] = $array[$dateField];
+            $this->graphDates[$index] = (int)$array[$dateField];
         }
         $index++;
     }

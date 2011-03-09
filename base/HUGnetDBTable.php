@@ -584,7 +584,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     protected function outputDate($field)
     {
-        return date($this->myConfig->dateFormat, $this->$field);
+        return $this->$field;
     }
     /**
     * There should only be a single instance of this class
