@@ -862,6 +862,66 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, get_class($this->o->sensor($num)));
     }
 
+    /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataSensorFromString()
+    {
+        return array(
+            array(
+                base64_encode(
+                    serialize(
+                        array(
+                            0 => array("id" => 3, "type" => "Hello"),
+                            1 => array("id" => 2),
+                            2 => array("id" => 8),
+                        )
+                    )
+                ),
+                0,
+                array("id" => 3, "type" => "Hello"),
+            ),
+            array(
+                base64_encode(
+                    serialize(
+                        array(
+                            0 => array("id" => 3, "type" => "Hello"),
+                            1 => array("id" => 2),
+                            2 => array("id" => 8),
+                        )
+                    )
+                ),
+                5,
+                array("id" => null, "type" => ""),
+            ),
+            array(
+                "",
+                0,
+                array("id" => null, "type" => ""),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $string The string with the sensor in it
+    * @param int    $sensor The sensor number
+    * @param mixed  $expect The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataSensorFromString
+    */
+    public function testSensorFromString($string, $sensor, $expect)
+    {
+        $this->assertSame(
+            $expect,
+            $this->o->sensorFromString($string, $sensor)->toArray(false)
+        );
+    }
 
     /**
     * data provider for testFromCalString

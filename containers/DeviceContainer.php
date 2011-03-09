@@ -436,5 +436,22 @@ class DeviceContainer extends DevicesTable
     {
         return $this->epDriver;
     }
+
+    /**
+    * returns an object with the controller of this device in it
+    * 
+    * @param int    $id     The id of the device to get the sensor from
+    * @param int    $sensor The sensor to get
+    * @param string $group  The database group to get the device from
+    *
+    * @return DeviceContainer
+    */
+    static public function getSensor($id, $sensor, $group = "default")
+    {
+        $dev = new DevicesTable(array("group" => $group));
+        $dev->getRow($id);
+        $sen = new DeviceSensorsContainer(array(), $dev);
+        return $sen->sensorFromString($dev->sensors, $sensor);
+    }
 }
 ?>

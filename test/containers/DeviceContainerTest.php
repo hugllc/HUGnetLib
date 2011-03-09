@@ -2169,7 +2169,181 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, get_class($this->o->driver()));
     }
+    /**
+    * data provider for testGetController
+    *
+    * @return array
+    */
+    public static function dataGetSensor()
+    {
+        return array(
+            array( // #0
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(),
+                        "id" => 232,
+                        "DeviceID" => "0000E8",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-CF-01-A",
+                        "FWPartNum" => "0039-24-67-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                        "Active" => 1,
+                        "GatewayKey" => 0,
+                        "ControllerKey" => 0,
+                        "ControllerIndex" => 0,
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => 0,
+                        "ActiveSensors" => 2,
+                        "DeviceGroup" => "FFFFFF",
+                        "params" => "",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            0 => array("id" => 0x03, "type" => "hello"),
+                            1 => array("id" => 0x02, "type" => "there"),
+                            2 => array("id" => 0x01, "type" => "here"),
+                        ),
+                    ),
+                ),
+                0xE8,
+                0,
+                array("id" => 0x03, "type" => "hello"),
+            ),
+            array( // #1
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(),
+                        "id" => 232,
+                        "DeviceID" => "0000E8",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-CF-01-A",
+                        "FWPartNum" => "0039-24-67-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                        "Active" => 1,
+                        "GatewayKey" => 0,
+                        "ControllerKey" => 0,
+                        "ControllerIndex" => 0,
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => 0,
+                        "ActiveSensors" => 2,
+                        "DeviceGroup" => "FFFFFF",
+                        "params" => "",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            0 => array("id" => 0x03, "type" => "hello"),
+                            1 => array("id" => 0x02, "type" => "there"),
+                            2 => array("id" => 0x01, "type" => "here"),
+                        ),
+                    ),
+                ),
+                0xE8,
+                1,
+                array("id" => 0x02, "type" => "there"),
+            ),
+            array( // #2 Sensor not present
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(),
+                        "id" => 232,
+                        "DeviceID" => "0000E8",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-CF-01-A",
+                        "FWPartNum" => "0039-24-67-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                        "Active" => 1,
+                        "GatewayKey" => 0,
+                        "ControllerKey" => 0,
+                        "ControllerIndex" => 0,
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => 0,
+                        "ActiveSensors" => 2,
+                        "DeviceGroup" => "FFFFFF",
+                        "params" => "",
+                        "sensors" => array(
+                            "Sensors" => 2,
+                            0 => array("id" => 0x03, "type" => "hello"),
+                            1 => array("id" => 0x02, "type" => "there"),
+                            2 => array("id" => 0x01, "type" => "here"),
+                        ),
+                    ),
+                ),
+                0xE8,
+                4,
+                array("id" => null, "type" => ""),
+            ),
+            array( // #3 Device not present
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(),
+                        "id" => 232,
+                        "DeviceID" => "0000E8",
+                        "DeviceName" => "",
+                        "HWPartNum" => "0039-CF-01-A",
+                        "FWPartNum" => "0039-24-67-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                        "Active" => 1,
+                        "GatewayKey" => 0,
+                        "ControllerKey" => 0,
+                        "ControllerIndex" => 0,
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => 0,
+                        "ActiveSensors" => 2,
+                        "DeviceGroup" => "FFFFFF",
+                        "params" => "",
+                        "sensors" => array(
+                            "Sensors" => 2,
+                            0 => array("id" => 0x03, "type" => "hello"),
+                            1 => array("id" => 0x02, "type" => "there"),
+                            2 => array("id" => 0x01, "type" => "here"),
+                        ),
+                    ),
+                ),
+                0xE9,
+                0,
+                array("id" => null, "type" => ""),
+            ),
+        );
+    }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $load   The stuff to load into the database.
+    * @param array $id     The values to preload
+    * @param int   $sensor The sensor to get
+    * @param mixed $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetSensor
+    */
+    public function testGetSensor($load, $id, $sensor, $expect)
+    {
+        foreach ($load as $l) {
+            $this->o->clearData();
+            $this->o->fromAny($l);
+            $this->o->insertRow(true);
+        }
+        $this->assertSame(
+            $expect,
+            $this->o->getSensor($id, $sensor)->toArray(false)
+        );
+    }
 }
 
 ?>

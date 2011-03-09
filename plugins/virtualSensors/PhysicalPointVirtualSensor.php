@@ -111,7 +111,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function __construct($data, &$device)
     {
-        $dev = &$this->getDevice($data["extra"][0]);
+        $this->DeviceID = hexdec($data["extra"][0]);
         $this->cloneSensor($data);
     
         if (empty($data["location"])) {
@@ -129,8 +129,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     protected function cloneSensor($data)
     {
-        $dev = &$this->getDevice();
-        $sensor = &$dev->sensors->sensor($data["extra"][1] - 1);
+        $sensor = DeviceContainer::getSensor($this->DeviceID, $data["extra"][1] - 1);
         $fixed = array("unitType", "storageUnit", "maxDecimals", "storageType");
         foreach ($fixed as $f) {
             $this->fixed[$f] = $sensor->$f;
@@ -151,15 +150,10 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     * 
-    * @param string $DeviceID The Device ID of the device to get
-    *
     * @return mixed The value in whatever the units are in the sensor
     */
-    protected function &getDevice($DeviceID = null)
+    protected function &getDevice()
     {
-        if (!empty($DeviceID)) {
-            $this->DeviceID = hexdec($DeviceID);
-        }
         if (!is_a($this->dev, "DeviceContainer")) {
             $this->dev = new DeviceContainer(
                 array("group" => $this->myDevice->group)

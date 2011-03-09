@@ -353,7 +353,19 @@ class DeviceSensorsContainer extends HUGnetContainer
         }
         return $this->sensorFactory(array());
     }
-
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    * @param int    $sensor The sensor to get.
+    *
+    * @return object The sensor object
+    */
+    public function &sensorFromString($string, $sensor)
+    {
+        $array = self::fromStringDecode((string)$string);
+        return $this->sensorFactory($array[$sensor]);
+    }
     /**
     * Creates a sensor object
     *

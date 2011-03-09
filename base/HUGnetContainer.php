@@ -451,12 +451,23 @@ abstract class HUGnetContainer extends HUGnetClass
     public function fromString($string)
     {
         if (!empty($string)) {
-            $stuff = unserialize(base64_decode($string));
+            $stuff = self::fromStringDecode($string);
         }
         if ($stuff) {
             $this->fromArray($stuff);
         }
         return (bool)$stuff;
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return boolean
+    */
+    static protected function fromStringDecode($string)
+    {
+        return unserialize(base64_decode($string));
     }
     /**
     * Returns the object as a string
