@@ -87,10 +87,10 @@ class EVIRTUALAverageTable extends AverageTableBase
             return false;
         }
         $this->_setAverageTables($data->sqlLimit);
-        $this->startup = false;
         $this->device->params->DriverInfo["LastPoll"] = time();
-        $ret = $this->_get15MinAverage($rec);
-
+        do {
+            $ret = $this->_get15MinAverage($rec);
+        } while (($ret === false) && !$this->done);
         if ($ret) {
             $this->fromDataArray($rec);
             $this->device->params->DriverInfo["LastHistory"] = $this->Date;
@@ -127,6 +127,11 @@ class EVIRTUALAverageTable extends AverageTableBase
                 }
             }
         }
+        // Nothing to do.  Exit
+        if (empty($this->averages["DeviceID"])) {
+            $this->done = true;
+            return;
+        }
     }
     /**
     * This returns the first average from this device
@@ -139,6 +144,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     {
         $date = $this->getNextAverageDate();
         if (empty($date)) {
+            $this->done = true;
             return false;
         }
         $rec = array("id" => $this->device->id, "Date" => $date);

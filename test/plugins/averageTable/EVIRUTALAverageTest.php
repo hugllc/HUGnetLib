@@ -570,6 +570,125 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                 ),
                 false,
             ),
+            array(  // #4 No PhysicalPointVirtualSensors in virtual endpoint
+                array(
+                    array(
+                        "id" => 0xE10,
+                        "DeviceID" => "000E10",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 00, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        "id" => 0xE20,
+                        "DeviceID" => "000E20",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "LastAverage15MIN" => gmmktime(
+                                    15, 00, 00, 1, 22, 2009
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    0xE10 => array(
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 4.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                    0xE20 => array(
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => 1.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x1000,
+                    "DeviceID" => "001000",
+                    "HWPartNum" => "0039-24-02-P",
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 0,
+                        "VirtualSensors" => 3,
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "1 + 1", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "1 + 2", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "1 + 3", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                ),
+                false,
+            ),
 
         );
     }
@@ -1873,6 +1992,176 @@ class EVIRTUALAverageTableTest extends AverageTablePluginTestBase
                     ),
                 ),
                 gmmktime(15, 30, 00, 1, 22, 2009),
+                time(),
+            ),
+            array(  // #7 basic input.  First record bad.  Middle record bad
+                array(
+                    array(
+                        "id" => 0xE10,
+                        "DeviceID" => "000E10",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                            ),
+                        ),
+                    ),
+                    array(
+                        "id" => 0xE20,
+                        "DeviceID" => "000E20",
+                        "sensors" => array(
+                            "Sensors" => 3,
+                            "PhysicalSensors" => 2,
+                            "VirtualSensors" => 1,
+                            array("id" => 0x02),
+                            array("id" => 0x02),
+                            array(
+                                "id" => 0xFE,
+                                "type" => "computation",
+                                "extra" => array(
+                                    "{2} - {1}", "&#176;C", "Temperature",
+                                    UnitsBase::TYPE_DIFF, 4
+                                ),
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    0xE10 => array(
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => null,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                            "Data0" => 3.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 30, 00, 1, 22, 2009),
+                            "Data0" => null,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE10,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 45, 00, 1, 22, 2009),
+                            "Data0" => 2.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                    0xE20 => array(
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 00, 00, 1, 22, 2009),
+                            "Data0" => null,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                            "Data0" => 2.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 30, 00, 1, 22, 2009),
+                            "Data0" => null,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                        array(
+                            "id" => 0xE20,
+                            "Type" => AverageTableBase::AVERAGE_15MIN,
+                            "Date" => gmmktime(15, 45, 00, 1, 22, 2009),
+                            "Data0" => 3.0,
+                            "Data1" => 2.0,
+                            "Data2" => 1.0,
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x1000,
+                    "DeviceID" => "001000",
+                    "HWPartNum" => "0039-24-02-P",
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "PhysicalSensors" => 0,
+                        "VirtualSensors" => 3,
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E20", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "physicalpoint",
+                            "extra" => array("000E10", 1),
+                        ),
+                        array(
+                            "id" => 0xFE,
+                            "type" => "computation",
+                            "extra" => array(
+                                "{2} - {1}", "&#176;C", "Temperature",
+                                UnitsBase::TYPE_DIFF, 4
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 0x1000,
+                        "Date" => gmmktime(15, 15, 00, 1, 22, 2009),
+                        "Data0" => "2.0",
+                        "Data1" => "3.0",
+                        "Data2" => 1.0,
+                    ),
+                    array(
+                        "id" => 0x1000,
+                        "Date" => gmmktime(15, 45, 00, 1, 22, 2009),
+                        "Data0" => "3.0",
+                        "Data1" => "2.0",
+                        "Data2" => -1.0,
+                    ),
+                ),
+                gmmktime(15, 45, 00, 1, 22, 2009),
                 time(),
             ),
 
