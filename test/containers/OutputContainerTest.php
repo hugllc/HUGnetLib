@@ -702,6 +702,85 @@ post"
         );
     }
 
+    /**
+    * data provider for testFilterFactory
+    *
+    * @return array
+    */
+    public static function dataFilterFactory()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                    array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
+                ),
+                "TestOutputFilter1",
+                array(
+                    array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
+                ),
+            ),
+            array(
+                array(
+                    "type" => "anotherType",
+                ),
+                array(
+                    array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
+                ),
+                "TestOutputFilter2",
+                array(
+                    array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $setup  The setup array to use for the filter class
+    * @param array $data   The data to use
+    * @param array $class  The expected class
+    * @param array $expect The expected data array
+    *
+    * @return null
+    *
+    * @dataProvider dataFilterFactory
+    */
+    public function testFilterFactory($setup, $data, $class, $expect)
+    {
+        $ret = &OutputContainer::filterFactory($setup, $data);
+        $this->assertSame($class, get_class($ret), "Class Wrong");
+        $this->assertAttributeSame(
+            $expect, "data", $ret, "Data Wrong"
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @expectedException Exception
+    * 
+    * @return null
+    */
+    public function testFilterFactoryException()
+    {
+        $config = array(
+            "plugins" => array(
+                "dir" => realpath(dirname(__FILE__)."/../files/badPluginDir/"),
+            ),
+        );
+        $this->config = &ConfigContainer::singleton();
+        $this->config->forceConfig($config);
+        $ret = &OutputContainer::filterFactory($setup, $data);
+    }
+
 }
 
 /**

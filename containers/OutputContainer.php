@@ -280,5 +280,41 @@ class OutputContainer extends HUGnetContainer
         }
         return false;
     }
+    /**
+    * Creates a filter object
+    *
+    * @param array $setup The setup array to use for the filter class
+    * @param array &$data The data to use
+    *
+    * @return null
+    */
+    static public function &filterFactory($setup, &$data)
+    {
+        $class = self::filterClass($setup["type"]);
+        return new $class($setup, $data);
+    }
+    /**
+    * Creates a filter object
+    *
+    * @param string $type The type to check
+    *
+    * @return string The class for this filter
+    */
+    static protected function filterClass($type)
+    {
+        if (empty($type)) {
+            $type = "DEFAULT";
+        }
+        $config = &ConfigContainer::singleton();
+        $driver = $config->plugins->getPlugin(
+            "outputFilter", $type
+        );
+        self::throwException(
+            "No default outputFilter class found",
+            -5,
+            !class_exists($driver["Class"])
+        );
+        return $driver["Class"];
+    }
 }
 ?>
