@@ -61,13 +61,16 @@ class OutputContainer extends HUGnetContainer
         "type" => "DEFAULT",
         "iterate" => true,
         "params" => array(),
+        "filters" => array(),
     );
     /** @var object The data container class */
     public $container = null;
     /** @var array of output rows */
     public $out = array();
-    /** @var object The data container class */
+    /** @var array The array of callback functions */
     protected $callbacks = array();
+    /** @var array The array of filters */
+    protected $outFilters = array();
     /** @var array Our data to display */
     protected $dataOut = array();
     /** @var array Our header information */
@@ -100,7 +103,6 @@ class OutputContainer extends HUGnetContainer
     {
         $this->container = &$container;
     }
-
     /**
     * Sets all of the endpoint attributes from an array
     *
@@ -114,6 +116,7 @@ class OutputContainer extends HUGnetContainer
                 $ret = $this->container->toOutput();
                 $this->dataOut[] = $ret;
             } while ($iterate && $this->iterate && $this->container->nextInto());
+            $this->doFilters();
         }
     }
     /**
@@ -244,6 +247,38 @@ class OutputContainer extends HUGnetContainer
         }
 
     }
+    /**
+    * Creates a sensor object
+    *
+    * @return string The class for this sensor
+    */
+    protected function doFilters()
+    {
+        // Apply the call backs
+        foreach (array_keys($this->headerOut) as $field) {
+            $filter = $this->getFilter($field);
+            $filter->execute($field);
+        }
+
+    }
+    /**
+    * This sets up a filter if it is not already set up
+    *
+    * @param string $field Field to set up a filter for
+    *
+    * @return none
+    */
+    protected function &getFilter($field)
+    {
+        if (!is_a($this->filters[$field], "OutputFilterBase")) {
+            $this->outFilters[$field] = self::filterFactory(
+                $this->filters[$field],
+                $this->dataOut
+            );
+        }
+        return $this->outFilters[$field];
+    }
+
     /**
     * Creates a sensor object
     *

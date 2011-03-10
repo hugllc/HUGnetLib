@@ -409,7 +409,11 @@ post"
     {
         return array(
             array( // #0
-                array(),
+                array(
+                    "filters" => array(
+                        "a" => array("type" => "anotherType"),
+                    ),
+                ),
                 "TestOutputContainer",
                 array(),
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
@@ -425,7 +429,7 @@ post"
 )
 Array
 (
-    [a] => 1
+    [a] => 1_TestOutputFilter2
     [c] => 3
     [d] => 4
 )
@@ -458,6 +462,9 @@ post"
             ),
             array( // #2
                 array(
+                    "filters" => array(
+                        "a" => array("type" => "anotherType"),
+                    ),
                 ),
                 "TestOutputContainer2",
                 array(),
@@ -477,13 +484,13 @@ post"
 )
 Array
 (
-    [a] => 1
+    [a] => 1_TestOutputFilter2
     [c] => 3
     [d] => 4
 )
 Array
 (
-    [a] => 3
+    [a] => 3_TestOutputFilter2
     [c] => 8
     [d] => 9
 )

@@ -112,6 +112,24 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
                     array("test" => "there"),
                     array("test" => "hello"),
                 ),
+                array(
+                    "setup" => "array",
+                ),
+            ),
+            array(
+                null,
+                array(
+                    array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
+                ),
+                array(
+                    array("test" => "world"),
+                    array("test" => "there"),
+                    array("test" => "hello"),
+                ),
+                array(
+                ),
             ),
         );
     }
@@ -119,15 +137,16 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $setup  The setup to use
-    * @param array $data   The data to use
-    * @param array $expect The expected return
+    * @param array $setup       The setup to use
+    * @param array $data        The data to use
+    * @param array $expect      The expected return
+    * @param mixed $setupExpect The expected setup value
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($setup, $data, $expect)
+    public function testConstructor($setup, $data, $expect, $setupExpect)
     {
         $o = new OutputFilterBaseTestClass($setup, $data);
         // If I change this, it should also change in the object.
@@ -140,7 +159,7 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
             "Data is wrong"
         );
         $this->assertAttributeSame(
-            $setup,
+            $setupExpect,
             "setup",
             $o,
             "Setup is wrong"

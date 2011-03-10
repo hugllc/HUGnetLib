@@ -71,10 +71,6 @@ class TestOutputFilter1 extends OutputFilterBase
     */
     public function execute($field)
     {
-        foreach (array_keys((array)$this->data[$field])
-        as $k) {
-            $this->data[$field][$k] .= get_class($this);
-        }
         return true;
     }
 

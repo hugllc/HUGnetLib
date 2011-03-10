@@ -71,7 +71,7 @@ abstract class OutputFilterBase extends HUGnetClass implements OutputFilterInter
     public function __construct($setup, &$data)
     {
         $this->data = &$data;
-        $this->setup = array_merge($this->setup, $setup);
+        $this->setup = array_merge($this->setup, (array)$setup);
     }
 
 }
