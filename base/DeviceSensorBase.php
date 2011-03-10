@@ -202,10 +202,10 @@ abstract class DeviceSensorBase extends HUGnetContainer
     {
         $ret = array();
         if ($this->storageType == UnitsBase::TYPE_DIFF) {
-            $ret["value"] = $this->getReading(($A - $prev), $deltaT, $data);
+            $ret["value"] = $this->getReading(($A - $prev), $deltaT, $data, $prev);
             $ret["raw"] = $A;
         } else {
-            $ret["value"] = $this->getReading($A, $deltaT, $data);
+            $ret["value"] = $this->getReading($A, $deltaT, $data, $prev);
         }
         $ret["units"] = $this->storageUnit;
         $ret["unitType"] = $this->unitType;

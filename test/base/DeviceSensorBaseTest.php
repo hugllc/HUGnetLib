@@ -362,7 +362,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataUnits()
+    public static function dataGetUnits()
     {
         return array(
             array(
@@ -372,6 +372,8 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 1,
                 "d",
                 "c",
+                array(
+                ),
                 array(
                     "value" => 1,
                     "units" => "firstUnit",
@@ -388,11 +390,30 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
                 2,
                 5,
                 array(
+                ),
+                array(
                     "value" => -4,
                     "raw" => 1,
                     "units" => "firstUnit",
                     "unitType" => "firstUnit",
                     "dataType" => UnitsBase::TYPE_DIFF,
+                ),
+            ),
+            array(
+                "TestDeviceSensor3",
+                array(
+                ),
+                1,
+                2,
+                5,
+                array(
+                    0 => array("value" => 4),
+                ),
+                array(
+                    "value" => 10.0,
+                    "units" => "moreUnit",
+                    "unitType" => "moreUnit",
+                    "dataType" => UnitsBase::TYPE_RAW,
                 ),
             ),
         );
@@ -406,16 +427,18 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     * @param mixed  $A       The value to send
     * @param int    $deltaT  The delta Time
     * @param mixed  $prev    The previous reading
+    * @param array  $data    The previous data
     * @param string $expect  The expected data
     *
     * @return null
     *
-    * @dataProvider dataUnits
+    * @dataProvider dataGetUnits
     */
-    public function testGetUnits($class, $preload, $A, $deltaT, $prev, $expect)
-    {
+    public function testGetUnits(
+        $class, $preload, $A, $deltaT, $prev, $data, $expect
+    ) {
         $o = new $class($preload, $this->d);
-        $this->assertSame($expect, $o->getUnits($A, $deltaT, $prev));
+        $this->assertSame($expect, $o->getUnits($A, $deltaT, $prev, $data));
     }
     /**
     * data provider for testConvertUnits
@@ -779,10 +802,11 @@ class TestDeviceSensor extends DeviceSensorBase
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, &$data = array())
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         return $A;
     }
@@ -852,10 +876,11 @@ class TestDeviceSensor2 extends DeviceSensorBase
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, &$data = array())
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         return $A;
     }
@@ -925,12 +950,13 @@ class TestDeviceSensor3 extends DeviceSensorBase
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
     * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
     */
-    public function getReading($A, $deltaT = 0, &$data = array())
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return $A;
+        return (float)($A + $prev + $data[0]["value"]);
     }
 }
 

@@ -293,17 +293,18 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
     * @param int   $A       Output of the A to D converter
     * @param float $deltaT  The time delta in seconds between this record
     * @param mixed $data    The data for the sensor to work with 
+    * @param mixed $prev    The previous value for this sensor
     * @param mixed $expect  The return data to expect
     *
     * @return null
     *
     * @dataProvider dataGetReading()
     */
-    public function testGetReading($preload, $A, $deltaT, $data, $expect)
+    public function testGetReading($preload, $A, $deltaT, $data, $prev, $expect)
     {
 
         $o = new BinaryVirtualSensor($preload, $this->d);
-        $ret = $o->getReading($A, $deltaT, $data);
+        $ret = $o->getReading($A, $deltaT, $data, $prev);
         $this->assertSame($expect, $ret);
     }
 
