@@ -112,16 +112,6 @@ class OutputContainer extends HUGnetContainer
             $iterate = is_a($this->container, "IteratorInterface");
             do {
                 $ret = $this->container->toOutput();
-                foreach (array_keys($this->callbacks) as $field) {
-                    if (array_key_exists($field, $this->headerOut)) {
-                        $ret[$field] = call_user_func(
-                            $this->callbacks[$field],
-                            $field,
-                            $ret[$field],
-                            &$this->container
-                        );
-                    }
-                }
                 $this->dataOut[] = $ret;
             } while ($iterate && $this->iterate && $this->container->nextInto());
         }
@@ -224,9 +214,35 @@ class OutputContainer extends HUGnetContainer
         $this->preloadData();
         $out->header($this->headerOut);
         foreach ((array)$this->dataOut as $o) {
+            $this->doCallbacks($o, $type);
+            // Set the row for output
             $out->row($o);
         }
         return $out->toString();
+    }
+    /**
+    * Creates a sensor object
+    *
+    * @param array  &$data The data to use
+    * @param string $type  The type of output to get
+    *
+    * @return string The class for this sensor
+    */
+    protected function doCallbacks(&$data, $type)
+    {
+        // Apply the call backs
+        foreach (array_keys($this->callbacks) as $field) {
+            if (array_key_exists($field, $this->headerOut)) {
+                $data[$field] = call_user_func(
+                    $this->callbacks[$field],
+                    $field,
+                    $data[$field],
+                    &$this->container,
+                    $type
+                );
+            }
+        }
+
     }
     /**
     * Creates a sensor object

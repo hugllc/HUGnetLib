@@ -490,7 +490,7 @@ Array
 post"
                 ),
             ),
-            array( // #2
+            array( // #3
                 array(
                 ),
                 "TestOutputContainer",
@@ -518,7 +518,7 @@ Array
 post"
                 ),
             ),
-            array( // #3
+            array( // #4
                 array(
                     "iterate" => false,
                 ),
@@ -543,14 +543,14 @@ post"
 )
 Array
 (
-    [a] => 1_a_TestOutputContainer
+    [a] => 1_a_DEFAULT_TestOutputContainer
     [c] => 3
     [d] => 4
 )
 post"
                 ),
             ),
-            array( // #4
+            array( // #5
                 array(
                     "iterate" => false,
                 ),
@@ -578,10 +578,10 @@ post"
 )
 Array
 (
-    [a] => a_1_TestOutputContainer_TestOutputContainer
+    [a] => a_1_TestOutputContainer_TestOutputContainer-DEFAULT
     [c] => 3
     [d] => 4
-    [q] => _q_TestOutputContainer_static
+    [q] => _q_TestOutputContainer_static_DEFAULT
 )
 post"
                 ),
@@ -710,14 +710,15 @@ post"
 * @param string $field The field to use
 * @param string $data  Data to preload
 * @param object $obj   The field to use
+* @param string $type  The type of plugin
 *
 * @return string
 *
 * @dataProvider dataAddFunction
 */
-function outputContainerTestAddFunction1($field, $data, $obj)
+function outputContainerTestAddFunction1($field, $data, $obj, $type)
 {
-    return $data."_".$field."_".get_class($obj);
+    return $data."_".$field."_".$type."_".get_class($obj);
 }
 
 /**
@@ -726,14 +727,15 @@ function outputContainerTestAddFunction1($field, $data, $obj)
 * @param string $field The field to use
 * @param string $data  Data to preload
 * @param object $obj   The field to use
+* @param string $type  The type of plugin
 *
 * @return string
 *
 * @dataProvider dataAddFunction
 */
-function outputContainerTestAddFunction2($field, $data, $obj)
+function outputContainerTestAddFunction2($field, $data, $obj, $type)
 {
-    return $field."_".$data."_".get_class($obj);
+    return $field."_".$data."_".get_class($obj)."_".$type;
 }
 
 ?>
