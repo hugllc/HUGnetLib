@@ -81,7 +81,7 @@ class BinaryVirtualSensor extends VirtualSensorBase
     */
     protected $fixed = array(
         "longName" => "Binary Virtual Sensor",
-        "unitType" => "None",
+        "unitType" => "Percent",
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
@@ -89,14 +89,14 @@ class BinaryVirtualSensor extends VirtualSensorBase
             5, 10, 10, 10, 15, 15, 5
         ),
         "extraText" => array(
-            "input", "Threshold", "Unused", "Multiplier", "Storage Unit",
+            "input", "High Threshold", "Low Threshold", "Multiplier", "Storage Unit",
             "Unit Type", "Max Decimals"
         ),
         "extraDefault" => array(
-            1, 0, 1, 1, "None", "None", "2"
+            1, 0, 1, 1, "decimal", "Percent", 4
         ),
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "storageUnit" => "None",
+        "storageUnit" => "decimal",
         "maxDecimals" => 4,
     );
 
@@ -134,21 +134,23 @@ class BinaryVirtualSensor extends VirtualSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $index = ((int)$this->getExtra(0)) - 1;
-        $val = $data[$index]["value"];
-        if (is_null($val)) {
+        $mult  = (float)$this->getExtra(3);
+        if (($index < 0) || empty($mult)) {
             return null;
         }
-        // These are the same because I don't have the previous value here.
-        // That value is required to do hysteresis.
+        $val = $data[$index]["value"];
+        if (is_null($val)) {
+            return $prev;
+        }
+        $out = (int)($prev / $mult);
         $high = (float)$this->getExtra(1);
         if ($val >= $high) {
             $out = 1;
         }
-        $low  = (float)$this->getExtra(1);
+        $low  = (float)$this->getExtra(2);
         if ($val <= $low) {
             $out = 0;
         }
-        $mult  = (float)$this->getExtra(3);
         return round($out * $mult, $this->maxDecimals);
     }
     /******************************************************************

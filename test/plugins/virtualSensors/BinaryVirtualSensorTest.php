@@ -210,12 +210,13 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
                     0 => array("value" => 5),
                     1 => array("value" => 2),
                 ),
-                0.0
+                60.0,
+                60.0
             ),
             array( // #1
                 array(
                     "extra" => array(
-                        1, 10, 5.5, 0, 60,
+                        1, 10, 5.5, 60,
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_RAW,
@@ -228,12 +229,13 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
                     0 => array("value" => null),
                     1 => array("value" => 2),
                 ),
+                null,
                 null
             ),
             array( // #2
                 array(
                     "extra" => array(
-                        0, 10, 5.5, 0, 60,
+                        0, 10, 5.5, 60,
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_RAW,
@@ -246,12 +248,13 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
                     0 => array("value" => 5),
                     1 => array("value" => 2),
                 ),
+                60.0,
                 null
             ),
             array( // #3
                 array(
                     "extra" => array(
-                        1, 20, 0, 60,
+                        1, 20, 10, 60,
                         "&#176;C",
                         "Temperature",
                         "3"
@@ -263,9 +266,28 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
                     0 => array("value" => 5),
                     1 => array("value" => 2),
                 ),
+                60.0,
                 0.0
             ),
-            array( // #3
+            array( // #4
+                array(
+                    "extra" => array(
+                        1, 20, 10, 60,
+                        "&#176;C",
+                        "Temperature",
+                        "3"
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => 15),
+                    1 => array("value" => 2),
+                ),
+                60.0,
+                60.0
+            ),
+            array( // #5
                 array(
                     "extra" => array(
                         1, 4, 0, 60,
@@ -280,6 +302,7 @@ class BinaryVirtualSensorTest extends VirtualSensorPluginTestBase
                     0 => array("value" => 5),
                     1 => array("value" => 2),
                 ),
+                60.0,
                 60.0
             ),
         );
