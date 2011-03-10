@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="datacollectors">
+        <column>id</column>
+        <column>gatewayID</column>
+        <column>name</column>
+        <column>ip</column>
+        <column>LastContact</column>
+        <row>
+            <value>404</value>
+            <value>1</value>
+            <value>Test1</value>
+            <value>192.168.192.5</value>
+            <value>12345678</value>
+        </row>
+        <row>
+            <value>484</value>
+            <value>1</value>
+            <value>Test2</value>
+            <value>192.168.192.125</value>
+            <value>123456789</value>
+        </row>
+        <row>
+            <value>848</value>
+            <value>2</value>
+            <value>Test3</value>
+            <value>192.168.192.82</value>
+            <value>123456789</value>
+        </row>
+    </table>
+</dataset>
