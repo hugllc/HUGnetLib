@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
+ * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -36,9 +36,12 @@
  *
  */
 
-
-require_once dirname(__FILE__).'/../../containers/ConfigContainer.php';
-require_once dirname(__FILE__).'/../../base/OutputFilterBase.php';
+/** Get our classes */
+require_once dirname(__FILE__)
+    .'/../../../plugins/outputFilters/NullOutputFilterPlugin.php';
+require_once dirname(__FILE__).'/../../../containers/OutputContainer.php';
+require_once dirname(__FILE__).'/../../../containers/ConfigContainer.php';
+require_once dirname(__FILE__).'/OutputFilterPluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -46,14 +49,14 @@ require_once dirname(__FILE__).'/../../base/OutputFilterBase.php';
  *
  * @category   Devices
  * @package    HUGnetLibTest
- * @subpackage Devices
+ * @subpackage Default
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
+class NullOutputFilterPluginTest extends OutputFilterPluginTestBase
 {
 
     /**
@@ -67,14 +70,12 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
-            "plugins" => array(
-                "dir" => realpath(
-                    dirname(__FILE__)."/../files/plugins/"
-                ),
-            ),
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
+        $this->socket = &$this->config->sockets->getSocket("default");
+        $this->d = new OutputContainer();
+        $this->o = new NullOutputFilterPlugin(array(), $this->d);
     }
 
     /**
@@ -87,93 +88,68 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->o);
     }
 
-
     /**
-    * data provider for testDeviceID
+    * Data provider for testRegisterPlugin
     *
     * @return array
     */
-    public static function dataConstructor()
+    public static function dataRegisterPlugin()
+    {
+        return array(
+            array("NullOutputFilterPlugin"),
+        );
+    }
+    /**
+     * Data provider for testExecute
+     *
+     * @return array
+     */
+    public static function dataExecute()
     {
         return array(
             array(
                 array(
-                    "setup" => "array",
                 ),
                 array(
                     array("test" => "hello"),
                     array("test" => "there"),
                     array("test" => "world"),
                 ),
+                "test",
                 array(
-                    array("test" => "world"),
-                    array("test" => "there"),
                     array("test" => "hello"),
+                    array("test" => "there"),
+                    array("test" => "world"),
                 ),
+                true,
             ),
         );
     }
-
     /**
-    * test the set routine when an extra class exists
+    * test CtoF()
     *
-    * @param array $setup  The setup to use
-    * @param array $data   The data to use
-    * @param array $expect The expected return
+    * @param array  $setup  The stuff to preload into the Filter
+    * @param mixed  $data   The data to use
+    * @param string $field  The field to use
+    * @param mixed  $expect The value to expect
+    * @param bool   $return The expected return value
     *
     * @return null
     *
-    * @dataProvider dataConstructor
+    * @dataProvider dataExecute
     */
-    public function testConstructor($setup, $data, $expect)
+    public function testExecute($setup, $data, $field, $expect, $return)
     {
-        $o = new OutputFilterBaseTestClass($setup, $data);
-        // If I change this, it should also change in the object.
-        // This tests if it is indeed a reference
-        $data = $expect;
-        $this->assertAttributeSame(
-            $expect,
-            "data",
-            $o,
-            "Data is wrong"
-        );
-        $this->assertAttributeSame(
-            $setup,
-            "setup",
-            $o,
-            "Setup is wrong"
-        );
+        $this->o = new NullOutputFilterPlugin($setup, $data);
+        $ret = $this->o->execute($field);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertSame($expect, $data, "The data is wrong");
     }
 
 
 }
-/**
-* Driver for the polling script (0039-26-01-P)
-*
-* @category   Drivers
-* @package    HUGnetLib
-* @subpackage Endpoints
-* @author     Scott Price <prices@hugllc.com>
-* @copyright  2007-2011 Hunt Utilities Group, LLC
-* @copyright  2009 Scott Price
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*/
-class OutputFilterBaseTestClass extends OutputFilterBase
-{
-    /**
-    * Does the actual conversion
-    *
-    * @param mixed $field The field to execute this on
-    *
-    * @return bool True on success, false on failure
-    */
-    public function execute($field)
-    {
-        return true;
-    }
 
-}
 ?>

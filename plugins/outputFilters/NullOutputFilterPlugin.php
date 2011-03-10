@@ -36,8 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/HUGnetClass.php";
-require_once dirname(__FILE__)."/../interfaces/OutputFilterInterface.php";
+require_once dirname(__FILE__)."/../../base/OutputFilterBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,27 +51,28 @@ require_once dirname(__FILE__)."/../interfaces/OutputFilterInterface.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-abstract class OutputFilterBase extends HUGnetClass implements OutputFilterInterface
+class NullOutputFilterPlugin extends OutputFilterBase
 {
-    /** @var The original values given to us */
-    protected $setup = array(
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Null Output Filter",
+        "Type" => "outputFilter",
+        "Class" => "NullOutputFilterPlugin",
+        "Flags" => array("DEFAULT"),
     );
-    /** @var The original values given to us */
-    protected $data = null;
 
     /**
-    * Sets everything up
+    * Does the actual conversion
     *
-    * @param array $setup The setup for this filter
-    * @param array &$data The data to work on
+    * @param mixed $field The field to execute this on
     *
-    * @return null
+    * @return bool True on success, false on failure
     */
-    public function __construct($setup, &$data)
+    public function execute($field)
     {
-        $this->data = &$data;
-        $this->setup = array_merge($this->setup, $setup);
+        return true;
     }
+
 
 }
 ?>
