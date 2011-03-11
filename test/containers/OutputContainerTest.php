@@ -416,6 +416,7 @@ post"
                 ),
                 "TestOutputContainer",
                 array(),
+                array(),
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 array("DEFAULT"),
                 array(),
@@ -439,6 +440,7 @@ post"
             array( // #1
                 array(),
                 "TestOutputContainer",
+                array(),
                 array(),
                 array("a" => 3, "c" => 8, "d" => 9),
                 array("DEFAULT"),
@@ -467,7 +469,12 @@ post"
                     ),
                 ),
                 "TestOutputContainer2",
-                array(),
+                array(
+                    "a" => "outputContainerTestAddFunction1",
+                ),
+                array(
+                    "a" => "HTMLList",
+                ),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
@@ -502,6 +509,7 @@ post"
                 ),
                 "TestOutputContainer",
                 array(),
+                array(),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
@@ -534,6 +542,7 @@ post"
                     "a" => "outputContainerTestAddFunction1",
                     "q" => "outputContainerTestAddFunction2",
                 ),
+                array(),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
@@ -550,7 +559,7 @@ post"
 )
 Array
 (
-    [a] => 1_a_DEFAULT_TestOutputContainer
+    [a] => 1_a_TestOutputContainer
     [c] => 3
     [d] => 4
 )
@@ -569,6 +578,9 @@ post"
                     "q" => array("TestOutputContainer", "testAddFunction2"),
                 ),
                 array(
+                    "q" => "DEFAULT",
+                ),
+                array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
@@ -585,18 +597,19 @@ post"
 )
 Array
 (
-    [a] => a_1_TestOutputContainer_TestOutputContainer-DEFAULT
+    [a] => a_1_TestOutputContainer_TestOutputContainer
     [c] => 3
     [d] => 4
-    [q] => _q_TestOutputContainer_static_DEFAULT
+    [q] => _q_TestOutputContainer_static
 )
 post"
                 ),
             ),
-            array( // #5
+            array( // #6
                 array(
                 ),
                 "TestOutputContainer3",
+                array(),
                 array(),
                 array(
                     array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
@@ -617,6 +630,7 @@ post"
     * @param array  $preload   Data to preload
     * @param array  $class     The container class to use
     * @param array  $functions The functions to call
+    * @param arrray $types     The types for the above functions
     * @param array  $container The container data to use
     * @param array  $type      array of strings: The type of output
     * @param array  $params    an array of the params to use
@@ -628,13 +642,14 @@ post"
     * @dataProvider dataGetOutput
     */
     public function testGetOutput(
-        $preload, $class, $functions, $container, $type, $params, $cols, $expect
+        $preload, $class, $functions, $types, $container,
+        $type, $params, $cols, $expect
     ) {
         $this->cont = new $class();
         $this->cont->loadData($container);
         $this->o = new OutputContainer($preload, $this->cont);
         foreach (array_keys((array)$functions) as $field) {
-            $this->o->AddFunction($field, $functions[$field]);
+            $this->o->AddFunction($field, $functions[$field], $types[$field]);
         }
         foreach ((array)$type as $t) {
             $ret = $this->o->getOutput($t, $params[$t], $cols);
@@ -673,13 +688,27 @@ post"
                 array(),
                 "asdf",
                 "outputContainerTestAddFunction1",
-                array("asdf" => "outputContainerTestAddFunction1"),
+                null,
+                array(
+                    "Fields" => array("asdf" => "outputContainerTestAddFunction1"),
+                ),
+                true,
+            ),
+            array(
+                array(),
+                "asdf",
+                "outputContainerTestAddFunction1",
+                null,
+                array(
+                    "Fields" => array("asdf" => "outputContainerTestAddFunction1"),
+                ),
                 true,
             ),
             array(
                 array(),
                 "asdf",
                 "SomeBadFunctionNameThatDoesntExist",
+                null,
                 array(),
                 false,
             ),
@@ -691,6 +720,7 @@ post"
     * @param array  $preload  Data to preload
     * @param string $field    The field to use
     * @param mixed  $function The function to call
+    * @param string $type     The type of plugin to use
     * @param array  $expect   The expected callbacks array
     * @param bool   $return   The expected return value
     *
@@ -698,11 +728,12 @@ post"
     *
     * @dataProvider dataAddFunction
     */
-    public function testAddFunction($preload, $field, $function, $expect, $return)
-    {
+    public function testAddFunction(
+        $preload, $field, $function, $type, $expect, $return
+    ) {
         $this->o->clearData();
         $this->o->fromAny($preload);
-        $ret = $this->o->AddFunction($field, $function);
+        $ret = $this->o->AddFunction($field, $function, $type);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertAttributeSame(
             $expect, "callbacks", $this->o, "Callbacks Wrong"
@@ -796,15 +827,14 @@ post"
 * @param string $field The field to use
 * @param string $data  Data to preload
 * @param object $obj   The field to use
-* @param string $type  The type of plugin
 *
 * @return string
 *
 * @dataProvider dataAddFunction
 */
-function outputContainerTestAddFunction1($field, $data, $obj, $type)
+function outputContainerTestAddFunction1($field, $data, $obj)
 {
-    return $data."_".$field."_".$type."_".get_class($obj);
+    return $data."_".$field."_".get_class($obj);
 }
 
 /**
@@ -813,15 +843,14 @@ function outputContainerTestAddFunction1($field, $data, $obj, $type)
 * @param string $field The field to use
 * @param string $data  Data to preload
 * @param object $obj   The field to use
-* @param string $type  The type of plugin
 *
 * @return string
 *
 * @dataProvider dataAddFunction
 */
-function outputContainerTestAddFunction2($field, $data, $obj, $type)
+function outputContainerTestAddFunction2($field, $data, $obj)
 {
-    return $field."_".$data."_".get_class($obj)."_".$type;
+    return $field."_".$data."_".get_class($obj);
 }
 
 ?>

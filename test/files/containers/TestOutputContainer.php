@@ -137,15 +137,14 @@ class TestOutputContainer extends HUGnetContainer implements OutputInterface
     * @param string $field The field to use
     * @param string $data  Data to preload
     * @param object $obj   The field to use
-    * @param string $type  The type of plugin
     *
     * @return string
     *
     * @dataProvider dataAddFunction
     */
-    public function testAddFunction1($field, $data, $obj, $type)
+    public function testAddFunction1($field, $data, $obj)
     {
-        return $field."_".$data."_".get_class($obj)."_".get_class($this)."-".$type;
+        return $field."_".$data."_".get_class($obj)."_".get_class($this);
     }
     /**
     * test the set routine when an extra class exists
@@ -153,15 +152,14 @@ class TestOutputContainer extends HUGnetContainer implements OutputInterface
     * @param string $field The field to use
     * @param string $data  Data to preload
     * @param object $obj   The field to use
-    * @param string $type  The type of plugin
     *
     * @return string
     *
     * @dataProvider dataAddFunction
     */
-    static public function testAddFunction2($field, $data, $obj, $type)
+    static public function testAddFunction2($field, $data, $obj)
     {
-        return $data."_".$field."_".get_class($obj)."_static_".$type;
+        return $data."_".$field."_".get_class($obj)."_static";
     }
     /**
     * There should only be a single instance of this class

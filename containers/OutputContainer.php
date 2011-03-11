@@ -114,6 +114,7 @@ class OutputContainer extends HUGnetContainer
             $iterate = is_a($this->container, "IteratorInterface");
             do {
                 $ret = $this->container->toOutput();
+                $this->doCallbacks($ret);
                 $this->dataOut[] = $ret;
             } while ($iterate && $this->iterate && $this->container->nextInto());
             $this->doFilters();
@@ -231,17 +232,19 @@ class OutputContainer extends HUGnetContainer
     *
     * @return string The class for this sensor
     */
-    protected function doCallbacks(&$data, $type)
+    protected function doCallbacks(&$data, $type = null)
     {
+        if (empty($type)) {
+            $type = "Fields";
+        }
         // Apply the call backs
-        foreach (array_keys($this->callbacks) as $field) {
+        foreach (array_keys((array)$this->callbacks[$type]) as $field) {
             if (array_key_exists($field, $this->headerOut)) {
                 $data[$field] = call_user_func(
-                    $this->callbacks[$field],
+                    $this->callbacks[$type][$field],
                     $field,
                     $data[$field],
-                    &$this->container,
-                    $type
+                    &$this->container
                 );
             }
         }
@@ -304,13 +307,17 @@ class OutputContainer extends HUGnetContainer
     * 
     * @param string   $field    The field to use the callback on
     * @param callback $function The callback for the function
+    * @param string   $type     The plugin to use this callback on
     *
     * @return bool True if successful, false on failure
     */
-    public function addFunction($field, $function)
+    public function addFunction($field, $function, $type = null)
     {
         if (is_callable($function)) {
-            $this->callbacks[$field] = &$function;
+            if (empty($type)) {
+                $type = "Fields";
+            }
+            $this->callbacks[$type][$field] = &$function;
             return true;
         }
         return false;
