@@ -636,6 +636,17 @@ abstract class DeviceDriverBase extends HUGnetClass
         return array();
     }
     /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null)
+    {
+        return array();
+    }
+    /**
     * Registers extra vars
     *
     * @param mixed $data The data to import into the class

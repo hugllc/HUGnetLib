@@ -92,7 +92,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     */
     protected function tearDown()
     {
-        $this->o = null;
+        unset($this->o);
         $this->config = null;
     }
     /**
@@ -966,7 +966,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                             14 => "Data14",
                         ),
                         2 => array(),
-                    )
+                    ),
                 ),
             ),
             array(
@@ -999,7 +999,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "fields" => array(
                         1 => array("Data0", "Data2"),
                         2 => array("Data1", "Data3"),
-                    )
+                    ),
                 ),
             ),
             array(
@@ -1032,7 +1032,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "fields" => array(
                         1 => array("Data0", "Data2"),
                         2 => array("Data1", "Data3"),
-                    )
+                    ),
                 ),
             ),
         );
@@ -1059,6 +1059,110 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
             $this->o->device = new DeviceContainer($device);
         }
         $ret = $this->o->outputParams($type, $cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
+    * data provider for testOutputFilters
+    *
+    * @return array
+    */
+    public static function dataOutputFilters()
+    {
+        return array(
+            array(
+                array(),
+                null,
+                array(),
+                array(
+                    "Data0" => array(),
+                    "Data1" => array(),
+                    "Data2" => array(),
+                    "Data3" => array(),
+                    "Data4" => array(),
+                    "Data5" => array(),
+                    "Data6" => array(),
+                    "Data7" => array(),
+                    "Data8" => array(),
+                    "Data9" => array(),
+                    "Data10" => array(),
+                    "Data11" => array(),
+                    "Data12" => array(),
+                    "Data13" => array(),
+                    "Data14" => array(),
+                ),
+            ),
+            array(
+                array(),
+                array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
+                array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 4,
+                        "VirtualSensors" => 0,
+                    ),
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        array("id" => 0, "filter" => array("type" => "hello")),
+                        array("id" => 2),
+                        array("id" => 0),
+                        array("id" => 2),
+                    ),
+                ),
+                array(
+                    "Data0" => array("type" => "hello"),
+                    "Data1" => array(),
+                    "Data2" => array(),
+                    "Data3" => array(),
+                ),
+            ),
+            array(
+                array(),
+                array("id", "Date", "Data0", "Data1", "Data2", "Data3"),
+                array(
+                    "DriverInfo" => array(
+                        "PhysicalSensors" => 4,
+                        "VirtualSensors" => 0,
+                    ),
+                    "sensors" => array(
+                        "Sensors" => 4,
+                        array("id" => 0),
+                        array("id" => 2),
+                        array("id" => 0, "filter" => array("type" => "hello")),
+                        array("id" => 2),
+                    ),
+                ),
+                array(
+                    "Data0" => array(),
+                    "Data1" => array(),
+                    "Data2" => array("type" => "hello"),
+                    "Data3" => array(),
+                ),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param array  $device  The device to use.  None if null
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputFilters
+    */
+    public function testOutputFilters($preload, $cols, $device, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->device = null;
+        if (!is_null($device)) {
+            $this->o->device = new DeviceContainer($device);
+        }
+        $ret = $this->o->outputFilters($cols);
         $this->assertSame(
             $expect,
             $ret

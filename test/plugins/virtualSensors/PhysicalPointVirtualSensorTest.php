@@ -158,6 +158,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     "bound" => false,
                     "rawCalibration" => "",
                     "decimals" => 2,
+                    "filter" => array(),
                 ),
                 array(
                     'longName' => 'PhysicalPoint Virtual Sensor',
@@ -189,6 +190,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     'bound' => false,
                     'rawCalibration' => '',
                     'decimals' => 2,
+                    'filter' => array(),
                ),
             ),
         );

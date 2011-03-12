@@ -181,6 +181,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             "extraText",
             "extraDefault",
             "storageUnit",
+            "filter",
         );
         foreach ($fields as $f) {
             $this->assertTrue(
@@ -207,6 +208,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
             "extraText",
             "extraDefault",
             "extraValues",
+            "filter",
         );
         foreach ($fields as $f) {
             $val = $obj->$f;

@@ -91,6 +91,8 @@ class TestOutputContainer extends HUGnetContainer implements OutputInterface
     );
     /** @var int Index for where in the data array we are */
     protected $index = 0;
+    /** @var int Index for where in the data array we are */
+    public $outputParams = array();
     /**
     * This is the constructor
     *
@@ -247,6 +249,17 @@ class TestOutputContainer extends HUGnetContainer implements OutputInterface
     public function outputParams($type, $cols = null)
     {
         return (array)$this->outputParams[$type];
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null)
+    {
+        return (array)$this->outputParams['filters'];
     }
 
 }

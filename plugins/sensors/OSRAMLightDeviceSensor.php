@@ -75,6 +75,7 @@ class OSRAMLightDeviceSensor extends DeviceSensorBase
         "D" => 65536,                    // The D value
         "s" => 64,                       // The s value
         "Vcc" => 5,                      // The Vcc value
+        "filter" => array(),             // Information on the output filter
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(0x30);

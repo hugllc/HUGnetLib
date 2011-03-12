@@ -644,6 +644,17 @@ abstract class HUGnetDBTable extends HUGnetContainer
     {
         return (array)$this->outputParams[$type];
     }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null)
+    {
+        return (array)$this->outputParams['filters'];
+    }
     
     /**
     * This sets the labels, or gets them if no argument

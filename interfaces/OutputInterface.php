@@ -83,5 +83,13 @@ interface OutputInterface
     * @return null
     */
     public function &outputFactory($data = array());
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null);
 }
 ?>

@@ -138,6 +138,51 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    * data provider for testFilters
+    *
+    * @return array
+    */
+    public static function dataFilters()
+    {
+        return array(
+            array(
+                array(),
+                array("a" => 1),
+                array("a" => "6", "c" => "9"),
+                array("a" => "6", "c" => "9"),
+            ),
+            array(
+                array(),
+                null,
+                array("a" => "6", "c" => "9"),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array $preload   Data to preload
+    * @param array $container The container data to use
+    * @param array $filters   Array of filter iformation
+    * @param array $expect    The function to call
+    *
+    * @return null
+    *
+    * @dataProvider dataFilters
+    */
+    public function testFilters($preload, $container, $filters, $expect)
+    {
+        if (!is_null($container)) {
+            $cont = new TestOutputContainer($container);
+        }
+        $o = new OutputContainer($preload, $cont);
+        $o->filters($filters);
+        $this->assertAttributeSame(
+            $expect, "filters", $o
+        );
+    }
+    /**
     * test the set routine when an extra class exists
     *
     * @return null
@@ -410,9 +455,6 @@ post"
         return array(
             array( // #0
                 array(
-                    "filters" => array(
-                        "a" => array("type" => "anotherType"),
-                    ),
                 ),
                 "TestOutputContainer",
                 array(),
@@ -420,6 +462,9 @@ post"
                 array("a"=>1, "b"=>2, "c"=>3, "d"=>4),
                 array("DEFAULT"),
                 array(),
+                array(
+                    "a" => array("type" => "anotherType"),
+                ),
                 array(),
                 array(
                     "DEFAULT" => "preArray
@@ -446,6 +491,7 @@ post"
                 array("DEFAULT"),
                 array(),
                 array(),
+                array(),
                 array(
                     "DEFAULT" => "preArray
 (
@@ -464,9 +510,6 @@ post"
             ),
             array( // #2
                 array(
-                    "filters" => array(
-                        "a" => array("type" => "anotherType"),
-                    ),
                 ),
                 "TestOutputContainer2",
                 array(
@@ -481,6 +524,9 @@ post"
                 ),
                 array("DEFAULT"),
                 array(),
+                array(
+                    "a" => array("type" => "anotherType"),
+                ),
                 array(),
                 array(
                     "DEFAULT" => "preArray
@@ -517,6 +563,7 @@ post"
                 array("DEFAULT"),
                 array(),
                 array(),
+                array(),
                 array(
                     "DEFAULT" => "preArray
 (
@@ -548,6 +595,7 @@ post"
                     array("a" => 3, "c" => 8, "d" => 9),
                 ),
                 array("DEFAULT"),
+                array(),
                 array(),
                 array(),
                 array(
@@ -586,6 +634,7 @@ post"
                 ),
                 array("DEFAULT"),
                 array(),
+                array(),
                 array("a" => "Name Here", "c" => null, "d" => "", "q" => "Quality"),
                 array(
                     "DEFAULT" => "preArray
@@ -618,6 +667,7 @@ post"
                 array("DEFAULT"),
                 array(),
                 array(),
+                array(),
                 array(
                     "DEFAULT" => "Container doesn't implement OutputInterface"
                 ),
@@ -634,6 +684,7 @@ post"
     * @param array  $container The container data to use
     * @param array  $type      array of strings: The type of output
     * @param array  $params    an array of the params to use
+    * @param array  $filters   The filters to use
     * @param array  $cols      Array of columns in the form $field => $name
     * @param string $expect    The expected return
     *
@@ -643,9 +694,10 @@ post"
     */
     public function testGetOutput(
         $preload, $class, $functions, $types, $container,
-        $type, $params, $cols, $expect
+        $type, $params, $filters, $cols, $expect
     ) {
         $this->cont = new $class();
+        $this->cont->outputParams["filters"] = $filters;
         $this->cont->loadData($container);
         $this->o = new OutputContainer($preload, $this->cont);
         foreach (array_keys((array)$functions) as $field) {
@@ -817,6 +869,44 @@ post"
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $ret = &OutputContainer::filterFactory($setup, $data);
+    }
+    /**
+    * data provider for testGetAllFilterTypes
+    *
+    * @return array
+    */
+    public static function dataGetAllFilterTypes()
+    {
+        return array(
+            array(
+                array(
+                ),
+                array(
+                    "DEFAULT" => "TestOutputFilter1",
+                    "anotherType" => "TestOutputFilter2",
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetAllFilterTypes
+    */
+    public function testGetAllFiterTypes($preload, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->assertSame(
+            $expect,
+            $this->o->getAllFilterTypes()
+        );
     }
 
 }

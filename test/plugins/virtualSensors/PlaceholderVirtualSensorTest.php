@@ -149,7 +149,7 @@ class PlaceholderVirtualSensorTest extends VirtualSensorPluginTestBase
     public function testConstructor($preload, $expect)
     {
         $o = new PlaceholderVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->toArray());
+        $this->assertSame($expect, $o->toArray(false));
     }
     /**
     * Data provider for testGetReading
