@@ -63,6 +63,7 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
         "LastContact" => 0,             // The last time the dev was contacted
         "LastModified" => 0,            // The last time we were modified.
         "LastModifiedBy" => "",         // The name of the last person to modify me
+        "outputFilters" => array(),     // Any filters for the data output
 
         // These are for backwards compatibility and upgrading the database.
         // They will be removed in a few versions.
@@ -132,6 +133,17 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
     * @return array
     */
     public function outputParams($type, $cols = null)
+    {
+        return array();
+    }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null)
     {
         return array();
     }

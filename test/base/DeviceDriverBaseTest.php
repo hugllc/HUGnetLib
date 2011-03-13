@@ -1546,6 +1546,43 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         );
     }
     /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputFilters()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                ),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $device The data to preload into the class
+    * @param array  $cols   The columns to use
+    * @param int    $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputFilters
+    */
+    public function testOutputFilters($device, $cols, $expect)
+    {
+        $this->d = new DeviceContainer($device);
+        $this->o = new TestDevice($this->d);
+        $ret = $this->o->outputFilters($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
+    /**
     * data provider for testOutputFactory
     *
     * @return array

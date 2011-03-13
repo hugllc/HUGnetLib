@@ -296,6 +296,43 @@ class DeviceParamsContainerTest extends PHPUnit_Framework_TestCase
             $ret
         );
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataOutputFilters()
+    {
+        return array(
+            array(
+                array(),
+                array(
+                ),
+                array(),
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $preload The data to preload into the class
+    * @param array  $cols    The columns to use
+    * @param int    $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataOutputFilters
+    */
+    public function testOutputFilters($preload, $cols, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $ret = $this->o->outputFilters($cols);
+        $this->assertSame(
+            $expect,
+            $ret
+        );
+    }
 
 }
 

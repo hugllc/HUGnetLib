@@ -61,7 +61,6 @@ class OutputContainer extends HUGnetContainer
         "type" => "DEFAULT",
         "iterate" => true,
         "params" => array(),
-        "filters" => array(),
     );
     /** @var object The data container class */
     public $container = null;
@@ -77,6 +76,8 @@ class OutputContainer extends HUGnetContainer
     protected $headerOut = array();
     /** @var array parameters */
     protected $paramsOut = array();
+    /** @var array our filter setup */
+    protected $filters = array();
     
     
     /**
@@ -173,6 +174,24 @@ class OutputContainer extends HUGnetContainer
         }
     }
     /**
+    * Sets up all of the filters
+    *
+    * @param string $filters The filters to set
+    *
+    * @return null
+    */
+    public function filters($filters = array())
+    {
+        if (!is_a($this->container, "OutputInterface")) {
+            return;
+        }
+        $this->filters = array_merge(
+            (array)$this->filters,
+            $this->container->outputFilters(),
+            (array)$filters
+        );
+    }
+    /**
     * Returns the object as a string
     *
     * @param bool $default Return items set to their default?
@@ -213,6 +232,7 @@ class OutputContainer extends HUGnetContainer
         $class = $this->getPlugin($type);
         $this->throwException("No default 'output' plugin found", -6, empty($class));
         $this->params($type, $params);
+        $this->filters();
         $out = new $class($this->paramsOut[$type]);
         $this->header($cols, (is_array($cols) && !empty($cols)));
         $this->preloadData();
@@ -244,7 +264,8 @@ class OutputContainer extends HUGnetContainer
                     $this->callbacks[$type][$field],
                     $field,
                     $data[$field],
-                    &$this->container
+                    &$this->container,
+                    &$this
                 );
             }
         }
@@ -273,7 +294,7 @@ class OutputContainer extends HUGnetContainer
     */
     protected function &getFilter($field)
     {
-        if (!is_a($this->filters[$field], "OutputFilterBase")) {
+        if (!is_a($this->outFilters[$field], "OutputFilterBase")) {
             $this->outFilters[$field] = self::filterFactory(
                 $this->filters[$field],
                 $this->dataOut
@@ -357,6 +378,22 @@ class OutputContainer extends HUGnetContainer
             !class_exists($driver["Class"])
         );
         return $driver["Class"];
+    }
+    /**
+    * Converts data between units
+    *
+    * @return array 
+    */
+    public function getAllFilterTypes()
+    {
+        $ret = array();
+        $type = $this->stringSize(dechex($this->id), 2);
+        $plugins = $this->myConfig->plugins->searchPlugins("outputFilter");
+        foreach ((array)$plugins as $key => $value) {
+            $ret[$key] = $value["Name"];
+        }
+        return $ret;
+
     }
 }
 ?>

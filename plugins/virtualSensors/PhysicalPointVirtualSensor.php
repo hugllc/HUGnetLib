@@ -60,20 +60,6 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         "Class" => "PhysicalPointVirtualSensor",
         "Flags" => array("FE:physicalpoint"),
     );
-    /** These are the endpoint information bits */
-    /** @var array This is the default values for the data */
-    protected $default = array(
-        "id" => 0xFE,                    // The id of the sensor.  This is the value
-                                         // Stored in the device  It will be an int
-        "type" => "physicalpoint",                    // The type of the sensors
-        "location" => "",                // The location of the sensors
-        "dataType" => UnitsBase::TYPE_RAW,      // The datatype of each sensor
-        "extra" => array(),              // Extra input for crunching numbers
-        "units" => "",                   // The units to put the data into by default
-        "bound" => false,                // This says if this sensor is changeable
-        "rawCalibration" => "",          // The raw calibration string
-        "decimals" => null,
-    );
     /** @var object These are the valid values for type */
     protected $typeValues = array("physicalpoint");
     /** @var object These are the valid values for type */
@@ -111,6 +97,8 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     */
     public function __construct($data, &$device)
     {
+        $this->default["id"] = 0xFE;
+        $this->default["type"] = "physicalpoint";
         $this->DeviceID = hexdec($data["extra"][0]);
         $this->cloneSensor($data);
     

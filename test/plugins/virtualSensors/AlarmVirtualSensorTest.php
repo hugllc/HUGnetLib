@@ -143,6 +143,7 @@ class AlarmVirtualSensorTest extends VirtualSensorPluginTestBase
                     "bound" => false,
                     "rawCalibration" => "",
                     "decimals" => 4,
+                    "filter" => array(),
                 ),
             ),
         );

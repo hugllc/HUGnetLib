@@ -74,5 +74,15 @@ abstract class OutputFilterBase extends HUGnetClass implements OutputFilterInter
         $this->setup = array_merge($this->setup, (array)$setup);
     }
 
+    /**
+    * Returns the name of the sensor
+    *
+    * @return null
+    */
+    public function name()
+    {
+        return static::$registerPlugin["Name"];
+    }
+
 }
 ?>

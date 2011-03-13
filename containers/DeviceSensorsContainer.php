@@ -436,6 +436,17 @@ class DeviceSensorsContainer extends HUGnetContainer
         return array();
     }
     /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    *
+    * @return array
+    */
+    public function outputFilters($cols = null)
+    {
+        return array();
+    }
+    /**
     * This puts the next result into the object
     *
     * @return bool True on success, False on failure

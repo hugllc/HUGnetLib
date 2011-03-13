@@ -133,15 +133,9 @@ class DewPointVirtualSensorTest extends VirtualSensorPluginTestBase
                 array(
                     "id" => 0xFE,
                     "type" => "dewpoint",
-                    "location" => "",
-                    "dataType" => UnitsBase::TYPE_RAW,
                     'extra' => array(
                         1, 10
                     ),
-                    "units" => '&#176;F',
-                    "bound" => false,
-                    "rawCalibration" => "",
-                    "decimals" => 4,
                 ),
             ),
             array(
@@ -153,15 +147,9 @@ class DewPointVirtualSensorTest extends VirtualSensorPluginTestBase
                 array(
                     "id" => 0xFE,
                     "type" => "dewpoint",
-                    "location" => "",
-                    "dataType" => UnitsBase::TYPE_RAW,
                     'extra' => array(
                         1, 2
                     ),
-                    "units" => '&#176;F',
-                    "bound" => false,
-                    "rawCalibration" => "",
-                    "decimals" => 4,
                 ),
             ),
         );
@@ -181,7 +169,7 @@ class DewPointVirtualSensorTest extends VirtualSensorPluginTestBase
     public function testConstructor($preload, $expect)
     {
         $o = new DewPointVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->toArray());
+        $this->assertSame($expect, $o->toArray(false));
     }
     /**
     * Data provider for testGetReading

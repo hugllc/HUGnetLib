@@ -65,6 +65,7 @@ abstract class PulseDeviceSensorBase extends DeviceSensorBase
         "units" => "",                   // The units to put the data into by default
         "bound" => false,                // This says if this sensor is changeable
         "rawCalibration" => "",          // The raw calibration string
+        "filter" => array(),             // Information on the output filter
     );
     /** @var object These are the valid values for unitType */
     protected $unitTypeValues = array();

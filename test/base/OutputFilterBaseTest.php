@@ -134,6 +134,7 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+
     /**
     * test the set routine when an extra class exists
     *
@@ -166,6 +167,17 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testName()
+    {
+        $o = new OutputFilterBaseTestClass($setup, $data);
+        $this->assertSame("Test", $o->name());
+    }
+
 
 }
 /**
@@ -182,6 +194,13 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
 */
 class OutputFilterBaseTestClass extends OutputFilterBase
 {
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Test",
+        "Type" => "outputFilter2",
+        "Class" => "This is a bad class",
+        "Flags" => array("DEFAULT"),
+    );
     /**
     * Does the actual conversion
     *

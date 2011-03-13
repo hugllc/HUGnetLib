@@ -87,6 +87,7 @@ class PlaceholderVirtualSensor extends VirtualSensorBase
         "decimals" => 0,
         "maxDecimals" => 0,
         "unitType" => "-",
+        "filter" => array(),             // Information on the output filter
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(0xFE);

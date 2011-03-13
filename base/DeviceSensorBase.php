@@ -75,6 +75,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
         "units" => "",                   // The units to put the data into by default
         "decimals" => 2,                 // The number of decimal places to use
         "bound" => false,                // This says if this sensor is changeable
+        "filter" => array(),             // Information on the output filter
     );
     /**
     * This is the array of sensor information.

@@ -345,6 +345,27 @@ abstract class HistoryTableBase extends HUGnetDBTable
         }
         return parent::outputParams($type, $cols);
     }
+    /**
+    * There should only be a single instance of this class
+    *
+    * @param array $cols The columns to get
+    * 
+    * @return array
+    */
+    public function outputFilters($cols = null)
+    {
+        $filters = array();
+        if (is_a($this->device, "DeviceContainer")) {
+            $cols = $this->getOutputCols($cols);
+            foreach ($cols as $col) {
+                if (substr($col, 0, 4) == "Data") {
+                    $key = (int)substr($col, 4);
+                    $filters[$col] = $this->device->sensors->sensor($key)->filter;
+                }
+            }
+        }
+        return $filters;
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

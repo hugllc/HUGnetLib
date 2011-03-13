@@ -142,6 +142,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                     "bound" => false,
                     "rawCalibration" => "",
                     "decimals" => 3,
+                    "filter" => array(),
                 ),
             ),
             array(
@@ -162,6 +163,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                     "bound" => false,
                     "rawCalibration" => "",
                     "decimals" => 3,
+                    "filter" => array(),
                 ),
             ),
         );
@@ -181,7 +183,7 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
     public function testConstructor($preload, $expect)
     {
         $o = new ComputationVirtualSensor($preload, $this->d);
-        $this->assertSame($expect, $o->toArray());
+        $this->assertSame($expect, $o->toArray(true));
     }
     /**
     * Data provider for testGetReading
