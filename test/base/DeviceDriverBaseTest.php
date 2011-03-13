@@ -565,7 +565,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(time()-3600, array(), 10, true),
             array(
                 time()-86400,
-                array("PollFail" => 60, "LastPollTry" => (time() + 300)),
+                array("PollFail" => 60, "LastPollTry" => "now"),
                 12,
                 false,
             ),
@@ -591,6 +591,11 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     */
     function testReadDataTime($lastPoll, $persist, $interval, $expect)
     {
+        foreach ($persist as $key => $value) {
+            if (strtolower($value) === "now") {
+                $persist[$key] = time();
+            }
+        }
         $this->d->params->DriverInfo = $persist;
         $this->d->params->DriverInfo["LastPoll"] = $lastPoll;
         $this->d->PollInterval = $interval;
