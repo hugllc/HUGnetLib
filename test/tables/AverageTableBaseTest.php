@@ -2140,6 +2140,60 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
                 "Date",
                 mktime(0, 0, 0, 1, 1, 2010),
             ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_15MIN,
+                ),
+                "Date",
+                gmmktime(0, 0, 0, 6, 1, 2010),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_HOURLY,
+                ),
+                "Date",
+                gmmktime(0, 0, 0, 6, 1, 2010),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_DAILY,
+                ),
+                "Date",
+                gmmktime(0, 0, 0, 6, 1, 2010),
+            ),
+            array(
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_WEEKLY,
+                ),
+                "Date",
+                gmmktime(0, 0, 0, 6, 1, 2010),
+            ),
+            array( // Note the use of gmmktime instead of mktime
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_MONTHLY,
+                ),
+                "Date",
+                mktime(0, 0, 0, 6, 1, 2010),
+            ),
+            array( // Note the use of gmmktime instead of mktime
+                array(
+                    "id"  => 41,
+                    "Date"   => gmmktime(0, 0, 0, 6, 1, 2010),
+                    "Type"  => AverageTableBase::AVERAGE_YEARLY,
+                ),
+                "Date",
+                mktime(0, 0, 0, 6, 1, 2010),
+            ),
         );
     }
 

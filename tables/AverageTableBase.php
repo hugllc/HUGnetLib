@@ -200,13 +200,13 @@ abstract class AverageTableBase extends HistoryTableBase
     }
     /**
     * This calculates the averages
-    * 
+    *
     * It will return once for each average that it calculates.  The average will be
     * stored in the instance this is called from.  If this is fed history table
     * then it will calculate 15 minute averages.
     *
     * @param HistoryTableBase &$data This is the data to use to calculate the average
-    * 
+    *
     * @return bool True on success, false on failure
     */
     protected function calc15MinAverage(HistoryTableBase &$data)
@@ -419,7 +419,7 @@ abstract class AverageTableBase extends HistoryTableBase
     }
     /**
     * By default it outputs the date in the format specified in myConfig
-    * 
+    *
     * This function fixes the time offset due to the time zone for
     * monthly and yearly averages.
     *
@@ -433,7 +433,9 @@ abstract class AverageTableBase extends HistoryTableBase
         if (($this->Type == self::AVERAGE_MONTHLY)
             || ($this->Type == self::AVERAGE_YEARLY)
         ) {
-            $tzoffset = (int)date("Z") + ((int)date("I", $this->$field)*3600);
+            $tzoffset = (int)date("Z", $this->$field);
+            // This does not seem to be needed.
+            // + ((int)date("I", $this->$field)*3600);
         }
         return $this->$field - $tzoffset;
     }
