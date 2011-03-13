@@ -298,6 +298,59 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
         $this->o->setValid($preload);
         $this->assertSame($expect, $this->o->getValid());
     }
+    /**
+     * Data provider for testValid
+     *
+     * @return array
+     */
+    public static function dataNumeric()
+    {
+        return array(
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "&#176;C",
+                true,
+            ),
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_DIFF,
+                ),
+                "&#176;F",
+                true,
+            ),
+            array(
+                array(
+                    "to" => "&#176;F",
+                    "from" => "&#176;C",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "&#176;Q",
+                false,
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array $preload The stuff to preload into the Units
+    * @param mixed $units   The units to check
+    * @param mixed $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataNumeric
+    */
+    public function testNumeric($preload, $units, $expect)
+    {
+        $this->o = new UnitsBaseTestClass($preload);
+        $this->assertSame($expect, $this->o->numeric($units));
+    }
 
 }
 /**
@@ -330,7 +383,7 @@ class UnitsBaseTestClass extends UnitsBase
             $this->valid = (array)$array;
         }
     }
-    
+
 
 }
 ?>

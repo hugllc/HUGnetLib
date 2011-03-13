@@ -983,22 +983,22 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         array("id" => 0),
                         array("id" => 2),
                         array("id" => 0),
-                        array("id" => 2),
+                        array("id" => 0x20),
                     ),
                 ),
                 array(
                     "units" => array(
                         1 => "firstUnit",
-                        2 => "anotherUnit",
+                        2 => "test3units",
                     ),
                     "unitTypes" => array(
                         1 => "firstUnit",
-                        2 => "secondUnit",
+                        2 => "test3units",
                     ),
                     "dateField" => "Date",
                     "fields" => array(
                         1 => array("Data0", "Data2"),
-                        2 => array("Data1", "Data3"),
+                        2 => array("Data3"),
                     )
                 ),
             ),
@@ -1016,22 +1016,22 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                         array("id" => 0),
                         array("id" => 2),
                         array("id" => 0),
-                        array("id" => 2),
+                        array("id" => 0x20),
                     ),
                 ),
                 array(
                     "units" => array(
                         1 => "firstUnit",
-                        2 => "anotherUnit",
+                        2 => "test3units",
                     ),
                     "unitTypes" => array(
                         1 => "firstUnit",
-                        2 => "secondUnit",
+                        2 => "test3units",
                     ),
                     "dateField" => "Date",
                     "fields" => array(
                         1 => array("Data0", "Data2"),
-                        2 => array("Data1", "Data3"),
+                        2 => array("Data3"),
                     )
                 ),
             ),

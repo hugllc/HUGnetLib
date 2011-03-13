@@ -36,7 +36,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../../../base/UnitsBase.php";
+require_once dirname(__FILE__)."/../../../../base/DeviceSensorBase.php";
 // Need to make sure this file is not added to the code coverage
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
@@ -53,73 +53,67 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Test2Units extends UnitsBase
+class Test4Sensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Test2Units",
-        "Type" => "Units",
-        "Class" => "Test2Units",
-        "Flags" => array("moreUnit", "DEFAULT"),
+        "Name" => "Test4Sensor",
+        "Type" => "sensor",
+        "Class" => "Test4Sensor",
+        "Flags" => array("20"),
+    );
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("a", "c", "e", "Test3Sensor", "Hello");
+    /** @var object This is where we store our configuration */
+    protected $idValues = array(0x10);
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Multi Input Sensor",
+        "unitType" => "test3units",
+        "storageUnit" => 'test3units',
+        "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
+        "extraText" => array(),
+        "extraDefault" => array(),
+        "maxDecimals"=> 4,
     );
 
     /**
-    * Sets everything up
+    * Disconnects from the database
     *
-    * @param array $data The data to start with
+    * @param array  $data    The servers to use
+    * @param object &$device The device we are attached to
+    */
+    public function __construct($data, &$device)
+    {
+        $data["type"] = "multiInput";
+        parent::__construct($data, $device);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    */
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    {
+        return $A >> 2;
+    }
+    /**
+    * function to set unitType
+    *
+    * @param mixed $value The value to set
     *
     * @return null
     */
-    public function __construct($data)
+    protected function setType($value)
     {
-        parent::__construct($data);
-    }
-
-    /**
-    * Does the actual conversion
-    *
-    * @param mixed  &$data The data to convert
-    * @param string $to    The units to convert to
-    * @param string $from  The units to convert from
-    *
-    * @return mixed The value returned
-    */
-    public function convert(&$data, $to=null, $from=null)
-    {
-        if (($to == "moreUnit") && ($from == "otherUnit")) {
-            $data = $data / 3;
-        } else if (($to == "otherUnit") && ($from == "moreUnit")) {
-            $data = $data * 3;
-        } else if (($to == "thirdUnit") && ($from == "moreUnit")) {
-            $data = $data / 3;
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-    * Checks to see if units are valid
-    *
-    * @param string $units The units to check for validity
-    *
-    * @return mixed The value returned
-    */
-    public function valid($units)
-    {
-        return true;
-    }
-
-    /**
-    * Checks to see if value the units represent is numeric
-    *
-    * @param string $units The units to check
-    *
-    * @return bool True if they are numeric, false otherwise
-    */
-    public function numeric($units)
-    {
-        return false;
+        $this->data["type"] = $value;
     }
 
 }

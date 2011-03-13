@@ -224,6 +224,22 @@ class DirectionUnits extends UnitsBase
         }
         return 0;
     }
+    /**
+    * Checks to see if value the units represent is numeric
+    *
+    * @param string $units The units to check
+    *
+    * @return bool True if they are numeric, false otherwise
+    */
+    public function numeric($units)
+    {
+        // Degrees are numeric.  Nothing else here is.
+        if ($units === "&#176;") {
+            return true;
+        }
+        return false;
+    }
+
 
 }
 

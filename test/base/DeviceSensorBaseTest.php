@@ -701,6 +701,59 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataNumeric()
+    {
+        return array(
+            array(
+                array(
+                ),
+                "TestDeviceSensor",
+                "asdf",
+                false,
+            ),
+            array(
+                array(
+                ),
+                "TestDeviceSensor",
+                null,
+                true,
+            ),
+            array(
+                array(
+                ),
+                "TestDeviceSensor",
+                "firstUnit",
+                true,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param mixed  $class   The class to use for this test
+    * @param string $units   The units to use
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataNumeric
+    */
+    public function testNumeric($preload, $class, $units, $expect)
+    {
+        $o = new $class($preload, $this->d);
+        $this->assertSame(
+            $expect,
+            $o->numeric($units)
+        );
+    }
+
+    /**
     * data provider for testSet
     *
     * @return array

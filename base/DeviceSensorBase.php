@@ -314,6 +314,21 @@ abstract class DeviceSensorBase extends HUGnetContainer
     {
         return false;
     }
+    /**
+    * Checks to see if value the units represent is numeric
+    *
+    * @param string $units The units to check.  Checks the units above if null
+    *
+    * @return bool True if they are numeric, false otherwise
+    */
+    public function numeric($units = null)
+    {
+        $this->setupUnits();
+        if (empty($units)) {
+            $units = $this->units;
+        }
+        return $this->unitConvert->numeric($units);
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

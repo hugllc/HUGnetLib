@@ -61,6 +61,28 @@ interface UnitsInterface
     * @return mixed The value returned
     */
     public function convert(&$data, $from, $to);
+    /**
+    * Checks to see if units are valid
+    *
+    * @param string $units The units to check for validity
+    *
+    * @return bool True if the units are valid
+    */
+    public function valid($units);
+    /**
+    * Checks to see if units are valid
+    *
+    * @return array Array of units returned
+    */
+    public function getValid();
+    /**
+    * Checks to see if value the units represent is numeric
+    *
+    * @param string $units The units to check
+    *
+    * @return bool True if they are numeric, false otherwise
+    */
+    public function numeric($units);
 
 }
 ?>

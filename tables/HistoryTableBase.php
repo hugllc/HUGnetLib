@@ -323,16 +323,19 @@ abstract class HistoryTableBase extends HUGnetDBTable
                 if (substr($col, 0, 4) == "Data") {
                     $key = (int)substr($col, 4);
                     $units = $this->device->sensors->sensor($key)->units;
+                    $graphable = $this->device->sensors->sensor($key)->numeric(
+                        $units
+                    );
                     $unitType = $this->device->sensors->sensor($key)->unitType;
                     if ($units == $params["units"][1]) {
                         $params["fields"][1][] = $col;
                     } else if ($units == $params["units"][2]) {
                         $params["fields"][2][] = $col;
-                    } else if (empty($params["units"][1])) {
+                    } else if (empty($params["units"][1]) && $graphable) {
                         $params["units"][1] = $units;
                         $params["unitTypes"][1] = $unitType;
                         $params["fields"][1][] = $col;
-                    } else if (empty($params["units"][2])) {
+                    } else if (empty($params["units"][2]) && $graphable) {
                         $params["units"][2] = $units;
                         $params["unitTypes"][2] = $unitType;
                         $params["fields"][2][] = $col;

@@ -160,6 +160,60 @@ class DirectionUnitsTest extends UnitsPluginTestBase
         $this->assertSame($expect, $data, "The data is wrong");
         $this->assertSame($return, $ret, "Return Wrong");
     }
+    /**
+     * Data provider for testValid
+     *
+     * @return array
+     */
+    public static function dataNumeric()
+    {
+        return array(
+            array(
+                array(
+                    "to" => "&#176;",
+                    "from" => "Direction",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "Direction",
+                false,
+            ),
+            array(
+                array(
+                    "to" => "Direction",
+                    "from" => "&#176;",
+                    "type"  => UnitsBase::TYPE_DIFF,
+                ),
+                "&#176;",
+                true,
+            ),
+            array(
+                array(
+                    "to" => "&#176;",
+                    "from" => "&#176;",
+                    "type"  => UnitsBase::TYPE_RAW,
+                ),
+                "&#176;Q",
+                false,
+            ),
+        );
+    }
+    /**
+    * test CtoF()
+    *
+    * @param array $preload The stuff to preload into the Units
+    * @param mixed $units   The units to check
+    * @param mixed $expect  The value to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataNumeric
+    */
+    public function testNumeric($preload, $units, $expect)
+    {
+        $this->o = new DirectionUnits($preload);
+        $this->assertSame($expect, $this->o->numeric($units));
+    }
+
 }
 
 ?>
