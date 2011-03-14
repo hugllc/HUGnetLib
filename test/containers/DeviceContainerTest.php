@@ -2170,6 +2170,133 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, get_class($this->o->driver()));
     }
     /**
+    * data provider for testSensor
+    *
+    * @return array
+    */
+    public static function dataSensor()
+    {
+        return array(
+            array(
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 0,
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => 3,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "ActiveSensors" => 3,
+                        "PhysicalSensors" => 3,
+                        0 => array("id" => 3, "type" => "Hello"),
+                        1 => array("id" => 2),
+                        2 => array("id" => 8),
+                    ),
+                    "params" => array(),
+                ),
+                0,
+                "Test2Sensor",
+            ),
+            array(
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 0,
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => 3,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "ActiveSensors" => 3,
+                        "PhysicalSensors" => 3,
+                        0 => array("id" => 3),
+                        1 => array("id" => 2),
+                        2 => array("id" => 8),
+                    ),
+                    "params" => array(),
+                ),
+                0,
+                "Test1Sensor",
+            ),
+            array(
+                array(
+                    "DriverInfo" => array(
+                        "RawDriverInfo" => "",
+                        "PhysicalSensors" => 3,
+                        "VirtualSensors" => 0,
+                    ),
+                    "id" => 232,
+                    "DeviceID" => "0000E8",
+                    "HWPartNum" => "0039-CF-01-A",
+                    "FWPartNum" => "0039-24-67-C",
+                    "FWVersion" => "0.1.2",
+                    "RawSetup"  => "00000000E80039CF01410039246743000102FFFFFF",
+                    "Active" => "1",
+                    "GatewayKey" => "0",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "Driver" => "testDriver",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => 3,
+                    "sensors" => array(
+                        "Sensors" => 3,
+                        "ActiveSensors" => 3,
+                        "PhysicalSensors" => 3,
+                        0 => array("id" => 3),
+                        1 => array("id" => 2),
+                        2 => array("id" => 8),
+                    ),
+                    "params" => array(),
+                ),
+                8,
+                "Test1Sensor",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $num     The string to use for the input
+    * @param array  $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataSensor
+    */
+    public function testSensor($preload, $num, $expect)
+    {
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, get_class($this->o->sensor($num)));
+    }
+    /**
     * data provider for testGetController
     *
     * @return array

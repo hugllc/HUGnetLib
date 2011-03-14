@@ -436,6 +436,17 @@ class DeviceContainer extends DevicesTable
     {
         return $this->epDriver;
     }
+    /**
+    * Creates a sensor object
+    *
+    * @param int $key The array key for the sensor object
+    *
+    * @return Returns a reference to the sensor object
+    */
+    public function &sensor($key)
+    {
+        return $this->sensors->sensor($key);
+    }
 
     /**
     * returns an object with the controller of this device in it
