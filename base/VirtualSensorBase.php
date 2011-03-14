@@ -118,7 +118,22 @@ abstract class VirtualSensorBase extends DeviceSensorBase
         $this->dataType = $this->storageType;
         parent::__construct($data, $device);
     }
-
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param bool $default Return items set to their default?
+    * @param bool $fixed   Return items in the fixed array?
+    *
+    * @return null
+    */
+    public function toArray($default = true, $fixed = false)
+    {
+        $array = parent::toArray($default, $fixed);
+        if ($this->doppelganger) {
+            $array["doppelganger"] = 1;
+        }
+        return $array;
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

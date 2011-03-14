@@ -87,6 +87,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "storageUnit" => "unknown",
         "maxDecimals" => 4,
+        "doppelganger" => true,
     );
 
     /**

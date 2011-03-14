@@ -228,6 +228,130 @@ class VirtualSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->o->$var = $value;
         $this->assertSame($expect, $this->o->$var);
     }
+    /**
+    * data provider for testToArray
+    *
+    * @return array
+    */
+    public static function dataToArray()
+    {
+        return array(
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestVirtualSensor1",
+                false,
+                false,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "extra" => array(6,5,4),
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestVirtualSensor1",
+                false,
+                true,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "firstUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(0,1,2,3,4,5,6,7),
+                    "maxDecimals" => 2,
+                    "extra" => array(6,5,4),
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestVirtualSensor1",
+                true,
+                true,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "longName" => "Unknown Sensor",
+                    "unitType" => "firstUnit",
+                    "storageUnit" => "firstUnit",
+                    "storageType" => "raw",
+                    "extraText" => array(),
+                    "extraDefault" => array(0,1,2,3,4,5,6,7),
+                    "maxDecimals" => 2,
+                    "location" => "f",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestVirtualSensor1",
+                true,
+                false,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "location" => "f",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
+                ),
+            ),
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestVirtualSensor2",
+                true,
+                false,
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "location" => "f",
+                    "units" => "testUnit",
+                    "dataType" => "raw",
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                    "decimals" => 2,
+                    "doppelganger" => 1,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $class   The class to use
+    * @param bool   $default Whether to include default values or not
+    * @param bool   $fixed   Return items in the fixed array?
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataToArray
+    */
+    public function testToArray($preload, $class, $default, $fixed, $expect)
+    {
+        $this->o = new $class($preload, $this->d);
+        $this->assertSame($expect, $this->o->toArray($default, $fixed));
+    }
 
 }
 /**
@@ -274,6 +398,83 @@ class TestVirtualSensor1 extends VirtualSensorBase
         "extraText" => array(),
         "extraDefault" => array(0,1,2,3,4,5,6,7),
         "maxDecimals" => 2,
+    );
+    /** @var object This is where we store our configuration */
+    protected $unitTypeValues = array("b");
+    /** @var object This is where we store our configuration */
+    protected $typeValues = array("j");
+    /**
+    * Gets the extra values
+    *
+    * @param array $index The extra index to use
+    *
+    * @return mixed the extra value
+    */
+    public function getExtra($index)
+    {
+        return parent::getExtra($index);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    */
+    public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
+    {
+        return $data;
+    }
+}
+
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2011 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TestVirtualSensor2 extends VirtualSensorBase
+{
+    /** @var This is to register the class */
+    public static $registerPlugin = array(
+        "Name" => "Doppelganger",
+        "Type" => "sensor",
+        "Class" => "TestVirtualSensor2",
+        "Sensors" => array(),
+    );
+    /** These are the endpoint information bits */
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "location" => "f",                // The location of the sensors
+        "id" => 0,                      // The id of the sensor.  This is the value
+                                         // Stored in the device  It will be an int
+        "type" => "sensor",                    // The type of the sensors
+        "units" => "testUnit",             // The units the values are stored in
+        "dataType" => "raw",             // The datatype of each sensor
+        "extra" => array(),              // Extra input for crunching numbers
+        "rawCalibration" => "cali",          // The raw calibration string
+    );
+    /**
+    * This is the array of sensor information.
+    */
+    protected $fixed = array(
+        "longName" => "Unknown Sensor",
+        "unitType" => "firstUnit",
+        "storageUnit" => 'firstUnit',
+        "storageType" => UnitsBase::TYPE_RAW,
+        "extraText" => array(),
+        "extraDefault" => array(0,1,2,3,4,5,6,7),
+        "maxDecimals" => 2,
+        "doppelganger" => true,
     );
     /** @var object This is where we store our configuration */
     protected $unitTypeValues = array("b");

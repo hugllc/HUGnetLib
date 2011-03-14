@@ -901,6 +901,23 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 array("id" => null, "type" => ""),
             ),
             array(
+                base64_encode(
+                    serialize(
+                        array(
+                            0 => array(
+                                "id" => 0xFE,
+                                "type" => "physicalpoint",
+                                "doppelganger" => 1,
+                            ),
+                            1 => array("id" => 2),
+                            2 => array("id" => 8),
+                        )
+                    )
+                ),
+                0,
+                array("id" => 0xFE, "type" => "Virtual"),
+            ),
+            array(
                 "",
                 0,
                 array("id" => null, "type" => ""),

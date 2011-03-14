@@ -159,6 +159,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     "rawCalibration" => "",
                     "decimals" => 2,
                     "filter" => array(),
+                    'doppelganger' => 1,
                 ),
                 array(
                     'longName' => 'PhysicalPoint Virtual Sensor',
@@ -178,6 +179,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
                     'storageType' => UnitsBase::TYPE_RAW,
                     'storageUnit' => '&#176;C',
                     'maxDecimals' => 2,
+                    'doppelganger' => true,
                 ),
                 array(
                     'id' => 254,

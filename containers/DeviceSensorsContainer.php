@@ -364,7 +364,16 @@ class DeviceSensorsContainer extends HUGnetContainer
     public function &sensorFromString($string, $sensor)
     {
         $array = self::fromStringDecode((string)$string);
-        return $this->sensorFactory($array[$sensor]);
+
+        // PhysicalPoint Virtual sensors are doppelgangers.  They will be using
+        // this function to create themselves.  They are not allowed to get stuff
+        // from eachother.
+        if ($array[$sensor]["doppelganger"]) {
+            $s = array("id" => 0xFE);
+        } else {
+            $s = &$array[$sensor];
+        }
+        return $this->sensorFactory($s);
     }
     /**
     * Creates a sensor object
