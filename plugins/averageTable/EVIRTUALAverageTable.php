@@ -109,7 +109,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     {
         $start = (int)$this->device->params->DriverInfo["LastAverage15MIN"];
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = &$this->device->sensors->sensor($i);
+            $sensor = &$this->device->sensor($i);
             if (method_exists($sensor, "getAverageTable")) {
                 if (!is_a($this->averages["sensors"][$i], "AverageTableBase")) {
                     $avg = &$sensor->getAverageTable();
@@ -151,7 +151,7 @@ class EVIRTUALAverageTable extends AverageTableBase
         $this->Type = self::AVERAGE_15MIN;
         $notEmpty = false;
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
-            $sensor = &$this->device->sensors->sensor($i);
+            $sensor = &$this->device->sensor($i);
             if (is_a($this->averages["sensors"][$i], "AverageTableBase")) {
                 if ($this->averages["sensors"][$i]->Date == $date) {
                     $data = $this->averages["sensors"][$i]->toArray();

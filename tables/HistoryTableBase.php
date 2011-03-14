@@ -288,7 +288,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
             $prev = $this->toArray();
             for ($i = 0; $i < $this->datacols; $i++) {
                 $col = "Data".$i;
-                $sensor = &$this->device->sensors->sensor($i);
+                $sensor = &$this->device->sensor($i);
                 // This changes raw mode into differential mode
                 if (($sensor->storageType === UnitsBase::TYPE_RAW)
                     && ($sensor->dataType === UnitsBase::TYPE_DIFF)
@@ -322,11 +322,11 @@ abstract class HistoryTableBase extends HUGnetDBTable
             foreach ($cols as $col) {
                 if (substr($col, 0, 4) == "Data") {
                     $key = (int)substr($col, 4);
-                    $units = $this->device->sensors->sensor($key)->units;
-                    $graphable = $this->device->sensors->sensor($key)->numeric(
+                    $units = $this->device->sensor($key)->units;
+                    $graphable = $this->device->sensor($key)->numeric(
                         $units
                     );
-                    $unitType = $this->device->sensors->sensor($key)->unitType;
+                    $unitType = $this->device->sensor($key)->unitType;
                     if ($units == $params["units"][1]) {
                         $params["fields"][1][] = $col;
                     } else if ($units == $params["units"][2]) {
@@ -360,7 +360,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
             foreach ($cols as $col) {
                 if (substr($col, 0, 4) == "Data") {
                     $key = (int)substr($col, 4);
-                    $filters[$col] = $this->device->sensors->sensor($key)->filter;
+                    $filters[$col] = $this->device->sensor($key)->filter;
                 }
             }
         }
