@@ -90,8 +90,8 @@ class DataCollectorsTable extends HUGnetDBTable
             "Type" => "INTEGER",
             "Null" => false,
         ),
-        "gatewayID" => array(
-            "Name" => "gatewayID",
+        "GatewayKey" => array(
+            "Name" => "GatewayKey",
             "Type" => "int",
             "Null" => false,
         ),
@@ -129,7 +129,7 @@ class DataCollectorsTable extends HUGnetDBTable
         "id" => array(
             "Name" => "id",
             "Unique" => true,
-            "Columns" => array("gatewayID", "ip"),
+            "Columns" => array("GatewayKey", "ip"),
         ),
     );
 
@@ -150,16 +150,55 @@ class DataCollectorsTable extends HUGnetDBTable
     /**
     * returns an object with the controller of this device in it
     *
-    * @param int $gatewayID The gateway ID to find
+    * @param int $GatewayKey The gateway ID to find
     *
     * @return bool
     */
-    public function &onGateway($gatewayID)
+    public function &onGateway($GatewayKey)
     {
         return $this->selectInto(
-            "`gatewayID` = ?",
-            array($gatewayID)
+            "`GatewayKey` = ?",
+            array($GatewayKey)
         );
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @param DeviceContainer &$dev The device container to use
+    *
+    * @return null
+    */
+    public function fromDeviceContainer(DeviceContainer &$dev)
+    {
+        $this->id = $dev->id;
+        $this->name = $dev->DeviceName;
+        $this->GatewayKey = $dev->GatewayKey;
+        $this->ip = $dev->DeviceLocation;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    public function registerMe()
+    {
+        $this->LastContact = time();
+        return $this->insertRow(true);
+    }
+    /**
+    * Creates the object from a string or array
+    *
+    * @param mixed &$data This is whatever you want to give the class
+    *
+    * @return null
+    */
+    public function fromAny(&$data)
+    {
+        if (is_object($data) && is_a($data, "DeviceContainer")) {
+            $this->fromDeviceContainer($data);
+        } else {
+            parent::fromAny($data);
+        }
     }
 
     /******************************************************************

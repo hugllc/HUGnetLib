@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../tables/DataCollectorsTable.php';
+require_once dirname(__FILE__).'/../../containers/DeviceContainer.php';
 require_once dirname(__FILE__)."/HUGnetDBTableTestBase.php";
 
 /**
@@ -180,7 +181,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     0 => array(
                         'group' => 'default',
                         'id' => '484',
-                        'gatewayID' => '1',
+                        'GatewayKey' => '1',
                         'name' => 'Test2',
                         'ip' => '192.168.192.125',
                         'LastContact' => 123456789,
@@ -188,7 +189,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     1 => array(
                         'group' => 'default',
                         'id' => '404',
-                        'gatewayID' => '1',
+                        'GatewayKey' => '1',
                         'name' => 'Test1',
                         'ip' => '192.168.192.5',
                         'LastContact' => 12345678,
@@ -207,17 +208,17 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int   $gatewayID The id to use
-    * @param bool  $return    The expected return
-    * @param mixed $expect    The expected data
+    * @param int   $GatewayKey The id to use
+    * @param bool  $return     The expected return
+    * @param mixed $expect     The expected data
     *
     * @return null
     *
     * @dataProvider dataOnGateway
     */
-    public function testOnGateway($gatewayID, $return, $expect)
+    public function testOnGateway($GatewayKey, $return, $expect)
     {
-        $ret = $this->o->onGateway($gatewayID);
+        $ret = $this->o->onGateway($GatewayKey);
         $this->assertSame($return, $ret, "Return Wrong");
         if ($ret) {
             $data = array();
@@ -226,6 +227,126 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
             } while ($this->o->nextInto());
             $this->assertSame($expect, $data, "Data Wrong");
         }
+    }
+    /**
+    * Data provider for testRegisterMe
+    *
+    * @return array
+    */
+    public static function dataRegisterMe()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 156,
+                    "GatewayKey" => 23,
+                    "name" => "hello",
+                    "ip" => "192.168.54.2",
+                ),
+                array(
+                    0 => array(
+                        'id' => '404',
+                        'GatewayKey' => '1',
+                        'name' => 'Test1',
+                        'ip' => '192.168.192.5',
+                        'LastContact' => '12345678',
+                    ),
+                    1 => array(
+                        'id' => '484',
+                        'GatewayKey' => '1',
+                        'name' => 'Test2',
+                        'ip' => '192.168.192.125',
+                        'LastContact' => '123456789',
+                    ),
+                    2 => array(
+                        'id' => '848',
+                        'GatewayKey' => '2',
+                        'name' => 'Test3',
+                        'ip' => '192.168.192.82',
+                        'LastContact' => '123456789',
+                    ),
+                    3 => array(
+                        'id' => '156',
+                        'GatewayKey' => '23',
+                        'name' => 'hello',
+                        'ip' => '192.168.54.2',
+                    ),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data   The data to use
+    * @param array $expect The expected table row
+    * @param bool  $ret    The expected return
+    *
+    * @dataProvider dataRegisterMe
+    *
+    * @return null
+    */
+    public function testRegisterMe($data, $expect, $ret)
+    {
+        $time = time();
+        $this->o->clearData();
+        $this->o->fromAny($data);
+        $return = $this->o->registerMe();
+        $stmt = $this->pdo->query("SELECT * FROM `datacollectors`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $k => $v) {
+            if ($v["id"] == $data["id"]) {
+                $this->assertGreaterThanOrEqual(
+                    $time, $v["LastContact"], "LastContact not set properly"
+                );
+                unset ($rows[$k]["LastContact"]);
+            }
+        }
+        $this->assertSame($expect, $rows);
+        $this->assertSame($ret, $return);
+    }
+    /**
+    * data provider for testForceTable
+    *
+    * @return array
+    */
+    public static function dataFromAny()
+    {
+        return array(
+            array(
+                new DeviceContainer(array(
+                    "id" => 12,
+                    "HWPartNum" => "0039-21-02-A",
+                    "FWPartNum" => "0039-20-01-A",
+                    "FWVersion" => "0.1.2",
+                    "GatewayKey" => 5,
+                    "DeviceName" => "This is a Name",
+                )),
+                array(
+                    "id" => 12,
+                    'GatewayKey' => 5,
+                    'name' => 'This is a Name',
+                    'LastContact' => 0,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the forceTable routine
+    *
+    * @param array $dev    The device to use
+    * @param mixed $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromAny
+    */
+    public function testFromAny($dev, $expect)
+    {
+        $this->o->fromAny($dev);
+        $this->assertSame($expect, $this->o->toArray(false));
     }
 }
 

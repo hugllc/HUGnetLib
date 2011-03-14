@@ -2,7 +2,7 @@
 <dataset>
     <table name="datacollectors">
         <column>id</column>
-        <column>gatewayID</column>
+        <column>GatewayKey</column>
         <column>name</column>
         <column>ip</column>
         <column>LastContact</column>
