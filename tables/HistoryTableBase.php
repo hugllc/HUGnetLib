@@ -316,34 +316,50 @@ abstract class HistoryTableBase extends HUGnetDBTable
     */
     public function outputParams($type, $cols = null)
     {
+        $cols = $this->getOutputCols($cols);
         if (is_a($this->device, "DeviceContainer")) {
-            $params = &$this->outputParams[$type];
-            $cols = $this->getOutputCols($cols);
-            foreach ($cols as $col) {
-                if (substr($col, 0, 4) == "Data") {
-                    $key = (int)substr($col, 4);
-                    $units = $this->device->sensor($key)->units;
-                    $graphable = $this->device->sensor($key)->numeric(
-                        $units
-                    );
-                    $unitType = $this->device->sensor($key)->unitType;
-                    if ($units == $params["units"][1]) {
-                        $params["fields"][1][] = $col;
-                    } else if ($units == $params["units"][2]) {
-                        $params["fields"][2][] = $col;
-                    } else if (empty($params["units"][1]) && $graphable) {
-                        $params["units"][1] = $units;
-                        $params["unitTypes"][1] = $unitType;
-                        $params["fields"][1][] = $col;
-                    } else if (empty($params["units"][2]) && $graphable) {
-                        $params["units"][2] = $units;
-                        $params["unitTypes"][2] = $unitType;
-                        $params["fields"][2][] = $col;
-                    }
+            $this->outputUnits(
+                $this->outputParams[$type],
+                $cols
+            );
+        }
+        return parent::outputParams($type, $cols);
+    }
+    /**
+    * This function modifies the units, unitTypes, and the fields
+    *
+    * @param array &$params The parameters to modify
+    * @param array $cols    The columns to get
+    *
+    * @return array
+    */
+    public function outputUnits(&$params, $cols = null)
+    {
+        foreach ($cols as $col) {
+            if (substr($col, 0, 4) == "Data") {
+                $key = (int)substr($col, 4);
+                $units = $this->device->sensor($key)->units;
+                $graphable = $this->device->sensor($key)->numeric(
+                    $units
+                );
+                $unitType = $this->device->sensor($key)->unitType;
+                if ($units == $params["units"][1]) {
+                    $params["fields"][1][] = $col;
+                    $params["unitTypes"][1] = $unitType;
+                } else if ($units == $params["units"][2]) {
+                    $params["fields"][2][] = $col;
+                    $params["unitTypes"][2] = $unitType;
+                } else if (empty($params["units"][1]) && $graphable) {
+                    $params["units"][1] = $units;
+                    $params["unitTypes"][1] = $unitType;
+                    $params["fields"][1][] = $col;
+                } else if (empty($params["units"][2]) && $graphable) {
+                    $params["units"][2] = $units;
+                    $params["unitTypes"][2] = $unitType;
+                    $params["fields"][2][] = $col;
                 }
             }
         }
-        return parent::outputParams($type, $cols);
     }
     /**
     * There should only be a single instance of this class
