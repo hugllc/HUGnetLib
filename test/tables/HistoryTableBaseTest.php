@@ -981,7 +981,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "sensors" => array(
                         "Sensors" => 4,
                         array("id" => 0),
-                        array("id" => 2),
+                        array("id" => 0x20),
                         array("id" => 0),
                         array("id" => 0x20),
                     ),
@@ -998,7 +998,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
                     "dateField" => "Date",
                     "fields" => array(
                         1 => array("Data0", "Data2"),
-                        2 => array("Data3"),
+                        2 => array("Data1", "Data3"),
                     )
                 ),
             ),
