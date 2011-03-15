@@ -426,6 +426,18 @@ abstract class HUGnetDBTable extends HUGnetContainer
         return $ret;
     }
     /**
+    * Returns the number of records this query would return
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return false on failure, int on success
+    */
+    public function count($where, $data = array())
+    {
+        return $this->myDriver->countWhere($where, $data);
+    }
+    /**
     * This function gets a record with the given key
     *
     * @param string $where The where clause

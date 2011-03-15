@@ -621,6 +621,46 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertSame($expect, $ret);
     }
     /**
+    * Data provider for testCount
+    *
+    * @return array
+    */
+    public static function dataCount()
+    {
+        return array(
+            array(
+                array(),
+                "",
+                array(),
+                4,
+            ),
+            array(
+                array(),
+                "asdf = 'saser'",
+                array(),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param mixed  $expect  false on failure, int on success
+    *
+    * @dataProvider dataCount
+    *
+    * @return null
+    */
+    public function testCount($preload, $where, $data, $expect)
+    {
+        $o = new HUGnetDBTableTestStub($preload);
+        $res = $o->count($where, $data);
+        $this->assertSame($expect, $res);
+    }
+    /**
     * Tests for verbosity
     *
     * @param array  $preload The array to preload into the class
