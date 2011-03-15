@@ -57,7 +57,7 @@ class MeanDifferenceOutputFilterPlugin extends OutputFilterBase
     const SAMPLES = 5;
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Mean Difference",
+        "Name" => "5 Sample Mean Difference",
         "Type" => "outputFilter",
         "Class" => "MeanDifferenceOutputFilterPlugin",
         "Flags" => array("meandifference"),

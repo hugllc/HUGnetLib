@@ -55,7 +55,7 @@ class NullOutputFilterPlugin extends OutputFilterBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "None",
+        "Name" => "No Filtering",
         "Type" => "outputFilter",
         "Class" => "NullOutputFilterPlugin",
         "Flags" => array("DEFAULT"),
