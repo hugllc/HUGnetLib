@@ -133,6 +133,11 @@ class DevicesHistoryTable extends HUGnetDBTable
             "Unique"  => true,
             "Columns" => array("id", "SaveDate", "SetupString", "SensorString,255"),
         ),
+        "idDate" => array(
+            "Name"    => "idDate",
+            "Unique"  => true,
+            "Columns" => array("id", "SaveDate"),
+        ),
     );
 
     /** @var array This is the default values for the data */
