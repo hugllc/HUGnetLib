@@ -143,10 +143,13 @@ class IMCSolarDeviceSensorTest extends DeviceSensorPluginTestBase
                 null
             ),
             array(
-                array('dataType' => DeviceSensorBase::TYPE_IGNORE),
+                array(
+                    'dataType' => DeviceSensorBase::TYPE_IGNORE,
+                    'extra'=>array(10)
+                ),
                 5000,
                 0,
-                null
+                94.0506
             ),
         );
     }

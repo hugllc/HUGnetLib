@@ -147,7 +147,7 @@ class B57560G0103F000DeviceSensorTest extends DeviceSensorPluginTestBase
                 array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
-                null
+                110.0645
             ),
         );
     }

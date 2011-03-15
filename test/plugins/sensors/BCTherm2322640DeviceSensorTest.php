@@ -165,7 +165,7 @@ class BCTherm2322640DeviceSensorTest extends DeviceSensorPluginTestBase
                 array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
-                null
+                93.3105
             ),
         );
     }

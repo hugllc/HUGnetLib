@@ -168,10 +168,12 @@ class PotDirectionDeviceSensorTest extends DeviceSensorPluginTestBase
                 44.7251,
             ),
             array(   // #9
-                array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
-                5000,
+                array(
+                    'dataType'=> DeviceSensorBase::TYPE_IGNORE,
+                ),
+                32768,
                 0,
-                null
+                90.0878,
             ),
         );
     }

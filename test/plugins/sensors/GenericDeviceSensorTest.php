@@ -138,7 +138,7 @@ class GenericDeviceSensorTest extends DeviceSensorPluginTestBase
                 array('dataType' => DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
-                null
+                5000
             ),
         );
     }

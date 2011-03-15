@@ -112,9 +112,6 @@ class PotDirectionDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
-            return null;
-        }
         $RTotal = $this->getExtra(0);
         $dir1   = $this->getExtra(1);
         $R1     = $this->getExtra(2);

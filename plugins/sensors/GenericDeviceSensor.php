@@ -115,9 +115,6 @@ class GenericDeviceSensor extends DeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
-            return null;
-        }
         return $A;
     }
 

@@ -130,9 +130,6 @@ class BCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
-            return null;
-        }
         $Bias      = $this->getExtra(0);
         $baseTherm = $this->getExtra(1);
         $ohms      = $this->getResistance($A, $Bias);

@@ -257,9 +257,6 @@ class IMCSolarDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        if ($this->dataType == DeviceSensorBase::TYPE_IGNORE) {
-            return null;
-        }
         $Bias = $this->getExtra(0);
         $ohms = $this->getResistance($A, $Bias);
         $T    = $this->tableInterpolate($ohms);
