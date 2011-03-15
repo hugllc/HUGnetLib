@@ -94,7 +94,7 @@ class GatewaysTable extends HUGnetDBTable
         "name" => array(
             "Name" => "name",
             "Type" => "varchar(128)",
-            "Default" => 'Unknown',
+            "Default" => '',
         ),
         "location" => array(
             "Name" => "location",
@@ -104,7 +104,12 @@ class GatewaysTable extends HUGnetDBTable
         "description" => array(
             "Name" => "description",
             "Type" => "text",
-            "Default" => "0",
+            "Default" => "",
+        ),
+        "visible" => array(
+            "Name" => "visible",
+            "Type" => "tinyint",
+            "Default" => "1",
         ),
     );
     /**
@@ -126,6 +131,11 @@ class GatewaysTable extends HUGnetDBTable
             "Name" => "id",
             "Unique" => true,
             "Columns" => array("id"),
+        ),
+        "name" => array(
+            "Name" => "name",
+            "Unique" => true,
+            "Columns" => array("name"),
         ),
     );
 
