@@ -174,6 +174,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "Checksum" => "C6",
                         "CalcChecksum" => "C6",
                     ),
+                    "devicesHistoryDate" => 1048472484,
                     "command" => "55",
                     "dataIndex" => 123,
                 ),
@@ -210,6 +211,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "Checksum" => "C6",
                         "CalcChecksum" => "C6",
                     ),
+                    "devicesHistoryDate" => 1048472484,
                     "command" => "55",
                     "dataIndex" => 123,
                 ),
@@ -229,17 +231,19 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public function testFromArray($preload, $expect)
     {
-        $date = time();
+        //$date = time();
         $this->o->fromArray($preload);
         $data = $this->readAttribute($this->o, "data");
         $this->assertSame("PacketContainer", get_class($this->o->packet));
         $row = $this->o->toArray();
+        /*
         $this->assertThat(
             $row["devicesHistoryDate"],
             $this->greaterThanOrEqual($date),
             "Date is wrong on key $key"
         );
         unset($row["devicesHistoryDate"]);
+        */
         $this->assertSame($expect, $row);
     }
     /**
@@ -305,6 +309,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
                         "id"        => "123",
                         "Date"      => "220954140",
                         "packet"    => $packet->toZip(),
+                        "devicesHistoryDate" => "1043364912",
                         "command"   => "55",
                         "dataIndex" => "232",
                     ),
@@ -328,6 +333,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
         RawHistoryTable::insertRecord($preload);
         $stmt = $this->pdo->query("SELECT * FROM `rawHistory`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        /*
         foreach (array_keys($rows) as $key) {
             $this->assertThat(
                 $rows[$key]["devicesHistoryDate"],
@@ -336,7 +342,9 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
             );
             unset($rows[$key]["devicesHistoryDate"]);
         }
+        */
         $this->assertSame($expect, $rows);
+        
     }
     /**
     * Data provider for testGetDevice

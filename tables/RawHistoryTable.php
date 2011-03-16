@@ -221,6 +221,7 @@ class RawHistoryTable extends HUGnetDBTable
     public function fromArray($array)
     {
         parent::fromArray($array);
+        $this->_setupClasses();
         if (empty($this->devicesHistoryDate) && isset($array["device"])) {
             if (is_object($array["device"])) {
                 $dev = &$array["device"];
@@ -228,10 +229,10 @@ class RawHistoryTable extends HUGnetDBTable
                 $dev = new DeviceContainer($array["device"]);
             }
             $this->devHist = new DevicesHistoryTable($dev);
+            $this->devHist->SaveDate = $this->packet->Date;
             $this->devHist->insertRow();
             $this->devicesHistoryDate = $this->devHist->SaveDate;
         }
-        $this->_setupClasses();
     }
     /**
     * Sets all of the endpoint attributes from an array
