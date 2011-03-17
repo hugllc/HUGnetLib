@@ -149,7 +149,7 @@ class RawHistoryOldTable extends HUGnetDBTable
     {
         $this->device->clearData();
         $this->device->fromSetupString($this->RawSetup);
-        if ($this->device->isEmpty()) {
+        if ($this->device->isEmpty() || ($this->device->id > 0x500)) {
             return false;
         }
         $time = $this->unixDate($this->Date, "UTC");
