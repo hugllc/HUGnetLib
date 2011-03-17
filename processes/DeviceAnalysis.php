@@ -116,6 +116,9 @@ class DeviceAnalysis extends DeviceProcess
         parent::main($fct);
         $dev = new DeviceContainer();
         foreach ($this->periodicPriority as $p) {
+            if (!$this->loop()) {
+                return;
+            }
             foreach ($p as $n) {
                 if ($this->periodic[$n]->ready($dev)) {
                     $this->periodic[$n]->$fct($dev);
