@@ -319,6 +319,48 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                 ),
                 array("TestAnalysisPlugin", "TestAnalysisPlugin2"),
             ),
+            array(
+                array(
+                    array(
+                        "id" => hexdec("123456"),
+                        "DeviceID" => "123456",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "return" => 0,
+                            ),
+                        ),
+                    ),
+                    array(
+                        "id" => hexdec("234567"),
+                        "DeviceID" => "234567",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "return" => 0,
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "analysis",
+                ),
+                true,
+                array(
+                    hexdec("123456") => 1,
+                    hexdec("234567") => 1
+                ),
+                array("TestAnalysisPlugin", "TestAnalysisPlugin2"),
+            ),
         );
     }
 

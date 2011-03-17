@@ -74,8 +74,11 @@ class TestAnalysisPlugin extends DeviceProcessPluginBase
         $dev->params->DriverInfo[__CLASS__]++;
         if (is_null($dev->params->DriverInfo["return"])) {
             return true;
-        } else {
-            return $dev->params->DriverInfo["return"];
+        } else if (is_int($dev->params->DriverInfo["return"])) {
+            $ret = $dev->params->DriverInfo["return"];
+            $dev->params->DriverInfo["return"]++;
+            return (bool)$ret;
         }
+        return (bool)$dev->params->DriverInfo["return"];
     }
 }
