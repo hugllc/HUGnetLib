@@ -71,6 +71,8 @@ class GenericUnits extends UnitsBase
     public function __construct($data)
     {
         parent::__construct($data);
+        // This sets what our valid units are
+        $this->valid = $this->getValid();
     }
     /**
     * Checks to see if units are valid
