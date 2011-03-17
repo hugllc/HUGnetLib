@@ -463,11 +463,22 @@ abstract class HUGnetContainer extends HUGnetClass
     *
     * @param string $string This is the raw string for the device
     *
-    * @return boolean
+    * @return array
     */
     static protected function fromStringDecode($string)
     {
         return unserialize(base64_decode($string));
+    }
+    /**
+    * Creates the object from a string
+    *
+    * @param array $array This is the array to encode
+    *
+    * @return string
+    */
+    static protected function toStringEncode($array)
+    {
+        return base64_encode(serialize($array));
     }
     /**
     * Returns the object as a string
@@ -478,7 +489,7 @@ abstract class HUGnetContainer extends HUGnetClass
     */
     public function toString($default = true)
     {
-        return base64_encode(serialize($this->toArray($default)));
+        return self::toStringEncode($this->toArray($default));
     }
     /**
     * Creates the object from a string

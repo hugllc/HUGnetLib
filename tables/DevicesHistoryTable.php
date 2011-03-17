@@ -191,7 +191,7 @@ class DevicesHistoryTable extends HUGnetDBTable
     public function fromDeviceContainer(DeviceContainer &$dev)
     {
         $this->id = $dev->id;
-        $this->SensorString = $dev->sensors->toString();
+        $this->SensorString = $dev->sensors->toDevHistString();
         $this->SetupString = $dev->toSetupString();
         $this->SaveDate = time();
     }

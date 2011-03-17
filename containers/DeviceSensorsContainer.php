@@ -172,6 +172,28 @@ class DeviceSensorsContainer extends HUGnetContainer
         return (array)$data;
     }
     /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    public function toDevHistArray()
+    {
+        $data = parent::toArray(true);
+        foreach (array_keys($this->sensor) as $key) {
+            $data[$key] = $this->sensor[$key]->toDevHistArray();
+        }
+        return (array)$data;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    public function toDevHistString()
+    {
+        return self::toStringEncode($this->toDevHistArray());
+    }
+    /**
     * Creates the object from a string
     *
     * @param string $string This is the raw string for the device

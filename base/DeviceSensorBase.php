@@ -190,6 +190,22 @@ abstract class DeviceSensorBase extends HUGnetContainer
         return $ret;
     }
     /**
+    * Sets all of the endpoint attributes from an array
+    *
+    * @return null
+    */
+    public function toDevHistArray()
+    {
+        $badCols = array(
+            "location", "units", "decimals", "bound", "filter"
+        );
+        $cols = array_diff(array_keys($this->default), $badCols);
+        foreach ($cols as $col) {
+            $ret[$col] = $this->$col;
+        }
+        return $ret;
+    }
+    /**
     * Gets the direction from a direction sensor made out of a POT.
     *
     * @param int   $A      Output of the A to D converter

@@ -468,6 +468,186 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $this->assertSame($expect, $this->o->toArray($default));
     }
+
+    /**
+    * data provider for testToDevHistArray
+    *
+    * @return array
+    */
+    public static function dataToDevHistArray()
+    {
+        return array(
+            array(
+                array(
+                    "RawCalibration" => "",
+                    "Sensors" => 2,
+                    0 => array(
+                        "id" => 0,
+                        "type" => "here",
+                        "location" => "There",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "cal",
+                        "units" => "testUnit",
+                    ),
+                    1 => array(
+                        "id" => 0,
+                        "type" => "5",
+                        "location" => "hello",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "called",
+                        "units" => "testUnit",
+                    ),
+                    2 => array(
+                        "id" => 0xFE,
+                        "type" => "vt",
+                        "location" => "virtual",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "noCalHere",
+                        "units" => "testUnit",
+                    ),
+                ),
+                2,
+                1,
+                array(
+                    "RawCalibration" => "",
+                    "Sensors" => 3,
+                    "ActiveSensors" => 3,
+                    "PhysicalSensors" => 2,
+                    "VirtualSensors" => 1,
+                    "forceSensors" => false,
+                    0 => array(
+                        "id" => 0,
+                        "type" => "here",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "cal",
+                    ),
+                    1 => array(
+                        "id" => 0,
+                        "type" => "5",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "called",
+                    ),
+                    2 => array(
+                        "id" => 0xFE,
+                        "type" => "Virtual",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "noCalHere",
+                    ),
+                ),
+
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload         The stuff to give to the constructor
+    * @param int   $PhysicalSensors The total number of physical sensors
+    * @param int   $VirtualSensors  The total number of virtual sensors
+    * @param array $expect          The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataToDevHistArray
+    */
+    public function testToDevHistArray(
+        $preload, $PhysicalSensors, $VirtualSensors, $expect
+    ) {
+        $this->d->DriverInfo["PhysicalSensors"] = $PhysicalSensors;
+        $this->d->DriverInfo["VirtualSensors"] = $VirtualSensors;
+        $this->d->ActiveSensors = $PhysicalSensors + $VirtualSensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, $this->o->toDevHistArray());
+    }
+    /**
+    * data provider for testToDevHistString
+    *
+    * @return array
+    */
+    public static function dataToDevHistString()
+    {
+        return array(
+            array(
+                array(
+                    "RawCalibration" => "",
+                    "Sensors" => 2,
+                    0 => array(
+                        "id" => 0,
+                        "type" => "here",
+                        "location" => "There",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "cal",
+                        "units" => "testUnit",
+                    ),
+                    1 => array(
+                        "id" => 0,
+                        "type" => "5",
+                        "location" => "hello",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "called",
+                        "units" => "testUnit",
+                    ),
+                    2 => array(
+                        "id" => 0xFE,
+                        "type" => "vt",
+                        "location" => "virtual",
+                        "dataType" => "raw",
+                        "extra" => array(),
+                        "rawCalibration" => "noCalHere",
+                        "units" => "testUnit",
+                    ),
+                ),
+                2,
+                1,
+                "YTo5OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3M6NzoiU2Vuc29ycyI"
+                    ."7aTozO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MztzOjE1OiJQaHlzaWNhb"
+                    ."FNlbnNvcnMiO2k6MjtzOjE0OiJWaXJ0dWFsU2Vuc29ycyI7aToxO3M6MTI"
+                    ."6ImZvcmNlU2Vuc29ycyI7YjowO2k6MDthOjU6e3M6MjoiaWQiO2k6MDtzO"
+                    ."jQ6InR5cGUiO3M6NDoiaGVyZSI7czo4OiJkYXRhVHlwZSI7czozOiJyYXc"
+                    ."iO3M6NToiZXh0cmEiO2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzO"
+                    ."jM6ImNhbCI7fWk6MTthOjU6e3M6MjoiaWQiO2k6MDtzOjQ6InR5cGUiO3M"
+                    ."6MToiNSI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZXh0cmEiO"
+                    ."2E6MDp7fXM6MTQ6InJhd0NhbGlicmF0aW9uIjtzOjY6ImNhbGxlZCI7fWk"
+                    ."6MjthOjU6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7czo3OiJWaXJ0d"
+                    ."WFsIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI7YTo"
+                    ."wOnt9czoxNDoicmF3Q2FsaWJyYXRpb24iO3M6OToibm9DYWxIZXJlIjt9f"
+                    ."Q==",
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload         The stuff to give to the constructor
+    * @param int   $PhysicalSensors The total number of physical sensors
+    * @param int   $VirtualSensors  The total number of virtual sensors
+    * @param array $expect          The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataToDevHistString
+    */
+    public function testToDevHistString(
+        $preload, $PhysicalSensors, $VirtualSensors, $expect
+    ) {
+        $this->d->DriverInfo["PhysicalSensors"] = $PhysicalSensors;
+        $this->d->DriverInfo["VirtualSensors"] = $VirtualSensors;
+        $this->d->ActiveSensors = $PhysicalSensors + $VirtualSensors;
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $this->assertSame($expect, $this->o->toDevHistString());
+    }
     /**
     * data provider for testConstructor
     *

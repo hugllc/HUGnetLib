@@ -358,6 +358,87 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $this->o->toArray($default, $fixed));
     }
     /**
+    * data provider for testToDevHistArray
+    *
+    * @return array
+    */
+    public static function dataToDevHistArray()
+    {
+        return array(
+            array(
+                array(
+                    "extra" => array(6,5,4),
+                ),
+                "TestDeviceSensor",
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "dataType" => UnitsBase::TYPE_RAW,
+                    "extra" => array(6,5,4),
+                    "rawCalibration" => "cali",
+                ),
+            ),
+            array(
+                array(
+                    "id" => 41,
+                    "type" => "sensorType",
+                    "dataType" => UnitsBase::TYPE_DIFF,
+                    "extra" => array(6,5,4,3,2,1),
+                    "rawCalibration" => "SomeCalibrationString",
+                ),
+                "TestDeviceSensor",
+                array(
+                    "id" => 0,
+                    "type" => "sensor",
+                    "dataType" => UnitsBase::TYPE_DIFF,
+                    "extra" => array(6,5,4,3,2,1),
+                    "rawCalibration" => "SomeCalibrationString",
+                ),
+            ),
+            array(
+                array(
+                    "id" => 41,
+                    "type" => "sensorType",
+                    "dataType" => UnitsBase::TYPE_DIFF,
+                    "extra" => array(6,5,4,3,2,1),
+                    "rawCalibration" => "SomeCalibrationString",
+                ),
+                "TestDeviceSensor3",
+                array(
+                    "id" => 5,
+                    "type" => "",
+                    "dataType" => UnitsBase::TYPE_DIFF,
+                    "extra" => array(6,5,4,3,2,1),
+                    "rawCalibration" => "SomeCalibrationString",
+                    'timeConstant' => 1,
+                    'Am' => 1023,
+                    'Tf' => 65536,
+                    'D' => 65536,
+                    's' => 64,
+                    'Vcc' => 5,
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param string $class   The class to use
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataToDevHistArray
+    */
+    public function testToDevHistArray($preload, $class, $expect)
+    {
+        $this->o = new $class($preload, $this->d);
+        $this->assertSame($expect, $this->o->toDevHistArray());
+    }
+
+    /**
     * data provider for testGetExtra
     *
     * @return array
@@ -808,7 +889,7 @@ class TestDeviceSensor extends DeviceSensorBase
         "Name" => "testSensor",
         "Type" => "sensor",
         "Class" => "TestSensor",
-        "Sensors" => array(),
+        "Flags" => array("DEFAULT"),
     );
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
@@ -958,6 +1039,25 @@ class TestDeviceSensor3 extends DeviceSensorBase
         "Type" => "sensor",
         "Class" => "TestSensor",
         "Sensors" => array(),
+    );
+    /** @var array This is the default values for the data */
+    protected $default = array(
+        "location" => "",                // The location of the sensors
+        "id" => null,                    // The id of the sensor.  This is the value
+                                         // Stored in the device  It will be an int
+        "type" => "",                    // The type of the sensors
+        "dataType" => UnitsBase::TYPE_RAW,     // The datatype of each sensor
+        "extra" => array(),              // Extra input for crunching numbers
+        "units" => "",                   // The units to put the data into by default
+        "bound" => false,                // This says if this sensor is changeable
+        "rawCalibration" => "",          // The raw calibration string
+        "timeConstant" => 1,             // The time constant
+        "Am" => 1023,                    // The maximum value for the AtoD convertor
+        "Tf" => 65536,                   // The Tf value
+        "D" => 65536,                    // The D value
+        "s" => 64,                       // The s value
+        "Vcc" => 5,                      // The Vcc value
+        "filter" => array(),             // Information on the output filter
     );
     /**
     * This is the array of sensor information.
