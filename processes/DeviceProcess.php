@@ -144,12 +144,23 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             if (!$this->loop()) {
                 return;
             }
-            $this->device->getRow($key);
-            $this->_check($this->device, $fct);
-            $this->preUpdate($fct);
-            $this->device->updateRow();
+            $this->checkDev($key, $fct);
         }
 
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param int    $id  The id of the device to work with
+    * @param string $fct The function to call
+    *
+    * @return int The number of packets routed
+    */
+    protected function checkDev($id, $fct)
+    {
+        $this->device->getRow($id);
+        $this->checkPlugins($this->device, $fct);
+        $this->updateDev($this->device, $fct);
     }
     /**
     * This function should be used to wait between config attempts
@@ -159,7 +170,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     *
     * @return int The number of packets routed
     */
-    private function _check(DeviceContainer &$dev, $fct = "main")
+    protected function checkPlugins(DeviceContainer &$dev, $fct = "main")
     {
         foreach ($this->priority as $k => $p) {
             foreach ($p as $n) {
@@ -170,6 +181,19 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
                 }
             }
         }
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
+    * @param string          $fct  The function to call
+    *
+    * @return int The number of packets routed
+    */
+    protected function updateDev(DeviceContainer &$dev, $fct = "main")
+    {
+        $this->preUpdate($fct);
+        $this->device->updateRow();
     }
     /**
     * This is called just before the device update to set anything that needs to

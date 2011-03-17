@@ -125,6 +125,45 @@ class DeviceAnalysis extends DeviceProcess
 
     }
     /**
+    * This function should be used to wait between config attempts
+    *
+    * @param int    $id  The id of the device to work with
+    * @param string $fct The function to call
+    *
+    * @return int The number of packets routed
+    */
+    protected function checkDev($id, $fct)
+    {
+        $this->device->getRow($id);
+        $ret = $this->checkPlugins($this->device, $fct);
+        if ($ret) {
+            $this->updateDev($this->device, $fct);
+        }
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
+    * @param string          $fct  The function to call
+    *
+    * @return int The number of packets routed
+    */
+    protected function checkPlugins(DeviceContainer &$dev, $fct = "main")
+    {
+        $return = false;
+        foreach ($this->priority as $k => $p) {
+            foreach ($p as $n) {
+                if ($this->active[$n]->ready($dev)) {
+                    $ret = $this->active[$n]->$fct($dev);
+                    if ($return === false) {
+                        $return = $ret;
+                    }
+                }
+            }
+        }
+        return $return;
+    }
+    /**
     * This is called just before the device update to set anything that needs to
     * be before the device is updated
     *

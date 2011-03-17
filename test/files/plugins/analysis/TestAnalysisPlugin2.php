@@ -72,5 +72,10 @@ class TestAnalysisPlugin2 extends DeviceProcessPluginBase
     public function main(DeviceContainer &$dev)
     {
         $dev->params->DriverInfo[__CLASS__]++;
+        if (is_null($dev->params->DriverInfo["return"])) {
+            return true;
+        } else {
+            return $dev->params->DriverInfo["return"];
+        }
     }
 }
