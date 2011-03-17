@@ -57,6 +57,8 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  */
 abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInterface
 {
+    /** @var This is the error for a clock skew */
+    const CLOCK_SKEW = -100;
     /** These are the endpoint information bits */
     /** @var array This is the default values for the data */
     protected $default = array(
@@ -106,6 +108,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "loopEnd"));
         }
+        $this->checkTime();
     }
     /**
     * Registers the packet hooks
@@ -324,6 +327,31 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $last = date("i");
         }
     }
-
+    /**
+    * This updates my device record
+    *
+    * @return string
+    */
+    protected function checkTime()
+    {
+        $time = time();
+        $last = $this->myDevice->params->DriverInfo["LastConfig"];
+        $diff = 10 * (60 * 60 * 24); // 10 Days
+        if (empty($last)) {
+            return;
+        }
+        if ((($time + $diff) < $last) || (($time - $diff) > $last)) {
+            $this->logError(
+                self::CLOCK_SKEW,
+                "Clock jump of ".($time - $last)." detected",
+                ErrorTable::SEVERITY_CRITICAL,
+                "checkTime"
+            );
+            $this->vprint(
+                "Clock jump of ".($time - $last)."s detected",
+                HUGnetClass::VPRINT_NORMAL
+            );
+        }
+    }
 }
 ?>

@@ -151,8 +151,10 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     */
     public static function dataConstructor()
     {
+        $LastConfig = time() - (11 * 60 * 60 * 24);
+        $LastConfig2 = time() + (11 * 60 * 60 * 24);
         return array(
-           array(
+            array(
                 array(),
                 array(
                 ),
@@ -165,8 +167,10 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "sensors" => array(),
                     "params" => array(),
                 ),
+                array(
+                ),
             ),
-           array(
+            array(
                 array(
                     "group" => "test",
                     "GatewayKey" => 3,
@@ -176,6 +180,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "HWPartNum" => "0039-26-02-P",
                     "FWPartNum" => "0039-26-02-P",
                     "FWVersion" => "0.6.99",
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastConfig" => $LastConfig,
+                        ),
+                    ),
                 ),
                 array(
                     "group" => "test",
@@ -191,7 +200,68 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                         ."000000000000000000000000000000000000000000000000000000"
                         ."000000000000000000000",
                     "sensors" => array(),
-                    "params" => array(),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastConfig" => $LastConfig,
+                        ),
+                    ),
+                ),
+                array(
+                    0 => array(
+                        'group' => 'default',
+                        'id' => '1',
+                        'class' => 'ProcessBaseClassTest',
+                        'method' => 'checkTime',
+                        'errno' => '-100',
+                        'Severity' => '8',
+                    ),
+                ),
+            ),
+             array(
+                array(
+                    "group" => "test",
+                    "GatewayKey" => 3,
+                ),
+                array(
+                    "id"       => 0x19,
+                    "HWPartNum" => "0039-26-02-P",
+                    "FWPartNum" => "0039-26-02-P",
+                    "FWVersion" => "0.6.99",
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastConfig" => $LastConfig2,
+                        ),
+                    ),
+                ),
+                array(
+                    "group" => "test",
+                    "GatewayKey" => 3,
+                ),
+                array(
+                    "HWPartNum" => "0039-26-02-P",
+                    "FWPartNum" => "0039-26-02-P",
+                    "FWVersion" => "0.6.99",
+                    "Driver" => "e00392600",
+                    "id" => 0x19,
+                    "RawSetup" => "000000001900392602500039260250000699FFFFFF000"
+                        ."000000000000000000000000000000000000000000000000000000"
+                        ."000000000000000000000",
+                    "sensors" => array(),
+                    "params" => array(
+                        "DriverInfo" => array(
+                            "LastConfig" => $LastConfig2,
+                        ),
+                    ),
+                ),
+                array(
+                    0 => array(
+                        'group' => 'default',
+                        'id' => '1',
+                        'class' => 'ProcessBaseClassTest',
+                        'method' => 'checkTime',
+                        'errno' => '-100',
+                        'Severity' => '8',
+                    ),
                 ),
             ),
            array(
@@ -215,6 +285,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     "sensors" => array(),
                     "params" => array(),
                 ),
+                array(
+                ),
             ),
         );
     }
@@ -225,12 +297,13 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     * @param array $device    The device array to use
     * @param array $expect    The expected data
     * @param array $expectDev The expected device
+    * @param array $err       The expected errors posted
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $device, $expect, $expectDev)
+    public function testConstructor($preload, $device, $expect, $expectDev, $err)
     {
         $o = new ProcessBaseClassTest($preload, $device);
         $ret = $this->readAttribute($o, "data");
@@ -260,6 +333,19 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         foreach ($expectDev as $key => $value) {
             $this->assertSame($value, $dev[$key], "$key in myDevice is wrong");
         }
+        $errors = new ErrorTable();
+        $ret = $errors->selectInto("errno = ?", array(-100));
+        $e = array();
+        while ($ret) {
+            $temp = $errors->toArray();
+            // Date will always change
+            unset($temp["Date"]);
+            // There is a date in here, also
+            unset($temp["error"]);
+            $e[] = $temp;
+            $ret = $errors->nextInto();
+        }
+        $this->assertSame($err, $e, "Error table wrong");
     }
 
     /**
