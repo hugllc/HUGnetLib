@@ -68,6 +68,14 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     protected function setUp()
     {
         $config = array(
+            "hugnet_database" => "HUGNet",
+            "script_gateway" => 4,
+            "pluginData" => array(
+                5 => "h",
+            ),
+            "admin_email" => "me@mydomain.com",
+            "useSocket" => "dummy",
+
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
@@ -185,6 +193,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'name' => 'Test2',
                         'ip' => '192.168.192.125',
                         'LastContact' => 123456789,
+                        'SetupString' => "c",
+                        'Config' => 'd',
                     ),
                     1 => array(
                         'group' => 'default',
@@ -193,6 +203,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'name' => 'Test1',
                         'ip' => '192.168.192.5',
                         'LastContact' => 12345678,
+                        'SetupString' => "a",
+                        'Config' => 'b',
                     ),
                 ),
             ),
@@ -242,6 +254,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     "GatewayKey" => 23,
                     "name" => "hello",
                     "ip" => "192.168.54.2",
+                    "SetupString" => "there",
+                    "Config" => "Hello",
                 ),
                 array(
                     0 => array(
@@ -250,6 +264,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'name' => 'Test1',
                         'ip' => '192.168.192.5',
                         'LastContact' => '12345678',
+                        'SetupString' => "a",
+                        'Config' => "b",
                     ),
                     1 => array(
                         'id' => '484',
@@ -257,6 +273,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'name' => 'Test2',
                         'ip' => '192.168.192.125',
                         'LastContact' => '123456789',
+                        'SetupString' => "c",
+                        'Config' => "d",
                     ),
                     2 => array(
                         'id' => '848',
@@ -264,12 +282,16 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                         'name' => 'Test3',
                         'ip' => '192.168.192.82',
                         'LastContact' => '123456789',
+                        'SetupString' => "e",
+                        'Config' => "f",
                     ),
                     3 => array(
                         'id' => '156',
                         'GatewayKey' => '23',
                         'name' => 'hello',
                         'ip' => '192.168.54.2',
+                        'SetupString' => "there",
+                        'Config' => "Hello",
                     ),
                 ),
                 true,
@@ -328,6 +350,25 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     'GatewayKey' => 5,
                     'name' => 'This is a Name',
                     'LastContact' => 0,
+                    'SetupString' => '000000000C00392102410039200141000102FFFFFF00',
+                    'Config' => "YToxNDp7czo3OiJzZXJ2ZXJzIjthOjE6e2k6MDthOjEwOntzO"
+                        ."jU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NjoiZHJpdmVyIjtzOjY6I"
+                        ."nNxbGl0ZSI7czo0OiJob3N0IjtzOjk6ImxvY2FsaG9zdCI7czo0OiJwb"
+                        ."3J0IjtpOjMzMDY7czoyOiJkYiI7czo2OiJIVUduZXQiO3M6Njoic29ja"
+                        ."2V0IjtzOjA6IiI7czo0OiJ1c2VyIjtzOjA6IiI7czo4OiJwYXNzd29yZ"
+                        ."CI7czowOiIiO3M6Nzoib3B0aW9ucyI7YTowOnt9czo0OiJmaWxlIjtzO"
+                        ."jg6IjptZW1vcnk6Ijt9fXM6Nzoic29ja2V0cyI7YTowOnt9czo1OiJob"
+                        ."29rcyI7YToxOntzOjU6Imhvb2tzIjthOjA6e319czoxNToiaHVnbmV0X"
+                        ."2RhdGFiYXNlIjtzOjY6IkhVR05ldCI7czoxNDoic2NyaXB0X2dhdGV3Y"
+                        ."XkiO2k6NDtzOjEwOiJwbHVnaW5EYXRhIjthOjE6e2k6NTtzOjE6ImgiO"
+                        ."31zOjExOiJhZG1pbl9lbWFpbCI7czoxNToibWVAbXlkb21haW4uY29tI"
+                        ."jtzOjc6InBsdWdpbnMiO2E6Mjp7czozOiJkaXIiO3M6NDM6Ii9ob21lL"
+                        ."2h1Z25ldC9kZXZlbC9IVUduZXQvSFVHbmV0TGliL3BsdWdpbnMiO3M6O"
+                        ."ToiZXh0ZW5zaW9uIjtzOjQ6Ii5waHAiO31zOjEyOiJQbHVnaW5XZWJEa"
+                        ."XIiO3M6MDoiIjtzOjEzOiJQbHVnaW5Ta2lwRGlyIjthOjA6e31zOjk6I"
+                        ."nVzZVNvY2tldCI7czo1OiJkdW1teSI7czo3OiJ2ZXJib3NlIjtpOjA7c"
+                        ."zoxMDoiZGF0ZUZvcm1hdCI7czoxMToiWS1tLWQgSDppOnMiO3M6NDoid"
+                        ."GVzdCI7YjowO30=",
                 ),
             ),
         );

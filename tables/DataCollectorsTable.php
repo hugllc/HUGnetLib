@@ -110,6 +110,16 @@ class DataCollectorsTable extends HUGnetDBTable
             "Type" => "bigint",
             "Default" => "0",
         ),
+        "SetupString" => array(
+            "Name" => "SetupString",
+            "Type" => "varchar(255)",
+            "Default" => "",
+        ),
+        "Config" => array(
+            "Name" => "Config",
+            "Type" => "longtext",
+            "Default" => "",
+        ),
     );
     /**
     * @var array This is the definition of the indexes
@@ -174,6 +184,9 @@ class DataCollectorsTable extends HUGnetDBTable
         $this->name = $dev->DeviceName;
         $this->GatewayKey = $dev->GatewayKey;
         $this->ip = $dev->DeviceLocation;
+        $this->SetupString = $dev->toSetupString();
+        $config = &ConfigContainer::singleton();
+        $this->Config = $config->toString();
     }
     /**
     * Sets all of the endpoint attributes from an array

@@ -82,9 +82,9 @@ class DeviceContainer extends DevicesTable
 
     /** @var object This is the endpoint driver */
     protected $epDriver = null;
-    /** @var object This is the endpoint driver */
+    /** @var object This is the params container */
     public $params = "";
-    /** @var object This is the endpoint driver */
+    /** @var object This is the sensors container */
     public $sensors = null;
     /** @var object This is the endpoint driver */
     public $DriverInfo = array();
