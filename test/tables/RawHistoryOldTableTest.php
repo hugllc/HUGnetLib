@@ -416,7 +416,7 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
                         'Checksum' => '6D',
                         'CalcChecksum' => '6D',
                     ),
-                    'devicesHistoryDate' => 1280251875,
+                    'devicesHistoryDate' => 1068143410,
                     'command' => 55,
                 ),
             ),
