@@ -938,7 +938,22 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         $pdo = $this->pdo->prepare($query);
         $res = false;
         if (is_object($pdo)) {
-            if ($pdo->execute($data)) {
+            $this->vprint(
+                "Executing (group: ".$this->myTable->group."): "
+                .print_r($query, true),
+                HUGnetClass::VPRINT_VERBOSE
+            );
+            $this->vprint(
+                "With Data: ".print_r($data, true),
+                HUGnetClass::VPRINT_VERBOSE
+            );
+            $ret = $pdo->execute($data);
+            $this->vprint(
+                "With Result: ".print_r($ret, true)
+                . "(".$pdo->rowCount()." rows)",
+                HUGnetClass::VPRINT_VERBOSE
+            );
+            if ($ret) {
                 $res = $pdo->fetchAll(PDO::FETCH_ASSOC);
             } else {
                 $error = $pdo->errorInfo();

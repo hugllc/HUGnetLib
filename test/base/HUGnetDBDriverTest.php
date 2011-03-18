@@ -1843,9 +1843,11 @@ class HUGnetDBDriverTestStub extends HUGnetDBDriver
     /**
     * Checks the database table, repairs and optimizes it
     *
+    * @param bool $force Force the repair
+    *
     * @return mixed
     */
-    public function check()
+    public function check($force = false)
     {
         return true;
     }

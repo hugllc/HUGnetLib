@@ -156,6 +156,12 @@ class MysqlDriver extends HUGnetDBDriver
                 // @codeCoverageIgnoreStart
                 // It is impossible to make this run, since it only runs when the
                 // table is corrupt and not fixable
+                $this->logError(
+                    -99,
+                    "Table ".$this->table()." is BROKEN",
+                    ErrorTable::SEVERITY_CRITICAL,
+                    "check"
+                );
                 $return = false;
             }
             // @codeCoverageIgnoreEnd
