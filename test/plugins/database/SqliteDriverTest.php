@@ -214,7 +214,7 @@ class SqliteDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testTables()
     {
-        $this->assertSame(array(), $this->o->tables());
+        $this->assertSame(array("myTable" => "myTable"), $this->o->tables());
     }
 }
 

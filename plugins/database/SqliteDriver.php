@@ -82,9 +82,11 @@ class SqliteDriver extends HUGnetDBDriver
     /**
     * Checks the database table, repairs and optimizes it
     *
+    * @param bool $force Force the repair
+    *
     * @return mixed
     */
-    public function check()
+    public function check($force = false)
     {
         return true;
     }
@@ -113,7 +115,15 @@ class SqliteDriver extends HUGnetDBDriver
     */
     public function tables()
     {
-        return array();
+        $ret = $this->query("SELECT * FROM SQLITE_MASTER");
+        $return = array();
+        foreach ((array)$ret as $t) {
+            if (strtolower(substr($t["name"], 0, 7)) === "sqlite_") {
+                continue;
+            }
+            $return[$t["name"]] = $t["name"];
+        }
+        return $return;
     }
 
 }
