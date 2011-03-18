@@ -161,10 +161,31 @@ class GenericTable extends HUGnetDBTable
         }
         $oldTable = $this->sqlTable;
         foreach ($tables as $table) {
-            $this->sqlTable = $table;
-            $this->myDriver->check();
+            $this->checkTable($table);
         }
-        $this->sqlTable = $oldTable;
+        $this->forceTable($oldTable);
+    }
+    /**
+    * Check all database tables
+    *
+    * @param array $table The table to check
+    *
+    * @return null
+    */
+    public function checkTable($table)
+    {
+        $this->forceTable($table);
+        $ret = $this->myDriver->check();
+        return $ret;
+    }
+    /**
+    * Check all database tables
+    *
+    * @return null
+    */
+    public function getTables()
+    {
+        return $this->myDriver->tables();
     }
     /**
     * Updates a row in the database.

@@ -254,6 +254,36 @@ class GenericTableTest extends HUGnetDBTableTestBase
         $o->checkTables($tables);
         $this->assertAttributeSame($tableExpect, "sqlTable", $o);
     }
+
+    /**
+    * data provider for testGetTables
+    *
+    * @return array
+    */
+    public static function dataGetTables()
+    {
+        return array(
+            array(
+                array("myTable" => "myTable"),
+            ),
+        );
+    }
+
+    /**
+    * test the forceTable routine
+    *
+    * @param string $expect The expected table
+    *
+    * @return null
+    *
+    * @dataProvider dataGetTables
+    */
+    public function testGetTables($expect)
+    {
+        $o = new GenericTable();
+        $ret = $o->getTables();
+        $this->assertSame($expect, $ret);
+    }
     /**
     * Data provider for testUpdate
     *
