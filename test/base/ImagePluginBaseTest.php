@@ -301,8 +301,9 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                 }
             }
         }
+        //$name = tempnam(sys_get_temp_dir(), "ImagePluginBaseTest");
+        //imagepng($ret, $name);
         imagedestroy($image);
-        //imagedestroy($ret);
         $this->assertSame($x, $retx, "Different widths");
         $this->assertSame($y, $rety, "Different widths");
         $this->assertSame(0, $count, "$count pixels are different");
