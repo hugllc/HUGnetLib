@@ -59,20 +59,20 @@ class E00392600Device extends DeviceDriverBase
 {
     /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";
-    /** @var int The job number for polling */
-    const JOB_POLL     = 1;
-    /** @var int The job number for updatedb */
-    const JOB_SYNC     = 2;
+    /** @var int The job number for unused1 */
+    const JOB_UNUSED1  = 1;
+    /** @var int The job number for periodic function */
+    const JOB_PERIODIC = 2;
     /** @var int The job number for analysis */
     const JOB_ANALYSIS = 3;
     /** @var int The job number for endpoint */
     const JOB_ENDPOINT = 4;
-    /** @var int The job number for control */
-    const JOB_CONTROL  = 5;
-    /** @var int The job number for config */
-    const JOB_CONFIG   = 6;
-    /** @var int The job number for check */
-    const JOB_CHECK    = 7;
+    /** @var int The job number for unused2 */
+    const JOB_UNUSED2  = 5;
+    /** @var int The job number for device polling and stuff */
+    const JOB_DEVICE   = 6;
+    /** @var int The job number for unused3 */
+    const JOB_UNUSED3  = 7;
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00392600",
@@ -90,13 +90,10 @@ class E00392600Device extends DeviceDriverBase
     );
     /** @var array These define what jobs this driver might see */
     protected $jobs = array(
-        self::JOB_POLL     => "Poll",
-        self::JOB_SYNC     => "Sync",
+        self::JOB_PERIODIC => "Periodic",
         self::JOB_ANALYSIS => "Analysis",
         self::JOB_ENDPOINT => "Endpoint",
-        self::JOB_CONTROL  => "Control",
-        self::JOB_CONFIG   => "Config",
-        self::JOB_CHECK    => "Check",
+        self::JOB_DEVICE   => "Device",
     );
     /**
     * Builds the class

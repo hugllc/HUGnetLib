@@ -174,7 +174,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                     "VirtualSensors" => 0,
                     "PacketTimeout" => 10,
                     "Job" => 6,
-                    "Function" => "Config",
+                    "Function" => "Device",
                     "CurrentGatewayKey" => 12,
                     "Name" => "Scott's Device Here",
                     "IP" => "1.2.3.4",
