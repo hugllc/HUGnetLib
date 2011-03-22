@@ -55,6 +55,8 @@ require_once dirname(__FILE__).'/../../containers/DBServerContainer.php';
 class DBServerContainerTest extends PHPUnit_Framework_TestCase
 {
 
+    /** @var array We store our files here so they can be deleted */
+    protected $files = array();   // We store our files here so they can be deleted
     /**
     * Sets up the fixture, for example, open a network connection.
     * This method is called before a test is executed.
@@ -77,6 +79,9 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        foreach ((array)$this->files as $file) {
+            unlink($file);
+        }
     }
 
 
@@ -143,6 +148,46 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
         $o = new DBServerContainer($preload);
         $ret = $o->getDSN();
         $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataPostConnect()
+    {
+        return array(
+            array(
+                array(
+                    "file" => sys_get_temp_dir()."/FunkyFileName",
+                    "filePerm" => 0777,
+                ),
+                0777,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload This is the attribute to set
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPostCOnnect
+    */
+    public function testPostConnect($preload, $expect)
+    {
+        $o = new DBServerContainer($preload);
+        $this->files[] = $preload["file"];
+        $f = fopen($preload["file"], "w");
+        fwrite($f, "Hello");
+        fclose($f);
+        $ret = $o->postConnect();
+        $perms = fileperms($preload["file"]) & 0777;
+        $this->assertSame($expect, $perms);
     }
 
 }

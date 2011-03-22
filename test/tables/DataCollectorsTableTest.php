@@ -351,24 +351,11 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
                     'name' => 'This is a Name',
                     'LastContact' => 0,
                     'SetupString' => '000000000C00392102410039200141000102FFFFFF00',
-                    'Config' => "YToxNDp7czo3OiJzZXJ2ZXJzIjthOjE6e2k6MDthOjEwOntzO"
-                        ."jU6Imdyb3VwIjtzOjc6ImRlZmF1bHQiO3M6NjoiZHJpdmVyIjtzOjY6I"
-                        ."nNxbGl0ZSI7czo0OiJob3N0IjtzOjk6ImxvY2FsaG9zdCI7czo0OiJwb"
-                        ."3J0IjtpOjMzMDY7czoyOiJkYiI7czo2OiJIVUduZXQiO3M6Njoic29ja"
-                        ."2V0IjtzOjA6IiI7czo0OiJ1c2VyIjtzOjA6IiI7czo4OiJwYXNzd29yZ"
-                        ."CI7czowOiIiO3M6Nzoib3B0aW9ucyI7YTowOnt9czo0OiJmaWxlIjtzO"
-                        ."jg6IjptZW1vcnk6Ijt9fXM6Nzoic29ja2V0cyI7YTowOnt9czo1OiJob"
-                        ."29rcyI7YToxOntzOjU6Imhvb2tzIjthOjA6e319czoxNToiaHVnbmV0X"
-                        ."2RhdGFiYXNlIjtzOjY6IkhVR05ldCI7czoxNDoic2NyaXB0X2dhdGV3Y"
-                        ."XkiO2k6NDtzOjEwOiJwbHVnaW5EYXRhIjthOjE6e2k6NTtzOjE6ImgiO"
-                        ."31zOjExOiJhZG1pbl9lbWFpbCI7czoxNToibWVAbXlkb21haW4uY29tI"
-                        ."jtzOjc6InBsdWdpbnMiO2E6Mjp7czozOiJkaXIiO3M6NDM6Ii9ob21lL"
-                        ."2h1Z25ldC9kZXZlbC9IVUduZXQvSFVHbmV0TGliL3BsdWdpbnMiO3M6O"
-                        ."ToiZXh0ZW5zaW9uIjtzOjQ6Ii5waHAiO31zOjEyOiJQbHVnaW5XZWJEa"
-                        ."XIiO3M6MDoiIjtzOjEzOiJQbHVnaW5Ta2lwRGlyIjthOjA6e31zOjk6I"
-                        ."nVzZVNvY2tldCI7czo1OiJkdW1teSI7czo3OiJ2ZXJib3NlIjtpOjA7c"
-                        ."zoxMDoiZGF0ZUZvcm1hdCI7czoxMToiWS1tLWQgSDppOnMiO3M6NDoid"
-                        ."GVzdCI7YjowO30=",
+                    'Config' => "YTo1OntzOjE1OiJodWduZXRfZGF0YWJhc2UiO3M6NjoiSFVHT"
+                        ."mV0IjtzOjE0OiJzY3JpcHRfZ2F0ZXdheSI7aTo0O3M6MTA6InBsdWdpb"
+                        ."kRhdGEiO2E6MTp7aTo1O3M6MToiaCI7fXM6MTE6ImFkbWluX2VtYWlsI"
+                        ."jtzOjE1OiJtZUBteWRvbWFpbi5jb20iO3M6OToidXNlU29ja2V0IjtzO"
+                        ."jU6ImR1bW15Ijt9",
                 ),
             ),
         );

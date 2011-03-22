@@ -186,7 +186,7 @@ class DataCollectorsTable extends HUGnetDBTable
         $this->ip = $dev->DeviceLocation;
         $this->SetupString = $dev->toSetupString();
         $config = &ConfigContainer::singleton();
-        $this->Config = $config->toString();
+        $this->Config = $config->toString(false);
     }
     /**
     * Sets all of the endpoint attributes from an array

@@ -67,6 +67,7 @@ class DBServerContainer extends HUGnetContainer
         "password" => "",            // Password to use
         "options" => array(),        // Options to use
         "file"    => ":memory:",     // The file for sqlite
+        "filePerm" => 0644,          // Permissions on the sqlite file
     );
     /** @var array This is where the data is stored */
     protected $data = array();
@@ -76,7 +77,7 @@ class DBServerContainer extends HUGnetContainer
     *
     * @return null
     */
-    function getDSN()
+    public function getDSN()
     {
         $this->driver = strtolower($this->driver);
 
@@ -97,6 +98,20 @@ class DBServerContainer extends HUGnetContainer
             $dsn = "sqlite:".$this->file;
         }
         return (string)$dsn;
+    }
+
+    /**
+    * Does any extra stuff that needs to be done after opening the database
+    *
+    * @return null
+    */
+    public function postConnect()
+    {
+        if ($this->driver === "sqlite") {
+            if (file_exists($this->file)) {
+                chmod($this->file, $this->filePerm);
+            }
+        }
     }
 
 }

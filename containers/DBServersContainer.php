@@ -164,6 +164,7 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
                 (string)$this->server[$group]->password,
                 (array)$this->server[$group]->options
             );
+            $this->server[$group]->postConnect();
         } catch (PDOException $e) {
             self::vprint(
                 "Error (".$e->getCode()."): ".$e->getMessage()."\n",

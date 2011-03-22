@@ -415,6 +415,18 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                 true,
             ),
             array(
+                array(
+                    array(
+                        "driver" => "sqlite",
+                        "file" => sys_get_temp_dir()."/TestFile",
+                        "filePerm" => 0644,
+                    )
+                ),
+                null,
+                false,
+                true,
+                ),
+                array(
                 array(array("driver" => "sqlite", "file" => ":memory:")),
                 "somegroup",
                 "group",
@@ -505,6 +517,14 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
                 $this->assertTrue(is_object($check[$group]), "$var not found");
             } else {
                 $this->assertNull($check[$group], "$var should be null");
+            }
+        }
+        foreach ((array)$preload as $load) {
+            if (file_exists($load["file"])) {
+                $perms = fileperms($load["file"]) & 0777;
+                $this->assertSame(
+                    $load["filePerm"], $perms, "File Permissions Wrong"
+                );
             }
         }
     }
