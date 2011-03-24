@@ -607,7 +607,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                             "devLocks" => array(
                                 "000019" => array(
                                     // Make sure that it is always in the future
-                                    "001300" => 10,
+                                    "001300" => 100,
                                 ),
                             ),
                         ),
@@ -645,12 +645,12 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOj"
-                            ."g6ImRldkxvY2tzIjthOjE6e3M6NjoiMDAwMDE5IjthOjE6e3M"
-                            ."6NjoiMDAxMzAwIjtpOjEwO319fX0=",
+                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg"
+                            ."6ImRldkxvY2tzIjthOjE6e3M6NjoiMDAwMDE5IjthOjE6e3M6N"
+                            ."joiMDAxMzAwIjtpOjEwMDt9fX19",
                     ),
                 ),
-                "5A5A5A0112345600001905000019000A7E",
+                "5A5A5A0112345600001905000019005723",
             ),
             array(  // #7 This is to test locking.  Someone Elses Device
                 array(
@@ -726,7 +726,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                             ."joiMDAxMzAwIjtpOjQ2NjA7fX19fQ==",
                     ),
                 ),
-                "5A5A5A011234560000190500531212340A",
+                "5A5A5A0112345600001905005312122719",
             ),
             array(  // #8 This is to test locking.  Someone Elses expired lock
                 array(
@@ -870,9 +870,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => 'YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg6'
-                            .'ImRldkxvY2tzIjthOjE6e2k6MTIzNDU2O2E6MTp7czo2OiIwMDE'
-                            .'zMDAiO2k6NzUwO319fX0=',
+                        "params" => 'YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOj'
+                            .'g6ImRldkxvY2tzIjthOjE6e2k6MTIzNDU2O2E6MTp7czo2OiI'
+                            .'wMDEzMDAiO2k6NzYzO319fX0=',
                     ),
                     array(
                         'id' => '4864',
@@ -1172,7 +1172,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'ProcessInfo' => array(
                         'devLocks' => array(
                             '000000' => array(
-                                '000532' => 900,
+                                '000532' => 913,
                                 ),
                             ),
                         ),
@@ -1298,7 +1298,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'ProcessInfo' => array(
                             'devLocks' => array(
                                 '000123' => array(
-                                    '000532' => 900,
+                                    '000532' => 913,
                                 ),
                             ),
                         ),
@@ -1382,7 +1382,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'ProcessInfo' => array(
                             'devLocks' => array(
                                 '000124' => array(
-                                    '000532' => 256,
+                                    '000532' => 269,
                                 ),
                             ),
                         ),
@@ -1465,7 +1465,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'ProcessInfo' => array(
                             'devLocks' => array(
                                 '000123' => array(
-                                    '000532' => 900,
+                                    '000532' => 913,
                                 ),
                             ),
                         ),
@@ -1531,7 +1531,7 @@ class TestE00392606Device extends E00392606Device
     */
     protected function now()
     {
-        return 0;
+        return 13;
     }
 }
 ?>

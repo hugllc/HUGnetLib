@@ -120,13 +120,15 @@ class E00392606Device extends E00392600Device
                 3
             );
             $data = $this->checkLocalDevLock($DeviceID, true);
+            $locker = substr($data, 0, 6);
             if (empty($data)) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
                 $this->setDevLock($dev, $pkt->From);
+                $locker = "no one";
             }
             self::vprint(
-                "Replying that ".substr($data, 0, 6)." has a lock",
+                "Replying that $locker has a lock",
                 3
             );
             $pkt->reply($data);
@@ -196,15 +198,15 @@ class E00392606Device extends E00392600Device
             )
         );
         $ret = $pkt->send();
-        if (is_object($pkt->Reply)) {
+        if (is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
             $DeviceID = substr($pkt->Reply->Data, 0, 6);
             $time     = hexdec(substr($pkt->Reply->Data, 6, 4));
             self::vprint(
                 "$locker Replied: ".$dev->DeviceID." locked by ".$DeviceID
-                ." for ".$time." s",
+                ." for ".$time." s longer",
                 3
             );
-            $ret      = $this->setDevLock($dev, $DeviceID, $time);
+            $ret = $this->setDevLock($dev, $DeviceID, $time);
         }
         return (bool) $ret;
     }
@@ -276,9 +278,9 @@ class E00392606Device extends E00392600Device
     */
     protected function checkLocalDevLock($DeviceID, $time = false)
     {
-        $ProcessInfo = &$this->myDriver->params->ProcessInfo;
+        $devLocks = &$this->myDriver->params->ProcessInfo["devLocks"];
         $ret = "";
-        foreach ((array)$ProcessInfo["devLocks"] as $dev => $locks) {
+        foreach ((array)$devLocks as $dev => $locks) {
             if (isset($locks[$DeviceID]) && ($locks[$DeviceID] > $this->now())) {
                 $ret = $dev;
                 if ($time) {
@@ -287,7 +289,7 @@ class E00392606Device extends E00392600Device
                 }
                 break;
             } else if ($locks[$DeviceID] <= $this->now()) {
-                unset($ProcessInfo["devLocks"][$dev][$DeviceID]);
+                unset($devLocks[$dev][$DeviceID]);
             }
         }
         return $ret;
@@ -306,34 +308,43 @@ class E00392606Device extends E00392600Device
         if ($dev->isEmpty()) {
             return false;
         }
-        $ProcessInfo = &$this->myDriver->params->ProcessInfo;
-        $timeout = $this->getDevLockTime($dev);
-        if ($time > $timeout) {
-            return false;
+        $devLocks = &$this->myDriver->params->ProcessInfo["devLocks"];
+        $timeout = $this->getDevLockTime($dev, $time);
+        if (is_int($timeout) && !empty($timeout)) {
+            self::vprint(
+                "Setting expiration of lock on ".$dev->DeviceID." by $locker for "
+                .date("Y-m-d H:i:s", $timeout),
+                3
+            );
+            $devLocks[$locker][$dev->DeviceID] = (int)$timeout;
+            return true;
         }
-        if (empty($time)) {
-            $time = $timeout;
-        }
-        $ProcessInfo["devLocks"][$locker][$dev->DeviceID] = (int)$time;
-        return true;
+        return false;
     }
     /**
     * Reads the setup out of the device.
     *
     * @param DeviceContainer &$dev The device to lock
+    * @param int             $time The time to lock for
     *
     * @return bool True on success, False on failure
     */
-    protected function getDevLockTime(&$dev)
+    protected function getDevLockTime(&$dev, $time)
     {
         $interval = (empty($dev->PollInterval)) ? 10 : $dev->PollInterval;
-        $timeout = $this->now() + ($interval * 60 * 1.5);
+        $timeout = $interval * 60 * 1.5;
         while ($timeout < 600) {
             // Keep adding poll intervals until we are > 10 minutes
             // This way the timeout is never an even multiple of the poll interval
             $timeout += $interval * 60;
         }
-        return $timeout;
+        if ($time > $timeout) {
+            return false;
+        }
+        if (empty($time)) {
+            return (int)($this->now() + $timeout);
+        }
+        return (int)($this->now() + $time);
     }
 }
 

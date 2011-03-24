@@ -103,6 +103,22 @@ class DeviceContainer extends DevicesTable
         parent::__construct($data);
     }
     /**
+    * Sets the verbosity
+    *
+    * @param int $level The verbosity level
+    *
+    * @return null
+    */
+    public function verbose($level=0)
+    {
+        parent::verbose($level);
+        foreach (array("sensors", "params", "epDriver") as $var) {
+            if (is_object($this->$var)) {
+                $this->$var->verbose($level);
+            }
+        }
+    }
+    /**
     * Builds the class
     *
     * @return null
