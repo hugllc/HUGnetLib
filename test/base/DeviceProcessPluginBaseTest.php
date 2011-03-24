@@ -168,6 +168,15 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
         $d = new DeviceContainer();
         $this->assertTrue($this->o->pre($d));
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testRequireLock()
+    {
+        $this->assertTrue($this->o->requireLock());
+    }
 
 }
 

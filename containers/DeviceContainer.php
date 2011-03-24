@@ -450,7 +450,7 @@ class DeviceContainer extends DevicesTable
 
     /**
     * returns an object with the controller of this device in it
-    * 
+    *
     * @param int    $id     The id of the device to get the sensor from
     * @param int    $sensor The sensor to get
     * @param string $group  The database group to get the device from

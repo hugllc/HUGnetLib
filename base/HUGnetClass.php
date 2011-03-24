@@ -192,6 +192,7 @@ abstract class HUGnetClass
             // This will never run.
         }
     }
+    // @codeCoverageIgnoreEnd
 
     /**
     * returns true if passed an object of the same type as me
@@ -309,7 +310,15 @@ abstract class HUGnetClass
         $this->findClass("ConfigContainer", "containers");
         $this->myConfig = &ConfigContainer::singleton();
     }
-
+    /**
+    * Returns the current time in seconds.  This is for testing purposes
+    *
+    * @return int
+    */
+    protected function now()
+    {
+        return time();
+    }
 }
 
 

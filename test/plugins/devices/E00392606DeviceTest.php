@@ -126,7 +126,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
     public static function dataPacketConsumer()
     {
         return array(
-            array(
+            array( // #0
                 array(
                 ),
                 array(
@@ -192,7 +192,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "",
             ),
-            array(
+            array( // #1
                 array(
                 ),
                 array(
@@ -258,7 +258,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ."06000100000000000000000000000000000000000000000000000000000000000"
                 ."00000000000B2",
             ),
-            array(
+            array(  // #2
                 array(
                 ),
                 array(
@@ -323,7 +323,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "5A5A5A01123456000019040102030468",
             ),
-            array(
+            array(  // #3
                 array(
                 ),
                 array(
@@ -388,7 +388,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "5A5A5A01123456000019040102030468",
             ),
-            array(
+            array( // #4
                 array(
                     array(
                         "id" => "26",
@@ -511,6 +511,397 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "5A5A5A011234560000190900001900001A00001B79",
             ),
+            array(  // #5 This is to test locking with no locks yet
+                array(
+                ),
+                array(
+                    "id" => 25,
+                    "DeviceID" => "000019",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "e00392606",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "FFFFFF",
+                    "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                    ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "params" => "YTowOnt9",
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
+                    "Data" => "001300",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "id" => "25",
+                        "DeviceID" => "000019",
+                        "DeviceName" => "Device Process",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.7.0",
+                        "RawSetup" => "000000001900392606500039260650000700FFFFFF00"
+                        ."0600010000000000000000000000000000000000000000000000"
+                        ."000000000000000000000000",
+                        "Active" => "1",
+                        "GatewayKey" => "1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "0.0.0.0",
+                        "DeviceJob" => "Device",
+                        "Driver" => "e00392606",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => "YTowOnt9",
+                    ),
+                ),
+                "5A5A5A011234560000190068",
+            ),
+            array(  // #6 This is to test locking.  My Device
+                array(
+                ),
+                array(
+                    "id" => 25,
+                    "DeviceID" => "000019",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "e00392606",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "FFFFFF",
+                    "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                    ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "params" => array(
+                        "ProcessInfo" => array(
+                            "devLocks" => array(
+                                "000019" => array(
+                                    // Make sure that it is always in the future
+                                    "001300" => 10,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
+                    "Data" => "001300",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "id" => "25",
+                        "DeviceID" => "000019",
+                        "DeviceName" => "Device Process",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.7.0",
+                        "RawSetup" => "000000001900392606500039260650000700FFFFFF00"
+                        ."0600010000000000000000000000000000000000000000000000"
+                        ."000000000000000000000000",
+                        "Active" => "1",
+                        "GatewayKey" => "1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "0.0.0.0",
+                        "DeviceJob" => "Device",
+                        "Driver" => "e00392606",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOj"
+                            ."g6ImRldkxvY2tzIjthOjE6e3M6NjoiMDAwMDE5IjthOjE6e3M"
+                            ."6NjoiMDAxMzAwIjtpOjEwO319fX0=",
+                    ),
+                ),
+                "5A5A5A0112345600001905000019000A7E",
+            ),
+            array(  // #7 This is to test locking.  Someone Elses Device
+                array(
+                ),
+                array(
+                    "id" => 25,
+                    "DeviceID" => "000019",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "e00392606",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "FFFFFF",
+                    "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                    ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "params" => array(
+                        "ProcessInfo" => array(
+                            "devLocks" => array(
+                                "005312" => array(
+                                    // Make sure that it is always in the future
+                                    "001300" => 0x1234,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
+                    "Data" => "001300",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "id" => "25",
+                        "DeviceID" => "000019",
+                        "DeviceName" => "Device Process",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.7.0",
+                        "RawSetup" => "000000001900392606500039260650000700FFFFFF00"
+                        ."0600010000000000000000000000000000000000000000000000"
+                        ."000000000000000000000000",
+                        "Active" => "1",
+                        "GatewayKey" => "1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "0.0.0.0",
+                        "DeviceJob" => "Device",
+                        "Driver" => "e00392606",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg"
+                            ."6ImRldkxvY2tzIjthOjE6e3M6NjoiMDA1MzEyIjthOjE6e3M6N"
+                            ."joiMDAxMzAwIjtpOjQ2NjA7fX19fQ==",
+                    ),
+                ),
+                "5A5A5A011234560000190500531212340A",
+            ),
+            array(  // #8 This is to test locking.  Someone Elses expired lock
+                array(
+                ),
+                array(
+                    "id" => 25,
+                    "DeviceID" => "000019",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "e00392606",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "FFFFFF",
+                    "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                    ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "params" => array(
+                        "ProcessInfo" => array(
+                            "devLocks" => array(
+                                "005632" => array(
+                                    // Make sure that it is always in the past
+                                    "001300" => -10,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
+                    "Data" => "001300",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "id" => "25",
+                        "DeviceID" => "000019",
+                        "DeviceName" => "Device Process",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.7.0",
+                        "RawSetup" => "000000001900392606500039260650000700FFFFFF00"
+                        ."0600010000000000000000000000000000000000000000000000"
+                        ."000000000000000000000000",
+                        "Active" => "1",
+                        "GatewayKey" => "1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "0.0.0.0",
+                        "DeviceJob" => "Device",
+                        "Driver" => "e00392606",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzO"
+                            ."jg6ImRldkxvY2tzIjthOjE6e3M6NjoiMDA1NjMyIjthOjA6e"
+                            ."319fX0=",
+                    ),
+                ),
+                "5A5A5A011234560000190068",
+            ),
+            array(  // #9 This is to test locking with no locks yet
+                array(
+                    array(
+                        "id" => 0x001300,
+                        "DeviceID" => "001300",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 5,
+                    ),
+                ),
+                array(
+                    "id" => 25,
+                    "DeviceID" => "000019",
+                    "DeviceName" => "",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "RawSetup" => "",
+                    "Active" => "1",
+                    "GatewayKey" => "1",
+                    "ControllerKey" => "0",
+                    "ControllerIndex" => "0",
+                    "DeviceLocation" => "",
+                    "DeviceJob" => "",
+                    "Driver" => "e00392606",
+                    "PollInterval" => "0",
+                    "ActiveSensors" => "0",
+                    "DeviceGroup" => "FFFFFF",
+                    "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                    ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                    "params" => "YTowOnt9",
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
+                    "Data" => "001300",
+                    "group" => "default",
+                ),
+                array(
+                    array(
+                        "id" => "25",
+                        "DeviceID" => "000019",
+                        "DeviceName" => "Device Process",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.7.0",
+                        "RawSetup" => "000000001900392606500039260650000700FFFFFF00"
+                        ."0600010000000000000000000000000000000000000000000000"
+                        ."000000000000000000000000",
+                        "Active" => "1",
+                        "GatewayKey" => "1",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "0.0.0.0",
+                        "DeviceJob" => "Device",
+                        "Driver" => "e00392606",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => 'YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg6'
+                            .'ImRldkxvY2tzIjthOjE6e2k6MTIzNDU2O2E6MTp7czo2OiIwMDE'
+                            .'zMDAiO2k6NzUwO319fX0=',
+                    ),
+                    array(
+                        'id' => '4864',
+                        'DeviceID' => '001300',
+                        'DeviceName' => '',
+                        'HWPartNum' => '',
+                        'FWPartNum' => '',
+                        'FWVersion' => '',
+                        'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                        'Active' => '1',
+                        'GatewayKey' => '1',
+                        'ControllerKey' => '0',
+                        'ControllerIndex' => '0',
+                        'DeviceLocation' => '',
+                        'DeviceJob' => '',
+                        'Driver' => 'eDEFAULT',
+                        'PollInterval' => '5',
+                        'ActiveSensors' => '0',
+                        'DeviceGroup' => 'FFFFFF',
+                        'sensors' => 'YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO'
+                            .'3M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2'
+                            .'k6MDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ'
+                            .'0dWFsU2Vuc29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7Yjow'
+                            .'O30=',
+                        'params' => 'YTowOnt9',
+                    ),
+                ),
+                "5A5A5A011234560000190068",
+            ),
         );
     }
 
@@ -537,9 +928,10 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $d->fromAny($dev);
         $d->insertRow(true);
         $p = new PacketContainer($pkt);
-        $o = new E00392606Device($d);
+        $o = new TestE00392606Device($d);
 
         $o->packetConsumer($p);
+        $d->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows, "Devices Wrong");
@@ -713,7 +1105,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $dev->clearData();
         $dev->fromAny($device);
         $this->socket->readString = $read;
-        $o = new E00392606Device($dev);
+        $o = new TestE00392606Device($dev);
         $ret = $o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $dev->RawSetup, "Wrong Setup String");
@@ -721,9 +1113,425 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expectDev, $rows);
-
     }
-
+    /**
+    * Data provider for testGetDevLock
+    *
+    * @return array
+    */
+    public static function dataGetDevLock()
+    {
+        return array(
+            array( // #0 Device for locking empty
+                array(),
+                array(
+                ),
+                array(),
+                "",
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 0,
+                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "",
+            ),
+            array( // #1 I got a lock!
+                array(),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                    "PollInterval" => 10,
+                ),
+                "",
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 0,
+                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'sensors' =>
+                    array(
+                    ),
+                    'params' => array(
+                        'ProcessInfo' => array(
+                        'devLocks' => array(
+                            '000000' => array(
+                                '000532' => 900,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "",
+            ),
+            array( // #2 Already locked!
+                array(
+                    "params" => array(
+                        "ProcessInfo" => array(
+                            "devLocks" => array(
+                                "AAAAAA" => array(
+                                    "000532" => 100000000000, // Way in the future
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                "",
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 0,
+                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                        'ProcessInfo' => array(
+                            'devLocks' => array(
+                                'AAAAAA' => array(
+                                    '000532' => 100000000000,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "",
+            ),
+            array( // #3 Already locked (remote) (no answer)!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                            "ProcessInfo" => array(
+                                "devLocks" => array(
+                                    "AAAAAA" => array(
+                                        "000532" => 100, // Way in the future
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                "",
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                        'ProcessInfo' => array(
+                            'devLocks' => array(
+                                '000123' => array(
+                                    '000532' => 900,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "5A5A5A5700012400012303000532645A5A5A570001240001230300053264"
+                    ."5A5A5A0300012400012300045A5A5A570001240001230300053264",
+            ),
+            array( // #4 Already locked (remote)!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                            "ProcessInfo" => array(
+                                "devLocks" => array(
+                                    "AAAAAA" => array(
+                                        "000532" => 100, // Way in the future
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                "5A5A5A0100012300012405000124010027",
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                        'ProcessInfo' => array(
+                            'devLocks' => array(
+                                '000124' => array(
+                                    '000532' => 256,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "5A5A5A570001240001230300053264",
+            ),
+            array( // #5 Already locked (remote) bad time!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                            "ProcessInfo" => array(
+                                "devLocks" => array(
+                                    "AAAAAA" => array(
+                                        "000532" => 100, // Way in the future
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                "5A5A5A0100012300012405000124FFFF26",
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                        'ProcessInfo' => array(
+                            'devLocks' => array(
+                                '000123' => array(
+                                    '000532' => 900,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                "5A5A5A570001240001230300053264",
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the device for the class
+    * @param array  $devs    The Devices to load into the database
+    * @param array  $device  The device to get a lock for
+    * @param string $read    The packet string to be read
+    * @param array  $expect  The expected return
+    * @param array  $devExp  The expected device afterwards
+    * @param string $write   The packet string expected to be written
+    *
+    * @dataProvider dataGetDevLock
+    *
+    * @return null
+    */
+    public function testGetDevLock(
+        $preload, $devs, $device, $read, $expect, $devExp, $write
+    ) {
+        $this->socket->readString = $read;
+        $dev = new DeviceContainer();
+        foreach ((array)$devs as $key => $val) {
+            $dev->clearData();
+            $dev->fromAny($val);
+            $dev->insertRow(true);
+        }
+        $dev->clearData();
+        $dev->fromAny($preload);
+        $o = new TestE00392606Device($dev);
+        $devO = new DeviceContainer($device);
+        $ret = $o->getDevLock($devO);
+        $this->assertSame($expect, $ret, "Return Wrong");
+        $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+    }
 }
-
+/**
+* Driver for the polling script (0039-26-01-P)
+*
+* @category   Drivers
+* @package    HUGnetLib
+* @subpackage Endpoints
+* @author     Scott Price <prices@hugllc.com>
+* @copyright  2007-2011 Hunt Utilities Group, LLC
+* @copyright  2009 Scott Price
+* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+*/
+class TestE00392606Device extends E00392606Device
+{
+    /**
+    * Returns the time
+    *
+    * @return string The binary string.
+    */
+    protected function now()
+    {
+        return 0;
+    }
+}
 ?>

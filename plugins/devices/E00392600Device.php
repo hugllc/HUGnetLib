@@ -263,7 +263,17 @@ class E00392600Device extends DeviceDriverBase
             }
         }
     }
-
+    /**
+     * Reads the setup out of the device.
+     *
+     * @param DeviceContainer &$dev The device to get a lock on
+     *
+     * @return bool True on success, False on failure
+     */
+    public function getDevLock(DeviceContainer &$dev)
+    {
+        return true;
+    }
 }
 
 ?>

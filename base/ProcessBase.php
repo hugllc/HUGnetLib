@@ -97,8 +97,10 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->verbose($this->myConfig->verbose);
         // This is our device container
         $this->device = new DeviceContainer();
+        $this->device->verbose($this->verbose);
         // This is our device container
         $this->unsolicited = new DeviceContainer();
+        $this->unsolicited->verbose($this->verbose);
         // Set the gatewaykey if it hasn't been set
         if (empty($this->GatewayKey)) {
             $this->GatewayKey = $this->myConfig->script_gateway;
@@ -122,6 +124,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // This sets us up as a device
         $this->vprint("Setting up my device...", HUGnetClass::VPRINT_NORMAL);
         $this->myDevice = new DeviceContainer($device);
+        $this->myDevice->verbose($this->verbose);
         $this->myDevice->GatewayKey = $this->GatewayKey;
         $this->myDevice->DeviceJob = posix_getpid();
         $this->myDevice->DeviceLocation = ProcessBase::getIP();

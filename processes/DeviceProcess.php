@@ -129,7 +129,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
         // Get the devices
         $where = "id <> ?";
         $data = array($this->myDevice->id);
-        
+
         if ($this->GatewayKey != "all") {
             $where .= " AND GatewayKey = ?";
             $data[] = $this->GatewayKey;
@@ -175,12 +175,34 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
         foreach ($this->priority as $k => $p) {
             foreach ($p as $n) {
                 if ($this->active[$n]->ready($dev)) {
-                    if ($this->active[$n]->$fct($dev) === false) {
+                    $ret = $this->runPlugin($this->active[$n], $dev, $fct);
+                    if (false === $ret) {
                         return;
                     }
                 }
             }
         }
+    }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param object          &$plugin A reference to the plugin to run
+    * @param DeviceContainer &$dev    The device to check
+    * @param string          $fct     The function to call
+    *
+    * @return int The number of packets routed
+    */
+    protected function runPlugin(&$plugin, DeviceContainer &$dev, $fct = "main")
+    {
+        $locked = !$plugin->requireLock();
+        if ($locked === false) {
+            $locked = $this->myDevice->getDevLock($dev);
+        }
+        if ($locked) {
+            $ret = $plugin->$fct($dev);
+        } else {
+        }
+        return $ret;
     }
     /**
     * This function should be used to wait between config attempts

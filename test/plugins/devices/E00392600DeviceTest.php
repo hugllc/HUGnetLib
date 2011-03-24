@@ -338,6 +338,16 @@ class E00392600DeviceTest extends DevicePluginTestBase
         $this->assertSame($write, $this->socket->writeString);
 
     }
+    /**
+    * test the loadable routine.
+    *
+    * @return null
+    */
+    public function testGetDevLock()
+    {
+        $d = new DeviceContainer();
+        $this->assertTrue($this->o->getDevLock($d));
+    }
 
 }
 

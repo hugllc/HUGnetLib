@@ -480,6 +480,15 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->hexifyStr($str);
         $this->assertEquals($expect, $ret);
     }
+    /**
+    * test
+    *
+    * @return null
+    */
+    public function testNow()
+    {
+        $this->assertGreaterThanOrEqual(time(), $this->o->now());
+    }
 }
 
 /**
@@ -522,6 +531,14 @@ class HUGnetClassTestStub extends HUGnetClass
     {
         $this->throwException($msg, $code, $condition);
     }
-
+    /**
+    * Returns the current time in seconds.  This is for testing purposes
+    *
+    * @return int
+    */
+    public function now()
+    {
+        return parent::now();
+    }
 }
 ?>
