@@ -169,6 +169,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
+                null,
             ),
             array(
                 array(
@@ -216,8 +217,9 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                         'Severity' => '8',
                     ),
                 ),
+                "000019",
             ),
-             array(
+            array(
                 array(
                     "group" => "test",
                     "GatewayKey" => 3,
@@ -263,8 +265,9 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                         'Severity' => '8',
                     ),
                 ),
+                "000019",
             ),
-           array(
+            array(
                 array(
                     "group" => "test",
                     "GatewayKey" => 1,
@@ -287,24 +290,27 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
+                "000019",
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload   The value to preload
-    * @param array $device    The device array to use
-    * @param array $expect    The expected data
-    * @param array $expectDev The expected device
-    * @param array $err       The expected errors posted
+    * @param array  $preload   The value to preload
+    * @param array  $device    The device array to use
+    * @param array  $expect    The expected data
+    * @param array  $expectDev The expected device
+    * @param array  $err       The expected errors posted
+    * @param string $DeviceID  The device id it should have
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $device, $expect, $expectDev, $err)
-    {
+    public function testConstructor(
+        $preload, $device, $expect, $expectDev, $err, $DeviceID
+    ) {
         $o = new ProcessBaseClassTest($preload, $device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret, "Data is wrong");
@@ -346,6 +352,18 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             $ret = $errors->nextInto();
         }
         $this->assertSame($err, $e, "Error table wrong");
+        if (is_null($DeviceID)) {
+            // If it is random, it must be within this:
+            $this->assertGreaterThanOrEqual(
+                0xFE0000, hexdec($this->socket->DeviceID), "DeviceID Low"
+            );
+            $this->assertLessThan(
+                0xFF0000, hexdec($this->socket->DeviceID), "DeviceID High"
+            );
+        } else {
+            // If it is set we can test it directly
+            $this->assertSame($DeviceID, $this->socket->DeviceID, "DeviceID wrong");
+        }
     }
 
     /**

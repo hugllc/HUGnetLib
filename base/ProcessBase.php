@@ -93,14 +93,10 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->myConfig = &ConfigContainer::singleton();
         // Run the parent stuff
         parent::__construct($data);
-        // Set the verbosity
-        $this->verbose($this->myConfig->verbose);
         // This is our device container
         $this->device = new DeviceContainer();
-        $this->device->verbose($this->verbose);
         // This is our device container
         $this->unsolicited = new DeviceContainer();
-        $this->unsolicited->verbose($this->verbose);
         // Set the gatewaykey if it hasn't been set
         if (empty($this->GatewayKey)) {
             $this->GatewayKey = $this->myConfig->script_gateway;
@@ -110,7 +106,25 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "loopEnd"));
         }
+        // Set the verbosity
+        $this->verbose($this->myConfig->verbose);
         $this->checkTime();
+    }
+    /**
+    * Sets the verbosity
+    *
+    * @param int $level The verbosity level
+    *
+    * @return null
+    */
+    public function verbose($level=0)
+    {
+        parent::verbose($level);
+        foreach (array("device", "unsolicited", "myDevice") as $var) {
+            if (is_object($this->$var)) {
+                $this->$var->verbose($level);
+            }
+        }
     }
     /**
     * Registers the packet hooks
@@ -124,7 +138,6 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         // This sets us up as a device
         $this->vprint("Setting up my device...", HUGnetClass::VPRINT_NORMAL);
         $this->myDevice = new DeviceContainer($device);
-        $this->myDevice->verbose($this->verbose);
         $this->myDevice->GatewayKey = $this->GatewayKey;
         $this->myDevice->DeviceJob = posix_getpid();
         $this->myDevice->DeviceLocation = ProcessBase::getIP();
@@ -135,6 +148,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $this->myDevice->id = hexdec($id);
         }
         $this->myDevice->DeviceID = $this->myDevice->id;
+        $this->myConfig->sockets->forceDeviceID($this->myDevice->DeviceID);
         // This is the device container with our setup information in it.
         $this->myDevice->LastConfig = time();
         $this->myDevice->insertRow(true);
