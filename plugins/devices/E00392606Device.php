@@ -58,6 +58,8 @@ class E00392606Device extends E00392600Device
     const COMMAND_READDOWNSTREAM = "56";
     /** The placeholder for locking a device */
     const COMMAND_GETDEVLOCK = "57";
+    /** The verbose setting for output */
+    const VERBOSITY = 2;
     /** @var This is to register the class */
     public static $registerPlugin = array(
         "Name" => "e00392606",
@@ -117,19 +119,21 @@ class E00392606Device extends E00392600Device
             $DeviceID = substr($pkt->Data, 0, 6);
             self::vprint(
                 "Got a lock request for ".$DeviceID." from ".$pkt->From,
-                3
+                self::VERBOSITY
             );
             $data = $this->checkLocalDevLock($DeviceID, true);
             $locker = substr($data, 0, 6);
+            $time = " for ".hexdec(substr($data, 6, 4))." s";
             if (empty($data)) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
                 $this->setDevLock($dev, $pkt->From);
                 $locker = "no one";
+                $time = "";
             }
             self::vprint(
-                "Replying that $locker has a lock",
-                3
+                "Replying that $locker has a lock $time",
+                self::VERBOSITY
             );
             $pkt->reply($data);
         }
@@ -186,7 +190,7 @@ class E00392606Device extends E00392600Device
     {
         self::vprint(
             "Sending a lock request for ".$dev->DeviceID." to ".$locker,
-            3
+            self::VERBOSITY
         );
         $pkt = new PacketContainer(
             array(
@@ -202,9 +206,9 @@ class E00392606Device extends E00392600Device
             $DeviceID = substr($pkt->Reply->Data, 0, 6);
             $time     = hexdec(substr($pkt->Reply->Data, 6, 4));
             self::vprint(
-                "$locker Replied: ".$dev->DeviceID." locked by ".$DeviceID
-                ." for ".$time." s longer",
-                3
+                "$locker Replied: ".$dev->DeviceID." locked by $DeviceID"
+                ." for $time s",
+                self::VERBOSITY
             );
             $ret = $this->setDevLock($dev, $DeviceID, $time);
         }
@@ -314,7 +318,7 @@ class E00392606Device extends E00392600Device
             self::vprint(
                 "Setting expiration of lock on ".$dev->DeviceID." by $locker for "
                 .date("Y-m-d H:i:s", $timeout),
-                3
+                self::VERBOSITY
             );
             $devLocks[$locker][$dev->DeviceID] = (int)$timeout;
             return true;
