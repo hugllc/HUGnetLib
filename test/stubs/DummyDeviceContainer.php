@@ -148,6 +148,17 @@ class DummyDeviceContainer extends HUGnetClass
             $this->$name = $this->default[$name];
         }
     }
+    /**
+    * Creates a sensor object
+    *
+    * @param int $key The array key for the sensor object
+    *
+    * @return Returns a reference to the sensor object
+    */
+    public function &sensor($key)
+    {
+        return $this->sensors->sensor($key);
+    }
 
 
 
