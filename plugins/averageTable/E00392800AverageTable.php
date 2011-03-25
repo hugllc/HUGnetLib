@@ -58,7 +58,7 @@ class E00392800AverageTable extends AverageTableBase
         "Name" => "E00392800AverageTable",
         "Type" => "averageTable",
         "Class" => "E00392800AverageTable",
-        "Flags" => array("e00392800"),
+        "Flags" => array("e00392800", "e00392801"),
     );
     /** @var string This is the table we should use */
     public $sqlTable = "e00392800_average";
