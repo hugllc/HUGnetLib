@@ -149,7 +149,7 @@ class E00392801DeviceTest extends DevicePluginTestBase
     {
         return array(
             array(
-                "0102020202020202020102030405060708",
+                "010202020202020202707070707070707001020304050607084F034F034F034F03",
                 array(
                     "PhysicalSensors" => 16,
                     "VirtualSensors" => 4,
@@ -162,6 +162,10 @@ class E00392801DeviceTest extends DevicePluginTestBase
                     "c1-2" => 6,
                     "c0-3" => 7,
                     "c1-3" => 8,
+                    "alarm0" => "148.8 &#176;F",
+                    "alarm1" => "148.8 &#176;F",
+                    "alarm2" => "148.8 &#176;F",
+                    "alarm3" => "148.8 &#176;F",
                 ),
                 array(
                     'Sensors' => 20,
@@ -189,16 +193,16 @@ class E00392801DeviceTest extends DevicePluginTestBase
                         'id' => 0x70, 'type' => 'generic', 'location' => "Output 4",
                     ),
                     12 => array(
-                        'id' => 0x70, 'type' => 'generic', 'location' => "Output 5",
+                        'id' => 0x70, 'type' => 'generic', 'location' => "Alarm 1",
                     ),
                     13 => array(
-                        'id' => 0x70, 'type' => 'generic', 'location' => "Output 6",
+                        'id' => 0x70, 'type' => 'generic', 'location' => "Alarm 2",
                     ),
                     14 => array(
-                        'id' => 0x70, 'type' => 'generic', 'location' => "Output 7",
+                        'id' => 0x70, 'type' => 'generic', 'location' => "Alarm 3",
                     ),
                     15 => array(
-                        'id' => 0x70, 'type' => 'generic', 'location' => "Output 8",
+                        'id' => 0x70, 'type' => 'generic', 'location' => "Alarm 4",
                     ),
                     16 => array(
                         'id' => 0xFE, 'type' => 'Placeholder', "location" => null
@@ -384,7 +388,7 @@ class E00392801DeviceTest extends DevicePluginTestBase
             array(
                 array(
                 ),
-                "0102020202020202020807060504030201",
+                "010202020202020202707070707070707008070605040302014F034F034F034F03",
                 null,
                 array(
                     'PhysicalSensors' => 16,
@@ -398,6 +402,10 @@ class E00392801DeviceTest extends DevicePluginTestBase
                     "c1-2" => 3,
                     "c0-3" => 2,
                     "c1-3" => 1,
+                    "alarm0" => "148.8 &#176;F",
+                    "alarm1" => "148.8 &#176;F",
+                    "alarm2" => "148.8 &#176;F",
+                    "alarm3" => "148.8 &#176;F",
                     'CPU' => 'Atmel Mega168',
                     'SensorConfig' => '1-8 analog, 9-16 digital',
                 ),

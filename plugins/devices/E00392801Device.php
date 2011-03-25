@@ -81,6 +81,10 @@ class E00392801Device extends E00392800Device
         "c1-2" => "Output 3 c1",
         "c0-3" => "Output 4 c0",
         "c1-3" => "Output 4 c1",
+        "alarm0" => "Alarm Threshold 1",
+        "alarm1" => "Alarm Threshold 2",
+        "alarm2" => "Alarm Threshold 3",
+        "alarm3" => "Alarm Threshold 4",
     );
     /**
     * Builds the class
@@ -109,33 +113,46 @@ class E00392801Device extends E00392800Device
     */
     public function fromSetupString($string)
     {
-        $this->myDriver->DriverInfo["TimeConstant"] = 1;
-        if (is_object($this->myDriver->sensors)) {
-            // This builds what the sensor string should look like
-            $str = substr($string, 2, 16);
-            if (empty($str)) {
-                $str = "0202020202020202";
+        $str = substr($string, 2, 32);
+        parent::fromSetupString($string);
+        $con = substr($string, 34, 16);
+        for ($i = 0; $i < 8; $i+=2) {
+            $out = (int)($i / 2);
+            $this->myDriver->DriverInfo["c0-".$out] = hexdec(
+                substr($con, $i * 2, 2)
+            );
+            $this->myDriver->DriverInfo["c1-".$out] = hexdec(
+                substr($con, (($i * 2) + 2), 2)
+            );
+        }
+        $alarm = substr($string, 50, 16);
+        for ($i = 0; $i < 8; $i+=2) {
+            $out = (int)($i / 2);
+            $low = hexdec(
+                substr($alarm, $i * 2, 2)
+            );
+            $high = hexdec(
+                substr($alarm, (($i * 2) + 2), 2)
+            );
+            $val = $low + ($high * 0x100);
+            if (is_object($this->myDriver->sensors)) {
+                $val = (0xFFFF - ($val * 64));
+                $val = $this->myDriver->sensor($i+1)->getReading($val);
+                $this->myDriver->sensor($i+1)->convertUnits($val);
+                $val = ((float)$val)." ".$this->myDriver->sensor($i+1)->units;
             }
-            $str .= "7070707070707070";
-            $this->myDriver->sensors->fromTypeString($str);
-            for ($i = 8; $i < 16; $i++) {
-                $this->myDriver->sensors->updateSensor(
-                    array("id" => 0x70, "type" => "generic"),
-                    $i
-                );
+            $this->myDriver->DriverInfo["alarm".$out] = $val;
+        }
+        if (is_object($this->myDriver->sensors)) {
+            for ($i = 8; $i < 12; $i++) {
                 if (empty($this->myDriver->sensor($i)->location)) {
-                    $this->myDriver->sensor($i)->location = "Output ".($i-7);
+                    $this->myDriver->sensor($i)->location = "Output ".($i - 7);
                 }
             }
-            $con = substr($string, 18);
-            for ($i = 0; $i < 8; $i+=2) {
-                $out = (int)($i / 2);
-                $this->myDriver->DriverInfo["c0-".$out] = hexdec(
-                    substr($con, $i * 2, 2)
-                );
-                $this->myDriver->DriverInfo["c1-".$out] = hexdec(
-                    substr($con, (($i * 2) + 2), 2)
-                );
+            for ($i = 12; $i < 16; $i++) {
+                if (empty($this->myDriver->sensor($i)->location)) {
+                    $this->myDriver->sensor($i)->location = "Alarm ".($i - 11);
+                }
             }
         }
     }
