@@ -186,6 +186,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestBlank.png"
                 ),
+                0,
             ),
             array( // #1
                 array(
@@ -199,6 +200,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                 realpath(
                     dirname(__FILE__)."/../files/images/pinkSq.png"
                 ),
+                0,
             ),
             array( // #2
                 array(
@@ -228,6 +230,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText1.png"
                 ),
+                500,
             ),
             array( // #3
                 array(
@@ -263,6 +266,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText2.png"
                 ),
+                400,
             ),
         );
     }
@@ -276,12 +280,13 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     * @param array  $preload the stuff to preload into the plugin
     * @param array  $data    The data to use
     * @param string $expect  The value to expect
+    * @param int    $allowed The allowed number of different pixels
     *
     * @return null
     *
     * @dataProvider dataOutputTest
     */
-    public function testOutputTest($preload, $data, $expect)
+    public function testOutputTest($preload, $data, $expect, $allowed)
     {
         $img = new ImageContainer($preload);
         $o = new ImagePluginBaseTestClass($img, $data);
@@ -306,7 +311,9 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
         imagedestroy($image);
         $this->assertSame($x, $retx, "Different widths");
         $this->assertSame($y, $rety, "Different widths");
-        $this->assertSame(0, $count, "$count pixels are different");
+        $this->assertLessThanOrEqual(
+            $allowed, $count, "$count pixels are different"
+        );
     }
 
 }
