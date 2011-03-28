@@ -95,10 +95,12 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     protected function registerPlugins()
     {
         $this->active = array();
-        $this->myPlugins = new PluginsContainer(array(
-            "dir" => $this->PluginDir,
-            "extension" => $this->PluginExtension,
-        ));
+        $this->myPlugins = new PluginsContainer(
+            array(
+                "dir" => $this->PluginDir,
+                "extension" => $this->PluginExtension,
+            )
+        );
         $classes = $this->myPlugins->getPlugin($this->PluginType);
         $data = array(
             "verbose" => $this->verbose,

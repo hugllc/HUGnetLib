@@ -1150,15 +1150,17 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "C3",
                     "group" => "default",
-                    "Reply" => new PacketContainer(array(
-                        "To" => "000ABC",
-                        "From" => "000020",
-                        "Command" => "55",
-                        "Data" => "01020304",
-                        "Checksum" => "C3",
-                        "group" => "other",
-                        "Timeout" => 1,
-                    )),
+                    "Reply" => new PacketContainer(
+                        array(
+                            "To" => "000ABC",
+                            "From" => "000020",
+                            "Command" => "55",
+                            "Data" => "01020304",
+                            "Checksum" => "C3",
+                            "group" => "other",
+                            "Timeout" => 1,
+                        )
+                    ),
                     "Timeout" => 1,
                 ),
                 "5A5A5A55000ABC0000200401020304C3A134389105239258"
@@ -1236,15 +1238,17 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "Length"  => 4,
                     "Data" => "01020304",
                     "GetReply" => false,
-                    "Reply" => new PacketContainer(array(
-                        "To" => "000ABC",
-                        "From" => "000020",
-                        "Command" => "55",
-                        "Data" => "01020304",
-                        "Checksum" => "C3",
-                        "group" => "other",
-                        "Timeout" => 1,
-                    )),
+                    "Reply" => new PacketContainer(
+                        array(
+                            "To" => "000ABC",
+                            "From" => "000020",
+                            "Command" => "55",
+                            "Data" => "01020304",
+                            "Checksum" => "C3",
+                            "group" => "other",
+                            "Timeout" => 1,
+                        )
+                    ),
                 ),
                 "",
                 "5A5A5A55000ABC0000200401020304C3",

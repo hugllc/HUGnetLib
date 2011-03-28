@@ -260,13 +260,15 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
     */
     private function _checkID($id, $groups)
     {
-        $pkt = new PacketContainer(array(
-            "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-            "To" => $id,
-            "GetReply" => true,
-            "Retries" => 2,
-            "Timeout" => $this->PacketTimeout,
-        ));
+        $pkt = new PacketContainer(
+            array(
+                "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                "To" => $id,
+                "GetReply" => true,
+                "Retries" => 2,
+                "Timeout" => $this->PacketTimeout,
+            )
+        );
         self::vprint("Checking ".$pkt->To, HUGnetClass::VPRINT_NORMAL);
         foreach ($groups as $group) {
             if (!$this->connect($group)) {

@@ -326,13 +326,15 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                 ),
                 array(
-                    new PacketContainer(array(
-                        "To" => "123456",
-                        "From" => "654321",
-                        "Command" => "01",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
+                    new PacketContainer(
+                        array(
+                            "To" => "123456",
+                            "From" => "654321",
+                            "Command" => "01",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
                 ),
                 true,
                 array(
@@ -353,66 +355,86 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                 array(
                 ),
                 array(
-                    new PacketContainer(array(
-                        "To" => "000001",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000002",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000003",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000004",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000005",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000006",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000007",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000008",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "000009",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
-                    new PacketContainer(array(
-                        "To" => "00000A",
-                        "Command" => "55",
-                        "Data" => "010203040506",
-                        "Date" => 1046397540,
-                    )),
+                    new PacketContainer(
+                        array(
+                            "To" => "000001",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000002",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000003",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000004",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000005",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000006",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000007",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000008",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "000009",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
+                    new PacketContainer(
+                        array(
+                            "To" => "00000A",
+                            "Command" => "55",
+                            "Data" => "010203040506",
+                            "Date" => 1046397540,
+                        )
+                    ),
                 ),
                 true,
                 array(
@@ -590,12 +612,14 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
                     "ReplyTo" => 0,
                 ),
                 true,
-                new PacketContainer(array(
-                    "Timeout" => 5,
-                    "From" => "654321",
-                    "To" => "123456",
-                    "Command" => "5C",
-                )),
+                new PacketContainer(
+                    array(
+                        "Timeout" => 5,
+                        "From" => "654321",
+                        "To" => "123456",
+                        "Command" => "5C",
+                    )
+                ),
             ),
         );
     }

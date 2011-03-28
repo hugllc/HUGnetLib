@@ -138,18 +138,22 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(
                 "000025",
                 "000000002500391101410039201343000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500391101410039201343000009FFFFFF50",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500391101410039201343000009FFFFFF50",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ),
                 true,
                 0,
                 time(),
@@ -241,18 +245,22 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(
                 "37",
                 "000000002500391101410039201343000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "010203040506070809",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETDATA,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506070809",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETDATA,
+                        "Data" => "",
+                    )
+                ),
                 true,
                 array(
                     "PacketTimeout" => 0,
@@ -302,18 +310,22 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             array(
                 0x000025,
                 "000000002500391101410039201343000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "010203040506070809",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETDATA,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506070809",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETDATA,
+                        "Data" => "",
+                    )
+                ),
                 true,
                 array(
                     "PacketTimeout" => 0,
@@ -444,18 +456,22 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 "000025",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "06070809",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "06070809",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                        "Data" => "",
+                    )
+                ),
                 true,
             ),
             array(

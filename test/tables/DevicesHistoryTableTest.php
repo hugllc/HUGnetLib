@@ -292,94 +292,96 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     {
         return array(
             array(
-                new DeviceContainer(array(
-                    "DriverInfo" => array(
-                        "TimeConstant" => 1,
-                        "PhysicalSensors"   => 6,
-                        "VirtualSensors"   => 4,
-                    ),
-                    "id" => 404,
-                    "DeviceID" => "000194",
-                    "HWPartNum" => "0039-21-02-A",
-                    "FWPartNum" => "0039-20-14-C",
-                    "FWVersion" => "0.0.8",
-                    "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
-                    "Driver" => "e00392100",
-                    "ActiveSensors" => 10,
-                    "sensors" => array(
-                        "Sensors" => 10,
-                        "ActiveSensors" => 6,
-                        "PhysicalSensors" => 6,
-                        "VirtualSensors" => 4,
-                        0 => array(
-                            "id" => 0x40,
-                            "type" => "Controller",
-                            "location" => "HUGnet 1 Voltage",
-                            "extra" => array(180, 27),
-                            "bound" => true,
-                        ),
-                        1 => array(
-                            "id" => 0x50,
-                            "type" => "Controller",
-                            "location" => "HUGnet 1 Current",
-                            "extra" => array(0.5, 7),
-                            "bound" => true,
-                        ),
-                        2 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
-                            "location" => "HUGnet 1 FET Temperature",
-                            "extra" => array(100, 10),
-                            "bound" => true,
-                        ),
-                        3 => array(
-                            "id" => 0x40,
-                            "type" => "Controller",
-                            "location" => "HUGnet 2 Voltage",
-                            "extra" => array(180, 27),
-                            "bound" => true,
-                        ),
-                        4 => array(
-                            "id" => 0x50,
-                            "type" => "Controller",
-                            "location" => "HUGnet 2 Current",
-                            "extra" => array(0.5, 7),
-                            "bound" => true,
-                        ),
-                        5 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
-                            "location" => "HUGnet 2 FET Temperature",
-                            "extra" => array(100, 10),
-                            "bound" => true,
-                        ),
-                        6 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => "Sensor 1",
-                        ),
-                        7 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => "Sensor 2",
-                        ),
-                        8 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => "Sensor 3",
-                        ),
-                        9 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => "Sensor 4",
-                        ),
-                    ),
-                    "params" => array(
+                new DeviceContainer(
+                    array(
                         "DriverInfo" => array(
-                            "BoredomThreshold" => 80,
+                            "TimeConstant" => 1,
+                            "PhysicalSensors"   => 6,
+                            "VirtualSensors"   => 4,
                         ),
-                    ),
-                )),
+                        "id" => 404,
+                        "DeviceID" => "000194",
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-14-C",
+                        "FWVersion" => "0.0.8",
+                        "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
+                        "Driver" => "e00392100",
+                        "ActiveSensors" => 10,
+                        "sensors" => array(
+                            "Sensors" => 10,
+                            "ActiveSensors" => 6,
+                            "PhysicalSensors" => 6,
+                            "VirtualSensors" => 4,
+                            0 => array(
+                                "id" => 0x40,
+                                "type" => "Controller",
+                                "location" => "HUGnet 1 Voltage",
+                                "extra" => array(180, 27),
+                                "bound" => true,
+                            ),
+                            1 => array(
+                                "id" => 0x50,
+                                "type" => "Controller",
+                                "location" => "HUGnet 1 Current",
+                                "extra" => array(0.5, 7),
+                                "bound" => true,
+                            ),
+                            2 => array(
+                                "id" => 2,
+                                "type" => "BCTherm2322640",
+                                "location" => "HUGnet 1 FET Temperature",
+                                "extra" => array(100, 10),
+                                "bound" => true,
+                            ),
+                            3 => array(
+                                "id" => 0x40,
+                                "type" => "Controller",
+                                "location" => "HUGnet 2 Voltage",
+                                "extra" => array(180, 27),
+                                "bound" => true,
+                            ),
+                            4 => array(
+                                "id" => 0x50,
+                                "type" => "Controller",
+                                "location" => "HUGnet 2 Current",
+                                "extra" => array(0.5, 7),
+                                "bound" => true,
+                            ),
+                            5 => array(
+                                "id" => 2,
+                                "type" => "BCTherm2322640",
+                                "location" => "HUGnet 2 FET Temperature",
+                                "extra" => array(100, 10),
+                                "bound" => true,
+                            ),
+                            6 => array(
+                                "id" => 0xFE,
+                                "type" => "Placeholder",
+                                "location" => "Sensor 1",
+                            ),
+                            7 => array(
+                                "id" => 0xFE,
+                                "type" => "Placeholder",
+                                "location" => "Sensor 2",
+                            ),
+                            8 => array(
+                                "id" => 0xFE,
+                                "type" => "Placeholder",
+                                "location" => "Sensor 3",
+                            ),
+                            9 => array(
+                                "id" => 0xFE,
+                                "type" => "Placeholder",
+                                "location" => "Sensor 4",
+                            ),
+                        ),
+                        "params" => array(
+                            "DriverInfo" => array(
+                                "BoredomThreshold" => 80,
+                            ),
+                        ),
+                    )
+                ),
                 array(
                     "group" => "default",
                     "id" => 404,

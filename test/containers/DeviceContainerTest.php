@@ -77,12 +77,14 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         );
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
-        $this->o = new DeviceContainer(array(
-            "DeviceID"  => "000019",
-            "HWPartNum" => "0039-CD-01-A",
-            "FWPartNum" => "0123-45-67-C",
-            "FWVersion" => "0.0.5",
-        ));
+        $this->o = new DeviceContainer(
+            array(
+                "DeviceID"  => "000019",
+                "HWPartNum" => "0039-CD-01-A",
+                "FWPartNum" => "0123-45-67-C",
+                "FWVersion" => "0.0.5",
+            )
+        );
     }
 
     /**

@@ -980,30 +980,38 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 "000000002500392606500039260650000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000019",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392606500039260650000009FFFFFF50",
-                )).
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000019",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000082000073000071"
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000019",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                )).
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000019",
-                    "Command" => E00392606Device::COMMAND_READDOWNSTREAM,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392606500039260650000009FFFFFF50",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000082000073000071"
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => E00392606Device::COMMAND_READDOWNSTREAM,
+                        "Data" => "",
+                    )
+                ),
                 true,
                 array(
                     array(

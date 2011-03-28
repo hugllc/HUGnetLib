@@ -337,14 +337,16 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     {
         return array(
             array(
-                new DeviceContainer(array(
-                    "id" => 12,
-                    "HWPartNum" => "0039-21-02-A",
-                    "FWPartNum" => "0039-20-01-A",
-                    "FWVersion" => "0.1.2",
-                    "GatewayKey" => 5,
-                    "DeviceName" => "This is a Name",
-                )),
+                new DeviceContainer(
+                    array(
+                        "id" => 12,
+                        "HWPartNum" => "0039-21-02-A",
+                        "FWPartNum" => "0039-20-01-A",
+                        "FWVersion" => "0.1.2",
+                        "GatewayKey" => 5,
+                        "DeviceName" => "This is a Name",
+                    )
+                ),
                 array(
                     "id" => 12,
                     'GatewayKey' => 5,

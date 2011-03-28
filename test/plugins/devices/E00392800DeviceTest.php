@@ -186,72 +186,92 @@ class E00392800DeviceTest extends DevicePluginTestBase
                 "000025",
                 5,
                 "000000002500391101410039201343000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500391101410039201343000009FFFFFF50",
-                ))
-                .(string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "01020304",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500391101410039201343000009FFFFFF50",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "01020304",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                        "Data" => "",
+                    )
+                ),
                 true,
             ),
             array(
                 "000025",
                 2,
                 "000000002500391101410039201343000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500391101410039201343000009FFFFFF50",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETCALIBRATION,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500391101410039201343000009FFFFFF50",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETCALIBRATION,
+                        "Data" => "",
+                    )
+                ),
                 false,
             ),
             array(
@@ -259,30 +279,38 @@ class E00392800DeviceTest extends DevicePluginTestBase
                 2,
                 "000000000100392601500039260150010203FFFFFF10",
                 "",
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                    "Data" => "",
-                ))
-                .(string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ),
                 false,
             ),
         );

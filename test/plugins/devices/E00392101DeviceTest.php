@@ -912,24 +912,30 @@ S9030000FC",
                 ),
                 "000025",
                 "000000002500392101410039200143000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392101410039200143000009FFFFFF50",
-                )).
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392101410039200143000009FFFFFF50",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200143000009FFFFFF50",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200143000009FFFFFF50",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ),
                 null,
             ),
             array(   // #1
@@ -949,24 +955,30 @@ S9030000FC",
                 ),
                 "000025",
                 "000000002500392101410039200143000009FFFFFF50",
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392101410039200143000009FFFFFF50",
-                )).
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392101410039200143000009FFFFFF50",
-                )),
-                (string)new PacketContainer(array(
-                    "To" => "000025",
-                    "From" => "000020",
-                    "Command" => PacketContainer::COMMAND_GETSETUP,
-                    "Data" => "",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200143000009FFFFFF50",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200143000009FFFFFF50",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ),
                 null,
             ),
             array(   // #2
@@ -1044,12 +1056,14 @@ S9030000FC",
                         "Data" => "",
                     )
                 ).
-                (string)new PacketContainer(array(
-                    "From" => "000025",
-                    "To" => "000020",
-                    "Command" => PacketContainer::COMMAND_REPLY,
-                    "Data" => "000000002500392101410039200143000009FFFFFF50",
-                )),
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392101410039200143000009FFFFFF50",
+                    )
+                ),
                 (string)new PacketContainer(
                     array(
                         "To" => "000025",

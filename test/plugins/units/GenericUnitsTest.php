@@ -73,9 +73,11 @@ class GenericUnitsTest extends UnitsPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new GenericUnits(array(
-            $value, $units, UnitsBase::TYPE_RAW
-        ));
+        $this->o = new GenericUnits(
+            array(
+                $value, $units, UnitsBase::TYPE_RAW
+            )
+        );
     }
 
     /**
