@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="locks">
+        <column>id</column>
+        <column>type</column>
+        <column>lockData</column>
+        <column>expiration</column>
+        <row>
+            <value>25</value>
+            <value>lock</value>
+            <value>ABCDEFG</value>
+            <value>150</value>
+        </row>
+        <row>
+            <value>25</value>
+            <value>lock2</value>
+            <value>ABCDEFG</value>
+            <value>150</value>
+        </row>
+        <row>
+            <value>26</value>
+            <value>lock</value>
+            <value>GFEDCBA</value>
+            <value>10</value>
+        </row>
+    </table>
+</dataset>

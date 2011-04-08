@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../processes/DeviceProcess.php';
+require_once dirname(__FILE__).'/../../plugins/devices/E00392606Device.php';
 
 /**
  * Test class for filter.
@@ -193,7 +194,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     public static function dataMain()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     array(
                         "id" => hexdec("123456"),
@@ -228,6 +229,8 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "PluginType" => "deviceProcess",
                 ),
                 array(
+                ),
+                array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
                     "HWPartNum"  => "0039-26-06-P",
@@ -251,7 +254,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
             // Checks to see what happens when main return false
-            array(
+            array( // #1
                 array(
                     array(
                         "id" => hexdec("BADBAD"),
@@ -286,6 +289,8 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "PluginType" => "deviceProcess",
                 ),
                 array(
+                ),
+                array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
                     "HWPartNum"  => "0039-26-06-P",
@@ -309,7 +314,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
             // All of the devices locked
-            array(
+            array( // #2
                 array(
                     array(
                         "id" => hexdec("123456"),
@@ -342,6 +347,8 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 array(
                     "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
                     "PluginType" => "deviceProcess",
+                ),
+                array(
                 ),
                 array(
                     "id"         => 0x000019,
@@ -366,7 +373,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
-            array(
+            array( // #3
                 array(
                     array(
                         "id" => hexdec("123456"),
@@ -401,19 +408,25 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "PluginType" => "deviceProcess",
                 ),
                 array(
+                    array(
+                        "id" => 0xAAAAAA,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "123456",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                    array(
+                        "id" => 0xAAAAAA,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "234567",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
                     "HWPartNum"  => "0039-26-06-P",
                     "FWPartNum"  => "0039-26-06-P",
                     "params" => array(
-                        "ProcessInfo" => array(
-                            "devLocks" => array(
-                                "AAAAAA" => array(
-                                    "123456" => 100000000000, // Way in the future
-                                    "234567" => 100000000000, // Way in the future
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 true,
@@ -441,6 +454,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     *
     * @param array  $devs    The devices to load into the database
     * @param array  $preload The data to preload into the devices table
+    * @param array  $locks   The locks that are present
     * @param array  $dev     Device to load into the class
     * @param bool   $loop    Whether to loop or not
     * @param string $expect  The expected return
@@ -450,13 +464,19 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataMain
     */
-    public function testMain($devs, $preload, $dev, $loop, $expect, $plugins)
+    public function testMain($devs, $preload, $locks, $dev, $loop, $expect, $plugins)
     {
         $d = new DeviceContainer();
         foreach ((array)$devs as $load) {
             $d->clearData();
             $d->fromArray($load);
             $d->insertRow(true);
+        }
+        $l = new LockTable();
+        foreach ((array)$locks as $key => $val) {
+            $l->clearData();
+            $l->fromAny($val);
+            $l->insertRow(true);
         }
         $o = new DeviceProcess($preload, $dev);
         $o->loop = $loop;

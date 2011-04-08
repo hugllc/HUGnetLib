@@ -38,6 +38,7 @@
 
 
 require_once dirname(__FILE__).'/../../../plugins/devices/E00392606Device.php';
+require_once dirname(__FILE__).'/../../../tables/LockTable.php';
 require_once dirname(__FILE__).'/../../stubs/DummyDeviceContainer.php';
 require_once dirname(__FILE__).'/DevicePluginTestBase.php';
 
@@ -68,6 +69,18 @@ class E00392606DeviceTest extends DevicePluginTestBase
     protected function setUp()
     {
         $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "volatile",
+                ),
+            ),
             "sockets" => array(
                 array(
                     "dummy" => true,
@@ -576,8 +589,60 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "5A5A5A011234560000190068",
             ),
-            array(  // #6 This is to test locking.  My Device
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param array  $preload The data to preload into the devices table
+    * @param array  $dev     The device array to use
+    * @param string $pkt     The packet string to use
+    * @param string $expect  The expected return
+    * @param string $write   The packet string expected to be written
+    *
+    * @return null
+    *
+    * @dataProvider dataPacketConsumer
+    */
+    public function testPacketConsumer($preload, $dev, $pkt, $expect, $write)
+    {
+        $d = new DeviceContainer();
+        foreach ((array)$preload as $load) {
+            $d->fromArray($load);
+            $d->insertRow(true);
+        }
+        $d->fromAny($dev);
+        $d->insertRow(true);
+        $p = new PacketContainer($pkt);
+        $o = new TestE00392606Device($d);
+
+        $o->packetConsumer($p);
+        $d->updateRow();
+        $stmt = $this->pdo->query("SELECT * FROM `devices`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($expect, $rows, "Devices Wrong");
+        $this->assertSame($write, $this->socket->writeString);
+
+    }
+    /**
+    * data provider for testPacketConsumer
+    *
+    * @return array
+    */
+    public static function dataPacketConsumerLocking()
+    {
+        return array(
+            array(  // #0 This is to test locking.  My Device
                 array(
+                ),
+                array(
+                    array(
+                        "id" => 0x19,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "001300",
+                        "expiration" => 100,
+                    ),
                 ),
                 array(
                     "id" => 25,
@@ -603,14 +668,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
-                        "ProcessInfo" => array(
-                            "devLocks" => array(
-                                "000019" => array(
-                                    // Make sure that it is always in the future
-                                    "001300" => 100,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 array(
@@ -645,15 +702,21 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg"
-                            ."6ImRldkxvY2tzIjthOjE6e3M6NjoiMDAwMDE5IjthOjE6e3M6N"
-                            ."joiMDAxMzAwIjtpOjEwMDt9fX19",
+                        "params" => "YTowOnt9",
                     ),
                 ),
                 "5A5A5A0112345600001905000019005723",
             ),
-            array(  // #7 This is to test locking.  Someone Elses Device
+            array(  // #1 This is to test locking.  Someone Elses Device
                 array(
+                ),
+                array(
+                    array(
+                        "id" => 0x5312,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "001300",
+                        "expiration" => 0x1234,
+                    ),
                 ),
                 array(
                     "id" => 25,
@@ -679,14 +742,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
-                        "ProcessInfo" => array(
-                            "devLocks" => array(
-                                "005312" => array(
-                                    // Make sure that it is always in the future
-                                    "001300" => 0x1234,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 array(
@@ -721,15 +776,21 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOjg"
-                            ."6ImRldkxvY2tzIjthOjE6e3M6NjoiMDA1MzEyIjthOjE6e3M6N"
-                            ."joiMDAxMzAwIjtpOjQ2NjA7fX19fQ==",
+                        "params" => "YTowOnt9",
                     ),
                 ),
                 "5A5A5A0112345600001905005312122719",
             ),
-            array(  // #8 This is to test locking.  Someone Elses expired lock
+            array(  // #2 This is to test locking.  Someone Elses expired lock
                 array(
+                ),
+                array(
+                    array(
+                        "id" => 0x5632,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "001300",
+                        "expiration" => -10,
+                    ),
                 ),
                 array(
                     "id" => 25,
@@ -755,14 +816,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "sensors" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                     ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                     "params" => array(
-                        "ProcessInfo" => array(
-                            "devLocks" => array(
-                                "005632" => array(
-                                    // Make sure that it is always in the past
-                                    "001300" => -10,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 array(
@@ -797,14 +850,12 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => "YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzO"
-                            ."jg6ImRldkxvY2tzIjthOjE6e3M6NjoiMDA1NjMyIjthOjA6e"
-                            ."319fX0=",
+                        "params" => "YTowOnt9",
                     ),
                 ),
                 "5A5A5A011234560000190068",
             ),
-            array(  // #9 This is to test locking with no locks yet
+            array(  // #3 This is to test locking with no locks yet
                 array(
                     array(
                         "id" => 0x001300,
@@ -812,6 +863,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => 1,
                         "PollInterval" => 5,
                     ),
+                ),
+                array(
                 ),
                 array(
                     "id" => 25,
@@ -870,9 +923,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
                         ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
-                        "params" => 'YToxOntzOjExOiJQcm9jZXNzSW5mbyI7YToxOntzOj'
-                            .'g6ImRldkxvY2tzIjthOjE6e2k6MTIzNDU2O2E6MTp7czo2OiI'
-                            .'wMDEzMDAiO2k6NzYzO319fX0=',
+                        "params" => 'YTowOnt9',
                     ),
                     array(
                         'id' => '4864',
@@ -909,6 +960,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
     * test the set routine when an extra class exists
     *
     * @param array  $preload The data to preload into the devices table
+    * @param array  $locks   The locks to preload
     * @param array  $dev     The device array to use
     * @param string $pkt     The packet string to use
     * @param string $expect  The expected return
@@ -916,14 +968,20 @@ class E00392606DeviceTest extends DevicePluginTestBase
     *
     * @return null
     *
-    * @dataProvider dataPacketConsumer
+    * @dataProvider dataPacketConsumerLocking
     */
-    public function testPacketConsumer($preload, $dev, $pkt, $expect, $write)
-    {
+    public function testPacketConsumerLocking(
+        $preload, $locks, $dev, $pkt, $expect, $write
+    ) {
         $d = new DeviceContainer();
         foreach ((array)$preload as $load) {
             $d->fromArray($load);
             $d->insertRow(true);
+        }
+        $l = new LockTable();
+        foreach ((array)$locks as $load) {
+            $l->fromArray($load);
+            $l->insertRow(true);
         }
         $d->fromAny($dev);
         $d->insertRow(true);
@@ -1134,6 +1192,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(),
                 array(
                 ),
+                array(
+                ),
                 array(),
                 "",
                 false,
@@ -1158,6 +1218,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(
                 ),
                 array(
+                ),
+                array(
                     "id" => 0x532,
                     "DeviceID" => "000532",
                     "PollInterval" => 10,
@@ -1177,30 +1239,22 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     array(
                     ),
                     'params' => array(
-                        'ProcessInfo' => array(
-                        'devLocks' => array(
-                            '000000' => array(
-                                '000532' => 913,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 "",
             ),
             array( // #2 Already locked!
                 array(
-                    "params" => array(
-                        "ProcessInfo" => array(
-                            "devLocks" => array(
-                                "AAAAAA" => array(
-                                    "000532" => 100000000000, // Way in the future
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
                 array(
+                ),
+                array(
+                    array(
+                        "id" => 0xAAAAAA,
+                        "type" => E00392606Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
                 ),
                 array(
                     "id" => 0x532,
@@ -1220,13 +1274,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     'sensors' => array(
                     ),
                     'params' => array(
-                        'ProcessInfo' => array(
-                            'devLocks' => array(
-                                'AAAAAA' => array(
-                                    '000532' => 100000000000,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 "",
@@ -1259,15 +1306,10 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "Driver" => "e00392606",
                         "GatewayKey" => 5,
                         "params" => array(
-                            "ProcessInfo" => array(
-                                "devLocks" => array(
-                                    "AAAAAA" => array(
-                                        "000532" => 100, // Way in the future
-                                    ),
-                                ),
-                            ),
                         ),
                     ),
+                ),
+                array(
                 ),
                 array(
                     "id" => 0x532,
@@ -1303,13 +1345,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     'sensors' => array(
                     ),
                     'params' => array(
-                        'ProcessInfo' => array(
-                            'devLocks' => array(
-                                '000123' => array(
-                                    '000532' => 913,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 "5A5A5A5700012400012303000532645A5A5A570001240001230300053264"
@@ -1343,15 +1378,10 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "Driver" => "e00392606",
                         "GatewayKey" => 5,
                         "params" => array(
-                            "ProcessInfo" => array(
-                                "devLocks" => array(
-                                    "AAAAAA" => array(
-                                        "000532" => 100, // Way in the future
-                                    ),
-                                ),
-                            ),
                         ),
                     ),
+                ),
+                array(
                 ),
                 array(
                     "id" => 0x532,
@@ -1387,13 +1417,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     'sensors' => array(
                     ),
                     'params' => array(
-                        'ProcessInfo' => array(
-                            'devLocks' => array(
-                                '000124' => array(
-                                    '000532' => 269,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 "5A5A5A570001240001230300053264",
@@ -1437,6 +1460,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 array(
+                ),
+                array(
                     "id" => 0x532,
                     "DeviceID" => "000532",
                 ),
@@ -1470,13 +1495,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     'sensors' => array(
                     ),
                     'params' => array(
-                        'ProcessInfo' => array(
-                            'devLocks' => array(
-                                '000123' => array(
-                                    '000532' => 913,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
                 "5A5A5A570001240001230300053264",
@@ -1488,6 +1506,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
     *
     * @param array  $preload The array to preload into the device for the class
     * @param array  $devs    The Devices to load into the database
+    * @param array  $locks   The locks that are in place
     * @param array  $device  The device to get a lock for
     * @param string $read    The packet string to be read
     * @param array  $expect  The expected return
@@ -1499,7 +1518,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
     * @return null
     */
     public function testGetDevLock(
-        $preload, $devs, $device, $read, $expect, $devExp, $write
+        $preload, $devs, $locks, $device, $read, $expect, $devExp, $write
     ) {
         $this->socket->readString = $read;
         $dev = new DeviceContainer();
@@ -1507,6 +1526,12 @@ class E00392606DeviceTest extends DevicePluginTestBase
             $dev->clearData();
             $dev->fromAny($val);
             $dev->insertRow(true);
+        }
+        $lock = new LockTable();
+        foreach ((array)$locks as $key => $val) {
+            $lock->clearData();
+            $lock->fromAny($val);
+            $lock->insertRow(true);
         }
         $dev->clearData();
         $dev->fromAny($preload);
@@ -1533,9 +1558,47 @@ class E00392606DeviceTest extends DevicePluginTestBase
 class TestE00392606Device extends E00392606Device
 {
     /**
+    * Builds the class
+    *
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
+    *
+    * @return null
+    */
+    public function __construct(&$obj, $string = "")
+    {
+        parent::__construct($obj, $string);
+        $this->devLocks = new E00392606DeviceLockTableTestStub();
+    }
+    /**
     * Returns the time
     *
     * @return string The binary string.
+    */
+    protected function now()
+    {
+        return 13;
+    }
+}
+/**
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
+ *
+ * @category   Tables
+ * @package    HUGnetLib
+ * @subpackage Tables
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class E00392606DeviceLockTableTestStub extends LockTable
+{
+    /**
+    * Returns the current time in seconds.  This is for testing purposes
+    *
+    * @return int
     */
     protected function now()
     {

@@ -85,6 +85,13 @@ abstract class HUGnetClass
             $this->verbose($config["verbose"]);
         }
     }
+    /**
+    * This is the destructor
+    */
+    function __destruct()
+    {
+        unset($this);
+    }
 
     /**
     * Sets the verbosity

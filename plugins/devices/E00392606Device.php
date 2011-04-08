@@ -38,6 +38,7 @@
 
 // This is our base class
 require_once dirname(__FILE__).'/E00392600Device.php';
+require_once dirname(__FILE__).'/../../tables/LockTable.php';
 
 /**
 * Driver for the polling script (0039-26-01-P)
@@ -58,6 +59,8 @@ class E00392606Device extends E00392600Device
     const COMMAND_READDOWNSTREAM = "56";
     /** The placeholder for locking a device */
     const COMMAND_GETDEVLOCK = "57";
+    /** The type of locks we are doing */
+    const LOCKTYPE = "device";
     /** The verbose setting for output */
     const VERBOSITY = 2;
     /** @var This is to register the class */
@@ -69,6 +72,19 @@ class E00392606Device extends E00392600Device
             "DEFAULT:0039-26-06-P:DEFAULT",
         ),
     );
+    /**
+    * Builds the class
+    *
+    * @param object &$obj   The object that is registering us
+    * @param mixed  $string The string we will use to build the object
+    *
+    * @return null
+    */
+    public function __construct(&$obj, $string = "")
+    {
+        parent::__construct($obj, $string);
+        $this->devLocks = new LockTable();
+    }
     /**
     * Consumes packets and returns some stuff.
     *
@@ -282,21 +298,17 @@ class E00392606Device extends E00392600Device
     */
     protected function checkLocalDevLock($DeviceID, $time = false)
     {
-        $devLocks = &$this->myDriver->params->ProcessInfo["devLocks"];
-        $ret = "";
-        foreach ((array)$devLocks as $dev => $locks) {
-            if (isset($locks[$DeviceID]) && ($locks[$DeviceID] > $this->now())) {
-                $ret = $dev;
-                if ($time) {
-                    $left = dechex($locks[$DeviceID] - $this->now());
-                    $ret .= self::stringSize($left, 4);
-                }
-                break;
-            } else if ($locks[$DeviceID] <= $this->now()) {
-                unset($devLocks[$dev][$DeviceID]);
+        $data = "";
+        $this->devLocks->check($this->myDriver->id, self::LOCKTYPE, $DeviceID);
+        if (!$this->devLocks->isEmpty()) {
+            $data = self::stringSize(dechex($this->devLocks->id), 6);
+            if ($time) {
+                $data .= self::stringSize(
+                    dechex($this->devLocks->expiration - $this->now()), 4
+                );
             }
         }
-        return $ret;
+        return $data;
     }
     /**
     * Reads the setup out of the device.
@@ -320,8 +332,9 @@ class E00392606Device extends E00392600Device
                 .date("Y-m-d H:i:s", $timeout),
                 self::VERBOSITY
             );
-            $devLocks[$locker][$dev->DeviceID] = (int)$timeout;
-            return true;
+            return $this->devLocks->place(
+                $this->myDriver->id, self::LOCKTYPE, $dev->DeviceID, $timeout
+            );
         }
         return false;
     }
