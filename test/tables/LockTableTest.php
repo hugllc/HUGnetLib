@@ -427,6 +427,33 @@ class LockTableTest extends HUGnetDBTableTestBase
                 true,
             ),
             array(
+                null, "lock",
+                array(
+                    array(
+                        'group' => 'volatile',
+                        'id' => 25,
+                        'type' => 'lock',
+                        'lockData' => 'ABCDEFG',
+                        'expiration' => 150,
+                    ),
+                    array(
+                        'group' => 'volatile',
+                        'id' => 27,
+                        'type' => 'lock',
+                        'lockData' => 'GFBAQ',
+                        'expiration' => 165,
+                    ),
+                    array(
+                        'group' => 'volatile',
+                        'id' => 26,
+                        'type' => 'lock',
+                        'lockData' => 'GFEDCBAQ',
+                        'expiration' => 180,
+                    ),
+                ),
+                true,
+            ),
+            array(
                 25, "other",
                 array(
                 ),
@@ -455,7 +482,7 @@ class LockTableTest extends HUGnetDBTableTestBase
     */
     public function testGetAllLocks($id, $type, $expect, $ret)
     {
-        $lock = $this->o->getAllLocks($id, $type);
+        $lock = $this->o->getAllLocks($type, $id);
         $this->assertSame($ret, $lock, "Return Wrong");
         $data = array();
         while ($lock) {

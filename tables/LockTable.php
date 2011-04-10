@@ -197,17 +197,20 @@ class LockTable extends HUGnetDBTable
     /**
     * This is the constructor
     *
-    * @param int    $id   The id of the locking element
     * @param string $type The type of lock
+    * @param int    $id   The id of the locking element
     *
     * @return id of locking element
     */
-    public function getAllLocks($id, $type)
+    public function getAllLocks($type, $id = null)
     {
-        return $this->selectInto(
-            "`id` = ? AND `type` = ? AND `expiration` > ?",
-            array($id, $type, $this->now())
-        );
+        $where = "`type` = ? AND `expiration` > ?";
+        $data = array($type, $this->now());
+        if (!empty($id)) {
+            $where .= " AND `id` = ?";
+            $data[] = $id;
+        }
+        return $this->selectInto($where, $data);
     }
     /******************************************************************
      ******************************************************************

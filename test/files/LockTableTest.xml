@@ -23,5 +23,17 @@
             <value>GFEDCBA</value>
             <value>10</value>
         </row>
+        <row>
+            <value>26</value>
+            <value>lock</value>
+            <value>GFEDCBAQ</value>
+            <value>180</value>
+        </row>
+        <row>
+            <value>27</value>
+            <value>lock</value>
+            <value>GFBAQ</value>
+            <value>165</value>
+        </row>
     </table>
 </dataset>
