@@ -147,6 +147,7 @@ class MysqlDriver extends HUGnetDBDriver
     public function check($force = false)
     {
         $return = true;
+        $error = "";
         $this->lock();
         $ret = $this->query("FLUSH TABLES ".$this->table());
         $ret = $this->query("CHECK TABLE ".$this->table());
@@ -156,18 +157,22 @@ class MysqlDriver extends HUGnetDBDriver
                 // @codeCoverageIgnoreStart
                 // It is impossible to make this run, since it only runs when the
                 // table is corrupt and not fixable
-                $this->logError(
-                    -99,
-                    "Table ".$this->table()." is BROKEN",
-                    ErrorTable::SEVERITY_CRITICAL,
-                    "check"
-                );
+                $error = "Table ".$this->table()." is BROKEN (";
+                $error .= $ret[count($ret)-1]["Msg_text"].")";
                 $return = false;
             }
             // @codeCoverageIgnoreEnd
         }
         $ret = $this->query("OPTIMIZE TABLE ".$this->table());
         $this->unlock();
+        // This must be done after the unlock
+        if (!empty($error)) {
+            // @codeCoverageIgnoreStart
+            // It is impossible to make this run, since it only runs when the
+            // table is corrupt and not fixable
+            $this->logError(-99, $error, ErrorTable::SEVERITY_CRITICAL, "check");
+        }
+        // @codeCoverageIgnoreEnd
         return $return;
     }
     /**
