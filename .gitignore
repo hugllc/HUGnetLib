@@ -4,3 +4,4 @@ Documentation/
 HUGNET_LOCAL_DATABASE
 old/
 .swp.*
+*.kate*
