@@ -56,6 +56,8 @@ class E00392606Device extends E00392600Device
     implements DeviceDriverInterface
 {
     /** The placeholder for the reading the downstream units from a controller */
+    const ERROR_CLOCK_SKEW = -2321;
+    /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";
     /** The verbose setting for output */
     const VERBOSITY = 2;
@@ -130,6 +132,22 @@ class E00392606Device extends E00392600Device
         $ret = $this->readConfig();
         if ($ret) {
             $ret = $this->readDownstreamDevices();
+            $rtc = $this->readRTC();
+            if (is_int($rtc)) {
+                if ((($rtc + 60) < $this->now())
+                    || (($rtc - 60) > $this->now())
+                ) {
+                    $this->logError(
+                        self::ERROR_CLOCK_SKEW,
+                        "Clock skew between data collectors found"
+                        ."(".($rtc-$this->now())." s)",
+                        ErrorTable::SEVERITY_CRITICAL,
+                        "readSetup"
+                    );
+                    // Try to set the clock
+                    @system("ntpdate -s ntp.ubuntu.com");
+                }
+            }
         }
         return $this->setLastConfig($ret);
     }
@@ -152,7 +170,6 @@ class E00392606Device extends E00392600Device
                         "GatewayKey" => $this->myDriver->GatewayKey,
                     )
                 );
-
             }
             $ret = true;;
         }

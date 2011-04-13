@@ -681,6 +681,14 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "Command" => PacketContainer::COMMAND_REPLY,
                         "Data" => "000082000073000071"
                     )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000000000000D",
+                    )
                 ),
                 (string)new PacketContainer(
                     array(
@@ -695,6 +703,167 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "To" => "000025",
                         "From" => "000019",
                         "Command" => E00392606Device::COMMAND_READDOWNSTREAM,
+                        "Data" => "",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
+                        "Data" => "",
+                    )
+                ),
+                true,
+                array(
+                    array(
+                        "id" => (string)0x71,
+                        "DeviceID" => "000071",
+                        "DeviceName" => "Hello",
+                        "HWPartNum" => "0039-23-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "000000007100392101410039200143000102"
+                            ."FFFFFF00",
+                        "Active" => "1",
+                        "GatewayKey" => "0",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "YTo2OntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiIiO3"
+                        ."M6NzoiU2Vuc29ycyI7aTowO3M6MTM6IkFjdGl2ZVNlbnNvcnMiO2k6MDtz"
+                        ."OjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6MDtzOjE0OiJWaXJ0dWFsU2Vu"
+                        ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
+                        "params" => "YTowOnt9",
+                    ),
+                    array(
+                        "id" => (string)0x73,
+                        "DeviceID" => "000073",
+                        "DeviceName" => "",
+                        "HWPartNum" => "",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup"  => "",
+                        "Active" => "1",
+                        "GatewayKey" => "0",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                    array(
+                        "id" => (string)0x82,
+                        "DeviceID" => "000082",
+                        "DeviceName" => "",
+                        "HWPartNum" => "",
+                        "FWPartNum" => "",
+                        "FWVersion" => "",
+                        "RawSetup"  => "",
+                        "Active" => "1",
+                        "GatewayKey" => "0",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+            ),
+            array(  // #1 Date is off
+                array(
+                    "id"        => 0x25,
+                    "DeviceID"  => "000025",
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.7.0",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "id" => (string)0x71,
+                        "DeviceID" => "000071",
+                        "DeviceName" => "Hello",
+                        "HWPartNum" => "0039-23-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "0.1.2",
+                        "RawSetup"  => "000000007100392101410039200143000102"
+                            ."FFFFFF00",
+                        "Active" => "1",
+                        "GatewayKey" => "0",
+                        "ControllerKey" => "0",
+                        "ControllerIndex" => "0",
+                        "DeviceLocation" => "",
+                        "DeviceJob" => "",
+                        "Driver" => "eDEFAULT",
+                        "PollInterval" => "0",
+                        "ActiveSensors" => "0",
+                        "DeviceGroup" => "FFFFFF",
+                        "sensors" => "",
+                        "params" => "",
+                    ),
+                ),
+                "000000002500392606500039260650000009FFFFFF50",
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000002500392606500039260650000009FFFFFF50",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000082000073000071"
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "0000000000D0000D",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::COMMAND_GETSETUP,
+                        "Data" => "",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => E00392606Device::COMMAND_READDOWNSTREAM,
+                        "Data" => "",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
                         "Data" => "",
                     )
                 ),

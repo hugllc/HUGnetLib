@@ -238,6 +238,20 @@ class E00392600Device extends DeviceDriverBase
         return $this->data["LastConfigTry"]<(time() - $this->data["ConfigFail"]*60);
     }
     /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readRTC()
+    {
+        $ret = $this->sendPkt(PacketContainer::READRTC_COMMAND);
+        if (is_string($ret) && !empty($ret)) {
+            $ret = hexdec($ret);
+            return $ret;
+        }
+        return false;
+    }
+    /**
     * Consumes packets and returns some stuff.
     *
     * This function deals with setup and ping requests
@@ -250,6 +264,7 @@ class E00392600Device extends DeviceDriverBase
     {
         $this->pktSetupEcho($pkt);
         $this->pktGetDevLock($pkt);
+        $this->pktReadRTC($pkt);
     }
     /**
     * This deals with Packets to me
@@ -268,6 +283,20 @@ class E00392600Device extends DeviceDriverBase
             ) {
                 $pkt->reply($pkt->Data);
             }
+        }
+    }
+    /**
+    * This deals with Packets to me
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    protected function pktReadRTC(PacketContainer &$pkt)
+    {
+        if ($pkt->toMe() && ($pkt->Command == PacketContainer::READRTC_COMMAND)) {
+            $data = self::stringSize(dechex($this->now()), 16);
+            $pkt->reply($data);
         }
     }
     /**

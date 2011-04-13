@@ -82,7 +82,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
         $this->pdo = &$this->config->servers->getPDO();
         $this->d = new DummyDeviceContainer();
         $this->d->DeviceID = "000019";
-        $this->o = new E00392600Device($this->d);
+        $this->o = new TestE00392600Device($this->d);
     }
 
     /**
@@ -247,6 +247,99 @@ class E00392600DeviceTest extends DevicePluginTestBase
         $this->assertSame($expect, $ret);
     }
     /**
+    * data provider for testReadSetup, testReadConfig
+    *
+    * @return array
+    */
+    public static function dataReadRTC()
+    {
+        return array(
+            array(
+                "000025",
+                5,
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000019",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "000000000000000D",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
+                        "Data" => "",
+                    )
+                ),
+                13,
+            ),
+            array(
+                "000025",
+                2,
+                "",
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
+                        "Data" => "",
+                    )
+                )
+                .(string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000019",
+                        "Command" => PacketContainer::READRTC_COMMAND,
+                        "Data" => "",
+                    )
+                ),
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $id      The Device ID to pretend to be
+    * @param int    $timeout The packet timeout to use
+    * @param string $read    The read string to put in
+    * @param string $write   The write string expected
+    * @param string $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataReadRTC
+    */
+    public function testReadRTC($id, $timeout, $read, $write, $expect)
+    {
+        $this->d->id = hexdec($id);
+        $this->d->DeviceID = $id;
+        $this->d->DriverInfo["PacketTimeout"] = $timeout;
+        $this->socket->readString = $read;
+        $ret = $this->o->readRTC();
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+        $this->assertSame($expect, $ret, "Wrong return value");
+    }
+    /**
     * data provider for testPacketConsumer
     *
     * @return array
@@ -308,6 +401,20 @@ class E00392600DeviceTest extends DevicePluginTestBase
                 array(
                 ),
                 "5A5A5A01123456000019040102030468",
+            ),
+            array(
+                array(
+                ),
+                array(
+                    "To" => "000019",
+                    "From" => "123456",
+                    "Command" => PacketContainer::READRTC_COMMAND,
+                    "Data" => "",
+                    "group" => "default",
+                ),
+                array(
+                ),
+                "5A5A5A0112345600001908000000000000000D6D",
             ),
         );
     }
@@ -1100,6 +1207,15 @@ class TestE00392600Device extends E00392600Device
     {
         parent::__construct($obj, $string);
         $this->devLocks = new E00392600DeviceLockTableTestStub();
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @return bool True on success, False on failure
+    */
+    public function readRTC()
+    {
+        return parent::readRTC();
     }
     /**
     * Returns the time
