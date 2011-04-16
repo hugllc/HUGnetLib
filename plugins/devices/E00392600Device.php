@@ -116,6 +116,10 @@ class E00392600Device extends DeviceDriverBase
         $this->myDriver->DriverInfo["VirtualSensors"] = 0;
         $this->myDriver->DriverInfo["PacketTimeout"] = 10;
         $this->fromSetupString($string);
+        if (empty($this->myDriver->ControllerKey)) {
+            $this->myDriver->ControllerKey = $this->myDriver->id;
+        }
+        $this->devLocks = new LockTable();
     }
     /**
     * Says whether this device is a gateway process or not
@@ -320,7 +324,7 @@ class E00392600Device extends DeviceDriverBase
             if (empty($data)) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
-                $this->setDevLock($dev, $pkt->From);
+                $this->setDevLock($dev, hexdec($pkt->From));
                 $locker = "no one";
                 $time = "";
             }
@@ -363,7 +367,7 @@ class E00392600Device extends DeviceDriverBase
                 ." for $time s",
                 self::VERBOSITY
             );
-            $ret = $this->setDevLock($dev, $DeviceID, $time);
+            $ret = $this->setDevLock($dev, hexdec($DeviceID), $time);
         }
         return (bool) $ret;
     }
@@ -377,8 +381,25 @@ class E00392600Device extends DeviceDriverBase
     public function getDevLock(DeviceContainer &$dev)
     {
         $ret = $this->checkDevLock($dev);
-        if (empty($ret) || ($ret === $this->myDriver->DeviceID)) {
-            $ret = $this->setDevLock($dev, $this->myDriver->DeviceID);
+        if (empty($ret) || (hexdec($ret) === $this->myDriver->ControllerKey)) {
+            $ret = $this->setDevLock($dev, $this->myDriver->ControllerKey);
+        } else {
+            $ret = false;
+        }
+        return $ret;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev The device to get a lock on
+    *
+    * @return bool True on success, False on failure
+    */
+    public function getMyDevLock(DeviceContainer &$dev)
+    {
+        $ret = $this->checkLocalDevLock($dev->DeviceID);
+        if (hexdec($ret) === $this->myDriver->ControllerKey) {
+            $ret = true;
         } else {
             $ret = false;
         }
@@ -436,9 +457,16 @@ class E00392600Device extends DeviceDriverBase
     protected function checkLocalDevLock($DeviceID, $time = false)
     {
         $data = "";
-        $this->devLocks->check($this->myDriver->id, self::LOCKTYPE, $DeviceID);
+        $this->devLocks->check(
+            $this->myDriver->ControllerKey, self::LOCKTYPE, $DeviceID
+        );
         if (!$this->devLocks->isEmpty()) {
             $data = self::stringSize(dechex($this->devLocks->id), 6);
+            self::vprint(
+                "$data has lock on ".$DeviceID." until "
+                .date("Y-m-d H:i:s", $this->devLocks->expiration),
+                self::VERBOSITY
+            );
             if ($time) {
                 $data .= self::stringSize(
                     dechex($this->devLocks->expiration - $this->now()), 4
@@ -461,16 +489,19 @@ class E00392600Device extends DeviceDriverBase
         if ($dev->isEmpty()) {
             return false;
         }
-        $devLocks = &$this->myDriver->params->ProcessInfo["devLocks"];
         $timeout = $this->getDevLockTime($dev, $time);
         if (is_int($timeout) && !empty($timeout)) {
             self::vprint(
-                "Setting expiration of lock on ".$dev->DeviceID." by $locker for "
-                .date("Y-m-d H:i:s", $timeout),
+                "Setting expiration of lock on ".$dev->DeviceID." by "
+                .self::stringSize(dechex($locker), 6)." for "
+                .date("Y-m-d H:i:s", $timeout + $this->now()),
                 self::VERBOSITY
             );
             return $this->devLocks->place(
-                $this->myDriver->id, self::LOCKTYPE, $dev->DeviceID, $timeout
+                $locker,
+                self::LOCKTYPE,
+                $dev->DeviceID,
+                $timeout
             );
         }
         return false;
@@ -495,10 +526,11 @@ class E00392600Device extends DeviceDriverBase
         if ($time > $timeout) {
             return false;
         }
-        if (empty($time)) {
-            return (int)($this->now() + $timeout);
+        // Only allow 1800 seconds at most for the lock
+        if (empty($time) || ($time > 1800)) {
+            return (int)$timeout;
         }
-        return (int)($this->now() + $time);
+        return (int)$time;
     }
 
 }

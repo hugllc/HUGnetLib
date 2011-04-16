@@ -176,7 +176,7 @@ class LockTable extends HUGnetDBTable
     public function place($id, $type, $data, $timeLeft)
     {
         $this->clearData();
-        if (is_null($id) || is_null($type) || is_null($data) || empty($timeLeft)) {
+        if (empty($id) || empty($type) || is_null($data) || empty($timeLeft)) {
             return false;
         }
         $check = $this->check($id, $type, $data);

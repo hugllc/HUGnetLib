@@ -86,6 +86,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     protected function tearDown()
     {
+        $this->o->__destruct();
         $this->o = null;
         $this->config = null;
     }
@@ -344,7 +345,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
         }
         */
         $this->assertSame($expect, $rows);
-        
+
     }
     /**
     * Data provider for testGetDevice

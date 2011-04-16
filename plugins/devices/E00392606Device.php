@@ -81,7 +81,6 @@ class E00392606Device extends E00392600Device
     public function __construct(&$obj, $string = "")
     {
         parent::__construct($obj, $string);
-        $this->devLocks = new LockTable();
     }
     /**
     * Consumes packets and returns some stuff.

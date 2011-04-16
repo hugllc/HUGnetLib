@@ -382,6 +382,28 @@ class LockTableTest extends HUGnetDBTableTestBase
                 ),
                 false,
             ),
+            array(
+                0, 'lock', 10, 10,
+                array(
+                    'group' => 'volatile',
+                    'id' => null,
+                    'type' => null,
+                    'lockData' => '',
+                    'expiration' => null,
+                ),
+                false,
+            ),
+            array(
+                10, '', 10, 10,
+                array(
+                    'group' => 'volatile',
+                    'id' => null,
+                    'type' => null,
+                    'lockData' => '',
+                    'expiration' => null,
+                ),
+                false,
+            ),
         );
     }
 

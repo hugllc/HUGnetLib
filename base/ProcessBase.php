@@ -40,7 +40,9 @@ require_once dirname(__FILE__)."/../base/HUGnetClass.php";
 require_once dirname(__FILE__)."/../base/HUGnetContainer.php";
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
 require_once dirname(__FILE__)."/../containers/PacketContainer.php";
+require_once dirname(__FILE__)."/../containers/DeviceContainer.php";
 require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
+require_once dirname(__FILE__)."/../tables/DataCollectorsTable.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -106,6 +108,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, array($this, "loopEnd"));
         }
+        $this->registerDataCollector();
         // Set the verbosity
         $this->verbose($this->myConfig->verbose);
         $this->checkTime();
@@ -337,6 +340,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         static $last;
         // Do this only once per minute max
         if ($last != date("i")) {
+            $this->registerDataCollector();
             $this->myDevice->params->DriverInfo["LastConfig"] = time();
             $this->myDevice->params->LastContact = time();
             $this->myDevice->Active = 1;
@@ -368,6 +372,19 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
                 "Clock jump of ".($time - $last)."s detected",
                 HUGnetClass::VPRINT_NORMAL
             );
+        }
+    }
+    /**
+    * This function routes a packet
+    *
+    * @return null
+    */
+    protected function registerDataCollector()
+    {
+        $dc = new DataCollectorsTable();
+        $key = $dc->getMine($this->myDevice);
+        if (!empty($key)) {
+            $this->myDevice->ControllerKey = $key;
         }
     }
 }

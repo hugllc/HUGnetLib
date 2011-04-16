@@ -69,6 +69,18 @@ class E00392600DeviceTest extends DevicePluginTestBase
     protected function setUp()
     {
         $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "volatile",
+                ),
+            ),
             "sockets" => array(
                 array(
                     "dummy" => true,
@@ -511,7 +523,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         ."000000000000000000000000",
                         "Active" => "1",
                         "GatewayKey" => "1",
-                        "ControllerKey" => "0",
+                        "ControllerKey" => "25",
                         "ControllerIndex" => "0",
                         "DeviceLocation" => "0.0.0.0",
                         "DeviceJob" => "Device",
@@ -585,7 +597,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         ."000000000000000000000000",
                         "Active" => "1",
                         "GatewayKey" => "1",
-                        "ControllerKey" => "0",
+                        "ControllerKey" => "25",
                         "ControllerIndex" => "0",
                         "DeviceLocation" => "0.0.0.0",
                         "DeviceJob" => "Device",
@@ -659,7 +671,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         ."000000000000000000000000",
                         "Active" => "1",
                         "GatewayKey" => "1",
-                        "ControllerKey" => "0",
+                        "ControllerKey" => "25",
                         "ControllerIndex" => "0",
                         "DeviceLocation" => "0.0.0.0",
                         "DeviceJob" => "Device",
@@ -732,7 +744,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         ."000000000000000000000000",
                         "Active" => "1",
                         "GatewayKey" => "1",
-                        "ControllerKey" => "0",
+                        "ControllerKey" => "25",
                         "ControllerIndex" => "0",
                         "DeviceLocation" => "0.0.0.0",
                         "DeviceJob" => "Device",
@@ -826,7 +838,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
     {
         return array(
             array( // #0 Device for locking empty
-                array(),
+                array(
+                    "id" => 1,
+                ),
                 array(
                 ),
                 array(
@@ -841,8 +855,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 0,
-                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'id' => 1,
+                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 1,
                     'sensors' => array(
                     ),
                     'params' => array(
@@ -851,7 +866,10 @@ class E00392600DeviceTest extends DevicePluginTestBase
                 "",
             ),
             array( // #1 I got a lock!
-                array(),
+                array(
+                    "id" => 1,
+                    "ControllerKey" => 13,
+                ),
                 array(
                 ),
                 array(
@@ -870,8 +888,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 0,
-                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'id' => 1,
+                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 13,
                     'sensors' =>
                     array(
                     ),
@@ -882,6 +901,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
             ),
             array( // #2 Already locked!
                 array(
+                    "id" => 1,
                 ),
                 array(
                 ),
@@ -906,8 +926,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 0,
-                    'RawSetup' => '000000000000000000000000000000000000FFFFFF00',
+                    'id' => 1,
+                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 1,
                     'sensors' => array(
                     ),
                     'params' => array(
@@ -976,6 +997,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         .'06000500000000000000000000000000000000000000000000000'
                         .'00000000000000000000000',
                     'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
                     'DeviceLocation' => '0.0.0.0',
                     'DeviceJob' => 'Device',
                     'Driver' => 'e00392600',
@@ -1048,6 +1070,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         .'06000500000000000000000000000000000000000000000000000'
                         .'00000000000000000000000',
                     'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
                     'DeviceLocation' => '0.0.0.0',
                     'DeviceJob' => 'Device',
                     'Driver' => 'e00392600',
@@ -1126,6 +1149,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         .'06000500000000000000000000000000000000000000000000000'
                         .'00000000000000000000000',
                     'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
                     'DeviceLocation' => '0.0.0.0',
                     'DeviceJob' => 'Device',
                     'Driver' => 'e00392600',
@@ -1135,6 +1159,44 @@ class E00392600DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 "5A5A5A570001240001230300053264",
+            ),
+            array( // #6 Already locked by me!
+                array(
+                    "id" => 1,
+                    "ControllerKey" => 0x13,
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 0x13,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                "",
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 1,
+                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 0x13,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "",
             ),
         );
     }
@@ -1178,6 +1240,88 @@ class E00392600DeviceTest extends DevicePluginTestBase
         $this->assertSame($expect, $ret, "Return Wrong");
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+    }
+    /**
+    * Data provider for testGetMyDevLock
+    *
+    * @return array
+    */
+    public static function dataGetMyDevLock()
+    {
+        return array(
+            array( // #0 Device for locking empty
+                array(
+                    "id" => 1,
+                ),
+                array(
+                ),
+                array(),
+                false,
+            ),
+            array( // #1 Already locked!
+                array(
+                    "id" => 1,
+                ),
+                array(
+                    array(
+                        "id" => 0xAAAAAA,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                false,
+            ),
+            array( // #2 Already locked by me!
+                array(
+                    "id" => 1,
+                    "ControllerKey" => 0x13,
+                ),
+                array(
+                    array(
+                        "id" => 0x13,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the device for the class
+    * @param array $locks   The locks that are in place
+    * @param array $device  The device to get a lock for
+    * @param array $expect  The expected return
+    *
+    * @dataProvider dataGetMyDevLock
+    *
+    * @return null
+    */
+    public function testGetMyDevLock($preload, $locks, $device, $expect)
+    {
+        $lock = new LockTable();
+        foreach ((array)$locks as $key => $val) {
+            $lock->clearData();
+            $lock->fromAny($val);
+            $lock->insertRow(true);
+        }
+        $dev = new DeviceContainer($preload);
+        $o = new TestE00392600Device($dev);
+        $devO = new DeviceContainer($device);
+        $ret = $o->getMyDevLock($devO);
+        $this->assertSame($expect, $ret, "Return Wrong");
     }
 
 }

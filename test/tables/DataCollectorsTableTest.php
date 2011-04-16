@@ -329,6 +329,41 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
         $this->assertSame($ret, $return);
     }
     /**
+    * Data provider for testRegisterMe
+    *
+    * @return array
+    */
+    public static function dataGetMine()
+    {
+        return array(
+            array(
+                array(
+                    "id" => 0x156,
+                    "DeviceID" => "000156",
+                    "GatewayKey" => 1,
+                    "DeviceLocation" => "192.168.192.5",
+                ),
+                404,
+            ),
+        );
+    }
+    /**
+    * Tests the insert of a DeviceID
+    *
+    * @param mixed $data   The data to use
+    * @param array $expect The expected table row
+    *
+    * @dataProvider dataGetMine
+    *
+    * @return null
+    */
+    public function testGetMine($data, $expect)
+    {
+        $dev = new DeviceContainer($data);
+        $ret = $this->o->getMine($dev);
+        $this->assertSame($expect, $ret);
+    }
+    /**
     * data provider for testForceTable
     *
     * @return array

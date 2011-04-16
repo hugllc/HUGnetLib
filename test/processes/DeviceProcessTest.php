@@ -235,6 +235,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "DeviceID"   => "000019",
                     "HWPartNum"  => "0039-26-06-P",
                     "FWPartNum"  => "0039-26-06-P",
+                    "ControllerKey" => 19,
                 ),
                 true,
                 array(
@@ -295,6 +296,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "DeviceID"   => "000019",
                     "HWPartNum"  => "0039-26-06-P",
                     "FWPartNum"  => "0039-26-06-P",
+                    "ControllerKey" => 19,
                 ),
                 true,
                 array(

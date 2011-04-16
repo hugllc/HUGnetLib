@@ -87,6 +87,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         $this->config = &ConfigContainer::singleton();
         $this->config->forceConfig($config);
         $this->config->sockets->forceDeviceID("000019");
+        $this->pdo = &$this->config->servers->getPDO();
         foreach ($this->config->sockets->groups() as $group) {
             $this->socket[$group] = &$this->config->sockets->getSocket($group);
         }
@@ -117,7 +118,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, SIG_DFL);
         }
-
+        $stmt = $this->pdo->query("DELETE FROM `datacollectors`");
     }
     /**
     * Tests for exceptions
@@ -152,6 +153,9 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     "GatewayKey" => 4,
                 ),
+                array(
+                    array("id" => "25"),
+                ),
             ),
            array(
                 array(
@@ -168,21 +172,26 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                     "GatewayKey" => 6,
                 ),
+                array(
+                    array("id" => "25"),
+                ),
             ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
+    * @param array $preload       The value to preload
+    * @param array $expect        The expected return
+    * @param array $dataCollector The data collector id to expect
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect)
+    public function testConstructor($preload, $expect, $dataCollector)
     {
+        $stmt = $this->pdo->query("DELETE FROM `datacollectors`");
         $o = new PacketRouter($preload, $this->device);
         foreach ($expect as $key => $value) {
             $this->assertSame($value, $o->$key, "Bad Value in key $key");
@@ -190,6 +199,10 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
         // Check the configuration is set correctly
         $config = $this->readAttribute($o, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
+        $stmt = $this->pdo->query("SELECT `id` FROM `datacollectors`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame($dataCollector, $rows);
+
     }
     /**
     * data provider for testSend

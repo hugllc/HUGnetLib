@@ -170,6 +170,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 array(
                 ),
                 null,
+                array(
+                ),
             ),
             array(
                 array(
@@ -218,6 +220,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 "000019",
+                array(
+                ),
             ),
             array(
                 array(
@@ -266,6 +270,11 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 "000019",
+                array(
+                    "id" => 19,
+                    "ip" => ProcessBase::getIP(),
+                    "GatewayKey" => 3,
+                ),
             ),
             array(
                 array(
@@ -291,6 +300,8 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
                 array(
                 ),
                 "000019",
+                array(
+                ),
             ),
         );
     }
@@ -303,14 +314,19 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
     * @param array  $expectDev The expected device
     * @param array  $err       The expected errors posted
     * @param string $DeviceID  The device id it should have
+    * @param array  $dcLoad    The datacollector to insert
     *
     * @return null
     *
     * @dataProvider dataConstructor
     */
     public function testConstructor(
-        $preload, $device, $expect, $expectDev, $err, $DeviceID
+        $preload, $device, $expect, $expectDev, $err, $DeviceID, $dcLoad
     ) {
+        if (!empty($dcLoad)) {
+            $dc = new DataCollectorsTable($dcLoad);
+            $dc->insertRow(true);
+        }
         $o = new ProcessBaseClassTest($preload, $device);
         $ret = $this->readAttribute($o, "data");
         $this->assertSame($expect, $ret, "Data is wrong");
