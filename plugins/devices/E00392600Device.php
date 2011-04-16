@@ -393,11 +393,17 @@ class E00392600Device extends DeviceDriverBase
     */
     protected function checkDevLock(&$dev)
     {
-        $ret = $this->checkLocalDevLock($dev->DeviceID, false);
-        if (empty($ret)) {
-            $ret = $this->checkRemoteDevLock($dev);
+        $local = $this->checkLocalDevLock($dev->DeviceID, false);
+        $remote = $this->checkRemoteDevLock($dev);
+        if (!empty($local) && !empty($remote) && ($local !== $remote)) {
+            $this->logError(
+                $errorInfo[0],
+                $dev->DeviceID." is locked by both $local and $remote",
+                ErrorTable::SEVERITY_ERROR,
+                "checkDevLock"
+            );
         }
-        return $ret;
+        return $remote;
     }
     /**
     * Reads the setup out of the device.
