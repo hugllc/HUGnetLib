@@ -170,22 +170,23 @@ class LockTable extends HUGnetDBTable
     * @param string $type     The type of lock
     * @param string $data     The data string
     * @param int    $timeLeft The amount of time left on the lock
+    * @param bool   $force    Whether to force the writing or not
     *
     * @return true if lock successful, false otherwise
     */
-    public function place($id, $type, $data, $timeLeft)
+    public function place($id, $type, $data, $timeLeft, $force=false)
     {
         $this->clearData();
-        if (is_null($id) || is_null($type) || is_null($data) || empty($timeLeft)) {
+        if (empty($id) || empty($type) || is_null($data) || empty($timeLeft)) {
             return false;
         }
         $check = $this->check($id, $type, $data);
-        if ($this->isEmpty()) {
+        if ($this->isEmpty() || $force) {
             $this->id = (int)$id;
             $this->type = $type;
             $this->lockData = $data;
             $this->expiration = $this->now() + (int)$timeLeft;
-            $ret = $this->insertRow();
+            $ret = $this->insertRow($force);
         } else if ($check) {
             $this->expiration = $this->now() + (int)$timeLeft;
             $ret = $this->updateRow(array("expiration"));

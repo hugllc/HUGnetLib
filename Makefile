@@ -9,7 +9,7 @@ all: test style
 
 test: clean doc-clean Documentation/test
 	cd test; ${PHPUNIT} --coverage-html ${BASE_DIR}Documentation/test/codecoverage/ \
-                --log-junit ${BASE_DIR}Documentation/test/log.xml \
+                --log-junit ${BASE_DIR}Documentation/test/log.xml --syntax-check\
                 --testdox-html ${BASE_DIR}Documentation/test/testdox.html \
                 .| tee ${BASE_DIR}Documentation/test/testoutput.txt
 

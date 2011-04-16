@@ -139,6 +139,7 @@ class PacketRouter extends ProcessBase
     */
     public function route()
     {
+        // Okay, now do the meat of the stuff
         $packets = 0;
         foreach ($this->groups as $group) {
             if (!$this->loop()) {
@@ -232,11 +233,29 @@ class PacketRouter extends ProcessBase
     */
     public function powerup()
     {
+        $this->vprint(
+            "Starting... (".$this->myDevice->DeviceID.")",
+            HUGnetClass::VPRINT_NORMAL
+        );
         foreach ((array)$this->groups as $group) {
             PacketContainer::powerup("", $group);
         }
         $cmd = PacketContainer::COMMAND_POWERUP;
         $this->myDevice->params->ProcessInfo["unsolicited"][$cmd]++;
+    }
+    /**
+    * This function routes a packet
+    *
+    * @return null
+    */
+    protected function registerDataCollector()
+    {
+        $dc = new DataCollectorsTable();
+        $dc->fromDeviceContainer($this->myDevice);
+        $uname = posix_uname();
+        $dc->name = trim($uname['nodename']);
+        $ret = $dc->registerMe();
+        $this->myDevice->ControllerKey = $dc->id;
     }
 
 }

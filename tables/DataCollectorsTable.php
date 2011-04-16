@@ -191,6 +191,21 @@ class DataCollectorsTable extends HUGnetDBTable
     /**
     * Sets all of the endpoint attributes from an array
     *
+    * @param DeviceContainer &$dev The device container to use
+    *
+    * @return null
+    */
+    public function getMine(DeviceContainer &$dev)
+    {
+        $this->selectOneInto(
+            "`GatewayKey` = ? AND `ip` = ?",
+            array($dev->GatewayKey, $dev->DeviceLocation)
+        );
+        return (int)$this->id;
+    }
+    /**
+    * Sets all of the endpoint attributes from an array
+    *
     * @return null
     */
     public function registerMe()
