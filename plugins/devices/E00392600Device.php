@@ -282,6 +282,14 @@ class E00392600Device extends DeviceDriverBase
         if ($pkt->toMe()) {
             if ($pkt->Command == PacketContainer::COMMAND_GETSETUP) {
                 $pkt->reply((string)$this->myDriver);
+                // Try to insert anything getting my configuration
+                DevicesTable::insertDeviceID(
+                    array(
+                        "DeviceID" => $pkt->From,
+                        "GatewayKey" => $this->myDriver->GatewayKey,
+                    )
+                );
+
             } else if (($pkt->Command == PacketContainer::COMMAND_ECHOREQUEST)
                 || ($pkt->Command == PacketContainer::COMMAND_FINDECHOREQUEST)
             ) {
@@ -324,7 +332,7 @@ class E00392600Device extends DeviceDriverBase
             if (empty($data)) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
-                $this->setDevLock($dev, hexdec($pkt->From));
+                $this->setDevLock($dev, hexdec($pkt->From), null, true);
                 $locker = "no one";
                 $time = "";
             }
@@ -385,7 +393,9 @@ class E00392600Device extends DeviceDriverBase
     {
         $ret = $this->checkDevLock($dev);
         if (empty($ret) || (hexdec($ret) === $this->myDriver->ControllerKey)) {
-            $ret = $this->setDevLock($dev, $this->myDriver->ControllerKey);
+            $ret = $this->setDevLock(
+                $dev, $this->myDriver->ControllerKey, null, true
+            );
         } else {
             $ret = false;
         }

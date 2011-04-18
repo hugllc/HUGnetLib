@@ -265,6 +265,27 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         ."c29ycyI7aTowO3M6MTI6ImZvcmNlU2Vuc29ycyI7YjowO30=",
                         "params" => "YTowOnt9",
                     ),
+                    array(
+                        'id' => (string)0x123456,
+                        'DeviceID' => '123456',
+                        'DeviceName' => '',
+                        'HWPartNum' => '',
+                        'FWPartNum' => '',
+                        'FWVersion' => '',
+                        'RawSetup' => '',
+                        'Active' => '1',
+                        'GatewayKey' => '1',
+                        'ControllerKey' => '0',
+                        'ControllerIndex' => '0',
+                        'DeviceLocation' => '',
+                        'DeviceJob' => '',
+                        'Driver' => 'eDEFAULT',
+                        'PollInterval' => '0',
+                        'ActiveSensors' => '0',
+                        'DeviceGroup' => 'FFFFFF',
+                        'sensors' => '',
+                        'params' => '',
+                    )
                 ),
                 "5A5A5A011234560000193C000000001900392606500039260650000700FFFFFF00"
                 ."06000100000000000000000000000000000000000000000000000000000000000"

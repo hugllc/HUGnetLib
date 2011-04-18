@@ -279,6 +279,41 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public static function dataRoute()
     {
         return array(
+            // Unsolicited packet
+            array(
+                array(),
+                true,
+                array(
+                    array(
+                        "other" => (string)new PacketContainer(
+                            array(
+                                "To" => "000000",
+                                "From" => "123456",
+                                "Command" => "5E",
+                            )
+                        ),
+                    ),
+                ),
+                array(
+                    "other"   => "",
+                    "third"   => (string)new PacketContainer(
+                        array(
+                            "To" => "000000",
+                            "From" => "123456",
+                            "Command" => "5E",
+                        )
+                    ),
+                    "default" => (string)new PacketContainer(
+                        array(
+                            "To" => "000000",
+                            "From" => "123456",
+                            "Command" => "5E",
+                        )
+                    ),
+                ),
+                array(
+                ),
+            ),
             // One Packet to me.  Sending a reply
             array(
                 array(),
