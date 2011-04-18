@@ -63,6 +63,8 @@ class E00392606Device extends E00392600Device
     const COMMAND_READDOWNSTREAM = "56";
     /** The placeholder for locking a device */
     const COMMAND_GETDEVLOCK = "57";
+    /** The placeholder for locking a device */
+    const COMMAND_SETDEVLOCK = "58";
     /** The verbose setting for output */
     const VERBOSITY = 2;
     /** @var This is to register the class */
@@ -100,6 +102,7 @@ class E00392606Device extends E00392600Device
         $this->pktSetupEcho($pkt);
         $this->pktDownstreamDevices($pkt);
         $this->pktGetDevLock($pkt);
+        $this->pktSetDevLock($pkt);
     }
     /**
     * This deals with Packets to me
@@ -216,6 +219,46 @@ class E00392606Device extends E00392600Device
         }
     }
     /**
+    * This deals with Packets to me
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    protected function pktSetDevLock(PacketContainer &$pkt)
+    {
+        if ($pkt->toMe() && ($pkt->Command == self::COMMAND_SETDEVLOCK)) {
+            $DeviceID = substr($pkt->Data, 0, 6);
+            $timeout = hexdec(substr($pkt->Data, 6, 4));
+            self::vprint(
+                "Got a set lock request for ".$DeviceID." from ".$pkt->From,
+                self::VERBOSITY
+            );
+            $lock = $this->checkLocalDevLock($DeviceID);
+            if ($lock->isEmpty() || ($lock->id === hexdec($pkt->From))) {
+                $dev = new DeviceContainer();
+                $dev->getRow(hexdec($DeviceID));
+                $lock->id = $pkt->From;
+                $lock->type = static::LOCKTYPE;
+                $lock->lockData = $DeviceID;
+                $lock->expiration = $this->now() + $timeout;
+                $ret = $this->setLocalDevLock(
+                    $dev, hexdec($pkt->From), $timeout, true
+                );
+                $data  = $DeviceID;
+                $data .= self::stringSize(dechex($timeout), 4);
+                self::vprint(
+                    "Replying that $locker has a lock "
+                    ." until ".date("Y-m-d H:i:s", $lock->expiration),
+                    self::VERBOSITY
+                );
+            } else {
+                $data = "";
+            }
+            $pkt->reply($data);
+        }
+    }
+    /**
     * Reads the setup out of the device
     *
     * @param string          $locker The deviceID of the locking device
@@ -301,6 +344,42 @@ class E00392606Device extends E00392600Device
             }
         }
         return $ret;
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @param DeviceContainer &$dev   The device to lock
+    * @param int             $locker The deviceID of the locking device
+    * @param int             $time   The time to lock for
+    * @param bool            $force  Whether to force the writing or not
+    *
+    * @return bool True on success, False on failure
+    */
+    public function setRemoteDevLock(&$dev, $locker, $time=null, $force=false)
+    {
+        if ($dev->isEmpty()) {
+            return false;
+        }
+        self::vprint(
+            "Sending a save lock request for ".$dev->DeviceID." to ".$locker,
+            self::VERBOSITY
+        );
+        $pkt = new PacketContainer(
+            array(
+                "To"      => dechex($locker),
+                "From"    => (int) $this->myDriver->id,
+                "Command" => self::COMMAND_SETDEVLOCK,
+                "Data"    => $dev->DeviceID.self::stringSize(
+                    dechex($time), 4
+                ),
+                "Timeout" => 3,
+            )
+        );
+        $ret = $pkt->send();
+        if ($ret && is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
+            return $pkt->Reply->Data === $pkt->Data;
+        }
+        return false;
     }
     /**
     * Reads the setup out of the device.
