@@ -59,8 +59,6 @@ class E00392600Device extends DeviceDriverBase
 {
     /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";
-    /** The placeholder for locking a device */
-    const COMMAND_GETDEVLOCK = "57";
     /** The type of locks we are doing */
     const LOCKTYPE = "device";
     /** The verbose setting for output */
@@ -320,42 +318,33 @@ class E00392600Device extends DeviceDriverBase
     */
     public function getMyDevLock(DeviceContainer &$dev)
     {
-        $ret = $this->checkLocalDevLock($dev->DeviceID);
-        if (hexdec($ret) === $this->myDriver->ControllerKey) {
-            $ret = true;
-        } else {
-            $ret = false;
-        }
-        return $ret;
+        $lock = &$this->checkLocalDevLock($dev->DeviceID);
+        return !$lock->isEmpty() && ($lock->id === $this->myDriver->id);
     }
     /**
     * Reads the setup out of the device.
     *
     * @param string $DeviceID The deviceID to check
-    * @param bool   $time     The time left on the lock
     *
     * @return bool True on success, False on failure
     */
-    protected function checkLocalDevLock($DeviceID, $time = false)
+    protected function &checkLocalDevLock($DeviceID)
     {
         $data = "";
-        $this->devLocks->check(
-            $this->myDriver->ControllerKey, self::LOCKTYPE, $DeviceID
+        $class = get_class($this->devLocks);
+        $lock = new $class();
+        $local = $lock->check(
+            1, static::LOCKTYPE, $DeviceID
         );
-        if (!$this->devLocks->isEmpty()) {
-            $data = self::stringSize(dechex($this->devLocks->id), 6);
+        if ($local) {
+            $lock->id = $this->myDriver->id;
             self::vprint(
                 "$data has lock on ".$DeviceID." until "
                 .date("Y-m-d H:i:s", $this->devLocks->expiration),
                 self::VERBOSITY
             );
-            if ($time) {
-                $data .= self::stringSize(
-                    dechex($this->devLocks->expiration - $this->now()), 4
-                );
-            }
         }
-        return $data;
+        return $lock;
     }
 
 }

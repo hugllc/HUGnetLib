@@ -247,5 +247,18 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             }
         }
     }
+    /**
+    * This function should be used to wait between config attempts
+    *
+    * @param DeviceContainer &$dev The device to check
+    *
+    * @return int The number of packets routed
+    */
+    protected function checkLock(DeviceContainer &$dev)
+    {
+
+    }
+
+
 }
 ?>

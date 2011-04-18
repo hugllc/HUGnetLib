@@ -55,10 +55,14 @@ require_once dirname(__FILE__).'/../../tables/LockTable.php';
 class E00392606Device extends E00392600Device
     implements DeviceDriverInterface
 {
-    /** The placeholder for the reading the downstream units from a controller */
+    /** Error for the clock skew */
+    const MAX_LOCK_TIME = 1800;
+    /** Error for the clock skew */
     const ERROR_CLOCK_SKEW = -2321;
     /** The placeholder for the reading the downstream units from a controller */
     const COMMAND_READDOWNSTREAM = "56";
+    /** The placeholder for locking a device */
+    const COMMAND_GETDEVLOCK = "57";
     /** The verbose setting for output */
     const VERBOSITY = 2;
     /** @var This is to register the class */
@@ -189,15 +193,20 @@ class E00392606Device extends E00392600Device
                 "Got a lock request for ".$DeviceID." from ".$pkt->From,
                 self::VERBOSITY
             );
-            $data = $this->checkLocalDevLock($DeviceID, true);
-            $locker = substr($data, 0, 6);
-            $time = " for ".hexdec(substr($data, 6, 4))." s";
-            if (empty($data)) {
+            $lock = $this->checkLocalDevLock($DeviceID);
+            $locker = self::stringSize(dechex($lock->id), 6);
+            $time = " until ".date("Y-m-d H:i:s", $lock->expiration);
+            if ($lock->isEmpty()) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
-                $this->setDevLock($dev, hexdec($pkt->From), null, true);
+                $this->setLocalDevLock($dev, hexdec($pkt->From), 10, true);
                 $locker = "no one";
                 $time = "";
+            } else {
+                $data  = self::stringSize(dechex($lock->id), 6);
+                $data .= self::stringSize(
+                    dechex($lock->expiration - $this->now()), 4
+                );
             }
             self::vprint(
                 "Replying that $locker has a lock $time",
@@ -214,7 +223,7 @@ class E00392606Device extends E00392600Device
     *
     * @return bool True on success, False on failure
     */
-    protected function readDevLock($locker, &$dev)
+    protected function &readDevLock($locker, &$dev)
     {
         self::vprint(
             "Sending a lock request for ".$dev->DeviceID." to ".$locker,
@@ -230,20 +239,26 @@ class E00392606Device extends E00392600Device
             )
         );
         $ret = $pkt->send();
+        $class = get_class($this->devLocks);
+        $lock = new $class();
         if (is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
-            $DeviceID = substr($pkt->Reply->Data, 0, 6);
-            $time     = hexdec(substr($pkt->Reply->Data, 6, 4));
-            self::vprint(
-                "$locker Replied: ".$dev->DeviceID." locked by $DeviceID"
-                ." for $time s",
-                self::VERBOSITY
-            );
-            $ret = $this->setDevLock($dev, hexdec($DeviceID), $time, true);
+            $lock->lockData   = $dev->DeviceID;
+            $lock->id         = hexdec(substr($pkt->Reply->Data, 0, 6));
+            $timeout          = hexdec(substr($pkt->Reply->Data, 6, 4));
+            if ($timeout > self::MAX_LOCK_TIME) {
+                $lock->clearData();
+            } else {
+                self::vprint(
+                    "$locker Replied: ".$dev->DeviceID." locked by "
+                    .self::stringSize(dechex($lock->id), 6)
+                    ." until ".date("Y-m-d H:i:s", $lock->expiration)." s",
+                    self::VERBOSITY
+                );
+                $lock->expiration = $this->now() + $timeout;
+                $lock->type = static::LOCKTYPE;
+            }
         }
-        if ($ret) {
-            return $DeviceID;
-        }
-        return "";
+        return $lock;
     }
     /**
     * Reads the setup out of the device.
@@ -252,17 +267,14 @@ class E00392606Device extends E00392600Device
     *
     * @return bool True on success, False on failure
     */
-    public function getDevLock(DeviceContainer &$dev)
+    public function &getDevLock(DeviceContainer &$dev)
     {
-        $ret = $this->checkDevLock($dev);
-        if (empty($ret) || (hexdec($ret) === $this->myDriver->ControllerKey)) {
-            $ret = $this->setDevLock(
-                $dev, $this->myDriver->ControllerKey, null, true
-            );
-        } else {
-            $ret = false;
+        $locks = &$this->checkRemoteDevLock($dev);
+        $local = &$this->checkLocalDevLock($dev->DeviceID, false);
+        if (!$local->isEmpty()) {
+            $locks[1] = &$local;
         }
-        return $ret;
+        return $locks;
     }
     /**
     * Reads the setup out of the device.
@@ -271,31 +283,7 @@ class E00392606Device extends E00392600Device
     *
     * @return bool True on success, False on failure
     */
-    protected function checkDevLock(&$dev)
-    {
-        $local = $this->checkLocalDevLock($dev->DeviceID, false);
-        $remote = $this->checkRemoteDevLock($dev);
-        if (!empty($local) && !empty($remote) && ($local !== $remote)) {
-            $this->logError(
-                $errorInfo[0],
-                $dev->DeviceID." is locked by both $local and $remote",
-                ErrorTable::SEVERITY_ERROR,
-                "checkDevLock"
-            );
-        }
-        if (!empty($remote)) {
-            return $remote;
-        }
-        return $local;
-    }
-    /**
-    * Reads the setup out of the device.
-    *
-    * @param DeviceContainer &$dev The device to get a lock on
-    *
-    * @return bool True on success, False on failure
-    */
-    protected function checkRemoteDevLock(&$dev)
+    protected function &checkRemoteDevLock(&$dev)
     {
         $devs = $this->myDriver->selectIDs(
             "GatewayKey = ? AND Driver = ? AND id <> ?",
@@ -305,9 +293,9 @@ class E00392606Device extends E00392600Device
                 $this->myDriver->id
             )
         );
-        $ret = false;
+        $ret = array();
         foreach ($devs as $d) {
-            $ret = $this->readDevLock(dechex($d), $dev);
+            $ret[$d] = $this->readDevLock(dechex($d), $dev);
             if (!empty($ret)) {
                 break;
             }
@@ -318,13 +306,13 @@ class E00392606Device extends E00392600Device
     * Reads the setup out of the device.
     *
     * @param DeviceContainer &$dev   The device to lock
-    * @param string          $locker The deviceID of the locking device
+    * @param int             $locker The deviceID of the locking device
     * @param int             $time   The time to lock for
     * @param bool            $force  Whether to force the writing or not
     *
     * @return bool True on success, False on failure
     */
-    protected function setDevLock(&$dev, $locker, $time = null, $force=false)
+    public function setLocalDevLock(&$dev, $locker, $time = null, $force=false)
     {
         if ($dev->isEmpty()) {
             return false;
@@ -337,9 +325,12 @@ class E00392606Device extends E00392600Device
                 .date("Y-m-d H:i:s", $timeout + $this->now()),
                 self::VERBOSITY
             );
+            if ($locker === $this->myDriver->id) {
+                $locker = 1;
+            }
             return $this->devLocks->place(
                 $locker,
-                self::LOCKTYPE,
+                static::LOCKTYPE,
                 $dev->DeviceID,
                 $timeout,
                 $force
@@ -368,12 +359,11 @@ class E00392606Device extends E00392600Device
             return false;
         }
         // Only allow 1800 seconds at most for the lock
-        if (empty($time) || ($time > 1800)) {
+        if (empty($time) || ($time > self::MAX_LOCK_TIME)) {
             return (int)$timeout;
         }
         return (int)$time;
     }
-
 
 }
 

@@ -498,7 +498,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
             ),
             array( // #1 Already locked!
                 array(
-                    "id" => 1,
+                    "id" => 10,
                 ),
                 array(
                     array(
@@ -516,12 +516,12 @@ class E00392600DeviceTest extends DevicePluginTestBase
             ),
             array( // #2 Already locked by me!
                 array(
-                    "id" => 1,
+                    "id" => 10,
                     "ControllerKey" => 0x13,
                 ),
                 array(
                     array(
-                        "id" => 0x13,
+                        "id" => 1,
                         "type" => E00392600Device::LOCKTYPE,
                         "lockData" => "000532",
                         "expiration" => 100000000000, // Way in the future

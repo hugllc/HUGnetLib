@@ -1046,7 +1046,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(
                     "To" => "000019",
                     "From" => "123456",
-                    "Command" => E00392600Device::COMMAND_GETDEVLOCK,
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
                     "Data" => "001300",
                     "group" => "default",
                 ),
@@ -1120,7 +1120,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(
                     "To" => "000019",
                     "From" => "123456",
-                    "Command" => E00392600Device::COMMAND_GETDEVLOCK,
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
                     "Data" => "001300",
                     "group" => "default",
                 ),
@@ -1194,7 +1194,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(
                     "To" => "000019",
                     "From" => "123456",
-                    "Command" => E00392600Device::COMMAND_GETDEVLOCK,
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
                     "Data" => "001300",
                     "group" => "default",
                 ),
@@ -1267,7 +1267,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 array(
                     "To" => "000019",
                     "From" => "123456",
-                    "Command" => E00392600Device::COMMAND_GETDEVLOCK,
+                    "Command" => E00392606Device::COMMAND_GETDEVLOCK,
                     "Data" => "001300",
                     "group" => "default",
                 ),
@@ -1379,7 +1379,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
         return array(
             array( // #0 Device for locking empty
                 array(
-                    "id" => 1,
+                    "id" => 10,
                 ),
                 array(
                 ),
@@ -1387,7 +1387,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 array(),
                 "",
-                false,
+                array(),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -1395,9 +1395,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 1,
-                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
-                    'ControllerKey' => 1,
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 10,
                     'sensors' => array(
                     ),
                     'params' => array(
@@ -1405,9 +1405,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 "",
             ),
-            array( // #1 I got a lock!
+            array( // #1 No locks present
                 array(
-                    "id" => 1,
+                    "id" => 10,
                     "ControllerKey" => 13,
                 ),
                 array(
@@ -1420,7 +1420,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => 10,
                 ),
                 "",
-                true,
+                array(),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -1428,8 +1428,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 1,
-                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
                     'ControllerKey' => 13,
                     'sensors' =>
                     array(
@@ -1441,7 +1441,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
             ),
             array( // #2 Already locked!
                 array(
-                    "id" => 1,
+                    "id" => 10,
                 ),
                 array(
                 ),
@@ -1458,7 +1458,15 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "DeviceID" => "000532",
                 ),
                 "",
-                false,
+                array(
+                    1 => array(
+                        "group" => "volatile",
+                        "id" => 0xAAAAAA,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -1466,9 +1474,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 1,
-                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
-                    'ControllerKey' => 1,
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 10,
                     'sensors' => array(
                     ),
                     'params' => array(
@@ -1508,13 +1516,34 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 array(
+                    array(
+                        "id" => 0x124,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
                 ),
                 array(
                     "id" => 0x532,
                     "DeviceID" => "000532",
                 ),
                 "",
-                true,
+                array(
+                    0x124 => array(
+                        "group" => "volatile",
+                        "id" => null,
+                        "type" => null,
+                        "lockData" => "",
+                        "expiration" => null, // Way in the future
+                    ),
+                    1 => array(
+                        "group" => "volatile",
+                        "id" => 0x124,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'Job' => 6,
@@ -1581,13 +1610,34 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     ),
                 ),
                 array(
+                    array(
+                        "id" => 0x124,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 269, // Way in the future
+                    ),
                 ),
                 array(
                     "id" => 0x532,
                     "DeviceID" => "000532",
                 ),
                 "5A5A5A0100012300012405000124010027",
-                false,
+                array(
+                    292 => array(
+                        'group' => 'volatile',
+                        'id' => 292,
+                        'type' => 'device',
+                        'lockData' => '000532',
+                        'expiration' => 269,
+                    ),
+                    1 => array(
+                        'group' => 'volatile',
+                        'id' => 292,
+                        'type' => 'device',
+                        'lockData' => '000532',
+                        'expiration' => 269,
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'Job' => 6,
@@ -1649,13 +1699,6 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "Driver" => "e00392606",
                         "GatewayKey" => 5,
                         "params" => array(
-                            "ProcessInfo" => array(
-                                "devLocks" => array(
-                                    "AAAAAA" => array(
-                                        "000532" => 100, // Way in the future
-                                    ),
-                                ),
-                            ),
                         ),
                     ),
                 ),
@@ -1666,7 +1709,15 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "DeviceID" => "000532",
                 ),
                 "5A5A5A0100012300012405000124FFFF26",
-                true,
+                array(
+                    0x124 => array(
+                        "group" => "volatile",
+                        "id" => null,
+                        "type" => null,
+                        "lockData" => "",
+                        "expiration" => null, // Way in the future
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'Job' => 6,
@@ -1736,7 +1787,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "id" => 0x123,
                         "type" => E00392600Device::LOCKTYPE,
                         "lockData" => "000532",
-                        "expiration" => 100000000000, // Way in the future
+                        "expiration" => 152, // Way in the future
                     ),
                 ),
                 array(
@@ -1744,7 +1795,22 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "DeviceID" => "000532",
                 ),
                 "5A5A5A0100012300012405000124010027",
-                false,
+                array(
+                    292 => array(
+                        'group' => 'volatile',
+                        'id' => 292,
+                        'type' => 'device',
+                        'lockData' => '000532',
+                        'expiration' => 269,
+                    ),
+                    1 => array(
+                        'group' => 'volatile',
+                        'id' => 291,
+                        'type' => 'device',
+                        'lockData' => '000532',
+                        'expiration' => 152,
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'Job' => 6,
@@ -1780,7 +1846,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
             ),
             array( // #7 Already locked by me!
                 array(
-                    "id" => 1,
+                    "id" => 10,
                     "ControllerKey" => 0x13,
                 ),
                 array(
@@ -1790,7 +1856,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "id" => 0x13,
                         "type" => E00392600Device::LOCKTYPE,
                         "lockData" => "000532",
-                        "expiration" => 100000000000, // Way in the future
+                        "expiration" => 131, // Way in the future
                     ),
                 ),
                 array(
@@ -1798,7 +1864,15 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "DeviceID" => "000532",
                 ),
                 "",
-                true,
+                array(
+                    1 => array(
+                        'group' => 'volatile',
+                        'id' => 19,
+                        'type' => 'device',
+                        'lockData' => '000532',
+                        'expiration' => 131,
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -1806,8 +1880,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'PhysicalSensors' => 0,
                         'VirtualSensors' => 0,
                     ),
-                    'id' => 1,
-                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
                     'ControllerKey' => 0x13,
                     'sensors' => array(
                     ),
@@ -1854,11 +1928,442 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $dev->fromAny($preload);
         $o = new TestE00392606Device($dev);
         $devO = new DeviceContainer($device);
-        $ret = $o->getDevLock($devO);
+        $out = $o->getDevLock($devO);
+        $this->assertTrue(is_array($out), "Return must be an array");
+        $ret = array();
+        foreach (array_keys($out) as $k) {
+            $ret[$k] = $out[$k]->toArray();
+        }
         $this->assertSame($expect, $ret, "Return Wrong");
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
     }
+
+    /**
+    * Data provider for testSetLocalDevLock
+    *
+    * @return array
+    */
+    public static function dataSetLocalDevLock()
+    {
+        return array(
+            array( // #0 Device for locking empty
+                array(
+                    "id" => 10,
+                ),
+                array(
+                ),
+                array(
+                ),
+                array(),
+                10,
+                150,
+                true,
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 10,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #1 No locks present
+                array(
+                    "id" => 10,
+                    "ControllerKey" => 13,
+                ),
+                array(
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                    "PollInterval" => 10,
+                ),
+                10,
+                150,
+                true,
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 13,
+                    'sensors' =>
+                    array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #2 Already locked!
+                array(
+                    "id" => 10,
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 0xAAAAAA,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                10,
+                150,
+                false,
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 10,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #3 Already locked (remote) (no answer)!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                10,
+                910,
+                true,
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #4 Already locked (remote) bad time!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                            "ProcessInfo" => array(
+                                "devLocks" => array(
+                                    "AAAAAA" => array(
+                                        "000532" => 100, // Way in the future
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                    "PollInterval" => 60,
+                ),
+                10,
+                E00392606Device::MAX_LOCK_TIME+10,
+                true,
+                true,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #5 Already locked remote and local!
+                array(
+                    "group" => "default",
+                    "DriverInfo" => array(
+                        "Job" => 6,
+                    ),
+                    "id" => 0x123,
+                    "DeviceID" => "000123",
+                    "GatewayKey" => 5,
+                    "HWPartNum" => "0039-26-06-P",
+                    "FWPartNum" => "0039-26-06-P",
+                    "FWVersion" => "0.9.5",
+                    "Driver" => "e00392606",
+                ),
+                array(
+                    array(
+                        "group" => "default",
+                        "DriverInfo" => array(
+                            "Job" => 6,
+                        ),
+                        "id" => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.9.5",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 5,
+                        "params" => array(
+                        ),
+                    ),
+                ),
+                array(
+                    array(
+                        "id" => 0x123,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                10,
+                150,
+                false,
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'Job' => 6,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'PacketTimeout' => 10,
+                        'Function' => 'Device',
+                        'CurrentGatewayKey' => 5,
+                        'Name' => '',
+                        'IP' => '0.0.0.0',
+                        'Priority' => 0,
+                    ),
+                    'id' => 0x123,
+                    'DeviceID' => "000123",
+                    'DeviceName' => 'Device Process',
+                    'HWPartNum' => '0039-26-06-P',
+                    'FWPartNum' => '0039-26-06-P',
+                    'FWVersion' => '0.9.5',
+                    'RawSetup' => '000000012300392606500039260650000905FFFFFF00'
+                        .'06000500000000000000000000000000000000000000000000000'
+                        .'00000000000000000000000',
+                    'GatewayKey' => 5,
+                    'ControllerKey' => 0x123,
+                    'DeviceLocation' => '0.0.0.0',
+                    'DeviceJob' => 'Device',
+                    'Driver' => 'e00392606',
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+            array( // #6 Already locked by me!
+                array(
+                    "id" => 1,
+                    "ControllerKey" => 0x13,
+                ),
+                array(
+                ),
+                array(
+                    array(
+                        "id" => 0x13,
+                        "type" => E00392600Device::LOCKTYPE,
+                        "lockData" => "000532",
+                        "expiration" => 100000000000, // Way in the future
+                    ),
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                10,
+                150,
+                false,
+                false,
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'TimeConstant' => 0,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                    ),
+                    'id' => 1,
+                    'RawSetup' => '000000000100000000000000000000000000FFFFFF00',
+                    'ControllerKey' => 0x13,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array $preload The array to preload into the device for the class
+    * @param array $devs    The Devices to load into the database
+    * @param array $locks   The locks that are in place
+    * @param array $device  The device to get a lock for
+    * @param int   $locker  The device to set the lock for
+    * @param int   $time    The time to lock for
+    * @param bool  $force   Whether to force the setting of the lock or not
+    * @param array $expect  The expected return
+    * @param array $devExp  The expected device afterwards
+    *
+    * @dataProvider dataSetLocalDevLock
+    *
+    * @return null
+    */
+    public function testSetLocalDevLock(
+        $preload, $devs, $locks, $device, $locker, $time, $force, $expect, $devExp
+    ) {
+        $dev = new DeviceContainer();
+        foreach ((array)$devs as $key => $val) {
+            $dev->clearData();
+            $dev->fromAny($val);
+            $dev->insertRow(true);
+        }
+        $lock = new LockTable();
+        foreach ((array)$locks as $key => $val) {
+            $lock->clearData();
+            $lock->fromAny($val);
+            $lock->insertRow(true);
+        }
+        $dev->clearData();
+        $dev->fromAny($preload);
+        $o = new TestE00392606Device($dev);
+        $devO = new DeviceContainer($device);
+        $ret = $o->setLocalDevLock($devO, $locker, $time, $force);
+        $this->assertSame($expect, $ret, "Return Wrong");
+        $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
+    }
+
 
 }
 /**
