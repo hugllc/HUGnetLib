@@ -174,6 +174,207 @@ class E00392606Device extends E00392600Device
         }
         return (bool) $ret;
     }
+    /**
+    * This deals with Packets to me
+    *
+    * @param PacketContainer &$pkt The packet that is to us
+    *
+    * @return string
+    */
+    protected function pktGetDevLock(PacketContainer &$pkt)
+    {
+        if ($pkt->toMe() && ($pkt->Command == self::COMMAND_GETDEVLOCK)) {
+            $DeviceID = substr($pkt->Data, 0, 6);
+            self::vprint(
+                "Got a lock request for ".$DeviceID." from ".$pkt->From,
+                self::VERBOSITY
+            );
+            $data = $this->checkLocalDevLock($DeviceID, true);
+            $locker = substr($data, 0, 6);
+            $time = " for ".hexdec(substr($data, 6, 4))." s";
+            if (empty($data)) {
+                $dev = new DeviceContainer();
+                $dev->getRow(hexdec($DeviceID));
+                $this->setDevLock($dev, hexdec($pkt->From), null, true);
+                $locker = "no one";
+                $time = "";
+            }
+            self::vprint(
+                "Replying that $locker has a lock $time",
+                self::VERBOSITY
+            );
+            $pkt->reply($data);
+        }
+    }
+    /**
+    * Reads the setup out of the device
+    *
+    * @param string          $locker The deviceID of the locking device
+    * @param DeviceContainer &$dev   The device to get a lock on
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function readDevLock($locker, &$dev)
+    {
+        self::vprint(
+            "Sending a lock request for ".$dev->DeviceID." to ".$locker,
+            self::VERBOSITY
+        );
+        $pkt = new PacketContainer(
+            array(
+                "To"      => $locker,
+                "From"    => (int) $this->myDriver->id,
+                "Command" => self::COMMAND_GETDEVLOCK,
+                "Data"    => $dev->DeviceID,
+                "Timeout" => 3,
+            )
+        );
+        $ret = $pkt->send();
+        if (is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
+            $DeviceID = substr($pkt->Reply->Data, 0, 6);
+            $time     = hexdec(substr($pkt->Reply->Data, 6, 4));
+            self::vprint(
+                "$locker Replied: ".$dev->DeviceID." locked by $DeviceID"
+                ." for $time s",
+                self::VERBOSITY
+            );
+            $ret = $this->setDevLock($dev, hexdec($DeviceID), $time, true);
+        }
+        if ($ret) {
+            return $DeviceID;
+        }
+        return "";
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev The device to get a lock on
+    *
+    * @return bool True on success, False on failure
+    */
+    public function getDevLock(DeviceContainer &$dev)
+    {
+        $ret = $this->checkDevLock($dev);
+        if (empty($ret) || (hexdec($ret) === $this->myDriver->ControllerKey)) {
+            $ret = $this->setDevLock(
+                $dev, $this->myDriver->ControllerKey, null, true
+            );
+        } else {
+            $ret = false;
+        }
+        return $ret;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev The device to get a lock on
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function checkDevLock(&$dev)
+    {
+        $local = $this->checkLocalDevLock($dev->DeviceID, false);
+        $remote = $this->checkRemoteDevLock($dev);
+        if (!empty($local) && !empty($remote) && ($local !== $remote)) {
+            $this->logError(
+                $errorInfo[0],
+                $dev->DeviceID." is locked by both $local and $remote",
+                ErrorTable::SEVERITY_ERROR,
+                "checkDevLock"
+            );
+        }
+        if (!empty($remote)) {
+            return $remote;
+        }
+        return $local;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev The device to get a lock on
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function checkRemoteDevLock(&$dev)
+    {
+        $devs = $this->myDriver->selectIDs(
+            "GatewayKey = ? AND Driver = ? AND id <> ?",
+            array(
+                $this->myDriver->GatewayKey,
+                static::$registerPlugin["Name"],
+                $this->myDriver->id
+            )
+        );
+        $ret = false;
+        foreach ($devs as $d) {
+            $ret = $this->readDevLock(dechex($d), $dev);
+            if (!empty($ret)) {
+                break;
+            }
+        }
+        return $ret;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev   The device to lock
+    * @param string          $locker The deviceID of the locking device
+    * @param int             $time   The time to lock for
+    * @param bool            $force  Whether to force the writing or not
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function setDevLock(&$dev, $locker, $time = null, $force=false)
+    {
+        if ($dev->isEmpty()) {
+            return false;
+        }
+        $timeout = $this->getDevLockTime($dev, $time);
+        if (is_int($timeout) && !empty($timeout)) {
+            self::vprint(
+                "Setting expiration of lock on ".$dev->DeviceID." by "
+                .self::stringSize(dechex($locker), 6)." for "
+                .date("Y-m-d H:i:s", $timeout + $this->now()),
+                self::VERBOSITY
+            );
+            return $this->devLocks->place(
+                $locker,
+                self::LOCKTYPE,
+                $dev->DeviceID,
+                $timeout,
+                $force
+            );
+        }
+        return false;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param DeviceContainer &$dev The device to lock
+    * @param int             $time The time to lock for
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function getDevLockTime(&$dev, $time)
+    {
+        $interval = (empty($dev->PollInterval)) ? 10 : $dev->PollInterval;
+        $timeout = $interval * 60 * 1.5;
+        while ($timeout < 600) {
+            // Keep adding poll intervals until we are > 10 minutes
+            // This way the timeout is never an even multiple of the poll interval
+            $timeout += $interval * 60;
+        }
+        if ($time > $timeout) {
+            return false;
+        }
+        // Only allow 1800 seconds at most for the lock
+        if (empty($time) || ($time > 1800)) {
+            return (int)$timeout;
+        }
+        return (int)$time;
+    }
+
+
 }
 
 ?>
