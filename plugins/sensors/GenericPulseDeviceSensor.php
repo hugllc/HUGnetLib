@@ -103,7 +103,10 @@ class GenericPulseDeviceSensor extends PulseDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        return $this->getPPM($A, $deltaT);
+        if ($A < 0) {
+            return null;
+        }
+        return (int)$A;
     }
     /**
     * Converts data between units

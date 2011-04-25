@@ -113,9 +113,9 @@ class GenericPulseDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataGetReading()
     {
         return array(
-            array(array(), 500, 300, 100.0),
-            array(array(), 500, 0, null),
-            array(array(), 500, -1, null),
+            array(array(), 500, 300, 500),
+            array(array(), 500, 0, 500),
+            array(array(), 500, -1, 500),
             array(array(), -1, 300, null),
         );
     }
