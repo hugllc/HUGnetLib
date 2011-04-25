@@ -129,7 +129,10 @@ class DewPointVirtualSensor extends VirtualSensorBase
         $r = (($a * $T) / ($b + $T)) + log($RH / 100);
 
         $Td = ($b * $r) / ($a - $r);
-        
+        if (($Td > 50) || ($Td < 0)) {
+            return null;
+        }
+
         return round($Td, $this->maxDecimals);
     }
 

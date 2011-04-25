@@ -263,6 +263,20 @@ class DewPointVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 14.9068
             ),
+            array( // #6
+                array(
+                    "extra" => array(
+                        1, 2
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => 12.91),
+                    1 => array("value" => 9.89),
+                ),
+                null
+            ),
         );
     }
     /**
@@ -273,7 +287,7 @@ class DewPointVirtualSensorTest extends VirtualSensorPluginTestBase
     * @param array $preload The data to preload into the class
     * @param int   $A       Output of the A to D converter
     * @param float $deltaT  The time delta in seconds between this record
-    * @param mixed $data    The data for the sensor to work with 
+    * @param mixed $data    The data for the sensor to work with
     * @param mixed $expect  The return data to expect
     *
     * @return null
