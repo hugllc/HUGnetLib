@@ -129,6 +129,8 @@ class DewPointVirtualSensor extends VirtualSensorBase
         $r = (($a * $T) / ($b + $T)) + log($RH / 100);
 
         $Td = ($b * $r) / ($a - $r);
+
+        // This is only valid if the output is between 0 and 50 C
         if (($Td > 50) || ($Td < 0)) {
             return null;
         }
