@@ -2436,6 +2436,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
     * @param array  $locks   The locks that are in place
     * @param array  $device  The device to get a lock for
     * @param string $read    The packet string to be read
+    * @param int    $locker  The device to set the lock for
+    * @param int    $time    The time to lock for
+    * @param bool   $force   Whether to force the setting of the lock or not
     * @param array  $expect  The expected return
     * @param array  $devExp  The expected device afterwards
     * @param string $write   The packet string expected to be written
@@ -2897,6 +2900,264 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
     }
 
+    /**
+    * Data provider for testSetRemoteDevLock
+    *
+    * @return array
+    */
+    public static function dataSetDevLock()
+    {
+        return array(
+            array( // #0 Device for locking empty
+                array(
+                    "id" => 10,
+                    "GatewayKey" => 1,
+                ),
+                array(
+                    array(
+                        'id' => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.0.1",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                array(
+                ),
+                array(),
+                "",
+                150,
+                true,
+                array(
+                    1 => false,
+                    292 => false,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'TimeConstant' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    "GatewayKey" => 1,
+                    'ControllerKey' => 10,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "",
+            ),
+            array( // #1 No reply
+                array(
+                    "id" => 10,
+                    "ControllerKey" => 13,
+                    "GatewayKey" => 1,
+                ),
+                array(
+                    array(
+                        'id' => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.0.1",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                    "PollInterval" => 10,
+                ),
+                "",
+                150,
+                true,
+                array(
+                    1 => true,
+                    292 => false,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'TimeConstant' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    "GatewayKey" => 1,
+                    'ControllerKey' => 13,
+                    'sensors' =>
+                    array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "5A5A5A5800012400000A050005320096D3"
+                    ."5A5A5A5800012400000A050005320096D3"
+                    ."5A5A5A0300012400000A002C5A5A5A5800012400000A050005320096D3",
+            ),
+            array( // #2 Already locked!
+                array(
+                    "id" => 10,
+                    "GatewayKey" => 1,
+                ),
+                array(
+                    array(
+                        'id' => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.0.1",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "00000A",
+                        "From" => "000124",
+                        "Command" => "01",
+                        "Data" => "0005320096",
+                    )
+                ),
+                150,
+                true,
+                array(
+                    1 => true,
+                    292 => true,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'TimeConstant' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    "GatewayKey" => 1,
+                    'ControllerKey' => 10,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "5A5A5A5800012400000A050005320096D3",
+            ),
+            array( // #3 bad reply
+                array(
+                    "id" => 10,
+                    "GatewayKey" => 1,
+                ),
+                array(
+                    array(
+                        'id' => 0x124,
+                        "DeviceID" => "000124",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "0.0.1",
+                        "Driver" => "e00392606",
+                        "GatewayKey" => 1,
+                    ),
+                ),
+                array(
+                ),
+                array(
+                    "id" => 0x532,
+                    "DeviceID" => "000532",
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "00000A",
+                        "From" => "000124",
+                        "Command" => "01",
+                        "Data" => "0005320092",
+                    )
+                ),
+                150,
+                true,
+                array(
+                    1 => true,
+                    292 => false,
+                ),
+                array(
+                    'DriverInfo' => array(
+                        'PacketTimeout' => 10,
+                        'PhysicalSensors' => 0,
+                        'VirtualSensors' => 0,
+                        'TimeConstant' => 0,
+                    ),
+                    'id' => 10,
+                    'RawSetup' => '000000000A00000000000000000000000000FFFFFF00',
+                    "GatewayKey" => 1,
+                    'ControllerKey' => 10,
+                    'sensors' => array(
+                    ),
+                    'params' => array(
+                    ),
+                ),
+                "5A5A5A5800012400000A050005320096D3",
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the device for the class
+    * @param array  $devs    The Devices to load into the database
+    * @param array  $locks   The locks that are in place
+    * @param array  $device  The device to get a lock for
+    * @param string $read    The packet string to be read
+    * @param int    $time    The time to lock for
+    * @param bool   $force   Whether to force the setting of the lock or not
+    * @param array  $expect  The expected return
+    * @param array  $devExp  The expected device afterwards
+    * @param string $write   The packet string expected to be written
+    *
+    * @dataProvider dataSetDevLock
+    *
+    * @return null
+    */
+    public function testSetDevLock(
+        $preload, $devs, $locks, $device, $read, $time, $force,
+        $expect, $devExp, $write
+    ) {
+        $this->socket->readString = $read;
+        $dev = new DeviceContainer();
+        foreach ((array)$devs as $key => $val) {
+            $dev->clearData();
+            $dev->fromAny($val);
+            $val = $dev->insertRow(true);
+        }
+        $lock = new LockTable();
+        foreach ((array)$locks as $key => $val) {
+            $lock->clearData();
+            $lock->fromAny($val);
+            $lock->insertRow(true);
+        }
+        $dev->clearData();
+        $dev->fromAny($preload);
+        $o = new TestE00392606Device($dev);
+        $devO = new DeviceContainer($device);
+        $ret = $o->setDevLock($devO, $time, $force);
+        $this->assertSame($expect, $ret, "Return Wrong");
+        $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
+        $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
+    }
 
 }
 /**

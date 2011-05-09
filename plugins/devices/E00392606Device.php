@@ -420,6 +420,37 @@ class E00392606Device extends E00392600Device
     /**
     * Reads the setup out of the device.
     *
+    * @param DeviceContainer &$dev  The device to get a lock on
+    * @param int             $time  The time to lock for
+    * @param bool            $force Whether to force the writing or not
+    *
+    * @return bool True on success, False on failure
+    */
+    public function &setDevLock(
+        DeviceContainer &$dev, $time = null, $force=false
+    ) {
+        $locks[1] = &$this->setLocalDevLock(
+            $dev, $this->myDriver->DeviceID, $time, $force
+        );
+        $devs = $this->myDriver->selectIDs(
+            "GatewayKey = ? AND Driver = ? AND id <> ?",
+            array(
+                $this->myDriver->GatewayKey,
+                static::$registerPlugin["Name"],
+                $this->myDriver->id
+            )
+        );
+        $ret = array();
+        foreach ($devs as $d) {
+            $locks[$d] = &$this->setRemoteDevLock(
+                $dev, $d, $time, $force
+            );
+        }
+        return $locks;
+    }
+    /**
+    * Reads the setup out of the device.
+    *
     * @param DeviceContainer &$dev The device to lock
     * @param int             $time The time to lock for
     *
