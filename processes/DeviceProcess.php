@@ -128,9 +128,9 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     */
     public function main($fct = "main")
     {
-        // Get the devices
-        $where = "id <> ?";
-        $data = array($this->myDevice->id);
+        // Get the devices that are not part of this data collector
+        $where = "id <> ? AND DeviceLocation <> ?";
+        $data = array($this->myDevice->id, $this->myDevice->DeviceLocation);
 
         if ($this->GatewayKey != "all") {
             $where .= " AND GatewayKey = ?";
@@ -174,10 +174,11 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     */
     protected function checkPlugins(DeviceContainer &$dev, $fct = "main")
     {
+        $lock = $this->checkLock($dev);
         foreach ($this->priority as $k => $p) {
             foreach ($p as $n) {
                 if ($this->active[$n]->ready($dev)) {
-                    $ret = $this->runPlugin($this->active[$n], $dev, $fct);
+                    $ret = $this->runPlugin($this->active[$n], $dev, $fct, $lock);
                     if (false === $ret) {
                         return;
                     }
@@ -191,18 +192,16 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     * @param object          &$plugin A reference to the plugin to run
     * @param DeviceContainer &$dev    The device to check
     * @param string          $fct     The function to call
+    * @param bool            $lock    Whether this device is locked
     *
     * @return int The number of packets routed
     */
-    protected function runPlugin(&$plugin, DeviceContainer &$dev, $fct = "main")
-    {
-        $locked = !$plugin->requireLock();
-        if ($locked === false) {
-            $locked = $this->myDevice->getDevLock($dev);
-        }
-        if ($locked) {
+    protected function runPlugin(
+        &$plugin, DeviceContainer &$dev, $fct = "main", $lock = false
+    ) {
+        $needLock = $plugin->requireLock();
+        if (!$needLock || $lock) {
             $ret = $plugin->$fct($dev);
-        } else {
         }
         return $ret;
     }
@@ -256,7 +255,25 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     */
     protected function checkLock(DeviceContainer &$dev)
     {
-
+        $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
+        // Renew the license if the expiration is looming
+        if (($local->expiration - $this->now()) < 180) {
+            $locks = $this->myDevice->getDevLock($dev);
+            $setLock = true;
+            foreach (array_keys($locks) as $key) {
+                if (!$this->myDevice->myLock($locks[$key])
+                    && !$locks[$key]->isEmpty()
+                ) {
+                    $setLock = false;
+                    break;
+                }
+            }
+            if ($setLock) {
+                $res = $this->myDevice->setDevLock($dev, null, true);
+            }
+            $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
+        }
+        return $this->myDevice->myLock($local);
     }
 
 

@@ -319,7 +319,21 @@ class E00392600Device extends DeviceDriverBase
     public function getMyDevLock(DeviceContainer &$dev)
     {
         $lock = &$this->checkLocalDevLock($dev->DeviceID);
-        return !$lock->isEmpty() && ($lock->id === $this->myDriver->id);
+        if ($lock->isEmpty()) {
+            return null;
+        }
+        return $this->myLock($lock);
+    }
+    /**
+    * Reads the setup out of the device.
+    *
+    * @param LockTable &$lock The lock to test
+    *
+    * @return bool True on success, False on failure
+    */
+    public function myLock(LockTable &$lock)
+    {
+        return $lock->id === $this->myDriver->id;
     }
     /**
     * Reads the setup out of the device.
@@ -328,9 +342,8 @@ class E00392600Device extends DeviceDriverBase
     *
     * @return bool True on success, False on failure
     */
-    protected function &checkLocalDevLock($DeviceID)
+    public function &checkLocalDevLock($DeviceID)
     {
-        $data = "";
         $class = get_class($this->devLocks);
         $lock = new $class();
         $local = $lock->check(
@@ -339,8 +352,16 @@ class E00392600Device extends DeviceDriverBase
         if ($local) {
             $lock->id = $this->myDriver->id;
             self::vprint(
-                "$data has lock on ".$DeviceID." until "
-                .date("Y-m-d H:i:s", $this->devLocks->expiration),
+                "I have a lock on ".$DeviceID." until "
+                .date("Y-m-d H:i:s", $lock->expiration)
+                ." (".($lock->expiration - $this->now())."s)",
+                self::VERBOSITY
+            );
+        } else if (!$lock->isEmpty()) {
+            self::vprint(
+                self::stringSize(dechex($lock->id), 6)." a lock on "
+                .$DeviceID." until ".date("Y-m-d H:i:s", $lock->expiration)
+                ." (".($lock->expiration - $this->now())."s)",
                 self::VERBOSITY
             );
         }

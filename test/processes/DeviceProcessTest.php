@@ -230,6 +230,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
+                "",
                 array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
@@ -291,6 +292,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
+                "",
                 array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
@@ -352,6 +354,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
+                "",
                 array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
@@ -375,6 +378,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
             ),
+            // Already locked
             array( // #3
                 array(
                     array(
@@ -423,6 +427,126 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                         "expiration" => 100000000000, // Way in the future
                     ),
                 ),
+                "",
+                array(
+                    "id"         => 0x000019,
+                    "DeviceID"   => "000019",
+                    "HWPartNum"  => "0039-26-06-P",
+                    "FWPartNum"  => "0039-26-06-P",
+                    "params" => array(
+                    ),
+                ),
+                true,
+                array(
+                    hexdec("123456") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("654321") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                    hexdec("234567") => array(
+                        "TestDeviceProcessPlugin" => null,
+                        "TestDeviceProcessPlugin2" => null,
+                    ),
+                ),
+                array("TestDeviceProcessPlugin", "TestDeviceProcessPlugin2"),
+            ),
+            // Already locked Remote
+            array( // #4
+                array(
+                    array(
+                        "id" => hexdec("123456"),
+                        "DeviceID" => "123456",
+                        "HWPartNum" => "0039-21-01-A",
+                        "FWPartNum" => "0039-20-01-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                    ),
+                    array(
+                        "id" => hexdec("654321"),
+                        "DeviceID" => "654321",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 2,
+                        "PollInterval" => 10,
+                    ),
+                    array(
+                        "id" => hexdec("234567"),
+                        "DeviceID" => "234567",
+                        "HWPartNum" => "0039-28-01-A",
+                        "FWPartNum" => "0039-20-13-C",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                    ),
+                    array(
+                        "id" => 0xAAAAAA,
+                        "DeviceID" => "AAAAAA",
+                        "HWPartNum" => "0039-26-06-P",
+                        "FWPartNum" => "0039-26-06-P",
+                        "FWVersion" => "1.2.3",
+                        "GatewayKey" => 1,
+                        "PollInterval" => 10,
+                    ),
+                ),
+                array(
+                    "PluginDir" => realpath(dirname(__FILE__)."/../files/plugins"),
+                    "PluginType" => "deviceProcess",
+                ),
+                array(
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ).
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000019",
+                        "From" => "AAAAAA",
+                        "Command" => "01",
+                        "Data" => "AAAAAA0100",
+                    )
+                ),
                 array(
                     "id"         => 0x000019,
                     "DeviceID"   => "000019",
@@ -457,6 +581,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     * @param array  $devs    The devices to load into the database
     * @param array  $preload The data to preload into the devices table
     * @param array  $locks   The locks that are present
+    * @param string $read    The read stuff for the socke
     * @param array  $dev     Device to load into the class
     * @param bool   $loop    Whether to loop or not
     * @param string $expect  The expected return
@@ -466,8 +591,10 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataMain
     */
-    public function testMain($devs, $preload, $locks, $dev, $loop, $expect, $plugins)
-    {
+    public function testMain(
+        $devs, $preload, $locks, $read, $dev, $loop, $expect, $plugins
+    ) {
+        $this->socket->readString = $read;
         $d = new DeviceContainer();
         foreach ((array)$devs as $load) {
             $d->clearData();

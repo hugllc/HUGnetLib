@@ -312,10 +312,21 @@ class E00392606Device extends E00392600Device
     */
     public function &getDevLock(DeviceContainer &$dev)
     {
-        $locks = &$this->checkRemoteDevLock($dev);
-        $local = &$this->checkLocalDevLock($dev->DeviceID, false);
-        if (!$local->isEmpty()) {
-            $locks[1] = &$local;
+        $remote = null;
+        $time   = null;
+        $locks    = &$this->checkRemoteDevLock($dev);
+        foreach (array_keys($locks) as $key) {
+            if (!$locks[$key]->isEmpty()) {
+                $remote = $locks[$key]->id;
+                $time   = ($locks[$key]->expiration - $this->now());
+                break;
+            }
+        }
+        $locks[1] = &$this->checkLocalDevLock($dev->DeviceID, false);
+        // This resets the local lock if it is different from the remote ones.
+        if (($locks[1]->id !== $remote) && !is_null($remote)) {
+            $this->setLocalDevLock(&$dev, $remote, $time, true);
+            $locks[1] = &$this->checkLocalDevLock($dev->DeviceID, false);
         }
         return $locks;
     }
@@ -329,11 +340,12 @@ class E00392606Device extends E00392600Device
     protected function &checkRemoteDevLock(&$dev)
     {
         $devs = $this->myDriver->selectIDs(
-            "GatewayKey = ? AND Driver = ? AND id <> ?",
+            "GatewayKey = ? AND Driver = ? AND id <> ? AND Active = ?",
             array(
                 $this->myDriver->GatewayKey,
                 static::$registerPlugin["Name"],
-                $this->myDriver->id
+                $this->myDriver->id,
+                1
             )
         );
         $ret = array();
@@ -361,7 +373,7 @@ class E00392606Device extends E00392600Device
             return false;
         }
         self::vprint(
-            "Sending a save lock request for ".$dev->DeviceID." to ".$locker,
+            "Sending a save lock request for ".$dev->DeviceID." to ".dechex($locker),
             self::VERBOSITY
         );
         $pkt = new PacketContainer(
@@ -430,14 +442,15 @@ class E00392606Device extends E00392600Device
         DeviceContainer &$dev, $time = null, $force=false
     ) {
         $locks[1] = &$this->setLocalDevLock(
-            $dev, $this->myDriver->DeviceID, $time, $force
+            $dev, $this->myDriver->id, $time, $force
         );
         $devs = $this->myDriver->selectIDs(
-            "GatewayKey = ? AND Driver = ? AND id <> ?",
+            "GatewayKey = ? AND Driver = ? AND id <> ? AND Active = ?",
             array(
                 $this->myDriver->GatewayKey,
                 static::$registerPlugin["Name"],
-                $this->myDriver->id
+                $this->myDriver->id,
+                1
             )
         );
         $ret = array();

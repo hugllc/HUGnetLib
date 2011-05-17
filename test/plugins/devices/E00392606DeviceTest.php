@@ -1714,7 +1714,15 @@ class E00392606DeviceTest extends DevicePluginTestBase
                 ),
                 array(),
                 "",
-                array(),
+                array(
+                    1 => array(
+                        "group" => "volatile",
+                        "id" => null,
+                        "type" => null,
+                        "lockData" => "",
+                        "expiration" => null, // Way in the future
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -1747,7 +1755,15 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     "PollInterval" => 10,
                 ),
                 "",
-                array(),
+                array(
+                    1 => array(
+                        "group" => "volatile",
+                        "id" => null,
+                        "type" => null,
+                        "lockData" => "",
+                        "expiration" => null, // Way in the future
+                    ),
+                ),
                 array(
                     'DriverInfo' => array(
                         'PacketTimeout' => 10,
@@ -2044,6 +2060,13 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "lockData" => "",
                         "expiration" => null, // Way in the future
                     ),
+                    1 => array(
+                        "group" => "volatile",
+                        "id" => null,
+                        "type" => null,
+                        "lockData" => "",
+                        "expiration" => null, // Way in the future
+                    ),
                 ),
                 array(
                     'DriverInfo' => array(
@@ -2132,10 +2155,10 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     ),
                     1 => array(
                         'group' => 'volatile',
-                        'id' => 291,
+                        'id' => 292,
                         'type' => 'device',
                         'lockData' => '000532',
-                        'expiration' => 152,
+                        'expiration' => 269,
                     ),
                 ),
                 array(

@@ -494,7 +494,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                 array(
                 ),
                 array(),
-                false,
+                null,
             ),
             array( // #1 Already locked!
                 array(
