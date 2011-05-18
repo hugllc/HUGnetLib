@@ -79,6 +79,10 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     public function __construct($data, $device)
     {
         parent::__construct($data, $device);
+        // Purge the locks
+        $lock = new LockTable();
+        $lock->purgeAll();
+        // Set stuff up
         $this->registerHooks();
         $this->requireGateway();
         $this->registerPlugins();
