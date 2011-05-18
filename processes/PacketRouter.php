@@ -194,6 +194,13 @@ class PacketRouter extends ProcessBase
             $groups = array($this->Routes[$pkt->To] => $this->Routes[$pkt->To]);
         } else {
             $groups = $this->groups;
+            DevicesTable::insertDeviceID(
+                array(
+                    "id" => hexdec($pkt->From),
+                    "DeviceId" => $pkt->From,
+                    "GatewayKey" => $this->myDevice->GatewayKey,
+                )
+            );
         }
         return (array)$groups;
     }
