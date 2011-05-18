@@ -144,6 +144,17 @@ class LockTable extends HUGnetDBTable
         parent::__construct($data);
         $this->create();
     }
+    /**
+    * Gets a lock
+    *
+    * @return true if lock successful, false otherwise
+    */
+    public function purgeAll()
+    {
+        $ret = $this->myDriver->deleteWhere(1);
+        $this->myDriver->reset();
+        return $ret;
+    }
 
     /**
     * Gets a lock

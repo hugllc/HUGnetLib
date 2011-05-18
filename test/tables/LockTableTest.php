@@ -513,6 +513,38 @@ class LockTableTest extends HUGnetDBTableTestBase
         };
         $this->assertSame($expect, $data);
     }
+    /**
+    * data provider for testGetAllLocks
+    *
+    * @return array
+    */
+    public static function dataPurgeAll()
+    {
+        return array(
+            array(
+                "volatile",
+                true,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $group The group to use
+    * @param mixed  $ret   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataPurgeAll
+    */
+    public function testPurgeAll($group, $ret)
+    {
+        $lock = $this->o->purgeAll();
+        $this->assertSame($ret, $lock, "Return Wrong");
+        $stmt = $this->pdo->query("SELECT * FROM `locks`");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->assertSame(array(), $rows, "Database wrong");
+    }
 }
 /**
  * This class has functions that relate to the manipulation of elements
