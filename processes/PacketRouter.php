@@ -197,7 +197,7 @@ class PacketRouter extends ProcessBase
             DevicesTable::insertDeviceID(
                 array(
                     "id" => hexdec($pkt->From),
-                    "DeviceId" => $pkt->From,
+                    "DeviceID" => $pkt->From,
                     "GatewayKey" => $this->myDevice->GatewayKey,
                 )
             );
