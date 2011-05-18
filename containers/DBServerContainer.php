@@ -109,7 +109,7 @@ class DBServerContainer extends HUGnetContainer
     {
         if ($this->driver === "sqlite") {
             if (file_exists($this->file)) {
-                chmod($this->file, $this->filePerm);
+                @chmod($this->file, $this->filePerm);
             }
         }
     }
