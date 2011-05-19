@@ -184,6 +184,9 @@ class DeviceContainer extends DevicesTable
     */
     public function fromSetupString($string)
     {
+        if (!$this->checkSetupString($string)) {
+            return;
+        }
         $this->id = hexdec(substr($string, 0, 10));
         $this->DeviceID  = $this->id;
         $this->HWPartNum = substr($string, self::HW_START, 10);
@@ -198,6 +201,29 @@ class DeviceContainer extends DevicesTable
         if (is_object($this->epDriver)) {
             $this->epDriver->fromSetupString(substr($string, self::CONFIGEND));
         }
+    }
+    /**
+    * Checks to see if the string is valid
+    *
+    * @param string $string This is the raw string for the device
+    *
+    * @return null
+    */
+    public function checkSetupString($string)
+    {
+        if (($this->DeviceID !== '000000')
+            && ($this->DeviceID !== substr($string, 4, 6))
+        ) {
+            return false;
+        }
+        if (substr($string, self::HW_START, 4) !== "0039") {
+            return false;
+        }
+        if (substr($string, self::FW_START, 4) !== "0039") {
+            return false;
+        }
+
+        return true;
     }
     /**
     * Converts the object to a string

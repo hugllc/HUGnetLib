@@ -215,16 +215,16 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #3
             array(
-                "00000000E80039CD01410123456743000005FFFFFF",
+                "00000000E80039CD01410039456743000005FFFFFF",
                 array(
                     "group" => "default",
                     "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "HWPartNum" => "0039-CD-01-A",
-                    "FWPartNum" => "0123-45-67-C",
+                    "FWPartNum" => "0039-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E80039CD01410123456743000005FFFFFF",
+                    "RawSetup"  => "00000000E80039CD01410039456743000005FFFFFF",
                     "Active" => 1,
                     "GatewayKey" => 0,
                     "ControllerKey" => 0,
@@ -691,6 +691,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array( // #0
+                array(),
                 "00000000E80039CF01410039246743000302FFFFFF50",
                 array(
                     "group" => "default",
@@ -726,6 +727,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array( // #1
+                array(),
                 "00000000E80039CF01410039246743000102FFFFFF50",
                 array(
                     "group" => "default",
@@ -761,6 +763,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array( // #2
+                array(),
                 "00000000E80039CE01410039246743000005FFFFFF1E",
                 array(
                     "group" => "default",
@@ -796,16 +799,17 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array( // #3
-                "00000000E80039CD01410123456743000005FFFFFF530123456789",
+                array(),
+                "00000000E80039CD01410039456743000005FFFFFF530123456789",
                 array(
                     "group" => "default",
                     "id" => 232,
                     "DeviceID" => "0000E8",
                     "DeviceName" => "",
                     "HWPartNum" => "0039-CD-01-A",
-                    "FWPartNum" => "0123-45-67-C",
+                    "FWPartNum" => "0039-45-67-C",
                     "FWVersion" => "0.0.5",
-                    "RawSetup"  => "00000000E80039CD01410123456743000005FFFFFF53".
+                    "RawSetup"  => "00000000E80039CD01410039456743000005FFFFFF53".
                         "0123456789",
                     "Active" => 1,
                     "GatewayKey" => 0,
@@ -832,6 +836,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                ),
             ),
             array(  // #4
+                array(),
                 "00000000E80039CC01410039256743000005FFFFFF2101",
                 array(
                     "group" => "default",
@@ -866,21 +871,62 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"            => array(),
                ),
             ),
+            array(  // #5 Device already loaded
+                array(
+                    "id" => 0xE7,
+                    "DeviceID" => "0000E7",
+                ),
+                "00000000E80039CC01410039256743000005FFFFFF2101",
+                array(
+                    "group"    => "default",
+                    "id"       => 0xE7,
+                    "DeviceID" => "0000E7",
+                    "params"   => array(),
+                    "sensors"  => array(),
+               ),
+            ),
+            array(  // #6 Bad HWPartNum
+                array(
+                ),
+                "00000000E80038CC01410039256743000005FFFFFF2101",
+                array(
+                    "group"    => "default",
+                    "id"       => 0,
+                    "DeviceID" => "000000",
+                    "params"   => array(),
+                    "sensors"  => array(),
+               ),
+            ),
+            array(  // #7 Bad FWPartNum
+                array(
+                ),
+                "00000000E80039CC01410038256743000005FFFFFF2101",
+                array(
+                    "group"    => "default",
+                    "id"       => 0,
+                    "DeviceID" => "000000",
+                    "params"   => array(),
+                    "sensors"  => array(),
+               ),
+            ),
         );
     }
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
+    * @param array  $preload The value to preload
+    * @param string $string  The setup string to test
+    * @param array  $expect  The expected return
     *
     * @return null
     *
     * @dataProvider dataFromSetupString
     */
-    public function testFromSetupString($preload, $expect)
+    public function testFromSetupString($preload, $string, $expect)
     {
-        $this->o->fromSetupString($preload);
+        $this->o->clearData();
+        $this->o->fromAny($preload);
+        $this->o->fromSetupString($string);
         $this->assertInternalType("object", $this->o->params);
         $this->assertSame(
             $expect["params"],
