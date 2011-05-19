@@ -67,6 +67,18 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $config = array(
+            "servers" => array(
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "default",
+                ),
+                array(
+                    "driver" => "sqlite",
+                    "file" => ":memory:",
+                    "group" => "volatile",
+                ),
+            ),
             "sockets" => array(
                 array(
                     "dummy" => true,
@@ -415,16 +427,16 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 ),
                 array(
                     array(
-                        "id" => 0xAAAAAA,
+                        "id" => 0xFEAAAA,
                         "type" => E00392606Device::LOCKTYPE,
                         "lockData" => "123456",
-                        "expiration" => 100000000000, // Way in the future
+                        "expiration" => 1000000000000, // Way in the future
                     ),
                     array(
-                        "id" => 0xAAAAAA,
+                        "id" => 0xFEAAAA,
                         "type" => E00392606Device::LOCKTYPE,
                         "lockData" => "234567",
-                        "expiration" => 100000000000, // Way in the future
+                        "expiration" => 1000000000000, // Way in the future
                     ),
                 ),
                 "",
@@ -484,8 +496,8 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                         "PollInterval" => 10,
                     ),
                     array(
-                        "id" => 0xAAAAAA,
-                        "DeviceID" => "AAAAAA",
+                        "id" => 0xFEAAAA,
+                        "DeviceID" => "FEAAAA",
                         "HWPartNum" => "0039-26-06-P",
                         "FWPartNum" => "0039-26-06-P",
                         "FWVersion" => "1.2.3",
@@ -502,49 +514,49 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ).
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ).
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ).
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ).
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ).
                 (string)new PacketContainer(
                     array(
                         "To" => "000019",
-                        "From" => "AAAAAA",
+                        "From" => "FEAAAA",
                         "Command" => "01",
-                        "Data" => "AAAAAA0100",
+                        "Data" => "FEAAAA0100",
                     )
                 ),
                 array(
@@ -594,6 +606,8 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     public function testMain(
         $devs, $preload, $locks, $read, $dev, $loop, $expect, $plugins
     ) {
+        $o = new DeviceProcess($preload, $dev);
+        $o->loop = $loop;
         $this->socket->readString = $read;
         $d = new DeviceContainer();
         foreach ((array)$devs as $load) {
@@ -602,13 +616,12 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
             $d->insertRow(true);
         }
         $l = new LockTable();
-        foreach ((array)$locks as $key => $val) {
+        $l->purgeAll();
+        foreach ((array)$locks as $val) {
             $l->clearData();
             $l->fromAny($val);
             $l->insertRow(true);
         }
-        $o = new DeviceProcess($preload, $dev);
-        $o->loop = $loop;
         $o->main();
         foreach ((array)$devs as $load) {
             $d->clearData();

@@ -1204,50 +1204,6 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $GLOBALS[$name]);
     }
 
-    /**
-    * data provider for testIsEmpty
-    *
-    * @return array
-    */
-    public static function dataIsEmpty()
-    {
-        return array(
-            array(
-                array(
-                    "DeviceID" => "000000",
-                ),
-                true,
-            ),
-            array(
-                array(
-                    "DeviceID" => "000001",
-                ),
-                false,
-            ),
-            array(
-                array(
-                    "DeviceID" => "0000E1",
-                ),
-                false,
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $preload The values to preload
-    * @param mixed  $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataIsEmpty
-    */
-    public function testIsEmpty($preload, $expect)
-    {
-        $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->isEmpty());
-    }
 
     /**
     * data provider for testIsEmpty

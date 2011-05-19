@@ -342,16 +342,6 @@ class DeviceContainer extends DevicesTable
         return $str;
     }
     /**
-    * returns true if the container is empty.  False otherwise
-    *
-    * @return bool Whether this container is empty or not
-    */
-    public function isEmpty()
-    {
-        return (bool)(empty($this->data["DeviceID"])
-            || ($this->data["DeviceID"] === '000000'));
-    }
-    /**
     * Consumes packets and returns some stuff.
     *
     * This function deals with setup and ping requests

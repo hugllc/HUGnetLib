@@ -270,6 +270,16 @@ class DevicesTable extends HUGnetDBTable
         return $ret;
     }
     /**
+    * returns true if the container is empty.  False otherwise
+    *
+    * @return bool Whether this container is empty or not
+    */
+    public function isEmpty()
+    {
+        return (bool)(empty($this->data["DeviceID"])
+            || ($this->data["DeviceID"] === '000000'));
+    }
+    /**
     * This function inserts this record in the table
     *
     * @param bool $replace Replace any records found that collide with this one.

@@ -193,13 +193,15 @@ class E00392606Device extends E00392600Device
         if ($pkt->toMe() && ($pkt->Command == self::COMMAND_GETDEVLOCK)) {
             $DeviceID = substr($pkt->Data, 0, 6);
             self::vprint(
-                "Got a lock request for ".$DeviceID." from ".$pkt->From,
+                "Got a lock request for ".$DeviceID." from "
+                .self::stringSize($pkt->From, 6),
                 self::VERBOSITY
             );
             $lock = $this->checkLocalDevLock($DeviceID);
             $locker = self::stringSize(dechex($lock->id), 6);
-            $time = " until ".date("Y-m-d H:i:s", $lock->expiration);
-            if ($lock->isEmpty()) {
+            $this->checkLockerID(hexdec($pkt->From), true);
+            $time = "until ".date("Y-m-d H:i:s", $lock->expiration);
+            if (($lock->isEmpty()) || empty($locker)) {
                 $dev = new DeviceContainer();
                 $dev->getRow(hexdec($DeviceID));
                 $this->setLocalDevLock($dev, hexdec($pkt->From), 10, true);
@@ -229,6 +231,7 @@ class E00392606Device extends E00392600Device
     {
         if ($pkt->toMe() && ($pkt->Command == self::COMMAND_SETDEVLOCK)) {
             $DeviceID = substr($pkt->Data, 0, 6);
+            $this->checkLockerID(hexdec($pkt->From), true);
             $timeout = hexdec(substr($pkt->Data, 6, 4));
             self::vprint(
                 "Got a set lock request for ".$DeviceID." from ".$pkt->From,
@@ -269,7 +272,8 @@ class E00392606Device extends E00392600Device
     protected function &readDevLock($locker, &$dev)
     {
         self::vprint(
-            "Sending a lock request for ".$dev->DeviceID." to ".$locker,
+            "Sending a lock request for ".$dev->DeviceID." to "
+            .self::stringSize($locker, 6),
             self::VERBOSITY
         );
         $pkt = new PacketContainer(
@@ -288,20 +292,66 @@ class E00392606Device extends E00392600Device
             $lock->lockData   = $dev->DeviceID;
             $lock->id         = hexdec(substr($pkt->Reply->Data, 0, 6));
             $timeout          = hexdec(substr($pkt->Reply->Data, 6, 4));
-            if ($timeout > self::MAX_LOCK_TIME) {
-                $lock->clearData();
+            if ($this->checkLockerID($lock->id)) {
+                if ($timeout > self::MAX_LOCK_TIME) {
+                    $lock->clearData();
+                } else {
+                    self::vprint(
+                        strtoupper($locker)." Replied: ".$dev->DeviceID." locked by "
+                        .self::stringSize(dechex($lock->id), 6)
+                        ." until ".date("Y-m-d H:i:s", $lock->expiration)." s",
+                        self::VERBOSITY
+                    );
+                    $lock->expiration = $this->now() + $timeout;
+                    $lock->type = static::LOCKTYPE;
+                }
             } else {
-                self::vprint(
-                    "$locker Replied: ".$dev->DeviceID." locked by "
-                    .self::stringSize(dechex($lock->id), 6)
-                    ." until ".date("Y-m-d H:i:s", $lock->expiration)." s",
-                    self::VERBOSITY
-                );
-                $lock->expiration = $this->now() + $timeout;
-                $lock->type = static::LOCKTYPE;
+                // Bad locker ID
+                $lock->clearData();
             }
         }
         return $lock;
+    }
+    /**
+    * Checks to see if a device is a valid locker
+    *
+    * @param int  $id     The id to check
+    * @param bool $update Whether to update the record or not
+    *
+    * @return bool True on success, False on failure
+    */
+    protected function checkLockerID($id, $update = false)
+    {
+        if ($id < 0xFE0000) {
+            return false;
+        }
+        $dev = new DevicesTable();
+        $dev->getRow($id);
+        if ($dev->isEmpty()) {
+            DevicesTable::insertDeviceID(
+                array(
+                    "id" => $id, "DeviceID" => $id,
+                    "Active" => 1, "GatewayKey" => $this->myDriver->GatewayKey,
+                    "Driver" => $this->myDriver->Driver,
+                    "HWPartNum" => $this->myDriver->HWPartNum,
+                    "FWPartNum" => $this->myDriver->FWPartNum,
+                    "FWVersion" => $this->myDriver->FWVersion,
+                )
+            );
+        } else {
+            if ($dev->HWPartNum !== $this->myDriver->HWPartNum) {
+                return false;
+            }
+            if (($dev->Active != 1) && !$update) {
+                return false;
+            } else {
+                $dev->Active = 1;
+            }
+        }
+        if ($update) {
+            $dev->updateRow(array("Active" => "Active"));
+        }
+        return true;
     }
     /**
     * Reads the setup out of the device.
@@ -373,7 +423,8 @@ class E00392606Device extends E00392600Device
             return false;
         }
         self::vprint(
-            "Sending a save lock request for ".$dev->DeviceID." to ".dechex($locker),
+            "Sending a save lock request for ".$dev->DeviceID." to "
+            .self::stringSize(dechex($locker), 6),
             self::VERBOSITY
         );
         $pkt = new PacketContainer(

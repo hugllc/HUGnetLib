@@ -213,6 +213,7 @@ abstract class DeviceDriverBase extends HUGnetClass
             $this->data["LastConfig"] = time();
             $this->data["ConfigFail"] = 0;
             $this->data["TotalConfigSuccess"]++;
+            $this->myDriver->params->LastContact = time();
             $this->myDriver->Active = 1;
             return true;
         } else if (is_null($pass)) {

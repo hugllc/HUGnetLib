@@ -261,7 +261,8 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     {
         $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
         // Renew the license if the expiration is looming
-        if ($local->isEmpty() || (($local->expiration - $this->now()) < 180)) {
+        $time = 60 + mt_rand(0, 120);
+        if ($local->isEmpty() || (($local->expiration - $this->now()) < $time)) {
             $locks = $this->myDevice->getDevLock($dev);
             $setLock = true;
             foreach (array_keys($locks) as $key) {

@@ -359,7 +359,7 @@ class E00392600Device extends DeviceDriverBase
             );
         } else if (!$lock->isEmpty()) {
             self::vprint(
-                self::stringSize(dechex($lock->id), 6)." a lock on "
+                self::stringSize(dechex($lock->id), 6)." has a lock on "
                 .$DeviceID." until ".date("Y-m-d H:i:s", $lock->expiration)
                 ." (".($lock->expiration - $this->now())."s)",
                 self::VERBOSITY
