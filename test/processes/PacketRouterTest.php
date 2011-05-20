@@ -312,6 +312,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
+                    "123456" => "other",
                 ),
             ),
             // Packet from a gateway
