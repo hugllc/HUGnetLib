@@ -224,6 +224,16 @@ class PacketRouter extends ProcessBase
     {
         if (!$pkt->unsolicited()) {
             $this->Routes[$pkt->From] = $pkt->group;
+            // Insert anything that looks like a gateway
+            if (hexdec($pkt->From) >= 0xFE0000) {
+                DevicesTable::insertDeviceID(
+                    array(
+                        "id" => hexdec($pkt->From),
+                        "DeviceID" => $pkt->From,
+                        "GatewayKey" => $this->myDevice->GatewayKey,
+                    )
+                );
+            }
         } else {
             // Try to insert unsolicited packets into the database
             DevicesTable::insertDeviceID(

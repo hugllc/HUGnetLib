@@ -314,6 +314,42 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
                 array(
                 ),
             ),
+            // Packet from a gateway
+            array(
+                array(),
+                true,
+                array(
+                    array(
+                        "other" => (string)new PacketContainer(
+                            array(
+                                "To" => "000126",
+                                "From" => "FE1234",
+                                "Command" => "5C",
+                            )
+                        ),
+                    ),
+                ),
+                array(
+                    "other"   => "",
+                    "third"   => (string)new PacketContainer(
+                        array(
+                            "To" => "000126",
+                            "From" => "FE1234",
+                            "Command" => "5C",
+                        )
+                    ),
+                    "default" => (string)new PacketContainer(
+                        array(
+                            "To" => "000126",
+                            "From" => "FE1234",
+                            "Command" => "5C",
+                        )
+                    ),
+                ),
+                array(
+                    "FE1234" => "other",
+                ),
+            ),
             // One Packet to me.  Sending a reply
             array(
                 array(),
