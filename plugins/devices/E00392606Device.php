@@ -271,6 +271,11 @@ class E00392606Device extends E00392600Device
     */
     protected function &readDevLock($locker, &$dev)
     {
+        $class = get_class($this->devLocks);
+        $lock = new $class();
+        if ($dev->isEmpty()) {
+            return $lock;
+        }
         self::vprint(
             "Sending a lock request for ".$dev->DeviceID." to "
             .self::stringSize($locker, 6),
@@ -286,8 +291,6 @@ class E00392606Device extends E00392600Device
             )
         );
         $ret = $pkt->send();
-        $class = get_class($this->devLocks);
-        $lock = new $class();
         if (is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
             $lock->lockData   = $dev->DeviceID;
             $lock->id         = hexdec(substr($pkt->Reply->Data, 0, 6));
@@ -322,7 +325,7 @@ class E00392606Device extends E00392600Device
     */
     protected function checkLockerID($id, $update = false)
     {
-        if ($id < 0xFE0000) {
+        if ($id < 0xFD0000) {
             return false;
         }
         $dev = new DevicesTable();
@@ -366,7 +369,7 @@ class E00392606Device extends E00392600Device
         $time   = null;
         $locks    = &$this->checkRemoteDevLock($dev);
         foreach (array_keys($locks) as $key) {
-            if (!$locks[$key]->isEmpty()) {
+            if (is_object($locks[$key]) && !$locks[$key]->isEmpty()) {
                 $remote = $locks[$key]->id;
                 $time   = ($locks[$key]->expiration - $this->now());
                 break;

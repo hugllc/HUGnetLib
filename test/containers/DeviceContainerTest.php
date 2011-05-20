@@ -909,6 +909,19 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
                     "sensors"  => array(),
                ),
             ),
+            array(  // #8 Specific example
+                array(
+                ),
+                "00000000016E00392801410039201843000002FFFFFF50010202020202020202"
+                    ."7046707070707008200820082008204F034F034F034F03",
+                array(
+                    "group"    => "default",
+                    "id"       => 0,
+                    "DeviceID" => "000000",
+                    "params"   => array(),
+                    "sensors"  => array(),
+               ),
+            ),
         );
     }
     /**
