@@ -174,6 +174,7 @@ class E00392606Device extends E00392600Device
                     array(
                         "DeviceID" => $d,
                         "GatewayKey" => $this->myDriver->GatewayKey,
+                        "DeviceLocation" => "readDownstreamDevices",
                     )
                 );
             }
@@ -339,6 +340,7 @@ class E00392606Device extends E00392600Device
                     "HWPartNum" => $this->myDriver->HWPartNum,
                     "FWPartNum" => $this->myDriver->FWPartNum,
                     "FWVersion" => $this->myDriver->FWVersion,
+                    "DeviceLocation" => "checkLockerID",
                 )
             );
         } else {

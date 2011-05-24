@@ -285,6 +285,7 @@ class E00392600Device extends DeviceDriverBase
                     array(
                         "DeviceID" => $pkt->From,
                         "GatewayKey" => $this->myDriver->GatewayKey,
+                        "DeviceLocation" => "pktSetupEcho",
                     )
                 );
 

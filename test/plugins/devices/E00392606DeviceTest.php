@@ -277,7 +277,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         'GatewayKey' => '1',
                         'ControllerKey' => '0',
                         'ControllerIndex' => '0',
-                        'DeviceLocation' => '',
+                        'DeviceLocation' => 'pktSetupEcho',
                         'DeviceJob' => '',
                         'Driver' => 'eDEFAULT',
                         'PollInterval' => '0',
@@ -774,7 +774,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
                         "ControllerIndex" => "0",
-                        "DeviceLocation" => "",
+                        "DeviceLocation" => "readDownstreamDevices",
                         "DeviceJob" => "",
                         "Driver" => "eDEFAULT",
                         "PollInterval" => "0",
@@ -795,7 +795,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
                         "ControllerIndex" => "0",
-                        "DeviceLocation" => "",
+                        "DeviceLocation" => "readDownstreamDevices",
                         "DeviceJob" => "",
                         "Driver" => "eDEFAULT",
                         "PollInterval" => "0",
@@ -927,7 +927,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
                         "ControllerIndex" => "0",
-                        "DeviceLocation" => "",
+                        "DeviceLocation" => "readDownstreamDevices",
                         "DeviceJob" => "",
                         "Driver" => "eDEFAULT",
                         "PollInterval" => "0",
@@ -948,7 +948,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => "0",
                         "ControllerKey" => "0",
                         "ControllerIndex" => "0",
-                        "DeviceLocation" => "",
+                        "DeviceLocation" => "readDownstreamDevices",
                         "DeviceJob" => "",
                         "Driver" => "eDEFAULT",
                         "PollInterval" => "0",
@@ -1568,7 +1568,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     )
                 ),
             ),
-            array(  // #5 Device already locked by someone else
+            array(  // #6 Device already locked by someone else
                 array(
                     array(
                         "id" => 0x001300,
@@ -1679,7 +1679,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                     )
                 ),
             ),
-            array(  // #6 This is to test adding a device
+            array(  // #7 This is to test adding a device
                 array(
                     array(
                         "id" => 0x001300,
@@ -1786,7 +1786,7 @@ class E00392606DeviceTest extends DevicePluginTestBase
                         "GatewayKey" => "1",
                         "ControllerKey" => "0",
                         "ControllerIndex" => "0",
-                        "DeviceLocation" => "",
+                        "DeviceLocation" => "checkLockerID",
                         "DeviceJob" => "",
                         "Driver" => "e00392606",
                         "PollInterval" => "0",

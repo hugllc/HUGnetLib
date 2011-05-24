@@ -229,6 +229,7 @@ class PacketRouter extends ProcessBase
                     array(
                         "DeviceID" => $pkt->From,
                         "GatewayKey" => $this->myDevice->GatewayKey,
+                        "DeviceLocation" => "_setRoute",
                     )
                 );
 

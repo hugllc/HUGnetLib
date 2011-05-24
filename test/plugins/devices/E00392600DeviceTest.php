@@ -394,7 +394,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
                         'GatewayKey' => '5',
                         'ControllerKey' => '0',
                         'ControllerIndex' => '0',
-                        'DeviceLocation' => '',
+                        'DeviceLocation' => 'pktSetupEcho',
                         'DeviceJob' => '',
                         'Driver' => 'eDEFAULT',
                         'PollInterval' => '0',
