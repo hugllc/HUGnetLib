@@ -252,7 +252,7 @@ class E00392606Device extends E00392600Device
                 $data  = $DeviceID;
                 $data .= self::stringSize(dechex($timeout), 4);
                 self::vprint(
-                    "Replying that $locker has a lock "
+                    "Replying that $DeviceID has a lock "
                     ." until ".date("Y-m-d H:i:s", $lock->expiration),
                     self::VERBOSITY
                 );
