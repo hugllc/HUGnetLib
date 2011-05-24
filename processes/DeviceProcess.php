@@ -68,6 +68,8 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     protected $priority = array();
     /** @var object This is where our plugin object resides */
     protected $myPlugins = array();
+    /** @var object This is where our plugin object resides */
+    protected $myLocks = array();
     /**
     * Builds the class
     *
@@ -132,6 +134,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     */
     public function main($fct = "main")
     {
+        $this->myLocks = array();
         // Get the devices that are not part of this data collector
         $where = "id <> ? AND DeviceLocation <> ?";
         $data = array($this->myDevice->id, $this->myDevice->DeviceLocation);
@@ -152,6 +155,14 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             }
             $this->checkDev($key, $fct);
         }
+        foreach ($this->myLocks as $name => $locks) {
+            natcasesort($locks);
+            self::vprint(
+                "$name locks:  ".implode($locks, ","),
+                1
+            );
+        }
+
 
     }
     /**
@@ -203,8 +214,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     protected function runPlugin(
         &$plugin, DeviceContainer &$dev, $fct = "main", $lock = false
     ) {
-        $needLock = $plugin->requireLock();
-        if (!$needLock || $lock) {
+        if (!$plugin->requireLock() || $lock) {
             $ret = $plugin->$fct($dev);
         }
         return $ret;
@@ -278,7 +288,14 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             }
             $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
         }
-        return $this->myDevice->myLock($local);
+        $ret = $this->myDevice->myLock($local);
+        if ($ret) {
+            $this->myLocks["My"][$dev->DeviceID] = $dev->DeviceID;
+        } else if (!$local->isEmpty()) {
+            $id = self::stringSize(dechex($local->id), 6);
+            $this->myLocks[$id][$dev->DeviceID] = $dev->DeviceID;
+        }
+        return $ret;
     }
 
 
