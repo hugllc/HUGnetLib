@@ -214,7 +214,7 @@ class E00392606Device extends E00392600Device
                 );
             }
             self::vprint(
-                "Replying that $locker has a lock $time",
+                "Replying that $locker has a lock $time ($data)",
                 self::VERBOSITY
             );
             $pkt->reply($data);
