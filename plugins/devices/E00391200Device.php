@@ -79,11 +79,13 @@ class E00391200Device extends DeviceDriverBase
             "0039-20-03-C:0039-12-02-B:DEFAULT",
             "0039-20-07-C:0039-12-02-A:DEFAULT",
             "0039-20-07-C:0039-12-02-B:DEFAULT",
+            "0039-20-17-C:0039-12-02-C:DEFAULT",
             "DEFAULT:0039-12-00-A:DEFAULT",
             "DEFAULT:0039-12-01-A:DEFAULT",
             "DEFAULT:0039-12-02-A:DEFAULT",
             "DEFAULT:0039-12-01-B:DEFAULT",
             "DEFAULT:0039-12-02-B:DEFAULT",
+            "DEFAULT:0039-12-02-C:DEFAULT",
         ),
     );
     /** @var This is to register the class */
@@ -120,7 +122,7 @@ class E00391200Device extends DeviceDriverBase
         $ret = parent::toOutput($cols);
         $ret["CPU"] = "Atmel Tiny26";
         $ret["SensorConfig"] = "1-9 Analog or Digital";
-        
+
         return $ret;
     }
 
