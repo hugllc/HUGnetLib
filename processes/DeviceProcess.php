@@ -289,11 +289,13 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
         }
         $ret = $this->myDevice->myLock($local);
-        if ($ret) {
-            $this->myLocks["My"][$dev->DeviceID] = $dev->DeviceID;
-        } else if (!$local->isEmpty()) {
-            $id = self::stringSize(dechex($local->id), 6);
-            $this->myLocks[$id][$dev->DeviceID] = $dev->DeviceID;
+        if (!$dev->gateway()) {
+            if ($ret) {
+                $this->myLocks["My"][$dev->DeviceID] = $dev->DeviceID;
+            } else if (!$local->isEmpty()) {
+                $id = self::stringSize(dechex($local->id), 6);
+                $this->myLocks[$id][$dev->DeviceID] = $dev->DeviceID;
+            }
         }
         return $ret;
     }
