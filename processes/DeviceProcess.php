@@ -156,7 +156,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             $this->checkDev($key, $fct);
         }
         foreach ($this->myLocks as $name => $locks) {
-            natcasesort($locks);
+            sort($locks);
             self::vprint(
                 "$name locks:  ".implode($locks, ","),
                 1
