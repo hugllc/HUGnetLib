@@ -327,6 +327,9 @@ abstract class DeviceDriverBase extends HUGnetClass
         );
         $ret = $pkt->send();
         if (is_object($pkt->Reply)) {
+            if ($this->data["DataIndex"] === $this->dataIndex($pkt->Reply->Data)) {
+                return false;
+            }
             $this->data["ReplyPkts"]++;
             $this->data["ReplyTotal"] += $pkt->replyTime();
             $hist = new RawHistoryTable(
@@ -339,6 +342,7 @@ abstract class DeviceDriverBase extends HUGnetClass
                     "dataIndex" => $this->dataIndex($pkt->Reply->Data),
                 )
             );
+            $this->data["DataIndex"] = $this->dataIndex($pkt->Reply->Data);
             return $hist->insertRow();
         }
         $this->data["NoReplyPkts"]++;

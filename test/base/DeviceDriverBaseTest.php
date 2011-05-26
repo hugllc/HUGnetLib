@@ -261,6 +261,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "Data" => "",
                     )
                 ),
+                null,
                 true,
                 array(
                     "PacketTimeout" => 0,
@@ -307,6 +308,35 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                     'dataIndex' => '1',
                 ),
             ),
+            array( // The data index is the same
+                "37",
+                "000000002500391101410039201343000009FFFFFF50",
+                (string)new PacketContainer(
+                    array(
+                        "From" => "000025",
+                        "To" => "000020",
+                        "Command" => PacketContainer::COMMAND_REPLY,
+                        "Data" => "010203040506070809",
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "000025",
+                        "From" => "000020",
+                        "Command" => PacketContainer::COMMAND_GETDATA,
+                        "Data" => "",
+                    )
+                ),
+                1,
+                false,
+                array(
+                    "PacketTimeout" => 0,
+                ),
+                null,
+                1,
+                array(
+                ),
+            ),
             array(
                 0x000025,
                 "000000002500391101410039201343000009FFFFFF50",
@@ -326,6 +356,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                         "Data" => "",
                     )
                 ),
+                null,
                 true,
                 array(
                     "PacketTimeout" => 0,
@@ -378,6 +409,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 "",
                 "5A5A5A5500002500002000505A5A5A550000250000200050"
                     ."5A5A5A0300002500002000065A5A5A550000250000200050",
+                null,
                 false,
                 array(
                     "PacketTimeout" => 1,
@@ -396,6 +428,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * @param string $string     The string for the dummy device to return
     * @param string $read       The read string to put in
     * @param string $write      The write string expected
+    * @param int    $dataIndex  The last data index found
     * @param string $expect     The expected return
     * @param array  $DriverInfo The driver info to use
     * @param string $LastPoll   The time last congig should be set to (regex)
@@ -407,7 +440,8 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * @dataProvider dataReadData
     */
     public function testReadData(
-        $id, $string, $read, $write, $expect, $DriverInfo, $LastPoll, $PollFail, $row
+        $id, $string, $read, $write, $dataIndex,
+        $expect, $DriverInfo, $LastPoll, $PollFail, $row
     ) {
         $this->pdo = &$this->config->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `rawHistory`");
@@ -415,6 +449,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
         $this->d->id = $id;
         $this->d->DriverInfo = $DriverInfo;
         $this->d->params->DriverInfo["LastPoll"] = $LastPoll;
+        $this->d->params->DriverInfo["DataIndex"] = $dataIndex;
         $this->socket->readString = $read;
         $ret = $this->o->readData();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
