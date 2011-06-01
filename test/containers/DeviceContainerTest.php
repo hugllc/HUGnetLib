@@ -2488,6 +2488,67 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             $this->o->getSensor($id, $sensor)->toArray(false)
         );
     }
+    /**
+    * data provider for testGetHardwareTypes
+    *
+    * @return array
+    */
+    public static function dataGetHardwareTypes()
+    {
+        return array(
+            array(
+                array(
+                ),
+                1,
+                array('HWPartNum', 'Parameters', 'Obsolete', 'Notes'),
+                array(
+                    "CPU", "VCC"
+                ),
+            ),
+            array(
+                array(
+                ),
+                0,
+                array('HWPartNum', 'Parameters', 'Obsolete', 'Notes'),
+                array(
+                    "CPU", "VCC", "Firmware", "FuseHigh", "FuseLow"
+                ),
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload  The stuff to give to the constructor
+    * @param string $obsolete The string to use for the input
+    * @param array  $expect   The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetHardwareTypes
+    */
+    public function testGetHardwareTypes($preload, $obsolete, $expect, $parameters)
+    {
+        $this->o->clearData();
+        $this->o->fromArray($preload);
+        $ret = $this->o->getHardwareTypes($obsolete);
+        foreach ($ret as $val) {
+            $this->assertEquals($obsolete, $val["Obsolete"], "Obsolete is wrong");
+            foreach ($expect as $k) {
+                $this->assertTrue(
+                    isset($val[$k]), "'$k' is missing in ".$val["HWPartNum"]
+                );
+            }
+            foreach ($parameters as $k) {
+                $this->assertTrue(
+                    isset($val["Param"][$k]), 
+                    "Param '$k' is missing in ".$val["HWPartNum"]
+                );
+            }
+        }
+    }
+
 }
 
 ?>

@@ -25,17 +25,21 @@
 -->
 
 
-<HUGNet>
+<HUGnet>
     <!-- Table endpoints -->
     <endpoints>
         <HWPartNum>0039-12-01-A</HWPartNum>
-        <Parameters>CPU: attiny26</Parameters>
+        <Parameters>
+            CPU: attiny26
+            VCC: 5V
+        </Parameters>
         <Obsolete>1</Obsolete>
         <Notes>Test Run.  Only 20 ever made.</Notes>
     </endpoints>
     <endpoints>
         <HWPartNum>0039-12-02-A</HWPartNum>
-        <Parameters>CPU: attiny26
+        <Parameters>
+            CPU: attiny26
             VCC: 3.3V
         </Parameters>
         <Obsolete>1</Obsolete>
@@ -43,15 +47,36 @@
     </endpoints>
     <endpoints>
         <HWPartNum>0039-12-02-B</HWPartNum>
-        <Parameters>CPU: attiny26
-            VCC: 5V</Parameters>
+        <Parameters>
+            CPU: attiny26
+            VCC: 5V
+        </Parameters>
         <Obsolete>1</Obsolete>
-        <Notes>Martek made 96 of these.  Scott make a number more than that.
-            There are still a lot of these out in the field.</Notes>
+        <Notes>
+            Martek made 96 of these.  Scott make a number more than that.
+            There are still a lot of these out in the field.
+        </Notes>
+    </endpoints>
+    <endpoints>
+        <HWPartNum>0039-12-02-C</HWPartNum>
+        <Parameters>CPU: attiny861
+            VCC: 5V
+            Firmware: 0039-20-17-C
+            FuseExtended: 0x01
+            FuseHigh: 0xD4
+            FuseLow: 0xE2
+            Built: 96
+        </Parameters>
+        <Obsolete>0</Obsolete>
+        <Notes>This is an upgraded version of 0039-12-02-B.  It uses the tiny861 processor
+            in place of the tiny26.  It has 8k code space instead of 2k.  All 0039-12-02-B
+            endpoints will be field upgrade to this version eventually.
+        </Notes>
     </endpoints>
     <endpoints>
         <HWPartNum>0039-21-01-A</HWPartNum>
-        <Parameters>CPU: atmega16
+        <Parameters>
+            CPU: atmega16
             VCC: 5V
             Firmware: 0039-20-06-C
             FuseHigh: 0xD0
@@ -60,11 +85,13 @@
             Built: 30
         </Parameters>
         <Obsolete>0</Obsolete>
-        <Notes>This is the current controller board.
+        <Notes>
+            This is the current controller board.
 
             6 were made by Scott
             6 were made by Barb
-            18 were made by Martek</Notes>
+            18 were made by Martek
+        </Notes>
     </endpoints>
     <endpoints>
         <HWPartNum>0039-21-02-A</HWPartNum>
@@ -75,26 +102,32 @@
             FuseHigh: 0xD0
             FuseLow: 0xE7
             LockBits: 0x3F
-            Built: 30
+            Built: 42
         </Parameters>
         <Obsolete>0</Obsolete>
-        <Notes>This is the new controller board.
+        <Notes>
+            This is the new controller board.
 
-            6 were made by Martek</Notes>
+            42 were made by Martek
+        </Notes>
     </endpoints>
     <endpoints>
         <HWPartNum>0039-28-01-A</HWPartNum>
-        <Parameters>CPU: atmega168
+        <Parameters>
+            CPU: atmega168
             VCC: 5V
             Firmware: 0039-20-13-C
             FuseHigh: 0xD5
             FuseLow: 0xE2
-            Built: 168
+            Built: 216
         </Parameters>
         <Obsolete>0</Obsolete>
-        <Notes>This is the current endpoint
+        <Notes>
+            This is the current endpoint
 
             12 were made by Scott
-            156 were made by Martek</Notes>
+            156 were made by Martek
+            48 were made by Martek 5/11
+        </Notes>
     </endpoints>
-</HUGNet>
+</HUGnet>
