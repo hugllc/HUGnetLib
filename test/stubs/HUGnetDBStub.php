@@ -44,7 +44,7 @@ define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 /** The database went away */
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /** Misc stuff */
-require_once dirname(__FILE__)."/HUGnetClass.php";
+require_once dirname(__FILE__)."/../../base/HUGnetClass.php";
 require_once HUGNET_INCLUDE_PATH."/interfaces/HUGnetDB.php";
 /**
  * Base class for all database work
