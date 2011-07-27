@@ -24,7 +24,11 @@ doc:
 doc-clean:
 	rm -Rf ${BASE_DIR}Documentation/test
 
-clean: 
+build-clean:
+	rm -Rf ${BASE_DIR}build
+
+
+clean: doc-clean build-clean
 	rm -Rf *~ */*~ */*/*~ */*/*/*~
 
 
