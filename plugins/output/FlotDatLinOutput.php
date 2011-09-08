@@ -95,7 +95,7 @@ class FlotDatLinOutput extends OutputPluginBase
     protected $graph = null;
     /** @var This is whether or not we have a second y axis */
     protected $y2 = false;
-    
+
     /**
     * Returns the object as a string
     *
@@ -157,7 +157,7 @@ class FlotDatLinOutput extends OutputPluginBase
     *
     * @param int    $line  The graph line to use
     * @param string $field The field to use in that line
-    * 
+    *
     * @return String the text to output
     */
     private function _createLine($line, $field)
@@ -173,7 +173,7 @@ class FlotDatLinOutput extends OutputPluginBase
         $ret .= "]";
         return $ret;
     }
-    
+
     /**
     * This function implements the output after the data
     *
@@ -539,6 +539,9 @@ class FlotDatLinOutput extends OutputPluginBase
         #flotTable {
             background: #DDD;
             margin: 10px;
+        }
+        #flotTable td {
+            color: 000;
         }
     </style>
     <div id="flotDiv">

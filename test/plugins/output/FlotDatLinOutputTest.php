@@ -216,6 +216,9 @@ class FlotDatLinOutputTest extends OutputPluginTestBase
             background: #DDD;
             margin: 10px;
         }
+        #flotTable td {
+            color: 000;
+        }
     </style>
     <div id="flotDiv">
         <table id="flotTable">
@@ -392,6 +395,9 @@ $(function () {
             background: #DDD;
             margin: 10px;
         }
+        #flotTable td {
+            color: 000;
+        }
     </style>
     <div id="flotDiv">
         <table id="flotTable">
@@ -505,6 +511,9 @@ $(function () {
         #flotTable {
             background: #DDD;
             margin: 10px;
+        }
+        #flotTable td {
+            color: 000;
         }
     </style>
     <div id="flotDiv">
