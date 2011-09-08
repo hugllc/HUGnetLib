@@ -2520,9 +2520,10 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $preload  The stuff to give to the constructor
-    * @param string $obsolete The string to use for the input
-    * @param array  $expect   The expected data
+    * @param mixed  $preload    The stuff to give to the constructor
+    * @param string $obsolete   The string to use for the input
+    * @param array  $expect     The expected data
+    * @param array  $parameters The parameters to test
     *
     * @return null
     *
@@ -2542,7 +2543,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
             }
             foreach ($parameters as $k) {
                 $this->assertTrue(
-                    isset($val["Param"][$k]), 
+                    isset($val["Param"][$k]),
                     "Param '$k' is missing in ".$val["HWPartNum"]
                 );
             }
