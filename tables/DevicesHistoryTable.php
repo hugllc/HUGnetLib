@@ -167,6 +167,9 @@ class DevicesHistoryTable extends HUGnetDBTable
     */
     public function insertRow($replace = false)
     {
+        if (!$this->checkRecord()) {
+            return false;
+        }
         $ret = $this->select(
             "id = ? AND SetupString = ? and SensorString = ?",
             array(
@@ -209,6 +212,25 @@ class DevicesHistoryTable extends HUGnetDBTable
             $dev->ActiveSensors = $dev->sensors->Sensors;
         }
         return $dev;
+    }
+    /**
+    * returns a device with the stuff here
+    *
+    * @return null
+    */
+    public function checkRecord()
+    {
+        if (substr($this->SetupString, 10, 4) !== "0039") {
+            return false;
+        }
+        if (substr($this->SetupString, 20, 4) !== "0039") {
+            return false;
+        }
+        $data = self::fromStringDecode($this->SensorString);
+        if ($data["Sensors"] <= 0) {
+            return false;
+        }
+        return true;
     }
     /**
     * Sets all of the endpoint attributes from an array

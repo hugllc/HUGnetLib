@@ -143,7 +143,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     public static function dataInsertRow()
     {
         return array(
-            array(
+            array( // #0 inserted normally
                 array(
                     "id" => "401",
                     "SaveDate" => "1280251876",
@@ -190,7 +190,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 dirname(__FILE__).'/../files/DevicesHistoryTableTest2.xml',
                 12,
             ),
-            array(
+            array( // #1 This won't be inserted because it is already there
                 array(
                     "id" => "404",
                     "SaveDate" => "1280251875",
@@ -258,6 +258,17 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                 ),
                 dirname(__FILE__).'/../files/DevicesHistoryTableTest.xml',
                 404,
+            ),
+            array( // #2 This won't be inserted because it is a bad record
+                array(
+                    "id" => "923",
+                    "SaveDate" => "1280251876",
+                    "SetupString" => "00000000BC00392801410039201343000006FFFFFF50",
+                    "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
+                        ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                ),
+                dirname(__FILE__).'/../files/DevicesHistoryTableTest.xml',
+                401,
             ),
         );
     }
@@ -433,190 +444,6 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
         );
     }
 
-    /**
-    * test the forceTable routine
-    *
-    * @param array $dev    The device to use
-    * @param mixed $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataFromAny
-    */
-    public function testFromAny($dev, $expect)
-    {
-        $this->o->fromAny($dev);
-        $this->assertThat($this->o->SaveDate, $this->greaterThan(time() - 10000));
-        $this->o->SaveDate = 0;
-        $this->assertAttributeSame($expect, "data", $this->o);
-    }
-    /**
-    * data provider for testForceTable
-    *
-    * @return array
-    */
-    public static function dataToDeviceContainer()
-    {
-        return array(
-            array(
-                array(
-                    "id" => "404",
-                    "group" => "default",
-                    "SaveDate" => "1280251875",
-                    "SetupString" => "000000019400392102410039201443000008FFFFFF50",
-                    "SensorString" => "YToxNjp7czoxNDoiUmF3Q2FsaWJyYXRpb24iO3M6MD"
-                        ."oiIjtzOjc6IlNlbnNvcnMiO2k6MTA7czoxMzoiQWN0aXZlU2Vuc29yc"
-                        ."yI7aToxMDtzOjE1OiJQaHlzaWNhbFNlbnNvcnMiO2k6NjtzOjE0OiJW"
-                        ."aXJ0dWFsU2Vuc29ycyI7aTo0O3M6MTI6ImZvcmNlU2Vuc29ycyI7Yjo"
-                        ."wO2k6MDthOjExOntzOjI6ImlkIjtpOjY0O3M6NDoidHlwZSI7czoxMD"
-                        ."oiQ29udHJvbGxlciI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6N"
-                        ."ToiZXh0cmEiO2E6Mjp7aTowO2k6MTgwO2k6MTtpOjI3O31zOjE0OiJy"
-                        ."YXdDYWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI"
-                        ."7aToxO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MT"
-                        ."oiRCI7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTt9a"
-                        ."ToxO2E6MTE6e3M6MjoiaWQiO2k6ODA7czo0OiJ0eXBlIjtzOjEwOiJD"
-                        ."b250cm9sbGVyIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJ"
-                        ."leHRyYSI7YToyOntpOjA7ZDowLjU7aToxO2k6Nzt9czoxNDoicmF3Q2"
-                        ."FsaWJyYXRpb24iO3M6MDoiIjtzOjEyOiJ0aW1lQ29uc3RhbnQiO2k6M"
-                        ."TtzOjI6IkFtIjtpOjEwMjM7czoyOiJUZiI7aTo2NTUzNjtzOjE6IkQi"
-                        ."O2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6MzoiVmNjIjtpOjU7fWk6Mjt"
-                        ."hOjExOntzOjI6ImlkIjtpOjI7czo0OiJ0eXBlIjtzOjE0OiJCQ1RoZX"
-                        ."JtMjMyMjY0MCI7czo4OiJkYXRhVHlwZSI7czozOiJyYXciO3M6NToiZ"
-                        ."Xh0cmEiO2E6Mjp7aTowO2k6MTAwO2k6MTtpOjEwO31zOjE0OiJyYXdD"
-                        ."YWxpYnJhdGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aTo"
-                        ."xO3M6MjoiQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRC"
-                        ."I7aTo2NTUzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTt9aTozO"
-                        ."2E6MTE6e3M6MjoiaWQiO2k6NjQ7czo0OiJ0eXBlIjtzOjEwOiJDb250"
-                        ."cm9sbGVyIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHR"
-                        ."yYSI7YToyOntpOjA7aToxODA7aToxO2k6Mjc7fXM6MTQ6InJhd0NhbG"
-                        ."licmF0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN0YW50IjtpOjE7c"
-                        ."zoyOiJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtp"
-                        ."OjY1NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7aTo1O31pOjQ7YTo"
-                        ."xMTp7czoyOiJpZCI7aTo4MDtzOjQ6InR5cGUiO3M6MTA6IkNvbnRyb2"
-                        ."xsZXIiO3M6ODoiZGF0YVR5cGUiO3M6MzoicmF3IjtzOjU6ImV4dHJhI"
-                        ."jthOjI6e2k6MDtkOjAuNTtpOjE7aTo3O31zOjE0OiJyYXdDYWxpYnJh"
-                        ."dGlvbiI7czowOiIiO3M6MTI6InRpbWVDb25zdGFudCI7aToxO3M6Mjo"
-                        ."iQW0iO2k6MTAyMztzOjI6IlRmIjtpOjY1NTM2O3M6MToiRCI7aTo2NT"
-                        ."UzNjtzOjE6InMiO2k6NjQ7czozOiJWY2MiO2k6NTt9aTo1O2E6MTE6e"
-                        ."3M6MjoiaWQiO2k6MjtzOjQ6InR5cGUiO3M6MTQ6IkJDVGhlcm0yMzIy"
-                        ."NjQwIjtzOjg6ImRhdGFUeXBlIjtzOjM6InJhdyI7czo1OiJleHRyYSI"
-                        ."7YToyOntpOjA7aToxMDA7aToxO2k6MTA7fXM6MTQ6InJhd0NhbGlicm"
-                        ."F0aW9uIjtzOjA6IiI7czoxMjoidGltZUNvbnN0YW50IjtpOjE7czoyO"
-                        ."iJBbSI7aToxMDIzO3M6MjoiVGYiO2k6NjU1MzY7czoxOiJEIjtpOjY1"
-                        ."NTM2O3M6MToicyI7aTo2NDtzOjM6IlZjYyI7aTo1O31pOjY7TjtpOjc"
-                        ."7TjtpOjg7TjtpOjk7Tjt9"
-                ),
-                array(
-                    "DriverInfo" => array(
-                        "TimeConstant" => 1,
-                        "PhysicalSensors"   => 6,
-                        "VirtualSensors"   => 4,
-                    ),
-                    "id" => 404,
-                    "DeviceID" => "000194",
-                    "HWPartNum" => "0039-21-02-A",
-                    "FWPartNum" => "0039-20-14-C",
-                    "FWVersion" => "0.0.8",
-                    "RawSetup" => "000000019400392102410039201443000008FFFFFF50",
-                    "Driver" => "e00392100",
-                    "ActiveSensors" => 10,
-                    "sensors" => array(
-                        "Sensors" => 10,
-                        "ActiveSensors" => 6,
-                        "PhysicalSensors" => 6,
-                        "VirtualSensors" => 4,
-                        0 => array(
-                            "id" => 0x40,
-                            "type" => "Controller",
-                            "location" => "HUGnet 1 Voltage",
-                            "extra" => array(180, 27),
-                            "bound" => true,
-                        ),
-                        1 => array(
-                            "id" => 0x50,
-                            "type" => "Controller",
-                            "location" => "HUGnet 1 Current",
-                            "extra" => array(0.5, 7),
-                            "bound" => true,
-                        ),
-                        2 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
-                            "location" => "HUGnet 1 FET Temperature",
-                            "extra" => array(100, 10),
-                            "bound" => true,
-                        ),
-                        3 => array(
-                            "id" => 0x40,
-                            "type" => "Controller",
-                            "location" => "HUGnet 2 Voltage",
-                            "extra" => array(180, 27),
-                            "bound" => true,
-                        ),
-                        4 => array(
-                            "id" => 0x50,
-                            "type" => "Controller",
-                            "location" => "HUGnet 2 Current",
-                            "extra" => array(0.5, 7),
-                            "bound" => true,
-                        ),
-                        5 => array(
-                            "id" => 2,
-                            "type" => "BCTherm2322640",
-                            "location" => "HUGnet 2 FET Temperature",
-                            "extra" => array(100, 10),
-                            "bound" => true,
-                        ),
-                        6 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => null,
-                        ),
-                        7 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => null,
-                        ),
-                        8 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => null,
-                        ),
-                        9 => array(
-                            "id" => 0xFE,
-                            "type" => "Placeholder",
-                            "location" => null,
-                        ),
-                    ),
-                    "params" => array(
-                        "DriverInfo" => array(
-                            "BoredomThreshold" => 80,
-                        ),
-                    ),
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the forceTable routine
-    *
-    * @param array $preload The device to use
-    * @param mixed $expect  The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataToDeviceContainer
-    */
-    public function testToDeviceContainer($preload, $expect)
-    {
-        $this->o->fromAny($preload);
-        $dev = &$this->o->toDeviceContainer();
-        $this->assertTrue(
-            is_a($dev, "DeviceContainer"), "Not a DeviceContainer"
-        );
-        $this->assertSame($expect, $dev->toArray(false), "Wrong data");
-    }
     /**
     * data provider for testForceTable
     *
@@ -830,6 +657,133 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
             is_a($dev, "DeviceContainer"), "Not a DeviceContainer"
         );
         $this->assertSame($expect, $dev->toArray(false), "Wrong data");
+    }
+
+    /**
+    * test the forceTable routine
+    *
+    * @param array $dev    The device to use
+    * @param mixed $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFromAny
+    */
+    public function testFromAny($dev, $expect)
+    {
+        $this->o->fromAny($dev);
+        $this->assertThat($this->o->SaveDate, $this->greaterThan(time() - 10000));
+        $this->o->SaveDate = 0;
+        $this->assertAttributeSame($expect, "data", $this->o);
+    }
+    /**
+    * data provider for testCheckRecord
+    *
+    * @return array
+    */
+    public static function dataCheckRecord()
+    {
+        return array(
+            array( // #0 a good record
+                array(
+                    "id" => "404",
+                    "group" => "default",
+                    "SaveDate" => "1280251875",
+                    "SetupString" => "000000019400392102410039201443000008FFFFFF50",
+                    "SensorString" => (string) new DeviceSensorsContainer(
+                        array(
+                            "Sensors" => 20,
+                            "PhysicalSensors" => 16,
+                            "VirtualSensors" => 4,
+                            "ActiveSensors" => 10,
+                            "forceSensors" => true,
+                        ),
+                        new DeviceContainer()
+                    ),
+                ),
+                true,
+            ),
+            array( // #1 a record with no sensors
+                array(
+                    "id" => "404",
+                    "group" => "default",
+                    "SaveDate" => "1280251875",
+                    "SetupString" => "000000019400392102410039201443000008FFFFFF50",
+                    "SensorString" => (string) new DeviceSensorsContainer(
+                        array(
+                            "forceSensors" => true,
+                        ),
+                        new DeviceContainer()
+                    ),
+                ),
+                false,
+            ),
+            array( // #2 a bad record from the field
+                array(
+                    "id" => "404",
+                    "group" => "default",
+                    "SaveDate" => "1280251875",
+                    "SetupString" => "00000000BC00392801410039201343000006FFFFFF50",
+                    "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOi"
+                        ."IiO3M6NzoiU2Vuc29ycyI7aTowO30=",
+                ),
+                false,
+            ),
+            array( // #3 a bad setup string
+                array(
+                    "id" => "404",
+                    "group" => "default",
+                    "SaveDate" => "1280251875",
+                    "SetupString" => "000000019410392102410039201443000008FFFFFF50",
+                    "SensorString" => (string) new DeviceSensorsContainer(
+                        array(
+                            "Sensors" => 20,
+                            "PhysicalSensors" => 16,
+                            "VirtualSensors" => 4,
+                            "ActiveSensors" => 10,
+                            "forceSensors" => true,
+                        ),
+                        new DeviceContainer()
+                    ),
+                ),
+                false,
+            ),
+            array( // #4 another bad setup string
+                array(
+                    "id" => "404",
+                    "group" => "default",
+                    "SaveDate" => "1280251875",
+                    "SetupString" => "000000019400392102411039201443000008FFFFFF50",
+                    "SensorString" => (string) new DeviceSensorsContainer(
+                        array(
+                            "Sensors" => 20,
+                            "PhysicalSensors" => 16,
+                            "VirtualSensors" => 4,
+                            "ActiveSensors" => 10,
+                            "forceSensors" => true,
+                        ),
+                        new DeviceContainer()
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+
+    /**
+    * test the forceTable routine
+    *
+    * @param array $preload The device to use
+    * @param mixed $expect  The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataCheckRecord
+    */
+    public function testCheckRecord($preload, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->checkRecord());
     }
 
 }
