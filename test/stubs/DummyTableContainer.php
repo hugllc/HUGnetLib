@@ -73,7 +73,7 @@ class DummyTableContainer extends HUGnetDBTable
         "name" => array("Name" => "name", "Type" => "varchar(32)", "Default" => ""),
         "value" => array("Name" => "value", "Type" => "float", "Default" => 0.0),
     );
-    public $sqlIndxes = array(
+    public $sqlIndexes = array(
         "stuff" => array(
             "Name" => "stuff",
             "Unique" => true,

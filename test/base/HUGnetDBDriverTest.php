@@ -1302,9 +1302,11 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "25.0",
                     ),
                 ), // expect
-                "value ASC", // Orderby
-                0, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "value ASC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
                 true,
             ),
             // #1 Selects everything, returns 1 value
@@ -1319,9 +1321,11 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "-25.0",
                     ),
                 ), // expect
-                "", // Orderby
-                1, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "", // Orderby
+                    "sqlLimit" => 1, // limit
+                    "sqlStart" => 0, // start
+                ),
                 true,
             ),
             // #2 Selects only one
@@ -1336,12 +1340,14 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "23.0",
                     ),
                 ), // expect
-                "value DESC", // Orderby
-                0, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
                 true,
             ),
-            // Selects only one
+            // #3 Selects only one
             array(
                 "id = 32",  // where
                 array(), // data
@@ -1352,23 +1358,27 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "23.0",
                     ),
                 ), // expect
-                "value DESC", // Orderby
-                0, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
                 true,
             ),
-            // Selects only one that is not there
+            // #4 Selects only one that is not there
             array(
                 "idasd = 6472",  // where
                 array(), // data
                 array("id", "value"), // keys
                 null, // expect
-                "value DESC", // Orderby
-                0, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
                 false,
             ),
-            // Selects only one using the 'idwhere'
+            // #5 Selects only one using the 'idwhere'
             array(
                 array("id" => 32),  // where
                 array(), // data
@@ -1380,9 +1390,63 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                         "value" => "23.0",
                     ),
                 ), // expect
-                "value DESC", // Orderby
-                0, // limit
-                0, // start
+                array(
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
+            // #6 Selects only one using the 'idwhere'
+            array(
+                array("id" => 32, "value" => 23.0),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ), // expect
+                array(
+                    "sqlId" => null,
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
+            // #7 Selects two using the 'idwhere'
+            array(
+                array("id" => 32, "value" => 23.0),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                array(
+                    array(
+                        "id" => "32",
+                        "name" => "A way up here thing",
+                        "value" => "23.0",
+                    ),
+                ), // expect
+                array(
+                    "sqlId" => null,
+                    "sqlIndexes" => array(
+                        "stuff" => array(
+                            "Name" => "stuff",
+                            "Unique" => true,
+                            "Columns" => array("id", "value"),
+                        ),
+                        "stuff2" => array(
+                            "Name" => "stuff2",
+                            "Unique" => true,
+                            "Columns" => array("value"),
+                        ),
+                    ),
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
                 true,
             ),
         );
@@ -1394,9 +1458,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
-    * @param string $orderby   The orderby clause
-    * @param int    $limit     The max number of records to return
-    * @param int    $start     The record to start on
+    * @param array  $setup     Setup information for the dummy class
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1408,14 +1470,12 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $whereData,
         $keys,
         $expect,
-        $orderby,
-        $limit,
-        $start,
+        $setup,
         $ret
     ) {
-        $this->table->sqlOrderBy = $orderby;
-        $this->table->sqlStart = $start;
-        $this->table->sqlLimit = $limit;
+        foreach ((array)$setup as $key => $value) {
+            $this->table->$key = $value;
+        }
         $r = $this->o->selectWhere($where, $whereData, $keys);
         $this->assertSame($ret, $r);
         // This is necessary because the other methods return null, while FETCH_ASSOC
@@ -1433,9 +1493,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
-    * @param string $orderby   The orderby clause
-    * @param int    $limit     The max number of records to return
-    * @param int    $start     The record to start on
+    * @param array  $setup     Setup information for the dummy class
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1447,14 +1505,12 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $whereData,
         $keys,
         $expect,
-        $orderby,
-        $limit,
-        $start,
+        $setup,
         $ret
     ) {
-        $this->table->sqlOrderBy = $orderby;
-        $this->table->sqlStart = $start;
-        $this->table->sqlLimit = $limit;
+        foreach ((array)$setup as $key => $value) {
+            $this->table->$key = $value;
+        }
         $r = $this->o->selectWhere($where, $whereData, $keys);
         $this->assertSame($ret, $r);
         $ret = array();
@@ -1473,9 +1529,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param array  $whereData The data to use for the where clause
     * @param array  $keys      The columns to insert.  Uses all of this is blank.
     * @param string $expect    The query created
-    * @param string $orderby   The orderby clause
-    * @param int    $limit     The max number of records to return
-    * @param int    $start     The record to start on
+    * @param array  $setup     Setup information for the dummy class
     * @param bool   $ret       The expected return value
     *
     * @return null
@@ -1487,14 +1541,12 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $whereData,
         $keys,
         $expect,
-        $orderby,
-        $limit,
-        $start,
+        $setup,
         $ret
     ) {
-        $this->table->sqlOrderBy = $orderby;
-        $this->table->sqlStart = $start;
-        $this->table->sqlLimit = $limit;
+        foreach ((array)$setup as $key => $value) {
+            $this->table->$key = $value;
+        }
         $r = $this->o->selectWhere($where, $whereData, $keys);
         $this->assertSame($ret, $r);
         $rows = array();

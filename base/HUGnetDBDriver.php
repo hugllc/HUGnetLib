@@ -489,8 +489,16 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
                 if (!$ind["Unique"]) {
                     continue;
                 }
+                if (!empty($where)) {
+                    $where .= " AND ";
+                }
                 $where .= " (`".implode("` = ? AND `", $ind["Columns"])."` = ?)";
-                $this->idWhere = $ind["Columns"];
+                $this->idWhere = array_merge(
+                    (array)$this->idWhere, (array)$ind["Columns"]
+                );
+            }
+            if (empty($where)) {
+                $where = 0;
             }
         }
         $this->where($where);
