@@ -119,7 +119,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <rect id="" x="0" y="0" width="200px" height="100px" fill="#FFFFFF" '
             .'stroke="none" />
     <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
-            .'" height="100" width="133" x="0" y="0" ></image>
+            .'" height="100" width="200" x="0" y="0" ></image>
 </svg>
 
 ',
@@ -140,7 +140,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <rect id="" x="0" y="0" width="100px" height="200px" fill="#FFFFFF" '
             .'stroke="none" />
     <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
-            .'" height="75" width="100" x="0" y="0" ></image>
+            .'" height="200" width="100" x="0" y="0" ></image>
 </svg>
 
 ',
@@ -161,7 +161,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <rect id="" x="0" y="0" width="2000px" height="1000px" fill="#FFFFFF" '
             .'stroke="none" />
     <image xlink:href="'.realpath(dirname(__FILE__).'/../../files/images/pink.png')
-            .'" height="480" width="640" x="0" y="0" ></image>
+            .'" height="1000" width="2000" x="0" y="0" ></image>
 </svg>
 
 ',

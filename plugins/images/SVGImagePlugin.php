@@ -64,7 +64,7 @@ class SVGImagePlugin extends ImagePluginBase
     private $_ind = "    ";
     /** @var This is the line end to use */
     private $_end = "\n";
-    
+
     /**
     * Returns the object as a string
     *
@@ -131,7 +131,7 @@ class SVGImagePlugin extends ImagePluginBase
     }
     /**
     * Returns a rectangle object
-    * 
+    *
     * @param int    $x      The x-coordinate of the upper left corner
     * @param int    $y      The y-coordinate of the upper left corner
     * @param int    $width  The width
@@ -209,7 +209,7 @@ class SVGImagePlugin extends ImagePluginBase
     *
     * @param string $indent The indent to use
     * @param string $end    The end to use
-    * 
+    *
     * @return string
     */
     private function _backgroundImage($indent = "", $end = "")
@@ -226,25 +226,9 @@ class SVGImagePlugin extends ImagePluginBase
             // @codeCoverageIgnoreEnd
         }
 
-        if (($imageHeight < $this->image->height)
-            || ($imageWidth < $this->image->width)
-        ) {
-            $imageHeight = (int)$imageHeight;
-            $imageWidth = (int)$imageWidth;
-        } else {
-            $hPerc = $this->image->height / $imageHeight;
-            $wPerc = $this->image->width  / $imageWidth;
-            if ($hPerc > $wPerc) {
-                $imageHeight = (int)($imageHeight * $wPerc);
-                $imageWidth  = (int)($imageWidth  * $wPerc);
-            } else {
-                $imageHeight = (int)($imageHeight * $hPerc);
-                $imageWidth  = (int)($imageWidth  * $hPerc);
-            }
-        }
         return $indent.'<image xlink:href="'.(string)$this->image->imageLoc.'"'
-            .' height="'.$imageHeight.'" width="'.$imageWidth.'" x="0" y="0" >'
-            .'</image>'.$end;
+            .' height="'.$this->image->height.'" width="'.$this->image->width.'"'
+            .' x="0" y="0" ></image>'.$end;
 
     }
 
