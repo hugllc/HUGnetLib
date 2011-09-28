@@ -1449,6 +1449,22 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
                 ),
                 true,
             ),
+            // #8 Ends up with an empty where
+            array(
+                array("id" => 32, "value" => 23.0),  // where
+                array(), // data
+                array("id", "value", "name"), // keys
+                null, // expect
+                array(
+                    "sqlId" => null,
+                    "sqlIndexes" => array(
+                    ),
+                    "sqlOrderBy" => "value DESC", // Orderby
+                    "sqlLimit" => 0, // limit
+                    "sqlStart" => 0, // start
+                ),
+                true,
+            ),
         );
     }
     /**

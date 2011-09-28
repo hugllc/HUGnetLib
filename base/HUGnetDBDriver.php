@@ -489,7 +489,6 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
                 if (!$ind["Unique"]) {
                     continue;
                 }
-                //$where .= " (`"; //.implode("` = ? AND `", $ind["Columns"])."` = ?)";
                 $nWhere = "";
                 $sep = "";
                 foreach ($ind["Columns"] as $col) {
@@ -506,6 +505,9 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
                     $where .= "(".$nWhere.")";
                 }
             }
+        }
+        if (empty($where)) {
+            $where = "(0)";
         }
         $this->where($where);
     }
