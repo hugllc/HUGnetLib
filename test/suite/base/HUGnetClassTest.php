@@ -35,10 +35,6 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 
-if (!defined("HUGNET_INCLUDE_PATH")) {
-    define("HUGNET_INCLUDE_PATH", realpath(CODE_BASE.".."));
-}
-
 require_once CODE_BASE.'base/HUGnetClass.php';
 require_once CODE_BASE.'tables/ErrorTable.php';
 

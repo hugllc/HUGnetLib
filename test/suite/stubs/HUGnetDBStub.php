@@ -45,7 +45,7 @@ define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /** Misc stuff */
 require_once CODE_BASE."base/HUGnetClass.php";
-require_once HUGNET_INCLUDE_PATH."/interfaces/HUGnetDB.php";
+require_once CODE_BASE."/interfaces/HUGnetDB.php";
 /**
  * Base class for all database work
  *
@@ -503,8 +503,8 @@ class HUGnetDBStub extends HUGnetClass implements HUGnetDBInterface
     function &getInstance($class = "HUGnetDB", $config = null)
     {
         static $instances;
-        if (file_exists(HUGNET_INCLUDE_PATH."/database/".$class.".php")) {
-            include_once HUGNET_INCLUDE_PATH."/database/".$class.".php";
+        if (file_exists(CODE_BASE."/database/".$class.".php")) {
+            include_once CODE_BASE."/database/".$class.".php";
         }
         if (!class_exists($class)) {
             return false;

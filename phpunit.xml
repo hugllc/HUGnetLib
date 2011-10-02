@@ -25,9 +25,11 @@
       <directory suffix=".php">.</directory>
     </whitelist>
     <blacklist>
-      <directory suffix=".php">test/</directory>
-      <directory suffix=".php">contrib/</directory>
-      <directory suffix=".php">old/</directory>
+      <directory suffix=".php">test</directory>
+      <directory suffix=".php">contrib</directory>
+      <directory suffix=".php">old</directory>
+      <directory suffix=".php">build</directory>
+      <directory suffix=".php">Documentation</directory>
     </blacklist>
   </filter>
 </phpunit>
