@@ -113,6 +113,52 @@ abstract class CurrentDeviceSensorBase extends DeviceSensorBase
         $A = $this->getCurrent($val, $R, $G);
         return round($A * 1000, 1);
     }
+    /**
+    * This will work with sensors that are linear and bounded
+    *
+    * Basically if we have a sensor that is linear and the ends
+    * of the line are specified (max1,max2) and (min1,min2) then this
+    * is the routine for you.
+    *
+    * Take the case of a pressure sensor.  We are give that at Vmax the
+    * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us
+    * the boundries of the line.  The pressure has to be between Pmax and Pmin
+    * and the voltage has to be between Vmax and Vmin.  If it is not null
+    * is returned.
+    *
+    * Given the formula I am using, P MUST be in bounds.
+    *
+    * @param float $A The incoming value
+    *
+    * @return output rounded to 4 places
+    */
+    protected function linearBounded($A)
+    {
+        if (is_null($A)) {
+            return null;
+        }
+        $Imin = $this->getExtra(0);
+        $Imax = $this->getExtra(1);
+        $Pmin = $this->getExtra(2);
+        $Pmax = $this->getExtra(3);
+        $Rsense = $this->getExtra(4);
+        $Gain = $this->getExtra(5);
+        if ($Imax == $Imin) {
+            return null;
+        }
+        $I = ($this->getCurrent($A, $Rsense, $Gain) * 1000);
+        if ($I > $Imax) {
+            return null;
+        }
+        if ($I < $Imin) {
+            return null;
+        }
+        $m = ($Pmax - $Pmin) / ($Imax - $Imin);
+        $b = $Pmax - ($m * $Imax);
+        $P = ($m * $I) + $b;
+        $P = round($P, 4);
+        return $P;
+    }
 
 }
 

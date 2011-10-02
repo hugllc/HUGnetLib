@@ -213,6 +213,43 @@ class CurrentDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $ret = $this->o->direct($val);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testLinearBounded
+    *
+    * @return array
+    */
+    public static function dataLinearBounded()
+    {
+        return array(
+            array(20000, array("extra" => array(4, 20, -1.5, 1.5, 249, 1)), -1.1063),
+            array(null,  array("extra" => array(.5, 4.5, 0, 5, 249, 1)), null),
+            array(0, array("extra" => array(.5, 4.5, 0, 5, 249, 1)), null),
+            array(65535, array("extra" => array(.5, 4.5, 0, 5, 249, 1)), null),
+            array(10000, array("extra" => array(5, 5, 0, 5, 249, 1)), null),
+            array(null, array('extra' => array(1, 4, 0, 100, 249, 1)), null),
+            array(0, array('extra' => array(1, 4, 0, 100, 249, 1)), null),
+            array(65535, array('extra' => array(1, 4, 0, 100, 249, 1)), null),
+            array(65536, array("extra" => array(5, 5, 0, 5, 249, 1)), null),
+
+        );
+    }
+    /**
+    * test
+    *
+    * @param float $val     The incoming value
+    * @param array $preload The value to preload into the object
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataLinearBounded
+    */
+    public function testLinearBounded($val, $preload, $expect)
+    {
+        $this->o->fromAny($preload);
+        $ret = $this->o->linearBounded($val);
+        $this->assertSame($expect, $ret);
+    }
 
 }
 /**
@@ -274,6 +311,29 @@ class TestCurrentDeviceSensor extends CurrentDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
+    }
+    /**
+    * This will work with sensors that are linear and bounded
+    *
+    * Basically if we have a sensor that is linear and the ends
+    * of the line are specified (max1,max2) and (min1,min2) then this
+    * is the routine for you.
+    *
+    * Take the case of a pressure sensor.  We are give that at Vmax the
+    * pressure is Pmax and at Vmin the pressure is Vmin.  That gives us
+    * the boundries of the line.  The pressure has to be between Pmax and Pmin
+    * and the voltage has to be between Vmax and Vmin.  If it is not null
+    * is returned.
+    *
+    * Given the formula I am using, P MUST be in bounds.
+    *
+    * @param float $A The incoming value
+    *
+    * @return output rounded to 4 places
+    */
+    public function linearBounded($A)
+    {
+        return parent::linearBounded($A);
     }
 }
 
