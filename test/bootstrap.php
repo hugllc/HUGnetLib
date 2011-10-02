@@ -26,8 +26,8 @@
  * </pre>
  *
  * @category   Test
- * @package    ComTimeclock
- * @subpackage Com_timeclock
+ * @package    HUGnetLibTest
+ * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2008-2009, 2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -38,4 +38,11 @@
 
 define("CODE_BASE", realpath(dirname(__FILE__)."/..")."/");
 define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
+
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(CODE_BASE."hugnet.inc.php");
+PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."contrib");
+PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."test");
+PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."interfaces");
+
 ?>
