@@ -29,7 +29,7 @@
  * @package    HUGnetLibTest
  * @subpackage Test
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2008-2009,2011 Hunt Utilities Group, LLC
+ * @copyright  2008,2009,2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    SVN: $Id$
