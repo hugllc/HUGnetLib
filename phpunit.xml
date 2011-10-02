@@ -4,10 +4,11 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          strict="false"
+         bootstrap="test/bootstrap.php"
          verbose="true">
   <testsuites>
     <testsuite name="HUGnetLib">
-      <directory suffix="Test.php">test</directory>
+      <directory suffix="Test.php">test/suite</directory>
     </testsuite>
   </testsuites>
 
@@ -23,5 +24,10 @@
     <whitelist addUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">.</directory>
     </whitelist>
+    <blacklist>
+      <directory suffix=".php">test/</directory>
+      <directory suffix=".php">contrib/</directory>
+      <directory suffix=".php">old/</directory>
+    </blacklist>
   </filter>
 </phpunit>
