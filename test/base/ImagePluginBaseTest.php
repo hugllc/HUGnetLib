@@ -230,7 +230,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     dirname(__FILE__)
                     ."/../files/images/ImagePluginsBaseTestText1.png"
                 ),
-                500,
+                600,
             ),
             array( // #3
                 array(
