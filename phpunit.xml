@@ -5,7 +5,7 @@
          backupStaticAttributes="false"
          strict="false"
          bootstrap="test/bootstrap.php"
-         verbose="true">
+         verbose="false">
   <testsuites>
     <testsuite name="HUGnetLib">
       <directory suffix="Test.php">test/suite</directory>
@@ -22,14 +22,13 @@
 
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">.</directory>
+      <exclude>
+        <directory suffix=".php">test</directory>
+        <directory suffix=".php">contrib</directory>
+        <directory suffix=".php">old</directory>
+        <directory suffix=".php">build</directory>
+        <directory suffix=".php">Documentation</directory>
+      </exclude>
     </whitelist>
-    <blacklist>
-      <directory suffix=".php">test</directory>
-      <directory suffix=".php">contrib</directory>
-      <directory suffix=".php">old</directory>
-      <directory suffix=".php">build</directory>
-      <directory suffix=".php">Documentation</directory>
-    </blacklist>
   </filter>
 </phpunit>
