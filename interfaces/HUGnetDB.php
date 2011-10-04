@@ -153,7 +153,7 @@ interface HUGnetDBInterface
     *
     * @return array
     */
-    public function get($id);
+    public function get($sqlId);
     /**
     * Gets all rows from the database
     *
@@ -196,7 +196,7 @@ interface HUGnetDBInterface
     *
     * @return int
     */
-    function getNextID($id = null);
+    function getNextID($sqlId = null);
     /**
     * Gets one less that the smallest ID to use from the table.
     *
@@ -206,7 +206,7 @@ interface HUGnetDBInterface
     *
     * @return int
     */
-    function getPrevID($id = null);
+    function getPrevID($sqlId = null);
     /**
     * Fixes variable so they are the correct type
     *
@@ -235,11 +235,11 @@ interface HUGnetDBInterface
     /**
     * Removes a row from the database.
     *
-    * @param mixed $id The id value of the row to delete
+    * @param mixed $sqlId The id value of the row to delete
     *
     * @return mixed
     */
-    public function remove($id);
+    public function remove($sqlId);
     /**
     * Removes a row from the database.
     *

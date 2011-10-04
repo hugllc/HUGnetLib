@@ -237,13 +237,13 @@ class DevicesHistoryTable extends HUGnetDBTable
     /**
     * Sets all of the endpoint attributes from an array
     *
-    * @param int $id   The id of the record to get
-    * @param int $date The date to use
-    * @param int $data The data to load into the history table
+    * @param int $devId The id of the record to get
+    * @param int $date  The date to use
+    * @param int $data  The data to load into the history table
     *
     * @return null
     */
-    static public function &deviceFactory($id, $date = 0, $data = array())
+    static public function &deviceFactory($devId, $date = 0, $data = array())
     {
         $hist = new DevicesHistoryTable($data);
         if (empty($date)) {
@@ -253,7 +253,7 @@ class DevicesHistoryTable extends HUGnetDBTable
         $hist->sqlOrderBy = "SaveDate DESC";
         $hist->selectOneInto(
             "id = ? AND SaveDate <= ?",
-            array($id, $date)
+            array($devId, $date)
         );
         return $hist->toDeviceContainer();
     }

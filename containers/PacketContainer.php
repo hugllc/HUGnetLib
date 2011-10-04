@@ -566,12 +566,12 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return bool true if it is unsolicited, false otherwise
     */
-    static public function checkDeviceID($id)
+    static public function checkDeviceID($devId)
     {
-        if (is_string($id)) {
-            $id = hexdec($id);
+        if (is_string($devId)) {
+            $devId = hexdec($devId);
         }
-        return ($id <= self::MAX_SN) && ($id >= self::MIN_SN);
+        return ($devId <= self::MAX_SN) && ($devId >= self::MIN_SN);
     }
     /**
     * Checks to see if the contained packet is an unsolicited
@@ -885,6 +885,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * @param string $value The value to set
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedLocalVariable)
     */
     protected function setDate($value)
     {

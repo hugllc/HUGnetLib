@@ -145,7 +145,7 @@ class PeriodicPlugins extends ProcessBase
             return false;
         }
         $additional_headers    = "";
-        $additional_parameters = "";
+        $additional_params = "";
         // Do a test if we are in test mode.
         if ($this->myConfig->test) {
             return array(
@@ -153,7 +153,7 @@ class PeriodicPlugins extends ProcessBase
                 $subject,
                 $message,
                 $additional_headers,
-                $additional_parameters
+                $additional_params
             );
         }
         // @codeCoverageIgnoreStart
@@ -163,7 +163,7 @@ class PeriodicPlugins extends ProcessBase
             $subject,
             $message,
             $additional_headers,
-            $additional_parameters
+            $additional_params
         );
         // @codeCoverageIgnoreEnd
     }

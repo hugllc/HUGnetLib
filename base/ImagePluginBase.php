@@ -159,7 +159,7 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
                 $ocolor
             );
         }
-        
+
         if (!is_null($point->fill)
             && (strtolower($point->fill) !== "none")
             && (strtolower($point->fill) !== "transparent")
@@ -174,7 +174,7 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
                 $bcolor
             );
         }
-        $ret = imagettftext(
+        imagettftext(
             $this->img,
             $point->fontsize,
             0,
@@ -209,18 +209,17 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
         return $this->colors[$color];
     }
     /**
-    * This calculates the size of the background image if its size does not match
-    * the size of the image we are building
+    * Checks to see if a file exists and can be opened.
     *
-    * @param string $file The file to check
+    * @param string $filename The file to check
     *
     * @return string
     */
-    protected function fileExists($file)
+    protected function fileExists($filename)
     {
-        $f = @fopen($file, 'r');
-        if ($f) {
-            fclose($f);
+        $file = @fopen($filename, 'r');
+        if ($file) {
+            fclose($file);
             return true;
         }
         return false;

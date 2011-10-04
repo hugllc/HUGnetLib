@@ -168,16 +168,16 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     /**
     * This function should be used to wait between config attempts
     *
-    * @param int    $id  The id of the device to work with
-    * @param string $fct The function to call
+    * @param int    $devId The id of the device to work with
+    * @param string $fct   The function to call
     *
     * @return int The number of packets routed
     */
-    protected function checkDev($id, $fct)
+    protected function checkDev($devId, $fct)
     {
-        $this->device->getRow($id);
+        $this->device->getRow($devId);
         $this->checkPlugins($this->device, $fct);
-        $this->updateDev($this->device, $fct);
+        $this->updateDev($fct);
     }
     /**
     * This function should be used to wait between config attempts
@@ -190,7 +190,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     protected function checkPlugins(DeviceContainer &$dev, $fct = "main")
     {
         $lock = $this->checkLock($dev);
-        foreach ($this->priority as $k => $p) {
+        foreach ($this->priority as $p) {
             foreach ($p as $n) {
                 if ($this->active[$n]->ready($dev)) {
                     $ret = $this->runPlugin($this->active[$n], $dev, $fct, $lock);
@@ -222,12 +222,11 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     /**
     * This function should be used to wait between config attempts
     *
-    * @param DeviceContainer &$dev The device to check
-    * @param string          $fct  The function to call
+    * @param string $fct The function to call
     *
     * @return int The number of packets routed
     */
-    protected function updateDev(DeviceContainer &$dev, $fct = "main")
+    protected function updateDev($fct = "main")
     {
         $this->preUpdate($fct);
         $this->device->updateRow();
@@ -286,7 +285,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
                 }
             }
             if ($setLock) {
-                $res = $this->myDevice->setDevLock($dev, null, true);
+                $this->myDevice->setDevLock($dev, null, true);
             }
             $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
         }

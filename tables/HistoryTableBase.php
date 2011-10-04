@@ -268,13 +268,13 @@ abstract class HistoryTableBase extends HUGnetDBTable
     public function getPeriod(
         $start,
         $end = null,
-        $id = null,
+        $devId = null,
         $type = null,
         $extraWhere = null,
         $extraData = null
     ) {
         return parent::getPeriod(
-            $start, $end, $id, "id", $extraWhere, $extraData
+            $start, $end, $devId, "id", $extraWhere, $extraData
         );
     }
     /**

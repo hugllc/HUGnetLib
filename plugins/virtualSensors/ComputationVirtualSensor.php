@@ -176,7 +176,6 @@ class ComputationVirtualSensor extends VirtualSensorBase
      */
     protected function sanatize($string)
     {
-        $pattern = preg_quote('+*)(');
         $string = preg_replace(
             '/[^0-9\-\/\+\*\(\)\.]+/',
             "",

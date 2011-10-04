@@ -199,6 +199,8 @@ class MysqlDriver extends HUGnetDBDriver
     * Get the names of all the tables in the current database
     *
     * @return array of table names
+    *
+    * @SuppressWarnings(UnusedLocalVariable)
     */
     public function tables()
     {

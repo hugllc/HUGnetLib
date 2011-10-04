@@ -231,7 +231,6 @@ class E00392101Device extends DeviceDriverLoadableBase
     protected function writeCode()
     {
         $code = $this->myFirmware->getCode("FF");
-        $size = strlen($code)/2;
         $pageSize = $this->myDriver->DriverInfo["FLASHPAGE"];
         $code = str_split($code, $pageSize*2);
         foreach ($code as $page => $data) {
@@ -262,7 +261,6 @@ class E00392101Device extends DeviceDriverLoadableBase
     protected function writeData()
     {
         $code = $this->myFirmware->getData("FF");
-        $size = strlen($code)/2;
         $pageSize = $this->myDriver->DriverInfo["FLASHPAGE"];
         $code = str_split($code, $pageSize*2);
         foreach ($code as $page => $data) {

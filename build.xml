@@ -62,6 +62,7 @@
    <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml
              --exclude contrib/
              --exclude old/
+             --exclude test/
              --exclude Documentation/
              --exclude build/
              ${source}" />

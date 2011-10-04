@@ -110,12 +110,10 @@ interface HUGnetContainerInterface
     * resets a value to its default
     *
     * @param string $name Array of names to lock
-    * @param string $var  The name of the variable to traverse
-    *                     *** For internal use only ***
     *
     * @return mixed The value of the attribute
     */
-    public function locked($name = null, $var = null);
+    public function locked($name = null);
     /**
     * Sets all of the endpoint attributes from an array
     *

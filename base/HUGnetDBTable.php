@@ -247,7 +247,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @param int    $start      The start of the time
     * @param int    $end        The end of the time
-    * @param mixed  $id         The ID to use.  None if null
+    * @param mixed  $rid         The ID to use.  None if null
     * @param string $idField    The ID Field to use.  Table Primary id if left blank
     * @param string $extraWhere Extra where clause
     * @param array  $extraData  Data for the extraWhere clause
@@ -257,7 +257,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function getPeriod(
         $start,
         $end = null,
-        $id = null,
+        $rid = null,
         $idField = null,
         $extraWhere = null,
         $extraData = null
@@ -278,9 +278,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         // Set up the where and data fields
         $where = "`".$this->dateField."` >= ? AND `".$this->dateField."` <= ?";
         $data = array($start, $end);
-        if (!is_null($id)) {
+        if (!is_null($rid)) {
             $where .= " AND `".$idField."` = ?";
-            $data[] = $id;
+            $data[] = $rid;
         }
         if (!empty($extraWhere)) {
             $where .= " AND ".$extraWhere;
@@ -317,8 +317,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function refresh()
     {
-        $id = $this->sqlId;
-        return $this->getRow($this->$id);
+        $sqlId = $this->sqlId;
+        return $this->getRow($this->$sqlId);
     }
     /**
     * This function updates the record currently in this table
@@ -348,8 +348,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->isEmpty()) {
             return false;
         }
-        $id = $this->sqlId;
-        if ($this->default[$this->sqlId] === $this->$id) {
+        $sqlId = $this->sqlId;
+        if ($this->default[$this->sqlId] === $this->$sqlId) {
             $cols = $this->myDriver->autoIncrement();
         }
         $ret = $this->myDriver->insert($this->toDB(), (array)$cols, $replace);
@@ -358,11 +358,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This function updates the record currently in this table
     *
-    * @param bool $replace Replace any records found that collide with this one.
-    *
     * @return bool True on success, False on failure
     */
-    public function insertEnd($replace = false)
+    public function insertEnd()
     {
         $this->myDriver->reset();
     }
@@ -538,14 +536,16 @@ abstract class HUGnetDBTable extends HUGnetContainer
     * @param string $TZ    The time zone to use.  Defaults to UTC
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedLocalVariable)
     */
-    static public function sqlDate($value, $TZ = "UTC")
+    static public function sqlDate($value, $TimeZone = "UTC")
     {
         if (is_numeric($value)) {
             $value = date("Y-m-d H:i:s", (int)$value);
         }
         try {
-            $date = new DateTime($value, new DateTimeZone($TZ));
+            $date = new DateTime($value, new DateTimeZone($TimeZone));
         } catch (exception $e) {
             return "1970-01-01 00:00:00";
         }
@@ -554,18 +554,20 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This routine takes any date and turns it into an SQL date
     *
-    * @param mixed  $value The value to set
-    * @param string $TZ    The time zone to use.  Defaults to UTC
+    * @param mixed  $value    The value to set
+    * @param string $TimeZone The time zone to use.  Defaults to UTC
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedLocalVariable)
     */
-    static public function unixDate($value, $TZ = "UTC")
+    static public function unixDate($value, $TimeZone = "UTC")
     {
         if (is_numeric($value)) {
             return (int)$value;
         }
         try {
-            $date = new DateTime($value, new DateTimeZone($TZ));
+            $date = new DateTime($value, new DateTimeZone($TimeZone));
         } catch (exception $e) {
             return 0;
         }

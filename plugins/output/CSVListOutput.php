@@ -117,7 +117,7 @@ class CSVListOutput extends OutputPluginBase
     {
         $sep = "";
         $this->setHeader($array);
-        foreach ($this->header as $key => $val) {
+        foreach ($this->header as $val) {
             $val = '"'.strip_tags($val).'"';
             $this->text .= $sep.html_entity_decode($val, ENT_COMPAT, "UTF-8");
             $sep = $this->params["separator"];

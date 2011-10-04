@@ -126,7 +126,7 @@ class PacketRouter extends ProcessBase
             // We don't want to wait for a reply
             $pkt->GetReply = false;
             // Send the packet
-            $ret = $pkt->send();
+            $pkt->send();
         }
     }
     /**
@@ -260,12 +260,12 @@ class PacketRouter extends ProcessBase
     */
     protected function registerDataCollector()
     {
-        $dc = new DataCollectorsTable();
-        $dc->fromDeviceContainer($this->myDevice);
+        $datac = new DataCollectorsTable();
+        $datac->fromDeviceContainer($this->myDevice);
         $uname = posix_uname();
-        $dc->name = trim($uname['nodename']);
-        $ret = $dc->registerMe();
-        $this->myDevice->ControllerKey = $dc->id;
+        $datac->name = trim($uname['nodename']);
+        $datac->registerMe();
+        $this->myDevice->ControllerKey = $datac->id;
     }
 
 }

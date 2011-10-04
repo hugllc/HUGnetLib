@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/VirtualSensorBase.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(ShortVariable)
  */
 class PhysicalPointVirtualSensor extends VirtualSensorBase
 {
@@ -102,7 +104,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
         $this->default["type"] = "physicalpoint";
         $this->DeviceID = hexdec($data["extra"][0]);
         $this->cloneSensor($data);
-    
+
         if (empty($data["location"])) {
             unset($data["location"]);
         }
@@ -113,7 +115,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     * Clones a sensor
     *
     * @param array $data The servers to use
-    * 
+    *
     * @return null
     */
     protected function cloneSensor($data)
@@ -138,7 +140,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     }
     /**
     * Changes a raw reading into a output value
-    * 
+    *
     * @return mixed The value in whatever the units are in the sensor
     */
     protected function &getDevice()
@@ -171,6 +173,8 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {

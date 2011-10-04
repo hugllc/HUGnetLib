@@ -113,7 +113,6 @@ class E00392801Device extends E00392800Device
     */
     public function fromSetupString($string)
     {
-        $str = substr($string, 2, 32);
         parent::fromSetupString($string);
         $con = substr($string, 34, 16);
         for ($i = 0; $i < 8; $i+=2) {

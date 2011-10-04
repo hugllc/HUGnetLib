@@ -66,7 +66,7 @@ class MeanDifferenceOutputFilterPlugin extends OutputFilterBase
     protected $samples = array();
     /** @var This is where we are currently in the array */
     protected $index = 0;
-    
+
     /**
     * Does the actual conversion
     *
@@ -127,7 +127,6 @@ class MeanDifferenceOutputFilterPlugin extends OutputFilterBase
     */
     private function _getValues($field)
     {
-        $diff = ((self::SAMPLES - 1) / 2);
         $current = $this->index - ((self::SAMPLES - 1) / 2);
         $end = count($this->data);
         $atEnd = ($current + self::SAMPLES) - $end;
@@ -145,6 +144,6 @@ class MeanDifferenceOutputFilterPlugin extends OutputFilterBase
         }
     }
 
-    
+
 }
 ?>

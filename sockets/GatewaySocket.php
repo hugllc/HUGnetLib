@@ -182,20 +182,19 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
     /**
      * This makes multiple gateways able to register on the same SQL row
      *
-     * @param string $IP The string to decode
+     * @param string $IPaddr The string to decode
      *
      * @return mixed false on failure, Array of gateway information on success
      */
-    function decodeIP($IP)
+    function decodeIP($IPaddr)
     {
         $ret = array();
-        if (is_string($IP)) {
+        if (is_string($IPaddr)) {
             // This gives us the old way
-            if (stristr($IP, ":") === false) {
-                return $IP;
+            if (stristr($IPaddr, ":") === false) {
+                return $IPaddr;
             }
-            $ip = explode("\n", $IP);
-            foreach ($ip as $line) {
+            foreach (explode("\n", $IPaddr) as $line) {
                 if (empty($line)) {
                     continue;
                 }
@@ -257,6 +256,8 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
             return false;
         }
         $read = array($this->socket);
+        $write = null;
+        $except = null;
 
         // Wait a maximum of 100,000 uSeconds.
         $socks = @stream_select($read, $write, $except, 0, 100000);

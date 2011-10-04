@@ -62,8 +62,6 @@ abstract class HUGnetContainer extends HUGnetClass
     private $_extra = null;
     /** @var object The locked values */
     private $_lock = array();
-    /** @var object The locked values */
-    private $_includePath = "";
     /** @var int The configuration */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -249,11 +247,9 @@ abstract class HUGnetContainer extends HUGnetClass
     /**
     * Sets the extra attributes field
     *
-    * @param string $var The variable to check
-    *
     * @return mixed The value of the attribute
     */
-    public function getProperties($var = null)
+    public function getProperties()
     {
         return array_keys((array)$this->default);
     }
@@ -340,12 +336,10 @@ abstract class HUGnetContainer extends HUGnetClass
     * resets a value to its default
     *
     * @param string $name Array of names to lock
-    * @param string $var  The name of the variable to traverse
-    *                     *** For internal use only ***
     *
     * @return mixed The value of the attribute
     */
-    public function locked($name = null, $var = null)
+    public function locked($name = null)
     {
         if (array_key_exists($name, $this->default)) {
             return isset($this->_lock[$name]);
@@ -550,7 +544,7 @@ abstract class HUGnetContainer extends HUGnetClass
     public function isEmpty()
     {
         $ret = true;
-        foreach ($this->default as $key => $value) {
+        foreach (array_keys((array)$this->default) as $key) {
             if ($this->default[$key] !== $this->$key) {
                 $ret = false;
                 break;

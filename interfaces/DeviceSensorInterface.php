@@ -59,6 +59,8 @@ interface DeviceSensorInterface
     * @param array &$data  The data from the other sensors that were crunched
     *
     * @return float The direction in degrees
+    *
+    * @SuppressWarnings(ShortVariable)
     */
     public function getUnits($A, $deltaT = 0, &$prev = null, &$data = array());
     /**
@@ -70,6 +72,8 @@ interface DeviceSensorInterface
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(ShortVariable)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null);
     /**

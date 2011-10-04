@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/ImagePluginBase.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(ShortVariable)
  */
 class SVGImagePlugin extends ImagePluginBase
 {
@@ -185,6 +187,8 @@ class SVGImagePlugin extends ImagePluginBase
     * @param string $end    The line end to use
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     private function _xlinkHref(
         $link, $title, $text, $target = "_top", $id = "", $extra = "",
@@ -254,7 +258,7 @@ class SVGImagePlugin extends ImagePluginBase
         ).$end;
         $ret .= $indent.$this->_text(
             $point->text, $point->x, $point->y, $point->color, "none",
-            $point->fontsize, $pointId."text", $extra
+            $point->fontsize, $pointId."text", ""
         ).$end;
         if (strlen($point->link) > 0) {
             $ret = $this->_xlinkHref(

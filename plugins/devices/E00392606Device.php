@@ -246,7 +246,7 @@ class E00392606Device extends E00392600Device
                 $lock->type = static::LOCKTYPE;
                 $lock->lockData = $DeviceID;
                 $lock->expiration = $this->now() + $timeout;
-                $ret = $this->setLocalDevLock(
+                $this->setLocalDevLock(
                     $dev, hexdec($pkt->From), $timeout, true
                 );
                 $data  = $DeviceID;
@@ -291,7 +291,7 @@ class E00392606Device extends E00392600Device
                 "Timeout" => 3,
             )
         );
-        $ret = $pkt->send();
+        $pkt->send();
         if (is_object($pkt->Reply) && !empty($pkt->Reply->Data)) {
             $lock->lockData   = $dev->DeviceID;
             $lock->id         = hexdec(substr($pkt->Reply->Data, 0, 6));
@@ -324,17 +324,17 @@ class E00392606Device extends E00392600Device
     *
     * @return bool True on success, False on failure
     */
-    protected function checkLockerID($id, $update = false)
+    protected function checkLockerID($devId, $update = false)
     {
-        if ($id < 0xFD0000) {
+        if ($devId < 0xFD0000) {
             return false;
         }
         $dev = new DevicesTable();
-        $dev->getRow($id);
+        $dev->getRow($devId);
         if ($dev->isEmpty()) {
             DevicesTable::insertDeviceID(
                 array(
-                    "id" => $id, "DeviceID" => $id,
+                    "id" => $devId, "DeviceID" => $devId,
                     "Active" => 1, "GatewayKey" => $this->myDriver->GatewayKey,
                     "Driver" => $this->myDriver->Driver,
                     "HWPartNum" => $this->myDriver->HWPartNum,
@@ -418,11 +418,10 @@ class E00392606Device extends E00392600Device
     * @param DeviceContainer &$dev   The device to lock
     * @param int             $locker The deviceID of the locking device
     * @param int             $time   The time to lock for
-    * @param bool            $force  Whether to force the writing or not
     *
     * @return bool True on success, False on failure
     */
-    public function setRemoteDevLock(&$dev, $locker, $time=null, $force=false)
+    public function setRemoteDevLock(&$dev, $locker, $time=null)
     {
         if ($dev->isEmpty()) {
             return false;
@@ -509,7 +508,6 @@ class E00392606Device extends E00392600Device
                 1
             )
         );
-        $ret = array();
         foreach ($devs as $d) {
             $locks[$d] = &$this->setRemoteDevLock(
                 $dev, $d, $time, $force

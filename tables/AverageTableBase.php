@@ -360,10 +360,10 @@ abstract class AverageTableBase extends HistoryTableBase
     */
     private function _getTimePeriod($time, $type)
     {
-        $H = gmdate("H", $time);
-        $m = gmdate("m", $time);
-        $d = gmdate("d", $time);
-        $Y = gmdate("Y", $time);
+        $Hour = gmdate("H", $time);
+        $mon = gmdate("m", $time);
+        $day = gmdate("d", $time);
+        $Year = gmdate("Y", $time);
         if ($type == self::AVERAGE_15MIN) {
             $min = gmdate("i", $time);
             if ($min < 15) {
@@ -375,28 +375,28 @@ abstract class AverageTableBase extends HistoryTableBase
             } else {
                 $min = 45;
             }
-            $this->startTime = gmmktime($H, $min, 0, $m, $d, $Y);
-            $this->endTime = gmmktime($H, $min + 15, 0, $m, $d, $Y);
+            $this->startTime = gmmktime($Hour, $min, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour, $min + 15, 0, $mon, $day, $Year);
         } else if ($type == self::AVERAGE_HOURLY) {
-            $this->startTime = gmmktime($H, 0, 0, $m, $d, $Y);
-            $this->endTime = gmmktime($H + 1, 0, 0, $m, $d, $Y);
+            $this->startTime = gmmktime($Hour, 0, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime($Hour + 1, 0, 0, $mon, $day, $Year);
             return true;
         } else if ($type == self::AVERAGE_DAILY) {
-            $this->startTime = gmmktime(0, 0, 0, $m, $d, $Y);
-            $this->endTime = gmmktime(0, 0, 0, $m, $d + 1, $Y);
+            $this->startTime = gmmktime(0, 0, 0, $mon, $day, $Year);
+            $this->endTime = gmmktime(0, 0, 0, $mon, $day + 1, $Year);
             return true;
         } else if ($type == self::AVERAGE_WEEKLY) {
-            $w = gmdate("w", $time);
-            $this->startTime = gmmktime(0, 0, 0, $m, ($d - $w), $Y);
-            $this->endTime = gmmktime(0, 0, 0, $m, ($d - $w + 7), $Y);
+            $weekday = gmdate("w", $time);
+            $this->startTime = gmmktime(0, 0, 0, $mon, ($day - $weekday), $Year);
+            $this->endTime = gmmktime(0, 0, 0, $mon, ($day - $weekday + 7), $Year);
             return true;
         } else if ($type == self::AVERAGE_MONTHLY) {
-            $this->startTime = gmmktime(0, 0, 0, $m, 1, $Y);
-            $this->endTime = gmmktime(0, 0, 0, $m + 1, 1, $Y);
+            $this->startTime = gmmktime(0, 0, 0, $mon, 1, $Year);
+            $this->endTime = gmmktime(0, 0, 0, $mon + 1, 1, $Year);
             return true;
         } else if ($type == self::AVERAGE_YEARLY) {
-            $this->startTime = gmmktime(0, 0, 0, 1, 1, $Y);
-            $this->endTime = gmmktime(0, 0, 0, 1, 1, $Y + 1);
+            $this->startTime = gmmktime(0, 0, 0, 1, 1, $Year);
+            $this->endTime = gmmktime(0, 0, 0, 1, 1, $Year + 1);
             return true;
         }
         return false;
@@ -406,15 +406,15 @@ abstract class AverageTableBase extends HistoryTableBase
     *
     * @param int    $start The start of the time
     * @param int    $end   The end of the time
-    * @param mixed  $id    The ID to use.  None if null
+    * @param mixed  $devId The ID to use.  None if null
     * @param string $type  The type of record
     *
     * @return mixed The value of the attribute
     */
-    public function getPeriod($start, $end = null, $id = null, $type = "15MIN")
+    public function getPeriod($start, $end = null, $devId = null, $type = "15MIN")
     {
         return parent::getPeriod(
-            $start, $end, $id, "id", "Type = ?", array($type)
+            $start, $end, $devId, "id", "Type = ?", array($type)
         );
     }
     /**

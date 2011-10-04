@@ -87,7 +87,7 @@ class EVIRTUALHistoryTable extends HistoryTableBase
     public function getPeriod(
         $start,
         $end = null,
-        $id = null,
+        $devId = null,
         $idField = null,
         $extraWhere = null,
         $extraData = null

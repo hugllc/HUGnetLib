@@ -143,12 +143,12 @@ interface EndpointDriverLoadableInterface extends EndpointDriverInterface
     * Runs the application
     *
     * @param array $Info        Infomation about the device to use
-    * @param array $gw          The gateway array to use
+    * @param array $gateway     The gateway array to use
     * @param int   $FirmwareKey The firmware key of the program to load into memory
     *
     * @return bool true on success, false on failure
     */
-    function loadProgram($Info, $gw=null, $FirmwareKey=null);
+    function loadProgram($Info, $gateway=null, $FirmwareKey=null);
 
 }
 ?>

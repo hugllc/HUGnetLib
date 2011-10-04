@@ -389,7 +389,7 @@ class OutputContainer extends HUGnetContainer
     public function getAllFilterTypes()
     {
         $ret = array();
-        $type = $this->stringSize(dechex($this->id), 2);
+        //$type = $this->stringSize(dechex($this->id), 2);
         $plugins = $this->myConfig->plugins->searchPlugins("outputFilter");
         foreach ((array)$plugins as $key => $value) {
             $ret[$key] = $value["Name"];

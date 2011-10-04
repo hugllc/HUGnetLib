@@ -51,6 +51,8 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBTable.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(ShortVariable)
  */
 class JPGraphDatLinOutput extends OutputPluginBase
 {
@@ -95,7 +97,7 @@ class JPGraphDatLinOutput extends OutputPluginBase
     protected $graph = null;
     /** @var This is whether or not we have a second y axis */
     protected $y2 = false;
-    
+
     /**
     * Returns the object as a string
     *
@@ -246,7 +248,7 @@ class JPGraphDatLinOutput extends OutputPluginBase
         $this->_createGraph();
         // The classes
         $this->_bodyData();
-        
+
         // Set up the second axis if we have one.
         if ($this->y2) {
             $this->graph->SetY2Scale("lin");

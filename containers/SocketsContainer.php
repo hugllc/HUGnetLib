@@ -223,47 +223,47 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
         }
         // Find an ID to use
         do {
-            $i = mt_rand(self::MIN_SN, self::MAX_SN);
-            $id = $this->_checkID($i, $groups);
-        } while ($id === false);
-        $this->forceDeviceID($id, $groups);
-        return $id;
+            $index = mt_rand(self::MIN_SN, self::MAX_SN);
+            $devId = $this->_checkID($index, $groups);
+        } while ($devId === false);
+        $this->forceDeviceID($devId, $groups);
+        return $devId;
     }
     /**
     * Forcably sets the DeviceID
     *
-    * @param string $id     The DeviceID to use
+    * @param string $devId  The DeviceID to use
     * @param array  $groups The array of groups to set
     *
     * @return null
     */
-    public function forceDeviceID($id, $groups = array())
+    public function forceDeviceID($devId, $groups = array())
     {
         if (empty($groups) || !is_array($groups)) {
             $groups = (array)$this->groups;
         }
         // Set all of the IDs
         foreach ($groups as $group) {
-            $this->lastDeviceID[$group] = $id;
+            $this->lastDeviceID[$group] = $devId;
             if ($this->connect($group)) {
-                $this->socket[$group]->DeviceID = $id;
+                $this->socket[$group]->DeviceID = $devId;
             }
         }
     }
     /**
     * Finds a deviceID that we can use
     *
-    * @param int   $id     The ID to check
+    * @param int   $devId  The ID to check
     * @param array $groups The array of groups to check
     *
     * @return null
     */
-    private function _checkID($id, $groups)
+    private function _checkID($devId, $groups)
     {
         $pkt = new PacketContainer(
             array(
                 "Command" => PacketContainer::COMMAND_FINDECHOREQUEST,
-                "To" => $id,
+                "To" => $devId,
                 "GetReply" => true,
                 "Retries" => 2,
                 "Timeout" => $this->PacketTimeout,

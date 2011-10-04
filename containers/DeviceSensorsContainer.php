@@ -249,7 +249,7 @@ class DeviceSensorsContainer extends HUGnetContainer
             $vals["id"] = hexdec($data);
         } else {
             $vals["id"] = (int)$data;
-        } 
+        }
         if ($key >= $this->PhysicalSensors) {
             // This is forced to be a virtual sensor.
             $vals["id"] = 0xFE;
@@ -287,11 +287,11 @@ class DeviceSensorsContainer extends HUGnetContainer
     * Creates the sensors from the old method of storing them.
     *
     * @param DeviceParamsContainer &$array the array to upgrade to use
-    * @param int                   $i      the index to get data from
+    * @param int                   $index  the index to get data from
     *
     * @return null
     */
-    protected function upgradeArray(&$array, $i)
+    protected function upgradeArray(&$array, $index)
     {
         $stuff = array(
             "type"     => &$this->myDevice->params->sensorType,
@@ -303,9 +303,9 @@ class DeviceSensorsContainer extends HUGnetContainer
         // Now setup our sensors
         foreach ($sync as $key) {
             if (empty($array[$key])
-                && !empty($stuff[$key][$i])
+                && !empty($stuff[$key][$index])
             ) {
-                $array[$key] = $stuff[$key][(int)$i];
+                $array[$key] = $stuff[$key][(int)$index];
             }
         }
     }
@@ -315,6 +315,8 @@ class DeviceSensorsContainer extends HUGnetContainer
     * @param string $string This is the raw string for the device
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function fromCalString($string)
     {
@@ -334,14 +336,14 @@ class DeviceSensorsContainer extends HUGnetContainer
     /**
     * Creates a sensor object
     *
-    * @param int    $id   The ID for the sensor to use
-    * @param string $type The type to check
+    * @param int    $senId The ID for the sensor to use
+    * @param string $type  The type to check
     *
     * @return string The class for this sensor
     */
-    protected function sensorClass($id, $type)
+    protected function sensorClass($senId, $type)
     {
-        $sid = $this->stringSize(dechex($id), 2);
+        $sid = $this->stringSize(dechex($senId), 2);
         $driver = $this->myConfig->plugins->getPlugin(
             "sensor", $sid.":".$type
         );
@@ -350,15 +352,15 @@ class DeviceSensorsContainer extends HUGnetContainer
     /**
     * Creates a sensor object
     *
-    * @param int    $id      The ID for the sensor to use
+    * @param int    $senId   The ID for the sensor to use
     * @param string $type    The type to check
     * @param object &$sensor The sensor to check
     *
     * @return bool True if the sensor is correct, false otherwise
     */
-    protected function checkSensor($id, $type, &$sensor)
+    protected function checkSensor($senId, $type, &$sensor)
     {
-        return is_object($sensor) && is_a($sensor, $this->sensorClass($id, $type));
+        return is_object($sensor) && is_a($sensor, $this->sensorClass($senId, $type));
     }
 
     /**
@@ -391,11 +393,11 @@ class DeviceSensorsContainer extends HUGnetContainer
         // this function to create themselves.  They are not allowed to get stuff
         // from eachother.
         if ($array[$sensor]["doppelganger"]) {
-            $s = array("id" => 0xFE);
+            $sen = array("id" => 0xFE);
         } else {
-            $s = &$array[$sensor];
+            $sen = &$array[$sensor];
         }
-        return $this->sensorFactory($s);
+        return $this->sensorFactory($sen);
     }
     /**
     * Creates a sensor object
@@ -424,6 +426,8 @@ class DeviceSensorsContainer extends HUGnetContainer
     * @param array $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toOutput($cols = null)
     {
@@ -461,6 +465,8 @@ class DeviceSensorsContainer extends HUGnetContainer
     * @param array  $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -472,6 +478,8 @@ class DeviceSensorsContainer extends HUGnetContainer
     * @param array $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

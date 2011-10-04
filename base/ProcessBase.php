@@ -146,9 +146,9 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
         $this->myDevice->DeviceLocation = ProcessBase::getIP();
         // Get the deviceID
         if (empty($device["id"])) {
-            $id = $this->getMyDeviceID();
+            $did = $this->getMyDeviceID();
             // Setting up the id
-            $this->myDevice->id = hexdec($id);
+            $this->myDevice->id = hexdec($did);
         }
         $this->myDevice->DeviceID = $this->myDevice->id;
         $this->myConfig->sockets->forceDeviceID($this->myDevice->DeviceID);
@@ -323,10 +323,10 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
             $line,
             $match
         );
-        $i = 0;
+        $cnt = 0;
         // This removes localhost, netmask and broadcast addresses
         do {
-            $ret = trim((string)$match[0][$i++]);
+            $ret = trim((string)$match[0][$cnt++]);
             $local = preg_match("/127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/", $ret);
             $netmask = preg_match("/255/", $ret);
         } while (($local + $netmask) > 0);
@@ -383,8 +383,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     */
     protected function registerDataCollector()
     {
-        $dc = new DataCollectorsTable();
-        $key = $dc->getMine($this->myDevice);
+        $datac = new DataCollectorsTable();
+        $key = $datac->getMine($this->myDevice);
         if (!empty($key)) {
             $this->myDevice->ControllerKey = $key;
         }

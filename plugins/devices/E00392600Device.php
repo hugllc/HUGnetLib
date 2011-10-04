@@ -190,13 +190,13 @@ class E00392600Device extends DeviceDriverBase
         $this->Info["Name"] = trim($this->Info["Name"]);
 
         $index += 60;
-        $IP     = str_split(substr($string, $index, 8), 2);
+        $IPaddr = str_split(substr($string, $index, 8), 2);
         $index += 8;
 
-        foreach ($IP as $k => $v) {
-            $IP[$k] = hexdec($v);
+        foreach ($IPaddr as $k => $v) {
+            $IPaddr[$k] = hexdec($v);
         }
-        $this->Info["IP"] = implode(".", $IP);
+        $this->Info["IP"] = implode(".", $IPaddr);
         $this->myDriver->DeviceLocation = $this->Info["IP"];
         $this->Info["Priority"] = hexdec(substr($string, $index, 2));
     }

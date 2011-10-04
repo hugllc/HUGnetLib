@@ -57,6 +57,8 @@ require_once dirname(__FILE__)
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(UnusedPrivateField)
  */
 abstract class HUGnetExtensibleContainer extends HUGnetContainer
     implements HUGnetExtensibleContainerInterface
@@ -200,7 +202,8 @@ abstract class HUGnetExtensibleContainer extends HUGnetContainer
         }
         // Register the class
         unset($this->_extra["Classes"][$var]);
-        // Set up the object
+        // obliterate the object
+        $obj = null;
         $this->$var =& $obj;
         return true;
     }

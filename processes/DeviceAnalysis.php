@@ -100,7 +100,7 @@ class DeviceAnalysis extends DeviceProcess
             }
         }
     }
-    
+
     /**
     * This process runs analysis plugins on the data
     *
@@ -130,14 +130,14 @@ class DeviceAnalysis extends DeviceProcess
     /**
     * This function should be used to wait between config attempts
     *
-    * @param int    $id  The id of the device to work with
-    * @param string $fct The function to call
+    * @param int    $devId The id of the device to work with
+    * @param string $fct   The function to call
     *
     * @return int The number of packets routed
     */
-    protected function checkDev($id, $fct)
+    protected function checkDev($devId, $fct)
     {
-        $this->device->getRow($id);
+        $this->device->getRow($devId);
         $ret = $this->checkPlugins($this->device, $fct);
         if ($ret) {
             $this->updateDev($this->device, $fct);
@@ -154,7 +154,7 @@ class DeviceAnalysis extends DeviceProcess
     protected function checkPlugins(DeviceContainer &$dev, $fct = "main")
     {
         $return = false;
-        foreach ($this->priority as $k => $p) {
+        foreach ((array)$this->priority as $p) {
             foreach ($p as $n) {
                 if ($this->active[$n]->ready($dev)) {
                     $ret = $this->active[$n]->$fct($dev);

@@ -327,7 +327,7 @@ abstract class DeviceDriverBase extends HUGnetClass
                 "Timeout"  => $this->myDriver->DriverInfo["PacketTimeout"],
             )
         );
-        $ret = $pkt->send();
+        $pkt->send();
         if (is_object($pkt->Reply)) {
             if ($this->data["DataIndex"] === $this->dataIndex($pkt->Reply->Data)) {
                 return false;

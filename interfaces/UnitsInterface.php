@@ -59,6 +59,8 @@ interface UnitsInterface
     * @param string $to    The units to convert to
     *
     * @return mixed The value returned
+    *
+    * @SuppressWarnings(ShortVariable)
     */
     public function convert(&$data, $from, $to);
     /**

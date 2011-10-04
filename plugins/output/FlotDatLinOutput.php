@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/OutputPluginBase.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(ShortVariable)
  */
 class FlotDatLinOutput extends OutputPluginBase
 {

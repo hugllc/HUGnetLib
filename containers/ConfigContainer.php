@@ -90,9 +90,6 @@ class ConfigContainer extends HUGnetContainer
     /** @var object This is where we store our hooks */
     public $hooks = null;
 
-    /** @var string The version of HUGnetLib */
-    private $_version = null;
-
     /**
     * Build everything
     *
@@ -187,6 +184,7 @@ class ConfigContainer extends HUGnetContainer
     */
     private function _readConfigFile($file)
     {
+        $hugnet_config = array();
         @include $file;
         if (isset($config)) {
             return (array)$config;

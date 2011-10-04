@@ -230,8 +230,7 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function getLatest()
     {
-        $status = $ths->RelStatus;
-        $data  = array($this->FWPartNum, $this->RelStatus, 0);
+        $data   = array($this->FWPartNum, $this->RelStatus, 0);
         $where  = " FWPartNum = ? AND RelStatus <= ?";
         $where .= " AND Active <> ?";
         if (!empty($this->HWPartNum)) {
@@ -263,6 +262,8 @@ class FirmwareTable extends HUGnetDBTable
     * @param string $ver2 The second version to use in the compare
     *
     * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
+    *
+    * @SuppressWarnings(ShortVariable)
     */
     public function compareVersion($ver1, $ver2 = null)
     {
@@ -371,7 +372,7 @@ class FirmwareTable extends HUGnetDBTable
             $where .= " AND `md5` = ?";
             $data[] = $this->md5;
         }
-        $ret = $this->myDriver->selectWhere($where, $data);
+        $this->myDriver->selectWhere($where, $data);
         $this->myDriver->fetchInto();
         return  !is_null($this->id);
     }

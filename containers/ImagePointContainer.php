@@ -118,10 +118,10 @@ class ImagePointContainer extends HUGnetContainer
         $diff = $diff/$denom;
         $min = $this->_color2HSV($this->colorMin);
         $max = $this->_color2HSV($this->colorMax);
-        $h = $min['h'] + (($max['h'] - $min['h']) * $diff);
-        $s = $min['s'] + (($max['s'] - $min['s']) * $diff);
-        $v = $min['v'] + (($max['v'] - $min['v']) * $diff);
-        return $this->_hsv2Color($h, $s, $v);
+        $hue = $min['h'] + (($max['h'] - $min['h']) * $diff);
+        $sat = $min['s'] + (($max['s'] - $min['s']) * $diff);
+        $val = $min['v'] + (($max['v'] - $min['v']) * $diff);
+        return $this->_hsv2Color($hue, $sat, $val);
     }
     /**
      * Method to display the view
@@ -136,10 +136,10 @@ class ImagePointContainer extends HUGnetContainer
     {
         $this->fill = "#".$this->_autoColor($value, $valueMin, $valueMax);
         // Now check the foreground color
-        $bF = (bool)($this->_colorBrightness($this->fill) > 80);
-        $bC = (bool)($this->_colorBrightness($this->color) > 80);
+        $bgndF = (bool)($this->_colorBrightness($this->fill) > 80);
+        $bgndC = (bool)($this->_colorBrightness($this->color) > 80);
         // if $bF and $bC are the same then invert the color
-        if ($bF === $bC) {
+        if ($bgndF === $bgndC) {
             $this->color = "#".$this->_colorInvert($this->color);
         }
     }
@@ -157,9 +157,9 @@ class ImagePointContainer extends HUGnetContainer
         $this->color = "#".$this->_autoColor($value, $valueMin, $valueMax);
 
         // Now check the background color
-        $bF = (bool)($this->_colorBrightness($this->fill) > 90);
-        $bC = (bool)($this->_colorBrightness($this->color) > 90);
-        if ($bF === $bC) {
+        $bgndF = (bool)($this->_colorBrightness($this->fill) > 90);
+        $bgndC = (bool)($this->_colorBrightness($this->color) > 90);
+        if ($bgndF === $bgndC) {
             $this->fill = "#".$this->_colorInvert($this->fill);
         }
     }
@@ -192,51 +192,51 @@ class ImagePointContainer extends HUGnetContainer
         return Color::hex2hsv($color);
     }
     /**
-     * Method to display the view
-     *
-     * @param int $h The Hue
-     * @param int $s The Saturation
-     * @param int $v The Value
-     *
-     * @return string
-     */
-    private function _hsv2Color($h, $s, $v)
+    * Method to display the view
+    *
+    * @param int $hue The Hue
+    * @param int $sat The Saturation
+    * @param int $val The Value
+    *
+    * @return string
+    */
+    private function _hsv2Color($hue, $sat, $val)
     {
-        return Color::hsv2hex($h, $s, $v);
+        return Color::hsv2hex($hue, $sat, $val);
     }
 
 
     /**
-     * Get the brightness of a color
-     *
-     * The algorithm was found at:
-     * http://particletree.com/notebook/calculating-color-contrast-for-legible-text/
-     *
-     * @param string $color The color value to use.  Should be RRGGBB
-     *
-     * @return int Range: 0 - 255
-     */
+    * Get the brightness of a color
+    *
+    * The algorithm was found at:
+    * http://particletree.com/notebook/calculating-color-contrast-for-legible-text/
+    *
+    * @param string $color The color value to use.  Should be RRGGBB
+    *
+    * @return int Range: 0 - 255
+    */
     private function _colorBrightness($color)
     {
-        $c = $this->_color2RGB($color);
-        $bright = (($c['r'] * 299) + ($c['g'] * 587) + ($c['b'] * 114)) / 1000;
+        $col = $this->_color2RGB($color);
+        $bright = (($col['r'] * 299) + ($col['g'] * 587) + ($col['b'] * 114)) / 1000;
         return (int)$bright;
     }
 
     /**
-     * Get the brightness of a color
-     *
-     * @param string $color The color value to use.  Should be RRGGBB
-     *
-     * @return int Range: 0 - 255
-     */
+    * Get the brightness of a color
+    *
+    * @param string $color The color value to use.  Should be RRGGBB
+    *
+    * @return int Range: 0 - 255
+    */
     private function _colorInvert($color)
     {
-        $c = $this->_color2RGB($color);
-        $r = 255 - $c['r'];
-        $g = 255 - $c['g'];
-        $b = 255 - $c['b'];
-        return sprintf("%02X%02X%02X", $r, $g, $b);
+        $col = $this->_color2RGB($color);
+        $red = 255 - $col['r'];
+        $green = 255 - $col['g'];
+        $blue = 255 - $col['b'];
+        return sprintf("%02X%02X%02X", $red, $green, $blue);
     }
 }
 ?>

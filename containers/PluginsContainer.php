@@ -142,7 +142,6 @@ class PluginsContainer extends HUGnetContainer
             return;
         }
         $realFile = realpath($filedir."/".$file);
-        $plugin_info = false;
         $this->vprint("Checking File:  ".$file."\n", 4);
         try {
             // These files might need to be included more than once,
@@ -273,18 +272,18 @@ class PluginsContainer extends HUGnetContainer
         if (isset($this->typeCache[$flag])) {
             return $type[$this->typeCache[$flag]];
         }
-        $f = explode(":", $flag);
+        $flags = explode(":", $flag);
         $try = array();
-        if (count($f) > 2) {
-            $try[] = $f[0].":".$f[1].":DEFAULT";
-            $try[] = $f[0].":DEFAULT:".$f[2];
-            $try[] = "DEFAULT:".$f[1].":".$f[2];
-            $try[] = "DEFAULT:".$f[1].":DEFAULT";
+        if (count($flags) > 2) {
+            $try[] = $flags[0].":".$flags[1].":DEFAULT";
+            $try[] = $flags[0].":DEFAULT:".$flags[2];
+            $try[] = "DEFAULT:".$flags[1].":".$flags[2];
+            $try[] = "DEFAULT:".$flags[1].":DEFAULT";
         }
-        if (count($f) > 1) {
-            $try[] = $f[0].":DEFAULT";
-            $try[] = "DEFAULT:".$f[1];
-            $try[] = $f[0];
+        if (count($flags) > 1) {
+            $try[] = $flags[0].":DEFAULT";
+            $try[] = "DEFAULT:".$flags[1];
+            $try[] = $flags[0];
         }
         foreach ($try as $t) {
             if (isset($type[$t])) {

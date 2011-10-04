@@ -266,8 +266,6 @@ class DeviceContainer extends DevicesTable
     public function fromArray($array)
     {
         parent::fromArray($array);
-        // This is to upgrade the tables from the old format
-        $upgrade = false;
         // Setup our classes
         $this->_setupClasses();
         // Make sure RawSetup is populated
@@ -483,16 +481,16 @@ class DeviceContainer extends DevicesTable
     /**
     * returns an object with the controller of this device in it
     *
-    * @param int    $id     The id of the device to get the sensor from
+    * @param int    $devId  The id of the device to get the sensor from
     * @param int    $sensor The sensor to get
     * @param string $group  The database group to get the device from
     *
     * @return DeviceContainer
     */
-    static public function getSensor($id, $sensor, $group = "default")
+    static public function getSensor($devId, $sensor, $group = "default")
     {
         $dev = new DevicesTable(array("group" => $group));
-        $dev->getRow($id);
+        $dev->getRow($devId);
         $sen = new DeviceSensorsContainer(array(), $dev);
         return $sen->sensorFromString($dev->sensors, $sensor);
     }
@@ -521,7 +519,7 @@ class DeviceContainer extends DevicesTable
                     }
                 }
                 $devs[] = $data;
-                
+
             }
         }
         return $devs;

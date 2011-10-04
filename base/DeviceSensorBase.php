@@ -311,6 +311,8 @@ abstract class DeviceSensorBase extends HUGnetContainer
     * Converts data between units
     *
     * @return array of units in array("unit" => "unit") format
+    *
+    * @SuppressWarnings(UnusedLocalVariable)
     */
     public function getAllTypes()
     {

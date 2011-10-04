@@ -64,7 +64,7 @@ class MedianOutputFilterPlugin extends OutputFilterBase
     );
     /** @var This is where we store our samples */
     protected $samples = array();
-    
+
     /**
     * Does the actual conversion
     *
@@ -84,19 +84,19 @@ class MedianOutputFilterPlugin extends OutputFilterBase
     /**
     * Does the actual conversion
     *
-    * @param int $k The point to get the data from
+    * @param int $index The point to get the data from
     *
     * @return null
     */
-    private function _getMedian($k)
+    private function _getMedian($index)
     {
         $half = (int)(self::SAMPLES / 2);
-        if (($k < $half)
-            || ($k >= (count($this->samples) - $half))
+        if (($index < $half)
+            || ($index >= (count($this->samples) - $half))
         ) {
-            $ret = $this->samples[$k];
+            $ret = $this->samples[$index];
         } else {
-            $samples = array_slice($this->samples, $k - $half, self::SAMPLES);
+            $samples = array_slice($this->samples, $index - $half, self::SAMPLES);
             sort($samples);
             $ret = $samples[$half];
         }
@@ -118,6 +118,6 @@ class MedianOutputFilterPlugin extends OutputFilterBase
         }
     }
 
-    
+
 }
 ?>
