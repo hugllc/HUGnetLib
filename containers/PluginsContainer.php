@@ -182,10 +182,10 @@ class PluginsContainer extends HUGnetContainer
             return false;
         }
         if (property_exists($name, "registerPlugin")) {
-            $reg = eval("return $name::\$registerPlugin;");
+            $reg = $name::$registerPlugin;
         }
         if (empty($reg) && method_exists($name, "registerPlugin")) {
-            $reg = eval("return $name::registerPlugin();");
+            $reg = $name::registerPlugin();
         }
         if (!is_array($reg) || empty($reg)) {
             return false;
