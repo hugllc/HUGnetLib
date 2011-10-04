@@ -273,7 +273,7 @@ class PacketSocketTable extends HUGnetDBTable
     private function _packetTime()
     {
         list($usec, $sec) = explode(" ", microtime());
-        $this->PacketTime = ((float)$usec + (float)$sec);
+        $this->PacketTime = bcadd($usec, $sec, 6);
     }
 }
 ?>
