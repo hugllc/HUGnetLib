@@ -65,7 +65,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testRegisterPluginDevices($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $this->assertInternalType(
             "array",
@@ -155,7 +155,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixed($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $default = $this->readAttribute($obj, "default");
         $fixed = $this->readAttribute($obj, "fixed");
@@ -201,7 +201,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedArray($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $fields = array(
             "extraText",
@@ -230,7 +230,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedNotEmpty($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $fields = array(
             "type",
@@ -259,7 +259,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedInt($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $default = $this->readAttribute($obj, "default");
         $fixed = $this->readAttribute($obj, "fixed");
@@ -286,7 +286,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedBool($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $fields = array(
             "bound"
@@ -311,7 +311,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedExtraText($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $this->assertSame(
             count($obj->extraText),
@@ -331,7 +331,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     public function testDefaultFixedExtraValues($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $this->assertSame(
             count($obj->extraValues),
@@ -352,7 +352,7 @@ abstract class DeviceSensorPluginTestBase extends PluginTestBase
     {
         $size = 40;
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $this->assertTrue(
             (strlen($var["Name"]) < $size),

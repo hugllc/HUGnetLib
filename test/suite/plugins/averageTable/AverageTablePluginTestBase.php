@@ -65,7 +65,7 @@ abstract class AverageTablePluginTestBase extends PluginTestBase
     public function testRegisterPluginDevices($class)
     {
         $d = new DeviceContainer();
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $obj = new $class($data, $d);
         $this->assertInternalType(
             "array",

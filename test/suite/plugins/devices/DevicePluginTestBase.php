@@ -63,7 +63,7 @@ abstract class DevicePluginTestBase extends PluginTestBase
     */
     public function testRegisterPluginDevices($class)
     {
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $this->assertInternalType(
             "array",
             $var["Flags"],

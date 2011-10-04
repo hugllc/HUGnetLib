@@ -70,7 +70,7 @@ abstract class PluginTestBase extends PHPUnit_Framework_TestCase
     */
     public function testRegisterPlugin($class)
     {
-        $var = eval("return $class::\$registerPlugin;");
+        $var = $class::$registerPlugin;
         $this->assertInternalType(
             "array",
             $var,
