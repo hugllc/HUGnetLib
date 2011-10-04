@@ -35,9 +35,8 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 // Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once TEST_BASE.'plugins/PluginTestBase.php';
 /**
  * Test class for device drivers

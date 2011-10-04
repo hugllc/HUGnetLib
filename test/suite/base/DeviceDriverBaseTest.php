@@ -39,7 +39,7 @@
 /** Include the stuff we need */
 require_once CODE_BASE.'base/UnitsBase.php';
 require_once CODE_BASE.'base/DeviceDriverBase.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 require_once CODE_BASE.'containers/PacketContainer.php';
 
 /**
@@ -75,7 +75,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

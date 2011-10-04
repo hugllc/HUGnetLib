@@ -91,11 +91,11 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins2/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins2/",
                     "extension" => "php",
                 ),
                 array(
-                    "dir" => TEST_BASE."files/plugins2/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins2/",
                     "extension" => ".php",
                 ),
                 array (
@@ -151,11 +151,11 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => ".inc.php",
                 ),
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => ".inc.php",
                 ),
                 array (
@@ -204,7 +204,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "periodic",
@@ -232,7 +232,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "bogusType",
@@ -244,7 +244,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -269,7 +269,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -292,7 +292,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -311,7 +311,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "sensor",
@@ -366,7 +366,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
         return array(
             array( // #0
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "periodic",
@@ -393,7 +393,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #1
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "bogusType",
@@ -404,7 +404,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #2
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -454,7 +454,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #3
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -478,7 +478,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #4
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -489,7 +489,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #5
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "device",
@@ -513,7 +513,7 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
             ),
             array( // #6
                 array(
-                    "dir" => TEST_BASE."files/plugins/",
+                    "dir" => TEST_CONFIG_BASE."files/plugins/",
                     "extension" => "php",
                 ),
                 "sensor",

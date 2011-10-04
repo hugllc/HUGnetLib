@@ -75,7 +75,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
         );
         $data = array(
             "PluginDir" => realpath(
-                TEST_BASE."files/plugins/"
+                TEST_CONFIG_BASE."files/plugins/"
             ),
         );
         $this->config = &ConfigContainer::singleton();

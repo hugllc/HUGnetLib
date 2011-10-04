@@ -100,7 +100,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/DevicesHistoryTableTest.xml'
+            TEST_CONFIG_BASE.'files/DevicesHistoryTableTest.xml'
         );
     }
     /**
@@ -187,7 +187,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         ."ZiI7aTo2NTUzNjtzOjE6IkQiO2k6NjU1MzY7czoxOiJzIjtpOjY0O3M6"
                         ."MzoiVmNjIjtpOjU7fX0=",
                 ),
-                TEST_BASE.'files/DevicesHistoryTableTest2.xml',
+                TEST_CONFIG_BASE.'files/DevicesHistoryTableTest2.xml',
                 12,
             ),
             array( // #1 This won't be inserted because it is already there
@@ -256,7 +256,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                         ."iO047fWk6OTthOjM6e3M6MjoiaWQiO2k6MjU0O3M6NDoidHlwZSI7c"
                         ."zoxMToiUGxhY2Vob2xkZXIiO3M6ODoibG9jYXRpb24iO047fX0=",
                 ),
-                TEST_BASE.'files/DevicesHistoryTableTest.xml',
+                TEST_CONFIG_BASE.'files/DevicesHistoryTableTest.xml',
                 404,
             ),
             array( // #2 This won't be inserted because it is a bad record
@@ -267,7 +267,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
                     "SensorString" => "YToyOntzOjE0OiJSYXdDYWxpYnJhdGlvbiI7czowOiI"
                         ."iO3M6NzoiU2Vuc29ycyI7aTowO30=",
                 ),
-                TEST_BASE.'files/DevicesHistoryTableTest.xml',
+                TEST_CONFIG_BASE.'files/DevicesHistoryTableTest.xml',
                 401,
             ),
         );

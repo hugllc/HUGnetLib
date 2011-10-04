@@ -84,7 +84,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/FirmwareTableTest.xml'
+            TEST_CONFIG_BASE.'files/FirmwareTableTest.xml'
         );
     }
 
@@ -370,7 +370,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
         return array(
             array(
                 // Everything works
-                TEST_BASE."files",
+                TEST_CONFIG_BASE."files",
                 "MD5 (00392001C-00.01.04.gz) = 84b01697b6fbc32c457d3b9815585fe0",
                 true,
                 array(
@@ -393,7 +393,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             ),
             array(
                 // Everything works
-                TEST_BASE."files",
+                TEST_CONFIG_BASE."files",
                 "00392001C-00.01.04.gz",
                 true,
                 array(
@@ -416,7 +416,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             ),
             array(
                 // Bad MD5
-                TEST_BASE."files",
+                TEST_CONFIG_BASE."files",
                 "MD5 (00392001C-00.01.04.gz) = bd2dd61d3ef24bfab9d40c8791f3b18b",
                 false,
                 array(

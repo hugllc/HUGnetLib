@@ -39,7 +39,7 @@
 
 require_once CODE_BASE.'base/sensors/VoltageDeviceSensorBase.php';
 require_once CODE_BASE.'containers/ConfigContainer.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 
 /**
  * Test class for filter.

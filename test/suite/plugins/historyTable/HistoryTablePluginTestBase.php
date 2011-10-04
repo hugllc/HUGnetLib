@@ -35,10 +35,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
+/** This is the test base */
 require_once TEST_BASE."plugins/PluginTestBase.php";
+/** This is the device container */
 require_once CODE_BASE.'containers/DeviceContainer.php';
 /**
  * Test class for device drivers

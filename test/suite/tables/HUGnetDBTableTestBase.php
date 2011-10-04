@@ -35,11 +35,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
-
+/** This is the packet loss */
 require_once CODE_BASE.'tables/PacketLogTable.php';
+/** This is the database testing extension */
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 /**
  * Test class for filter.

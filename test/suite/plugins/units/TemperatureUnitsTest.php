@@ -36,7 +36,7 @@
  *
  */
 
-require_once dirname(__FILE__).'/UnitsPluginTestBase.php';
+require_once 'UnitsPluginTestBase.php';
 require_once CODE_BASE.'plugins/units/TemperatureUnits.php';
 
 /**

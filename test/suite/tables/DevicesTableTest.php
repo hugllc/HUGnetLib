@@ -99,7 +99,7 @@ class DevicesTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/DevicesTableTest.xml'
+            TEST_CONFIG_BASE.'files/DevicesTableTest.xml'
         );
     }
     /**

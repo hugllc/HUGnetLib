@@ -100,7 +100,7 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/RawHistoryTableTest.xml'
+            TEST_CONFIG_BASE.'files/RawHistoryTableTest.xml'
         );
     }
     /**

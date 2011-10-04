@@ -102,7 +102,7 @@ class PacketLogTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/PacketLogTableTest.xml'
+            TEST_CONFIG_BASE.'files/PacketLogTableTest.xml'
         );
     }
     /**

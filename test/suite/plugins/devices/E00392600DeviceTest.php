@@ -39,7 +39,7 @@
 
 require_once CODE_BASE.'plugins/devices/E00392600Device.php';
 require_once CODE_BASE.'tables/LockTable.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
 
 /**

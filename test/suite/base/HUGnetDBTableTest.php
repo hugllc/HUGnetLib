@@ -139,7 +139,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/HUGnetDBTableTest.xml'
+            TEST_CONFIG_BASE.'files/HUGnetDBTableTest.xml'
         );
     }
     /**

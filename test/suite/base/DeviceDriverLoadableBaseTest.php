@@ -38,7 +38,7 @@
 
 
 require_once CODE_BASE.'base/DeviceDriverLoadableBase.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 require_once CODE_BASE.'containers/PacketContainer.php';
 
 /**

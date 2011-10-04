@@ -127,7 +127,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/PacketSocketTest.xml'
+            TEST_CONFIG_BASE.'files/PacketSocketTest.xml'
         );
     }
 

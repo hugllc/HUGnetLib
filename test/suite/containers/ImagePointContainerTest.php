@@ -67,7 +67,7 @@ class ImagePointContainerTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

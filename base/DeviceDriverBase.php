@@ -501,12 +501,12 @@ abstract class DeviceDriverBase extends HUGnetClass
     */
     public function timeConstant($string)
     {
-        $tc = hexdec(substr($string, 4, 2));
-        if (empty($tc)) {
+        $timeconstant = hexdec(substr($string, 4, 2));
+        if (empty($timeconstant)) {
             // This is the old location for the time constant
-            $tc = hexdec(substr($string, 2, 2));
+            $timeconstant = hexdec(substr($string, 2, 2));
         }
-        return $tc;
+        return $timeconstant;
     }
     /**
     * Takes in a raw string from a sensor gets the sensor data

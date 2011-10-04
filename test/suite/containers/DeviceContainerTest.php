@@ -41,7 +41,7 @@ require_once CODE_BASE.'containers/DeviceContainer.php';
 require_once CODE_BASE.'containers/PacketContainer.php';
 // This removes the test plugin files that we load from the code coverage report
 PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(
-    TEST_BASE."files/plugins/devices", ".php"
+    TEST_CONFIG_BASE."files/plugins/devices", ".php"
 );
 
 /**
@@ -72,7 +72,7 @@ class DeviceContainerTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

@@ -39,7 +39,7 @@
 
 require_once CODE_BASE.'base/DeviceSensorBase.php';
 require_once CODE_BASE.'containers/ConfigContainer.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 
 /**
  * Test class for filter.
@@ -75,7 +75,7 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
             ),
             "plugins" => array(
                 "dir" => realpath(
-                    TEST_BASE."files/plugins/"
+                    TEST_CONFIG_BASE."files/plugins/"
                 ),
             ),
         );

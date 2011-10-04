@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/devices/E00391200Device.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
 
 /**

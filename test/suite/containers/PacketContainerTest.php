@@ -39,7 +39,7 @@
 
 require_once CODE_BASE.'containers/PacketContainer.php';
 require_once CODE_BASE.'tables/PacketSocketTable.php';
-require_once TEST_BASE.'stubs/DummySocketContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.

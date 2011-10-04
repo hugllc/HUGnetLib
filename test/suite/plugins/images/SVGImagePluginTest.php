@@ -39,7 +39,7 @@
 /** Get our classes */
 require_once CODE_BASE.'plugins/images/SVGImagePlugin.php';
 require_once CODE_BASE.'containers/ImageContainer.php';
-require_once dirname(__FILE__).'/ImagePluginTestBase.php';
+require_once 'ImagePluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -106,7 +106,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
             array(
                 array(
                     "imageLoc" =>
-                        realpath(TEST_BASE."files/images/pink.png"),
+                        realpath(TEST_CONFIG_BASE."files/images/pink.png"),
                     "height" => 100,
                     "width"  => 200,
                 ),
@@ -118,7 +118,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="200px" height="100px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="'.realpath(TEST_BASE.'files/images/pink.png')
+    <image xlink:href="'.realpath(TEST_CONFIG_BASE.'files/images/pink.png')
             .'" height="100" width="200" x="0" y="0" ></image>
 </svg>
 
@@ -127,7 +127,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
             array(
                 array(
                     "imageLoc" =>
-                        realpath(TEST_BASE."files/images/pink.png"),
+                        realpath(TEST_CONFIG_BASE."files/images/pink.png"),
                     "height" => 200,
                     "width"  => 100,
                 ),
@@ -139,7 +139,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="100px" height="200px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="'.realpath(TEST_BASE.'files/images/pink.png')
+    <image xlink:href="'.realpath(TEST_CONFIG_BASE.'files/images/pink.png')
             .'" height="200" width="100" x="0" y="0" ></image>
 </svg>
 
@@ -148,7 +148,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
             array(
                 array(
                     "imageLoc" =>
-                        realpath(TEST_BASE."files/images/pink.png"),
+                        realpath(TEST_CONFIG_BASE."files/images/pink.png"),
                     "height" => 1000,
                     "width"  => 2000,
                 ),
@@ -160,7 +160,7 @@ class SVGImagePluginTest extends ImagePluginTestBase
     <desc></desc>
     <rect id="" x="0" y="0" width="2000px" height="1000px" fill="#FFFFFF" '
             .'stroke="none" />
-    <image xlink:href="'.realpath(TEST_BASE.'files/images/pink.png')
+    <image xlink:href="'.realpath(TEST_CONFIG_BASE.'files/images/pink.png')
             .'" height="1000" width="2000" x="0" y="0" ></image>
 </svg>
 

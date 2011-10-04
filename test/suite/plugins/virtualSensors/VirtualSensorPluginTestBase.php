@@ -37,7 +37,6 @@
  */
 
 // Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 require_once TEST_BASE."plugins/sensors/DeviceSensorPluginTestBase.php";
 require_once CODE_BASE.'containers/DeviceContainer.php';
 /**

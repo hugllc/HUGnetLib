@@ -37,7 +37,7 @@
  */
 
 require_once CODE_BASE.'plugins/database/MysqlDriver.php';
-require_once TEST_BASE.'stubs/DummyTableContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyTableContainer.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
@@ -158,7 +158,7 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/HUGnetDBDriverTest.xml'
+            TEST_CONFIG_BASE.'files/HUGnetDBDriverTest.xml'
         );
     }
     /**

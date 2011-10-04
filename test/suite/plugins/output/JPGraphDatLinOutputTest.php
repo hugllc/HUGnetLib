@@ -38,8 +38,8 @@
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/output/JPGraphDatLinOutput.php';
-require_once TEST_BASE.'files/mocks/JPGraph.php';
-require_once dirname(__FILE__).'/OutputPluginTestBase.php';
+require_once TEST_CONFIG_BASE.'files/mocks/JPGraph.php';
+require_once 'OutputPluginTestBase.php';
 
 /**
  * Test class for filter.

@@ -40,7 +40,7 @@
 require_once CODE_BASE.'plugins/averageTable/EVIRTUALAverageTable.php';
 require_once CODE_BASE.'base/UnitsBase.php';
 require_once TEST_BASE.'plugins/averageTable/AverageTablePluginTestBase.php';
-require_once TEST_BASE."files/mocks/HistoryTableMock.php";
+require_once TEST_CONFIG_BASE."files/mocks/HistoryTableMock.php";
 
 /**
  * Test class for filter.

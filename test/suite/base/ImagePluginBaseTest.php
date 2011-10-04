@@ -70,7 +70,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "PluginDir" => realpath(
-                TEST_BASE."files/plugins/"
+                TEST_CONFIG_BASE."files/plugins/"
             ),
         );
         $this->image = new ImageContainer();
@@ -183,8 +183,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                 array("height" => 100, "width" => 100),
                 array(),
                 realpath(
-                    dirname(__FILE__)
-                    ."/../files/images/ImagePluginsBaseTestBlank.png"
+                    TEST_CONFIG_BASE."files/images/ImagePluginsBaseTestBlank.png"
                 ),
                 0,
             ),
@@ -193,12 +192,12 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     "height" => 640,
                     "width" => 640,
                     "imageLoc" => realpath(
-                        TEST_BASE."files/images/pink.png"
+                        TEST_CONFIG_BASE."files/images/pink.png"
                     ),
                 ),
                 array(),
                 realpath(
-                    TEST_BASE."files/images/pinkSq.png"
+                    TEST_CONFIG_BASE."files/images/pinkSq.png"
                 ),
                 0,
             ),
@@ -207,7 +206,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     "height" => 100,
                     "width" => 150,
                     "imageLoc" => realpath(
-                        TEST_BASE."files/images/pink.png"
+                        TEST_CONFIG_BASE."files/images/pink.png"
                     ),
                     "points" => array(
                         array(
@@ -226,7 +225,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(),
-                TEST_BASE."files/images/ImagePluginsBaseTestText1.png",
+                TEST_CONFIG_BASE."files/images/ImagePluginsBaseTestText1.png",
                 600,
             ),
             array( // #3
@@ -234,7 +233,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     "height" => 100,
                     "width" => 150,
                     "imageLoc" => realpath(
-                        TEST_BASE."files/images/pink.png"
+                        TEST_CONFIG_BASE."files/images/pink.png"
                     ),
                     "points" => array(
                         array(
@@ -256,7 +255,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                 array(
                     "fontFile" => CODE_BASE."contrib/fonts/bitstream-vera/Vera.ttf"
                 ),
-                TEST_BASE."files/images/ImagePluginsBaseTestText2.png",
+                TEST_CONFIG_BASE."files/images/ImagePluginsBaseTestText2.png",
                 400,
             ),
         );

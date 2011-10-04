@@ -70,7 +70,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     {
         $config = array(
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
 
         );
@@ -105,7 +105,7 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/HistoryTableBaseTest.xml'
+            TEST_CONFIG_BASE.'files/HistoryTableBaseTest.xml'
         );
     }
     /**

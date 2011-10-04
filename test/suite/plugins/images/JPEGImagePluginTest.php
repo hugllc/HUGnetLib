@@ -39,7 +39,7 @@
 /** Get our classes */
 require_once CODE_BASE.'plugins/images/JPEGImagePlugin.php';
 require_once CODE_BASE.'containers/ImageContainer.php';
-require_once dirname(__FILE__).'/ImagePluginTestBase.php';
+require_once 'ImagePluginTestBase.php';
 
 /**
  * Test class for filter.
@@ -112,12 +112,12 @@ class JPEGImagePluginTest extends ImagePluginTestBase
             array(
                 array(
                     "imageLoc" =>
-                        realpath(TEST_BASE."files/images/pink.png"),
+                        realpath(TEST_CONFIG_BASE."files/images/pink.png"),
                     "height" => 640,
                     "width"  => 640,
                 ),
                 file_get_contents(
-                    TEST_BASE."files/images/JPEGImagePluginTest1.jpg"
+                    TEST_CONFIG_BASE."files/images/JPEGImagePluginTest1.jpg"
                 ),
             ),
         );

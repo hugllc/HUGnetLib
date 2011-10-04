@@ -38,7 +38,7 @@
 
 
 require_once CODE_BASE.'containers/DBServersContainer.php';
-require_once TEST_BASE.'stubs/DummyTableContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyTableContainer.php';
 
 /**
  * Test class for filter.

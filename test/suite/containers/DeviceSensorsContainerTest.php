@@ -41,7 +41,7 @@ require_once CODE_BASE.'base/UnitsBase.php';
 require_once CODE_BASE.'containers/DeviceSensorsContainer.php';
 require_once CODE_BASE.'containers/DeviceParamsContainer.php';
 require_once CODE_BASE.'containers/ConfigContainer.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 
 /**
  * Test class for filter.
@@ -76,7 +76,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 ),
             ),
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

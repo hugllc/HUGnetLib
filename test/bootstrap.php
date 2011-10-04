@@ -37,6 +37,7 @@
 
 define("CODE_BASE", realpath(dirname(__FILE__)."/..")."/");
 define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
+define("TEST_CONFIG_BASE", realpath(dirname(__FILE__))."/");
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(

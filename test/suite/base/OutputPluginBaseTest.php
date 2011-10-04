@@ -39,7 +39,7 @@
 
 require_once CODE_BASE.'containers/ConfigContainer.php';
 require_once CODE_BASE.'base/OutputPluginBase.php';
-require_once TEST_BASE.'files/containers/TestOutputContainer.php';
+require_once TEST_CONFIG_BASE.'files/containers/TestOutputContainer.php';
 
 /**
  * Test class for filter.
@@ -69,7 +69,7 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "PluginDir" => realpath(
-                TEST_BASE."files/plugins/"
+                TEST_CONFIG_BASE."files/plugins/"
             ),
         );
         $this->output = new TestOutputContainer();

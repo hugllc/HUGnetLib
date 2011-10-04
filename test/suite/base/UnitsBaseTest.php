@@ -69,7 +69,7 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
         $config = array(
             "plugins" => array(
                 "dir" => realpath(
-                    TEST_BASE."files/plugins/"
+                    TEST_CONFIG_BASE."files/plugins/"
                 ),
             ),
         );

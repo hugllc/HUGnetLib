@@ -38,7 +38,7 @@
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/output/HTMLListOutput.php';
-require_once dirname(__FILE__).'/OutputPluginTestBase.php';
+require_once 'OutputPluginTestBase.php';
 
 /**
  * Test class for filter.

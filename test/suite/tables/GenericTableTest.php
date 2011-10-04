@@ -109,7 +109,7 @@ class GenericTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/GenericTableTest.xml'
+            TEST_CONFIG_BASE.'files/GenericTableTest.xml'
         );
     }
     /**

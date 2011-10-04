@@ -38,9 +38,9 @@
 
 
 require_once CODE_BASE.'containers/OutputContainer.php';
-require_once TEST_BASE.'files/containers/TestOutputContainer.php';
-require_once TEST_BASE.'files/containers/TestOutputContainer2.php';
-require_once TEST_BASE.'files/containers/TestOutputContainer3.php';
+require_once TEST_CONFIG_BASE.'files/containers/TestOutputContainer.php';
+require_once TEST_CONFIG_BASE.'files/containers/TestOutputContainer2.php';
+require_once TEST_CONFIG_BASE.'files/containers/TestOutputContainer3.php';
 
 /**
  * Test class for filter.
@@ -70,7 +70,7 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
     {
         $config = array(
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();
@@ -863,7 +863,7 @@ post"
     {
         $config = array(
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/badPluginDir/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/badPluginDir/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();

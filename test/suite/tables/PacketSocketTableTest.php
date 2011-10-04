@@ -104,7 +104,7 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/PacketSocketTableTest.xml'
+            TEST_CONFIG_BASE.'files/PacketSocketTableTest.xml'
         );
     }
     /**

@@ -38,8 +38,8 @@
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/sensors/WattNodeDeviceSensor.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
-require_once dirname(__FILE__).'/DeviceSensorPluginTestBase.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
+require_once 'DeviceSensorPluginTestBase.php';
 
 /**
  * Test class for filter.

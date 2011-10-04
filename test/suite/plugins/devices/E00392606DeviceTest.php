@@ -38,7 +38,7 @@
 
 
 require_once CODE_BASE.'plugins/devices/E00392606Device.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
 
 /**

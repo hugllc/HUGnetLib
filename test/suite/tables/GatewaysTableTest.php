@@ -99,7 +99,7 @@ class GatewaysTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/GatewaysTableTest.xml'
+            TEST_CONFIG_BASE.'files/GatewaysTableTest.xml'
         );
     }
     /**

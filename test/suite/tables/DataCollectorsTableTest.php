@@ -108,7 +108,7 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/DataCollectorsTableTest.xml'
+            TEST_CONFIG_BASE.'files/DataCollectorsTableTest.xml'
         );
     }
     /**

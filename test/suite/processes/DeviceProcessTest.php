@@ -88,7 +88,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
         );
         $data = array(
             "PluginDir" => realpath(
-                TEST_BASE."files/plugins/"
+                TEST_CONFIG_BASE."files/plugins/"
             ),
         );
         $this->config = &ConfigContainer::singleton();
@@ -237,7 +237,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(
@@ -299,7 +299,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(
@@ -361,7 +361,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(
@@ -422,7 +422,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(
@@ -506,7 +506,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(
@@ -659,7 +659,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
                     "Date" => 1275683593,
                 ),
                 array(
-                    "PluginDir" => realpath(TEST_BASE."files/plugins"),
+                    "PluginDir" => realpath(TEST_CONFIG_BASE."files/plugins"),
                     "PluginType" => "deviceProcess",
                 ),
                 array(

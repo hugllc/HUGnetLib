@@ -38,7 +38,7 @@
 
 
 require_once CODE_BASE.'containers/ConfigContainer.php';
-require_once TEST_BASE.'stubs/DummySocketContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.
@@ -100,7 +100,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #1
             array(
-                TEST_BASE."files/config1.inc.php",
+                TEST_CONFIG_BASE."files/config1.inc.php",
                 array(
                     "servers" => array(
                         array(
@@ -126,7 +126,7 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
             ),
             // #2
             array(
-                TEST_BASE."files/config2.inc.php",
+                TEST_CONFIG_BASE."files/config2.inc.php",
                 array(
                     "servers" => array(
                         array(

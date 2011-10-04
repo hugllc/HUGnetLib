@@ -38,8 +38,8 @@
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/virtualSensors/DewPointVirtualSensor.php';
-require_once TEST_BASE.'stubs/DummyDeviceContainer.php';
-require_once dirname(__FILE__).'/VirtualSensorPluginTestBase.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
+require_once 'VirtualSensorPluginTestBase.php';
 
 /**
  * Test class for filter.

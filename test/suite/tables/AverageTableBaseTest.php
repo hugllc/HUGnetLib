@@ -40,8 +40,8 @@
 require_once CODE_BASE.'tables/AverageTableBase.php';
 require_once CODE_BASE.'containers/DeviceContainer.php';
 require_once TEST_BASE."tables/HUGnetDBTableTestBase.php";
-require_once TEST_BASE."files/mocks/AverageTableMock.php";
-require_once TEST_BASE."files/mocks/HistoryTableMock.php";
+require_once TEST_CONFIG_BASE."files/mocks/AverageTableMock.php";
+require_once TEST_CONFIG_BASE."files/mocks/HistoryTableMock.php";
 
 /**
  * Test class for filter.
@@ -72,7 +72,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
         $config = array(
             "dateFormat" => "Y-m-d H:i:s",
             "plugins" => array(
-                "dir" => realpath(TEST_BASE."files/plugins/"),
+                "dir" => realpath(TEST_CONFIG_BASE."files/plugins/"),
             ),
         );
         $this->config = &ConfigContainer::singleton();
@@ -106,7 +106,7 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/AverageTableBaseTest.xml'
+            TEST_CONFIG_BASE.'files/AverageTableBaseTest.xml'
         );
     }
     /**

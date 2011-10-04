@@ -99,7 +99,7 @@ class ErrorTableTest extends HUGnetDBTableTestBase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/ErrorTableTest.xml'
+            TEST_CONFIG_BASE.'files/ErrorTableTest.xml'
         );
     }
     /**

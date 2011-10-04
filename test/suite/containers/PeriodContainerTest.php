@@ -38,7 +38,7 @@
 
 /** This is the stuff we need */
 require_once CODE_BASE.'containers/PeriodContainer.php';
-require_once TEST_BASE.'stubs/DummyTableContainer.php';
+require_once TEST_CONFIG_BASE.'stubs/DummyTableContainer.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
@@ -123,7 +123,7 @@ class PeriodContainerTest extends PHPUnit_Extensions_Database_TestCase
     protected function getDataSet()
     {
         return $this->createXMLDataSet(
-            TEST_BASE.'files/PeriodContainerTest.xml'
+            TEST_CONFIG_BASE.'files/PeriodContainerTest.xml'
         );
     }
     /**

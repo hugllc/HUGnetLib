@@ -40,7 +40,7 @@
 require_once CODE_BASE.'plugins/outputFilters/MeanDifferenceOutputFilterPlugin.php';
 require_once CODE_BASE.'containers/OutputContainer.php';
 require_once CODE_BASE.'containers/ConfigContainer.php';
-require_once dirname(__FILE__).'/OutputFilterPluginTestBase.php';
+require_once 'OutputFilterPluginTestBase.php';
 
 /**
  * Test class for filter.
