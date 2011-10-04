@@ -42,6 +42,7 @@
               --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
               --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
               --ignore=old,contrib,test,build,Documentation
+              --configuration=test/pdepend.xml
               ${source}" />
   </exec>
  </target>
@@ -93,7 +94,7 @@
  <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
   <exec executable="phpdoc">
    <arg line="-d ${source}
-              -it @dataProvider,@covers,@expectedException
+              -it @dataProvider,@covers,@expectedException,@SuppressWarnings
               -i build/,Documentation/,JoomlaMock/,tmpl/,old/,contrib/
               -t ${basedir}/build/api" />
   </exec>

@@ -76,6 +76,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param mixed  $string The string we will use to build the object
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function __construct(&$obj, $string = "")
     {
@@ -458,6 +460,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param bool $default Return items set to their default?
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toSetupString($default = true)
     {
@@ -572,6 +576,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param float  $prev    The previous record
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function decodeData($string, $command="", $deltaT = 0, $prev = null)
     {
@@ -604,6 +610,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param array $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toOutput($cols = null)
     {
@@ -635,6 +643,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param array  $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -646,6 +656,8 @@ abstract class DeviceDriverBase extends HUGnetClass
     * @param array $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

@@ -243,6 +243,8 @@ class E00392100Device extends DeviceDriverLoadableBase
     * @param string $string This is totally ignored.
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function fromSetupString($string)
     {
@@ -288,6 +290,8 @@ class E00392100Device extends DeviceDriverLoadableBase
     * @param float  $deltaT  The time difference between this packet and the next
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function decodeData($string, $command="", $deltaT=0)
     {
@@ -342,7 +346,7 @@ class E00392100Device extends DeviceDriverLoadableBase
 
     /**
     * Decodes the sensor string
-    * 
+    *
     * @param string $string The string of sensor data
     *
     * @return null

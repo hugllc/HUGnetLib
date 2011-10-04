@@ -484,7 +484,7 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function getCode($empty="FF")
     {
-        return $this->_interpSREC($this->Code);
+        return $this->_interpSREC($this->Code, $empty);
     }
     /**
     * Changes an SREC source into a raw memory buffer
@@ -496,7 +496,7 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function getData($empty="FF")
     {
-        return $this->_interpSREC($this->Data);
+        return $this->_interpSREC($this->Data, $empty);
     }
     /**
     * Changes an SREC source into a raw memory buffer

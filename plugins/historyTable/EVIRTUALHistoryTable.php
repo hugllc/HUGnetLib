@@ -81,6 +81,8 @@ class EVIRTUALHistoryTable extends HistoryTableBase
     * @param array  $extraData  Data for the extraWhere clause
     *
     * @return mixed The value of the attribute
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function getPeriod(
         $start,

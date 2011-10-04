@@ -38,17 +38,19 @@
 /** Get the required base class */
 require_once dirname(__FILE__)."/../../base/UnitsBase.php";
 /**
-* This class implements photo sensors.
-*
-* @category   Drivers
-* @package    HUGnetLib
-* @subpackage Units
-* @author     Scott Price <prices@hugllc.com>
-* @copyright  2007-2011 Hunt Utilities Group, LLC
-* @copyright  2009 Scott Price
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*/
+ * This class implements photo sensors.
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Units
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
 class HeatPerUnitAreaUnits extends UnitsBase
 {
     /** @var This is to register the class */

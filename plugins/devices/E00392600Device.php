@@ -137,6 +137,8 @@ class E00392600Device extends DeviceDriverBase
     * @param bool $default Return items set to their default?
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toSetupString($default = true)
     {

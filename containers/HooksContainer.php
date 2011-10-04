@@ -136,6 +136,8 @@ class HooksContainer extends HUGnetContainer
     * @param array  $args The array of arguments
     *
     * @return mixed
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function __call($name, $args)
     {

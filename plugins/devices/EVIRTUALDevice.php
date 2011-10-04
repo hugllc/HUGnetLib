@@ -93,6 +93,8 @@ class EVIRTUALDevice extends DeviceDriverBase
     * @param string $string This is totally ignored.
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function fromSetupString($string)
     {

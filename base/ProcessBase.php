@@ -268,6 +268,8 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     * @param PacketContainer &$pkt The packet that is to us
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function packetConsumer(PacketContainer &$pkt)
     {
@@ -283,7 +285,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     {
         // Be verbose
         $this->vprint(
-            "Got exit signal",
+            "Got exit signal $signo",
             HUGnetClass::VPRINT_NORMAL
         );
         $this->loop = false;

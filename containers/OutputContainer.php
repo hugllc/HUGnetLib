@@ -78,8 +78,8 @@ class OutputContainer extends HUGnetContainer
     protected $paramsOut = array();
     /** @var array our filter setup */
     protected $filters = array();
-    
-    
+
+
     /**
     * This is the constructor
     *
@@ -97,7 +97,7 @@ class OutputContainer extends HUGnetContainer
     * This is the constructor
     *
     * @param object &$container the container to use for data
-    * 
+    *
     * @return none
     */
     public function setContainer(&$container)
@@ -197,6 +197,8 @@ class OutputContainer extends HUGnetContainer
     * @param bool $default Return items set to their default?
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toString($default = true)
     {
@@ -322,10 +324,10 @@ class OutputContainer extends HUGnetContainer
     *
     * Function should have the following form:
     *    string myFunction ($field, &$container);
-    * 
+    *
     *  The function should return whatever string that you want to be displayed
     *  in the field.
-    * 
+    *
     * @param string   $field    The field to use the callback on
     * @param callback $function The callback for the function
     * @param string   $type     The plugin to use this callback on
@@ -382,7 +384,7 @@ class OutputContainer extends HUGnetContainer
     /**
     * Converts data between units
     *
-    * @return array 
+    * @return array
     */
     public function getAllFilterTypes()
     {

@@ -135,6 +135,8 @@ class BaleMoistureV1DeviceSensor extends ResistiveDeviceSensorBase
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {

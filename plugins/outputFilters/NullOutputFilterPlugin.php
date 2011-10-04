@@ -67,6 +67,8 @@ class NullOutputFilterPlugin extends OutputFilterBase
     * @param mixed $field The field to execute this on
     *
     * @return bool True on success, false on failure
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function execute($field)
     {

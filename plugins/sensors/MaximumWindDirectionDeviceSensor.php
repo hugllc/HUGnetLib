@@ -38,17 +38,19 @@
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
 /**
-* This class deals with wind direction sensors.
-*
-* @category   Drivers
-* @package    HUGnetLib
-* @subpackage Sensors
-* @author     Scott Price <prices@hugllc.com>
-* @copyright  2007-2011 Hunt Utilities Group, LLC
-* @copyright  2009 Scott Price
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*/
+ * This class deals with wind direction sensors.
+ *
+ * @category   Drivers
+ * @package    HUGnetLib
+ * @subpackage Sensors
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
 class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
 {
     /** @var This is to register the class */
@@ -117,6 +119,8 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {

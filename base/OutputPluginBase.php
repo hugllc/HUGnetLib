@@ -85,7 +85,7 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     * This function implements the output before the data
     *
     * @param array $params the parameter array to save
-    * 
+    *
     * @return String the text to output
     */
     protected function setParams($params)
@@ -116,6 +116,8 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     * @param bool $default Return items set to their default?
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toString($default = true)
     {

@@ -211,6 +211,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     * @param bool $default Return items set to their default?
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toDB($default = true)
     {
@@ -614,7 +616,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
                 $ret[$col] = $this->outputDate($col);
             } else {
                 $ret[$col] = $this->$col;
-            } 
+            }
         }
         return $ret;
     }
@@ -651,6 +653,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     * @param array  $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -662,12 +666,14 @@ abstract class HUGnetDBTable extends HUGnetContainer
     * @param array $cols The columns to get
     *
     * @return array
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {
         return (array)$this->outputParams['filters'];
     }
-    
+
     /**
     * This sets the labels, or gets them if no argument
     *

@@ -174,6 +174,8 @@ abstract class VirtualSensorBase extends DeviceSensorBase
     * @param mixed $value The value to set
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     protected function setType($value)
     {

@@ -99,12 +99,12 @@ class ImageContainer extends HUGnetContainer
         }
         return parent::fromArray($array);
     }
-    
+
     /**
     * This is the constructor
     *
     * @param object &$container the container to use for data
-    * 
+    *
     * @return none
     */
     public function addPoint(&$container)
@@ -132,13 +132,15 @@ class ImageContainer extends HUGnetContainer
     {
         return $this->points[$index];
     }
-    
+
     /**
     * Returns the object as a string
     *
     * @param bool $default Return items set to their default?
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toString($default = true)
     {

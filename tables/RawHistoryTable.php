@@ -198,6 +198,8 @@ class RawHistoryTable extends HUGnetDBTable
     * @param bool $default Return items set to their default?
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toDB($default = true)
     {

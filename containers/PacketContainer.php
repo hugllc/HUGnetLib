@@ -234,6 +234,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * @param bool $default Return items set to their default?
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toPktString($default = true)
     {
@@ -280,6 +282,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * @param bool $default Return items set to their default?
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function toArray($default = true)
     {
@@ -828,6 +832,8 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     * @param string $value This is not used here
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     protected function setType($value = null)
     {

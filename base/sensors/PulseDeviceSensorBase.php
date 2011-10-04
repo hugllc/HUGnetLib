@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 abstract class PulseDeviceSensorBase extends DeviceSensorBase
 {
@@ -108,6 +110,8 @@ abstract class PulseDeviceSensorBase extends DeviceSensorBase
     *                      and the last one
     *
     * @return float
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     function liquidFlowMeter($val, $deltaT=null)
     {

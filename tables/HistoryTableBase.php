@@ -262,6 +262,8 @@ abstract class HistoryTableBase extends HUGnetDBTable
     * @param array  $extraData  Data for the extraWhere clause
     *
     * @return mixed The value of the attribute
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function getPeriod(
         $start,
@@ -365,7 +367,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     * There should only be a single instance of this class
     *
     * @param array $cols The columns to get
-    * 
+    *
     * @return array
     */
     public function outputFilters($cols = null)

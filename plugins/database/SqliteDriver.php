@@ -85,6 +85,8 @@ class SqliteDriver extends HUGnetDBDriver
     * @param bool $force Force the repair
     *
     * @return mixed
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     public function check($force = false)
     {

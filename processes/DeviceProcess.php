@@ -239,6 +239,8 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     * @param string $fct The function to call
     *
     * @return string
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     protected function preUpdate($fct = "main")
     {

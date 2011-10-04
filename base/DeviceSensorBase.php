@@ -52,6 +52,8 @@ require_once dirname(__FILE__)."/../interfaces/DeviceSensorInterface.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 abstract class DeviceSensorBase extends HUGnetContainer
     implements DeviceSensorInterface
@@ -386,6 +388,8 @@ abstract class DeviceSensorBase extends HUGnetContainer
     * @param mixed $value The value to set
     *
     * @return null
+    *
+    * @SuppressWarnings(UnusedFormalParameter)
     */
     protected function setType($value)
     {

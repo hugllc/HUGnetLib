@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.ph
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class BaleMoistureV2DeviceSensor extends ResistiveDeviceSensorBase
 {
@@ -115,6 +117,8 @@ class BaleMoistureV2DeviceSensor extends ResistiveDeviceSensorBase
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {

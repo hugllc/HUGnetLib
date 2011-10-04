@@ -50,6 +50,8 @@ require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
 {
@@ -167,7 +169,7 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
             return null;
         }
         $table = &$this->valueTable;
-        foreach ($table as $ohm => $temp) {
+        foreach (array_keys($table) as $ohm) {
             $ohm  = $ohm;
             $last = $ohm;
             if ((float)$ohm < $R) {
