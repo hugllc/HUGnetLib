@@ -155,20 +155,16 @@ class PeriodContainer extends HUGnetContainer
     {
         $class = $this->class;
         $field = $this->dateField;
-        if (is_array($array)) {
-            if (isset($array[$field])
-                && ($array[$field] <= $this->end) && ($array[$field] >= $this->start)
-            ) {
-                if (!is_a($this->records[$array[$field]], $this->class)) {
-                    $this->records[$array[$field]] = new $class($array);
-                }
-            }
-        } else if (is_a($array, $this->class)) {
-            if (($array->$field <= $this->end) && ($array->$field >= $this->start)) {
-                if (!is_a($this->records[$array->$field], $this->class)) {
-                    $this->records[$array->$field] = &$array;
-                }
-            }
+        if (is_array($array) && isset($array[$field])
+            && ($array[$field] <= $this->end) && ($array[$field] >= $this->start)
+            && (!is_a($this->records[$array[$field]], $this->class))
+        ) {
+            $this->records[$array[$field]] = new $class($array);
+        } else if (is_a($array, $this->class)
+            && ($array->$field <= $this->end) && ($array->$field >= $this->start)
+            && (!is_a($this->records[$array->$field], $this->class))
+        ) {
+            $this->records[$array->$field] = &$array;
         }
         ksort($this->records);
     }
@@ -184,12 +180,15 @@ class PeriodContainer extends HUGnetContainer
     {
         if (method_exists($this->class, $name)) {
             foreach (array_keys($this->records) as $key) {
-                $code  ='return $this->records['.$key.']->'.$name.'(';
-                if (count($args) > 0) {
-                    $code .= '$args['.implode('], $args[', array_keys($args)).']';
-                }
-                $code .= ');';
-                $output[$key] = eval($code);
+                //$code  ='return $this->records['.$key.']->'.$name.'(';
+                //if (count($args) > 0) {
+                //    $code .= '$args['.implode('], $args[', array_keys($args)).']';
+                //}
+                //$code .= ');';
+                //$output[$key] = eval($code);
+                $output[$key] = call_user_func_array(
+                    array($this->records[$key], $name), $args
+                );
             }
             return $output;
         }
