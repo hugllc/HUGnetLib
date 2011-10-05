@@ -1152,9 +1152,9 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     "group" => "default",
                     "Reply" => new PacketContainer(
                         array(
-                            "To" => "000ABC",
-                            "From" => "000020",
-                            "Command" => "55",
+                            "From" => "000ABC",
+                            "To" => "000020",
+                            "Command" => "01",
                             "Data" => "01020304",
                             "Checksum" => "C3",
                             "group" => "other",
