@@ -64,6 +64,25 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     protected $idValues = array(0x6F);
     /** @var object These are the valid values for type */
     protected $typeValues = array("maximum-inc");
+    /** @var array These our the direction masks */
+    protected $directions = array(
+        "00000001" => 0.0,
+        "00000011" => 22.5,
+        "00000010" => 45.0,
+        "00000110" => 67.5,
+        "00000100" => 90.0,
+        "00001100" => 112.5,
+        "00001000" => 135.0,
+        "00011000" => 157.5,
+        "00010000" => 180.0,
+        "00110000" => 202.5,
+        "00100000" => 225.0,
+        "01100000" => 247.5,
+        "01000000" => 270.0,
+        "11000000" => 292.5,
+        "10000000" => 315.0,
+        "10000001" => 337.5,
+    );
     /**
     * This is the array of sensor information.
     */
@@ -124,48 +143,12 @@ class MaximumWindDirectionDeviceSensor extends DeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-
-        // Do the cardinal directions
-        $cDirections = array(0 => 0.0, 2 => 90.0, 4 => 180.0, 6 => 270.0);
-        $cDir        = null;
-        $oDir        = null;
-        foreach ($cDirections as $shift => $dir) {
-            // Do the cardinal direction
-            if ($A & (1<<$shift)) {
-                if (!is_null($cDir)) {
-                    return null;  // Can't have two cardinal directions!
-                }
-                $cDir = $dir;
-            }
-            // Do the ordinal direction that is +45deg from the cardinal
-            if ($A & (1<<($shift+1))) {
-                if (!is_null($oDir)) {
-                    return null;  // Can't have two ordinal directions!
-                }
-                $oDir = $dir + 45.0;
+        foreach ($this->directions as $mask => $dir) {
+            if ($A === bindec($mask)) {
+                return (float)$dir;
             }
         }
-        // If $oDir is null we are at a cardinal direction
-        if (is_null($oDir)) {
-            return $cDir;
-        }
-        // If $cDir is null we are at an ordinal direction
-        if (is_null($cDir)) {
-            return $oDir;
-        }
-
-        // Now we have to check the in between directions.
-        // One special case first.  (see notes in docblock
-        if (($cDir == 0) && ($oDir == 315)) {
-            $cDir = 360;
-        }
-        // If the difference is not 45 it is a bad reading
-        if (abs($cDir - $oDir) != 45) {
-            return null;
-        }
-        // Return the average of the two directions.  This gives
-        // us the inbetween readings.
-        return ($cDir + $oDir)/2;
+        return null;
     }
 
 }
