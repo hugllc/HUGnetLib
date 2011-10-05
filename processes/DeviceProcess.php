@@ -289,6 +289,18 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             }
             $local = $this->myDevice->checkLocalDevLock($dev->DeviceID);
         }
+        return $this->_checkLockSet($dev, $local);
+    }
+    /**
+    * This function sets a lock
+    *
+    * @param DeviceContainer &$dev   The device to check
+    * @param LockTable       &$local The local lock if there is one
+    *
+    * @return int The number of packets routed
+    */
+    private function _checkLockSet(DeviceContainer &$dev, LockTable &$local)
+    {
         $ret = $this->myDevice->myLock($local);
         if (!$dev->gateway()) {
             if ($ret) {

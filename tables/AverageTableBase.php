@@ -377,6 +377,7 @@ abstract class AverageTableBase extends HistoryTableBase
             }
             $this->startTime = gmmktime($Hour, $min, 0, $mon, $day, $Year);
             $this->endTime = gmmktime($Hour, $min + 15, 0, $mon, $day, $Year);
+            return true;
         } else if ($type == self::AVERAGE_HOURLY) {
             $this->startTime = gmmktime($Hour, 0, 0, $mon, $day, $Year);
             $this->endTime = gmmktime($Hour + 1, 0, 0, $mon, $day, $Year);

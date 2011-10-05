@@ -95,7 +95,7 @@ class SocketsContainer extends HUGnetContainer implements ConnectionManager
                 || isset($sock["GatewayPort"])
                 || isset($sock["GatewayKey"])
             ) {
-                if ($this->findClass("GatewaySocket", "/sockets/")) {
+                if ($this->findClass("GatewaySocket", "sockets")) {
                     $this->sockets[$key] =& self::factory(
                         $sock,
                         "GatewaySocket"

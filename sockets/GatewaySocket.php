@@ -73,7 +73,6 @@ class GatewaySocket extends HUGnetContainer implements HUGnetSocketInterface
     );
     /** @var array This is where the data is stored */
     protected $data = array();
-
     /** @var Unix Socket This is the socket for our connection */
     protected $socket = null;
     /** @var int The error number.  0 if no error occurred */
