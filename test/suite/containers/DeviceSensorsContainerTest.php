@@ -814,7 +814,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 $sensors[$k],
                 get_class($sensor[$k]),
                 "Sensor $k class is wrong ".$sensors[$k]." != "
-                    .get_class($sensor[$k])
+                .get_class($sensor[$k])
             );
         }
 
@@ -970,7 +970,7 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
                 $sensors[$k],
                 get_class($sensor[$k]),
                 "Sensor $k class is wrong ".$sensors[$k]." != "
-                    .get_class($sensor[$k])
+                .get_class($sensor[$k])
             );
         }
 

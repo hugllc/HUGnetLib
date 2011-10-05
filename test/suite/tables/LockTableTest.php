@@ -410,7 +410,7 @@ class LockTableTest extends HUGnetDBTableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $sqlId       The id of the locking element
+    * @param int    $sqlId    The id of the locking element
     * @param string $type     The type of lock
     * @param string $data     The data string
     * @param int    $timeLeft The amount of time left on the lock

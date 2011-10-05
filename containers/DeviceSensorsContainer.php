@@ -360,7 +360,8 @@ class DeviceSensorsContainer extends HUGnetContainer
     */
     protected function checkSensor($senId, $type, &$sensor)
     {
-        return is_object($sensor) && is_a($sensor, $this->sensorClass($senId, $type));
+        return is_object($sensor)
+            && is_a($sensor, $this->sensorClass($senId, $type));
     }
 
     /**

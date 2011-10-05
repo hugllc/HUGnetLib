@@ -562,7 +562,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     /**
     * Checks to see if the contained packet is an unsolicited
     *
-    * @param mixed $id The DeviceID or id of the device
+    * @param mixed $devId The DeviceID or id of the device
     *
     * @return bool true if it is unsolicited, false otherwise
     */

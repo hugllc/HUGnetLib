@@ -133,7 +133,9 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $config = array(
         );
         $this->config->forceConfig($config);
-        $obj = new ProcessBaseClassTest(array("GatewayKey" => "all"), $this->devArray);
+        $obj = new ProcessBaseClassTest(
+            array("GatewayKey" => "all"), $this->devArray
+        );
     }
     /**
     * Tests for exceptions

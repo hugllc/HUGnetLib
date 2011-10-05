@@ -319,7 +319,7 @@ class E00392606Device extends E00392600Device
     /**
     * Checks to see if a device is a valid locker
     *
-    * @param int  $id     The id to check
+    * @param int  $devId  The id to check
     * @param bool $update Whether to update the record or not
     *
     * @return bool True on success, False on failure

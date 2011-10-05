@@ -149,7 +149,7 @@ interface HUGnetDBInterface
     /**
     * Gets all rows from the database
     *
-    * @param int $id The id of the row to get.
+    * @param int $sqlId The id of the row to get.
     *
     * @return array
     */
@@ -192,7 +192,7 @@ interface HUGnetDBInterface
     *
     * This only works with integer ID columns!
     *
-    * @param int $id The cureent ID to use
+    * @param int $sqlId The cureent ID to use
     *
     * @return int
     */
@@ -202,7 +202,7 @@ interface HUGnetDBInterface
     *
     * This only works with integer ID columns!
     *
-    * @param int $id The cureent ID to use
+    * @param int $sqlId The cureent ID to use
     *
     * @return int
     */

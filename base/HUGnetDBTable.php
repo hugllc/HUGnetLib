@@ -247,7 +247,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @param int    $start      The start of the time
     * @param int    $end        The end of the time
-    * @param mixed  $rid         The ID to use.  None if null
+    * @param mixed  $rid        The ID to use.  None if null
     * @param string $idField    The ID Field to use.  Table Primary id if left blank
     * @param string $extraWhere Extra where clause
     * @param array  $extraData  Data for the extraWhere clause
@@ -532,8 +532,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
     /**
     * This routine takes any date and turns it into an SQL date
     *
-    * @param mixed  $value The value to set
-    * @param string $TZ    The time zone to use.  Defaults to UTC
+    * @param mixed  $value    The value to set
+    * @param string $TimeZone The time zone to use.  Defaults to UTC
     *
     * @return null
     *

@@ -1259,7 +1259,7 @@ S9030000FC",
     *
     * @param array  $firmware Firmware to load into the database
     * @param array  $device   Parameters to load into the device
-    * @param string $devId       The Device ID to pretend to be
+    * @param string $devId    The Device ID to pretend to be
     * @param string $string   The string for the dummy device to return
     * @param string $read     The read string to put in
     * @param string $write    The write string expected
