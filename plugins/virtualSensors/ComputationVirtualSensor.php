@@ -132,7 +132,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $fct = $this->createFunction($this->getExtra(0), $data);
-        $ret = @eval("return $fct;");
+        $ret = (is_callable($fct)) ? @call_user_func($fct) : false;
         if (!is_bool($ret)) {
             $ret = round($ret, $this->decimals);
         } else {
@@ -163,9 +163,11 @@ class ComputationVirtualSensor extends VirtualSensorBase
             }
         }
         if (is_string($mathCode)) {
-            return $this->sanatize($mathCode);
+            $text = "return ".$this->sanatize($mathCode).";";
+        } else {
+            $text = "return false;";
         }
-        return "false";
+        return @create_function("", $text);
     }
     /**
      * Creates a function to crunch numbers
