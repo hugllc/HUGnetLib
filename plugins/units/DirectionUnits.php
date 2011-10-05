@@ -66,7 +66,25 @@ class DirectionUnits extends UnitsBase
     public $from = "&#176;";
     /** @var The units that are valid for conversion */
     protected $valid = array("&#176;", "Direction");
-
+    /** @var These are the direction names */
+    protected $directions = array(
+        "N" => 0,
+        "NNE" => 22.5,
+        "NE" => 45,
+        "ENE" => 67.5,
+        "E" => 90,
+        "ESE" => 112.5,
+        "SE" => 135,
+        "SSE" => 157.5,
+        "S" => 180,
+        "SSW" => 202.5,
+        "SW" => 225,
+        "WSW" => 247.5,
+        "W" => 270,
+        "WNW" => 292.5,
+        "NW" => 315,
+        "NNW" => 337.5,
+    );
     /**
     * Does the actual conversion
     *
@@ -108,53 +126,10 @@ class DirectionUnits extends UnitsBase
     */
     protected function numDirtoDir($ndir)
     {
-        if ($ndir <= 0) {
-            return "N";
-        }
-        if ($ndir <= 22.5) {
-            return "NNE";
-        }
-        if ($ndir <= 45) {
-            return "NE";
-        }
-        if ($ndir <= 67.5) {
-            return "ENE";
-        }
-        if ($ndir <= 90) {
-            return "E";
-        }
-        if ($ndir <= 112.5) {
-            return "ESE";
-        }
-        if ($ndir <= 135) {
-            return "SE";
-        }
-        if ($ndir <= 157.5) {
-            return "SSE";
-        }
-        if ($ndir <= 180) {
-            return "S";
-        }
-        if ($ndir <= 202.5) {
-            return "SSW";
-        }
-        if ($ndir <= 225) {
-            return "SW";
-        }
-        if ($ndir <= 247.5) {
-            return "WSW";
-        }
-        if ($ndir <= 270) {
-            return "W";
-        }
-        if ($ndir <= 292.5) {
-            return "WNW";
-        }
-        if ($ndir <= 315) {
-            return "NW";
-        }
-        if ($ndir <= 337.5) {
-            return "NNW";
+        foreach ($this->directions as $name => $val) {
+            if ($ndir <= $val) {
+                return $name;
+            }
         }
         return "N";
     }
@@ -176,53 +151,8 @@ class DirectionUnits extends UnitsBase
     protected function dirToNumDir($ndir)
     {
         $ndir = trim(strtoupper($ndir));
-        if ($ndir == "N") {
-            return 0;
-        }
-        if ($ndir == "NNE") {
-            return 22.5;
-        }
-        if ($ndir == "NE") {
-            return 45;
-        }
-        if ($ndir == "ENE") {
-            return 67.5;
-        }
-        if ($ndir == "E") {
-            return 90;
-        }
-        if ($ndir == "ESE") {
-            return 112.5;
-        }
-        if ($ndir == "SE") {
-            return 135;
-        }
-        if ($ndir == "SSE") {
-            return 157.5;
-        }
-        if ($ndir == "S") {
-            return 180;
-        }
-        if ($ndir == "SSW") {
-            return 202.5;
-        }
-        if ($ndir == "SW") {
-            return 225;
-        }
-        if ($ndir == "WSW") {
-            return 247.5;
-        }
-        if ($ndir == "W") {
-            return 270;
-        }
-        if ($ndir == "WNW") {
-            return 292.5;
-        }
-        if ($ndir == "NW") {
-            return 315;
-        }
-        if ($ndir == "NNW") {
-            return 337.5;
+        if (isset($this->directions[$ndir])) {
+            return $this->directions[$ndir];
         }
         return 0;
     }
