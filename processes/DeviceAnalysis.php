@@ -140,7 +140,7 @@ class DeviceAnalysis extends DeviceProcess
         $this->device->getRow($devId);
         $ret = $this->checkPlugins($this->device, $fct);
         if ($ret) {
-            $this->updateDev($this->device, $fct);
+            $this->updateDev($fct);
         }
     }
     /**
