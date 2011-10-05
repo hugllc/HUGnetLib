@@ -263,7 +263,7 @@ class FirmwareTable extends HUGnetDBTable
     *
     * @return int -1 if $ver1 < $ver2, 0 if $ver1 == $ver2, 1 if $ver1 > $ver2
     *
-    * @SuppressWarnings(ShortVariable)
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function compareVersion($ver1, $ver2 = null)
     {

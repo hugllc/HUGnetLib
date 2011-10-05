@@ -110,8 +110,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new DevicesHistoryTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new DevicesHistoryTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -120,8 +120,8 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new DevicesHistoryTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new DevicesHistoryTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -278,13 +278,13 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     *
     * @param array $preload The data to preoload into the table
     * @param mixed $expect  The expected return
-    * @param int   $id      The ID we expect to get back
+    * @param int   $devId   The ID we expect to get back
     *
     * @return null
     *
     * @dataProvider dataInsertRow
     */
-    public function testInsertRow($preload, $expect, $id)
+    public function testInsertRow($preload, $expect, $devId)
     {
         $this->o->fromAny($preload);
         $this->o->insertRow();
@@ -642,7 +642,7 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     /**
     * test the forceTable routine
     *
-    * @param int   $id     The ID of the device to use
+    * @param int   $devId  The ID of the device to use
     * @param int   $date   The date to use
     * @param mixed $expect The expected return
     *
@@ -650,9 +650,9 @@ class DevicesHistoryTableTest extends HUGnetDBTableTestBase
     *
     * @dataProvider dataDeviceFactory
     */
-    public function testDeviceFactory($id, $date, $expect)
+    public function testDeviceFactory($devId, $date, $expect)
     {
-        $dev = &DevicesHistoryTable::deviceFactory($id, $date);
+        $dev = &DevicesHistoryTable::deviceFactory($devId, $date);
         $this->assertTrue(
             is_a($dev, "DeviceContainer"), "Not a DeviceContainer"
         );

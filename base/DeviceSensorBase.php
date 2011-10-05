@@ -312,7 +312,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     *
     * @return array of units in array("unit" => "unit") format
     *
-    * @SuppressWarnings(UnusedLocalVariable)
+    * @SuppressWarnings(PHPMD.UnusedLocalVariable)
     */
     public function getAllTypes()
     {
@@ -391,7 +391,7 @@ abstract class DeviceSensorBase extends HUGnetContainer
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function setType($value)
     {

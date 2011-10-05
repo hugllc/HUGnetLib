@@ -119,8 +119,8 @@ class GenericTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new GenericTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new GenericTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -129,8 +129,8 @@ class GenericTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new GenericTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new GenericTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -213,11 +213,11 @@ class GenericTableTest extends HUGnetDBTableTestBase
     */
     public function testForceTable($table, $tableExpect, $expect, $default)
     {
-        $o = new GenericTable();
-        $o->forceTable($table);
-        $this->assertAttributeSame($tableExpect, "sqlTable", $o, "table wrong");
-        $this->assertAttributeSame($expect, "sqlColumns", $o, "columns wrong");
-        $this->assertAttributeSame($default, "default", $o, "default wrong");
+        $obj = new GenericTable();
+        $obj->forceTable($table);
+        $this->assertAttributeSame($tableExpect, "sqlTable", $obj, "table wrong");
+        $this->assertAttributeSame($expect, "sqlColumns", $obj, "columns wrong");
+        $this->assertAttributeSame($default, "default", $obj, "default wrong");
     }
     /**
     * data provider for testCheckTables
@@ -250,9 +250,9 @@ class GenericTableTest extends HUGnetDBTableTestBase
     */
     public function testCheckTables($tables, $tableExpect)
     {
-        $o = new GenericTable();
-        $o->checkTables($tables);
-        $this->assertAttributeSame($tableExpect, "sqlTable", $o);
+        $obj = new GenericTable();
+        $obj->checkTables($tables);
+        $this->assertAttributeSame($tableExpect, "sqlTable", $obj);
     }
 
     /**
@@ -280,8 +280,8 @@ class GenericTableTest extends HUGnetDBTableTestBase
     */
     public function testGetTables($expect)
     {
-        $o = new GenericTable();
-        $ret = $o->getTables();
+        $obj = new GenericTable();
+        $ret = $obj->getTables();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -365,7 +365,7 @@ class GenericTableTest extends HUGnetDBTableTestBase
     * @param string $expect    The query created
     * @param bool   $ret       The expected return value
     * @param bool   $ret2      The expected return value of the second call
-    * @param string $id        The id column to use
+    * @param string $sqlId     The id column to use
     * @param array  $indexes   The indexes array to use
     *
     * @return null
@@ -380,10 +380,10 @@ class GenericTableTest extends HUGnetDBTableTestBase
         $expect,
         $ret,
         $ret2 = true,
-        $id = "id",
+        $sqlId = "id",
         $indexes = array()
     ) {
-        $this->table->sqlId = $id;
+        $this->table->sqlId = $sqlId;
         $this->table->sqlIndexes = $indexes;
         $r = $this->o->update($data, $where, $whereData, $keys);
         $this->assertSame($ret, $r);

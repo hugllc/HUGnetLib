@@ -115,9 +115,9 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFromArray($preload, $expect)
     {
-        $o = new HooksContainer($preload);
+        $obj = new HooksContainer($preload);
         foreach ($expect as $key => $value) {
-            $this->assertEquals($value, $o->$key, "Bad Value in key $key");
+            $this->assertEquals($value, $obj->$key, "Bad Value in key $key");
         }
     }
     /**
@@ -166,9 +166,9 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testRegisterHook($preload, $name, $obj, $expect, $ret)
     {
-        $o = new HooksContainer($preload);
-        $this->assertSame($ret, $o->registerHook($name, $obj));
-        $ret = $o->toArray();
+        $object = new HooksContainer($preload);
+        $this->assertSame($ret, $object->registerHook($name, $obj));
+        $ret = $object->toArray();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -230,8 +230,8 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testHook($preload, $name, $interface, $expect)
     {
-        $o = new HooksContainer($preload);
-        $ret = &$o->hook($name, $interface);
+        $obj = new HooksContainer($preload);
+        $ret = &$obj->hook($name, $interface);
         $this->assertInternalType("object", $ret);
         $this->assertSame($expect, $ret->toArray());
     }
@@ -273,10 +273,10 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testCall($preload, $fct, $verbose, $expect)
     {
-        $o = new HooksContainer($preload);
-        $o->verbose($verbose);
+        $obj = new HooksContainer($preload);
+        $obj->verbose($verbose);
         ob_start();
-        $o->$fct();
+        $obj->$fct();
         $ret = ob_get_contents();
         ob_end_clean();
         $this->assertSame($expect, $ret);

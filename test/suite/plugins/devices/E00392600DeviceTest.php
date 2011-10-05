@@ -331,7 +331,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id      The Device ID to pretend to be
+    * @param string $devId   The Device ID to pretend to be
     * @param int    $timeout The packet timeout to use
     * @param string $read    The read string to put in
     * @param string $write   The write string expected
@@ -341,10 +341,10 @@ class E00392600DeviceTest extends DevicePluginTestBase
     *
     * @dataProvider dataReadRTC
     */
-    public function testReadRTC($id, $timeout, $read, $write, $expect)
+    public function testReadRTC($devId, $timeout, $read, $write, $expect)
     {
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($devId);
+        $this->d->DeviceID = $devId;
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readRTC();
@@ -466,13 +466,13 @@ class E00392600DeviceTest extends DevicePluginTestBase
     */
     public function testPacketConsumer($preload, $pkt, $expect, $write)
     {
-        $d = new DeviceContainer();
+        $dev = new DeviceContainer();
         foreach ((array)$preload as $load) {
-            $d->fromArray($load);
-            $d->insertRow(true);
+            $dev->fromArray($load);
+            $dev->insertRow(true);
         }
-        $p = new PacketContainer($pkt);
-        $this->o->packetConsumer($p);
+        $packet = new PacketContainer($pkt);
+        $this->o->packetConsumer($packet);
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -556,9 +556,9 @@ class E00392600DeviceTest extends DevicePluginTestBase
             $lock->insertRow(true);
         }
         $dev = new DeviceContainer($preload);
-        $o = new TestE00392600Device($dev);
+        $obj = new TestE00392600Device($dev);
         $devO = new DeviceContainer($device);
-        $ret = $o->getMyDevLock($devO);
+        $ret = $obj->getMyDevLock($devO);
         $this->assertSame($expect, $ret, "Return Wrong");
     }
 

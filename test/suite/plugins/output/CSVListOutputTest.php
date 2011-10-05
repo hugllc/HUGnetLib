@@ -141,9 +141,9 @@ class CSVListOutputTest extends OutputPluginTestBase
     */
     public function testRow($preload, $row, $expect)
     {
-        $o = new CSVListOutput(null, $preload);
-        $o->row($row);
-        $this->assertSame($expect, $o->body());
+        $obj = new CSVListOutput(null, $preload);
+        $obj->row($row);
+        $this->assertSame($expect, $obj->body());
     }
 
     /**
@@ -188,10 +188,10 @@ class CSVListOutputTest extends OutputPluginTestBase
     */
     public function testHeader($preload, $array, $body, $expect)
     {
-        $o = new CSVListOutput(null, $preload);
-        $o->header($array);
-        $this->assertSame($body, $o->body(), "Body Wrong");
-        $this->assertAttributeSame($expect, "header", $o, "Header Wrong");
+        $obj = new CSVListOutput(null, $preload);
+        $obj->header($array);
+        $this->assertSame($body, $obj->body(), "Body Wrong");
+        $this->assertAttributeSame($expect, "header", $obj, "Header Wrong");
     }
 
     /**
@@ -220,8 +220,8 @@ class CSVListOutputTest extends OutputPluginTestBase
     */
     public function testPre($preload, $expect)
     {
-        $o = new CSVListOutput($preload);
-        $this->assertSame($expect, $o->pre());
+        $obj = new CSVListOutput($preload);
+        $this->assertSame($expect, $obj->pre());
     }
 
     /**
@@ -250,8 +250,8 @@ class CSVListOutputTest extends OutputPluginTestBase
     */
     public function testPost($preload, $expect)
     {
-        $o = new CSVListOutput($preload);
-        $this->assertSame($expect, $o->post());
+        $obj = new CSVListOutput($preload);
+        $this->assertSame($expect, $obj->post());
     }
 
 }

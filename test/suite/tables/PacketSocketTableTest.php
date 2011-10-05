@@ -114,8 +114,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new PacketSocketTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new PacketSocketTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -124,8 +124,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new PacketSocketTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new PacketSocketTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -226,8 +226,8 @@ class PacketSocketTableTest extends HUGnetDBTableTestBase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketSocketTable($preload);
-        $this->assertAttributeSame($expect, "data", $o);
+        $obj = new PacketSocketTable($preload);
+        $this->assertAttributeSame($expect, "data", $obj);
     }
 
     /**

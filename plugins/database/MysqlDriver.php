@@ -200,7 +200,7 @@ class MysqlDriver extends HUGnetDBDriver
     *
     * @return array of table names
     *
-    * @SuppressWarnings(UnusedLocalVariable)
+    * @SuppressWarnings(PHPMD.UnusedLocalVariable)
     */
     public function tables()
     {

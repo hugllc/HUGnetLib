@@ -235,7 +235,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toPktString($default = true)
     {
@@ -283,7 +283,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toArray($default = true)
     {
@@ -833,7 +833,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function setType($value = null)
     {
@@ -886,7 +886,7 @@ class PacketContainer extends HUGnetContainer implements HUGnetPacketInterface
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedLocalVariable)
+    * @SuppressWarnings(PHPMD.UnusedLocalVariable)
     */
     protected function setDate($value)
     {

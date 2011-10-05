@@ -133,7 +133,7 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PacketRouter($array, $this->device);
+        $obj = new PacketRouter($array, $this->device);
     }
     /**
     * data provider for testConstructor
@@ -192,12 +192,12 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $expect, $dataCollector)
     {
         $stmt = $this->pdo->query("DELETE FROM `datacollectors`");
-        $o = new PacketRouter($preload, $this->device);
+        $obj = new PacketRouter($preload, $this->device);
         foreach ($expect as $key => $value) {
-            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+            $this->assertSame($value, $obj->$key, "Bad Value in key $key");
         }
         // Check the configuration is set correctly
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         $stmt = $this->pdo->query("SELECT `id` FROM `datacollectors`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -492,13 +492,13 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     {
         $this->o->fromAny($preload);
         $this->o->loop = $loop;
-        $i = 0;
+        $index = 0;
         $start = time();
         do {
-            foreach ((array)$read[$i] as $group => $string) {
+            foreach ((array)$read[$index] as $group => $string) {
                 $this->socket[$group]->readString = $string;
             }
-            $i++;
+            $index++;
         } while ($this->o->route() > 0);
         foreach ($write as $group => $string) {
             $this->assertSame(
@@ -542,12 +542,12 @@ class PacketRouterTest extends PHPUnit_Framework_TestCase
     public function testPowerup($preload, $read, $write)
     {
         $this->o->fromAny($preload);
-        $i = 0;
+        $index = 0;
         do {
-            foreach ((array)$read[$i] as $group => $string) {
+            foreach ((array)$read[$index] as $group => $string) {
                 $this->socket[$group]->readString = $string;
             }
-            $i++;
+            $index++;
         } while ($this->o->powerup() > 0);
         foreach ($write as $group => $string) {
             $this->assertSame(

@@ -249,9 +249,9 @@ class SVGImagePluginTest extends ImagePluginTestBase
     */
     public function testOutput($preload, $expect)
     {
-        $c = new ImageContainer($preload);
-        $o = new SVGImagePlugin($c);
-        $ret = $o->output();
+        $cont = new ImageContainer($preload);
+        $obj = new SVGImagePlugin($cont);
+        $ret = $obj->output();
         $this->assertSame($expect, $ret);
     }
 

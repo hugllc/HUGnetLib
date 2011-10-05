@@ -117,10 +117,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $expect,
         $lock = ""
     ) {
-        $o = new HUGnetContainerTestClass();
-        $o->lock($lock);
-        $o->$attrib = $value;
-        $this->assertSame($expect, $o->$attrib);
+        $obj = new HUGnetContainerTestClass();
+        $obj->lock($lock);
+        $obj->$attrib = $value;
+        $this->assertSame($expect, $obj->$attrib);
     }
 
     /**
@@ -152,9 +152,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $value,
         $expect
     ) {
-        $o = new HUGnetContainerTestClass3();
-        $o->setFixed($attrib, $value);
-        $this->assertSame($expect, $o->$attrib);
+        $obj = new HUGnetContainerTestClass3();
+        $obj->setFixed($attrib, $value);
+        $this->assertSame($expect, $obj->$attrib);
     }
 
     /**
@@ -187,11 +187,11 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $expect,
         $lock = ""
     ) {
-        $o = new HUGnetContainerTestClass();
-        $o->lock($lock);
-        $o->clearData();
-        $o->Attrib4[$attrib] = $value;
-        $this->assertSame($expect, $o->Attrib4);
+        $obj = new HUGnetContainerTestClass();
+        $obj->lock($lock);
+        $obj->clearData();
+        $obj->Attrib4[$attrib] = $value;
+        $this->assertSame($expect, $obj->Attrib4);
 
     }
 
@@ -242,13 +242,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testRegister($obj, $var, $expect, $properties)
     {
-        $o = new HUGnetContainerTestClass();
-        $ret = $o->register($obj, $var);
+        $object = new HUGnetContainerTestClass();
+        $ret = $object->register($obj, $var);
         $this->assertSame($expect, $ret);
         if ($expect) {
             $this->assertSame(
                 $obj,
-                $this->readAttribute($o, $var)
+                $this->readAttribute($object, $var)
             );
             // This will tell us if the class is registered
             $this->assertSame(
@@ -257,7 +257,7 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
             );
         } else {
             $this->assertNull(
-                $this->readAttribute($o, $var)
+                $this->readAttribute($object, $var)
             );
         }
     }
@@ -296,10 +296,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testOutputFactory($class, $data, $expectData)
     {
-        $o = new $class();
-        $ret = &$o->outputFactory($data);
+        $obj = new $class();
+        $ret = &$obj->outputFactory($data);
         $this->assertSame("OutputContainer", get_class($ret), "Class is wrong");
-        $this->assertAttributeSame($o, "container", $ret, "Container is wrong");
+        $this->assertAttributeSame($obj, "container", $ret, "Container is wrong");
         $this->assertAttributeSame($expectData, "data", $ret, "Data is wrong");
     }
 
@@ -415,8 +415,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetProperties($class, $expect)
     {
-        $o = new $class();
-        $ret = $o->getProperties();
+        $obj = new $class();
+        $ret = $obj->getProperties();
         $this->assertSame(
             $expect,
             $ret
@@ -478,10 +478,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testUnset($name, $expect, $lock = "")
     {
-        $o = new HUGnetContainerTestClass();
-        $o->lock($lock);
-        unset($o->$name);
-        $this->assertSame($expect, $o->$name);
+        $obj = new HUGnetContainerTestClass();
+        $obj->lock($lock);
+        unset($obj->$name);
+        $this->assertSame($expect, $obj->$name);
     }
     /**
     * data provider for testDeviceID
@@ -522,8 +522,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testIsset($name, $expect)
     {
-        $o = new HUGnetContainerTestClass();
-        $ret = isset($o->$name);
+        $obj = new HUGnetContainerTestClass();
+        $ret = isset($obj->$name);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -605,13 +605,13 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $expect,
         $lock
     ) {
-        $o = new HUGnetContainerTestClass($preload);
-        $o->lock($lock);
-        $o->clearData();
-        $obj = &$o;
+        $obj = new HUGnetContainerTestClass($preload);
+        $obj->lock($lock);
+        $obj->clearData();
+        $object = &$obj;
         $this->assertSame(
             $expect,
-            $o->toArray()
+            $obj->toArray()
         );
     }
     /**
@@ -650,11 +650,11 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $lock,
         $expect
     ) {
-        $o = new HUGnetContainerTestClass();
-        $o->$attrib = $value;
-        $o->lock($lock);
-        $o->setDefault($attrib);
-        $this->assertSame($expect, $o->$attrib, "$expect != ".$o->$attrib);
+        $obj = new HUGnetContainerTestClass();
+        $obj->$attrib = $value;
+        $obj->lock($lock);
+        $obj->setDefault($attrib);
+        $this->assertSame($expect, $obj->$attrib, "$expect != ".$obj->$attrib);
     }
     /**
     * data provider for testDeviceID
@@ -693,9 +693,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $lock,
         $expect
     ) {
-        $o = new HUGnetContainerTestClass();
-        $o->lock($lock);
-        $this->assertSame($expect, $o->locked());
+        $obj = new HUGnetContainerTestClass();
+        $obj->lock($lock);
+        $this->assertSame($expect, $obj->locked());
     }
     /**
     * data provider for testDeviceID
@@ -739,10 +739,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $unlock,
         $expect
     ) {
-        $o = new HUGnetContainerTestClass("");
-        $o->lock($lock);
-        $o->unlock($unlock);
-        $this->assertSame($expect, $o->locked());
+        $obj = new HUGnetContainerTestClass("");
+        $obj->lock($lock);
+        $obj->unlock($unlock);
+        $this->assertSame($expect, $obj->locked());
     }
     /**
     * data provider for testDeviceID
@@ -786,9 +786,9 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
         $check,
         $expect
     ) {
-        $o = new HUGnetContainerTestClass("");
-        $o->lock($lock);
-        $ret = $o->locked($check);
+        $obj = new HUGnetContainerTestClass("");
+        $obj->lock($lock);
+        $ret = $obj->locked($check);
         $this->assertSame($expect, $ret);
     }
 
@@ -938,8 +938,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $class, $expect, $default = true)
     {
-        $o = new $class($preload);
-        $ret = $o->toArray($default);
+        $obj = new $class($preload);
+        $ret = $obj->toArray($default);
         $this->assertSame(
             $expect,
             $ret
@@ -1009,12 +1009,12 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFromArray($array, $expect, $expectExtra)
     {
-        $o = new HUGnetContainerTestClass();
-        $o->fromArray($array);
+        $obj = new HUGnetContainerTestClass();
+        $obj->fromArray($array);
         foreach ((array)$expect as $key => $val) {
             $this->assertSame(
                 $val,
-                $o->$key,
+                $obj->$key,
                 "$key is wrong"
             );
         }
@@ -1103,8 +1103,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToString($preload, $expect)
     {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->toString();
+        $obj = new HUGnetContainerTestClass($preload);
+        $ret = $obj->toString();
         $this->assertSame(
             $expect,
             $ret
@@ -1167,8 +1167,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testHash($preload, $expect)
     {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->hash();
+        $obj = new HUGnetContainerTestClass($preload);
+        $ret = $obj->hash();
         $this->assertSame(
             $expect,
             $ret
@@ -1214,8 +1214,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testIsEmpty($preload, $expect)
     {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->isEmpty();
+        $obj = new HUGnetContainerTestClass($preload);
+        $ret = $obj->isEmpty();
         $this->assertSame(
             $expect,
             $ret
@@ -1233,10 +1233,10 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testOverloadToString($preload, $expect)
     {
-        $o = new HUGnetContainerTestClass($preload);
+        $obj = new HUGnetContainerTestClass($preload);
         $this->assertSame(
             $expect,
-            (string)$o
+            (string)$obj
         );
     }
     /**
@@ -1323,11 +1323,11 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testFromString($string, $expect)
     {
-        $o = new HUGnetContainerTestClass();
-        $o->fromString($string);
+        $obj = new HUGnetContainerTestClass();
+        $obj->fromString($string);
         $this->assertSame(
             $expect,
-            $o->toArray()
+            $obj->toArray()
         );
     }
 
@@ -1505,8 +1505,8 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToZip($preload, $expect)
     {
-        $o = new HUGnetContainerTestClass($preload);
-        $ret = $o->toZip();
+        $obj = new HUGnetContainerTestClass($preload);
+        $ret = $obj->toZip();
         $this->assertSame(
             $expect,
             $ret
@@ -1630,14 +1630,14 @@ class HUGnetContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructorData($data, $expect)
     {
-        $o = new HUGnetContainerTestClass($data);
+        $obj = new HUGnetContainerTestClass($data);
         $this->assertSame(
             $expect,
-            $o->toArray()
+            $obj->toArray()
         );
         $this->assertSame(
             "ConfigContainer",
-            get_class($this->readAttribute($o, "myConfig"))
+            get_class($this->readAttribute($obj, "myConfig"))
         );
     }
 

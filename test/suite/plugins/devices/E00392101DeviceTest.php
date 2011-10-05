@@ -1259,7 +1259,7 @@ S9030000FC",
     *
     * @param array  $firmware Firmware to load into the database
     * @param array  $device   Parameters to load into the device
-    * @param string $id       The Device ID to pretend to be
+    * @param string $devId       The Device ID to pretend to be
     * @param string $string   The string for the dummy device to return
     * @param string $read     The read string to put in
     * @param string $write    The write string expected
@@ -1270,7 +1270,7 @@ S9030000FC",
     * @dataProvider dataReadSetup
     */
     public function testReadSetup(
-        $firmware, $device, $id, $string, $read, $write, $expect
+        $firmware, $device, $devId, $string, $read, $write, $expect
     ) {
         foreach ((array)$firmware as $firm) {
             $this->firmware->fromAny($firm);
@@ -1279,8 +1279,8 @@ S9030000FC",
         foreach ((array)$device as $key => $val) {
             $this->d->$key = $val;
         }
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($devId);
+        $this->d->DeviceID = $devId;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");

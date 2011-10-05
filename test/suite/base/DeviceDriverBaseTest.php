@@ -175,7 +175,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id         The Device ID to pretend to be
+    * @param string $devId      The Device ID to pretend to be
     * @param string $string     The string for the dummy device to return
     * @param string $read       The read string to put in
     * @param string $write      The write string expected
@@ -189,9 +189,9 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * @dataProvider dataReadSetup
     */
     public function testReadSetup(
-        $id, $string, $read, $write, $expect, $timeout, $LastConfig, $configFail
+        $devId, $string, $read, $write, $expect, $timeout, $LastConfig, $configFail
     ) {
-        $this->d->id = hexdec($id);
+        $this->d->id = hexdec($devId);
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();
@@ -213,7 +213,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id     The Device ID to pretend to be
+    * @param string $devId  The Device ID to pretend to be
     * @param string $string The string for the dummy device to return
     * @param string $read   The read string to put in
     * @param string $write  The write string expected
@@ -223,10 +223,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadConfig($id, $string, $read, $write, $expect)
+    public function testReadConfig($devId, $string, $read, $write, $expect)
     {
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($devId);
+        $this->d->DeviceID = $devId;
         $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
         $ret = $this->o->readConfig();
@@ -424,7 +424,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id         The Device ID to pretend to be
+    * @param string $devId      The Device ID to pretend to be
     * @param string $string     The string for the dummy device to return
     * @param string $read       The read string to put in
     * @param string $write      The write string expected
@@ -440,13 +440,13 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     * @dataProvider dataReadData
     */
     public function testReadData(
-        $id, $string, $read, $write, $dataIndex,
+        $devId, $string, $read, $write, $dataIndex,
         $expect, $DriverInfo, $LastPoll, $PollFail, $row
     ) {
         $this->pdo = &$this->config->servers->getPDO();
         $this->pdo->query("DROP TABLE IF EXISTS `rawHistory`");
 
-        $this->d->id = $id;
+        $this->d->id = $devId;
         $this->d->DriverInfo = $DriverInfo;
         $this->d->params->DriverInfo["LastPoll"] = $LastPoll;
         $this->d->params->DriverInfo["DataIndex"] = $dataIndex;
@@ -468,7 +468,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
             "PollFail wrong"
         );
         if ($expect) {
-            $stmt = $this->pdo->query("SELECT * FROM `rawHistory` WHERE id=".$id);
+            $stmt = $this->pdo->query("SELECT * FROM `rawHistory` WHERE id=".$devId);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $rht = new RawHistoryTable($rows[0]);
             $raw = $rht->toArray();
@@ -522,7 +522,7 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id     The Device ID to pretend to be
+    * @param string $devId  The Device ID to pretend to be
     * @param string $read   The read string to put in
     * @param string $write  The write string expected
     * @param string $expect The expected return
@@ -531,10 +531,10 @@ class DeviceDriverBaseTest extends PHPUnit_Framework_TestCase
     *
     * @dataProvider dataReadCalibration
     */
-    public function testReadCalibration($id, $read, $write, $expect)
+    public function testReadCalibration($devId, $read, $write, $expect)
     {
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($devId);
+        $this->d->DeviceID = $devId;
         $this->d->DriverInfo["PacketTimeout"] = 1;
         $this->socket->readString = $read;
         $ret = $this->o->readCalibration();

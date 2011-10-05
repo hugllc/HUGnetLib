@@ -184,10 +184,10 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PacketSocket($preload);
-        $this->assertThat($o->senderID, $this->greaterThan(0));
-        $o->senderID = 0;
-        $data = $this->readAttribute($o, "data");
+        $obj = new PacketSocket($preload);
+        $this->assertThat($obj->senderID, $this->greaterThan(0));
+        $obj->senderID = 0;
+        $data = $this->readAttribute($obj, "data");
         if (!isset($expect["DeviceID"])) {
             $this->assertTrue(PacketContainer::checkDeviceID($data["DeviceID"]));
             unset($data["DeviceID"]);

@@ -60,7 +60,7 @@ interface UnitsInterface
     *
     * @return mixed The value returned
     *
-    * @SuppressWarnings(ShortVariable)
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function convert(&$data, $from, $to);
     /**

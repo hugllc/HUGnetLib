@@ -138,9 +138,9 @@ class PNGImagePluginTest extends ImagePluginTestBase
     */
     public function testOutput($preload, $expect)
     {
-        $c = new ImageContainer($preload);
-        $o = new PNGImagePlugin($c);
-        $ret = $o->output();
+        $cont = new ImageContainer($preload);
+        $obj = new PNGImagePlugin($cont);
+        $ret = $obj->output();
         $image = imagecreatefromstring($expect);
         $name = tempnam(sys_get_temp_dir(), "PNGImagePluginTest");
         imagepng($image, $name);

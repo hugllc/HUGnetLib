@@ -161,9 +161,9 @@ class HTMLOutputTest extends OutputPluginTestBase
     */
     public function testRow($params, $preload, $row, $expect)
     {
-        $o = new HTMLOutput($params, $preload);
-        $o->row($row);
-        $this->assertSame($expect, $o->body());
+        $obj = new HTMLOutput($params, $preload);
+        $obj->row($row);
+        $this->assertSame($expect, $obj->body());
     }
 
     /**
@@ -196,9 +196,9 @@ class HTMLOutputTest extends OutputPluginTestBase
     */
     public function testHeader($params, $preload, $array, $expect)
     {
-        $o = new HTMLOutput($params, $preload);
-        $o->header($array);
-        $this->assertSame($expect, $o->body());
+        $obj = new HTMLOutput($params, $preload);
+        $obj->header($array);
+        $this->assertSame($expect, $obj->body());
     }
 
     /**
@@ -231,8 +231,8 @@ class HTMLOutputTest extends OutputPluginTestBase
     */
     public function testPre($preload, $expect)
     {
-        $o = new HTMLOutput($preload);
-        $this->assertSame($expect, $o->pre());
+        $obj = new HTMLOutput($preload);
+        $this->assertSame($expect, $obj->pre());
     }
 
     /**
@@ -261,8 +261,8 @@ class HTMLOutputTest extends OutputPluginTestBase
     */
     public function testPost($preload, $expect)
     {
-        $o = new HTMLOutput($preload);
-        $this->assertSame($expect, $o->post());
+        $obj = new HTMLOutput($preload);
+        $this->assertSame($expect, $obj->post());
     }
 
 }

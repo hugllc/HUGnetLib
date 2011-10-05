@@ -121,7 +121,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new ProcessBaseClassTest(array(), $this->devArray);
+        $obj = new ProcessBaseClassTest(array(), $this->devArray);
     }
     /**
     * Tests for exceptions
@@ -133,7 +133,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $config = array(
         );
         $this->config->forceConfig($config);
-        $o = new ProcessBaseClassTest(array("GatewayKey" => "all"), $this->devArray);
+        $obj = new ProcessBaseClassTest(array("GatewayKey" => "all"), $this->devArray);
     }
     /**
     * Tests for exceptions
@@ -327,25 +327,25 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
             $dc = new DataCollectorsTable($dcLoad);
             $dc->insertRow(true);
         }
-        $o = new ProcessBaseClassTest($preload, $device);
-        $ret = $this->readAttribute($o, "data");
+        $obj = new ProcessBaseClassTest($preload, $device);
+        $ret = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $ret, "Data is wrong");
         // Check the configuration is set correctly
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame(
             "ConfigContainer",
             get_class($config),
             "Config wrong class"
         );
         // Check the configuration is set correctly
-        $device = $this->readAttribute($o, "device");
+        $device = $this->readAttribute($obj, "device");
         $this->assertSame(
             "DeviceContainer",
             get_class($device),
             "Device wrong class"
         );
         // Check the configuration is set correctly
-        $myDevice = $this->readAttribute($o, "myDevice");
+        $myDevice = $this->readAttribute($obj, "myDevice");
         $this->assertSame(
             "DeviceContainer",
             get_class($myDevice),

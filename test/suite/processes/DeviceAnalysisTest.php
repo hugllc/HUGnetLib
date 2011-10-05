@@ -124,7 +124,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceAnalysis(array(), $this->device);
+        $obj = new DeviceAnalysis(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -174,14 +174,14 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceAnalysis($preload, $this->device);
-        $ret = $this->readAttribute($o, "data");
+        $obj = new DeviceAnalysis($preload, $this->device);
+        $ret = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the configuration is set correctly
-        $device = $this->readAttribute($o, "device");
+        $device = $this->readAttribute($obj, "device");
         $this->assertSame("DeviceContainer", get_class($device));
     }
 
@@ -385,9 +385,9 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
             $d->fromArray($load);
             $d->insertRow(true);
         }
-        $o = new DeviceAnalysis($preload, $this->device);
-        $o->loop = $loop;
-        $o->main();
+        $obj = new DeviceAnalysis($preload, $this->device);
+        $obj->loop = $loop;
+        $obj->main();
         foreach ((array)$devs as $load) {
             $d->clearData();
             $d->getRow($load["id"]);
@@ -398,7 +398,7 @@ class DeviceAnalysisTest extends PHPUnit_Framework_TestCase
                 );
             }
         }
-        $plug = $this->readAttribute($o, "active");
+        $plug = $this->readAttribute($obj, "active");
         foreach (array_keys((array)$plug) as $k) {
             // If the return type is int then array_search found the item
             $this->assertInternalType(

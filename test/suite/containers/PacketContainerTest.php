@@ -325,20 +325,20 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect, $sock)
     {
-        $o = new PacketContainer($preload);
-        $ret = $this->readAttribute($o, "data");
+        $obj = new PacketContainer($preload);
+        $ret = $this->readAttribute($obj, "data");
         $this->checkDateTime($ret, false);
         // Check to make sure the data var is set correctly
         //$this->assertEquals($expect, $ret);
         // Check the configuration is set correctly
         foreach ($expect as $key => $value) {
-            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+            $this->assertSame($value, $obj->$key, "Bad Value in key $key");
         }
 
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the socket is set correctly
-        $socket = $this->readAttribute($o, "mySocket");
+        $socket = $this->readAttribute($obj, "mySocket");
         $this->assertSame($sock, is_object($socket));
     }
     /**
@@ -855,10 +855,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testRecv($preload, $string, $data, $expect)
     {
-        $o = new PacketContainer($preload);
-        $ret = $o->recv($string);
+        $obj = new PacketContainer($preload);
+        $ret = $obj->recv($string);
         $this->assertSame($expect, $ret, "recv returned the wrong value");
-        $array = $o->toArray();
+        $array = $obj->toArray();
         $this->checkDateTime($array, false);
         $this->assertSame($data, $array, "The data returned is wrong");
     }
@@ -922,8 +922,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testUnsolicited($preload, $expect)
     {
-        $o = new PacketContainer($preload);
-        $ret = $o->unsolicited();
+        $obj = new PacketContainer($preload);
+        $ret = $obj->unsolicited();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -965,11 +965,11 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testReplyTime($preload, $reply, $expect)
     {
-        $o = new PacketContainer($preload);
+        $obj = new PacketContainer($preload);
         if (!is_null($reply)) {
-            $o->Reply = new PacketContainer($reply);
+            $obj->Reply = new PacketContainer($reply);
         }
-        $ret = $o->replyTime();
+        $ret = $obj->replyTime();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -1039,8 +1039,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testToMe($preload, $myID, $expect)
     {
         $this->config->sockets->forceDeviceID($myID);
-        $o = new PacketContainer($preload);
-        $ret = $o->toMe();
+        $obj = new PacketContainer($preload);
+        $ret = $obj->toMe();
         $this->assertSame($expect, $ret);
     }
     /**
@@ -1340,10 +1340,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->socket[$group]->readString = $readString;
 
-        $o = new PacketContainer($preload);
-        $o->send();
+        $obj = new PacketContainer($preload);
+        $obj->send();
         $this->checkTestSend(
-            $o,
+            $obj,
             $preload,
             $readString,
             $writeString,
@@ -1385,8 +1385,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testIsEmpty($preload, $expect)
     {
-        $o = new PacketContainer($preload);
-        $ret = $o->isEmpty();
+        $obj = new PacketContainer($preload);
+        $ret = $obj->isEmpty();
         $this->assertSame(
             $expect,
             $ret
@@ -1672,10 +1672,10 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
         $group
     ) {
         $this->socket["default"]->readString = $readString;
-        $o = new PacketContainer($preload);
-        $o->ping("", $find);
+        $obj = new PacketContainer($preload);
+        $obj->ping("", $find);
         $this->checkTestSend(
-            $o, $preload, $readString, $writeString, $expect, $group
+            $obj, $preload, $readString, $writeString, $expect, $group
         );
     }
 
@@ -1752,12 +1752,12 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testMonitor($preload, $readString, $expect)
     {
         $this->socket["default"]->readString = $readString;
-        $o = PacketContainer::monitor($preload);
-        if (is_object($o)) {
-            $ret = $o->toArray();
+        $obj = PacketContainer::monitor($preload);
+        if (is_object($obj)) {
+            $ret = $obj->toArray();
             $this->checkDateTime($ret);
         } else {
-            $ret = $o;
+            $ret = $obj;
         }
         $this->assertSame($expect, $ret);
     }
@@ -1873,8 +1873,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testMyReply($preload, $reply, $expect)
     {
         $this->o->fromAny($preload);
-        $o = new PacketContainer($reply);
-        $this->assertSame($expect, $this->o->myReply($o));
+        $obj = new PacketContainer($reply);
+        $this->assertSame($expect, $this->o->myReply($obj));
     }
 
     /**
@@ -1921,8 +1921,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testReply($preload, $replyString, $writeString, $expect)
     {
-        $o = new PacketContainer($preload);
-        $ret = $o->reply($replyString);
+        $obj = new PacketContainer($preload);
+        $ret = $obj->reply($replyString);
         $this->assertSame($expect, $ret);
         $this->assertSame($writeString, $this->socket["default"]->writeString);
     }
@@ -1983,8 +1983,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     public function testSendBadSocket($preload, $readString, $writeString, $expect)
     {
         $this->socket["default"] = null;
-        $o = new PacketContainer($preload);
-        $ret = $o->send();
+        $obj = new PacketContainer($preload);
+        $ret = $obj->send();
         $this->assertFalse($ret);
     }
 
@@ -1992,7 +1992,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param object &$o          The object to check
+    * @param object &$obj        The object to check
     * @param array  $preload     The value to preload
     * @param string $readString  This is the string that will be returned from
     *                            the socket
@@ -2006,7 +2006,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     * @dataProvider dataSend
     */
     public function checkTestSend(
-        &$o,
+        &$obj,
         $preload,
         $readString,
         $writeString,
@@ -2015,8 +2015,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     ) {
         if (is_array($expect)) {
             // First make sure we got an object back.
-            $this->assertInternalType("object", $o, "Type wrong");
-            $ret = $o->toArray();
+            $this->assertInternalType("object", $obj, "Type wrong");
+            $ret = $obj->toArray();
             $this->checkDateTime($ret);
             $this->assertSame($expect, $ret, "Incorrect Date");
             $this->assertSame(
@@ -2025,7 +2025,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                 "Write string wrong"
             );
         } else {
-            $this->assertFalse($o);
+            $this->assertFalse($obj);
         }
     }
     /**

@@ -263,7 +263,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
     *
     * @return mixed The value of the attribute
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getPeriod(
         $start,

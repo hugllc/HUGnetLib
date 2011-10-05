@@ -60,7 +60,7 @@ interface DeviceSensorInterface
     *
     * @return float The direction in degrees
     *
-    * @SuppressWarnings(ShortVariable)
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function getUnits($A, $deltaT = 0, &$prev = null, &$data = array());
     /**
@@ -73,7 +73,7 @@ interface DeviceSensorInterface
     *
     * @return mixed The value in whatever the units are in the sensor
     *
-    * @SuppressWarnings(ShortVariable)
+    * @SuppressWarnings(PHPMD.ShortVariable)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null);
     /**

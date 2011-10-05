@@ -53,6 +53,8 @@ require_once 'VirtualSensorPluginTestBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
 {
@@ -270,7 +272,7 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
     * @param array $preload The data to preload into the class
     * @param int   $A       Output of the A to D converter
     * @param float $deltaT  The time delta in seconds between this record
-    * @param mixed $data    The data for the sensor to work with 
+    * @param mixed $data    The data for the sensor to work with
     * @param mixed $expect  The return data to expect
     *
     * @return null

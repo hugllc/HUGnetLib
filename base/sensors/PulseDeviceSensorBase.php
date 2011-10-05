@@ -111,7 +111,7 @@ abstract class PulseDeviceSensorBase extends DeviceSensorBase
     *
     * @return float
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     function liquidFlowMeter($val, $deltaT=null)
     {

@@ -227,13 +227,13 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     public function testConstructor(
         $preload, $expect, $servers, $sockets, $hooks, $plugins
     ) {
-        $o = new ConfigContainer($preload);
-        $ret = $o->toArray(false);
+        $obj = new ConfigContainer($preload);
+        $ret = $obj->toArray(false);
         $this->assertSame($expect, $ret, "toArray wrong");
-        $this->assertSame($servers, get_class($o->servers));
-        $this->assertSame($sockets, get_class($o->sockets));
-        $this->assertSame($hooks, get_class($o->hooks));
-        $this->assertSame($plugins, get_class($o->plugins));
+        $this->assertSame($servers, get_class($obj->servers));
+        $this->assertSame($sockets, get_class($obj->sockets));
+        $this->assertSame($hooks, get_class($obj->hooks));
+        $this->assertSame($plugins, get_class($obj->plugins));
     }
 
     /**
@@ -290,12 +290,12 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testServers()
     {
-        $o = new ConfigContainer();
-        $servers = &$o->dbServers();
+        $obj = new ConfigContainer();
+        $servers = &$obj->dbServers();
         $this->assertAttributeSame(
             $servers,
             "servers",
-            $o
+            $obj
         );
         $this->assertSame("DBServersContainer", get_class($servers));
     }
@@ -326,11 +326,11 @@ class ConfigContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testVerbose($val, $expect)
     {
-        $o = new ConfigContainer();
-        $o->verbose($val);
-        $this->assertAttributeSame($expect, "verbose", $o);
-        $this->assertAttributeSame($expect, "verbose", $o->sockets);
-        $this->assertAttributeSame($expect, "verbose", $o->servers);
+        $obj = new ConfigContainer();
+        $obj->verbose($val);
+        $this->assertAttributeSame($expect, "verbose", $obj);
+        $this->assertAttributeSame($expect, "verbose", $obj->sockets);
+        $this->assertAttributeSame($expect, "verbose", $obj->servers);
     }
 
 }

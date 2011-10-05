@@ -168,11 +168,11 @@ class MysqlDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testErrorHandler()
     {
-        $o = new MysqlDriverTestStub($this->table, "default");
+        $obj = new MysqlDriverTestStub($this->table, "default");
         $config = &ConfigContainer::singleton();
         $config->servers->connect($this->table->group);
         $this->assertTrue($config->servers->connected($this->table->group));
-        $o->errorHandler(
+        $obj->errorHandler(
             array(
                 "HY000",
                 2006,

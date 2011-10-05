@@ -150,9 +150,9 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new GatewaySocket($preload);
+        $obj = new GatewaySocket($preload);
         foreach ($expect as $key => $value) {
-            $this->assertSame($value, $o->$key, "$key is wrong");
+            $this->assertSame($value, $obj->$key, "$key is wrong");
         }
 
     }
@@ -501,16 +501,16 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     /**
      * Tests gateway::find()
      *
-     * @param array $IP     The IP address to test
+     * @param array $IPaddr The IP address to test
      * @param array $expect The return value to expect
      *
      * @return null
      *
      * @dataProvider dataEncodeIP().
      */
-    public function testEncodeIP($IP, $expect)
+    public function testEncodeIP($IPaddr, $expect)
     {
-        $ret = $this->o->encodeIP($IP);
+        $ret = $this->o->encodeIP($IPaddr);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -541,16 +541,16 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     /**
      * Tests gateway::find()
      *
-     * @param array $IP     The IP address to test
+     * @param array $IPaddr The IP address to test
      * @param array $expect The return value to expect
      *
      * @return null
      *
      * @dataProvider dataDecodeIP().
      */
-    public function testDecodeIP($IP, $expect)
+    public function testDecodeIP($IPaddr, $expect)
     {
-        $ret = $this->o->decodeIP($IP);
+        $ret = $this->o->decodeIP($IPaddr);
         $this->assertSame($expect, $ret);
     }
     /**

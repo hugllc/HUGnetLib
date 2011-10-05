@@ -627,18 +627,18 @@ class E00392606DeviceTest extends DevicePluginTestBase
     */
     public function testPacketConsumer($preload, $dev, $pkt, $expect, $write)
     {
-        $d = new DeviceContainer();
+        $device = new DeviceContainer();
         foreach ((array)$preload as $load) {
-            $d->fromArray($load);
-            $d->insertRow(true);
+            $device->fromArray($load);
+            $device->insertRow(true);
         }
-        $d->fromAny($dev);
-        $d->insertRow(true);
-        $p = new PacketContainer($pkt);
-        $o = new TestE00392606Device($d);
+        $device->fromAny($dev);
+        $device->insertRow(true);
+        $packet = new PacketContainer($pkt);
+        $obj = new TestE00392606Device($device);
 
-        $o->packetConsumer($p);
-        $d->updateRow();
+        $obj->packetConsumer($packet);
+        $device->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows, "Devices Wrong");
@@ -989,8 +989,8 @@ class E00392606DeviceTest extends DevicePluginTestBase
         $dev->clearData();
         $dev->fromAny($device);
         $this->socket->readString = $read;
-        $o = new TestE00392606Device($dev);
-        $ret = $o->readSetup();
+        $obj = new TestE00392606Device($dev);
+        $ret = $obj->readSetup();
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
         $this->assertSame($string, $dev->RawSetup, "Wrong Setup String");
         $this->assertSame($expect, $ret, "Wrong return value");
@@ -1824,23 +1824,23 @@ class E00392606DeviceTest extends DevicePluginTestBase
     public function testPacketConsumerLocking(
         $preload, $locks, $dev, $pkt, $expect, $write
     ) {
-        $d = new DeviceContainer();
+        $device = new DeviceContainer();
         foreach ((array)$preload as $load) {
-            $d->fromArray($load);
-            $d->insertRow(true);
+            $device->fromArray($load);
+            $device->insertRow(true);
         }
-        $l = new LockTable();
+        $lock = new LockTable();
         foreach ((array)$locks as $load) {
-            $l->fromArray($load);
-            $l->insertRow(true);
+            $lock->fromArray($load);
+            $lock->insertRow(true);
         }
-        $d->fromAny($dev);
-        $d->insertRow(true);
-        $p = new PacketContainer($pkt);
-        $o = new TestE00392606Device($d);
+        $device->fromAny($dev);
+        $device->insertRow(true);
+        $packet = new PacketContainer($pkt);
+        $obj = new TestE00392606Device($device);
 
-        $o->packetConsumer($p);
-        $d->updateRow();
+        $obj->packetConsumer($packet);
+        $device->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `devices`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows, "Devices Wrong");
@@ -3070,9 +3070,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
         }
         $dev->clearData();
         $dev->fromAny($preload);
-        $o = new TestE00392606Device($dev);
+        $obj = new TestE00392606Device($dev);
         $devO = new DeviceContainer($device);
-        $out = $o->getDevLock($devO);
+        $out = $obj->getDevLock($devO);
         $this->assertTrue(is_array($out), "Return must be an array");
         $ret = array();
         foreach (array_keys($out) as $k) {
@@ -3325,9 +3325,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
         }
         $dev->clearData();
         $dev->fromAny($preload);
-        $o = new TestE00392606Device($dev);
+        $obj = new TestE00392606Device($dev);
         $devO = new DeviceContainer($device);
-        $ret = $o->setRemoteDevLock($devO, $locker, $time, $force);
+        $ret = $obj->setRemoteDevLock($devO, $locker, $time, $force);
         $this->assertSame($expect, $ret, "Return Wrong");
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");
@@ -3752,9 +3752,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
         }
         $dev->clearData();
         $dev->fromAny($preload);
-        $o = new TestE00392606Device($dev);
+        $obj = new TestE00392606Device($dev);
         $devO = new DeviceContainer($device);
-        $ret = $o->setLocalDevLock($devO, $locker, $time, $force);
+        $ret = $obj->setLocalDevLock($devO, $locker, $time, $force);
         $this->assertSame($expect, $ret, "Return Wrong");
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
     }
@@ -4052,9 +4052,9 @@ class E00392606DeviceTest extends DevicePluginTestBase
         }
         $dev->clearData();
         $dev->fromAny($preload);
-        $o = new TestE00392606Device($dev);
+        $obj = new TestE00392606Device($dev);
         $devO = new DeviceContainer($device);
-        $ret = $o->setDevLock($devO, $time, $force);
+        $ret = $obj->setDevLock($devO, $time, $force);
         $this->assertSame($expect, $ret, "Return Wrong");
         $this->assertSame($devExp, $dev->toArray(false), "Device Wrong");
         $this->assertSame($write, $this->socket->writeString, "Wrong writeString");

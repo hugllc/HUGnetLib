@@ -199,12 +199,14 @@ abstract class ImagePluginBase extends HUGnetClass implements ImagePluginInterfa
 
         $color = trim(strtoupper($color));
         if (empty($this->colors[$color])) {
-            $r = hexdec(substr($color, 1, 2));
-            $g = hexdec(substr($color, 3, 2));
-            $b = hexdec(substr($color, 5, 2));
+            $red = hexdec(substr($color, 1, 2));
+            $green = hexdec(substr($color, 3, 2));
+            $blue = hexdec(substr($color, 5, 2));
 
-            $this->colors[$color] = imagecolorallocate($this->img, $r, $g, $b);
-            $this->RGB[$color]    = array("R" => $r, "G" => $g, "B" => $b);
+            $this->colors[$color] = imagecolorallocate(
+                $this->img, $red, $green, $blue
+            );
+            $this->RGB[$color] = array("R" => $red, "G" => $green, "B" => $blue);
         }
         return $this->colors[$color];
     }

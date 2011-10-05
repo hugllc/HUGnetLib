@@ -137,7 +137,7 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new DeviceProcess(array(), $this->device);
+        $obj = new DeviceProcess(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -187,14 +187,14 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceProcess($preload, $this->device);
-        $ret = $this->readAttribute($o, "data");
+        $obj = new DeviceProcess($preload, $this->device);
+        $ret = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the configuration is set correctly
-        $device = $this->readAttribute($o, "device");
+        $device = $this->readAttribute($obj, "device");
         $this->assertSame("DeviceContainer", get_class($device));
     }
 
@@ -606,36 +606,36 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     public function testMain(
         $devs, $preload, $locks, $read, $dev, $loop, $expect, $plugins
     ) {
-        $o = new DeviceProcess($preload, $dev);
-        $o->loop = $loop;
+        $obj = new DeviceProcess($preload, $dev);
+        $obj->loop = $loop;
         $this->socket->readString = $read;
-        $d = new DeviceContainer();
+        $device = new DeviceContainer();
         foreach ((array)$devs as $load) {
-            $d->clearData();
-            $d->fromArray($load);
-            $d->insertRow(true);
+            $device->clearData();
+            $device->fromArray($load);
+            $device->insertRow(true);
         }
-        $l = new LockTable();
-        $l->purgeAll();
+        $lock = new LockTable();
+        $lock->purgeAll();
         foreach ((array)$locks as $val) {
-            $l->clearData();
-            $l->fromAny($val);
-            $l->insertRow(true);
+            $lock->clearData();
+            $lock->fromAny($val);
+            $lock->insertRow(true);
         }
-        $o->main();
+        $obj->main();
         foreach ((array)$devs as $load) {
-            $d->clearData();
-            $d->getRow($load["id"]);
-            $info = &$d->params->DriverInfo;
+            $device->clearData();
+            $device->getRow($load["id"]);
+            $info = &$device->params->DriverInfo;
             foreach ($plugins as $p) {
                 $this->assertSame(
-                    $expect[$d->id][$p],
+                    $expect[$device->id][$p],
                     $info[$p],
-                    "$p didn't run enough on ".$d->DeviceID
+                    "$p didn't run enough on ".$device->DeviceID
                 );
             }
         }
-        $plug = $this->readAttribute($o, "active");
+        $plug = $this->readAttribute($obj, "active");
         foreach (array_keys((array)$plug) as $k) {
             // If the return type is int then array_search found the item
             $this->assertInternalType(
@@ -695,12 +695,12 @@ class DeviceProcessTest extends PHPUnit_Framework_TestCase
     */
     public function testPacketConsumer($pkt, $preload, $expect)
     {
-        $p = new PacketContainer($pkt);
-        $o = new DeviceProcess($preload, $this->device);
-        $o->packetConsumer($p);
+        $packet = new PacketContainer($pkt);
+        $obj = new DeviceProcess($preload, $this->device);
+        $obj->packetConsumer($packet);
         //$this->assertAttributeSame($expect, "data", $p);
         foreach ($expect as $key => $value) {
-            $this->assertSame($value, $p->$key, "$key is wrong");
+            $this->assertSame($value, $packet->$key, "$key is wrong");
         }
     }
 }

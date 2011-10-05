@@ -175,7 +175,7 @@ abstract class VirtualSensorBase extends DeviceSensorBase
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function setType($value)
     {

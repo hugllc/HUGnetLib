@@ -58,7 +58,7 @@ require_once dirname(__FILE__)
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
- * @SuppressWarnings(UnusedPrivateField)
+ * @SuppressWarnings(PHPMD.UnusedPrivateField)
  */
 abstract class HUGnetExtensibleContainer extends HUGnetContainer
     implements HUGnetExtensibleContainerInterface

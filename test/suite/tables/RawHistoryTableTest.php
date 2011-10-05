@@ -110,8 +110,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new RawHistoryTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new RawHistoryTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -120,8 +120,8 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new RawHistoryTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new RawHistoryTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -793,19 +793,19 @@ class RawHistoryTableTest extends HUGnetDBTableTestBase
     /**
     * Tests for verbosity
     *
-    * @param array $db      The database stuff to load
-    * @param array $preload The array to preload into the class
-    * @param array $time    The time of the last packet
-    * @param array $prev    The previous record
-    * @param array $expect  The expected return
+    * @param array $database The database stuff to load
+    * @param array $preload  The array to preload into the class
+    * @param array $time     The time of the last packet
+    * @param array $prev     The previous record
+    * @param array $expect   The expected return
     *
     * @dataProvider dataToHistoryTable
     *
     * @return null
     */
-    public function testToHistoryTable($db, $preload, $time, $prev, $expect)
+    public function testToHistoryTable($database, $preload, $time, $prev, $expect)
     {
-        foreach ($db as $p) {
+        foreach ($database as $p) {
             $this->o->clearData();
             $this->o->fromAny($p);
             $this->o->insertRow();

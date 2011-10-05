@@ -68,7 +68,7 @@ class NullOutputFilterPlugin extends OutputFilterBase
     *
     * @return bool True on success, false on failure
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function execute($field)
     {

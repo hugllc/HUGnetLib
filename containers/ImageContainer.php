@@ -140,7 +140,7 @@ class ImageContainer extends HUGnetContainer
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toString($default = true)
     {

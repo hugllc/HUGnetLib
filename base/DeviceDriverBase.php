@@ -77,7 +77,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function __construct(&$obj, $string = "")
     {
@@ -461,7 +461,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toSetupString($default = true)
     {
@@ -577,7 +577,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decodeData($string, $command="", $deltaT = 0, $prev = null)
     {
@@ -611,7 +611,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toOutput($cols = null)
     {
@@ -644,7 +644,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -657,7 +657,7 @@ abstract class DeviceDriverBase extends HUGnetClass
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

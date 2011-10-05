@@ -37,8 +37,6 @@
  */
 /** This is for the base class */
 require_once CODE_BASE."base/DeviceSensorBase.php";
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,6 +50,9 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class Test2Sensor extends DeviceSensorBase
 {
@@ -102,6 +103,8 @@ class Test2Sensor extends DeviceSensorBase
     * @param mixed $prev   The previous value for this sensor
     *
     * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {

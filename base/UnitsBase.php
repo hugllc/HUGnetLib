@@ -99,7 +99,7 @@ abstract class UnitsBase extends HUGnetClass implements UnitsInterface
     *
     * @return mixed The value returned
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function convert(&$data, $to=null, $from=null)
     {

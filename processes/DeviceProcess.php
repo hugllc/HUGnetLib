@@ -239,7 +239,7 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     protected function preUpdate($fct = "main")
     {
@@ -294,8 +294,8 @@ class DeviceProcess extends ProcessBase implements PacketConsumerInterface
             if ($ret) {
                 $this->myLocks["My"][$dev->DeviceID] = $dev->DeviceID;
             } else if (!$local->isEmpty()) {
-                $id = self::stringSize(dechex($local->id), 6);
-                $this->myLocks[$id][$dev->DeviceID] = $dev->DeviceID;
+                $devId = self::stringSize(dechex($local->id), 6);
+                $this->myLocks[$devId][$dev->DeviceID] = $dev->DeviceID;
             }
         }
         return $ret;

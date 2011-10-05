@@ -52,7 +52,7 @@
    <arg line="${source}
               xml
               codesize,design,naming,unusedcode
-              --exclude old,contrib,build,Documentation
+              --exclude old,contrib,build,Documentation,test
               --reportfile ${basedir}/build/logs/pmd.xml" />
   </exec>
  </target>

@@ -116,8 +116,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new AverageTableBaseTestStub();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new AverageTableBaseTestStub();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -126,8 +126,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new AverageTableBaseTestStub();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new AverageTableBaseTestStub();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -204,8 +204,8 @@ class AverageTableBaseTest extends HUGnetDBTableTestBase
     */
     public function testConstructor($preload, $cols, $expect)
     {
-        $o = new AverageTableBaseTestStub($preload, $cols);
-        $this->assertSame($expect, $o->toArray());
+        $obj = new AverageTableBaseTestStub($preload, $cols);
+        $this->assertSame($expect, $obj->toArray());
     }
     /**
     * data provider for testDeviceID

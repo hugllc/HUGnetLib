@@ -104,7 +104,7 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toOutput($cols = null)
     {
@@ -122,7 +122,7 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toOutputHeader($cols = null)
     {
@@ -136,7 +136,7 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -149,7 +149,7 @@ class DeviceParamsContainer extends HUGnetContainer implements OutputInterface
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

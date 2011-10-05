@@ -922,7 +922,7 @@ class E00392100DeviceTest extends DevicePluginTestBase
     */
     public function testDecodeData($data, $command, $deltaT, $expect)
     {
-        $d = $this->readAttribute($this->o, "myDriver");
+        $this->readAttribute($this->o, "myDriver");
         $ret = $this->o->decodeData($data, $command, $deltaT);
         $this->assertEquals($expect, $ret, "Arrays are not the same", 0.1);
     }

@@ -138,7 +138,7 @@ class E00392600Device extends DeviceDriverBase
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toSetupString($default = true)
     {

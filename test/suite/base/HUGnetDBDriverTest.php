@@ -142,7 +142,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testConstructTableExec()
     {
-        $o = new HUGnetDBDriverTestStub($empty, $this->pdo);
+        $obj = new HUGnetDBDriverTestStub($empty, $this->pdo);
     }
     /**
     * Tests for exceptions
@@ -183,7 +183,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->myConfig = &ConfigContainer::singleton();
         $this->myConfig->verbose = $verbose;
-        $o = new HUGnetDBDriverTestStub($this->table, $this->pdo);
+        $obj = new HUGnetDBDriverTestStub($this->table, $this->pdo);
         $ret = $this->o->qpdo->getAttribute(PDO::ATTR_ERRMODE);
         $this->assertSame($expect, $ret);
     }
@@ -695,8 +695,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testDeleteWhere($where, $data, $expect, $ret)
     {
-        $r = $this->o->deleteWhere($where, $data);
-        $this->assertSame($ret, $r);
+        $res = $this->o->deleteWhere($where, $data);
+        $this->assertSame($ret, $res);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -925,8 +925,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         if (is_null($keys)) {
             $keys = $this->o->autoIncrement();
         }
-        $r = $this->o->insertOnce($data, $keys, $replace);
-        $this->assertSame($ret, $r);
+        $res = $this->o->insertOnce($data, $keys, $replace);
+        $this->assertSame($ret, $res);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -953,10 +953,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         if (is_null($keys)) {
             $keys = $this->o->autoIncrement();
         }
-        $r = $this->o->insert(array(), $keys, $replace);
-        $this->assertSame($ret, $r);
-        $r = $this->o->insert($data, $keys, $replace);
-        $this->assertSame($ret2, $r);
+        $res = $this->o->insert(array(), $keys, $replace);
+        $this->assertSame($ret, $res);
+        $res = $this->o->insert($data, $keys, $replace);
+        $this->assertSame($ret2, $res);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -982,10 +982,10 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     public function testReplace($data, $keys, $replace, $expect, $ret2, $ret)
     {
         if ($replace) {
-            $r = $this->o->replace(array(), $keys);
-            $this->assertSame($ret, $r);
-            $r = $this->o->replace($data, $keys);
-            $this->assertSame($ret, $r);
+            $res = $this->o->replace(array(), $keys);
+            $this->assertSame($ret, $res);
+            $res = $this->o->replace($data, $keys);
+            $this->assertSame($ret, $res);
             $stmt = $this->pdo->query("SELECT * FROM `myTable`");
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->assertSame($expect, $rows);
@@ -1010,8 +1010,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     public function testReplaceOnce($data, $keys, $replace, $expect, $ret)
     {
         if ($replace) {
-            $r = $this->o->replaceOnce($data, $keys);
-            $this->assertSame($ret, $r);
+            $res = $this->o->replaceOnce($data, $keys);
+            $this->assertSame($ret, $res);
             $stmt = $this->pdo->query("SELECT * FROM `myTable`");
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->assertSame($expect, $rows);
@@ -1202,7 +1202,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param string $expect    The query created
     * @param bool   $ret       The expected return value
     * @param bool   $ret2      The expected return value of the second call
-    * @param string $id        The id column to use
+    * @param string $sqlId     The id column to use
     * @param array  $indexes   The indexes array to use
     *
     * @return null
@@ -1217,13 +1217,13 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $expect,
         $ret,
         $ret2 = true,
-        $id = "id",
+        $sqlId = "id",
         $indexes = array()
     ) {
-        $this->table->sqlId = $id;
+        $this->table->sqlId = $sqlId;
         $this->table->sqlIndexes = $indexes;
-        $r = $this->o->updateOnce($data, $where, $whereData, $keys);
-        $this->assertSame($ret, $r);
+        $res = $this->o->updateOnce($data, $where, $whereData, $keys);
+        $this->assertSame($ret, $res);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -1239,7 +1239,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * @param string $expect    The query created
     * @param bool   $ret       The expected return value
     * @param bool   $ret2      The expected return value of the second call
-    * @param string $id        The id column to use
+    * @param string $sqlId     The id column to use
     * @param array  $indexes   The indexes array to use
     *
     * @return null
@@ -1254,15 +1254,15 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $expect,
         $ret,
         $ret2 = true,
-        $id = "id",
+        $sqlId = "id",
         $indexes = array()
     ) {
-        $this->table->sqlId = $id;
+        $this->table->sqlId = $sqlId;
         $this->table->sqlIndexes = $indexes;
-        $r = $this->o->update(array(), $where, $whereData, $keys);
-        $this->assertSame($ret, $r);
-        $r = $this->o->update($data);
-        $this->assertSame($ret2, $r);
+        $res = $this->o->update(array(), $where, $whereData, $keys);
+        $this->assertSame($ret, $res);
+        $res = $this->o->update($data);
+        $this->assertSame($ret2, $res);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -1492,8 +1492,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         foreach ((array)$setup as $key => $value) {
             $this->table->$key = $value;
         }
-        $r = $this->o->selectWhere($where, $whereData, $keys);
-        $this->assertSame($ret, $r);
+        $res = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $res);
         // This is necessary because the other methods return null, while FETCH_ASSOC
         // returns an array
         if (is_null($expect)) {
@@ -1527,8 +1527,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         foreach ((array)$setup as $key => $value) {
             $this->table->$key = $value;
         }
-        $r = $this->o->selectWhere($where, $whereData, $keys);
-        $this->assertSame($ret, $r);
+        $res = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $res);
         $ret = array();
         $res = $this->o->fetchAll();
         foreach ((array)$res as $row) {
@@ -1563,8 +1563,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         foreach ((array)$setup as $key => $value) {
             $this->table->$key = $value;
         }
-        $r = $this->o->selectWhere($where, $whereData, $keys);
-        $this->assertSame($ret, $r);
+        $res = $this->o->selectWhere($where, $whereData, $keys);
+        $this->assertSame($ret, $res);
         $rows = array();
         foreach ((array)$expect as $e) {
             $ret = $this->o->fetchInto();
@@ -1643,8 +1643,8 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $column,
         $expect
     ) {
-        $r = $this->o->countWhere($where, $whereData, $column);
-        $this->assertSame($expect, $r);
+        $res = $this->o->countWhere($where, $whereData, $column);
+        $this->assertSame($expect, $res);
     }
     /**
     * Data provider for testPrepareExecute

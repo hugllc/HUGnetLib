@@ -122,9 +122,9 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($config, $expect, $expectCfg)
     {
-        $o = new DeviceProcessPluginBaseTestStub($config, $this->p);
+        $obj = new DeviceProcessPluginBaseTestStub($config, $this->p);
         foreach ($expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o, "$key wrong");
+            $this->assertAttributeSame($value, $key, $obj, "$key wrong");
         }
         $this->assertSame(
             $expectCfg,
@@ -155,8 +155,8 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testReady($dev, $expect)
     {
-        $d = new DeviceContainer($dev);
-        $this->assertSame($expect, $this->o->ready($d));
+        $device = new DeviceContainer($dev);
+        $this->assertSame($expect, $this->o->ready($device));
     }
     /**
     * test the loadable routine.
@@ -165,8 +165,8 @@ class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testPre()
     {
-        $d = new DeviceContainer();
-        $this->assertTrue($this->o->pre($d));
+        $dev = new DeviceContainer();
+        $this->assertTrue($this->o->pre($dev));
     }
     /**
     * test the loadable routine.

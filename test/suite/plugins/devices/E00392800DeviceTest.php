@@ -319,7 +319,7 @@ class E00392800DeviceTest extends DevicePluginTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param string $id      The Device ID to pretend to be
+    * @param string $devId   The Device ID to pretend to be
     * @param int    $timeout The packet timeout to use
     * @param string $string  The string for the dummy device to return
     * @param string $read    The read string to put in
@@ -330,10 +330,10 @@ class E00392800DeviceTest extends DevicePluginTestBase
     *
     * @dataProvider dataReadSetup
     */
-    public function testReadSetup($id, $timeout, $string, $read, $write, $expect)
+    public function testReadSetup($devId, $timeout, $string, $read, $write, $expect)
     {
-        $this->d->id = hexdec($id);
-        $this->d->DeviceID = $id;
+        $this->d->id = hexdec($devId);
+        $this->d->DeviceID = $devId;
         $this->d->DriverInfo["PacketTimeout"] = $timeout;
         $this->socket->readString = $read;
         $ret = $this->o->readSetup();

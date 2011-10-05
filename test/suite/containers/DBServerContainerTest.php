@@ -145,8 +145,8 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetDSN($preload, $expect)
     {
-        $o = new DBServerContainer($preload);
-        $ret = $o->getDSN();
+        $obj = new DBServerContainer($preload);
+        $ret = $obj->getDSN();
         $this->assertSame($expect, $ret);
     }
 
@@ -180,12 +180,12 @@ class DBServerContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testPostConnect($preload, $expect)
     {
-        $o = new DBServerContainer($preload);
+        $obj = new DBServerContainer($preload);
         $this->files[] = $preload["file"];
         $f = fopen($preload["file"], "w");
         fwrite($f, "Hello");
         fclose($f);
-        $ret = $o->postConnect();
+        $ret = $obj->postConnect();
         $perms = fileperms($preload["file"]) & 0777;
         $this->assertSame($expect, $perms);
     }

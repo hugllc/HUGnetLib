@@ -53,6 +53,8 @@ require_once CODE_BASE.'containers/ImageContainer.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
 {
@@ -134,9 +136,9 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     public function testConstructor($preload, $data, $font)
     {
         $img = new ImageContainer($preload);
-        $o = new ImagePluginBaseTestClass($img, $data);
-        $this->assertAttributeSame($img, "image", $o, "Image wrong");
-        $this->assertAttributeSame($font, "_fontFile", $o, "Font wrong");
+        $obj = new ImagePluginBaseTestClass($img, $data);
+        $this->assertAttributeSame($img, "image", $obj, "Image wrong");
+        $this->assertAttributeSame($font, "_fontFile", $obj, "Font wrong");
     }
     /**
      * Data provider for testConvertTo
@@ -167,8 +169,8 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     public function testOutput($preload, $data, $expect)
     {
         $img = new ImageContainer($preload);
-        $o = new ImagePluginBaseTestClass($img, $data);
-        $body = $o->output();
+        $obj = new ImagePluginBaseTestClass($img, $data);
+        $body = $obj->output();
         $this->assertSame($expect, $body);
     }
     /**
@@ -279,8 +281,8 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
     public function testOutputTest($preload, $data, $expect, $allowed)
     {
         $img = new ImageContainer($preload);
-        $o = new ImagePluginBaseTestClass($img, $data);
-        $ret = $o->outputTest();
+        $obj = new ImagePluginBaseTestClass($img, $data);
+        $ret = $obj->outputTest();
         $image = imagecreatefrompng($expect);
         $x = imagesx($image);
         $y = imagesy($image);

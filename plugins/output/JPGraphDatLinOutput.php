@@ -52,7 +52,7 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBTable.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
- * @SuppressWarnings(ShortVariable)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class JPGraphDatLinOutput extends OutputPluginBase
 {

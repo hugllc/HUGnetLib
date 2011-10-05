@@ -118,8 +118,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new DataCollectorsTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new DataCollectorsTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -128,8 +128,8 @@ class DataCollectorsTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new DataCollectorsTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new DataCollectorsTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID

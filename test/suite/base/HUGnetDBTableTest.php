@@ -160,7 +160,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             ),
         );
         $this->myConfig->forceConfig($config);
-        $o = new HUGnetDBTableTestStub($empty, $this->pdo);
+        $obj = new HUGnetDBTableTestStub($empty, $this->pdo);
     }
 
     /**
@@ -213,9 +213,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $this->assertSame($expect, $o->toArray());
-        $default = $this->readAttribute($o, "default");
+        $obj = new HUGnetDBTableTestStub($preload);
+        $this->assertSame($expect, $obj->toArray());
+        $default = $this->readAttribute($obj, "default");
         $this->assertSame($expect["group"], $default["group"]);
     }
 
@@ -256,10 +256,10 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testGetRow($preload, $key, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $o->getRow($key);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $obj->getRow($key);
         if (is_array($expect)) {
-            $this->assertSame($expect, $o->toArray());
+            $this->assertSame($expect, $obj->toArray());
         } else {
             $this->assertNull($ret);
         }
@@ -393,7 +393,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     * @param int    $start      The first date
     * @param int    $end        The last date
     * @param mixed  $key        The key to use
-    * @param string $id         The id field to use
+    * @param string $sqlId      The id field to use
     * @param array  $expect     The expected return
     * @param string $extraWhere The extra where clause to use
     * @param array  $extraData  The data for the extra where clause
@@ -407,18 +407,18 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $start,
         $end,
         $key,
-        $id,
+        $sqlId,
         $expect,
         $extraWhere = null,
         $extraData = null
     ) {
-        $o = new HUGnetDBTableTestStub2($preload);
-        $ret = $o->getPeriod($start, $end, $key, $id, $extraWhere, $extraData);
+        $obj = new HUGnetDBTableTestStub2($preload);
+        $ret = $obj->getPeriod($start, $end, $key, $sqlId, $extraWhere, $extraData);
         if ($ret !== false) {
             $ret = array();
             do {
-                $ret[] = $o->toArray();
-            } while ($o->nextInto());
+                $ret[] = $obj->toArray();
+            } while ($obj->nextInto());
         }
         $this->assertSame($expect, $ret);
     }
@@ -455,13 +455,13 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testGetPeriod2($preload, $start, $end, $key, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = $o->getPeriod($start, $end, $key);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = $obj->getPeriod($start, $end, $key);
         if ($ret !== false) {
             $ret = array();
             do {
-                $ret[] = $o->toArray();
-            } while ($o->nextInto());
+                $ret[] = $obj->toArray();
+            } while ($obj->nextInto());
         }
         $this->assertSame($expect, $ret);
     }
@@ -478,12 +478,12 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testRefresh($preload, $key, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $id = $o->sqlId;
-        $o->$id = $key;
-        $o->refresh();
+        $obj = new HUGnetDBTableTestStub($preload);
+        $sqlId = $obj->sqlId;
+        $obj->$sqlId = $key;
+        $obj->refresh();
         if (is_array($expect)) {
-            $this->assertSame($expect, $o->toArray());
+            $this->assertSame($expect, $obj->toArray());
         } else {
             $this->assertNull($ret);
         }
@@ -536,9 +536,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     public function testCreate($preload, $key, $expect)
     {
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
-        $o = new HUGnetDBTableTestStub($preload);
-        $o->create();
-        $myDriver = $this->readAttribute($o, "myDriver");
+        $obj = new HUGnetDBTableTestStub($preload);
+        $obj->create();
+        $myDriver = $this->readAttribute($obj, "myDriver");
         $ret = $myDriver->columns();
         $this->assertSame($expect, $ret);
     }
@@ -613,8 +613,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testSelect($preload, $where, $data, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $res = $o->select($where, $data);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $res = $obj->select($where, $data);
         foreach ($res as $val) {
             $ret[] = $val->toArray();
         }
@@ -656,8 +656,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testCount($preload, $where, $data, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $res = $o->count($where, $data);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $res = $obj->count($where, $data);
         $this->assertSame($expect, $res);
     }
     /**
@@ -674,12 +674,12 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectInto($preload, $where, $data, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = $o->selectInto($where, $data);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = $obj->selectInto($where, $data);
         foreach ($expect as $e) {
             $this->assertTrue($ret);
-            $this->assertSame($e, $o->toArray());
-            $ret = $o->nextInto();
+            $this->assertSame($e, $obj->toArray());
+            $ret = $obj->nextInto();
         }
         $this->assertFalse($ret);
 
@@ -723,9 +723,9 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectOneInto($preload, $where, $data, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $res = $o->selectOneInto($where, $data);
-        $this->assertSame($expect, $o->toArray());
+        $obj = new HUGnetDBTableTestStub($preload);
+        $res = $obj->selectOneInto($where, $data);
+        $this->assertSame($expect, $obj->toArray());
     }
     /**
     * Data provider for testSelectIDs
@@ -759,8 +759,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testSelectIds($preload, $where, $data, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = $o->selectIDs($where, $data);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = $obj->selectIDs($where, $data);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -842,8 +842,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testUpdateRow($preload, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $o->updateRow();
+        $obj = new HUGnetDBTableTestStub($preload);
+        $obj->updateRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -935,8 +935,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testInsertRow($preload, $replace, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $o->insertRow($replace);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $obj->insertRow($replace);
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -1016,8 +1016,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testDeleteRow($preload, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $o->deleteRow();
+        $obj = new HUGnetDBTableTestStub($preload);
+        $obj->deleteRow();
         $stmt = $this->pdo->query("SELECT * FROM `myTable`");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $this->assertSame($expect, $rows);
@@ -1094,8 +1094,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testToDB($preload, $expect, $default = true)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = $o->toDB($default);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = $obj->toDB($default);
         $this->assertSame(
             $expect,
             $ret
@@ -1193,8 +1193,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testFactory($preload, $load, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = &$o->factory($load);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = &$obj->factory($load);
         $this->assertAttributeSame(
             $expect,
             "data",
@@ -1405,8 +1405,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testToOutput2($preload, $cols, $expect)
     {
-        $o = new HUGnetDBTableTestStub2($preload);
-        $ret = $o->toOutput($cols);
+        $obj = new HUGnetDBTableTestStub2($preload);
+        $ret = $obj->toOutput($cols);
         $this->assertSame(
             $expect,
             $ret
@@ -1618,8 +1618,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testToOutputHeader2($preload, $cols, $expect)
     {
-        $o = new HUGnetDBTableTestStub2($preload);
-        $ret = $o->toOutputHeader($cols);
+        $obj = new HUGnetDBTableTestStub2($preload);
+        $ret = $obj->toOutputHeader($cols);
         $this->assertSame(
             $expect,
             $ret
@@ -1663,8 +1663,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     */
     public function testLabels($preload, $cols, $expect)
     {
-        $o = new HUGnetDBTableTestStub($preload);
-        $ret = $o->labels($cols);
+        $obj = new HUGnetDBTableTestStub($preload);
+        $ret = $obj->labels($cols);
         $this->assertSame(
             $expect,
             $ret

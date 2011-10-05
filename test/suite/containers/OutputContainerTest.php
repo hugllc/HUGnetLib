@@ -176,10 +176,10 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
         if (!is_null($container)) {
             $cont = new TestOutputContainer($container);
         }
-        $o = new OutputContainer($preload, $cont);
-        $o->filters($filters);
+        $obj = new OutputContainer($preload, $cont);
+        $obj->filters($filters);
         $this->assertAttributeSame(
-            $expect, "filters", $o
+            $expect, "filters", $obj
         );
     }
     /**
@@ -190,8 +190,8 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testParams2()
     {
-        $o = new OutputContainer(array());
-        $o->params("type", array());
+        $obj = new OutputContainer(array());
+        $obj->params("type", array());
         $this->assertAttributeSame(
             array(), "paramsOut", $this->o
         );
@@ -284,8 +284,8 @@ class OutputContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testHeader2()
     {
-        $o = new OutputContainer(array());
-        $o->header();
+        $obj = new OutputContainer(array());
+        $obj->header();
         $this->assertAttributeSame(
             array(), "headerOut", $this->o
         );
@@ -720,8 +720,8 @@ post"
     */
     public function testToString2()
     {
-        $o = new OutputContainer(array());
-        $ret = $o->toString();
+        $obj = new OutputContainer(array());
+        $ret = $obj->toString();
         $this->assertSame(
             "Container doesn't implement OutputInterface",
             $ret
@@ -856,7 +856,7 @@ post"
     * test the set routine when an extra class exists
     *
     * @expectedException Exception
-    * 
+    *
     * @return null
     */
     public function testFilterFactoryException()

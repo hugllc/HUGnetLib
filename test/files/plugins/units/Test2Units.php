@@ -37,8 +37,6 @@
  */
 /** This is for the base class */
 require_once CODE_BASE."base/UnitsBase.php";
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -52,6 +50,9 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class Test2Units extends UnitsBase
 {

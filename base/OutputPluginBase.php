@@ -117,7 +117,7 @@ abstract class OutputPluginBase extends HUGnetClass implements OutputPluginInter
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toString($default = true)
     {

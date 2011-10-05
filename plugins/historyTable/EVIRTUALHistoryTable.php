@@ -82,7 +82,7 @@ class EVIRTUALHistoryTable extends HistoryTableBase
     *
     * @return mixed The value of the attribute
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getPeriod(
         $start,

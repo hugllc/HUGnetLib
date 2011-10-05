@@ -189,11 +189,11 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetPDO($preload, $group, $expect, $expectDriver)
     {
-        $o = new DBServersContainer($preload);
+        $obj = new DBServersContainer($preload);
         if (is_null($group)) {
-            $pdo = $o->getPDO();
+            $pdo = $obj->getPDO();
         } else {
-            $pdo = $o->getPDO($group);
+            $pdo = $obj->getPDO($group);
         }
         if ($expect === false) {
             $this->assertFalse($pdo);
@@ -271,8 +271,8 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGroup($preload, $expect)
     {
-        $o = new DBServersContainer($preload);
-        $ret = $o->groups();
+        $obj = new DBServersContainer($preload);
+        $ret = $obj->groups();
         $this->assertSame($expect, $ret);
     }
 
@@ -383,11 +383,11 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetDriver($preload, $table, $group, $expect)
     {
-        $o = new DBServersContainer($preload);
+        $obj = new DBServersContainer($preload);
         if (is_null($group)) {
-            $pdo = $o->getDriver($table);
+            $pdo = $obj->getDriver($table);
         } else {
-            $pdo = $o->getDriver($table, $group);
+            $pdo = $obj->getDriver($table, $group);
         }
         if ($expect === false) {
             $this->assertFalse($pdo);
@@ -498,21 +498,21 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConnect($preload, $group, $preconnect, $expect)
     {
-        $o = new DBServersContainer($preload);
+        $obj = new DBServersContainer($preload);
         if (!is_bool($preconnect)) {
-            $o->connect($preconnect);
+            $obj->connect($preconnect);
         }
         if (is_null($group)) {
-            $ret = $o->connect();
+            $ret = $obj->connect();
         } else {
-            $ret = $o->connect($group);
+            $ret = $obj->connect($group);
         }
         if (empty($group)) {
             $group = "default";
         }
         $this->assertSame($expect, $ret);
         foreach (array("server", "pdo") as $var) {
-            $check = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
             } else {
@@ -545,21 +545,21 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testAvailable($preload, $group, $preconnect, $expect)
     {
-        $o = new DBServersContainer($preload);
+        $obj = new DBServersContainer($preload);
         if (!is_bool($preconnect)) {
-            $o->connect($preconnect);
+            $obj->connect($preconnect);
         }
         if (is_null($group)) {
-            $ret = $o->available();
+            $ret = $obj->available();
         } else {
-            $ret = $o->available($group);
+            $ret = $obj->available($group);
         }
         if (empty($group)) {
             $group = "default";
         }
         $this->assertSame($expect, $ret);
         foreach (array("server", "pdo") as $var) {
-            $check = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
             } else {
@@ -614,12 +614,12 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
         $expectDis,
         $expectCon
     ) {
-        $o = new DBServersContainer($preload);
-        $ret = $o->connect($groupCon);
-        $o->disconnect($groupDis);
+        $obj = new DBServersContainer($preload);
+        $ret = $obj->connect($groupCon);
+        $obj->disconnect($groupDis);
         foreach (array("server", "pdo") as $var) {
-            $check = $this->readAttribute($o, $var);
-            $pdo = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
+            $pdo = $this->readAttribute($obj, $var);
             $this->assertSame(
                 $expectDis,
                 is_object($check[$groupDis]),
@@ -675,9 +675,9 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
         $groupCon,
         $expect
     ) {
-        $o = new DBServersContainer($preload);
-        $o->connect($groupCon);
-        $ret = $o->connected($groupDis);
+        $obj = new DBServersContainer($preload);
+        $obj->connect($groupCon);
+        $ret = $obj->connected($groupDis);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -775,8 +775,8 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $expect)
     {
-        $o = new DBServersContainer($preload);
-        $ret = $o->toArray();
+        $obj = new DBServersContainer($preload);
+        $ret = $obj->toArray();
         $this->assertSame($expect, $ret);
     }
 
@@ -787,9 +787,9 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSingleton()
     {
-        $o = DBServersContainer::singleton($preload);
+        $obj = DBServersContainer::singleton($preload);
         $p = DBServersContainer::singleton($preload);
-        $this->assertSame($o, $p);
+        $this->assertSame($obj, $p);
     }
 
 }

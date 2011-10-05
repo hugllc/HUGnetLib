@@ -94,7 +94,7 @@ class EVIRTUALDevice extends DeviceDriverBase
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function fromSetupString($string)
     {

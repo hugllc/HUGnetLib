@@ -121,8 +121,8 @@ class LockTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new LockTable(array("group" => "default"));
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new LockTable(array("group" => "default"));
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -131,8 +131,8 @@ class LockTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new LockTable(array("group" => "default"));
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new LockTable(array("group" => "default"));
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -270,7 +270,7 @@ class LockTableTest extends HUGnetDBTableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $id     The id of the locking element
+    * @param int    $sqlId  The id of the locking element
     * @param string $type   The type of lock
     * @param string $data   The data string
     * @param mixed  $expect The expected class data
@@ -280,9 +280,9 @@ class LockTableTest extends HUGnetDBTableTestBase
     *
     * @dataProvider dataCheck
     */
-    public function testCheck($id, $type, $data, $expect, $ret)
+    public function testCheck($sqlId, $type, $data, $expect, $ret)
     {
-        $lock = $this->o->check($id, $type, $data);
+        $lock = $this->o->check($sqlId, $type, $data);
         $this->assertSame($ret, $lock, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray());
     }
@@ -410,7 +410,7 @@ class LockTableTest extends HUGnetDBTableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $id       The id of the locking element
+    * @param int    $sqlId       The id of the locking element
     * @param string $type     The type of lock
     * @param string $data     The data string
     * @param int    $timeLeft The amount of time left on the lock
@@ -421,9 +421,9 @@ class LockTableTest extends HUGnetDBTableTestBase
     *
     * @dataProvider dataPlace
     */
-    public function testPlace($id, $type, $data, $timeLeft, $expect, $ret)
+    public function testPlace($sqlId, $type, $data, $timeLeft, $expect, $ret)
     {
-        $lock = $this->o->place($id, $type, $data, $timeLeft);
+        $lock = $this->o->place($sqlId, $type, $data, $timeLeft);
         $this->assertSame($ret, $lock, "Return Wrong");
         $this->assertSame($expect, $this->o->toArray());
     }
@@ -493,7 +493,7 @@ class LockTableTest extends HUGnetDBTableTestBase
     /**
     * test the set routine when an extra class exists
     *
-    * @param int    $id     The id of the locking element
+    * @param int    $sqlId  The id of the locking element
     * @param string $type   The type of lock
     * @param mixed  $expect The expected class data
     * @param mixed  $ret    The expected return
@@ -502,9 +502,9 @@ class LockTableTest extends HUGnetDBTableTestBase
     *
     * @dataProvider dataGetAllLocks
     */
-    public function testGetAllLocks($id, $type, $expect, $ret)
+    public function testGetAllLocks($sqlId, $type, $expect, $ret)
     {
-        $lock = $this->o->getAllLocks($type, $id);
+        $lock = $this->o->getAllLocks($type, $sqlId);
         $this->assertSame($ret, $lock, "Return Wrong");
         $data = array();
         while ($lock) {

@@ -51,7 +51,7 @@ require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.ph
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
- * @SuppressWarnings(ShortVariable)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class BaleMoistureV1DeviceSensor extends ResistiveDeviceSensorBase
 {

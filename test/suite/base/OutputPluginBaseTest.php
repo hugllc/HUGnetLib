@@ -120,9 +120,9 @@ class OutputPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($data, $expect)
     {
-        $o = new OutputPluginBaseTestClass($data);
+        $obj = new OutputPluginBaseTestClass($data);
         foreach ((array)$expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o);
+            $this->assertAttributeSame($value, $key, $obj);
         }
     }
     /**

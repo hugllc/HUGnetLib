@@ -199,7 +199,7 @@ class RawHistoryTable extends HUGnetDBTable
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toDB($default = true)
     {

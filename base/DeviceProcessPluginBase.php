@@ -100,7 +100,7 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
     *
     * @return bool True if ready to return, false otherwise
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function ready(DeviceContainer &$dev)
     {
@@ -113,7 +113,7 @@ abstract class DeviceProcessPluginBase extends HUGnetClass
     *
     * @return bool True if ready to return, false otherwise
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function pre(DeviceContainer &$dev)
     {

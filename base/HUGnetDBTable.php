@@ -212,7 +212,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toDB($default = true)
     {
@@ -537,7 +537,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedLocalVariable)
+    * @SuppressWarnings(PHPMD.UnusedLocalVariable)
     */
     static public function sqlDate($value, $TimeZone = "UTC")
     {
@@ -559,7 +559,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedLocalVariable)
+    * @SuppressWarnings(PHPMD.UnusedLocalVariable)
     */
     static public function unixDate($value, $TimeZone = "UTC")
     {
@@ -656,7 +656,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -669,7 +669,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

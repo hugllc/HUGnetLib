@@ -244,7 +244,7 @@ class E00392100Device extends DeviceDriverLoadableBase
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function fromSetupString($string)
     {
@@ -291,7 +291,7 @@ class E00392100Device extends DeviceDriverLoadableBase
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function decodeData($string, $command="", $deltaT=0)
     {

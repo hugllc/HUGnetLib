@@ -115,8 +115,8 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new HistoryTableBaseTestStub();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new HistoryTableBaseTestStub();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -125,8 +125,8 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new HistoryTableBaseTestStub();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new HistoryTableBaseTestStub();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID
@@ -204,8 +204,8 @@ class HistoryTableBaseTest extends HUGnetDBTableTestBase
     */
     public function testConstructor($preload, $cols, $expect)
     {
-        $o = new HistoryTableBaseTestStub($preload, $cols);
-        $this->assertSame($expect, $o->toArray());
+        $obj = new HistoryTableBaseTestStub($preload, $cols);
+        $this->assertSame($expect, $obj->toArray());
     }
     /**
     * data provider for testDeviceID

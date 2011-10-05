@@ -53,6 +53,8 @@ require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
 class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
 {
@@ -194,15 +196,15 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($class, $preload, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         foreach ($expect as $key => $value) {
-            $this->assertSame($value, $o->$key, "Bad Value in key $key");
+            $this->assertSame($value, $obj->$key, "Bad Value in key $key");
         }
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame(
             "ConfigContainer", get_class($config), "Wrong config class"
         );
-        $device = $this->readAttribute($o, "myDevice");
+        $device = $this->readAttribute($obj, "myDevice");
         $this->assertSame(
             get_class($this->d), get_class($device), "Wrong device class"
         );
@@ -518,8 +520,8 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public function testGetUnits(
         $class, $preload, $A, $deltaT, $prev, $data, $expect
     ) {
-        $o = new $class($preload, $this->d);
-        $this->assertSame($expect, $o->getUnits($A, $deltaT, $prev, $data));
+        $obj = new $class($preload, $this->d);
+        $this->assertSame($expect, $obj->getUnits($A, $deltaT, $prev, $data));
     }
     /**
     * data provider for testConvertUnits
@@ -636,10 +638,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testGetAllUnits($preload, $class, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         $this->assertSame(
             $expect,
-            $o->getAllUnits()
+            $obj->getAllUnits()
         );
     }
 
@@ -689,10 +691,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testGetAllDataTypes($preload, $class, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         $this->assertSame(
             $expect,
-            $o->getAllDataTypes()
+            $obj->getAllDataTypes()
         );
     }
 
@@ -737,10 +739,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testGetAllTypes($preload, $class, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         $this->assertSame(
             $expect,
-            $o->getAllTypes()
+            $obj->getAllTypes()
         );
     }
 
@@ -774,10 +776,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testTotal($preload, $class, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         $this->assertSame(
             $expect,
-            $o->total()
+            $obj->total()
         );
     }
 
@@ -827,10 +829,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testNumeric($preload, $class, $units, $expect)
     {
-        $o = new $class($preload, $this->d);
+        $obj = new $class($preload, $this->d);
         $this->assertSame(
             $expect,
-            $o->numeric($units)
+            $obj->numeric($units)
         );
     }
 

@@ -188,9 +188,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $data, $plugins)
     {
-        $o = new PluginsContainer($preload);
-        $this->assertAttributeSame($data, "data", $o);
-        $this->assertAttributeSame($plugins, "plugins", $o);
+        $obj = new PluginsContainer($preload);
+        $this->assertAttributeSame($data, "data", $obj);
+        $this->assertAttributeSame($plugins, "plugins", $obj);
     }
 
 
@@ -348,12 +348,12 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetPlugin($preload, $type, $flag, $expect, $typeCache)
     {
-        $o = new PluginsContainer($preload);
-        $this->assertSame($expect, $o->getPlugin($type, $flag), "Run 1 failed");
+        $obj = new PluginsContainer($preload);
+        $this->assertSame($expect, $obj->getPlugin($type, $flag), "Run 1 failed");
         // Do the same thing again to make sure of the same result.
-        $this->assertSame($expect, $o->getPlugin($type, $flag), "Run 2 failed");
+        $this->assertSame($expect, $obj->getPlugin($type, $flag), "Run 2 failed");
         // This checks the type cache
-        $this->assertAttributeSame($typeCache, "typeCache", $o);
+        $this->assertAttributeSame($typeCache, "typeCache", $obj);
     }
 
     /**
@@ -539,13 +539,13 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSearchPlugins($preload, $type, $flag, $bad, $expect)
     {
-        $o = new PluginsContainer($preload);
+        $obj = new PluginsContainer($preload);
         $this->assertSame(
-            $expect, $o->searchPlugins($type, $flag, $bad), "Run 1 failed"
+            $expect, $obj->searchPlugins($type, $flag, $bad), "Run 1 failed"
         );
         // Do the same thing again to make sure of the same result.
         $this->assertSame(
-            $expect, $o->searchPlugins($type, $flag, $bad), "Run 2 failed"
+            $expect, $obj->searchPlugins($type, $flag, $bad), "Run 2 failed"
         );
     }
 
@@ -577,9 +577,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSet($var, $value, $expect)
     {
-        $o = new PluginsContainer($preload);
-        $o->$var = $value;
-        $data = $this->readAttribute($o, "data");
+        $obj = new PluginsContainer($preload);
+        $obj->$var = $value;
+        $data = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $data[$var]);
     }
     /**
@@ -606,9 +606,9 @@ class PluginsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToString($preload, $expect)
     {
-        $o = new PluginsContainer($preload);
-        $o->fromAny($preload);
-        $this->assertSame($expect, $o->toString());
+        $obj = new PluginsContainer($preload);
+        $obj->fromAny($preload);
+        $this->assertSame($expect, $obj->toString());
     }
     /**
     * data provider for testToString

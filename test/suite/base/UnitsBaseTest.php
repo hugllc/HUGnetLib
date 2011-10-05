@@ -52,6 +52,8 @@ require_once CODE_BASE.'base/UnitsBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class UnitsBaseTest extends PHPUnit_Framework_TestCase
 {
@@ -125,9 +127,9 @@ class UnitsBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($data, $expect)
     {
-        $o = new UnitsBaseTestClass($data);
+        $obj = new UnitsBaseTestClass($data);
         foreach ((array)$expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o);
+            $this->assertAttributeSame($value, $key, $obj);
         }
     }
 

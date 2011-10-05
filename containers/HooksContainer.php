@@ -137,7 +137,7 @@ class HooksContainer extends HUGnetContainer
     *
     * @return mixed
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function __call($name, $args)
     {

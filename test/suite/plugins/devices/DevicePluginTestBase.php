@@ -114,10 +114,10 @@ abstract class DevicePluginTestBase extends PluginTestBase
     */
     public function testPhysicalSensors($class)
     {
-        $d = new DummyDeviceContainer();
-        $obj = new $class($d, "");
+        $dev = new DummyDeviceContainer();
+        $obj = new $class($dev, "");
         $this->assertFalse(
-            is_null($d->DriverInfo["PhysicalSensors"]),
+            is_null($dev->DriverInfo["PhysicalSensors"]),
             'DriverInfo["PhysicalSensors"] must be set'
         );
     }
@@ -132,10 +132,10 @@ abstract class DevicePluginTestBase extends PluginTestBase
     */
     public function testVirtualSensors($class)
     {
-        $d = new DummyDeviceContainer();
-        $obj = new $class($d, "");
+        $dev = new DummyDeviceContainer();
+        $obj = new $class($dev, "");
         $this->assertFalse(
-            is_null($d->DriverInfo["VirtualSensors"]),
+            is_null($dev->DriverInfo["VirtualSensors"]),
             'DriverInfo["VirtualSensors"] must be set'
         );
     }

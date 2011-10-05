@@ -147,13 +147,13 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new DeviceSensorsContainer($preload, $this->d);
-        $this->assertAttributeSame($expect, "data", $o, "Wrong data in class");
-        $config = $this->readAttribute($o, "myConfig");
+        $obj = new DeviceSensorsContainer($preload, $this->d);
+        $this->assertAttributeSame($expect, "data", $obj, "Wrong data in class");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame(
             "ConfigContainer", get_class($config), "Wrong config class"
         );
-        $device = $this->readAttribute($o, "myDevice");
+        $device = $this->readAttribute($obj, "myDevice");
         $this->assertSame(
             get_class($this->d), get_class($device), "Wrong device class"
         );
@@ -274,10 +274,10 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->d->fromArray($devPreload);
         $this->o->clearData();
         $this->o->fromArray($preload);
-        $s = $this->readAttribute($this->o, "sensor");
-        foreach (array_keys((array)$s) as $k) {
+        $sensor = $this->readAttribute($this->o, "sensor");
+        foreach (array_keys((array)$sensor) as $k) {
             $this->assertSame(
-                $sensors[$k], get_class($s[$k]), "Sensor $k wrong"
+                $sensors[$k], get_class($sensor[$k]), "Sensor $k wrong"
             );
         }
         $this->assertSame($expect, $this->o->toArray());
@@ -803,17 +803,18 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $this->o->fromTypeString($string);
         $this->assertSame($expect, $this->o->toArray());
-        $s = $this->readAttribute($this->o, "sensor");
-        foreach (array_keys((array)$s) as $k) {
+        $sensor = $this->readAttribute($this->o, "sensor");
+        foreach (array_keys((array)$sensor) as $k) {
             $this->assertSame(
                 $types[$k],
-                $s[$k]->id,
-                "Sensor $k id is wrong ".$types[$k]." != ".$s[$k]->id
+                $sensor[$k]->id,
+                "Sensor $k id is wrong ".$types[$k]." != ".$sensor[$k]->id
             );
             $this->assertSame(
                 $sensors[$k],
-                get_class($s[$k]),
-                "Sensor $k class is wrong ".$sensors[$k]." != ".get_class($s[$k])
+                get_class($sensor[$k]),
+                "Sensor $k class is wrong ".$sensors[$k]." != "
+                    .get_class($sensor[$k])
             );
         }
 
@@ -958,17 +959,18 @@ class DeviceSensorsContainerTest extends PHPUnit_Framework_TestCase
         $this->o->fromArray($preload);
         $this->o->fromTypeArray($array);
         $this->assertSame($expect, $this->o->toArray());
-        $s = $this->readAttribute($this->o, "sensor");
-        foreach (array_keys((array)$s) as $k) {
+        $sensor = $this->readAttribute($this->o, "sensor");
+        foreach (array_keys((array)$sensor) as $k) {
             $this->assertSame(
                 $types[$k],
-                $s[$k]->id,
-                "Sensor $k id is wrong ".$types[$k]." != ".$s[$k]->id
+                $sensor[$k]->id,
+                "Sensor $k id is wrong ".$types[$k]." != ".$sensor[$k]->id
             );
             $this->assertSame(
                 $sensors[$k],
-                get_class($s[$k]),
-                "Sensor $k class is wrong ".$sensors[$k]." != ".get_class($s[$k])
+                get_class($sensor[$k]),
+                "Sensor $k class is wrong ".$sensors[$k]." != "
+                    .get_class($sensor[$k])
             );
         }
 

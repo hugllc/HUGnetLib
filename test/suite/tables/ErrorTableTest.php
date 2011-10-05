@@ -109,8 +109,8 @@ class ErrorTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new ErrorTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new ErrorTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -119,8 +119,8 @@ class ErrorTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new ErrorTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new ErrorTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID

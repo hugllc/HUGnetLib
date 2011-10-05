@@ -141,11 +141,11 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGetSocket($preload, $group, $expect)
     {
-        $o = new SocketsContainer($preload);
+        $obj = new SocketsContainer($preload);
         if (is_null($group)) {
-            $pdo = $o->getSocket();
+            $pdo = $obj->getSocket();
         } else {
-            $pdo = $o->getSocket($group);
+            $pdo = $obj->getSocket($group);
         }
         if ($expect === false) {
             $this->assertFalse($pdo);
@@ -216,8 +216,8 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testGroup($preload, $expect)
     {
-        $o = new SocketsContainer($preload);
-        $ret = $o->groups();
+        $obj = new SocketsContainer($preload);
+        $ret = $obj->groups();
         $this->assertSame($expect, $ret);
     }
 
@@ -300,21 +300,21 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testConnect($preload, $group, $preconnect, $expect)
     {
-        $o = new SocketsContainer($preload);
+        $obj = new SocketsContainer($preload);
         if (!is_bool($preconnect)) {
-            $o->connect($preconnect);
+            $obj->connect($preconnect);
         }
         if (is_null($group)) {
-            $ret = $o->connect();
+            $ret = $obj->connect();
         } else {
-            $ret = $o->connect($group);
+            $ret = $obj->connect($group);
         }
         if (empty($group)) {
             $group = "default";
         }
         $this->assertSame($expect, $ret);
         foreach (array("socket") as $var) {
-            $check = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
             } else {
@@ -339,21 +339,21 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testAvailable($preload, $group, $preconnect, $expect)
     {
-        $o = new SocketsContainer($preload);
+        $obj = new SocketsContainer($preload);
         if (!is_bool($preconnect)) {
-            $o->connect($preconnect);
+            $obj->connect($preconnect);
         }
         if (is_null($group)) {
-            $ret = $o->available();
+            $ret = $obj->available();
         } else {
-            $ret = $o->available($group);
+            $ret = $obj->available($group);
         }
         if (empty($group)) {
             $group = "default";
         }
         $this->assertSame($expect, $ret);
         foreach (array("socket") as $var) {
-            $check = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
             if ($ret) {
                 $this->assertTrue(is_object($check[$group]), "$var not found");
             } else {
@@ -415,11 +415,11 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
         $expectDis,
         $expectCon
     ) {
-        $o = new SocketsContainer($preload);
-        $ret = $o->connect($groupCon);
-        $o->disconnect($groupDis);
+        $obj = new SocketsContainer($preload);
+        $ret = $obj->connect($groupCon);
+        $obj->disconnect($groupDis);
         foreach (array("socket") as $var) {
-            $check = $this->readAttribute($o, $var);
+            $check = $this->readAttribute($obj, $var);
             $this->assertSame(
                 $expectDis,
                 is_object($check[$groupDis]),
@@ -473,9 +473,9 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
         $groupCon,
         $expect
     ) {
-        $o = new SocketsContainer($preload);
-        $o->connect($groupCon);
-        $ret = $o->connected($groupDis);
+        $obj = new SocketsContainer($preload);
+        $obj->connect($groupCon);
+        $ret = $obj->connected($groupDis);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -527,8 +527,8 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testToArray($preload, $expect)
     {
-        $o = new SocketsContainer($preload);
-        $ret = $o->toArray();
+        $obj = new SocketsContainer($preload);
+        $ret = $obj->toArray();
         $this->assertSame($expect, $ret);
     }
 
@@ -539,9 +539,9 @@ class SocketsContainerTest extends PHPUnit_Framework_TestCase
     */
     public function testSingleton()
     {
-        $o = SocketsContainer::singleton($preload);
+        $obj = SocketsContainer::singleton($preload);
         $p = SocketsContainer::singleton($preload);
-        $this->assertSame($o, $p);
+        $this->assertSame($obj, $p);
     }
     /**
     * Data provider for testDeviceID

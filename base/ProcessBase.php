@@ -269,7 +269,7 @@ abstract class ProcessBase extends HUGnetContainer implements PacketConsumerInte
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function packetConsumer(PacketContainer &$pkt)
     {

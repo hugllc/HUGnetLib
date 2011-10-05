@@ -52,6 +52,8 @@ require_once 'OutputPluginTestBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class FlotDatLinOutputTest extends OutputPluginTestBase
 {
@@ -157,11 +159,11 @@ class FlotDatLinOutputTest extends OutputPluginTestBase
     */
     public function testRow($params, $preload, $row, $expect)
     {
-        $o = new FlotDatLinOutput($params, $preload);
+        $obj = new FlotDatLinOutput($params, $preload);
         foreach ($row as $r) {
-            $o->row($r);
+            $obj->row($r);
         }
-        $this->assertAttributeSame($expect, "graphData", $o, "Data is wrong");
+        $this->assertAttributeSame($expect, "graphData", $obj, "Data is wrong");
     }
 
     /**
@@ -672,12 +674,12 @@ $(function () {
     */
     public function testBody($preload, $header, $rows, $expect)
     {
-        $o = new FlotDatLinOutput($preload);
-        $o->header($header);
+        $obj = new FlotDatLinOutput($preload);
+        $obj->header($header);
         foreach ($rows as $r) {
-            $o->row($r);
+            $obj->row($r);
         }
-        $graph = $o->body();
+        $graph = $obj->body();
         $this->assertSame($expect, $graph);
     }
 
@@ -719,9 +721,9 @@ $(function () {
     */
     public function testHeader($preload, $array, $expect)
     {
-        $o = new FlotDatLinOutput(null, $preload);
-        $o->header($array);
-        $this->assertAttributeSame($expect, "header", $o);
+        $obj = new FlotDatLinOutput(null, $preload);
+        $obj->header($array);
+        $this->assertAttributeSame($expect, "header", $obj);
     }
 
     /**
@@ -750,8 +752,8 @@ $(function () {
     */
     public function testPre($preload, $expect)
     {
-        $o = new FlotDatLinOutput($preload);
-        $this->assertSame($expect, $o->pre());
+        $obj = new FlotDatLinOutput($preload);
+        $this->assertSame($expect, $obj->pre());
     }
 
     /**
@@ -780,8 +782,8 @@ $(function () {
     */
     public function testPost($preload, $expect)
     {
-        $o = new FlotDatLinOutput($preload);
-        $this->assertSame($expect, $o->post());
+        $obj = new FlotDatLinOutput($preload);
+        $this->assertSame($expect, $obj->post());
     }
 
 }

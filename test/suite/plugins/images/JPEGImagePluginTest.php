@@ -138,9 +138,9 @@ class JPEGImagePluginTest extends ImagePluginTestBase
     */
     public function testOutput($preload, $expect)
     {
-        $c = new ImageContainer($preload);
-        $o = new JPEGImagePlugin($c);
-        $ret = $o->output();
+        $cont = new ImageContainer($preload);
+        $obj = new JPEGImagePlugin($cont);
+        $ret = $obj->output();
         $image = imagecreatefromstring($expect);
         $name = tempnam(sys_get_temp_dir(), "JPEGImagePluginTest");
         imagejpeg($image, $name);

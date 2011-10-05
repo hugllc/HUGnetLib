@@ -51,7 +51,7 @@ require_once dirname(__FILE__)."/../../base/ImagePluginBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
- * @SuppressWarnings(ShortVariable)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class SVGImagePlugin extends ImagePluginBase
 {
@@ -188,7 +188,7 @@ class SVGImagePlugin extends ImagePluginBase
     *
     * @return string
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     private function _xlinkHref(
         $link, $title, $text, $target = "_top", $id = "", $extra = "",

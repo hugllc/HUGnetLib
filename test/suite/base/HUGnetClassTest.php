@@ -110,9 +110,9 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($config, $expect)
     {
-        $o = new HUGnetClassTestStub($config);
+        $obj = new HUGnetClassTestStub($config);
         foreach ($expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o);
+            $this->assertAttributeSame($value, $key, $obj);
         }
     }
 

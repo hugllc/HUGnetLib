@@ -149,20 +149,20 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($setup, $data, $expect, $setupExpect)
     {
-        $o = new OutputFilterBaseTestClass($setup, $data);
+        $obj = new OutputFilterBaseTestClass($setup, $data);
         // If I change this, it should also change in the object.
         // This tests if it is indeed a reference
         $data = $expect;
         $this->assertAttributeSame(
             $expect,
             "data",
-            $o,
+            $obj,
             "Data is wrong"
         );
         $this->assertAttributeSame(
             $setupExpect,
             "setup",
-            $o,
+            $obj,
             "Setup is wrong"
         );
     }
@@ -174,8 +174,8 @@ class OutputFilterBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testName()
     {
-        $o = new OutputFilterBaseTestClass($setup, $data);
-        $this->assertSame("Test", $o->name());
+        $obj = new OutputFilterBaseTestClass($setup, $data);
+        $this->assertSame("Test", $obj->name());
     }
 
 

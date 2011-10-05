@@ -124,7 +124,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
 
         );
         $this->config->forceConfig($config);
-        $o = new PeriodicPlugins(array(), $this->device);
+        $obj = new PeriodicPlugins(array(), $this->device);
     }
     /**
     * data provider for testConstructor
@@ -174,14 +174,14 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($preload, $expect)
     {
-        $o = new PeriodicPlugins($preload, $this->device);
-        $ret = $this->readAttribute($o, "data");
+        $obj = new PeriodicPlugins($preload, $this->device);
+        $ret = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $ret);
         // Check the configuration is set correctly
-        $config = $this->readAttribute($o, "myConfig");
+        $config = $this->readAttribute($obj, "myConfig");
         $this->assertSame("ConfigContainer", get_class($config));
         // Check the configuration is set correctly
-        $device = $this->readAttribute($o, "device");
+        $device = $this->readAttribute($obj, "device");
         $this->assertSame("DeviceContainer", get_class($device));
     }
 

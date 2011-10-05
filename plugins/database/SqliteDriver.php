@@ -86,7 +86,7 @@ class SqliteDriver extends HUGnetDBDriver
     *
     * @return mixed
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function check($force = false)
     {

@@ -53,6 +53,8 @@ require_once TEST_BASE.'plugins/units/UnitsPluginTestBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class GenericUnitsTest extends UnitsPluginTestBase
 {

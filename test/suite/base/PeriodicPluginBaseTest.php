@@ -127,9 +127,9 @@ class PeriodicPluginBaseTest extends PHPUnit_Framework_TestCase
     */
     public function testConstructor($config, $expect, $expectCfg)
     {
-        $o = new PeriodicPluginBaseTestStub($config, $this->p);
+        $obj = new PeriodicPluginBaseTestStub($config, $this->p);
         foreach ($expect as $key => $value) {
-            $this->assertAttributeSame($value, $key, $o, "$key wrong");
+            $this->assertAttributeSame($value, $key, $obj, "$key wrong");
         }
         $this->assertSame(
             $expectCfg,

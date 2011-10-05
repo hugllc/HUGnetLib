@@ -53,6 +53,8 @@ require_once 'OutputPluginTestBase.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class JPGraphDatLinOutputTest extends OutputPluginTestBase
 {
@@ -150,12 +152,12 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     */
     public function testRow($params, $preload, $row, $expect, $dates)
     {
-        $o = new JPGraphDatLinOutput($params, $preload);
+        $obj = new JPGraphDatLinOutput($params, $preload);
         foreach ($row as $r) {
-            $o->row($r);
+            $obj->row($r);
         }
-        $this->assertAttributeSame($expect, "graphData", $o, "Data is wrong");
-        $this->assertAttributeSame($dates, "graphDates", $o, "Date is wrong");
+        $this->assertAttributeSame($expect, "graphData", $obj, "Data is wrong");
+        $this->assertAttributeSame($dates, "graphDates", $obj, "Date is wrong");
     }
 
     /**
@@ -309,13 +311,13 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     */
     public function testBody($preload, $header, $rows, $expect, $construct)
     {
-        $o = new JPGraphDatLinOutput($preload);
-        $o->header($header);
+        $obj = new JPGraphDatLinOutput($preload);
+        $obj->header($header);
         foreach ($rows as $r) {
-            $o->row($r);
+            $obj->row($r);
         }
-        $o->body();
-        $graph = $this->readAttribute($o, "graph");
+        $obj->body();
+        $graph = $this->readAttribute($obj, "graph");
         $this->assertSame($expect, $graph->calls);
         $this->assertSame($construct, $graph->construct);
     }
@@ -358,9 +360,9 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     */
     public function testHeader($preload, $array, $expect)
     {
-        $o = new JPGraphDatLinOutput(null, $preload);
-        $o->header($array);
-        $this->assertAttributeSame($expect, "header", $o);
+        $obj = new JPGraphDatLinOutput(null, $preload);
+        $obj->header($array);
+        $this->assertAttributeSame($expect, "header", $obj);
     }
 
     /**
@@ -389,8 +391,8 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     */
     public function testPre($preload, $expect)
     {
-        $o = new JPGraphDatLinOutput($preload);
-        $this->assertSame($expect, $o->pre());
+        $obj = new JPGraphDatLinOutput($preload);
+        $this->assertSame($expect, $obj->pre());
     }
 
     /**
@@ -419,8 +421,8 @@ class JPGraphDatLinOutputTest extends OutputPluginTestBase
     */
     public function testPost($preload, $expect)
     {
-        $o = new JPGraphDatLinOutput($preload);
-        $this->assertSame($expect, $o->post());
+        $obj = new JPGraphDatLinOutput($preload);
+        $this->assertSame($expect, $obj->post());
     }
 
 }

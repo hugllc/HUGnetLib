@@ -153,7 +153,7 @@ class DevicesHistoryTable extends HUGnetDBTable
     * @param mixed  $data  This is an array or string to create the object from
     * @param string $table The table to use
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     function __construct($data="", $table="")
     {

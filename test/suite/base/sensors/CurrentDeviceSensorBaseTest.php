@@ -53,6 +53,9 @@ require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class CurrentDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
 {

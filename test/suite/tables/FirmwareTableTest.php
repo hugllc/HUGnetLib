@@ -108,8 +108,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
     */
     public static function dataColumns()
     {
-        $o = new FirmwareTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlColumns");
+        $obj = new FirmwareTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlColumns");
     }
     /**
     * data provider for testDeviceID
@@ -118,8 +118,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
     */
     public static function dataIndexes()
     {
-        $o = new FirmwareTable();
-        return HUGnetDBTableTestBase::splitObject($o, "sqlIndexes");
+        $obj = new FirmwareTable();
+        return HUGnetDBTableTestBase::splitObject($obj, "sqlIndexes");
     }
     /**
     * data provider for testDeviceID

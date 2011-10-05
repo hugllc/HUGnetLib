@@ -316,7 +316,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return null
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function fromCalString($string)
     {
@@ -427,7 +427,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function toOutput($cols = null)
     {
@@ -466,7 +466,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputParams($type, $cols = null)
     {
@@ -479,7 +479,7 @@ class DeviceSensorsContainer extends HUGnetContainer
     *
     * @return array
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function outputFilters($cols = null)
     {

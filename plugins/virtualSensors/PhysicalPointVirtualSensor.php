@@ -51,7 +51,7 @@ require_once dirname(__FILE__)."/../../base/VirtualSensorBase.php";
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
- * @SuppressWarnings(ShortVariable)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class PhysicalPointVirtualSensor extends VirtualSensorBase
 {
@@ -174,7 +174,7 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     *
     * @return mixed The value in whatever the units are in the sensor
     *
-    * @SuppressWarnings(UnusedFormalParameter)
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
