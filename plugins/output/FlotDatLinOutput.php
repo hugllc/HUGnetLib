@@ -475,42 +475,108 @@ class FlotDatLinOutput extends OutputPluginBase
     public function body()
     {
         $this->y2 = !empty($this->params["fields"][2]);
-        $p = &$this->params;
-        $yaxis = $p["unitTypes"][1]." (".$p["units"][1].")";
+        $yaxis = $this->params["unitTypes"][1]." (".$this->params["units"][1].")";
         if ($this->y2) {
-            $yaxis2 = $p["unitTypes"][2]." (".$p["units"][2].")";
+            $yaxis2  = $this->params["unitTypes"][2];
+            $yaxis2 .= " (".$this->params["units"][2].")";
         } else {
             $yaxis2 = "&nbsp;";
         }
-        if ($p["doSelect"]) {
+        $ret = $this->_body_css().'
+    <div id="flotDiv">
+        <table id="flotTable">
+            <tr>
+                <td class="yTitle">&nbsp;</td>
+                <td class="flotTitle">
+                    '.$this->params["title"].'
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="yTitle flotRotate">'.$yaxis.'</td>
+                <td>
+                    <div id="placeholder"></div>
+                </td>
+                <td class="y2Title flotRotate">'.$yaxis2.'</td>
+            </tr>
+            <tr>
+                <td class="yTitle" style="white-space:nowrap;">'
+                    .$this->_body_controls().'</td>
+                <td>
+                    <div id="legend"></div>
+                </td>
+                <td class="yTitle2">&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+';
+        $ret .= $this->graph();
+        return $ret;
+    }
+
+    /**
+    * Returns the calculated width of the graph
+    *
+    * @return Width of the graph
+    */
+    private function _graphWidth()
+    {
+        return $this->params["width"] - $this->params["margin"]["left"]
+            - $this->params["margin"]["right"];
+    }
+    /**
+    * Returns the calculated width of the graph
+    *
+    * @return Width of the graph
+    */
+    private function _graphHeight()
+    {
+        return $this->params["height"] - $this->params["margin"]["top"]
+            - $this->params["margin"]["bottom"];
+    }
+    /**
+    * This function gets the style sheet for the graph
+    *
+    * @return String the text to output
+    */
+    private function _body_controls()
+    {
+        if ($this->params["doSelect"]) {
             $controls .= '<label for="flotSel">';
             $controls .= '<input id="flotSel" type="checkbox">Select</input>';
             $controls .= '</label>';
             $controls .= "<br/>\n";
         }
-        if ($p["doPan"]) {
+        if ($this->params["doPan"]) {
             $controls .= '<label for="flotPan">';
             $controls .= '<input id="flotPan" type="checkbox">Pan</input>';
             $controls .= '</label>';
             $controls .= "<br/>\n";
         }
-        if ($p["doPan"]) {
+        if ($this->params["doPan"]) {
             $controls .= '<label for="flotZoom">';
             $controls .= '<input id="flotZoom" type="checkbox">Zoom</input>';
             $controls .= '</label>';
             $controls .= "<br/>\n";
         }
-        $graphWidth = $p["width"] - $p["margin"]["left"] - $p["margin"]["right"];
-        $graphHeight = $p["height"] - $p["margin"]["top"] - $p["margin"]["bottom"];
-        $ret = '
+        return $controls;
+    }
+    /**
+    * This function gets the style sheet for the graph
+    *
+    * @return String the text to output
+    */
+    private function _body_css()
+    {
+        return '
     <style>
         #placeholder {
-            width: '.$graphWidth.'px;
-            height: '.$graphHeight.'px;
+            width: '.$this->_graphWidth().'px;
+            height: '.$this->_graphHeight().'px;
             margin: 10px auto;
         }
         #legend {
-            height: '.$p["margin"]["bottom"].'px;
+            height: '.$this->params["margin"]["bottom"].'px;
             margin: 0px auto;
             padding-left: 30px;
         }
@@ -524,18 +590,18 @@ class FlotDatLinOutput extends OutputPluginBase
             filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
         }
         .yTitle {
-            width: '.$p["margin"]["left"].'px !important;
+            width: '.$this->params["margin"]["left"].'px !important;
         }
         .y2Title {
-            width: '.$p["margin"]["right"].'px !important;
+            width: '.$this->params["margin"]["right"].'px !important;
         }
         .flotTitle {
             text-align: center;
             font-weight: bold;
-            height: '.$p["margin"]["top"].'px;
+            height: '.$this->params["margin"]["top"].'px;
         }
         #flotDiv {
-            width: '.$p["width"].'px;
+            width: '.$this->params["width"].'px;
             margin: auto;
         }
         #flotTable {
@@ -545,36 +611,9 @@ class FlotDatLinOutput extends OutputPluginBase
         #flotTable td {
             color: 000;
         }
-    </style>
-    <div id="flotDiv">
-        <table id="flotTable">
-            <tr>
-                <td class="yTitle">&nbsp;</td>
-                <td class="flotTitle">
-                    '.$p["title"].'
-                </td>
-                <td class="yTitle2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="yTitle flotRotate">'.$yaxis.'</td>
-                <td>
-                    <div id="placeholder"></div>
-                </td>
-                <td class="y2Title flotRotate">'.$yaxis2.'</td>
-            </tr>
-            <tr>
-                <td class="yTitle" style="white-space:nowrap;">'.$controls.'</td>
-                <td>
-                    <div id="legend"></div>
-                </td>
-                <td class="yTitle2">&nbsp;</td>
-            </tr>
-        </table>
-    </div>
-';
-        $ret .= $this->graph();
-        return $ret;
+    </style>';
     }
+
 }
 
 ?>
