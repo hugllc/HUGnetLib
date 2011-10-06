@@ -94,7 +94,7 @@
  <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
   <exec executable="phpdoc">
    <arg line="-d ${source}
-              -it @dataProvider,@covers,@expectedException,@SuppressWarnings(PHPMD.ShortVariable),@SuppressWarnings(PHPMD.UnusedLocalVariable),@SuppressWarnings(PHPMD.UnusedFormalParameter)
+              -it @dataProvider,@covers,@expectedException
               -i build/,Documentation/,JoomlaMock/,tmpl/,old/,contrib/
               -t ${basedir}/build/api" />
   </exec>
