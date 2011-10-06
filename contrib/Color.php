@@ -32,13 +32,9 @@
  * @copyright  2009 Scott Price
  * @copyright  Copyright (c) 2008, Nathan Lucas
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-if (class_exists("PHP_CodeCoverage_Filter")) {
-    // Need to make sure this file is not added to the code coverage
-    PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
-}
 /**
  * Color
  *
@@ -48,12 +44,13 @@ if (class_exists("PHP_CodeCoverage_Filter")) {
  * color values; RGB, Hexadecimal, HSL and HSV values. Color allows you to
  * convert between these four different methods with ease.
  *
- * @package     Color
- * @author      Nathan Lucas <nathan@gimpstraw.com>
- * @link        http://www.gimpstraw.com/
- * @copyright   Copyright (c) 2008, Nathan Lucas
- * @license     http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version     0.8.0
+ * @category  Contrib
+ * @package   Color
+ * @author    Nathan Lucas <nathan@gimpstraw.com>
+ * @link      http://www.gimpstraw.com/
+ * @copyright Copyright (c) 2008, Nathan Lucas
+ * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version   0.8.0
  */
 class Color {
 

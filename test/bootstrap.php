@@ -31,7 +31,7 @@
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 /** This is the base where the code resides */
