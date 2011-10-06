@@ -37,9 +37,8 @@
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/TestOutputContainer.php";
+/** This is for the base class */
 require_once CODE_BASE."interfaces/IteratorInterface.php";
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class keeps track of hooks that can be defined and used other places in the

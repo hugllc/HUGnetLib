@@ -35,9 +35,6 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** This is for the base class */
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class keeps track of hooks that can be defined and used other places in the

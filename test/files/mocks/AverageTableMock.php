@@ -37,8 +37,6 @@
  */
 /** This is for the base class */
 require_once CODE_BASE."tables/AverageTableBase.php";
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements

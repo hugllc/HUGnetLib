@@ -35,8 +35,6 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -57,7 +55,7 @@ class GenericMock
     public $calls = array();
     /** @var array This saves all of the calls to functions */
     public $construct = array();
-    
+
     /**
     * Build everything
     *
