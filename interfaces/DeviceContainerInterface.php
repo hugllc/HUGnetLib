@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,16 +35,12 @@
  * @version    SVN: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-/** This is for the base class */
-require_once dirname(__FILE__)."/../tables/DevicesTable.php";
-require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
-
 /**
  * This class does all of the work on endpoint devices.
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

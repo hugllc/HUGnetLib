@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Drivers
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage PluginsDevices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,19 +35,19 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
-
-// This is our base class
+/** This is a required class */
 require_once dirname(__FILE__).'/../../base/DeviceDriverLoadableBase.php';
-// This is the interface we are implementing
+/** This is a required class */
 require_once dirname(__FILE__).'/../../interfaces/DeviceDriverInterface.php';
+/** This is a required class */
 require_once dirname(__FILE__).'/../../interfaces/PacketConsumerInterface.php';
 
 /**
 * Driver for the polling script (0039-26-01-P)
 *
-* @category   Drivers
+* @category   Libraries
 * @package    HUGnetLib
-* @subpackage Endpoints
+* @subpackage PluginsDevices
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2007-2011 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price

@@ -24,7 +24,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Base
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
@@ -40,7 +40,7 @@
  *
  * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
  *
- * @category   Base
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>

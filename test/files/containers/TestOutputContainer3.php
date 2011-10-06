@@ -25,14 +25,14 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Containers
- * @package    HUGnetLib
- * @subpackage Containers
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Files
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
@@ -43,9 +43,9 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
  * This class keeps track of hooks that can be defined and used other places in the
  * code to cause custom functions to happen.
  *
- * @category   Containers
- * @package    HUGnetLib
- * @subpackage Containers
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Files
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

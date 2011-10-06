@@ -24,29 +24,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage Containers
+ * @subpackage SuiteContainers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
 /** This is the stuff we need */
 require_once CODE_BASE.'containers/PeriodContainer.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyTableContainer.php';
+/** This is a required class */
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
  * Test class for PeriodContainer
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage Containers
+ * @subpackage SuiteContainers
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

@@ -24,30 +24,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Devices
+ * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage ControllerBoard
+ * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 
 /** Get our classes */
 require_once CODE_BASE.'plugins/devices/E00392100Device.php';
+/** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
+/** This is a required class */
 require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
+/** This is a required class */
 require_once CODE_BASE.'containers/PacketContainer.php';
 
 /**
  * Test class for the controller baord firmware
  *
- * @category   Devices
+ * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage ControllerBoard
+ * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

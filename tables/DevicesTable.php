@@ -25,7 +25,7 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Tables
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>
@@ -46,7 +46,7 @@ require_once dirname(__FILE__)."/../containers/DeviceSensorsContainer.php";
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Tables
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Tables
  * @author     Scott Price <prices@hugllc.com>

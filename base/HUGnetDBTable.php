@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Base
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -49,9 +49,9 @@ require_once dirname(__FILE__)."/../interfaces/IteratorInterface.php";
  * because a class should be built for each pdo driver.  These are generally very
  * small.  This class will be used by the table classes to query the database.
  *
- * @category   Base
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

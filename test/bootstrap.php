@@ -25,18 +25,20 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
+ * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage Test
+ * @subpackage Setup
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
-
+/** This is the base where the code resides */
 define("CODE_BASE", realpath(dirname(__FILE__)."/..")."/");
+/** This is the base where the test suite resides */
 define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
+/** This is the base where the test config resides */
 define("TEST_CONFIG_BASE", realpath(dirname(__FILE__))."/");
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);

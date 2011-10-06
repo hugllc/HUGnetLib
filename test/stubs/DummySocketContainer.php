@@ -25,30 +25,30 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
- * @package    HUGnetLib
- * @subpackage Endpoints
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-// Need to make sure this file is not added to the code coverage
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
 /** This is for the base class */
 require_once CODE_BASE."base/HUGnetClass.php";
+/** This is our test configuration */
 require_once CODE_BASE."base/HUGnetContainer.php";
+/** This is our test configuration */
 require_once CODE_BASE."interfaces/HUGnetSocketInterface.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Containers
- * @package    HUGnetLib
- * @subpackage Database
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

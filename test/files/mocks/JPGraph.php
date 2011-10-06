@@ -25,14 +25,14 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Test
- * @package    HUGnetLib
- * @subpackage Endpoints
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Files
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 // Need to make sure this file is not added to the code coverage
@@ -44,9 +44,9 @@ require_once dirname(__FILE__)."/GenericMock.php";
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Mocks
- * @package    HUGnetLib
- * @subpackage Database
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Files
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -120,9 +120,9 @@ class Graph extends GenericMock
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Mocks
- * @package    HUGnetLib
- * @subpackage Database
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Files
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

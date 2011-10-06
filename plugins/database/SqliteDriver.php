@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Drivers
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Units
+ * @subpackage PluginsDatabase
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -40,9 +40,9 @@ require_once dirname(__FILE__)."/../../base/HUGnetDBDriver.php";
 /**
 * This class implements photo sensors.
 *
-* @category   Drivers
+* @category   Libraries
 * @package    HUGnetLib
-* @subpackage Units
+* @subpackage PluginsDatabase
 * @author     Scott Price <prices@hugllc.com>
 * @copyright  2007-2011 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price

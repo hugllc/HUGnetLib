@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -38,9 +38,9 @@
 /**
  * This is the interface for a socket connection.
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

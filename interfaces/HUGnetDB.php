@@ -24,9 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Database
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -38,9 +38,9 @@
 /**
  * This is the interface for the HUGnet database files
  *
- * @category   Base
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

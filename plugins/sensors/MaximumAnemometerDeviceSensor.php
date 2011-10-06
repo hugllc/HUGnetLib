@@ -24,7 +24,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Drivers
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>
@@ -40,7 +40,7 @@ require_once dirname(__FILE__)."/../../base/sensors/PulseDeviceSensorBase.php";
 /**
  * This class deals with wind direction sensors.
  *
- * @category   Drivers
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Sensors
  * @author     Scott Price <prices@hugllc.com>

@@ -25,9 +25,9 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Misc
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Endpoints
+ * @subpackage PluginsOutput
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -42,9 +42,9 @@ require_once dirname(__FILE__)."/../../base/OutputPluginBase.php";
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLib
- * @subpackage Database
+ * @subpackage PluginsOutput
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -482,7 +482,7 @@ class FlotDatLinOutput extends OutputPluginBase
         } else {
             $yaxis2 = "&nbsp;";
         }
-        $ret = $this->_body_css().'
+        $ret = $this->_bodyCss().'
     <div id="flotDiv">
         <table id="flotTable">
             <tr>
@@ -501,7 +501,7 @@ class FlotDatLinOutput extends OutputPluginBase
             </tr>
             <tr>
                 <td class="yTitle" style="white-space:nowrap;">'
-                    .$this->_body_controls().'</td>
+                    .$this->_bodyControls().'</td>
                 <td>
                     <div id="legend"></div>
                 </td>
@@ -539,7 +539,7 @@ class FlotDatLinOutput extends OutputPluginBase
     *
     * @return String the text to output
     */
-    private function _body_controls()
+    private function _bodyControls()
     {
         if ($this->params["doSelect"]) {
             $controls .= '<label for="flotSel">';
@@ -566,7 +566,7 @@ class FlotDatLinOutput extends OutputPluginBase
     *
     * @return String the text to output
     */
-    private function _body_css()
+    private function _bodyCss()
     {
         return '
     <style>

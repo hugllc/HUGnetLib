@@ -25,7 +25,7 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Processes
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Processes
  * @author     Scott Price <prices@hugllc.com>
@@ -43,7 +43,7 @@ require_once dirname(__FILE__)."/../interfaces/PacketConsumerInterface.php";
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Processes
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Processes
  * @author     Scott Price <prices@hugllc.com>

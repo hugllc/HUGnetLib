@@ -25,7 +25,7 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>
@@ -43,7 +43,7 @@ require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
  * This class keeps track of hooks that can be defined and used other places in the
  * code to cause custom functions to happen.
  *
- * @category   Containers
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Containers
  * @author     Scott Price <prices@hugllc.com>

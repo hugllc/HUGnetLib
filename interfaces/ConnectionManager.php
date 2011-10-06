@@ -25,7 +25,7 @@
  * MA  02110-1301, USA.
  * </pre>
  *
- * @category   Interfaces
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
@@ -39,7 +39,7 @@
  * This class has functions that relate to the manipulation of elements
  * of the devInfo array.
  *
- * @category   Interfaces
+ * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>

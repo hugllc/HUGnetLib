@@ -24,14 +24,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * </pre>
  *
- * @category   Database
- * @package    HUGnetLib
- * @subpackage Endpoints
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    SVN: $Id$
+ * @version    git: $Id$
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -45,15 +45,16 @@ define("HUGNETDB_META_ERROR_DUPLICATE", 2);
 define("HUGNETDB_META_ERROR_DUPLICATE_MSG", "Duplicate Entry");
 /** Misc stuff */
 require_once CODE_BASE."base/HUGnetClass.php";
+/** This is our test configuration */
 require_once CODE_BASE."/interfaces/HUGnetDB.php";
 /**
  * Base class for all database work
  *
  * This class uses the {@link http://www.php.net/pdo PDO} extension to php.
  *
- * @category   Base
- * @package    HUGnetLib
- * @subpackage Database
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
