@@ -31,26 +31,26 @@
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** This is for the base class */
 require_once dirname(__FILE__)."/../../base/DeviceSensorBase.php";
 /**
-* Class for dealing with current sensors.
-*
-* @category   Libraries
-* @package    HUGnetLib
-* @subpackage SensorBase
-* @author     Scott Price <prices@hugllc.com>
-* @copyright  2007-2011 Hunt Utilities Group, LLC
-* @copyright  2009 Scott Price
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
-*
-* @SuppressWarnings(PHPMD.ShortVariable)
-*/
+ * Class for dealing with current sensors.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage SensorBase
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
 abstract class CurrentDeviceSensorBase extends DeviceSensorBase
 {
     /** @var array This is the default values for the data */

@@ -31,15 +31,18 @@
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
 /** require our base class */
 require_once dirname(__FILE__)."/HUGnetClass.php";
+/** require our base class */
 require_once dirname(__FILE__)."/../containers/ConfigContainer.php";
+/** require our base class */
 require_once dirname(__FILE__)."/HUGnetContainer.php";
+/** require our base class */
 require_once dirname(__FILE__)."/../interfaces/OutputInterface.php";
+/** require our base class */
 require_once dirname(__FILE__)."/../interfaces/IteratorInterface.php";
 /**
  * Base class for all database work
@@ -56,6 +59,7 @@ require_once dirname(__FILE__)."/../interfaces/IteratorInterface.php";
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class HUGnetDBTable extends HUGnetContainer

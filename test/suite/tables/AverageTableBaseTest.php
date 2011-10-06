@@ -31,7 +31,6 @@
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
@@ -57,6 +56,7 @@ require_once TEST_CONFIG_BASE."files/mocks/HistoryTableMock.php";
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class AverageTableBaseTest extends HUGnetDBTableTestBase

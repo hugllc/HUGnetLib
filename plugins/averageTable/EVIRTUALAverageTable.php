@@ -32,7 +32,6 @@
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
@@ -49,6 +48,7 @@ require_once dirname(__FILE__)."/../../tables/AverageTableBase.php";
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class EVIRTUALAverageTable extends AverageTableBase
@@ -135,7 +135,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     }
     /**
     * This returns the first average from this device
-    * 
+    *
     * @param array &$rec The record to modify
     *
     * @return null
@@ -171,7 +171,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     }
     /**
     * This returns the first average from this device
-    * 
+    *
     * @param int $date The date to check for
     *
     * @return null
@@ -191,7 +191,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     }
     /**
     * This returns the first average from this device
-    * 
+    *
     * @return null
     */
     protected function getNextAverageDate()

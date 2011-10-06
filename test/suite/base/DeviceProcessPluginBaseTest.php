@@ -31,7 +31,6 @@
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is what we are testing */
@@ -51,6 +50,7 @@ require_once CODE_BASE.'containers/DeviceContainer.php';
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 class DeviceProcessPluginBaseTest extends PHPUnit_Framework_TestCase
