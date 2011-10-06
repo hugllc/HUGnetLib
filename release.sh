@@ -8,7 +8,10 @@ if [ "x${VERSION}" == "x" ]; then
     exit;
 fi
 
-git commit -a
+source setversion.sh ${VERSION}
+
+git commit -a -m "Release ${VERSION}"
+
 echo Tagging the version
 git tag -m "Release ${VERSION}" -s v${VERSION} HEAD
 git push --tags
