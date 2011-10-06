@@ -32,7 +32,7 @@
  * @copyright  2009 Scott Price
  * @copyright  Copyright (c) 2008, Nathan Lucas
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version    Release: 0.9.7
+ * @version    0.8.0
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /**
