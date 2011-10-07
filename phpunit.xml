@@ -23,11 +23,6 @@
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
       <exclude>
-        <directory suffix=".php">test</directory>
-        <directory suffix=".php">contrib</directory>
-        <directory suffix=".php">old</directory>
-        <directory suffix=".php">build</directory>
-        <directory suffix=".php">Documentation</directory>
       </exclude>
     </whitelist>
   </filter>

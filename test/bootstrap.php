@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
 /** This is the base where the code resides */
-define("CODE_BASE", realpath(dirname(__FILE__)."/..")."/");
+define("CODE_BASE", realpath(dirname(__FILE__)."/../src")."/");
 /** This is the base where the test suite resides */
 define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
 /** This is the base where the test config resides */
