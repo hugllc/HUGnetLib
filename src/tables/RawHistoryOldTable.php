@@ -179,7 +179,7 @@ class RawHistoryOldTable extends HUGnetDBTable
                 "packet" => $this->packet,
                 "device" => $this->device,
                 "command" => $this->sendCommand,
-                "dataIndex" => $this->device->dataIndex($old->RawData),
+                "dataIndex" => $this->device->dataIndex($this->RawData),
             )
         );
         return $new;

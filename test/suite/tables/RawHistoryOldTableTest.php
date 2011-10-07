@@ -418,6 +418,7 @@ class RawHistoryOldTableTest extends HUGnetDBTableTestBase
                     ),
                     'devicesHistoryDate' => 1068143410,
                     'command' => 55,
+                    'dataIndex' => 0x5A,
                 ),
             ),
             array(  // #2 id too high
