@@ -12,7 +12,7 @@
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/Documentation"/>
-  <delete dir="${basedir}/php.core"/>
+  <delete file="${basedir}/php.core"/>
 
   <mkdir dir="${basedir}/build/api"/>
   <mkdir dir="${basedir}/build/code-browser"/>
@@ -99,5 +99,9 @@
   </exec>
  </target>
 
- <target name="build" depends="clean,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb"/>
+ <target name="cleanafter" description="Clean up artifacts">
+  <delete file="${basedir}/php.core"/>
+ </target>
+
+ <target name="build" depends="clean,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
 </project>
