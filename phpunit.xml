@@ -21,11 +21,15 @@
   </logging>
 
   <filter>
+    <blacklist>
+      <directory suffix=".php">build</directory>
+      <directory suffix=".php">test</directory>
+    </blacklist>
     <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">src</directory>
       <exclude>
-        <directory suffix=".php">test</directory>
         <directory suffix=".php">src/contrib</directory>
-        <directory suffix=".php">build</directory>
+        <file>src/hugnet.inc.php</file>
       </exclude>
     </whitelist>
   </filter>

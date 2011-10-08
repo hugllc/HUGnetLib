@@ -45,7 +45,7 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
     CODE_BASE."hugnet.inc.php"
 );
 PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."contrib");
-PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."test");
+PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(dirname(__FILE__));
 PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(
     CODE_BASE."interfaces"
 );

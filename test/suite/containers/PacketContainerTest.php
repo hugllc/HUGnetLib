@@ -99,6 +99,7 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
     {
         $this->o = null;
         $this->config = null;
+        $this->socket = null;
     }
     /**
     * data provider for testDeviceID
@@ -1165,8 +1166,8 @@ class PacketContainerTest extends PHPUnit_Framework_TestCase
                     ),
                     "Timeout" => 1,
                 ),
-                "5A5A5A55000ABC0000200401020304C3A134389105239258"
-                ."5A5A5A01000020000ABC040102030497",
+                //"5A5A5A55000ABC0000200401020304C3A134389105239258".
+                "5A5A5A01000020000ABC040102030497",
                 "5A5A5A55000ABC0000200401020304C3",
                 array(
                     "To" => "000ABC",
