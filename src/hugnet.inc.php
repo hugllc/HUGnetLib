@@ -47,7 +47,7 @@ if (!defined("DS")) {
 /** The version define for all of HUGnetLib */
 define(
     "HUGNET_LIB_VERSION",
-    trim(file_get_contents("VERSION.TXT"))
+    trim(file_get_contents(dirname(__FILE__)."/VERSION.TXT"))
 );
 /** This is for backward compatibility with some older stuff */
 define("HUGNET_BACKEND_VERSION", HUGNET_LIB_VERSION);
