@@ -11,7 +11,7 @@
             />
     </exec>
     <property name="buildname" value="HUGnetLib-${version}" />
-    <property name="staging" value="${basedir}/build/${buildname}"/>
+    <property name="staging" value="${basedir}/build/"/>
     <property name="builddir" value="${basedir}/build/rel/" />
     <property name="buildtarget" value="${builddir}/${buildname}" />
 
@@ -26,8 +26,8 @@
 
     <target name="setup" description="Copy all of the files to build the deb">
         <echo>Setting up for HUGnetLib 'v${version}'</echo>
-        <mkdir dir="${staging}"/>
-        <copy todir="${staging}">
+        <mkdir dir="${staging}/${buildname}"/>
+        <copy todir="${staging}/${buildname}">
             <fileset dir="${source}"/>
         </copy>
     </target>
