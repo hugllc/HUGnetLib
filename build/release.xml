@@ -34,10 +34,22 @@
     <target name="release" description="build the release files">
         <tar destfile="${buildtarget}.tar.gz"
             basedir="${staging}" compression="gzip"/>
+        <checksum file="${buildtarget}.tar.gz" todir="${builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${buildtarget}.tar.gz" todir="${builddir}"
+                        algorithm="md5" format="MD5SUM"/>
         <tar destfile="${buildtarget}.tar.bz2"
             basedir="${staging}" compression="bzip2"/>
+        <checksum file="${buildtarget}.tar.bz2" todir="${builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${buildtarget}.tar.bz2" todir="${builddir}"
+                        algorithm="md5" format="MD5SUM"/>
         <zip destfile="${buildtarget}.zip"
             basedir="${staging}"/>
+        <checksum file="${buildtarget}.zip" todir="${builddir}"
+                        algorithm="sha1" format="MD5SUM"/>
+        <checksum file="${buildtarget}.zip" todir="${builddir}"
+                        algorithm="md5" format="MD5SUM"/>
     </target>
     <target name="postclean" description="build the deb">
         <delete dir="${staging}"/>
