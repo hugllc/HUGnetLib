@@ -4,8 +4,8 @@
 <project name="HUGnetLib" default="build" basedir=".">
     <property name="source" value="src"/>
     <property name="testSource" value="test"/>
+    <include file="${basedir}/build/package.xml"/>
     <include file="${basedir}/build/debs.xml"/>
-    <include file="${basedir}/build/release.xml"/>
 
     <target name="clean" description="Clean up">
         <delete dir="${basedir}/build/api" failonerror="false"/>
@@ -113,8 +113,8 @@
 
     <target name="build" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="deb.build"/>
-    <target name="release" depends="release.build"/>
-    <target name="distclean" depends="clean,deb.clean,release.clean">
+    <target name="package" depends="package.build,deb.build"/>
+    <target name="distclean" depends="clean,deb.clean,package.clean">
         <delete dir="${basedir}/build/rel"/>
     </target>
 
