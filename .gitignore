@@ -6,3 +6,4 @@ old/
 .swp.*
 *.kate*
 build/
+rel/
