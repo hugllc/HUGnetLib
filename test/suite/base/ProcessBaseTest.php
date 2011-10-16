@@ -36,6 +36,8 @@
  */
 /** This is a required class */
 require_once CODE_BASE.'base/ProcessBase.php';
+/** This is the dummy socket container */
+require_once TEST_CONFIG_BASE.'stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.

@@ -40,6 +40,8 @@ require_once CODE_BASE.'base/DeviceDriverLoadableBase.php';
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 /** This is a required class */
 require_once CODE_BASE.'containers/PacketContainer.php';
+/** This is the dummy socket container */
+require_once TEST_CONFIG_BASE.'stubs/DummySocketContainer.php';
 
 /**
  * Test class for filter.

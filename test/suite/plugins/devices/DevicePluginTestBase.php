@@ -36,6 +36,8 @@
  */
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
+/** This is the dummy socket container */
+require_once TEST_CONFIG_BASE.'stubs/DummySocketContainer.php';
 /** This is a required class */
 require_once TEST_BASE.'plugins/PluginTestBase.php';
 /**
