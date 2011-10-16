@@ -41,7 +41,7 @@
             </sequential>
             <antcall target="phpcpd"/>
             <antcall target="phpcs"/>
-            <antcall target="phpdoc"/>
+            <antcall target="docblox"/>
             <antcall target="phploc"/>
         </parallel>
     </target>
@@ -91,9 +91,9 @@
         </exec>
     </target>
 
-    <target name="phpdoc" description="Generate API documentation using PHPDocumentor">
-        <exec executable="phpdoc">
-            <arg line="-c build/phpdoc.ini" />
+    <target name="docblox" description="Generate API documentation using DocBlox">
+        <exec executable="docblox">
+            <arg line="-c build/docblox.xml" />
         </exec>
     </target>
 
@@ -109,7 +109,7 @@
         <delete file="${basedir}/php.core"/>
     </target>
 
-    <target name="build" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,phpdoc,phploc,phpunit,phpcb,cleanafter"/>
+    <target name="build" depends="clean,setup,pdepend,phpmd,phpcpd,phpcs,docblox,phploc,phpunit,phpcb,cleanafter"/>
     <target name="deb" depends="deb.build"/>
     <target name="package" depends="package.build,deb.build"/>
     <target name="distclean" depends="clean,deb.clean,package.clean">

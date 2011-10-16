@@ -43,7 +43,7 @@ require_once dirname(__FILE__).'/../tables/FirmwareTable.php';
  * Base for loadable device drivers
  *
  * @category   Libraries
- * @package    HUGnetLibTest
+ * @package    HUGnetLib
  * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC

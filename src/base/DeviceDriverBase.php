@@ -47,7 +47,7 @@ require_once dirname(__FILE__).'/../tables/RawHistoryTable.php';
  * Base class for all device drivers
  *
  * @category   Libraries
- * @package    HUGnetLibTest
+ * @package    HUGnetLib
  * @subpackage Base
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC

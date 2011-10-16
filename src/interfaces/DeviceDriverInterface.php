@@ -25,7 +25,7 @@
  * </pre>
  *
  * @category   Libraries
- * @package    HUGnetLibTest
+ * @package    HUGnetLib
  * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
@@ -39,7 +39,7 @@
  * Interface for device drivers
  *
  * @category   Libraries
- * @package    HUGnetLibTest
+ * @package    HUGnetLib
  * @subpackage Interfaces
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
