@@ -105,7 +105,7 @@ abstract class HistoryTableBase extends HUGnetDBTable
             "Default" => 0.0,
         ),
     );
-    /** @car array This is where the columns will actually reside. */
+    /** @var array This is where the columns will actually reside. */
     public $sqlColumns = array();
     /**
     * @var array This is the definition of the indexes

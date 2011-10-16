@@ -118,7 +118,7 @@ abstract class AverageTableBase extends HistoryTableBase
             "Default" => "15MIN",
         ),
     );
-    /** @car array This is where the columns will actually reside. */
+    /** @var array This is where the columns will actually reside. */
     public $sqlColumns = array();
     /**
     * @var array This is the definition of the indexes
