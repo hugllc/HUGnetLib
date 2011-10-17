@@ -1079,7 +1079,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
                         ."cyI7czoyOiJpZCI7aTo1O3M6NjoibXlEYXRlIjtzOjE5OiIxOTcwLTA"
                         ."xLTAxIDAwOjAwOjAwIjtzOjExOiJteU90aGVyRGF0ZSI7aTowO3M6ND"
                         ."oibmFtZSI7czo0OiJOYW1lIjtzOjU6InZhbHVlIjtkOjEyO30=",
-             ),
+                ),
             ),
         );
     }
