@@ -56,6 +56,7 @@ define("HUGNET_PLUGIN_BASE_PATH", realpath(dirname(__FILE__)."/../plugins/"));
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @deprecated Remove in version 0.9.9
  */
 class ConfigContainer extends HUGnetContainer
 {
