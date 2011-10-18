@@ -40,14 +40,4 @@ define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
 /** This is the base where the test config resides */
 define("TEST_CONFIG_BASE", realpath(dirname(__FILE__))."/");
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__);
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-    CODE_BASE."hugnet.inc.php"
-);
-PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(CODE_BASE."contrib");
-PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(dirname(__FILE__));
-PHP_CodeCoverage_Filter::getInstance()->addDirectoryToBlacklist(
-    CODE_BASE."interfaces"
-);
-
 ?>
