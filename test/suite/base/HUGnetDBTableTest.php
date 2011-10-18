@@ -724,8 +724,8 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for verbosity
     *
-    * @param array  $preload The array to preload into the class
-    * @param array  $expect  The expected return
+    * @param array $preload The array to preload into the class
+    * @param array $expect  The expected return
     *
     * @dataProvider dataSerialize
     *

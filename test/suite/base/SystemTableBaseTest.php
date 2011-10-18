@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'system/Gateway.php';
+require_once CODE_BASE.'base/SystemTableBase.php';
 /** This is a required class */
 require_once CODE_BASE.'system/Error.php';
 /** This is the dummy table container */
@@ -57,7 +57,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayTest extends \PHPUnit_Framework_TestCase
+class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -84,6 +84,29 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     {
         unset($this->o);
         parent::tearDown();
+    }
+    /**
+    * This tests the exception when a system object is not passed
+    *
+    * @return null
+    */
+    public function testCreateThrowException()
+    {
+        $this->setExpectedException("Exception");
+        // This throws an exception because $test is not a object
+        SystemTableBaseTestStub::create($test);
+    }
+    /**
+    * This tests the exception when a system object is not passed
+    *
+    * @return null
+    */
+    public function testTableThrowException()
+    {
+        $this->setExpectedException("Exception");
+        $system = new DummySystem();
+        // This throws an exception because the table name is bad
+        SystemTableBaseTestStub::create($system, 2, "thisIsAbadClassName");
     }
     /**
     * Data provider for testCreate
@@ -141,12 +164,88 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreate($config, $gateway, $class, $expectTable)
     {
-        $obj = Gateway::create($config, $gateway, $class);
+        $obj = SystemTableBaseTestStub::create($config, $gateway, $class);
         // Make sure we have the right object
-        $this->assertTrue((get_class($obj) === "HUGnet\Gateway"), "Class wrong");
-        if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
+        $this->assertTrue(
+            is_subclass_of($obj, "HUGnet\SystemTableBase"), "Class wrong"
+        );
+        if (is_object($class)) {
+            $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
         }
     }
+
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataLoad()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "fromAny" => array(
+                        array(
+                            array(
+                                "id" => 5,
+                                "name" => 3,
+                                "value" => 1,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                new DummySystem(),
+                2,
+                array(
+                    "getRow" => array(
+                        array(0 => 2),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config      The configuration to use
+    * @param mixed $gateway     The gateway data to set
+    * @param array $expectTable The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataLoad
+    */
+    public function testLoad($config, $gateway, $expectTable)
+    {
+        $class = new DummyTable();
+        $obj = SystemTableBaseTestStub::create($config, null, $class);
+        $obj->load($gateway);
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+    }
+
+}
+/**
+ * Stub class for testing SystemTableBase
+ *
+ * @category   Libraries
+ * @package    HUGnetLibTest
+ * @subpackage SuiteBase
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ */
+class SystemTableBaseTestStub extends SystemTableBase
+{
 }
 ?>

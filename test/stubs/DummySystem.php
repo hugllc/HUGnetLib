@@ -1,9 +1,9 @@
 <?php
 /**
- * Classes for dealing with devices
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
- *
  * <pre>
  * HUGnetLib is a library of HUGnet code
  * Copyright (C) 2007-2011 Hunt Utilities Group, LLC
@@ -21,60 +21,40 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  * </pre>
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage System
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- *
  */
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+require_once dirname(__FILE__)."/DummyBase.php";
 
 /**
- * Base system class.
- *
- * This class is the new API into HUGnetLib.  It controls the config and gives out
- * objects for everything else.  This is the only file that should be
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage System
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
- * @since      0.9.7
  */
-class Gateway extends SystemTableBase
+class DummySystem extends DummyBase
 {
-    /**
-    * This function creates the system.
-    *
-    * @param mixed  $config (array)The configuration, (string) File path to open
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
-    *
-    * @return null
-    */
-    public static function &create(
-        $config = array(), $data=null, $table="GatewaysTable"
-    ) {
-        $object = &parent::create($config, $data, $table);
-        return $object;
-    }
 
 }
-
-
 ?>

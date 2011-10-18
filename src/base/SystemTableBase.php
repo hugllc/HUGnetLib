@@ -1,0 +1,198 @@
+<?php
+/**
+ * Classes for dealing with devices
+ *
+ * PHP Version 5
+ *
+ * <pre>
+ * HUGnetLib is a library of HUGnet code
+ * Copyright (C) 2007-2011 Hunt Utilities Group, LLC
+ * Copyright (C) 2009 Scott Price
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * </pre>
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Base
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ */
+/** This is the HUGnet namespace */
+namespace HUGnet;
+
+/**
+ * Base system class.
+ *
+ * This class is the new API into HUGnetLib.  It controls the config and gives out
+ * objects for everything else.  This is the only file that should be
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Base
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2009 Scott Price
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+abstract class SystemTableBase
+{
+    /** @var int The database table to use */
+    private $_table = null;
+    /** @var int The config to use */
+    private $_system = null;
+    /** @var int The database table class to use */
+    protected $tableClass = null;
+
+    /**
+    * This function sets up the driver object, and the database object.  The
+    * database object is taken from the driver object.
+    *
+    * @param object &$system The configuration array
+    * @param string $table   The table class to use
+    *
+    * @return null
+    */
+    private function __construct(&$system, $table)
+    {
+        Error::throwException(
+            get_class($this)." needs to be passed a system object",
+            -99,
+            !is_object($system)
+        );
+        $this->_system = $system;
+        $this->_setTable($table);
+    }
+    /**
+    * Sets the database table to use. It expects either an object or a string
+    *
+    * @param mixed &$table The table class to use
+    *
+    * @return null
+    */
+    private function _setTable(&$table)
+    {
+        if (is_string($table)) {
+            $this->tableClass = $table;
+        } else if (is_object($table)) {
+            $this->tableClass = get_class($table);
+            $this->_table = $table;
+        }
+    }
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        if (is_object($this->_table)) {
+            // This calls the destructor on the table object
+            unset($this->_table);
+        }
+    }
+    /**
+    * This function gives us access to the table class
+    *
+    * @return reference to the table class object
+    */
+    protected function &table()
+    {
+        if (!is_object($this->_table)) {
+            $class = $this->findClass();
+            $system = &$this->system();
+            $this->_table = new $class($system);
+        }
+        return $this->_table;
+    }
+    /**
+    * This function gives us access to the table class
+    *
+    * @return reference to the table class object
+    */
+    protected function findClass()
+    {
+        /** This is our table class */
+        @include_once dirname(__FILE__)."/../tables/".$this->tableClass.".php";
+        if (class_exists("\\HUGnet\\".$this->tableClass)) {
+            $class = "\\HUGnet\\".$this->tableClass;
+        } else if (class_exists("\\".$this->tableClass)) {
+            $class = "\\".$this->tableClass;
+        } else if (class_exists($this->tableClass)) {
+            $class = $this->tableClass;
+        } else {
+            Error::throwException(
+                get_class($this)."'s table class '".$class."' doesn't exist",
+                -99,
+                !class_exists($class)
+            );
+        }
+        return $class;
+    }
+    /**
+    * This function gives us access to the table class
+    *
+    * @return reference to the system object
+    */
+    protected function &system()
+    {
+        return $this->_system;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param object &$system The system object to use
+    * @param mixed  $data    (int)The id of the item, (array) data info array
+    * @param string $table   The table to use
+    *
+    * @return null
+    */
+    public static function &create(
+        &$system, $data=null, $table="GenericTable"
+    ) {
+        $class = get_called_class();
+        $object = new $class($system, $table);
+        $object->load($data);
+        return $object;
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @param mixed $data (int)The id of the record,
+    *                    (array) or (string) data info array
+    *
+    * @return null
+    */
+    public function load($data)
+    {
+        $ret = false;
+        if (is_int($data)) {
+            $ret = $this->table()->getRow($data);
+        } else if (is_array($data) || is_string($data)) {
+            $this->table()->fromAny($data);
+            $ret = true;
+        }
+        return (bool)$ret;
+    }
+
+}
+
+
+?>

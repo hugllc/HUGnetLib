@@ -36,8 +36,6 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'system/Gateway.php';
-/** This is a required class */
 require_once CODE_BASE.'system/Error.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
@@ -57,7 +55,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySystem.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class GatewayTest extends \PHPUnit_Framework_TestCase
+class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -82,47 +80,73 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
-        unset($this->o);
         parent::tearDown();
+    }
+    /**
+    * Data provider for testThrowException
+    *
+    * @return array
+    */
+    public static function dataThrowException()
+    {
+        return array(
+            array("Test Message", 5, false, null),
+            array("Test Message", 6, true, "Exception"),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param string $msg       The message
+    * @param int    $code      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                          is ignored.
+    * @param array  $expect    The table to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataThrowException
+    */
+    public function testThrowException($msg, $code, $condition, $expect)
+    {
+        if (is_string($expect)) {
+            $this->setExpectedException($expect);
+        }
+        Error::throwException($msg, $code, $condition);
     }
     /**
     * Data provider for testCreate
     *
     * @return array
     */
-    public static function dataCreate()
+    public static function dataLoad()
     {
         return array(
-            array(new DummySystem(), null, "DummyTable", null),
-            array(new DummySystem(), null, "DummyTable", null),
             array(
-                new DummySystem(),
-                array(
-                    "id" => 5,
-                    "name" => 3,
-                    "value" => 1,
+                new DummySystem(
+                    array(
+                        "time" => 1234,
+                    )
                 ),
-                "DummyTable",
+                1,
+                "Message",
+                2,
+                "Method",
+                "Class",
                 array(
                     "fromAny" => array(
                         array(
                             array(
-                                "id" => 5,
-                                "name" => 3,
-                                "value" => 1,
+                                "class" => "Class",
+                                "method" => "Method",
+                                "errno" => 1,
+                                "error" => "Message",
+                                "Date" => 1234,
+                                "Severity" => 2,
                             ),
                         ),
                     ),
-                ),
-            ),
-            array(
-                new DummySystem(),
-                2,
-                new DummyTable(),
-                array(
-                    "getRow" => array(
-                        array(0 => 2),
-                    ),
+                    "insertRow" => array(array(true)),
                 ),
             ),
         );
@@ -130,23 +154,27 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array $config      The configuration to use
-    * @param mixed $gateway     The gateway to set
-    * @param mixed $class       This is either the name of a class or an object
-    * @param array $expectTable The table to expect
+    * @param array  $system   The configuration to use
+    * @param mixed  $errno    The error number.  Could be a string or number
+    * @param string $errmsg   The error message
+    * @param string $severity The severity of the message
+    * @param string $method   Should be filled with __METHOD__
+    * @param string $class    The classs calling the error
+    * @param array  $expect   The table to expect
     *
     * @return null
     *
-    * @dataProvider dataCreate
+    * @dataProvider dataLoad
     */
-    public function testCreate($config, $gateway, $class, $expectTable)
-    {
-        $obj = Gateway::create($config, $gateway, $class);
-        // Make sure we have the right object
-        $this->assertTrue((get_class($obj) === "HUGnet\Gateway"), "Class wrong");
-        if (is_object($table)) {
-            $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
-        }
+    public function testLoad(
+        $system, $errno, $errmsg, $severity, $method, $class, $expect
+    ) {
+        $table = new DummyTable();
+        $obj = Error::create($system, null, $table);
+        $obj->log($errno, $errmsg, $severity, $method, $class);
+        $this->assertEquals($expect, $table->retrieve(), "Data Wrong");
     }
+
+
 }
 ?>

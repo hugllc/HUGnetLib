@@ -40,10 +40,7 @@ namespace HUGnet;
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 
 /**
- * Base system class.
- *
- * This class is the new API into HUGnetLib.  It controls the config and gives out
- * objects for everything else.  This is the only file that should be
+ * This class controls all error messages and exceptions
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -56,23 +53,52 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Gateway extends SystemTableBase
+class Error extends SystemTableBase
 {
     /**
-    * This function creates the system.
+    * Logs an error in the database
     *
-    * @param mixed  $config (array)The configuration, (string) File path to open
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
+    * @param mixed  $errno    The error number.  Could be a string or number
+    * @param string $errmsg   The error message
+    * @param string $severity The severity of the message
+    * @param string $method   Should be filled with __METHOD__
+    * @param string $class    The classs calling the error
     *
     * @return null
     */
-    public static function &create(
-        $config = array(), $data=null, $table="GatewaysTable"
-    ) {
-        $object = &parent::create($config, $data, $table);
-        return $object;
+    public function log($errno, $errmsg, $severity, $method, $class)
+    {
+        $this->table()->fromAny(
+            array(
+                "class"    => $class,
+                "method"   => $method,
+                "errno"    => $errno,
+                "error"    => $errmsg,
+                "Date"     => $this->system()->time(),
+                "Severity" => $severity,
+            )
+        );
+        return $this->table()->insertRow(true);
     }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $code      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public static function throwException($msg, $code, $condition = true)
+    {
+        if ((boolean)$condition) {
+            throw new \Exception($msg, $code);
+            // @codeCoverageIgnoreStart
+            // This will never run.
+        }
+    }
+    // @codeCoverageIgnoreEnd
 
 }
 
