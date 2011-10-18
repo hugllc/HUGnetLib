@@ -162,7 +162,10 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
             ),
         );
         $this->myConfig->forceConfig($config);
-        $obj = new HUGnetDBTableTestStub($empty, $this->pdo);
+        $obj = new HUGnetDBTableTestStub();
+        // This causes it to try to connect to a bad database, and causes
+        // the exception.
+        $obj->getRow(5);
     }
 
     /**
@@ -540,7 +543,7 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->pdo->query("DROP TABLE IF EXISTS `myTable`");
         $obj = new HUGnetDBTableTestStub($preload);
         $obj->create();
-        $myDriver = $this->readAttribute($obj, "myDriver");
+        $myDriver = $this->readAttribute($obj, "_driver");
         $ret = $myDriver->columns();
         $this->assertSame($expect, $ret);
     }
@@ -686,6 +689,59 @@ class HUGnetDBTableTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertFalse($ret);
 
     }
+    /**
+    * Data provider for testSerialize
+    *
+    * @return array
+    */
+    public static function dataSerialize()
+    {
+        return array(
+            array(
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => "-5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "Something Negative",
+                    "value" => "-25.0",
+                ),
+                array(
+                    "group" => "default",
+                    "fluff" => "nStuff",
+                    "other" => "things",
+                    "id" => "-5",
+                    "myDate" => "1970-01-01 00:00:00",
+                    "myOtherDate" => 0,
+                    "name" => "Something Negative",
+                    "value" => "-25.0",
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSerialize
+    *
+    * @return null
+    */
+    public function testSerialize($preload, $expect)
+    {
+        $obj = new HUGnetDBTableTestStub($preload);
+        $data = serialize($obj);
+        $obj2 = unserialize($data);
+        $this->assertSame(get_class($obj), get_class($obj2), "Class is wrong");
+        $this->assertSame($expect, $obj2->toArray(), "Data is wrong");
+    }
+
     /**
     * Data provider for testSelectOneInto
     *

@@ -63,7 +63,7 @@ require_once dirname(__FILE__)."/../interfaces/IteratorInterface.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 abstract class HUGnetDBTable extends HUGnetContainer
-    implements OutputInterface, IteratorInterface
+    implements OutputInterface, IteratorInterface, Serializable
 {
     /** @var int This is where we store the limit */
     public $sqlLimit = 0;
@@ -125,7 +125,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public $sqlIndexes = array();
 
     /** @var object This is where we store our sqlDriver */
-    protected $myDriver = null;
+    private $_driver = null;
     /** @var object This is where we store our configuration object */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
@@ -151,30 +151,65 @@ abstract class HUGnetDBTable extends HUGnetContainer
         parent::__construct($data);
         // Get our config.
         $this->myConfig = &ConfigContainer::singleton();
-        if (is_object($this->myConfig->servers)) {
-            $this->myDriver = &$this->myConfig->servers->getDriver(
-                $this,
-                $this->group
-            );
-        }
-        if (!is_object($this->myDriver)) {
-            $this->throwException(
-                "No available database connection available in group '".$this->group
-                ."'.  Check your database configuration.", -2
-            );
-            // @codeCoverageIgnoreStart
-            // It thinks this line won't run.  The above function never returns.
-        }
-        // @codeCoverageIgnoreEnd
         $this->verbose($this->myConfig->verbose);
+    }
+    /**
+    * This function returns a reference to the database driver.
+    *
+    * @return Database Driver object reference
+    */
+    protected function &dbDriver()
+    {
+        if (!is_object($this->_driver)) {
+            if (is_object($this->myConfig->servers)) {
+                $this->_driver = &$this->myConfig->servers->getDriver(
+                    $this,
+                    $this->group
+                );
+            }
+            if (!is_object($this->_driver)) {
+                $this->throwException(
+                    "No available database connection available in group '"
+                    .$this->group."'.  Check your database configuration.", -2
+                );
+                // @codeCoverageIgnoreStart
+                // It thinks this line won't run.  The above function never returns.
+            } else {
+                // @codeCoverageIgnoreEnd
+                $this->_driver->verbose($verbose);
+            }
+        }
+        return $this->_driver;
     }
     /**
     * This is the destructor
     */
-    function __destruct()
+    public function __destruct()
     {
-        unset($this->myDriver);
+        unset($this->_driver);
         unset($this->myConfig);
+    }
+    /**
+    * This serializes the object without the PDO connection
+    *
+    * @return string The serialized object
+    */
+    public function serialize()
+    {
+        return (string)serialize($this->toArray());
+    }
+    /**
+    * This unserializes the object
+    *
+    * @param array $data The data to use to unserialize this class
+    *
+    * @return null
+    */
+    public function unserialize($data)
+    {
+        $this->setupColsDefault();
+        $this->clearData();
+        $this->fromArray(unserialize($data));
     }
     /**
     * Sets all of the endpoint attributes from an array
@@ -309,9 +344,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if (!is_array($key)) {
             $key = array($this->sqlId => $key);
         }
-        $ret = $this->myDriver->selectWhere($key);
-        $this->myDriver->fetchInto();
-        $this->myDriver->reset();
+        $ret = $this->dbDriver()->selectWhere($key);
+        $this->dbDriver()->fetchInto();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -336,8 +371,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->isEmpty()) {
             return false;
         }
-        $ret = $this->myDriver->updateOnce($this->toDB(), "", array(), $columns);
-        $this->myDriver->reset();
+        $ret = $this->dbDriver()->updateOnce($this->toDB(), "", array(), $columns);
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -354,9 +389,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
         }
         $sqlId = $this->sqlId;
         if ($this->default[$this->sqlId] === $this->$sqlId) {
-            $cols = $this->myDriver->autoIncrement();
+            $cols = $this->dbDriver()->autoIncrement();
         }
-        $ret = $this->myDriver->insert($this->toDB(), (array)$cols, $replace);
+        $ret = $this->dbDriver()->insert($this->toDB(), (array)$cols, $replace);
         return $ret;
     }
     /**
@@ -366,7 +401,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function insertEnd()
     {
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
     }
     /**
     * This function updates the record currently in this table
@@ -377,7 +412,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function insertRow($replace = false)
     {
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
         $ret = $this->insert($replace);
         $this->insertEnd();
         return $ret;
@@ -393,8 +428,8 @@ abstract class HUGnetDBTable extends HUGnetContainer
         if ($this->isEmpty()) {
             return false;
         }
-        $ret = $this->myDriver->deleteWhere($this->toDB());
-        $this->myDriver->reset();
+        $ret = $this->dbDriver()->deleteWhere($this->toDB());
+        $this->dbDriver()->reset();
         return $ret;
     }
 
@@ -405,13 +440,13 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function create()
     {
-        $ret = $this->myDriver->createTable();
+        $ret = $this->dbDriver()->createTable();
         if ($ret) {
             foreach ((array)$this->sqlIndexes as $index) {
-                $this->myDriver->addIndex($index);
+                $this->dbDriver()->addIndex($index);
             }
         }
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -424,9 +459,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function &select($where, $data = array())
     {
-        $this->myDriver->selectWhere($where, $data);
-        $ret = $this->myDriver->fetchAll();
-        $this->myDriver->reset();
+        $this->dbDriver()->selectWhere($where, $data);
+        $ret = $this->dbDriver()->fetchAll();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -439,7 +474,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function count($where, $data = array())
     {
-        return $this->myDriver->countWhere($where, $data);
+        return $this->dbDriver()->countWhere($where, $data);
     }
     /**
     * This function gets a record with the given key
@@ -451,13 +486,13 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function selectIDs($where, $data = array())
     {
-        $this->myDriver->selectWhere(
+        $this->dbDriver()->selectWhere(
             $where,
             $data,
             array($this->sqlId => $this->sqlId)
         );
-        $res = $this->myDriver->fetchAll(PDO::FETCH_ASSOC);
-        $this->myDriver->reset();
+        $res = $this->dbDriver()->fetchAll(PDO::FETCH_ASSOC);
+        $this->dbDriver()->reset();
         $ret = array();
         foreach ((array)$res as $r) {
             $ret[$r[$this->sqlId]] = $r[$this->sqlId];
@@ -474,7 +509,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     */
     public function selectInto($where, $data = array())
     {
-        $this->myDriver->selectWhere($where, $data);
+        $this->dbDriver()->selectWhere($where, $data);
         return $this->nextInto();
     }
     /**
@@ -488,7 +523,7 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function selectOneInto($where, $data = array())
     {
         $ret = $this->selectInto($where, $data);
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -499,9 +534,9 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function nextInto()
     {
         $this->clearData();
-        $ret = $this->myDriver->fetchInto();
+        $ret = $this->dbDriver()->fetchInto();
         if ($ret === false) {
-            $this->myDriver->reset();
+            $this->dbDriver()->reset();
         }
         return $ret;
     }
@@ -529,9 +564,6 @@ abstract class HUGnetDBTable extends HUGnetContainer
     public function verbose($verbose)
     {
         parent::verbose($verbose);
-        if (is_object($this->myDriver)) {
-            $this->myDriver->verbose($verbose);
-        }
     }
     /**
     * This routine takes any date and turns it into an SQL date
