@@ -200,8 +200,6 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     * Tests for verbosity
     *
     * @param array  $preload The array to preload into the class
-    * @param string $where   The where clause
-    * @param array  $data    The data to use with the where clause
     * @param array  $expect  The expected return
     *
     * @dataProvider dataSerialize
