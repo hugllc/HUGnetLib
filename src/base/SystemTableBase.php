@@ -131,19 +131,18 @@ abstract class SystemTableBase
     {
         /** This is our table class */
         @include_once dirname(__FILE__)."/../tables/".$this->tableClass.".php";
-        if (class_exists("\\HUGnet\\".$this->tableClass)) {
-            $class = "\\HUGnet\\".$this->tableClass;
-        } else if (class_exists("\\".$this->tableClass)) {
-            $class = "\\".$this->tableClass;
-        } else if (class_exists($this->tableClass)) {
-            $class = $this->tableClass;
-        } else {
-            Error::throwException(
-                get_class($this)."'s table class '".$class."' doesn't exist",
-                -99,
-                !class_exists($class)
-            );
+        $class = $this->tableClass;
+        if (!class_exists($class)) {
+            $class = "\\".$class;
         }
+        if (!class_exists($class)) {
+            $class = "\\HUGnet".$class;
+        }
+        Error::throwException(
+            get_class($this)."'s table class '".$this->tableClass."' doesn't exist",
+            -99,
+            !class_exists($class)
+        );
         return $class;
     }
     /**

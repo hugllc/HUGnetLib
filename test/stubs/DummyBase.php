@@ -75,7 +75,7 @@ class DummyBase
     /**
     * Tries to run a function defined by what is called..
     *
-    * @param string $name The name of the function to call
+    * @param string $function The name of the function to call
     *
     * @return mixed
     */
