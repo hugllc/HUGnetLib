@@ -252,7 +252,7 @@ class FirmwareTable extends HUGnetDBTable
                 break;
             }
         }
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**
@@ -372,8 +372,8 @@ class FirmwareTable extends HUGnetDBTable
             $where .= " AND `md5` = ?";
             $data[] = $this->md5;
         }
-        $this->myDriver->selectWhere($where, $data);
-        $this->myDriver->fetchInto();
+        $this->dbDriver()->selectWhere($where, $data);
+        $this->dbDriver()->fetchInto();
         return  !is_null($this->id);
     }
     /**
@@ -384,7 +384,7 @@ class FirmwareTable extends HUGnetDBTable
     public function exists()
     {
 
-        return (bool) $this->myDriver->countWhere(
+        return (bool) $this->dbDriver()->countWhere(
             "FWPartNum = ? AND Version = ?",
             array($this->FWPartNum, $this->Version),
             "id"

@@ -309,10 +309,10 @@ class DevicesTable extends HUGnetDBTable
     public function exists()
     {
 
-        $ret = (bool) $this->myDriver->countWhere(
+        $ret = (bool) $this->dbDriver()->countWhere(
             "DeviceID = ?", array($this->DeviceID), "DeviceID"
         );
-        $this->myDriver->reset();
+        $this->dbDriver()->reset();
         return $ret;
     }
     /**

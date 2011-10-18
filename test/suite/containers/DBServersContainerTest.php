@@ -81,6 +81,40 @@ class DBServersContainerTest extends PHPUnit_Framework_TestCase
     {
     }
 
+    /**
+    * Data provider for testSerialize
+    *
+    * @return array
+    */
+    public static function dataSerialize()
+    {
+        return array(
+            array(
+                array(array("group" => "one", "driver" => "asdf", "db" => "hello")),
+                "default",
+                array(array("group" => "one", "driver" => "asdf", "db" => "hello")),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $group   The group to connect to
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSerialize
+    *
+    * @return null
+    */
+    public function testSerialize($preload, $group, $expect)
+    {
+        $obj = new DBServersContainer($preload);
+        $data = serialize($obj);
+        $obj2 = unserialize($data);
+        $this->assertSame(get_class($obj), get_class($obj2), "Class is wrong");
+        $this->assertSame($expect, $obj2->toArray(), "Data is wrong");
+    }
 
 
     /**

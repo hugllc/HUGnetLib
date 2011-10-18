@@ -133,7 +133,7 @@ class RawHistoryOldTable extends HUGnetDBTable
     function __construct($data="")
     {
         parent::__construct($data);
-        $this->sqlColumns = $this->myDriver->columns();
+        $this->sqlColumns = $this->dbdriver()->columns();
         $this->setupColsDefault();
         $this->device = new DeviceContainer();
         $this->packet = new PacketContainer();

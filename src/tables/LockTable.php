@@ -151,8 +151,8 @@ class LockTable extends HUGnetDBTable
     */
     public function purgeAll()
     {
-        $ret = $this->myDriver->deleteWhere(1);
-        $this->myDriver->reset();
+        $ret = $this->dbDriver()->deleteWhere(1);
+        $this->dbDriver()->reset();
         return $ret;
     }
 

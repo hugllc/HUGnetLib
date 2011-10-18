@@ -105,6 +105,24 @@ class DBServersContainer extends HUGnetContainer implements ConnectionManager
             $this->disconnect($group);
         }
     }
+    /**
+    * This serializes the object without the PDO connection
+    *
+    * @return string The serialized object
+    */
+    public function __sleep()
+    {
+        // Save only the data array
+        return array("data");
+    }
+    /**
+    * This unserializes the object
+    *
+    * @return null
+    */
+    public function __wakeup()
+    {
+    }
 
     /**
     * Checks to see if we are connected to a database

@@ -103,14 +103,6 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
         // Connect to the database
         $this->connect();
         $this->dataColumns();
-        if ($this->myConfig->verbose > 5) {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } else if ($this->myConfig->verbose > 1) {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-        } else {
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
-        }
-        $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
     }
     /**
     * Register this database object
@@ -118,6 +110,35 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
     public function __destruct()
     {
         $this->reset();
+    }
+    /**
+    * This serializes the object without the PDO connection
+    *
+    * @return string The serialized object
+    */
+    public function __sleep()
+    {
+        $properties = get_object_vars($this);
+        $save = array();
+        foreach (array_keys($properties) as $key) {
+            // Filter out PDO objects
+            if (is_object($properties[$key])
+                && (get_class($properties[$key]) === "PDO")
+            ) {
+                continue;
+            }
+            $save[] = $key;
+        }
+        return $save;
+    }
+    /**
+    * This unserializes the object
+    *
+    * @return null
+    */
+    public function __wakeup()
+    {
+        $this->connect();
     }
 
     /**
@@ -140,6 +161,14 @@ abstract class HUGnetDBDriver extends HUGnetClass implements HUGnetDBDriverInter
             // It thinks this line won't run.  The above function never returns.
         }
         // @codeCoverageIgnoreEnd
+        if ($this->myConfig->verbose > 5) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } else if ($this->myConfig->verbose > 1) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+        } else {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+        }
+        $this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
     }
 
     /**

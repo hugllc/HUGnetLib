@@ -160,6 +160,67 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
         $this->o->Connect();
     }
     /**
+    * Data provider for testSerialize
+    *
+    * @return array
+    */
+    public static function dataSerialize()
+    {
+        return array(
+            array(
+                array(
+                    "defColumns" => array(
+                    ),
+                    "limit" => 1,
+                    "start" => 2,
+                    "verbose" => 3,
+                    "columns" => array(
+                        "id" => "id",
+                        "name" => "name",
+                        "value" => "value",
+                    ),
+                ),
+                array(
+                    "defColumns" => array(
+                    ),
+                    "limit" => 1,
+                    "start" => 2,
+                    "verbose" => 3,
+                    "columns" => array(
+                        "id" => "id",
+                        "name" => "name",
+                        "value" => "value",
+                    ),
+
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests for verbosity
+    *
+    * @param array  $preload The array to preload into the class
+    * @param string $where   The where clause
+    * @param array  $data    The data to use with the where clause
+    * @param array  $expect  The expected return
+    *
+    * @dataProvider dataSerialize
+    *
+    * @return null
+    */
+    public function testSerialize($preload, $expect)
+    {
+        $obj = new HUGnetDBDriverTestStub($this->table, $this->pdo);
+        foreach ((array)$preload as $key => $value) {
+            $obj->$key = $value;
+        }
+        $data = serialize($obj);
+        $obj2 = unserialize($data);
+        $this->assertSame(get_class($obj), get_class($obj2), "Class is wrong");
+        $this->assertSame($expect, get_object_vars($obj2), "Data is wrong");
+    }
+
+    /**
     * Data provider for testAddColumnQuery
     *
     * @return array

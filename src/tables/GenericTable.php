@@ -144,7 +144,7 @@ class GenericTable extends HUGnetDBTable
             return;
         }
         $this->sqlTable = $table;
-        $this->sqlColumns = $this->myDriver->columns();
+        $this->sqlColumns = $this->dbDriver()->columns();
         $this->setupColsDefault();
     }
     /**
@@ -157,7 +157,7 @@ class GenericTable extends HUGnetDBTable
     public function checkTables($tables = array())
     {
         if (empty($tables)) {
-            $tables = $this->myDriver->tables();
+            $tables = $this->dbDriver()->tables();
         }
         $oldTable = $this->sqlTable;
         foreach ($tables as $table) {
@@ -175,7 +175,7 @@ class GenericTable extends HUGnetDBTable
     public function checkTable($table)
     {
         $this->forceTable($table);
-        $ret = $this->myDriver->check();
+        $ret = $this->dbDriver()->check();
         return $ret;
     }
     /**
@@ -185,7 +185,7 @@ class GenericTable extends HUGnetDBTable
     */
     public function getTables()
     {
-        return $this->myDriver->tables();
+        return $this->dbDriver()->tables();
     }
     /**
     * Updates a row in the database.
@@ -203,7 +203,7 @@ class GenericTable extends HUGnetDBTable
         $whereData = array(),
         $columns = array()
     ) {
-        return $this->myDriver->updateOnce($data, $where, $whereData, $columns);
+        return $this->dbDriver()->updateOnce($data, $where, $whereData, $columns);
     }
 }
 ?>

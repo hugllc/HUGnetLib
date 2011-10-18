@@ -239,7 +239,7 @@ class PacketSocketTable extends HUGnetDBTable
     */
     public function deleteOld()
     {
-        return $this->myDriver->deleteWhere("`Timeout` < ?", time());
+        return $this->dbDriver()->deleteWhere("`Timeout` < ?", time());
     }
     /**
     * Gets the current time

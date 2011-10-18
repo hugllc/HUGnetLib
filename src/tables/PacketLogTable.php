@@ -162,8 +162,6 @@ class PacketLogTable extends HUGnetDBTable
         ),
     );
 
-    /** @var object This is where we store our sqlDriver */
-    protected $myDriver = null;
     /** @var object This is where we store our configuration object */
     protected $myConfig = null;
     /** @var array This is the default values for the data */
