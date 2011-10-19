@@ -175,7 +175,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * Data provider for testCreate
+    * Data provider for testLoad
     *
     * @return array
     */
@@ -184,6 +184,10 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 new DummySystem(),
+                new DummyTable(
+                    array(
+                    )
+                ),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -200,34 +204,118 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                true,
             ),
             array(
                 new DummySystem(),
+                new DummyTable(
+                    array(
+                        "getRow" => false,
+                    )
+                ),
                 2,
                 array(
                     "getRow" => array(
                         array(0 => 2),
                     ),
                 ),
+                false,
             ),
         );
     }
     /**
     * This tests the object creation
     *
-    * @param array $config      The configuration to use
-    * @param mixed $gateway     The gateway data to set
-    * @param array $expectTable The table to expect
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $gateway     The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
     *
     * @return null
     *
     * @dataProvider dataLoad
     */
-    public function testLoad($config, $gateway, $expectTable)
+    public function testLoad($config, $class, $gateway, $expectTable, $return)
     {
-        $class = new DummyTable();
         $obj = SystemTableBaseTestStub::create($config, null, $class);
-        $obj->load($gateway);
+        $ret = $obj->load($gateway);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+    }
+    /**
+    * Data provider for testStore
+    *
+    * @return array
+    */
+    public static function dataStore()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                new DummyTable(
+                    array(
+                        "get" => 5,
+                        "updateRow" => true,
+                    )
+                ),
+                false,
+                array(
+                    "get" => array(array("id")),
+                    "updateRow" => array(array()),
+                ),
+                true,
+            ),
+            array(
+                new DummySystem(),
+                new DummyTable(
+                    array(
+                        "get" => 0,
+                        "insertRow" => false,
+                    )
+                ),
+                false,
+                array(
+                    "get" => array(array("id")),
+                    "insertRow" => array(array(false)),
+                ),
+                false,
+            ),
+            array(
+                new DummySystem(),
+                new DummyTable(
+                    array(
+                        "get" => null,
+                        "insertRow" => true,
+                    )
+                ),
+                true,
+                array(
+                    "get" => array(array("id")),
+                    "insertRow" => array(array(true)),
+                ),
+                true,
+            ),
+        );
+    }
+    /**
+    * This tests storing to the database
+    *
+    * @param array  $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $replace     Whether to replace the current record or not
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataStore
+    */
+    public function testStore($config, $class, $replace, $expectTable, $return)
+    {
+        $obj = SystemTableBaseTestStub::create($config, null, $class);
+        $ret = $obj->store($replace);
+        $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
 

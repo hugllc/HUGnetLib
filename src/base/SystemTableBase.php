@@ -190,6 +190,23 @@ abstract class SystemTableBase
         }
         return (bool)$ret;
     }
+    /**
+    * Stores data into the database
+    *
+    * @param bool $replace Replace any record that is in the way
+    *
+    * @return null
+    */
+    public function store($replace = false)
+    {
+        $id = $this->table()->get($this->table()->sqlId);
+        if (!empty($id)) {
+            $ret = $this->table()->updateRow();
+        } else {
+            $ret = $this->table()->insertRow($replace);
+        }
+        return (bool)$ret;
+    }
 
 }
 
