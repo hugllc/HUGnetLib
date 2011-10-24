@@ -39,5 +39,7 @@ define("CODE_BASE", realpath(dirname(__FILE__)."/../src")."/");
 define("TEST_BASE", realpath(dirname(__FILE__)."/suite/")."/");
 /** This is the base where the test config resides */
 define("TEST_CONFIG_BASE", realpath(dirname(__FILE__))."/");
+/** This define allows everything else to be included */
+define("_HUGNET", true);
 
 ?>

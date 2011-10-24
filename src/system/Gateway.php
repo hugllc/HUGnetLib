@@ -36,6 +36,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet;
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 

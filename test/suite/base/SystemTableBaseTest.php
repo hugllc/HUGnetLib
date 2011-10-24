@@ -39,6 +39,8 @@ namespace HUGnet;
 require_once CODE_BASE.'base/SystemTableBase.php';
 /** This is a required class */
 require_once CODE_BASE.'system/Error.php';
+/** This is a required class */
+require_once CODE_BASE.'util/Util.php';
 /** This is the dummy table container */
 require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
 /** This is the dummy table container */

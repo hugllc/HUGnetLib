@@ -115,11 +115,11 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
         Error::throwException($msg, $code, $condition);
     }
     /**
-    * Data provider for testCreate
+    * Data provider for testLog
     *
     * @return array
     */
-    public static function dataLoad()
+    public static function dataLog()
     {
         return array(
             array(
@@ -164,9 +164,9 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataLoad
+    * @dataProvider dataLog
     */
-    public function testLoad(
+    public function testLog(
         $system, $errno, $errmsg, $severity, $method, $class, $expect
     ) {
         $table = new DummyTable();

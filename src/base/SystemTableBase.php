@@ -36,6 +36,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet;
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
  * Base system class.
@@ -76,7 +78,7 @@ abstract class SystemTableBase
     {
         Error::throwException(
             get_class($this)." needs to be passed a system object",
-            -99,
+            Error::EXCEPTION_OBJ_NOT_CONFIG,
             !is_object($system)
         );
         $this->_system = $system;
@@ -116,34 +118,11 @@ abstract class SystemTableBase
     protected function &table()
     {
         if (!is_object($this->_table)) {
-            $class = $this->findClass();
+            $class = Util::findClass($this->tableClass, "tables");
             $system = &$this->system();
             $this->_table = new $class($system);
         }
         return $this->_table;
-    }
-    /**
-    * This function gives us access to the table class
-    *
-    * @return reference to the table class object
-    */
-    protected function findClass()
-    {
-        /** This is our table class */
-        @include_once dirname(__FILE__)."/../tables/".$this->tableClass.".php";
-        $class = $this->tableClass;
-        if (!class_exists($class)) {
-            $class = "\\".$class;
-        }
-        if (!class_exists($class)) {
-            $class = "\\HUGnet".$class;
-        }
-        Error::throwException(
-            get_class($this)."'s table class '".$this->tableClass."' doesn't exist",
-            -99,
-            !class_exists($class)
-        );
-        return $class;
     }
     /**
     * This function gives us access to the table class

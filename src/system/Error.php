@@ -36,6 +36,8 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet;
+/** This keeps this file from being included unless HUGnetSystem.php is included */
+defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 
@@ -55,6 +57,8 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  */
 class Error extends SystemTableBase
 {
+    /** @var notice level severity */
+    const EXCEPTION_OBJ_NOT_CONFIG = -99;
     /**
     * Logs an error in the database
     *

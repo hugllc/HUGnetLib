@@ -34,8 +34,15 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+/** This define allows everything else to be included */
+define("_HUGNET", true);
 /** This is our base class */
 require_once dirname(__FILE__)."/containers/ConfigContainer.php";
+/** This is the system error class.  Everybody needs it */
+require_once dirname(__FILE__).'/system/Error.php';
+/** This is the system utility class.  Everybody needs it also */
+require_once dirname(__FILE__).'/util/Util.php';
+
 
 /**
  * Base system class.
