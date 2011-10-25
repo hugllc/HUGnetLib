@@ -156,6 +156,15 @@ class PhysicalPointVirtualSensor extends VirtualSensorBase
     /**
     * Changes a raw reading into a output value
     *
+    * @return mixed The DeviceID of our sensor
+    */
+    public function getDeviceID()
+    {
+        return $this->DeviceID;
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
     * @return mixed The value in whatever the units are in the sensor
     */
     public function &getAverageTable()

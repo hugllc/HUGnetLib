@@ -214,6 +214,15 @@ abstract class AverageTableBase extends HistoryTableBase
         if ($data->isEmpty()) {
             return false;
         }
+        if (($this->Type === self::AVERAGE_15MIN)
+            && ($this->endTime >= ($data->Date - 1800))
+            && ($this->endTime <= ($data->Date - 900))
+        ) {
+            $this->Date = $this->endTime;
+            $this->startTime += 900;
+            $this->endTime += 900;
+            return true;
+        }
         $this->clearData();
         $this->Type = self::AVERAGE_15MIN;
         $this->_getTimePeriod($data->Date, self::AVERAGE_15MIN);

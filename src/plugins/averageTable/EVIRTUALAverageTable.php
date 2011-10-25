@@ -78,6 +78,8 @@ class EVIRTUALAverageTable extends AverageTableBase
     * then it will calculate 15 minute averages.
     *
     * @param HistoryTableBase &$data This is the data to use to calculate the average
+    *                                This is not used here, but it is required to
+    *                                match the main implementation.
     *
     * @return bool True on success, false on failure
     */
@@ -86,7 +88,8 @@ class EVIRTUALAverageTable extends AverageTableBase
         if ($this->done) {
             return false;
         }
-        $this->_setAverageTables($data->sqlLimit);
+        $this->sqlLimit = $data->sqlLimit;
+        $this->_setAverageTables();
         $this->device->params->DriverInfo["LastPoll"] = time();
         do {
             $ret = $this->_get15MinAverage($rec);
@@ -101,34 +104,37 @@ class EVIRTUALAverageTable extends AverageTableBase
     /**
     * This returns the first average from this device
     *
-    * @param int $limit The maximum number of records to process
-    *
     * @return null
     */
-    private function _setAverageTables($limit)
+    private function _setAverageTables()
     {
         $start = (int)$this->device->params->DriverInfo["LastAverage15MIN"];
+        $aSen = &$this->averages["sensors"];
+        $aDev = &$this->averages["DeviceID"];
         for ($i = 0; $i < $this->device->sensors->Sensors; $i++) {
             $sensor = &$this->device->sensor($i);
             if (method_exists($sensor, "getAverageTable")) {
-                if (!is_a($this->averages["sensors"][$i], "AverageTableBase")) {
-                    $avg = &$sensor->getAverageTable();
-                    $avg->sqlLimit = $limit;
-                    $this->averages["DeviceID"][$avg->device->DeviceID] =& $avg;
-                    $this->averages["sensors"][$i] = &$avg;
-                    $avg->selectInto(
-                        "`id` = ? and `Type`=? and `Date` > ?",
-                        array(
-                            $avg->device->id,
-                            AverageTableBase::AVERAGE_15MIN,
-                            $start
-                        )
-                    );
+                if (!is_a($aSen[$i], "AverageTableBase")) {
+                    $devId = $sensor->getDeviceID();
+                    if (!is_object($aDev[$devId])) {
+                        $aDev[$devId] = &$sensor->getAverageTable();
+                        $aDev[$devId]->sqlLimit = $this->sqlLimit;
+                        $aDev[$devId]->sqlOrderBy = "Date ASC";
+                        $aDev[$devId]->selectInto(
+                            "`id` = ? and `Type`=? and `Date` > ?",
+                            array(
+                                $devId,
+                                AverageTableBase::AVERAGE_15MIN,
+                                (int)$start
+                            )
+                        );
+                    }
+                    $aSen[$i] = &$aDev[$devId];
                 }
             }
         }
         // Nothing to do.  Exit
-        if (empty($this->averages["DeviceID"])) {
+        if (empty($aDev)) {
             $this->done = true;
             return;
         }
@@ -169,6 +175,7 @@ class EVIRTUALAverageTable extends AverageTableBase
         $this->_next($date);
         return $notEmpty;
     }
+
     /**
     * This returns the first average from this device
     *
@@ -180,7 +187,7 @@ class EVIRTUALAverageTable extends AverageTableBase
     {
         $averages = &$this->averages["DeviceID"];
         foreach (array_keys((array)$averages) as $key) {
-            if ($averages[$key]->Date <= $date) {
+            while ($averages[$key]->Date <= $date) {
                 $ret = $averages[$key]->nextInto();
                 if ($ret === false) {
                     $this->done = true;

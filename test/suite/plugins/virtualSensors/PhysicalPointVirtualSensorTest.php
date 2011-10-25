@@ -288,6 +288,41 @@ class PhysicalPointVirtualSensorTest extends VirtualSensorPluginTestBase
         $ret = $o->getReading($A, $deltaT, $data);
         $this->assertSame($expect, $ret);
     }
+    /**
+    * Data provider for testGetReading
+    *
+    * @return array
+    */
+    public static function dataGetDeviceID()
+    {
+        return array(
+            array( // #0 Nothing
+                array(
+                    "extra" => array(
+                        "0000E1",
+                        2,
+                    ),
+                ),
+                0xE1,
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * @param array $preload The data to preload into the class
+    * @param mixed $expect  The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDeviceID()
+    */
+    public function testGetDeviceID($preload, $expect)
+    {
+
+        $o = new PhysicalPointVirtualSensor($preload, $this->d);
+        $this->assertSame($expect, $o->getDeviceID());
+    }
 
     /**
     * Data provider for testGetReading
