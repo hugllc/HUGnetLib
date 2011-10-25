@@ -80,7 +80,7 @@ class ComputationVirtualSensor extends VirtualSensorBase
                 UnitsBase::TYPE_DIFF => UnitsBase::TYPE_DIFF
             ),
             3,
-            array(1 => "Yes", 0 => "No"),
+            array(0 => "No", 1 => "Yes"),
         ),
         "extraText" => array(
             "Math", "Storage Unit", "Unit Type", "Data Type", "Max Decimals",
