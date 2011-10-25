@@ -120,14 +120,19 @@ class EVIRTUALAverageTable extends AverageTableBase
                         $aDev[$devId] = &$sensor->getAverageTable();
                         $aDev[$devId]->sqlLimit = $this->sqlLimit;
                         $aDev[$devId]->sqlOrderBy = "Date ASC";
-                        $aDev[$devId]->selectInto(
-                            "`id` = ? and `Type`=? and `Date` > ?",
-                            array(
-                                $devId,
-                                AverageTableBase::AVERAGE_15MIN,
-                                (int)$start
-                            )
+                        $query = "`id` = ? AND `Type`=? AND `Date` > ?";
+                        $data = array(
+                            $devId,
+                            AverageTableBase::AVERAGE_15MIN,
+                            (int)$start
                         );
+                        $lastAve = $aDev[$devId]->device
+                            ->params->DriverInfo["LastAverage15MIN"];
+                        if (!empty($lastAve)) {
+                            $query .= " AND `Date` <= ?";
+                            $data[] = $lastAve;
+                        }
+                        $aDev[$devId]->selectInto($query, $data);
                     }
                     $aSen[$i] = &$aDev[$devId];
                 }
