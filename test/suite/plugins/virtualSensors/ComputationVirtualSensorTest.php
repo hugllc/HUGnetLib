@@ -358,10 +358,66 @@ class ComputationVirtualSensorTest extends VirtualSensorPluginTestBase
                 ),
                 null,
             ),
-            array( // #9 Null input
+            array( // #9 Division by null
                 array(
                     "extra" => array(
-                        "{1} - {2}",
+                        "{1} / {2}",
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_DIFF,
+                        "3"
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => 4.1),
+                    1 => array("value" => null),
+                ),
+                null,
+            ),
+            array( // #10 Null input
+                array(
+                    "extra" => array(
+                        "{1} + {2}",
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_DIFF,
+                        "3",
+                        1,
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => null),
+                    1 => array("value" => 4.1),
+                ),
+                4.1,
+            ),
+            array( // #10 Null input #2
+                array(
+                    "extra" => array(
+                        "{1} + {2}",
+                        "&#176;C",
+                        "Temperature",
+                        UnitsBase::TYPE_DIFF,
+                        "3",
+                        0
+                    ),
+                ),
+                0,
+                0,
+                array(
+                    0 => array("value" => null),
+                    1 => array("value" => 4.1),
+                ),
+                null,
+            ),
+            array( // #10 Null input #3 defaults to the old behaviour
+                array(
+                    "extra" => array(
+                        "{1} + {2}",
                         "&#176;C",
                         "Temperature",
                         UnitsBase::TYPE_DIFF,

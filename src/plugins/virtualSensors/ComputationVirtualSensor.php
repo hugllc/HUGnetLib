@@ -80,12 +80,14 @@ class ComputationVirtualSensor extends VirtualSensorBase
                 UnitsBase::TYPE_DIFF => UnitsBase::TYPE_DIFF
             ),
             3,
+            array(1 => "Yes", 0 => "No"),
         ),
         "extraText" => array(
-            "Math", "Storage Unit", "Unit Type", "Data Type", "Max Decimals"
+            "Math", "Storage Unit", "Unit Type", "Data Type", "Max Decimals",
+            "Treat Null as Zero"
         ),
         "extraDefault" => array(
-            "", "unknown", "Generic", UnitsBase::TYPE_RAW, 4
+            "", "unknown", "Generic", UnitsBase::TYPE_RAW, 4, 0
         ),
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
         "storageUnit" => "unknown",
@@ -151,13 +153,14 @@ class ComputationVirtualSensor extends VirtualSensorBase
      */
     protected function createFunction($math, &$data)
     {
+        $zero = (bool)$this->getExtra(5);
         $mathCode = $math;
         for ($i = 1; $i < 20; $i++) {
             $index = $i - 1;
             $mathCode = str_ireplace(
                 '{'.$i.'}', (float)$data[$index]["value"], $mathCode, $count
             );
-            if (is_null($data[$index]["value"]) && ($count > 0)) {
+            if (is_null($data[$index]["value"]) && ($count > 0) && !$zero) {
                 $mathCode = false;
                 break;
             }
