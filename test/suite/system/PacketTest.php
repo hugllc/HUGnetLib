@@ -125,8 +125,8 @@ class PacketTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    "To" => "000ABC",
-                    "From" => "000020",
+                    "To" => "ABC",
+                    "From" => "20",
                     "Command" => "55",
                     "Length"  => 4,
                     "Data" => "01020304",
