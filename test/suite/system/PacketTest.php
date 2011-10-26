@@ -82,18 +82,70 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataFromString()
+    public static function dataFactory()
     {
         return array(
-            array(
+            array(  // #0 given a string
                 "5A5A5A55000ABC0000200401020304C3",
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
                     "Command" => "55",
-                    "Length"  => 4,
+                    "Length"  => "04",
                     "Data" => "01020304",
                     "Checksum" => "C3",
+                    "Type" => "SENSORREAD",
+                ),
+            ),
+            array( // #1 Given an array with strings
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "SENSORREAD",
+                    "Length"  => "04",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => "04",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                    "Type" => "SENSORREAD",
+                ),
+            ),
+            array( // #2 Given an array with integers and arrays
+                array(
+                    "To" => 0xABC,
+                    "From" => 0x20,
+                    "Command" => 0x00,
+                    "Length"  => 0x04,
+                    "Data" => array(1,2,3,4),
+                    "Checksum" => 0xC3,
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "00",
+                    "Length"  => "04",
+                    "Data" => "01020304",
+                    "Checksum" => "96",
+                    "Type" => "UNKNOWN",
+                ),
+            ),
+            array(  // #3 given a string with garbage before and after
+                "5A12825938475A5A55000ABC0000200401020304C34819C9A2",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => "04",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                    "Type" => "SENSORREAD",
+                    "StringEnd" => "4819C9A2",
                 ),
             ),
         );
@@ -106,13 +158,16 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataFromString()
+    * @dataProvider dataFactory()
     */
-    public function testFromString($string, $expect)
+    public function testFactory($string, $expect)
     {
         $pkt = Packet::factory($string);
         foreach ((array)$expect as $key => $value) {
-            $this->assertSame($value, $pkt[$key], "Key '".$key."' wrong");
+            $this->assertTrue(
+                method_exists($pkt, $key), $key."() doesn't exist"
+            );
+            $this->assertSame($value, $pkt->$key(), "Key '".$key."' wrong");
         }
     }
     /**
@@ -123,14 +178,25 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     public static function dataString()
     {
         return array(
-            array(
+            array( // #0 All strings
                 array(
                     "To" => "ABC",
                     "From" => "20",
                     "Command" => "55",
-                    "Length"  => 4,
+                    "Length"  => "04",
                     "Data" => "01020304",
                     "Checksum" => "C3",
+                ),
+                "5A5A5A55000ABC0000200401020304C3",
+            ),
+            array( // #1 All ints and arrays
+                array(
+                    "To" => 0xABC,
+                    "From" => 0x20,
+                    "Command" => 0x55,
+                    "Length"  => 4,
+                    "Data" => array(1,2,3,4),
+                    "Checksum" => 0xC3,
                 ),
                 "5A5A5A55000ABC0000200401020304C3",
             ),
@@ -157,7 +223,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataValid()
+    public static function dataIsValid()
     {
         return array(
             array(
@@ -185,16 +251,59 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     * Tests the iteration and preload functions
     *
     * @param string $preload The string to give to the class
-    * @param array  $expect The info to expect returned
+    * @param array  $expect  The info to expect returned
     *
     * @return null
     *
-    * @dataProvider dataValid()
+    * @dataProvider dataIsValid()
     */
-    public function testValid($preload, $expect)
+    public function testIsValid($preload, $expect)
     {
         $pkt = Packet::factory($preload);
-        $this->assertSame($expect, $pkt->valid());
+        $this->assertSame($expect, $pkt->isValid());
+    }
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataData()
+    {
+        return array(
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                ),
+                true,
+                array(1,2,3,4),
+            ),
+            array(
+                "5A5A5A55000ABC0000200401020304F4",
+                false,
+                "01020304",
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $preload The string to give to the class
+    * @param mixed  $raw     Whether to use the raw value or not
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataData()
+    */
+    public function testData($preload, $raw, $expect)
+    {
+        $pkt = Packet::factory($preload);
+        $this->assertSame($expect, $pkt->Data(null, $raw));
     }
 
 }
