@@ -54,7 +54,8 @@ while (($client === false) && (!$exit)) {
         usleep(100);
     }
 }
-while (!$exit && is_resource($client)) {
+$time = time();
+while (!$exit && is_resource($client) && ((time() - $time) < 10)) {
     $r = array($client);
     $w = array();
     $e = array();
