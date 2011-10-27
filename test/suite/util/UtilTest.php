@@ -95,11 +95,10 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param string $msg       The message
-    * @param int    $code      The error code
-    * @param bool   $condition If true the exception is thrown.  On false it
-    *                          is ignored.
-    * @param array  $expect    The table to expect
+    * @param string $class     The class to find
+    * @param string $dir       The directory to look in
+    * @param string $expect    The class as we found it
+    * @param string $exception If it is a string we are expecting an exception
     *
     * @return null
     *

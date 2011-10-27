@@ -33,10 +33,17 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
-set_time_limit (15);
+set_time_limit(15);
 declare(ticks = 1);
 $exit = false;
-pcntl_signal(SIGINT, function ($signo) {global $exit; $exit = true;});
+pcntl_signal(
+    SIGINT,
+    function ($signo)
+    {
+        global $exit;
+        $exit = true;
+    }
+);
 
 if (!empty($argv[2])) {
     $fd = fopen($argv[2], "w");

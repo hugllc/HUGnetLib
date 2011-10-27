@@ -43,6 +43,11 @@ namespace HUGnet;
  * http://devzone.zend.com/article/1086
  * by Ori Staub posted on August 27, 2003
  *
+ * The configuration options for this are as follows:
+ * "type"     - Required - Should be AF_UNIX or AF_INET (constants not strings)
+ * "location" - Required - IP address for AF_INET, file for AF_UNIX
+ * "port"     - Required - Only for AF_INET - TCP Port to use
+ * "bus"      - Optional - If true clients see eachothers writes
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -93,7 +98,7 @@ class SocketServer
     /**
     * Sets our configuration
     *
-    * @param array  $config The configuration to use
+    * @param array $config The configuration to use
     */
     private function __construct($config)
     {
@@ -108,8 +113,7 @@ class SocketServer
     /**
     * Creates the object
     *
-    * @param string $name   The name of this socket
-    * @param array  $config The configuration to use
+    * @param array $config The configuration to use
     *
     * @return null
     */
@@ -172,7 +176,7 @@ class SocketServer
     /**
     * Reads from all ready to read from and sends the data back out to everyone
     *
-    * @param array &$ready  The array of ready things
+    * @param array &$ready The array of ready things
     *
     * @return string The string that was read
     */
@@ -214,7 +218,7 @@ class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $client = &$this->_clients[$key];
             if (!is_null($client['socket']) && ($client !== $key)) {
-                socket_write($client['socket'] , $string);
+                socket_write($client['socket'], $string);
             }
         }
     }

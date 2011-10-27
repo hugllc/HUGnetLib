@@ -88,8 +88,8 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
     *
-    *
-    * @param array &$preload the preload data to fix
+    * @param array  $preload The preload data to fix
+    * @param string $send    The data (if any) to send on connect
     *
     * @access protected
     *
@@ -114,11 +114,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
     *
-    *
-    * @param array &$preload the preload data to fix
-    *
-    * @return null                print "HERE";
-
+    * @return null
     */
     protected static function findPort()
     {
@@ -132,7 +128,6 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
-    *
     *
     * @access protected
     *
@@ -267,6 +262,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     * test the set routine when an extra class exists
     *
     * @param array  $preload   The value to preload
+    * @param array  $clients   Array of what the clients should write to the server
     * @param string $write     The string to write
     * @param mixed  $expect    The expected return
     * @param string $buffer    What we expect to be written

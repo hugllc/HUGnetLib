@@ -88,7 +88,6 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
     *
-    *
     * @param array &$preload the preload data to fix
     *
     * @access protected
@@ -115,7 +114,6 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
-    *
     *
     * @access protected
     *
