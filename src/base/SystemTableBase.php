@@ -76,7 +76,7 @@ abstract class SystemTableBase
     */
     private function __construct(&$system, $table)
     {
-        Error::throwException(
+        System::exception(
             get_class($this)." needs to be passed a system object",
             Error::EXCEPTION_OBJ_NOT_CONFIG,
             !is_object($system)
@@ -142,7 +142,7 @@ abstract class SystemTableBase
     *
     * @return null
     */
-    public static function &create(
+    public static function &factory(
         &$system, $data=null, $table="GenericTable"
     ) {
         $class = get_called_class();

@@ -34,14 +34,17 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+/** This is our namespace */
+namespace HUGnet;
+
 /** This define allows everything else to be included */
 define("_HUGNET", true);
-/** This is our base class */
-require_once dirname(__FILE__)."/containers/ConfigContainer.php";
 /** This is the system error class.  Everybody needs it */
-require_once dirname(__FILE__).'/system/Error.php';
+require_once dirname(__FILE__).'/Error.php';
 /** This is the system utility class.  Everybody needs it also */
-require_once dirname(__FILE__).'/util/Util.php';
+require_once dirname(__FILE__).'/../util/Util.php';
+/** This is the system utility class.  Everybody needs it also */
+require_once dirname(__FILE__).'/../containers/ConfigContainer.php';
 
 
 /**
@@ -63,7 +66,7 @@ require_once dirname(__FILE__).'/util/Util.php';
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class HUGnetSystem
+class System
 {
     /** @var array The configuration that we are going to use */
     private $_config = array();
@@ -92,9 +95,9 @@ class HUGnetSystem
     *
     * @return null
     */
-    public static function &create($config = array())
+    public static function &factory($config = array())
     {
-        return new HUGnetSystem($config);
+        return new System($config);
     }
     /**
     * This sets the configuration array _config
@@ -110,14 +113,34 @@ class HUGnetSystem
 
         // This is so that the rest of the system works when we call it through
         // This class.  This should be removed when ConfigContainer is retired.
-        ConfigContainer::singleton()->forceConfig($this->_config);
+        \ConfigContainer::singleton()->forceConfig($this->_config);
     }
     /**
     * This is the destructor
     */
     public function __destruct()
     {
+        unset($this->_error);
     }
+    /**
+    * Throws an exception
+    *
+    * @param string $msg       The message
+    * @param int    $code      The error code
+    * @param bool   $condition If true the exception is thrown.  On false it
+    *                 is ignored.
+    *
+    * @return null
+    */
+    public static function exception($msg, $code, $condition = true)
+    {
+        if ((boolean)$condition) {
+            throw new \Exception($msg, $code);
+            // @codeCoverageIgnoreStart
+            // This will never run.
+        }
+    }
+    // @codeCoverageIgnoreEnd
 
 }
 

@@ -72,9 +72,9 @@ class Util
         if (!class_exists($class)) {
             $class = "\\HUGnet".$class;
         }
-        Error::throwException(
+        System::exception(
             "Class '".$baseclass."' doesn't exist",
-            Error::EXCEPTION_OBJ_NOT_CONFIG,
+            101,
             !class_exists($class)
         );
         return $class;

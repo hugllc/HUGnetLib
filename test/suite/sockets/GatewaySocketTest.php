@@ -57,7 +57,8 @@ require_once CODE_BASE.'containers/PacketContainer.php';
  */
 class GatewaySocketTest extends PHPUnit_Framework_TestCase
 {
-
+    /** @var This is the pid file for the socket server */
+    protected $pidfile = "";
     /**
     * Sets up the fixture, for example, open a network connection.
     * This method is called before a test is executed.
@@ -68,7 +69,6 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
-        $this->o = new GatewaySocket(array());
     }
 
     /**
@@ -82,267 +82,55 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         $this->o = null;
+        $this->tearDownSocket();
     }
-
-
     /**
-    * data provider for testDeviceID
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
     *
-    * @return array
-    */
-    public static function dataConstructor()
-    {
-        return array(
-            array(
-                array(
-                ),
-                array(
-                    "GatewayKey" => 0,
-                    "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "2000",
-                    "GatewayName" => "Localhost",
-                    "GatewayLocation" => "",
-                    "database" => "",
-                    "FirmwareStatus" => "RELEASE",
-                    "isVisible" => 0,
-                    "Timeout" => 2,
-                    "group" => "default",
-                ),
-            ),
-            array(
-                array(
-                    "GatewayKey" => 1,
-                    "GatewayIP" => "10.2.0.5",
-                    "GatewayPort" => "43",
-                    "GatewayName" => "Put Name Here",
-                    "GatewayLocation" => "Somewhere",
-                    "database" => "HUGnet",
-                    "FirmwareStatus" => "BETA",
-                    "isVisible" => 1,
-                    "Timeout" => 3,
-                    "group" => "myGroup",
-                    "DeviceID" => "000021",
-                ),
-                array(
-                    "GatewayKey" => 1,
-                    "GatewayIP" => "10.2.0.5",
-                    "GatewayPort" => "43",
-                    "GatewayName" => "Put Name Here",
-                    "GatewayLocation" => "Somewhere",
-                    "database" => "HUGnet",
-                    "FirmwareStatus" => "BETA",
-                    "isVisible" => 1,
-                    "Timeout" => 3,
-                    "group" => "myGroup",
-                    "DeviceID" => "000021",
-                ),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
+    * @param array &$preload the preload data to fix
+    *
+    * @access protected
     *
     * @return null
-    *
-    * @dataProvider dataConstructor
     */
-    public function testConstructor($preload, $expect)
+    protected function setUpSocket(&$preload)
     {
-        $obj = new GatewaySocket($preload);
-        foreach ($expect as $key => $value) {
-            $this->assertSame($value, $obj->$key, "$key is wrong");
+        if (isset($preload["GatewayPort"]) && empty($preload["GatewayPort"])) {
+            $sock = socket_create(AF_INET, SOCK_STREAM, 0);
+            $port = 0;
+            socket_bind($sock, "127.0.0.1", 0);
+            socket_getsockname($sock, $address, $port);
+            socket_close($sock);
+            $this->pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
+            exec(
+                "php ".TEST_CONFIG_BASE."scripts/socketserver.php "
+                .(int)$port." ".$this->pidfile." > /dev/null 2>&1 &"
+            );
+            sleep(1);
+            $preload["GatewayPort"] = $port;
         }
-
     }
     /**
-    * data provider for testConnect
+    * Sets up the fixture, for example, opens a network connection.
+    * This method is called before a test is executed.
     *
-    * @return array
-    */
-    public static function dataConnect()
-    {
-        return array(
-            array(
-                array(
-                    "GatewayKey" => 1,
-                    "GatewayIP" => "10.2.0.5",
-                    "GatewayPort" => "43",
-                    "GatewayName" => "Put Name Here",
-                    "GatewayLocation" => "Somewhere",
-                    "database" => "HUGnet",
-                    "FirmwareStatus" => "BETA",
-                    "isVisible" => 1,
-                    "Timeout" => 0.5,
-                ),
-                false,
-                false,
-                false,
-            ),
-            array(
-                array(
-                    "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "80",
-                ),
-                true,
-                true,
-                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
     *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    * @param bool  $socket  If true we expect a resource
-    * @param bool  $skip    Skip the test (resources not available)
+    * @access protected
     *
     * @return null
-    *
-    * @dataProvider dataConnect
     */
-    public function testConnect($preload, $expect, $socket, $skip)
+    protected function tearDownSocket()
     {
-        if ($skip) {
-            $this->markTestSkipped("HTTP Server not available");
-        }
-        $this->o->fromArray($preload);
-        $ret = $this->o->connect();
-        $this->assertSame($expect, $ret);
-        $this->assertSame(
-            $socket,
-            is_resource($this->readAttribute($this->o, "socket"))
-        );
-    }
-
-    /**
-    * data provider for testConnect
-    *
-    * @return array
-    */
-    public static function dataDisconnect()
-    {
-        return array(
-            array(
-                array(
-                    "GatewayKey" => 1,
-                    "GatewayIP" => "10.2.0.5",
-                    "GatewayPort" => "43",
-                    "GatewayName" => "Put Name Here",
-                    "GatewayLocation" => "Somewhere",
-                    "database" => "HUGnet",
-                    "FirmwareStatus" => "BETA",
-                    "isVisible" => 1,
-                    "Timeout" => 0.5,
-                ),
-                false,
-                null,
-                false,
-            ),
-            array(
-                array(
-                    "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "80",
-                ),
-                true,
-                null,
-                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array $preload The value to preload
-    * @param array $expect  The expected return
-    * @param mixed $socket  What to expect in the socket
-    * @param bool  $skip    Skip the test (resources not available)
-    *
-    * @return null
-    *
-    * @dataProvider dataDisconnect
-    */
-    public function testDisconnect($preload, $expect, $socket, $skip)
-    {
-        if ($skip) {
-            $this->markTestSkipped("HTTP Server not available");
-        }
-        $this->o->fromArray($preload);
-        $ret = $this->o->connect();
-        $this->o->disconnect();
-        $this->assertSame($expect, $ret);
-        $this->assertAttributeSame($socket, "socket", $this->o);
-    }
-
-    /**
-    * data provider for testConnect
-    *
-    * @return array
-    */
-    public static function dataRead()
-    {
-        return array(
-            array(
-                array(
-                    "GatewayKey" => 1,
-                    "GatewayIP" => "10.2.0.5",
-                    "GatewayPort" => "43",
-                    "GatewayName" => "Put Name Here",
-                    "GatewayLocation" => "Somewhere",
-                    "database" => "HUGnet",
-                    "FirmwareStatus" => "BETA",
-                    "isVisible" => 1,
-                    "Timeout" => 0.5,
-                ),
-                "",
-                false,
-                50,
-            ),
-            // This test will fail without a local web server
-            array(
-                array(
-                    "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "80",
-                ),
-                HUGnetClass::hexifyStr("GET\r\n"),
-                @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
-                50,
-            ),
-        );
-    }
-
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param array  $preload The value to preload
-    * @param string $write   The string to write
-    * @param mixed  $expect  The expected return
-    * @param int    $chars   The number of characters to read
-    *
-    * @return null
-    *
-    * @dataProvider dataRead
-    */
-    public function testRead($preload, $write, $expect, $chars)
-    {
-        $this->o->fromArray($preload);
-        $this->o->write($write);
-        // With the new timeout on the select we have to give the web server
-        // some time to respond.
-        sleep(1);
-        $read = $this->o->read($chars);
-        if (is_string($expect)) {
-            $read = HUGnetClass::dehexify($read);
-            //$this->assertFalse(is_bool(stristr($read, $expect)));
-            $this->assertSame($expect, $read);
-        } else {
-            $this->assertSame($expect, $read);
+        // This kills off the old process
+        if (!empty($this->pidfile)) {
+            $pid = (int)file_get_contents($this->pidfile);
+            if (!empty($pid)) {
+                posix_kill($pid, SIGINT);
+            }
+            unlink($this->pidfile);
+            $this->pidfile = "";
         }
     }
 
@@ -369,16 +157,31 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                 new PacketContainer(),
                 false,
                 false,
+                "",
             ),
             // This test will fail without a local web server
             array(
                 array(
                     "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "80",
+                    "GatewayPort" => "",
                 ),
-                new PacketContainer(array("To" => "123456", "Command" => "03")),
+                new PacketContainer(
+                    array(
+                        "To" => "123456",
+                        "From" => "555555",
+                        "Command" => "03",
+                        "Data" => array(1,2,3,4),
+                    )
+                ),
                 true,
-                !(bool)@file_get_contents("http://127.0.0.1", 0, null, -1, 1),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "123456",
+                        "From" => "555555",
+                        "Command" => "03",
+                        "Data" => array(1,2,3,4),
+                    )
+                ),
             ),
         );
     }
@@ -389,20 +192,20 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     * @param array  $preload The value to preload
     * @param string $write   The string to write
     * @param mixed  $expect  The expected return
-    * @param bool   $skip    Skip the test (resources not available)
+    * @param string $buffer  What we expect to be written
     *
     * @return null
     *
     * @dataProvider dataSendPkt
     */
-    public function testSendPkt($preload, $write, $expect, $skip)
+    public function testSendPkt($preload, $write, $expect, $buffer)
     {
-        if ($skip) {
-            $this->markTestSkipped("HTTP Server not available");
-        }
-        $this->o->fromArray($preload);
-        $ret = $this->o->sendPkt($write);
+        $this->setUpSocket($preload);
+        $obj = new GatewaySocket($preload);
+        $ret = $obj->sendPkt($write);
         $this->assertSame($expect, $ret);
+        $ret = $obj->read(1024);
+        $this->assertSame($buffer, $ret);
     }
 
     /**
@@ -434,12 +237,33 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     "GatewayIP" => "127.0.0.1",
-                    "GatewayPort" => "80",
+                    "GatewayPort" => "",
                 ),
-                HUGnetClass::hexifyStr("GET\r\n"),
-                false,
-                new PacketContainer(array("Timeout" => 5)),
-                @file_get_contents("http://127.0.0.1", 0, null, -1, 50),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "654321",
+                        "From" => "000235",
+                        "Command" => "01",
+                        "Data" => array(5,4,3,2,1),
+                    )
+                ),
+                true,
+                new PacketContainer(
+                    array(
+                        "From" => "654321",
+                        "To" => "000235",
+                        "Command" => "55",
+                        "Timeout" => 5
+                    )
+                ),
+                (string)new PacketContainer(
+                    array(
+                        "To" => "654321",
+                        "From" => "000235",
+                        "Command" => "01",
+                        "Data" => array(5,4,3,2,1),
+                    )
+                ),
             ),
         );
     }
@@ -459,20 +283,13 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     */
     public function testRecvPkt($preload, $write, $expect, $pkt, $buffer)
     {
-        $this->o->fromArray($preload);
-        $this->o->write($write);
-        $ret = $this->o->recvPkt($pkt);
+        $this->setUpSocket($preload);
+        $obj = new GatewaySocket($preload);
+        $obj->write($write);
+        $ret = $obj->recvPkt($pkt);
         $this->assertSame($expect, $ret);
-        // We are going to test the buffer here.  That is about the best we can
-        // do without building a custom network server.
-        if (strlen($buffer) > 0) {
-            $read = $this->readAttribute($this->o, "buffer");
-            // Since we can't control the read length, we will make the strings
-            // The same size.
-            $read = HUGnetClass::dehexify($read);
-            $read = substr($read, 0, strlen($buffer));
-            $buffer = substr($buffer, 0, strlen($read));
-            $this->assertSame($buffer, $read);
+        if (!empty($buffer)) {
+            $this->assertSame($buffer, (string)$pkt->Reply, "Reply Wrong");
         }
     }
     /**
@@ -512,7 +329,8 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
      */
     public function testEncodeIP($IPaddr, $expect)
     {
-        $ret = $this->o->encodeIP($IPaddr);
+        $obj = new GatewaySocket(array());
+        $ret = $obj->encodeIP($IPaddr);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -552,7 +370,8 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
      */
     public function testDecodeIP($IPaddr, $expect)
     {
-        $ret = $this->o->decodeIP($IPaddr);
+        $obj = new GatewaySocket(array());
+        $ret = $obj->decodeIP($IPaddr);
         $this->assertSame($expect, $ret);
     }
     /**
@@ -581,8 +400,9 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
     */
     public function testSet($var, $value, $expect)
     {
-        $this->o->$var = $value;
-        $data = $this->readAttribute($this->o, "data");
+        $obj = new GatewaySocket(array());
+        $obj->$var = $value;
+        $data = $this->readAttribute($obj, "data");
         $this->assertSame($expect, $data[$var]);
     }
 

@@ -84,25 +84,6 @@ class Error extends SystemTableBase
         );
         return $this->table()->insertRow(true);
     }
-    /**
-    * Throws an exception
-    *
-    * @param string $msg       The message
-    * @param int    $code      The error code
-    * @param bool   $condition If true the exception is thrown.  On false it
-    *                 is ignored.
-    *
-    * @return null
-    */
-    public static function throwException($msg, $code, $condition = true)
-    {
-        if ((boolean)$condition) {
-            throw new \Exception($msg, $code);
-            // @codeCoverageIgnoreStart
-            // This will never run.
-        }
-    }
-    // @codeCoverageIgnoreEnd
 
 }
 

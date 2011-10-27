@@ -82,10 +82,10 @@ class DummyTable extends DummyBase
     );
 
     /** @var This is our set values */
-    protected $set = array(
+    protected static $set = array(
     );
     /** @var This is our returns */
-    protected $ret = array(
+    protected static $ret = array(
         "columns" => array(
             "id" => array(
                 "Name" => "id",
@@ -105,6 +105,7 @@ class DummyTable extends DummyBase
             "a1" => "2",
         ),
     );
-
+    /** @var This is our returns */
+    protected $class = "Table";
 }
 ?>

@@ -62,7 +62,7 @@ namespace HUGnet;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Packet
+final class Packet
 {
     /** This is where in the packet this is */
     const COMMAND = 0;
@@ -90,6 +90,8 @@ class Packet
     private $_data;
     /** This is the packet checksum  */
     private $_checksum;
+    /** Extra string at the end of the packet  */
+    private $_extra;
     /** This has known types in it */
     private $_commands = array(
         "REPLY" => 0x01,
@@ -116,6 +118,8 @@ class Packet
 
     /**
     * This builds and populates the packet
+    *
+    * @param mixed $data The data to create the packet with
     */
     private function __construct($data)
     {
@@ -147,18 +151,18 @@ class Packet
     private function _fromString($string)
     {
         $string = $this->_cleanPktStr(strtoupper($string));
-        $this->Command(substr($string, self::COMMAND, 2));
-        $this->To(substr($string, self::TO, 6));
-        $this->From(substr($string, self::FROM, 6));
+        $this->command(substr($string, self::COMMAND, 2));
+        $this->to(substr($string, self::TO, 6));
+        $this->from(substr($string, self::FROM, 6));
         $length = substr($string, self::LENGTH, 2) * 2;
-        $this->Data(substr($string, self::DATA, $length));
+        $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
-        $this->StringEnd(substr($string, (self::DATA + $length + 2)));
+        $this->extra(substr($string, (self::DATA + $length + 2)));
     }
     /**
     * Builds the packet from a string
     *
-    * @param string $string The packet string
+    * @param string $array The packet array
     *
     * @return null
     */
@@ -176,7 +180,7 @@ class Packet
     *
     * @return null
     */
-    public function __tostring()
+    public function __toString()
     {
         return $this->Preamble().$this->_packetStr().$this->Checksum();
     }
@@ -190,13 +194,13 @@ class Packet
         // Command (2 chars)
         $string  = $this->Command();
         // To (6 chars)
-        $string .= $this->To();
+        $string .= $this->to();
         // From (6 chars)
-        $string .= $this->From();
+        $string .= $this->from();
         // Length (2 chars)
-        $string .= $this->Length();
+        $string .= $this->length();
         // Data ('Length' chars)
-        $string .= $this->Data();
+        $string .= $this->data();
         return $string;
     }
     /**
@@ -249,7 +253,8 @@ class Packet
     /**
     * Turns a string into an array
     *
-    * @param mixed $value The value to set this to.
+    * @param string $field The field to set
+    * @param mixed  $value The value to set this to.
     *
     * @return null
     */
@@ -284,7 +289,7 @@ class Packet
     *
     * @return string (2 chars) Returns the command
     */
-    public function Command($value = null)
+    public function command($value = null)
     {
         if (isset($this->_commands[$value])) {
             $value = $this->_commands[$value];
@@ -298,7 +303,7 @@ class Packet
     *
     * @return string (6 chars) Returns the to value
     */
-    public function To($value = null)
+    public function to($value = null)
     {
         return sprintf("%06X", $this->_setField("_to", $value));
     }
@@ -309,7 +314,7 @@ class Packet
     *
     * @return string Returns the value it is set to
     */
-    public function From($value = null)
+    public function from($value = null)
     {
         return sprintf("%06X", $this->_setField("_from", $value));
     }
@@ -320,19 +325,19 @@ class Packet
     *
     * @return string Returns the value it is set to
     */
-    public function StringEnd($value = null)
+    public function extra($value = null)
     {
         if (is_string($value)) {
-            $this->_strEnd = $value;
+            $this->_extra = $value;
         }
-        return $this->_strEnd;
+        return $this->_extra;
     }
     /**
     * Returns the packet length
     *
     * @return string (2 chars) The packet length
     */
-    public function Length()
+    public function length()
     {
         return sprintf("%02X", count($this->_data));
     }
@@ -341,7 +346,7 @@ class Packet
     *
     * @return string (2 chars) The packet checksum
     */
-    public function Checksum()
+    public function checksum()
     {
         return sprintf("%02X", $this->_checksum());
     }
@@ -354,7 +359,7 @@ class Packet
     * @return string|array Returns the data in an array if $raw is true, a string
     *                      otherwise
     */
-    public function Data($value = null, $raw = false)
+    public function data($value = null, $raw = false)
     {
         $this->_setArray("_data", $value);
         if ($raw) {
@@ -369,7 +374,7 @@ class Packet
     *
     * @return string Returns the value it is set to
     */
-    public function Preamble($min = false)
+    public function preamble($min = false)
     {
         if ($min) {
             return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES_MIN);
@@ -381,7 +386,7 @@ class Packet
     *
     * @return string Returns the value it is set to
     */
-    public function Type()
+    public function type()
     {
         $key = array_search($this->_command, $this->_commands);
         if (!is_bool($key)) {
@@ -399,15 +404,16 @@ class Packet
     private function _cleanPktStr($string)
     {
         // This strips off anything before the preamble
-        if (($string = stristr($string, $this->Preamble(true))) === false) {
+        if (($pkt = stristr($string, $this->preamble(true))) === false) {
             // If there is no preamble present send the string directly through
-            return $string;
+            $this->extra($string);
+            return "";
         }
         // This strips off the preamble.
-        while (strtoupper(substr($string, 0, 2)) == self::PREAMBLE) {
-            $string = substr($string, 2);
+        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
+            $pkt = substr($pkt, 2);
         }
-        return $string;
+        return $pkt;
     }
 }
 

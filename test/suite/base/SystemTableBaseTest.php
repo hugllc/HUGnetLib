@@ -38,6 +38,8 @@ namespace HUGnet;
 /** This is a required class */
 require_once CODE_BASE.'base/SystemTableBase.php';
 /** This is a required class */
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
 require_once CODE_BASE.'system/Error.php';
 /** This is a required class */
 require_once CODE_BASE.'util/Util.php';
@@ -96,7 +98,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("Exception");
         // This throws an exception because $test is not a object
-        SystemTableBaseTestStub::create($test);
+        SystemTableBaseTestStub::factory($test);
     }
     /**
     * This tests the exception when a system object is not passed
@@ -108,20 +110,19 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException("Exception");
         $system = new DummySystem();
         // This throws an exception because the table name is bad
-        SystemTableBaseTestStub::create($system, 2, "thisIsAbadClassName");
+        SystemTableBaseTestStub::factory($system, 2, "thisIsAbadClassName");
     }
     /**
-    * Data provider for testCreate
+    * Data provider for testFactory
     *
     * @return array
     */
-    public static function dataCreate()
+    public static function dataFactory()
     {
         return array(
-            array(new DummySystem(), null, "DummyTable", null),
-            array(new DummySystem(), null, "DummyTable", null),
+            array(array(), null, "DummyTable", array()),
             array(
-                new DummySystem(),
+                array(),
                 array(
                     "id" => 5,
                     "name" => 3,
@@ -129,24 +130,28 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 ),
                 "DummyTable",
                 array(
-                    "fromAny" => array(
-                        array(
+                    "Table" => array(
+                        "fromAny" => array(
                             array(
-                                "id" => 5,
-                                "name" => 3,
-                                "value" => 1,
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                     ),
                 ),
             ),
             array(
-                new DummySystem(),
+                array(),
                 2,
-                new DummyTable(),
+                new DummyTable("Table"),
                 array(
-                    "getRow" => array(
-                        array(0 => 2),
+                    "Table" => array(
+                        "getRow" => array(
+                            array(0 => 2),
+                        ),
                     ),
                 ),
             ),
@@ -162,18 +167,18 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataCreate
+    * @dataProvider dataFactory
     */
-    public function testCreate($config, $gateway, $class, $expectTable)
+    public function testFactory($config, $gateway, $class, $expectTable)
     {
-        $obj = SystemTableBaseTestStub::create($config, $gateway, $class);
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, $gateway, $class);
         // Make sure we have the right object
         $this->assertTrue(
             is_subclass_of($obj, "HUGnet\SystemTableBase"), "Class wrong"
         );
-        if (is_object($class)) {
-            $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
-        }
+        $this->assertEquals($expectTable, $sys->retrieve(), "Data Wrong");
     }
 
     /**
@@ -185,23 +190,22 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
-                new DummyTable(
-                    array(
-                    )
-                ),
+                array(),
+                new DummyTable(),
                 array(
                     "id" => 5,
                     "name" => 3,
                     "value" => 1,
                 ),
                 array(
-                    "fromAny" => array(
-                        array(
+                    "Table" => array(
+                        "fromAny" => array(
                             array(
-                                "id" => 5,
-                                "name" => 3,
-                                "value" => 1,
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
                             ),
                         ),
                     ),
@@ -209,16 +213,20 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                 true,
             ),
             array(
-                new DummySystem(),
-                new DummyTable(
-                    array(
-                        "getRow" => false,
-                    )
+                array(
+                    "Table" => array(
+                        array(
+                            "getRow" => false,
+                        )
+                    ),
                 ),
+                new DummyTable("Table"),
                 2,
                 array(
-                    "getRow" => array(
-                        array(0 => 2),
+                    "Table" => array(
+                        "getRow" => array(
+                            array(0 => 2),
+                        ),
                     ),
                 ),
                 false,
@@ -240,7 +248,9 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testLoad($config, $class, $gateway, $expectTable, $return)
     {
-        $obj = SystemTableBaseTestStub::create($config, null, $class);
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->load($gateway);
         $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
@@ -254,47 +264,53 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                new DummySystem(),
-                new DummyTable(
-                    array(
+                array(
+                    "Table" => array(
                         "get" => 5,
                         "updateRow" => true,
-                    )
+                    ),
                 ),
+                new DummyTable("Table"),
                 false,
                 array(
-                    "get" => array(array("id")),
-                    "updateRow" => array(array()),
+                    "Table" => array(
+                        "get" => array(array("id")),
+                        "updateRow" => array(array()),
+                    ),
                 ),
                 true,
             ),
             array(
-                new DummySystem(),
-                new DummyTable(
-                    array(
+                array(
+                    "Table" => array(
                         "get" => 0,
                         "insertRow" => false,
-                    )
+                    ),
                 ),
+                new DummyTable("Table"),
                 false,
                 array(
-                    "get" => array(array("id")),
-                    "insertRow" => array(array(false)),
+                    "Table" => array(
+                        "get" => array(array("id")),
+                        "insertRow" => array(array(false)),
+                    ),
                 ),
                 false,
             ),
             array(
-                new DummySystem(),
-                new DummyTable(
-                    array(
+                array(
+                    "Table" => array(
                         "get" => null,
                         "insertRow" => true,
-                    )
+                    ),
                 ),
+                new DummyTable("Table"),
                 true,
                 array(
-                    "get" => array(array("id")),
-                    "insertRow" => array(array(true)),
+                    "Table" => array(
+                        "get" => array(array("id")),
+                        "insertRow" => array(array(true)),
+                    ),
                 ),
                 true,
             ),
@@ -315,10 +331,12 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testStore($config, $class, $replace, $expectTable, $return)
     {
-        $obj = SystemTableBaseTestStub::create($config, null, $class);
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = SystemTableBaseTestStub::factory($sys, null, $class);
         $ret = $obj->store($replace);
-        $this->assertSame($return, $ret, "Return Wrong");
         $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
+        $this->assertSame($return, $ret, "Return Wrong");
     }
 
 }

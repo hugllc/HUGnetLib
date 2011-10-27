@@ -54,11 +54,13 @@ namespace HUGnet;
 class DummyBase
 {
     /** @var This is our set values */
-    protected $set = array(
+    protected static $set = array(
     );
     /** @var This is our returns */
-    protected $ret = array(
+    protected static $ret = array(
     );
+    /** @var This is our returns */
+    protected $class = "DummyBase";
     /**
     * Tries to run a function defined by what is called..
     *
@@ -66,11 +68,10 @@ class DummyBase
     *
     * @return mixed
     */
-    public function __construct($ret = null)
+    public function resetMock($ret = null)
     {
-        if (is_array($ret)) {
-            $this->ret = $ret;
-        }
+        self::$ret = (array)$ret;
+        self::$set = array();
     }
     /**
     * Tries to run a function defined by what is called..
@@ -82,9 +83,42 @@ class DummyBase
     public function retrieve($function = null)
     {
         if (is_null($function)) {
-            return $this->set;
+                return (array)self::$set;
         }
-        return $this->set[$function];
+        return (array)self::$set[$function];
+    }
+
+    /**
+    * Tries to run a function defined by what is called..
+    *
+    * @param array $class The class to emulate
+    *
+    * @return mixed
+    */
+    public function __construct($class = null)
+    {
+        if (is_string($class)) {
+            $this->class = $class;
+        }
+    }
+    /**
+    * Tries to run a function defined by what is called..
+    *
+    * @param string $name The name of the function to call
+    * @param array  $args The array of arguments
+    *
+    * @return mixed
+    */
+    public static function __callStatic($name, $args)
+    {
+        $class = get_called_class();
+        self::$set[$class][$name][] = $args;
+        if (is_array(self::$ret[$class][$name])
+            && isset(self::$ret[$class][$name][$args[0]])
+        ) {
+            return self::$ret[$class][$name][$args[0]];
+        }
+        return self::$ret[$class][$name];
     }
 
     /**
@@ -97,8 +131,14 @@ class DummyBase
     */
     public function __call($name, $args)
     {
-        $this->set[$name][] = $args;
-        return $this->ret[$name];
+        $class = $this->class;
+        self::$set[$class][$name][] = $args;
+        if (is_array(self::$ret[$class][$name])
+            && isset(self::$ret[$class][$name][$args[0]])
+        ) {
+            return self::$ret[$class][$name][$args[0]];
+        }
+        return self::$ret[$class][$name];
     }
 
 }

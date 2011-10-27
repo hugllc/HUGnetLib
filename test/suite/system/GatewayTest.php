@@ -141,7 +141,7 @@ class GatewayTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreate($config, $gateway, $class, $expectTable)
     {
-        $obj = Gateway::create($config, $gateway, $class);
+        $obj = Gateway::factory($config, $gateway, $class);
         // Make sure we have the right object
         $this->assertTrue((get_class($obj) === "HUGnet\Gateway"), "Class wrong");
         if (is_object($table)) {

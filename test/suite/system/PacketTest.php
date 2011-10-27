@@ -145,7 +145,27 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "C3",
                     "Type" => "SENSORREAD",
-                    "StringEnd" => "4819C9A2",
+                    "Extra" => "4819C9A2",
+                ),
+            ),
+            array(  // #4 given a string with no preamble.
+                "55000ABC0000200401020304C3",
+                array(
+                    "Extra" => "55000ABC0000200401020304C3",
+                ),
+            ),
+            array(  // #5 Two packets given.
+                "5A5A5A55000ABC0000200401020304C3"
+                ."5A5A5A01000ABC000020040102030497",
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => "04",
+                    "Data" => "01020304",
+                    "Checksum" => "C3",
+                    "Type" => "SENSORREAD",
+                    "Extra" => "5A5A5A01000ABC000020040102030497",
                 ),
             ),
         );
@@ -153,8 +173,8 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param string $string  The string to give to the class
-    * @param array  $expect  The info to expect returned
+    * @param string $string The string to give to the class
+    * @param array  $expect The info to expect returned
     *
     * @return null
     *
@@ -205,7 +225,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param string $string The string to give to the class
+    * @param string $array  The string to give to the class
     * @param array  $expect The info to expect returned
     *
     * @return null

@@ -55,6 +55,8 @@ require_once dirname(__FILE__)."/DummyBase.php";
  */
 class DummySystem extends DummyBase
 {
+    /** @var This is our returns */
+    protected $class = "System";
 
 }
 ?>
