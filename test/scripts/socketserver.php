@@ -50,9 +50,14 @@ if (!empty($argv[2])) {
     fwrite($fd, (string)getmypid());
     fclose($fd);
 }
-$sock = socket_create(AF_INET, SOCK_STREAM, 0);
+if (is_numeric($argv[1])) {
+    $sock = socket_create(AF_INET, SOCK_STREAM, 0);
+    socket_bind($sock, "127.0.0.1", $argv[1]);
+} else {
+    $sock = socket_create(AF_UNIX, SOCK_STREAM, 0);
+    socket_bind($sock, $argv[1]);
+}
 socket_set_nonblock($sock);
-socket_bind($sock, "127.0.0.1", $argv[1]);
 socket_listen($sock);
 $client = false;
 while (($client === false) && (!$exit)) {
