@@ -54,18 +54,24 @@ while (($client === false) && (!$exit)) {
         usleep(100);
     }
 }
-$r = array($client);
-while (!$exit && ($client !== false)) {
-    if (socket_select($r, $w, $e, 0, 10000)) {
-        $input = socket_read($client, 1);
-        print $input;
+while (!$exit && is_resource($client)) {
+    $r = array($client);
+    $w = array();
+    $e = array();
+    if (@socket_select($r, $w, $e, 0, 10000)) {
+        $input = socket_read($client, 1024);
         socket_write($client, $input);
     }
 }
-print "Closing sockets\n";
+print "Closing sockets: ";
 if (is_resource($client)) {
+    print " client";
     socket_close($client);
 }
+print " socket\n";
 socket_close($sock);
-
+if (file_exists($argv[2])) {
+    print "Removing PID file\n";
+    unlink($argv[2]);
+}
 ?>
