@@ -181,7 +181,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 32,
                 "5A5A5A010102030405060401020304C3",
                 null,
-            ),
+            ),/*
             array(
                 array(
                     "type" => AF_INET,
@@ -195,7 +195,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 "5A5A5A010102030405060401020304C3"
                 ."5A5A5A010102030405060401020304C3",
                 null,
-            ),
+            ),*/
             array(
                 array(
                     "type" => AF_UNIX,
@@ -236,6 +236,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 "Hello There",
                 null,
             ),
+            /*
             array(
                 array(
                     "type" => AF_UNIX,
@@ -254,7 +255,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 0,
                 "AAAAAAAAAAAAAAAAAAAAA",
                 null,
-            ),
+            ),*/
         );
     }
 
