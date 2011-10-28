@@ -61,6 +61,7 @@ if (is_numeric($argv[1])) {
 if (!empty($argv[3])) {
     print "Sending '".$argv[3]."'\n";
     socket_write($socket, $argv[3]);
+    socket_close($socket);
 } else {
     $time = time();
     while (!$exit && is_resource($socket) && ((time() - $time) < 10)) {
@@ -75,6 +76,6 @@ if (!empty($argv[3])) {
             socket_write($socket, $input);
         }
     }
+    socket_close($socket);
 }
-socket_close($socket);
 ?>
