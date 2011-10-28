@@ -218,7 +218,7 @@ class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $client = &$this->_clients[$key];
             if (!is_null($client['socket']) && ($client !== $key)) {
-                socket_write($client['socket'], $string);
+                @socket_write($client['socket'], $string);
             }
         }
     }

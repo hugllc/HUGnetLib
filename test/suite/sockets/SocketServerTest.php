@@ -88,6 +88,8 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
     *
+    * This is a really bad routine.  It works for now, but it should be refactored.
+    *
     * @param array  $preload The preload data to fix
     * @param string $send    The data (if any) to send on connect
     *
@@ -101,13 +103,32 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
             $port = $preload["location"];
             $this->pidfile[] = $port;
         } else {
-            $port = $preload["port"];
+            $port = (int)$preload["port"];
         }
-        $pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
-        exec(
-            "php ".TEST_CONFIG_BASE."scripts/socketclient.php "
-            .$port." ".$pidfile." \"".$send."\" > /dev/null 2>&1 &"
-        );
+        if (is_array($send)) {
+            $pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
+            $fd = fopen($pidfile, "w");
+            fwrite($fd, implode("\n", $send));
+            fclose($fd);
+            exec(
+                "php ".TEST_CONFIG_BASE."scripts/oneshotclient.php "
+                .$port." ".$pidfile." > /dev/null 2>&1 &"
+            );
+        } else if ("fork" === $send) {
+            $pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
+            exec(
+                "php ".TEST_CONFIG_BASE."scripts/forkclient.php "
+                .$port." ".$pidfile." > /dev/null 2>&1 &"
+            );
+            // This script takes longer to get going
+            sleep(1);
+        } else {
+            $pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
+            exec(
+                "php ".TEST_CONFIG_BASE."scripts/socketclient.php "
+                .$port." ".$pidfile." > /dev/null 2>&1 &"
+            );
+        }
         $this->pidfile[] = $pidfile;
     }
     /**
@@ -156,55 +177,41 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
     public static function dataWrite()
     {
         return array(
-            array(
+            array( // #0
                 array(
                     "type" => AF_INET,
                     "location" => "10.1.234.235",
                     "port" => 3289,
                     "bus" => true,
                 ),
-                array(""),
+                "",
                 "",
                 false,
                 false,
                 "Exception",
             ),
-            array(
+            array( // #1
                 array(
                     "type" => AF_INET,
                     "location" => "127.0.0.1",
                     "port" => self::findPort(),
                     "bus" => true,
                 ),
-                array(""),
+                "",
                 "5A5A5A010102030405060401020304C3",
                 32,
                 "5A5A5A010102030405060401020304C3",
                 null,
             ),
-            /*
-            array(
+            /* Not sure why this one will never fork
+            array( // #2
                 array(
                     "type" => AF_INET,
                     "location" => "127.0.0.1",
                     "port" => self::findPort(),
                     "bus" => false,
                 ),
-                array("", ""),
-                "5A5A5A010102030405060401020304C3",
-                32,
-                "5A5A5A010102030405060401020304C3"
-                ."5A5A5A010102030405060401020304C3",
-                null,
-            ),
-            array(
-                array(
-                    "type" => AF_UNIX,
-                    "location" => sys_get_temp_dir()."/test".md5(mt_rand()),
-                    "port" => 0,
-                    "bus" => false,
-                ),
-                array("", ""),
+                "fork",
                 "5A5A5A010102030405060401020304C3",
                 32,
                 "5A5A5A010102030405060401020304C3"
@@ -212,20 +219,34 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 null,
             ),
             */
-            array(
+            array( // #3
                 array(
                     "type" => AF_UNIX,
                     "location" => sys_get_temp_dir()."/test".md5(mt_rand()),
                     "port" => 0,
                     "bus" => false,
                 ),
-                array(""),
+                "fork",
+                "5A5A5A010102030405060401020304C3",
+                32,
+                "5A5A5A010102030405060401020304C3"
+                ."5A5A5A010102030405060401020304C3",
+                null,
+            ),
+            array( // #4
+                array(
+                    "type" => AF_UNIX,
+                    "location" => sys_get_temp_dir()."/test".md5(mt_rand()),
+                    "port" => 0,
+                    "bus" => false,
+                ),
+                "",
                 "",
                 0,
                 "",
                 null,
             ),
-            array(
+            array( // #5
                 array(
                     "type" => AF_UNIX,
                     "location" => sys_get_temp_dir()."/test".md5(mt_rand()),
@@ -238,8 +259,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 "Hello There",
                 null,
             ),
-            /*
-            array(
+            array( // #6
                 array(
                     "type" => AF_UNIX,
                     "location" => sys_get_temp_dir()."/test".md5(mt_rand()),
@@ -257,7 +277,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 0,
                 "AAAAAAAAAAAAAAAAAAAAA",
                 null,
-            ),*/
+            ),
         );
     }
 
@@ -283,10 +303,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
         }
         // This sets up the server
         $obj = SocketServer::factory($preload);
-        // This runs the clients
-        foreach ($clients as $val) {
-            $this->setupSender($preload, $val);
-        }
+        $this->setupSender($preload, $clients);
         $string = "";
         // This allows time for the connections to happen
         // We start capturing the string here because prewrites will be missed
