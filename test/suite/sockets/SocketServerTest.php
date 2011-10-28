@@ -218,7 +218,6 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 ."5A5A5A010102030405060401020304C3",
                 null,
             ),
-            */
             array( // #3
                 array(
                     "type" => AF_UNIX,
@@ -233,6 +232,7 @@ class SocketServerTest extends \PHPUnit_Framework_TestCase
                 ."5A5A5A010102030405060401020304C3",
                 null,
             ),
+            */
             array( // #4
                 array(
                     "type" => AF_UNIX,

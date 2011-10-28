@@ -60,5 +60,6 @@ foreach ($lines as $write) {
     print "Sending '".$write."'\n";
     socket_write($socket, $write);
     socket_close($socket);
+    usleep(10000);
 }
 ?>
