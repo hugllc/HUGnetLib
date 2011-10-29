@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'system/Socket.php';
+require_once CODE_BASE.'system/Network.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -55,7 +55,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SocketTest extends \PHPUnit_Framework_TestCase
+class NetworkTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -85,7 +85,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataSocket()
+    public static function dataNetwork()
     {
         return array(
             array(  // #0
@@ -120,7 +120,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 array(
-                    "default" => new DummySocket("defaultSocket"),
+                    "default" => new DummySocket("defaultNetwork"),
                 ),
                 "default",
                 array(
@@ -142,9 +142,9 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataSocket()
+    * @dataProvider dataNetwork()
     */
-    public function testSocket(
+    public function testNetwork(
         $system, $config, $socket, $expect, $class, $exception
     ) {
         if (!is_null($exception)) {
@@ -152,7 +152,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
         }
         $sys = new DummyBase("HUGnetSystem");
         $sys->resetMock($system);
-        $sock = &Socket::factory($sys, $config);
+        $sock = &Network::factory($sys, $config);
         $this->assertSame($class, get_class($sock->socket($socket)), "Class wrong");
         $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
         // This checks to make sure it is always returning the same socket

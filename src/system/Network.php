@@ -48,7 +48,7 @@ namespace HUGnet;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-final class Socket
+final class Network
 {
     /** This is where we store our sockets */
     private $_sockets = array();
@@ -76,7 +76,7 @@ final class Socket
     */
     public function &factory(&$system, $config = array())
     {
-        return new Socket($system, (array)$config);
+        return new Network($system, (array)$config);
     }
 
     /**
@@ -95,7 +95,7 @@ final class Socket
     *
     * @param string $socket The group to check
     *
-    * @return Socket object
+    * @return Network object
     */
     public function available($socket = "default")
     {
@@ -107,7 +107,7 @@ final class Socket
     *
     * @param string $socket The group to check
     *
-    * @return Socket object
+    * @return Network object
     */
     public function &socket($socket = "default")
     {
@@ -160,9 +160,9 @@ final class Socket
             );
             return;
         }
-        // Last resort include NullSocket
-        include_once dirname(__FILE__)."/../sockets/NullSocket.php";
-        $this->_sockets[$socket] = NullSocket::factory(
+        // Last resort include NullNetwork
+        include_once dirname(__FILE__)."/../sockets/NullNetwork.php";
+        $this->_sockets[$socket] = NullNetwork::factory(
             $socket, $this->_config[$socket]
         );
     }

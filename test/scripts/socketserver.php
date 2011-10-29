@@ -33,6 +33,8 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:Comtimeclock
  */
+print "Starting\n";
+var_dump($argv);
 set_time_limit(15);
 declare(ticks = 1);
 $exit = false;
@@ -51,9 +53,11 @@ if (!empty($argv[2])) {
     fclose($fd);
 }
 if (is_numeric($argv[1])) {
+    print "Opening AF_INET Socket\n";
     $sock = socket_create(AF_INET, SOCK_STREAM, 0);
     socket_bind($sock, "127.0.0.1", $argv[1]);
 } else {
+    print "Opening AF_UNIX Socket\n";
     $sock = socket_create(AF_UNIX, SOCK_STREAM, 0);
     socket_bind($sock, $argv[1]);
 }
@@ -64,6 +68,8 @@ while (($client === false) && (!$exit)) {
     $client = @socket_accept($sock);
     if ($client === false) {
         usleep(100);
+    } else {
+        print "Client Connected!\n";
     }
 }
 $time = time();
@@ -73,6 +79,7 @@ while (!$exit && is_resource($client) && ((time() - $time) < 10)) {
     $e = array();
     if (@socket_select($r, $w, $e, 0, 10000)) {
         $input = socket_read($client, 1024);
+        print "Sending $input\n";
         socket_write($client, $input);
     }
 }
