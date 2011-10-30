@@ -69,7 +69,7 @@ final class Network
     {
         $this->_system =& $system;
         $this->_config = $config;
-        include_once dirname(__FILE__)."/../system/Packet.php";
+        include_once dirname(__FILE__)."/Packet.php";
     }
     /**
     * Creates the object
@@ -199,9 +199,9 @@ final class Network
             );
             return;
         }
-        // Last resort include NullSocket
-        include_once dirname(__FILE__)."/NullSocket.php";
-        $this->_sockets[$socket] = NullSocket::factory(
+        // Last resort include SocketNull
+        include_once dirname(__FILE__)."/SocketNull.php";
+        $this->_sockets[$socket] = SocketNull::factory(
             $socket, $this->_config[$socket]
         );
     }

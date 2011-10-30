@@ -48,7 +48,7 @@ namespace HUGnet;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class NullSocket
+class SocketNull
 {
     /**
      * This is the name of our socket
@@ -79,7 +79,7 @@ class NullSocket
     */
     public function &factory($name, $config = array())
     {
-        return new NullSocket($name, (array)$config);
+        return new SocketNull($name, (array)$config);
     }
 
     /**

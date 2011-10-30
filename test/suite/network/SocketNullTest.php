@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'network/NullSocket.php';
+require_once CODE_BASE.'network/SocketNull.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -55,7 +55,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class NullSocketTest extends \PHPUnit_Framework_TestCase
+class SocketNullTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -89,7 +89,7 @@ class NullSocketTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("Exception");
         $config = array();
-        $socket = NullSocket::factory("test", $config);
+        $socket = SocketNull::factory("test", $config);
         $socket->read();
     }
     /**
@@ -101,7 +101,7 @@ class NullSocketTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("Exception");
         $config = array();
-        $socket = NullSocket::factory("test", $config);
+        $socket = SocketNull::factory("test", $config);
         $socket->write();
     }
     /**
@@ -112,7 +112,7 @@ class NullSocketTest extends \PHPUnit_Framework_TestCase
     public function testAvailable()
     {
         $config = array();
-        $socket = NullSocket::factory("test", $config);
+        $socket = SocketNull::factory("test", $config);
         $this->assertFalse($socket->available());
     }
 

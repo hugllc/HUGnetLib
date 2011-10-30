@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'system/Packet.php';
+require_once CODE_BASE.'network/Packet.php';
 
 /**
  * Test class for HUGnetDB.
@@ -324,6 +324,38 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     {
         $pkt = Packet::factory($preload);
         $this->assertSame($expect, $pkt->Data(null, $raw));
+    }
+
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataCrc8()
+    {
+        return array(
+            array(
+                "442431492031312F31342F323030362031383A31353A303020313633343134362"
+                ."0333737323337362033373732333434203337373233313220333737323239342"
+                ."0312A",
+                0x44,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataCrc8()
+    */
+    public function testCrc8($preload, $expect)
+    {
+        $pkt = Packet::factory($preload);
+        $this->assertSame($expect, $pkt->crc8($preload));
     }
 
 }

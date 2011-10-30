@@ -90,6 +90,8 @@ final class Packet
     private $_data;
     /** This is the packet checksum  */
     private $_checksum;
+    /** This is the polynomial for the CRC  */
+    private $_poly = 0xA6;
     /** Extra string at the end of the packet  */
     private $_extra;
     /** This has known types in it */
@@ -415,6 +417,42 @@ final class Packet
         }
         return $pkt;
     }
+    /**
+    * Checks to see if this packet is valid
+    *
+    * @return byte The total CRC
+    */
+    public function crc8($string)
+    {
+        //$string = $this->_packetStr();
+        $pkt = str_split($string, 2);
+        $crc = 0;
+        foreach ($pkt as $value) {
+            $this->_crc8byte($crc, hexdec($value));
+        }
+        return $crc;
+    }
+    /**
+    * Checks to see if this packet is valid
+    *
+    * @param int &$crc The total CRC so far.  SHould be set to 0 to start
+    * @param int $byte The byte we are adding to the crc
+    *
+    * @return byte The total CRC
+    */
+    private function _crc8byte(&$crc, $byte)
+    {
+        $crc = ($crc ^ $byte) & 0xFF;
+        for ($i = 0; $i < 8; $i++) {
+            if (($crc & 0x80) == 0x80) {
+                $crc = ($crc << 1) ^ $this->_poly;
+            } else {
+                $crc = $crc << 1;
+            }
+            $crc = $crc & 0xFF;
+        }
+    }
+
 }
 
 
