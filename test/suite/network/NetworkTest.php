@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /** This is a required class */
-require_once CODE_BASE.'sockets/NullSocket.php';
+require_once CODE_BASE.'network/Network.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -55,7 +55,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class NullSocketTest extends \PHPUnit_Framework_TestCase
+class NetworkTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -81,39 +81,86 @@ class NullSocketTest extends \PHPUnit_Framework_TestCase
     {
     }
     /**
-    * This tests the exception when read is called on a null socket
+    * Data provider for testRemove
     *
-    * @return null
+    * @return array
     */
-    public function testReadException()
+    public static function dataNetwork()
     {
-        $this->setExpectedException("Exception");
-        $config = array();
-        $socket = NullSocket::factory("test", $config);
-        $socket->read();
+        return array(
+            array(  // #0
+                array(
+                ),
+                array(
+                    "default" => array(
+                        "driver" => "DummySocket",
+                    ),
+                ),
+                "default",
+                array(
+                ),
+                "HUGnet\DummySocket",
+                null,
+            ),
+            array(  // #1 Bad socket driver
+                array(
+                ),
+                array(
+                    "default" => array(
+                        "driver" => "",
+                    ),
+                ),
+                "default",
+                array(
+                ),
+                "HUGnet\DummySocket",
+                "Exception",
+            ),
+            array(  // #2 Already set up class
+                array(
+                ),
+                array(
+                    "default" => new DummySocket("defaultNetwork"),
+                ),
+                "default",
+                array(
+                ),
+                "HUGnet\DummySocket",
+                null,
+            ),
+        );
     }
     /**
-    * This tests the exception when read is called on a null socket
+    * Tests the iteration and preload functions
+    *
+    * @param array  $system    The string to give to the class
+    * @param array  $config    The configuration to send the class
+    * @param string $socket    The socket to try to get
+    * @param array  $expect    The info to expect returned
+    * @param string $class     The class to expect returned
+    * @param string $exception The exception to expect.  Null for none
     *
     * @return null
-    */
-    public function testWriteException()
-    {
-        $this->setExpectedException("Exception");
-        $config = array();
-        $socket = NullSocket::factory("test", $config);
-        $socket->write();
-    }
-    /**
-    * This tests the exception when read is called on a null socket
     *
-    * @return null
+    * @dataProvider dataNetwork()
     */
-    public function testAvailable()
-    {
-        $config = array();
-        $socket = NullSocket::factory("test", $config);
-        $this->assertFalse($socket->available());
+    public function testNetwork(
+        $system, $config, $socket, $expect, $class, $exception
+    ) {
+        if (!is_null($exception)) {
+            $this->setExpectedException($exception);
+        }
+        $sys = new DummyBase("HUGnetSystem");
+        $sys->resetMock($system);
+        $sock = &Network::factory($sys, $config);
+        $this->assertSame($class, get_class($sock->socket($socket)), "Class wrong");
+        $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
+        // This checks to make sure it is always returning the same socket
+        $this->assertSame(
+            $sock->socket($socket),
+            $sock->socket($socket),
+            "Wrong socket returned"
+        );
     }
 
 }

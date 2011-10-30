@@ -36,7 +36,11 @@
 /** This is the HUGnet namespace */
 namespace HUGnet;
 /**
- * This class hands out references to the sockets that are available.
+ * This code routes packets to their correct destinations.
+ *
+ * This is the router class, essentially.  It will take packets and figure out
+ * which network interface to send them out.  This implements the Network layer
+ * of the OSI model.
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -65,6 +69,7 @@ final class Network
     {
         $this->_system =& $system;
         $this->_config = $config;
+        include_once dirname(__FILE__)."/../system/Packet.php";
     }
     /**
     * Creates the object
@@ -97,18 +102,6 @@ final class Network
     *
     * @return Network object
     */
-    public function available($socket = "default")
-    {
-        $this->_connect($socket);
-        return is_object($this->_sockets[$socket]);
-    }
-    /**
-    * Checks to see if we are connected to a database
-    *
-    * @param string $socket The group to check
-    *
-    * @return Network object
-    */
     public function &socket($socket = "default")
     {
         $this->_connect($socket);
@@ -118,6 +111,55 @@ final class Network
             !is_object($this->_sockets[$socket])
         );
         return $this->_sockets[$socket];
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param object &$pkt   The packet to send out
+    * @param string $socket The socket to send it out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function send(&$pkt)
+    {
+        // Send out what we have
+        $return = (bool)$this->socket($socket)->write((string)$pkt);
+        // Check to see if there is anything to receive
+        $this->buffer .= $this->socket($socket)->read();
+        // Return
+        return $return;
+    }
+    /**
+    * Waits for a reply packet for the packet given
+    *
+    * @param PacketContainer &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function &receive()
+    {
+        // Check to see if there is anything to receive
+        $this->buffer .= $this->socket($socket)->read();
+        $pkt = Packet::factory($this->buffer);
+        if ($ret->isValid()) {
+            $this->buffer = $ret->extra();
+            return $pkt;
+        }
+        return null;
+    }
+    /**
+    * function to set DeviceID
+    *
+    * @param string $value The value to set
+    *
+    * @return null
+    */
+    protected function setDeviceID($value)
+    {
+        if (is_int($value)) {
+            $value = dechex($value);
+        }
+        $this->data["DeviceID"] = self::stringSize($value, 6);
     }
 
     /**
@@ -147,22 +189,19 @@ final class Network
     */
     private function _findDriver($socket)
     {
-        $class = $this->_config[$socket]["driver"];
-        if (!class_exists($class)) {
-            $class = "\\".$class;
-        }
-        if (!class_exists($class)) {
-            $class = "\\HUGnet".$class;
-        }
+        $class = Util::findClass(
+            $this->_config[$socket]["driver"],
+            "network", true
+        );
         if (class_exists($class)) {
             $this->_sockets[$socket] = $class::factory(
                 $this->_config[$socket]
             );
             return;
         }
-        // Last resort include NullNetwork
-        include_once dirname(__FILE__)."/../sockets/NullNetwork.php";
-        $this->_sockets[$socket] = NullNetwork::factory(
+        // Last resort include NullSocket
+        include_once dirname(__FILE__)."/NullSocket.php";
+        $this->_sockets[$socket] = NullSocket::factory(
             $socket, $this->_config[$socket]
         );
     }

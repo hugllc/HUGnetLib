@@ -88,8 +88,9 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public static function dataFindClass()
     {
         return array(
-            array("Error", "system", "\HUGnet\Error", null),
-            array("ThisIsAVeryBadClass", "NoWhere", null, "Exception"),
+            array("Error", "system", false, "\HUGnet\Error", null),
+            array("ThisIsAVeryBadClass", "NoWhere", false, null, "Exception"),
+            array("ThisIsAVeryBadClass", "NoWhere", true, null, null),
         );
     }
     /**
@@ -104,12 +105,12 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataFindClass
     */
-    public function testFindClass($class, $dir, $expect, $exception)
+    public function testFindClass($class, $dir, $quiet, $expect, $exception)
     {
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
-        $this->assertSame($expect, Util::findClass($class, $dir));
+        $this->assertSame($expect, Util::findClass($class, $dir, $quiet));
     }
 
 }

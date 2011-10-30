@@ -38,7 +38,7 @@
 namespace HUGnet;
 
 /** This is a required class */
-require_once CODE_BASE.'sockets/SocketServer.php';
+require_once CODE_BASE.'network/SocketServer.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 

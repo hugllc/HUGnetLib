@@ -58,10 +58,11 @@ class Util
     *
     * @param string $class The class to find
     * @param string $dir   The directory to look into
+    * @param bool   @quiet If true no exception is thrown
     *
     * @return reference to the table class object
     */
-    public static function findClass($class, $dir="tables")
+    public static function findClass($class, $dir="tables", $quiet=false)
     {
         /** This is our table class */
         @include_once dirname(__FILE__)."/../".$dir."/".$class.".php";
@@ -72,12 +73,15 @@ class Util
         if (!class_exists($class)) {
             $class = "\\HUGnet".$class;
         }
+        if (class_exists($class)) {
+            return $class;
+        }
         System::exception(
             "Class '".$baseclass."' doesn't exist",
             101,
-            !class_exists($class)
+            !$quiet
         );
-        return $class;
+        return null;
     }
 
 }
