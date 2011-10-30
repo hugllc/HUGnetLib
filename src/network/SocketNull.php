@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 /**
  * This class hands out references to the sockets that are available.
  *
@@ -106,7 +106,7 @@ class SocketNull
     */
     public function write()
     {
-        System::exception(
+        \HUGnet\System::exception(
             "No connection available on ".$this->_name,
             101
         );
@@ -121,7 +121,7 @@ class SocketNull
     */
     public function read()
     {
-        System::exception(
+        \HUGnet\System::exception(
             "No connection available on ".$this->_name,
             101
         );

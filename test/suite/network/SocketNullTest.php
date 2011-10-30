@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 /** This is a required class */
 require_once CODE_BASE.'network/SocketNull.php';
 /** This is a required class */

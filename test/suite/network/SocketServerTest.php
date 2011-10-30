@@ -35,7 +35,7 @@
  *
  */
 /** This is our namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 
 /** This is a required class */
 require_once CODE_BASE.'network/SocketServer.php';

@@ -35,7 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 /** This is our base class */
 require_once dirname(__FILE__)."/DummyBase.php";
 
@@ -56,20 +56,34 @@ require_once dirname(__FILE__)."/DummyBase.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
-class DummySocket extends DummyBase
+class DummySocket extends \HUGnet\DummyBase
 {
+    /** @var This is our returns */
+    protected $class = "DummySocket";
     /**
     * Creates the object
     *
-    * @param object &$system The system object to use
-    * @param array  $config  The configuration to use
+    * @param array $config The configuration to use
     *
     * @return null
     */
-    public function &factory(&$system, $config = array())
+    public function &factory($config = array())
     {
-        return new DummySocket();
+        return new DummySocket($config["name"]);
     }
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function read()
+    {
+        $ret = parent::__call("read", func_get_args());
+        self::$ret[$this->class]["read"] = "";
+        return $ret;
+    }
+
+
 
 }
 ?>

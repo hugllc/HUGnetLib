@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network;
 /**
  * This code routes packets to their correct destinations.
  *
@@ -56,32 +56,33 @@ final class Network
 {
     /** This is where we store our sockets */
     private $_sockets = array();
+    /** Write buffer */
+    private $_write = array();
+    /** Read buffer */
+    private $_read = array();
     /** This is where we store our config */
     private $_config = array();
 
     /**
     * Sets our configuration
     *
-    * @param object &$system The system object to use
-    * @param array  $config  The configuration to use
+    * @param array $config The configuration to use
     */
-    private function __construct(&$system, $config)
+    private function __construct($config)
     {
-        $this->_system =& $system;
         $this->_config = $config;
         include_once dirname(__FILE__)."/Packet.php";
     }
     /**
     * Creates the object
     *
-    * @param object &$system The system object to use
-    * @param array  $config  The configuration to use
+    * @param array $config The configuration to use
     *
     * @return null
     */
-    public function &factory(&$system, $config = array())
+    public function &factory($config = array())
     {
-        return new Network($system, (array)$config);
+        return new Network((array)$config);
     }
 
     /**
@@ -102,10 +103,10 @@ final class Network
     *
     * @return Network object
     */
-    public function &socket($socket = "default")
+    private function &_socket($socket = "default")
     {
         $this->_connect($socket);
-        System::exception(
+        \HUGnet\System::exception(
             "No connection available on socket ".$socket,
             101,
             !is_object($this->_sockets[$socket])
@@ -115,53 +116,103 @@ final class Network
     /**
     * Sends out a packet
     *
-    * @param object &$pkt   The packet to send out
-    * @param string $socket The socket to send it out
+    * @param object &$pkt The packet to send out
     *
     * @return bool true on success, false on failure
     */
     public function send(&$pkt)
     {
-        // Send out what we have
-        $return = (bool)$this->socket($socket)->write((string)$pkt);
+        foreach ($this->_find($pkt) as $key) {
+            $this->_write[$key] .= (string)$pkt;
+        }
+        $this->_write();
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param object &$pkt The packet to send out
+    *
+    * @return bool true on success, false on failure
+    */
+    private function _find(&$pkt)
+    {
+        return $this->_ifaces();
+    }
+    /**
+    * Returns the interfaces that we are waiting for
+    *
+    * @return bool true on success, false on failure
+    */
+    private function _ifaces()
+    {
+        if (!is_array($this->_config["ifaces"])) {
+            $this->_config["ifaces"] = array();
+            foreach (array_keys($this->_config) as $key) {
+                if (is_object($this->_config[$key])
+                    ||  isset($this->_config[$key]["driver"])
+                ) {
+                    $this->_config["ifaces"][$key] = $key;
+                }
+            }
+            if (empty($this->_config["ifaces"])) {
+                $this->_config["ifaces"]["default"] = "default";
+            }
+        }
+        return $this->_config["ifaces"];
+    }
+    /**
+    * Sends out buffers
+    *
+    * The write routine doesn't always write all of the characters given to it.  It
+    * might encounter a full buffer or other things like that.  That is why it only
+    * remove the number of characters that it was told were actually written.
+    *
+    * @return null
+    */
+    private function _write()
+    {
+        foreach ($this->_ifaces() as $key) {
+            if (strlen($this->_write[$key]) > 0) {
+                $this->_connect($key);
+                $chars = $this->_socket($key)->write($this->_write[$key]);
+                $this->_write[$key] = (string)substr(
+                    $this->_write[$key], ($chars*2)
+                );
+            }
+        }
+    }
+    /**
+    * reads in buffers
+    *
+    * @return null
+    */
+    private function _read()
+    {
         // Check to see if there is anything to receive
-        $this->buffer .= $this->socket($socket)->read();
-        // Return
-        return $return;
+        foreach ($this->_ifaces() as $key) {
+            $this->_read[$key] .= $this->_socket($key)->read();
+        }
     }
     /**
     * Waits for a reply packet for the packet given
     *
-    * @param PacketContainer &$pkt The packet to send out
-    *
-    * @return bool true on success, false on failure
+    * @return null on failure, Packet container on success
     */
     public function &receive()
     {
-        // Check to see if there is anything to receive
-        $this->buffer .= $this->socket($socket)->read();
-        $pkt = Packet::factory($this->buffer);
-        if ($ret->isValid()) {
-            $this->buffer = $ret->extra();
-            return $pkt;
+        $this->_write();
+        $this->_read();
+        // Check for packets
+        foreach ($this->_ifaces() as $key) {
+            $pkt = Packet::factory($this->_read[$key]);
+            if ($pkt->isValid()) {
+                // This sets the buffer to the left over characters
+                $this->_read[$key] = $pkt->extra();
+                return $pkt;
+            }
         }
         return null;
     }
-    /**
-    * function to set DeviceID
-    *
-    * @param string $value The value to set
-    *
-    * @return null
-    */
-    protected function setDeviceID($value)
-    {
-        if (is_int($value)) {
-            $value = dechex($value);
-        }
-        $this->data["DeviceID"] = self::stringSize($value, 6);
-    }
-
     /**
     * Connects to a database group
     *
@@ -178,6 +229,7 @@ final class Network
             $this->_sockets[$socket] = &$this->_config[$socket];
             return;
         }
+        $this->_config[$socket]["name"] = $socket;
         $this->_findDriver($socket);
     }
     /**
@@ -189,10 +241,9 @@ final class Network
     */
     private function _findDriver($socket)
     {
-        $class = Util::findClass(
-            $this->_config[$socket]["driver"],
-            "network", true
-        );
+        $class = $this->_config[$socket]["driver"];
+        @include_once dirname(__FILE__)."/".$class.".php";
+        $class = __NAMESPACE__."\\physical\\".$class;
         if (class_exists($class)) {
             $this->_sockets[$socket] = $class::factory(
                 $this->_config[$socket]
@@ -201,7 +252,7 @@ final class Network
         }
         // Last resort include SocketNull
         include_once dirname(__FILE__)."/SocketNull.php";
-        $this->_sockets[$socket] = SocketNull::factory(
+        $this->_sockets[$socket] = physical\SocketNull::factory(
             $socket, $this->_config[$socket]
         );
     }

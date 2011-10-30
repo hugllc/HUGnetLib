@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Packet.php';
 
@@ -95,6 +95,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "C3",
                     "Type" => "SENSORREAD",
+                    "Extra" => "",
                 ),
             ),
             array( // #1 Given an array with strings
@@ -114,6 +115,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "C3",
                     "Type" => "SENSORREAD",
+                    "Extra" => "",
                 ),
             ),
             array( // #2 Given an array with integers and arrays
@@ -133,6 +135,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Data" => "01020304",
                     "Checksum" => "96",
                     "Type" => "UNKNOWN",
+                    "Extra" => "",
                 ),
             ),
             array(  // #3 given a string with garbage before and after
@@ -202,7 +205,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     "To" => "ABC",
                     "From" => "20",
-                    "Command" => "55",
+                    "Command" => "SENSORREAD",
                     "Length"  => "04",
                     "Data" => "01020304",
                     "Checksum" => "C3",
@@ -250,7 +253,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                 array(
                     "To" => "000ABC",
                     "From" => "000020",
-                    "Command" => "55",
+                    "Command" => "SENSORREAD",
                     "Length"  => 4,
                     "Data" => "01020304",
                     "Checksum" => "C3",
@@ -265,6 +268,14 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                 "5A5A5A55000ABC0000200401020304F4",
                 false,
             ),
+            array(
+                "5A5A5A010000201234560F0102030405060708090A0B0C0D0E0F5E",
+                true,
+            ),
+            array(
+                "",
+                false,
+            )
         );
     }
     /**
@@ -335,10 +346,13 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                "442431492031312F31342F323030362031383A31353A303020313633343134362"
-                ."0333737323337362033373732333434203337373233313220333737323239342"
-                ."0312A",
-                0x44,
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Data" => "01020304",
+                ),
+                0x82,
             ),
         );
     }
@@ -355,7 +369,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     public function testCrc8($preload, $expect)
     {
         $pkt = Packet::factory($preload);
-        $this->assertSame($expect, $pkt->crc8($preload));
+        $this->assertSame($expect, $pkt->crc8());
     }
 
 }

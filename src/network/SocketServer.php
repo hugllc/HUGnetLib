@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 /**
  * This class implements a sever for sockets.
  *
@@ -104,7 +104,7 @@ class SocketServer
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_setup();
-        System::exception(
+        \HUGnet\System::exception(
             "Failed to create socket with\n ".print_r($config, true),
             102,
             !is_resource($this->_socket)
@@ -165,7 +165,7 @@ class SocketServer
         $bound = socket_bind(
             $this->_socket, $this->_config["location"], $this->_config["port"]
         );
-        System::exception(
+        \HUGnet\System::exception(
             "Failed to bind to socket ".print_r($this->_config, true),
             102,
             !$bound

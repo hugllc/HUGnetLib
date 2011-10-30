@@ -34,9 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network;
 /** This is a required class */
 require_once CODE_BASE.'network/Network.php';
+/** This is a required class */
+require_once CODE_BASE.'network/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -88,44 +90,235 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     public static function dataNetwork()
     {
         return array(
-            array(  // #0
+            array(  // #0 // No sockets
                 array(
+                ),
+                array(
+                ),
+                1,
+                array(
+                    "asdf",
+                ),
+                array(
+                ),
+                "",
+                "Exception",
+            ),
+            array(  // #2 Already set up class
+                array(
+                    "defaultSocket" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123456,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                        "write" => 12,
+                    ),
+                ),
+                array(
+                    "default" => new \HUGnet\network\physical\DummySocket(
+                        "defaultSocket"
+                    ),
+                ),
+                1,
+                array(
+                    (string)Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                ),
+                array(
+                    "defaultSocket" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array()),
+                    ),
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "From" => 0x123456,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                ),
+                null,
+            ),
+            array(  // #3 No good read data
+                array(
+                    "default" => array(
+                        "read" => "010203040506",
+                        "write" => 12,
+                    ),
                 ),
                 array(
                     "default" => array(
                         "driver" => "DummySocket",
                     ),
                 ),
-                "default",
+                1,
                 array(
-                ),
-                "HUGnet\DummySocket",
-                null,
-            ),
-            array(  // #1 Bad socket driver
-                array(
+                    (string)Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
                 ),
                 array(
                     "default" => array(
-                        "driver" => "",
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array()),
                     ),
                 ),
-                "default",
                 array(
                 ),
-                "HUGnet\DummySocket",
-                "Exception",
+                null,
             ),
             array(  // #2 Already set up class
                 array(
+                    "default" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123456,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                        "write" => 12,
+                    ),
+                    "nondefault" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123458,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                        "write" => 12,
+                    ),
                 ),
                 array(
-                    "default" => new DummySocket("defaultNetwork"),
+                    "default" => array(
+                        "driver" => "DummySocket"
+                    ),
+                    "nondefault" => array(
+                        "driver" => "DummySocket"
+                    ),
                 ),
-                "default",
+                2,
                 array(
+                    (string)Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                    (string)Packet::factory(
+                        array(
+                            "To" => 0x123458,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
                 ),
-                "HUGnet\DummySocket",
+                array(
+                    "default" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                )
+                            ),
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array(), array()),
+                    ),
+                    "nondefault" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                )
+                            ),
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array(), array()),
+                    ),
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "From" => 0x123456,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x123458,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                ),
                 null,
             ),
         );
@@ -135,9 +328,10 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     *
     * @param array  $system    The string to give to the class
     * @param array  $config    The configuration to send the class
-    * @param string $socket    The socket to try to get
+    * @param int    $loops     The number of times to call read and write
+    * @param array  $send      Array of strings to send out
     * @param array  $expect    The info to expect returned
-    * @param string $class     The class to expect returned
+    * @param array  $recv      Array of objects to expect received
     * @param string $exception The exception to expect.  Null for none
     *
     * @return null
@@ -145,22 +339,20 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataNetwork()
     */
     public function testNetwork(
-        $system, $config, $socket, $expect, $class, $exception
+        $system, $config, $loops, $send, $expect, $recv, $exception
     ) {
         if (!is_null($exception)) {
             $this->setExpectedException($exception);
         }
-        $sys = new DummyBase("HUGnetSystem");
+        $sys = new \HUGnet\DummyBase("HUGnetSystem");
         $sys->resetMock($system);
-        $sock = &Network::factory($sys, $config);
-        $this->assertSame($class, get_class($sock->socket($socket)), "Class wrong");
+        $network = &Network::factory($config);
+        for ($i = 0; $i < $loops; $i++) {
+            $network->send($send[$i]);
+            $ret = $network->receive();
+            $this->assertEquals($recv[$i], $ret, "Return wrong");
+        }
         $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
-        // This checks to make sure it is always returning the same socket
-        $this->assertSame(
-            $sock->socket($socket),
-            $sock->socket($socket),
-            "Wrong socket returned"
-        );
     }
 
 }

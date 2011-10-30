@@ -34,7 +34,7 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network;
 /**
  * This is the packet class.
  *
@@ -156,7 +156,7 @@ final class Packet
         $this->command(substr($string, self::COMMAND, 2));
         $this->to(substr($string, self::TO, 6));
         $this->from(substr($string, self::FROM, 6));
-        $length = substr($string, self::LENGTH, 2) * 2;
+        $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
         $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
         $this->extra(substr($string, (self::DATA + $length + 2)));
@@ -282,7 +282,7 @@ final class Packet
     */
     public function isValid()
     {
-        return $this->_checksum == $this->_checksum();
+        return ($this->_checksum == $this->_checksum()) && !empty($this->_command);
     }
     /**
     * Sets and/or returns the command
@@ -332,7 +332,7 @@ final class Packet
         if (is_string($value)) {
             $this->_extra = $value;
         }
-        return $this->_extra;
+        return (string)$this->_extra;
     }
     /**
     * Returns the packet length
@@ -418,13 +418,13 @@ final class Packet
         return $pkt;
     }
     /**
-    * Checks to see if this packet is valid
+    * Returns the CRC8 of the packet
     *
     * @return byte The total CRC
     */
-    public function crc8($string)
+    public function crc8()
     {
-        //$string = $this->_packetStr();
+        $string = $this->_packetStr();
         $pkt = str_split($string, 2);
         $crc = 0;
         foreach ($pkt as $value) {
@@ -442,8 +442,8 @@ final class Packet
     */
     private function _crc8byte(&$crc, $byte)
     {
-        $crc = ($crc ^ $byte) & 0xFF;
-        for ($i = 0; $i < 8; $i++) {
+        $crc = ((int)$crc ^ (int)$byte) & 0xFF;
+        for ($bit = 8; $bit > 0; $bit--) {
             if (($crc & 0x80) == 0x80) {
                 $crc = ($crc << 1) ^ $this->_poly;
             } else {

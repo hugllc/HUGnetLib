@@ -35,7 +35,7 @@
  *
  */
 /** This is our namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 
 /** This is a required class */
 require_once CODE_BASE.'network/Socket.php';
@@ -113,7 +113,8 @@ class SocketTest extends \PHPUnit_Framework_TestCase
             $this->pidfile = tempnam(sys_get_temp_dir(), 'SocketServer');
             exec(
                 "php ".TEST_CONFIG_BASE."scripts/socketserver.php "
-                ."\"".$preload["location"]."\" ".$this->pidfile." >> /tmp/testfile 2>&1 &"
+                ."\"".$preload["location"]."\" ".$this->pidfile
+                ." >> /tmp/testfile 2>&1 &"
             );
             sleep(1);
         }
@@ -263,8 +264,8 @@ class SocketTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array  $preload   The value to preload
-    * @param mixed  $expect    The expected return
+    * @param array $preload The value to preload
+    * @param mixed $expect  The expected return
     *
     * @return null
     *

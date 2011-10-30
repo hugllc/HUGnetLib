@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\network\physical;
 /**
  * This class implements a sever for sockets.
  *
@@ -112,8 +112,9 @@ class Socket
     /**
     * Disconnects from the database
     *
+    * @return null
     */
-    public function _disconnect()
+    private function _disconnect()
     {
         if (is_resource($this->_socket)) {
             socket_close($this->_socket);
@@ -133,7 +134,7 @@ class Socket
         $bound = @socket_connect(
             $this->_socket, $this->_config["location"], $this->_config["port"]
         );
-        System::exception(
+        \HUGnet\System::exception(
             "Failed to connect to socket ".print_r($this->_config, true),
             102,
             !$bound && !$this->_config["quiet"]
@@ -169,7 +170,7 @@ class Socket
     /**
     * Sets up the class
     *
-    * @param array &$read  This will be the array of ready items for reading
+    * @param array &$read This will be the array of ready items for reading
     *
     * @return null
     */
