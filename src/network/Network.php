@@ -54,6 +54,8 @@ namespace HUGnet\network;
  */
 final class Network
 {
+    /** This is refresh count for the routes */
+    const routeTimeToLive = 2;
     /** This is where we store our sockets */
     private $_sockets = array();
     /** Write buffer */
@@ -122,10 +124,25 @@ final class Network
     */
     public function send(&$pkt)
     {
-        foreach ($this->_find($pkt) as $key) {
+        foreach ($this->_getRoute($pkt) as $key) {
             $this->_write[$key] .= (string)$pkt;
         }
         $this->_write();
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param object &$pkt  The packet to send out
+    * @param string $iface The interface to set the route to
+    *
+    * @return bool true on success, false on failure
+    */
+    private function _setRoute(&$pkt, $iface)
+    {
+        if (is_object($pkt)) {
+            $this->_routes[$pkt->from()]["socket"] = $iface;
+            $this->_routes[$pkt->from()]["ttl"] = self::routeTimeToLive;
+        }
     }
     /**
     * Sends out a packet
@@ -134,8 +151,18 @@ final class Network
     *
     * @return bool true on success, false on failure
     */
-    private function _find(&$pkt)
+    private function _getRoute(&$pkt)
     {
+        if (is_object($pkt) && ($pkt->type() != "FINDPING")) {
+            if ($this->_routes[$pkt->to()]["ttl"]-- > 0) {
+                // This route still has time to live.  Return it.
+                return array($this->_routes[$pkt->to()]["socket"]);
+            } else {
+                // Remove the route, it is old
+                unset($this->_routes[$pkt->to()]);
+            }
+        }
+        // No routes or bad route found.  Return all routes.
         return $this->_ifaces();
     }
     /**
@@ -208,6 +235,7 @@ final class Network
             if ($pkt->isValid()) {
                 // This sets the buffer to the left over characters
                 $this->_read[$key] = $pkt->extra();
+                $this->_setRoute($pkt, $key);
                 return $pkt;
             }
         }

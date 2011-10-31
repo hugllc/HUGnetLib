@@ -47,7 +47,7 @@ namespace HUGnet\network\physical;
  * "type"     - Required - Should be AF_UNIX or AF_INET (constants not strings)
  * "location" - Required - IP address for AF_INET, file for AF_UNIX
  * "port"     - Required - Only for AF_INET - TCP Port to use
- * "quiet"    - Optional - If true no exceptions are used
+ * "quiet"    - Optional - If true no exceptions are thrown
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -62,6 +62,18 @@ namespace HUGnet\network\physical;
 class Socket
 {
     /**
+    * This is the maximum number of bytes that we read
+    */
+    const maxBytes = 1024;
+    /**
+    * This is the maximum number of bytes that we read
+    */
+    const waitSec = 0;
+    /**
+    * This is the maximum number of bytes that we read
+    */
+    const waitUSec = 10000;
+    /**
     * This our configuration resides here
     */
     private $_config = array();
@@ -69,10 +81,6 @@ class Socket
     * This our socket
     */
     private $_socket;
-    /**
-    * This maximum read length
-    */
-    private $_maxRead = 1024;
     /**
     * This our configuration resides here
     */
@@ -139,6 +147,7 @@ class Socket
             102,
             !$bound && !$this->_config["quiet"]
         );
+        socket_set_nonblock($this->_socket);
     }
     /**
     * Reads from all ready to read from and sends the data back out to everyone
@@ -151,7 +160,7 @@ class Socket
     {
         $return = "";
         if (in_array($this->_socket, $ready)) {
-            $return = @socket_read($this->_socket, 1024);
+            $return = @socket_read($this->_socket, self::maxBytes);
         }
         return $return;
     }
@@ -179,7 +188,7 @@ class Socket
         $read  = array($this->_socket);
         $write = array();
         $exe = array();
-        $ready = @socket_select($read, $write, $exe, 0, 10000);
+        $ready = @socket_select($read, $write, $exe, self::waitSec, self::waitUSec);
         return $ready;
     }
     /**

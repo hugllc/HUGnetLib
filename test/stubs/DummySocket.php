@@ -79,8 +79,12 @@ class DummySocket extends \HUGnet\DummyBase
     public function read()
     {
         $ret = parent::__call("read", func_get_args());
-        self::$ret[$this->class]["read"] = "";
-        return $ret;
+        if (is_string(self::$ret[$this->class]["read"])) {
+            self::$ret[$this->class]["read"] = "";
+        } else if (is_array(self::$ret[$this->class]["read"])) {
+            return array_shift(self::$ret[$this->class]["read"]);
+        }
+        return (string)$ret;
     }
 
 

@@ -125,7 +125,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 1,
                 array(
-                    (string)Packet::factory(
+                    Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
@@ -206,24 +206,31 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
             array(  // #2 Already set up class
                 array(
                     "default" => array(
-                        "read" => (string)Packet::factory(
-                            array(
-                                "From" => 0x123456,
-                                "To" => 0x000020,
-                                "Command" => 0x01,
-                                "Data" => "0102030405060708090A0B0C0D0E0F",
-                            )
+                        "read" => array(
+                            "",
+                            (string)Packet::factory(
+                                array(
+                                    "From" => 0x123456,
+                                    "To" => 0x000020,
+                                    "Command" => 0x01,
+                                    "Data" => "0102030405060708090A0B0C0D0E0F",
+                                )
+                            ),
                         ),
                         "write" => 12,
                     ),
                     "nondefault" => array(
-                        "read" => (string)Packet::factory(
-                            array(
-                                "From" => 0x123458,
-                                "To" => 0x000020,
-                                "Command" => 0x01,
-                                "Data" => "0102030405060708090A0B0C0D0E0F",
-                            )
+                        "read" => array(
+                            "",
+                            "",
+                            (string)Packet::factory(
+                                array(
+                                    "From" => 0x123458,
+                                    "To" => 0x000020,
+                                    "Command" => 0x01,
+                                    "Data" => "0102030405060708090A0B0C0D0E0F",
+                                )
+                            ),
                         ),
                         "write" => 12,
                     ),
@@ -236,20 +243,47 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         "driver" => "DummySocket"
                     ),
                 ),
-                2,
+                10,
                 array(
-                    (string)Packet::factory(
+                    Packet::factory(
                         array(
                             "To" => 0x123456,
                             "From" => 0x000020,
                             "Command" => 0x55,
                         )
                     ),
-                    (string)Packet::factory(
+                    Packet::factory(
                         array(
                             "To" => 0x123458,
                             "From" => 0x000020,
-                            "Command" => 0x55,
+                            "Command" => "FINDPING",
+                        )
+                    ),
+                    null,
+                    null,
+                    // This packet is sent out nondefault only
+                    Packet::factory(
+                        array(
+                            "To" => 0x123458,
+                            "From" => 0x000020,
+                            "Command" => "PING",
+                        )
+                    ),
+                    // This packet is sent out nondefault only
+                    Packet::factory(
+                        array(
+                            "To" => 0x123458,
+                            "From" => 0x000020,
+                            "Command" => "PING",
+                        )
+                    ),
+                    // This packet is sent out both because no replies to the prev
+                    // packets.
+                    Packet::factory(
+                        array(
+                            "To" => 0x123458,
+                            "From" => 0x000020,
+                            "Command" => "PING",
                         )
                     ),
                 ),
@@ -270,12 +304,26 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
-                                        "Command" => 0x55,
+                                        "Command" => "FINDPING",
+                                    )
+                                ),
+                            ),
+                            // This is the third of these packets
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => "PING",
                                     )
                                 ),
                             ),
                         ),
-                        "read" => array(array(), array()),
+                        // 10 loops means 10 calls to read
+                        "read" => array(
+                            array(), array(), array(), array(), array(),
+                            array(), array(), array(), array(), array(),
+                        ),
                     ),
                     "nondefault" => array(
                         "write" => array(
@@ -293,15 +341,50 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                                     array(
                                         "To" => 0x123458,
                                         "From" => 0x000020,
-                                        "Command" => 0x55,
+                                        "Command" => "FINDPING",
+                                    )
+                                ),
+                            ),
+                            // All three packets are here
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => "PING",
+                                    )
+                                ),
+                            ),
+                            // All three packets are here
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => "PING",
+                                    )
+                                ),
+                            ),
+                            // All three packets are here
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123458,
+                                        "From" => 0x000020,
+                                        "Command" => "PING",
                                     )
                                 ),
                             ),
                         ),
-                        "read" => array(array(), array()),
+                        // 10 loops means 10 calls to read
+                        "read" => array(
+                            array(), array(), array(), array(), array(),
+                            array(), array(), array(), array(), array(),
+                        ),
                     ),
                 ),
                 array(
+                    "",
                     Packet::factory(
                         array(
                             "From" => 0x123456,

@@ -100,7 +100,12 @@ final class Packet
     private $_checksum;
     /** Extra string at the end of the packet  */
     private $_extra;
-    /** This has known types in it */
+    /**
+    * This has known types in it
+    *
+    * These should not change.  There are other places in the code that these
+    * are used.  If they change then things could break.
+    */
     private $_commands = array(
         "REPLY" => 0x01,
         "PING" => 0x02,
