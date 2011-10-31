@@ -98,6 +98,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     *
     * @param string $class     The class to find
     * @param string $dir       The directory to look in
+    * @param bool   $quiet     If true no exceptions are thrown
     * @param string $expect    The class as we found it
     * @param string $exception If it is a string we are expecting an exception
     *
@@ -112,6 +113,36 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertSame($expect, Util::findClass($class, $dir, $quiet));
     }
+
+    /**
+    * Data provider for testRemove
+    *
+    * @return array
+    */
+    public static function dataCrc8()
+    {
+        return array(
+            array(
+                "55000ABC0000200401020304",
+                0x82,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param string $preload The string to give to the class
+    * @param array  $expect  The info to expect returned
+    *
+    * @return null
+    *
+    * @dataProvider dataCrc8()
+    */
+    public function testCrc8($preload, $expect)
+    {
+        $this->assertSame($expect, Util::crc8($preload));
+    }
+
 
 }
 ?>

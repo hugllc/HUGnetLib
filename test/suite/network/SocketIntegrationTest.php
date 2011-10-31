@@ -108,32 +108,78 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     */
     public static function dataServer()
     {
-        $rand1 = mt_rand();
+        $port = self::findPort();
+        $file = sys_get_temp_dir()."/serverInteg".mt_rand();
         return array(
             array( // #0
                 array(
-                    "type" => AF_UNIX,
-                    "location" => sys_get_temp_dir()."/serverInteg".$rand1,
+                    "type" => AF_INET,
+                    "location" => "127.0.0.1",
+                    "port" => $port,
                     "bus" => false,
                 ),
                 array(
                     "default" => array(
-                        "type" => AF_UNIX,
-                        "location" => sys_get_temp_dir()."/serverInteg".$rand1,
+                        "type" => AF_INET,
+                        "location" => "127.0.0.1",
+                        "port" => $port,
+                        "name" => "default",
+                    ),
+                    "default2" => array(
+                        "type" => AF_INET,
+                        "location" => "127.0.0.1",
+                        "port" => $port,
+                        "name" => "default2",
                     ),
                 ),
                 10,
                 // There must be data from each client before they actually connect
                 // therefore, numbers should be lower in the client array.
                 array(
-                    5 => "Passed",
+                    6 => "Passed",
                 ),
                 array(
                     "default" => array(
-                        2 => "Test",
+                        4 => "Really",
+                    ),
+                    "default2" => array(
+                        3 => "Test",
                     ),
                 ),
-                "TestPassed",
+                "TestReallyPassedPassed",
+                null,
+            ),
+            array( // #1
+                array(
+                    "type" => AF_UNIX,
+                    "location" => $file,
+                    "bus" => false,
+                ),
+                array(
+                    "default" => array(
+                        "type" => AF_UNIX,
+                        "location" => $file,
+                        "name" => "default",
+                    ),
+                ),
+                10,
+                // There must be data from each client before they actually connect
+                // therefore, numbers should be lower in the client array.
+                array(
+                    2 => "Passed",
+                    4 => "Data",
+                    6 => "And",
+                ),
+                array(
+                    "default" => array(
+                        1 => "Test",
+                        3 => "Much",
+                        5 => "Back",
+                        7 => "Forth",
+
+                    ),
+                ),
+                "TestPassedMuchDataBackAndForth",
                 null,
             ),
         );
@@ -142,11 +188,13 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param array $server    Server configs
-    * @param array $clients   Client Configs
-    * @param array $write     The string to writ
-    * @param array $expect    The expected return
-    * @param mixed $exception Expected exception
+    * @param array $server      Server configs
+    * @param array $clients     Client Configs
+    * @param int   $loops       The number of loops to go through.
+    * @param array $servWrite   Array of strings to write from the server
+    * @param array $clientWrite The string to writ
+    * @param array $expect      The expected return
+    * @param mixed $exception   Expected exception
     *
     * @return null
     *
@@ -169,12 +217,13 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < $loops; $i++) {
             foreach (array_keys($clien) as $key) {
                 $read = $clien[$key]->read();
+                // We have to do a read between every client.
+                $sread .= $serv->read();
                 // Clients just return what they were given
                 $clien[$key]->write($read);
                 $clien[$key]->write($clientWrite[$key][$i]);
             }
             $serv->write($servWrite[$i]);
-            $sread .= $serv->read();
         }
         $this->assertSame($expect, $sread);
     }

@@ -53,6 +53,10 @@ namespace HUGnet\network;
  * This class is part of a refactoring of PacketContainer which bloated to
  * immense proportions.
  *
+ * This class has a lot of methods, but they are very simple.  I could make them
+ * more complex and have less methods.  However, I think I will leave this class
+ * as it is and just supress the warnings.
+ *
  * @category   Libraries
  * @package    HUGnetLib
  * @subpackage System
@@ -61,6 +65,10 @@ namespace HUGnet\network;
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.UnusedPrivateField)
+ * @SuppressWarnings(PHPMD.ShortMethodName)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 final class Packet
 {
@@ -90,8 +98,6 @@ final class Packet
     private $_data;
     /** This is the packet checksum  */
     private $_checksum;
-    /** This is the polynomial for the CRC  */
-    private $_poly = 0xA6;
     /** Extra string at the end of the packet  */
     private $_extra;
     /** This has known types in it */
@@ -265,8 +271,8 @@ final class Packet
         if (is_string($value)) {
             // This reference is necessary, otherwise I get the following error:
             // Cannot use [] for reading
+            $this->$field = array();
             $array = &$this->$field;
-            $array = array();
             foreach (str_split($value, 2) as $val) {
                 $array[] = hexdec($val);
             }
@@ -274,6 +280,27 @@ final class Packet
             $this->$field = $value;
         }
         return $this->$field;
+    }
+    /**
+    * Removes the preamble and other junk from the start of a packet string
+    *
+    * @param string $string The preamble will be removed from this packet string
+    *
+    * @return null
+    */
+    private function _cleanPktStr($string)
+    {
+        // This strips off anything before the preamble
+        if (($pkt = stristr($string, $this->preamble(true))) === false) {
+            // If there is no preamble present send the string directly through
+            $this->extra($string);
+            return "";
+        }
+        // This strips off the preamble.
+        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
+            $pkt = substr($pkt, 2);
+        }
+        return $pkt;
     }
     /**
     * Checks to see if this packet is valid
@@ -396,63 +423,6 @@ final class Packet
         }
         return "UNKNOWN";
     }
-    /**
-    * Removes the preamble and other junk from the start of a packet string
-    *
-    * @param string $string The preamble will be removed from this packet string
-    *
-    * @return null
-    */
-    private function _cleanPktStr($string)
-    {
-        // This strips off anything before the preamble
-        if (($pkt = stristr($string, $this->preamble(true))) === false) {
-            // If there is no preamble present send the string directly through
-            $this->extra($string);
-            return "";
-        }
-        // This strips off the preamble.
-        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
-            $pkt = substr($pkt, 2);
-        }
-        return $pkt;
-    }
-    /**
-    * Returns the CRC8 of the packet
-    *
-    * @return byte The total CRC
-    */
-    public function crc8()
-    {
-        $string = $this->_packetStr();
-        $pkt = str_split($string, 2);
-        $crc = 0;
-        foreach ($pkt as $value) {
-            $this->_crc8byte($crc, hexdec($value));
-        }
-        return $crc;
-    }
-    /**
-    * Checks to see if this packet is valid
-    *
-    * @param int &$crc The total CRC so far.  SHould be set to 0 to start
-    * @param int $byte The byte we are adding to the crc
-    *
-    * @return byte The total CRC
-    */
-    private function _crc8byte(&$crc, $byte)
-    {
-        $crc = ((int)$crc ^ (int)$byte) & 0xFF;
-        for ($bit = 8; $bit > 0; $bit--) {
-            if (($crc & 0x80) == 0x80) {
-                $crc = ($crc << 1) ^ $this->_poly;
-            } else {
-                $crc = $crc << 1;
-            }
-            $crc = $crc & 0xFF;
-        }
-    }
-
 }
 
 

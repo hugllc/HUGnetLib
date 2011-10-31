@@ -53,12 +53,14 @@ namespace HUGnet;
  */
 class Util
 {
+    /** This is the polynomial for the CRC  */
+    private static $_poly = 0xA6;
     /**
     * This function gives us access to the table class
     *
     * @param string $class The class to find
     * @param string $dir   The directory to look into
-    * @param bool   @quiet If true no exception is thrown
+    * @param bool   $quiet If true no exception is thrown
     *
     * @return reference to the table class object
     */
@@ -83,6 +85,43 @@ class Util
         );
         return null;
     }
+    /**
+    * Returns the CRC8 of the packet
+    *
+    * @param string $string The string to get the CRC of.
+    *
+    * @return byte The total CRC
+    */
+    public static function crc8($string)
+    {
+        $pkt = str_split($string, 2);
+        $crc = 0;
+        foreach ($pkt as $value) {
+            self::_crc8byte($crc, hexdec($value));
+        }
+        return $crc;
+    }
+    /**
+    * Checks to see if this packet is valid
+    *
+    * @param int &$crc The total CRC so far.  SHould be set to 0 to start
+    * @param int $byte The byte we are adding to the crc
+    *
+    * @return byte The total CRC
+    */
+    private static function _crc8byte(&$crc, $byte)
+    {
+        $crc = ((int)$crc ^ (int)$byte) & 0xFF;
+        for ($bit = 8; $bit > 0; $bit--) {
+            if (($crc & 0x80) == 0x80) {
+                $crc = ($crc << 1) ^ self::$_poly;
+            } else {
+                $crc = $crc << 1;
+            }
+            $crc = $crc & 0xFF;
+        }
+    }
+
 
 }
 

@@ -72,19 +72,7 @@ class SocketServer
     /**
     * This maximum read length
     */
-    private $_maxRead = 1024;
-    /**
-    * This maximum read length
-    */
     private $_maxClients = 10;
-    /**
-    * These are our clients
-    */
-    private $_selectSec = 0;
-    /**
-    * These are our clients
-    */
-    private $_selectUSec = 10000;
     /**
     * These are our clients
     */
@@ -171,6 +159,7 @@ class SocketServer
             !$bound
         );
         socket_listen($this->_socket);
+        socket_set_nonblock($this->_socket);
 
     }
     /**
@@ -258,7 +247,7 @@ class SocketServer
     {
         for ($key = 0; $key < $this->_maxClients; $key++) {
             if (is_null($this->_clients[$key]['socket'])) {
-                $this->_clients[$key]['socket'] = socket_accept($this->_socket);
+                $this->_clients[$key]['socket'] = @socket_accept($this->_socket);
                 break;
             }
         }

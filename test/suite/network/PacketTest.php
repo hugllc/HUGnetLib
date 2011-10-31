@@ -336,41 +336,5 @@ class PacketTest extends \PHPUnit_Framework_TestCase
         $pkt = Packet::factory($preload);
         $this->assertSame($expect, $pkt->Data(null, $raw));
     }
-
-    /**
-    * Data provider for testRemove
-    *
-    * @return array
-    */
-    public static function dataCrc8()
-    {
-        return array(
-            array(
-                array(
-                    "To" => "000ABC",
-                    "From" => "000020",
-                    "Command" => "55",
-                    "Data" => "01020304",
-                ),
-                0x82,
-            ),
-        );
-    }
-    /**
-    * Tests the iteration and preload functions
-    *
-    * @param string $preload The string to give to the class
-    * @param array  $expect  The info to expect returned
-    *
-    * @return null
-    *
-    * @dataProvider dataCrc8()
-    */
-    public function testCrc8($preload, $expect)
-    {
-        $pkt = Packet::factory($preload);
-        $this->assertSame($expect, $pkt->crc8());
-    }
-
 }
 ?>
