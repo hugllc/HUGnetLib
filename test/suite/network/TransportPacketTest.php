@@ -263,7 +263,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     ),
                     false,
                 ),
-                0.4,
+                0.45,
             ),
             array(  // #3 Reply on 3rd try, no find packet
                 array(
@@ -333,7 +333,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     false,
                     false,
                 ),
-                0.3,
+                0.35,
             ),
             array(  // #4 valid reply data == ident
                 array(
@@ -420,7 +420,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
         }
         if (is_float($time)) {
             $this->assertEquals(
-                $time, $transPacket->time(), "The time is wrong", 0.1
+                $time, $transPacket->time(), "The time is wrong", 0.2
             );
         } else {
             $this->assertSame(
