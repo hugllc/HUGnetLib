@@ -59,7 +59,7 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class Socket
+final class Socket
 {
     /**
     * This is the maximum number of bytes that we read

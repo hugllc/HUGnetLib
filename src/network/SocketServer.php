@@ -59,7 +59,7 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SocketServer
+final class SocketServer
 {
     /**
     * This our configuration resides here

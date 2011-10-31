@@ -85,7 +85,14 @@
         <exec executable="phpcs" output="/dev/null">
             <arg line="--report=checkstyle
                         --report-file=${basedir}/build/logs/checkstyle.xml
-                        --ignore=contrib/
+                        --ignore=contrib/,scripts2/
+                        --standard=PEAR
+                        ${source} ${testSource}" />
+        </exec>
+    </target>
+    <target name="style" description="Generate readable output using PHP_CodeSniffer">
+        <exec executable="phpcs">
+            <arg line=" --ignore=contrib/,scripts2/
                         --standard=PEAR
                         ${source} ${testSource}" />
         </exec>

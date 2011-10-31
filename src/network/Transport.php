@@ -34,9 +34,13 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\network\physical;
+namespace HUGnet\network;
 /**
- * This class hands out references to the sockets that are available.
+ * This code routes packets to their correct destinations.
+ *
+ * This is the router class, essentially.  It will take packets and figure out
+ * which network interface to send them out.  This implements the Network layer
+ * of the OSI model.
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -48,16 +52,13 @@ namespace HUGnet\network\physical;
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-final class SocketNull
+final class Transport
 {
-    /**
-     * This is the name of our socket
-     */
-    private $_name = "";
-    /**
-     * This our configuration resides here
-     */
-    private $_config = "";
+    /** This is our network */
+    private $_network = array();
+    /** These are the packets we are sending */
+    private $_packets = array();
+
     /**
     * Sets our configuration
     *
@@ -66,7 +67,7 @@ final class SocketNull
     private function __construct($config)
     {
         $this->_config = $config;
-        $this->_name = $this->_config["name"];
+        include_once dirname(__FILE__)."/Network.php";
     }
     /**
     * Creates the object
@@ -77,7 +78,7 @@ final class SocketNull
     */
     public function &factory($config = array())
     {
-        return new SocketNull((array)$config);
+        return new Transport((array)$config);
     }
 
     /**
@@ -86,47 +87,14 @@ final class SocketNull
     */
     public function __destruct()
     {
+        // Shut down the network
+        unset($this->_network);
+        // Get rid of any packets
+        foreach (array_keys($this->_packets) as $key) {
+            unset($this->_packets[$key]);
+        }
     }
 
-    /**
-    * Checks to see if this socket is available
-    *
-    * @return Socket object
-    */
-    public function available()
-    {
-        return false;
-    }
-    /**
-    * Writes to the socket
-    *
-    * @return int|bool # of bytes on success, False on failure
-    */
-    public function write()
-    {
-        \HUGnet\System::exception(
-            "No connection available on ".$this->_name,
-            101
-        );
-        // @codeCoverageIgnoreStart
-        // Due to the exception here the function never ends
-    }
-    // @codeCoverageIgnoreEnd
-    /**
-    * Reads from the socket
-    *
-    * @return int|bool # of bytes on success, False on failure
-    */
-    public function read()
-    {
-        \HUGnet\System::exception(
-            "No connection available on ".$this->_name,
-            101
-        );
-        // @codeCoverageIgnoreStart
-        // Due to the exception here the function never ends
-    }
-    // @codeCoverageIgnoreEnd
 
 }
 ?>

@@ -34,9 +34,11 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\network\physical;
+namespace HUGnet\network;
 /** This is a required class */
-require_once CODE_BASE.'network/SocketNull.php';
+require_once CODE_BASE.'network/Transport.php';
+/** This is a required class */
+require_once CODE_BASE.'network/Packet.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -55,7 +57,7 @@ require_once TEST_CONFIG_BASE.'stubs/DummySocket.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class SocketNullTest extends \PHPUnit_Framework_TestCase
+class TransportTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -81,39 +83,54 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     {
     }
     /**
-    * This tests the exception when read is called on a null socket
+    * Data provider for testRemove
     *
-    * @return null
+    * @return array
     */
-    public function testReadException()
+    public static function dataTransport()
     {
-        $this->setExpectedException("Exception");
-        $config = array();
-        $socket = SocketNull::factory($config);
-        $socket->read();
+        return array(
+            array(  // #0 // No sockets
+                array(
+                ),
+                array(
+                ),
+                1,
+                array(
+                    "asdf",
+                ),
+                array(
+                ),
+                "",
+                null,
+            ),
+        );
     }
     /**
-    * This tests the exception when read is called on a null socket
+    * Tests the iteration and preload functions
+    *
+    * @param array  $system    The string to give to the class
+    * @param array  $config    The configuration to send the class
+    * @param int    $loops     The number of times to call read and write
+    * @param array  $send      Array of strings to send out
+    * @param array  $expect    The info to expect returned
+    * @param array  $recv      Array of objects to expect received
+    * @param string $exception The exception to expect.  Null for none
     *
     * @return null
-    */
-    public function testWriteException()
-    {
-        $this->setExpectedException("Exception");
-        $config = array();
-        $socket = SocketNull::factory($config);
-        $socket->write();
-    }
-    /**
-    * This tests the exception when read is called on a null socket
     *
-    * @return null
+    * @dataProvider dataTransport()
     */
-    public function testAvailable()
-    {
-        $config = array();
-        $socket = SocketNull::factory($config);
-        $this->assertFalse($socket->available());
+    public function testTransport(
+        $system, $config, $loops, $send, $expect, $recv, $exception
+    ) {
+        if (!is_null($exception)) {
+            $this->setExpectedException($exception);
+        }
+        $sys = new \HUGnet\DummyBase("HUGnetSystem");
+        $sys->resetMock($system);
+        $transport = &Transport::factory($config);
+        $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
     }
 
 }
