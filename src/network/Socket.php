@@ -64,15 +64,15 @@ class Socket
     /**
     * This is the maximum number of bytes that we read
     */
-    const maxBytes = 1024;
+    const MAX_BYTES = 1024;
     /**
     * This is the maximum number of bytes that we read
     */
-    const waitSec = 0;
+    const WAIT_SEC = 0;
     /**
     * This is the maximum number of bytes that we read
     */
-    const waitUSec = 10000;
+    const WAIT_USEC = 10000;
     /**
     * This our configuration resides here
     */
@@ -160,7 +160,7 @@ class Socket
     {
         $return = "";
         if (in_array($this->_socket, $ready)) {
-            $return = @socket_read($this->_socket, self::maxBytes);
+            $return = @socket_read($this->_socket, self::MAX_BYTES);
         }
         return $return;
     }
@@ -188,7 +188,9 @@ class Socket
         $read  = array($this->_socket);
         $write = array();
         $exe = array();
-        $ready = @socket_select($read, $write, $exe, self::waitSec, self::waitUSec);
+        $ready = @socket_select(
+            $read, $write, $exe, self::WAIT_SEC, self::WAIT_USEC
+        );
         return $ready;
     }
     /**

@@ -55,7 +55,7 @@ namespace HUGnet\network;
 final class Network
 {
     /** This is refresh count for the routes */
-    const routeTimeToLive = 2;
+    const ROUTE_TIME_TO_LIVE = 2;
     /** This is where we store our sockets */
     private $_sockets = array();
     /** Write buffer */
@@ -141,7 +141,7 @@ final class Network
     {
         if (is_object($pkt)) {
             $this->_routes[$pkt->from()]["socket"] = $iface;
-            $this->_routes[$pkt->from()]["ttl"] = self::routeTimeToLive;
+            $this->_routes[$pkt->from()]["ttl"] = self::ROUTE_TIME_TO_LIVE;
         }
     }
     /**
