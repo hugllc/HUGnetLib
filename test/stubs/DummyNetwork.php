@@ -1,6 +1,7 @@
 <?php
 /**
- * This file howses the socket class
+ * This is the default endpoint driver and the base for all other
+ * endpoint drivers.
  *
  * PHP Version 5
  * <pre>
@@ -25,8 +26,8 @@
  * </pre>
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage System
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,64 +36,57 @@
  */
 /** This is the HUGnet namespace */
 namespace HUGnet\network;
+/** This is our base class */
+require_once dirname(__FILE__)."/DummyBase.php";
+
 /**
- * This code routes packets to their correct destinations.
- *
- * This is the router class, essentially.  It will take packets and figure out
- * which network interface to send them out.  This implements the Network layer
- * of the OSI model.
+ * This class has functions that relate to the manipulation of elements
+ * of the devInfo array.
  *
  * @category   Libraries
- * @package    HUGnetLib
- * @subpackage System
+ * @package    HUGnetLibTest
+ * @subpackage Stubs
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
-final class TransportChannel
+class DummyNetwork extends \HUGnet\DummyBase
 {
-    /** This is our network */
-    private $_network = array();
-    /** These are the packets we are sending */
-    private $_packets = array();
-
-    /**
-    * Sets our configuration
-    *
-    * @param array $config The configuration to use
-    */
-    private function __construct($config)
-    {
-        $this->_config = $config;
-    }
+    /** @var This is our returns */
+    protected $class = "DummyNetwork";
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param string $name The object name
     *
     * @return null
     */
-    public function &factory($config = array())
+    public function &factory($name)
     {
-        return new TransportChannel((array)$config);
+        return new DummyNetwork($name);
+    }
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function receive()
+    {
+        $ret = parent::__call("receive", func_get_args());
+        if (is_string(self::$ret[$this->class]["receive"])) {
+            self::$ret[$this->class]["receive"] = "";
+        } else if (is_array(self::$ret[$this->class]["receive"])) {
+            return array_shift(self::$ret[$this->class]["receive"]);
+        }
+        return (string)$ret;
     }
 
-    /**
-    * Disconnects from the database
-    *
-    */
-    public function __destruct()
-    {
-        // Shut down the network
-        unset($this->_network);
-        // Get rid of any packets
-        foreach (array_keys($this->_packets) as $key) {
-            unset($this->_packets[$key]);
-        }
-    }
 
 
 }

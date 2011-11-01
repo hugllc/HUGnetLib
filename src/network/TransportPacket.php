@@ -38,9 +38,11 @@ namespace HUGnet\network;
  * This is the packet transport class.
  *
  * Config (default):
- *    "find"  bool   Optional Whether to send out find packets default (true)
- *    "ident" string Optional 6 char hex identity to send in find packet (random)
- *    "tries" int    Optional Number of times to try sending out the packet (3)
+ *    "find"    bool   Optional Whether to send out find packets default (true)
+ *    "ident"   string Optional 6 char hex identity to send in find packet (random)
+ *    "tries"   int    Optional Number of times to try sending out the packet (3)
+ *    "quiet"   bool   Optional If true it won't throw exceptions (false)
+ *    "timeout" float  Optional Time in seconds to wait for a reply (5)
  *
  * This handles retries and checking for a reply.  It will also provide reply
  * times.  It will try the number of times given, plus will try a 'findping' before
@@ -69,19 +71,22 @@ final class TransportPacket
     private $_reply;
     /** This is the reply we have */
     private $_find = true;
-    /** This is the time (in seconds) that the packet was sent */
+    /** This is the first time (in seconds) that the packet was sent */
     private $_sent = null;
     /** This is the time (in seconds) that the reply was received */
     private $_return = null;
+    /** This is the last time (in seconds) that the packet was sent */
+    private $_time = 0;
     /** This is the current count down for retries */
     private $_retries = null;
     /** This is the ident that was sent out */
     private $_ident = null;
     /** This the default configuration */
     private $_defaultConfig = array(
-        "find" => true,
-        "ident" => "",
-        "tries" => 3,
+        "find"    => true,
+        "ident"   => "",
+        "tries"   => 3,
+        "timeout" => 5.0,
     );
     /** This the live configuration */
     private $_config = array();
@@ -127,7 +132,10 @@ final class TransportPacket
         if (is_null($this->_sent)) {
             $this->_sent = $this->_time();
         }
-        return $this->_find();
+        if ($this->_timeout()) {
+            return $this->_find();
+        }
+        return "";
     }
     /**
     * Creates the object
@@ -138,7 +146,7 @@ final class TransportPacket
     */
     public function &reply(&$pkt = null)
     {
-        $return = false;
+        $return = null;
         if (!is_null($pkt)) {
             $reply = &$this->_fix($pkt);
             if ($this->_isReply($reply)) {
@@ -194,6 +202,7 @@ final class TransportPacket
             // Only find once
             $this->_find  = false;
             $this->_ident = $this->_config["ident"];
+            $this->_time = $this->_time();
             return Packet::factory(
                 array(
                     "To"      => $this->_packet->to(),
@@ -204,6 +213,7 @@ final class TransportPacket
             );
         } else if (($this->_retries > 0) && is_null($this->_ident)) {
             $this->_retries--;
+            $this->_time = $this->_time();
             return $this->_packet;
         }
         return false;
@@ -232,6 +242,15 @@ final class TransportPacket
         } else {
             return Packet::factory($pkt);
         }
+    }
+    /**
+    * Clears the channel
+    *
+    * @return bool True if time has expired, false otherwise
+    */
+    public function _timeout()
+    {
+        return bcsub($this->_time(), $this->_time) > $this->_config["timeout"];
     }
 }
 

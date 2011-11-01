@@ -81,7 +81,7 @@ abstract class SystemTableBase
             Error::EXCEPTION_OBJ_NOT_CONFIG,
             !is_object($system)
         );
-        $this->_system = $system;
+        $this->_system = &$system;
         $this->_setTable($table);
     }
     /**

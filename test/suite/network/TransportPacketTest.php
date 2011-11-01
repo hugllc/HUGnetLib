@@ -89,6 +89,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
         return array(
             array(  // #0 everything correct
                 array(
+                    "timeout" => 1,
                 ),
                 Packet::factory(
                     array(
@@ -106,7 +107,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "01020304",
                     ),
                 ),
-                1234567,
+                1,
                 1,
                 array(
                     Packet::factory(
@@ -128,11 +129,12 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                1.234567,
+                1.1,
             ),
             array(  // #1 No Reply
                 array(
                     "ident" => "ABCDEF",
+                    "timeout" => 0.9,
                 ),
                 array(
                     "To"      => "000ABC",
@@ -142,8 +144,8 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                 ),
-                0,
-                5,
+                0.5,
+                10,
                 array(
                     Packet::factory(
                         array(
@@ -153,6 +155,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
+                    "",
                     Packet::factory(
                         array(
                             "To"      => "000ABC",
@@ -161,6 +164,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "01020304",
                         )
                     ),
+                    "",
                     Packet::factory(
                         array(
                             "To"      => "000ABC",
@@ -169,21 +173,28 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"    => "ABCDEF",
                         )
                     ),
+                    "",
                     false,
                     false,
                 ),
                 array(
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
                 ),
                 false,
             ),
             array(  // #2 Reply on 3rd & 4th try
                 array(
                     "ident" => "ABCDEF",
+                    "timeout" => 0.9,
                 ),
                 array(
                     "To"      => "000ABC",
@@ -212,7 +223,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     ),
                     "",
                 ),
-                100000,
+                1,
                 5,
                 array(
                     Packet::factory(
@@ -250,8 +261,8 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     false,
                 ),
                 array(
-                    false,
-                    false,
+                    null,
+                    null,
                     true,
                     Packet::factory(
                         array(
@@ -261,14 +272,15 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"      => "01020304",
                         )
                     ),
-                    false,
+                    null,
                 ),
-                0.45,
+                4.1,
             ),
             array(  // #3 Reply on 3rd try, no find packet
                 array(
                     "ident" => "ABCDEF",
                     "find"  => false,
+                    "timeout" => 0.9,
                 ),
                 array(
                     "To"      => "000ABC",
@@ -290,7 +302,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     "",
                     "",
                 ),
-                100000,
+                1,
                 5,
                 array(
                     Packet::factory(
@@ -320,8 +332,8 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     false,
                 ),
                 array(
-                    false,
-                    false,
+                    null,
+                    null,
                     Packet::factory(
                         array(
                             "To"        => "000020",
@@ -330,14 +342,15 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"      => "01020304",
                         )
                     ),
-                    false,
-                    false,
+                    null,
+                    null,
                 ),
-                0.35,
+                3.1,
             ),
             array(  // #4 valid reply data == ident
                 array(
                     "ident" => "ABCDEF",
+                    "timeout" => 1,
                 ),
                 Packet::factory(
                     array(
@@ -355,7 +368,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         "Data"    => "ABCDEF",
                     ),
                 ),
-                1234567,
+                1,
                 1,
                 array(
                     Packet::factory(
@@ -377,7 +390,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                1.234567,
+                1.1,
             ),
         );
     }
@@ -387,7 +400,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
     * @param array $config The configuration array
     * @param array $packet The packet to give (array, string or object)
     * @param array $reply  The reply packet (array, string or object)
-    * @param int   $pause  The number of MICROSECONDS to pause
+    * @param int   $pause  The number of seconds to pause
     * @param int   $loops  The number of times to loop through the software
     * @param array $send   The object returnd from send
     * @param array $expect The expected return from the reply command
@@ -406,7 +419,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(
                 $send[$i], $ret, "The return from send is wrong.  Iteration $i"
             );
-            usleep($pause);
+            usleep($pause * 1000000);
             $ret = &$transPacket->reply($reply[$i]);
             if (is_object($expect[$i])) {
                 $this->assertEquals(

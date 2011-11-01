@@ -38,9 +38,14 @@ namespace HUGnet\network;
 /**
  * This code routes packets to their correct destinations.
  *
- * This is the router class, essentially.  It will take packets and figure out
- * which network interface to send them out.  This implements the Network layer
- * of the OSI model.
+ * Config (default):
+ *    "quiet"    bool Optional If true it won't throw exceptions (false)
+ *    "channels" int  The number of channels to keep open (5)
+ *
+ * This class keeps track of packets and waits for replies.  It will use the
+ * TransportPacket class to keep track of each packet and where it is in its
+ * timeouts and retries.  It will keep a number of channels open and should NOT
+ * block.
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -58,32 +63,46 @@ final class Transport
     private $_network = array();
     /** These are the packets we are sending */
     private $_packets = array();
+    /** These are the packets we get we weren't expecting */
+    private $_unsolicited = array();
+    /** This is our configuration */
+    private $_config = array();
+    /** These are the packets we are sending */
+    private $_defaultConfig = array(
+        "channels" => 5,
+        "quiet"    => false,
+    );
 
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object &$network The network object to use
+    * @param array  $config   The configuration to use
     */
-    private function __construct($config)
+    private function __construct($network, $config)
     {
-        $this->_config = $config;
-        include_once dirname(__FILE__)."/Network.php";
+        $this->_config  = array_merge($this->_defaultConfig, $config);
+        $this->_network = &$network;
+        // This is our packet container
+        include_once dirname(__FILE__)."/TransportPacket.php";
     }
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object &$network The network object to use
+    * @param array  $config   The configuration to use
     *
-    * @return null
+    * @return Transport Object
     */
-    public function &factory($config = array())
+    public function &factory(&$network, $config = array())
     {
-        return new Transport((array)$config);
+        return new Transport($network, (array)$config);
     }
 
     /**
     * Disconnects from the database
     *
+    * @return null
     */
     public function __destruct()
     {
@@ -95,6 +114,100 @@ final class Transport
         }
     }
 
+    /**
+    * Sets the packet to be sent
+    *
+    * @param object &$pkt The packet to send out
+    *
+    * @return False if no channels are available, int token otherwise
+    */
+    public function send(&$pkt)
+    {
+        $return = false;
+        for ($i = 0; $i < $this->_config["channels"]; $i++) {
+            if (is_object($this->_packets[$i])) {
+                continue;
+            }
+            $this->_packets[$i] =& TransportPacket::factory(
+                $this->_config,
+                $pkt
+            );
+            $return = $i;
+            // Only put in a packet once
+            break;
+        }
+        $this->_receive();
+        $this->_send();
+        return $return;
+    }
+    /**
+    * Sets the packet to be sent
+    *
+    * @param int $token The token to check for the receive
+    *
+    * @return
+    */
+    public function &receive($token)
+    {
+        // Might as well do these even if it is a bad call  ;)
+        $this->_receive();
+        $this->_send();
+        // Check to see if the token is valid
+        if (!is_object($this->_packets[$token])) {
+            return false;
+        }
+        $reply = &$this->_packets[$token]->reply();
+        if (is_object($reply)) {
+            unset($this->_packets[$token]);
+        }
+        return $reply;
+    }
+    /**
+    * Sets the packet to be sent
+    *
+    * @return
+    */
+    public function &unsolicited()
+    {
+        return array_shift($this->_unsolicited);
+    }
+    /**
+    * Checks for incoming packets and deals with them
+    *
+    * @return null
+    */
+    public function _send()
+    {
+        foreach (array_keys($this->_packets) as $key) {
+            $pkt =& $this->_packets[$key]->send();
+            if (is_string($pkt) || is_object($pkt)) {
+                $this->_network->send($pkt);
+            }
+        }
+    }
+    /**
+    * Checks for incoming packets and deals with them
+    *
+    * @return null
+    */
+    public function _receive()
+    {
+        $pkt =& $this->_network->receive();
+        // If we don't get a packet back exit
+        if (is_object($pkt)) {
+            // Check every packet until one claims it or we get to the end
+            foreach (array_keys($this->_packets) as $key) {
+                $reply = &$this->_packets[$key]->reply($pkt);
+                if ($reply) {
+                    break;
+                }
+            }
+            // Save this packet if no one claimed it.
+            if (is_null($reply)) {
+                $this->_unsolicited[] = &$pkt;
+            }
+        }
+    }
 
 }
 ?>
