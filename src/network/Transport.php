@@ -79,7 +79,7 @@ final class Transport
     * @param object &$network The network object to use
     * @param array  $config   The configuration to use
     */
-    private function __construct($network, $config)
+    private function __construct(&$network, $config)
     {
         $this->_config  = array_merge($this->_defaultConfig, $config);
         $this->_network = &$network;
@@ -145,7 +145,7 @@ final class Transport
     *
     * @param int $token The token to check for the receive
     *
-    * @return
+    * @return Packet object, false or null.
     */
     public function &receive($token)
     {
@@ -165,7 +165,7 @@ final class Transport
     /**
     * Sets the packet to be sent
     *
-    * @return
+    * @return Packet Object or null
     */
     public function &unsolicited()
     {
@@ -176,7 +176,7 @@ final class Transport
     *
     * @return null
     */
-    public function _send()
+    private function _send()
     {
         foreach (array_keys($this->_packets) as $key) {
             $pkt =& $this->_packets[$key]->send();
@@ -190,7 +190,7 @@ final class Transport
     *
     * @return null
     */
-    public function _receive()
+    private function _receive()
     {
         $pkt =& $this->_network->receive();
         // If we don't get a packet back exit
