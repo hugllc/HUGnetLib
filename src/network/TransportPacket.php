@@ -147,7 +147,7 @@ final class TransportPacket
     public function &reply(&$pkt = null)
     {
         $return = null;
-        if (!is_null($pkt)) {
+        if (!is_null($pkt) && !is_object($this->_reply)) {
             $reply = &$this->_fix($pkt);
             if ($this->_isReply($reply)) {
                 if ($reply->data() === $this->_ident) {
@@ -163,6 +163,9 @@ final class TransportPacket
         }
         if (is_object($this->_reply)) {
             return $this->_reply;
+        }
+        if (($this->_retries < 1) && $this->_timeout()) {
+            return false;
         }
         return $return;
     }
@@ -189,7 +192,8 @@ final class TransportPacket
     {
         return $pkt->isValid()
             && ($pkt->type() === "REPLY")
-            && ($pkt->To() === $this->_packet->From());
+            && ($pkt->To() === $this->_packet->From())
+            && ($pkt->From() === $this->_packet->To());
     }
     /**
     * Gets the current time
@@ -215,6 +219,9 @@ final class TransportPacket
             $this->_retries--;
             $this->_time = $this->_time();
             return $this->_packet;
+        } else if (!is_null($this->_ident)) {
+            // No reply to the findping packet, so we are ending with this packet
+            $this->_retries = 0;
         }
         return false;
     }

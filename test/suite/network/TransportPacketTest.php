@@ -84,7 +84,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return array
     */
-    public static function dataReply()
+    public static function dataTransportPacket()
     {
         return array(
             array(  // #0 everything correct
@@ -184,10 +184,10 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    false,
+                    false,
+                    false,
+                    false,
                 ),
                 false,
             ),
@@ -272,7 +272,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"      => "01020304",
                         )
                     ),
-                    null,
+                    false,
                 ),
                 4.1,
             ),
@@ -342,8 +342,8 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                             "Data"      => "01020304",
                         )
                     ),
-                    null,
-                    null,
+                    false,
+                    false,
                 ),
                 3.1,
             ),
@@ -408,9 +408,9 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @dataProvider dataReply()
+    * @dataProvider dataTransportPacket()
     */
-    public function testFactory(
+    public function testTransportPacket(
         $config, $packet, $reply, $pause, $loops, $send, $expect, $time
     ) {
         $transPacket = TransportPacket::factory($config, $packet);

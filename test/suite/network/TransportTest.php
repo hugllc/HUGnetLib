@@ -148,6 +148,274 @@ class TransportTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            array(  // #1 more requests than buffers
+                array(
+                    "timeout" => 1,
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "To"      => "000ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030400",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "001ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030401",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "002ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030402",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "003ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030403",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "004ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030404",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "005ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030405",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "006ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030406",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "007ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030407",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "008ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030408",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "009ABC",
+                            "From"    => "000020",
+                            "Command" => "03",
+                            "Data"    => "0102030409",
+                        )
+                    ),
+                ),
+                array(
+                    "Network" => array(
+                        "receive" => array(
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "000ABD",
+                                    "Command" => "POWERUP",
+                                    "Data"    => "01020304DD",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "003ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030403",
+                                )
+                            ),
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "002ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030402",
+                                )
+                            ),
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "001ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030401",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "000ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030400",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "004ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030404",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "006ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030406",
+                                )
+                            ),
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "005ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030405",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "007ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030407",
+                                )
+                            ),
+                            null, null, null, null, null,
+                            null, null, null, null, null,
+                            Packet::factory(
+                                array(
+                                    "To"      => "000020",
+                                    "From"    => "009ABC",
+                                    "Command" => "01",
+                                    "Data"    => "0102030409",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                5,
+                array(
+                    // These are out of order because of the way they are
+                    // retrieved from TransportPacket and how they are processed.
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "001ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030401",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "002ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030402",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "003ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030403",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "000ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030400",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "004ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030404",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "005ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030405",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "006ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030406",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "007ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030407",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "009ABC",
+                            "Command" => "01",
+                            "Data"    => "0102030409",
+                        )
+                    ),
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "To"      => "000020",
+                            "From"    => "000ABD",
+                            "Command" => "POWERUP",
+                            "Data"    => "01020304DD",
+                        )
+                    ),
+                ),
+            ),
         );
     }
     /**
@@ -187,9 +455,12 @@ class TransportTest extends \PHPUnit_Framework_TestCase
                 if (is_object($ret)) {
                     $return[] = $ret;
                     unset($tokens[$k]);
+                } else if ($ret === false) {
+                    unset($tokens[$k]);
                 }
             }
-        } while ((count($tokens) > 0) && ((time() - $time) < $timeout));
+        } while (((count($tokens) > 0) || (count($packet) < ($index-1)))
+            && ((time() - $time) < $timeout));
         $this->assertEquals(
             $expect, $return, "The return is wrong"
         );

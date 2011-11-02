@@ -124,17 +124,19 @@ final class Transport
     public function send(&$pkt)
     {
         $return = false;
-        for ($i = 0; $i < $this->_config["channels"]; $i++) {
-            if (is_object($this->_packets[$i])) {
-                continue;
+        if (is_object($pkt)) {
+            for ($i = 0; $i < $this->_config["channels"]; $i++) {
+                if (is_object($this->_packets[$i])) {
+                    continue;
+                }
+                $this->_packets[$i] =& TransportPacket::factory(
+                    $this->_config,
+                    $pkt
+                );
+                $return = $i;
+                // Only put in a packet once
+                break;
             }
-            $this->_packets[$i] =& TransportPacket::factory(
-                $this->_config,
-                $pkt
-            );
-            $return = $i;
-            // Only put in a packet once
-            break;
         }
         $this->_receive();
         $this->_send();
@@ -200,6 +202,8 @@ final class Transport
                 $reply = &$this->_packets[$key]->reply($pkt);
                 if ($reply) {
                     break;
+                } else if ($reply === false) {
+                    unset($this->_packets[$key]);
                 }
             }
             // Save this packet if no one claimed it.
