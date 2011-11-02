@@ -255,7 +255,7 @@ final class TransportPacket
     *
     * @return bool True if time has expired, false otherwise
     */
-    public function _timeout()
+    private function _timeout()
     {
         return bcsub($this->_time(), $this->_time) > $this->_config["timeout"];
     }
