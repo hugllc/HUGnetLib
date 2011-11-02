@@ -328,7 +328,7 @@ class TransportTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
-                5,
+                15,
                 array(
                     // These are out of order because of the way they are
                     // retrieved from TransportPacket and how they are processed.
@@ -449,6 +449,10 @@ class TransportTest extends \PHPUnit_Framework_TestCase
                     $tokens[$index] = $ret;
                     $index++;
                 }
+                if ((time() - $time) > $timeout) {
+                    // This makes sure this is never an infinte loop
+                    $this->fail("Timeout occurred!");
+                }
             } while ($ret);
             foreach ($tokens as $k => $t) {
                 $ret = &$transport->receive($t);
@@ -459,8 +463,11 @@ class TransportTest extends \PHPUnit_Framework_TestCase
                     unset($tokens[$k]);
                 }
             }
-        } while (((count($tokens) > 0) || (count($packet) < ($index-1)))
-            && ((time() - $time) < $timeout));
+            if ((time() - $time) > $timeout) {
+                // This make sure this is never an infinite loop
+                $this->fail("Timeout occurred!");
+            }
+        } while (((count($tokens) > 0) || (count($packet) < ($index-1))));
         $this->assertEquals(
             $expect, $return, "The return is wrong"
         );

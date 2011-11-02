@@ -159,7 +159,7 @@ final class Transport
             return false;
         }
         $reply = &$this->_packets[$token]->reply();
-        if (is_object($reply)) {
+        if (is_object($reply) || ($reply === false)) {
             unset($this->_packets[$token]);
         }
         return $reply;
@@ -202,8 +202,6 @@ final class Transport
                 $reply = &$this->_packets[$key]->reply($pkt);
                 if ($reply) {
                     break;
-                } else if ($reply === false) {
-                    unset($this->_packets[$key]);
                 }
             }
             // Save this packet if no one claimed it.
