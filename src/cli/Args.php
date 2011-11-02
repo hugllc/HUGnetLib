@@ -132,7 +132,7 @@ class Args
     *
     * @return null
     */
-    public function _interpret()
+    private function _interpret()
     {
         $this->_name = trim($this->_argv[0]);
         for ($i = 1; $i < count($this->_argv); $i++) {
