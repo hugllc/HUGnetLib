@@ -63,6 +63,8 @@ final class Transport
     private $_network = array();
     /** These are the packets we are sending */
     private $_packets = array();
+    /** These are the tokens for the packets we are sending */
+    private $_tokens = array();
     /** These are the packets we get we weren't expecting */
     private $_unsolicited = array();
     /** This is our configuration */
@@ -125,17 +127,14 @@ final class Transport
     {
         $return = false;
         if (is_object($pkt)) {
-            for ($i = 0; $i < $this->_config["channels"]; $i++) {
-                if (is_object($this->_packets[$i])) {
-                    continue;
-                }
-                $this->_packets[$i] =& TransportPacket::factory(
+            if (count($this->_packets) < $this->_config["channels"]) {
+                // Generate a unique token
+                $token = uniqid();
+                $this->_packets[$token] =& TransportPacket::factory(
                     $this->_config,
                     $pkt
                 );
-                $return = $i;
-                // Only put in a packet once
-                break;
+                $return = $token;
             }
         }
         $this->_receive();
