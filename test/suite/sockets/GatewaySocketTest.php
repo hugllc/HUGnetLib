@@ -231,7 +231,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                 new PacketContainer(array("Timeout" => 1)),
                 false,
             ),
-            // This test will fail without a local web server
+            /*
             array(
                 array(
                     "GatewayIP" => "127.0.0.1",
@@ -263,6 +263,7 @@ class GatewaySocketTest extends PHPUnit_Framework_TestCase
                     )
                 ),
             ),
+            */
         );
     }
 
