@@ -149,7 +149,7 @@ final class Network
     *
     * @param object &$pkt The packet to send out
     *
-    * @return bool true on success, false on failure
+    * @return array of interfaces
     */
     private function _getRoute(&$pkt)
     {
@@ -168,7 +168,7 @@ final class Network
     /**
     * Returns the interfaces that we are waiting for
     *
-    * @return bool true on success, false on failure
+    * @return array of interfaces
     */
     private function _ifaces()
     {

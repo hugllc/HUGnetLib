@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -44,7 +44,7 @@ namespace HUGnet\network;
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -55,43 +55,56 @@ namespace HUGnet\network;
 final class Application
 {
     /** This is our network */
-    private $_network = array();
-    /** These are the packets we are sending */
-    private $_packets = array();
+    private $_transport;
+    /** This is our configuration */
+    private $_config = array();
+    /** This is our default configuration */
+    private $_defaultConfig = array(
+        "quiet" => false,
+    );
 
     /**
     * Sets our configuration
     *
-    * @param array $config The configuration to use
+    * @param object $transport The network transport to use
+    * @param array  $config    The configuration to use
     */
-    private function __construct($config)
+    private function __construct(&$transport, $config)
     {
-        $this->_config = $config;
+        $this->_config = array_merge($this->_defaultConfig, $config);
     }
     /**
     * Creates the object
     *
-    * @param array $config The configuration to use
+    * @param object $transport The network transport to use
+    * @param array  $config    The configuration to use
     *
     * @return null
     */
-    public function &factory($config = array())
+    public function &factory(&$transport, $config = array())
     {
-        return new Application((array)$config);
+        return new Application($transport, (array)$config);
+    }
+
+    /**
+    * Disconnects from the database
+    *
+    * @return null
+    */
+    public function __destruct()
+    {
+        // Shut down the network
+        unset($this->_transport);
     }
 
     /**
     * Disconnects from the database
     *
     */
-    public function __destruct()
+    public function main()
     {
         // Shut down the network
-        unset($this->_network);
-        // Get rid of any packets
-        foreach (array_keys($this->_packets) as $key) {
-            unset($this->_packets[$key]);
-        }
+        unset($this->_transport);
     }
 
 

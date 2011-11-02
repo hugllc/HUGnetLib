@@ -5,8 +5,7 @@
  * PHP Version 5
  * <pre>
  * HUGnetLib is a library of HUGnet code
- * Copyright (C) 2007-2011 Hunt Utilities Group, LLC
- * Copyright (C) 2009 Scott Price
+ * Copyright (C) 2011 Hunt Utilities Group, LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,10 +25,9 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
@@ -49,10 +47,9 @@ namespace HUGnet\network;
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
+ * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -63,8 +60,6 @@ final class Transport
     private $_network = array();
     /** These are the packets we are sending */
     private $_packets = array();
-    /** These are the tokens for the packets we are sending */
-    private $_tokens = array();
     /** These are the packets we get we weren't expecting */
     private $_unsolicited = array();
     /** This is our configuration */
