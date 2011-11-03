@@ -199,6 +199,8 @@ final class Network
     private function _write()
     {
         foreach ($this->_ifaces() as $key) {
+            // This dispatches any signals
+            pcntl_signal_dispatch();
             if (strlen($this->_write[$key]) > 0) {
                 $this->_connect($key);
                 $chars = $this->_socket($key)->write($this->_write[$key]);
@@ -217,6 +219,8 @@ final class Network
     {
         // Check to see if there is anything to receive
         foreach ($this->_ifaces() as $key) {
+            // This dispatches any signals
+            pcntl_signal_dispatch();
             $this->_read[$key] .= $this->_socket($key)->read();
         }
     }
