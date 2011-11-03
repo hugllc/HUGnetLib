@@ -84,8 +84,9 @@ class Args
     /**
     * Sets our configuration
     *
-    * @param array $argv The argument array
-    * @param int   $argc The argument count
+    * @param array $argv   The argument array
+    * @param int   $argc   The argument count
+    * @param array $config The configuration of command line args
     */
     private function __construct($argv, $argc, $config)
     {
@@ -129,25 +130,25 @@ class Args
     /**
     * Creates the object
     *
-    * @param string $name  The name of the argument to retrieve
+    * @param string $name The name of the argument to retrieve
     *
     * @return mixed
     */
-    public function _value($name)
+    private function _value($name)
     {
         switch ($this->_config[$name]["type"]) {
-            case "int":
-                $return = (int)$this->_arguments[$name];
-                break;
-            case "string":
-                $return = (string)$this->_arguments[$name];
-                break;
-            case "bool":
-                $return = (bool)$this->_arguments[$name];
-                break;
-            default:
-                $return = $this->_arguments[$name];
-                break;
+        case "int":
+            $return = (int)$this->_arguments[$name];
+            break;
+        case "string":
+            $return = (string)$this->_arguments[$name];
+            break;
+        case "bool":
+            $return = (bool)$this->_arguments[$name];
+            break;
+        default:
+            $return = $this->_arguments[$name];
+            break;
         }
         return $return;
     }
