@@ -90,25 +90,54 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 ),
                 7,
                 array(
-                    "i" => "000ABC",
-                    "v" => 3,
-                    "q" => 1,
+                    "i" => array("args" => true),
                 ),
                 array(
-                    "quiet" => 1,
+                    "i" => "000ABC",
+                    "v" => 3,
+                    "q" => true,
+                    "d" => false,
+                    "t" => false,
+                ),
+                array(
+                    "quiet" => true,
                     "verbose" => 3,
                 ),
             ),
-            array(  // #0 // Simple example
+            array(  // #1 // Another Simple example
                 array(
                     "test", "-i", "000ABC", "123456"
                 ),
                 4,
                 array(
+                    "i" => array("args" => true),
+                ),
+                array(
                     "loose" => array("123456"),
                     "i" => "000ABC",
                 ),
                 array(
+                ),
+            ),
+            array(  // #2 Stringing multiple switches together.
+                array(
+                    "test", "-vvvvvdqtf", "/here/there"
+                ),
+                4,
+                array(),
+                array(
+                    "f" => "/here/there",
+                    "v" => 5,
+                    "d" => true,
+                    "q" => true,
+                    "t"  => true,
+                ),
+                array(
+                    "quiet" => true,
+                    "verbose" => 5,
+                    "debug" => true,
+                    "test"  => true,
+                    "file" => "/here/there",
                 ),
             ),
         );
@@ -118,21 +147,22 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     *
     * @param array $argv      The array of arguments (first should be name)
     * @param int   $argc      The number of arguments
+    * @param array $config    The config array to feed it
     * @param array $arguments The arguments we expect to be set
-    * @param array $config    The config array we are expecting
+    * @param array $expect    The config array we are expecting
     *
     * @return null
     *
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $arguments, $config
+        $argv, $argc, $config, $arguments, $expect
     ) {
-        $args = &Args::factory($argv, $argc);
+        $args = &Args::factory($argv, $argc, $config);
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
-        $this->assertSame($config, $args->config());
+        $this->assertSame($expect, $args->config());
     }
 
 }

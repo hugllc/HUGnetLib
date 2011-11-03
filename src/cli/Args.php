@@ -36,11 +36,19 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\cli;
 /**
- * This code routes packets to their correct destinations.
+ * This code interprets command line arguments
  *
- * This is the router class, essentially.  It will take packets and figure out
- * which network interface to send them out.  This implements the Network layer
- * of the OSI model.
+ * The configuration array should consist of an array with each key being a single
+ * letter that is the command line argument.  The value attached to each key
+ * should be an array with the following:
+ *    "name" - optional - string The name in the config array output
+ *    "type" - optional - The return type for the argument
+ *    "args" - optional - Is there extra stuff that this argument is requiring?
+ *
+ * The arguments can be gotten with $obj->x where 'x' is the command line argument.
+ * So say your argument was -v you would get it by $obj->v.  For maximum accuracy
+ * the arguments should be set up in the config array.  If any of your arguments
+ * take arguments then they MUST be defined in the config array.
  *
  * @category   Libraries
  * @package    HUGnetLib
@@ -63,9 +71,14 @@ class Args
     /** This is our name */
     private $_name = "";
     /** These are pretty standard config changes */
-    private $_config = array(
-        "q" => "quiet",
-        "v" => "verbose",
+    private $_config = array();
+    /** These are pretty standard config changes */
+    private $_defaultConfig = array(
+        "q" => array("name" => "quiet", "type" => "bool"),
+        "v" => array("name" => "verbose", "type" => "int"),
+        "d" => array("name" => "debug", "type" => "bool"),
+        "t" => array("name" => "test", "type" => "bool"),
+        "f" => array("name" => "file", "type" => "string", "args" => true),
     );
 
     /**
@@ -74,23 +87,25 @@ class Args
     * @param array $argv The argument array
     * @param int   $argc The argument count
     */
-    private function __construct($argv, $argc)
+    private function __construct($argv, $argc, $config)
     {
         $this->_argv = $argv;
         $this->_argc = $argc;
+        $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_interpret();
     }
     /**
     * Creates the object
     *
-    * @param array $argv The argument array
-    * @param int   $argc The argument count
+    * @param array $argv   The argument array
+    * @param int   $argc   The argument count
+    * @param array $config The configuration of command line args
     *
     * @return Args object
     */
-    public function &factory($argv, $argc)
+    public function &factory($argv, $argc, $config = array())
     {
-        return new Args((array)$argv, (int)$argc);
+        return new Args((array)$argv, (int)$argc, (array)$config);
     }
 
     /**
@@ -109,19 +124,44 @@ class Args
     */
     public function __get($name)
     {
-        return $this->_arguments[$name];
+        return $this->_value($name);
     }
     /**
     * Creates the object
+    *
+    * @param string $name  The name of the argument to retrieve
+    *
+    * @return mixed
+    */
+    public function _value($name)
+    {
+        switch ($this->_config[$name]["type"]) {
+            case "int":
+                $return = (int)$this->_arguments[$name];
+                break;
+            case "string":
+                $return = (string)$this->_arguments[$name];
+                break;
+            case "bool":
+                $return = (bool)$this->_arguments[$name];
+                break;
+            default:
+                $return = $this->_arguments[$name];
+                break;
+        }
+        return $return;
+    }
+    /**
+    * Creates the config to go with the command line
     *
     * @return Configuration array
     */
     public function config()
     {
         $return = array();
-        foreach ($this->_config as $key => $name) {
-            if (isset($this->_arguments[$key])) {
-                $return[$name] = $this->_arguments[$key];
+        foreach ($this->_config as $key => $conf) {
+            if (isset($this->_arguments[$key]) && isset($conf["name"])) {
+                $return[$conf["name"]] = $this->_value($key);
             }
         }
         return $return;
@@ -135,23 +175,39 @@ class Args
     private function _interpret()
     {
         $this->_name = trim($this->_argv[0]);
-        for ($i = 1; $i < count($this->_argv); $i++) {
-            if (substr($this->_argv[$i], 0, 1) == "-") {
-                $arg = substr($this->_argv[$i], 1);
-                if ((substr($this->_argv[$i+1], 0, 1) != "-")
-                    && (strlen($this->_argv[$i+1]) > 0)
-                ) {
-                    $this->_arguments[$arg] = $this->_argv[$i+1];
-                    $i++;
-                } else {
-                    $this->_arguments[$arg]++;
-                }
-            } else {
-                $this->_arguments["loose"][] = $this->_argv[$i];
+        for ($i = 1; $i < $this->_argc; $i++) {
+            $arg = $this->_fixArg($this->_argv[$i]);
+            if ($this->_config[$arg]["args"]
+                && (substr($this->_argv[$i+1], 0, 1) != "-")
+                && (strlen($this->_argv[$i+1]) > 0)
+            ) {
+                $this->_arguments[$arg] = $this->_argv[$i+1];
+                $i++;
+            } else if (strlen($arg) > 0) {
+                $this->_arguments[$arg]++;
             }
         }
     }
 
-
+    /**
+    * Pulls the arguments apart and stores them
+    *
+    * @param int $arg the argument to tear apart
+    *
+    * @return null
+    */
+    private function _fixArg($arg)
+    {
+        if (substr($arg, 0, 1) == "-") {
+            $args = str_split(substr($arg, 1), 1);
+            for ($i = 0; $i < (count($args) - 1); $i++) {
+                $this->_arguments[$args[$i]]++;
+            }
+            $ret = $args[$i];
+        } else {
+            $this->_arguments["loose"][] = $arg;
+        }
+        return $ret;
+    }
 }
 ?>
