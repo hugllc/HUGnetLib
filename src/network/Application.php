@@ -66,8 +66,8 @@ final class Application
     /**
     * Sets our configuration
     *
-    * @param object $transport The network transport to use
-    * @param array  $config    The configuration to use
+    * @param object &$transport The network transport to use
+    * @param array  $config     The configuration to use
     */
     private function __construct(&$transport, $config)
     {
@@ -76,8 +76,8 @@ final class Application
     /**
     * Creates the object
     *
-    * @param object $transport The network transport to use
-    * @param array  $config    The configuration to use
+    * @param object &$transport The network transport to use
+    * @param array  $config     The configuration to use
     *
     * @return null
     */
@@ -100,6 +100,7 @@ final class Application
     /**
     * Disconnects from the database
     *
+    * @return null
     */
     public function main()
     {
