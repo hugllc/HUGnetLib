@@ -87,7 +87,7 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     */
     public function testReadException()
     {
-        $this->setExpectedException("Exception");
+        $this->setExpectedException("RuntimeException");
         $config = array();
         $socket = SocketNull::factory($config);
         $socket->read();
@@ -99,7 +99,7 @@ class SocketNullTest extends \PHPUnit_Framework_TestCase
     */
     public function testWriteException()
     {
-        $this->setExpectedException("Exception");
+        $this->setExpectedException("RuntimeException");
         $config = array();
         $socket = SocketNull::factory($config);
         $socket->write();

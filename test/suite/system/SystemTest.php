@@ -120,7 +120,8 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array("Test Message", 5, false, null),
-            array("Test Message", 6, true, "Exception"),
+            array("Test Message", "BadStuff", true, "RuntimeException"),
+            array("Test Message", "Logic", true, "LogicException"),
         );
     }
     /**
@@ -136,12 +137,12 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     *
     * @dataProvider dataException
     */
-    public function testException($msg, $code, $condition, $expect)
+    public function testException($msg, $type, $condition, $expect)
     {
         if (is_string($expect)) {
-            $this->setExpectedException($expect);
+            $this->setExpectedException($expect, $msg);
         }
-        System::exception($msg, $code, $condition);
+        System::exception($msg, $type, $condition);
     }
 
 }

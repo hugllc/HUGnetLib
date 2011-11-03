@@ -194,7 +194,7 @@ abstract class HUGnetClass
             return;
         }
         if ((boolean)$condition) {
-            throw new Exception($msg, $code);
+            throw new RuntimeException($msg, $code);
             // @codeCoverageIgnoreStart
             // This will never run.
         }

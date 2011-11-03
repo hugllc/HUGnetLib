@@ -94,7 +94,7 @@ final class SocketServer
         $this->_setup();
         \HUGnet\System::exception(
             "Failed to create socket with\n ".print_r($config, true),
-            102,
+            "Runtime",
             !is_resource($this->_socket)
         );
     }
@@ -149,17 +149,17 @@ final class SocketServer
     */
     private function _setup()
     {
-        $this->_socket = socket_create($this->_config["type"], SOCK_STREAM, 0);
-        $bound = socket_bind(
+        $this->_socket = @socket_create($this->_config["type"], SOCK_STREAM, 0);
+        $bound = @socket_bind(
             $this->_socket, $this->_config["location"], $this->_config["port"]
         );
         \HUGnet\System::exception(
             "Failed to bind to socket ".print_r($this->_config, true),
-            102,
+            "Runtime",
             !$bound
         );
-        socket_listen($this->_socket);
-        socket_set_nonblock($this->_socket);
+        @socket_listen($this->_socket);
+        @socket_set_nonblock($this->_socket);
 
     }
     /**
@@ -174,7 +174,7 @@ final class SocketServer
         $return = "";
         for ($key = 0; $key < 10; $key++) {
             if (in_array($this->_clients[$key]['socket'], $ready)) {
-                $input = socket_read(
+                $input = @socket_read(
                     $this->_clients[$key]['socket'], 1024
                 );
                 if (strlen($input) === 0) {

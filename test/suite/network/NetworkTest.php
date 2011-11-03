@@ -102,7 +102,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 array(
                 ),
                 "",
-                "Exception",
+                "RuntimeException",
             ),
             array(  // #2 Already set up class
                 array(

@@ -110,7 +110,7 @@ final class Network
         $this->_connect($socket);
         \HUGnet\System::exception(
             "No connection available on socket ".$socket,
-            101,
+            "Runtime",
             !is_object($this->_sockets[$socket])
         );
         return $this->_sockets[$socket];

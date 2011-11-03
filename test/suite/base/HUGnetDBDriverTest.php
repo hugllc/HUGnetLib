@@ -139,7 +139,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @return null
     */
@@ -150,7 +150,7 @@ class HUGnetDBDriverTest extends PHPUnit_Extensions_Database_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @return null
     */

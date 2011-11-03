@@ -246,7 +246,7 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     */
     public function testThrowException()
     {
@@ -257,7 +257,7 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     *
     * @return null
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     */
     public function testThrowException2()
     {

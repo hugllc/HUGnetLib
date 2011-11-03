@@ -226,7 +226,7 @@ class PacketSocketTest extends PHPUnit_Extensions_Database_TestCase
     *
     * @return null
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @dataProvider dataConnectExc
     */

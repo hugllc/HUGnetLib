@@ -96,7 +96,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testCreateThrowException()
     {
-        $this->setExpectedException("Exception");
+        $this->setExpectedException("InvalidArgumentException");
         // This throws an exception because $test is not a object
         SystemTableBaseTestStub::factory($test);
     }
@@ -107,7 +107,7 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
     */
     public function testTableThrowException()
     {
-        $this->setExpectedException("Exception");
+        $this->setExpectedException("InvalidArgumentException");
         $system = new DummySystem();
         // This throws an exception because the table name is bad
         SystemTableBaseTestStub::factory($system, 2, "thisIsAbadClassName");

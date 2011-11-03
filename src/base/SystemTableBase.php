@@ -78,7 +78,7 @@ abstract class SystemTableBase
     {
         System::exception(
             get_class($this)." needs to be passed a system object",
-            Error::EXCEPTION_OBJ_NOT_CONFIG,
+            "InvalidArgument",
             !is_object($system)
         );
         $this->_system = &$system;

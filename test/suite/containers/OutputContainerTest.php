@@ -858,7 +858,7 @@ post"
     /**
     * test the set routine when an extra class exists
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @return null
     */

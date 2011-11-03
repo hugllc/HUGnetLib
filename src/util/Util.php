@@ -80,7 +80,7 @@ class Util
         }
         System::exception(
             "Class '".$baseclass."' doesn't exist",
-            101,
+            "InvalidArgument",
             !$quiet
         );
         return null;

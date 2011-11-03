@@ -114,7 +114,7 @@ class PeriodicPluginsTest extends PHPUnit_Framework_TestCase
     /**
     * Tests for exceptions
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @return null
     */

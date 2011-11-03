@@ -158,7 +158,7 @@ class SocketTest extends \PHPUnit_Framework_TestCase
                 "",
                 false,
                 false,
-                "Exception",
+                "RuntimeException",
             ),
             array( // #1
                 array(

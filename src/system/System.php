@@ -126,21 +126,23 @@ class System
     * Throws an exception
     *
     * @param string $msg       The message
-    * @param int    $code      The error code
+    * @param string $type      The type of exception to throw
     * @param bool   $condition If true the exception is thrown.  On false it
     *                 is ignored.
     *
     * @return null
     */
-    public static function exception($msg, $code, $condition = true)
+    public static function exception($msg, $type = "Runtime", $condition = true)
     {
         if ((boolean)$condition) {
-            throw new \Exception($msg, $code);
-            // @codeCoverageIgnoreStart
-            // This will never run.
+            $class = "\\".$type."Exception";
+            if (class_exists($class)) {
+                throw new $class($msg);
+            } else {
+                throw new \RuntimeException($msg);
+            }
         }
     }
-    // @codeCoverageIgnoreEnd
 
 }
 

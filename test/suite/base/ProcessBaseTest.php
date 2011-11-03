@@ -79,6 +79,7 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         $this->config->sockets->forceDeviceID("000019");
         $this->socket = &$this->config->sockets->getSocket();
         $this->pdo = &$this->config->servers->getPDO();
+        var_dump($this->pdo);
         $this->devArray =  array(
             "id"        => 0x19,
             "DeviceID"  => "000019",
@@ -107,12 +108,14 @@ class ProcessBaseTest extends PHPUnit_Framework_TestCase
         if (function_exists("pcntl_signal")) {
             pcntl_signal(SIGINT, SIG_DFL);
         }
-        $this->pdo->query("drop table devices;");
+        if (is_object($this->pdo)) {
+            $this->pdo->query("drop table devices;");
+        }
     }
     /**
     * Tests for exceptions
     *
-    * @expectedException Exception
+    * @expectedException RuntimeException
     *
     * @return null
     */

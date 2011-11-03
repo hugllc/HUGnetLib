@@ -144,7 +144,7 @@ final class Socket
         );
         \HUGnet\System::exception(
             "Failed to connect to socket ".print_r($this->_config, true),
-            102,
+            "Runtime",
             !$bound && !$this->_config["quiet"]
         );
         socket_set_nonblock($this->_socket);

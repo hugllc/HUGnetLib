@@ -106,7 +106,7 @@ final class SocketNull
     {
         \HUGnet\System::exception(
             "No connection available on ".$this->_name,
-            101
+            "Runtime"
         );
         // @codeCoverageIgnoreStart
         // Due to the exception here the function never ends
@@ -121,7 +121,7 @@ final class SocketNull
     {
         \HUGnet\System::exception(
             "No connection available on ".$this->_name,
-            101
+            "Runtime"
         );
         // @codeCoverageIgnoreStart
         // Due to the exception here the function never ends

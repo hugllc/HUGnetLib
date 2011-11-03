@@ -89,7 +89,10 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array("Error", "system", false, "\HUGnet\Error", null),
-            array("ThisIsAVeryBadClass", "NoWhere", false, null, "Exception"),
+            array(
+                "ThisIsAVeryBadClass", "NoWhere", false, null,
+                "InvalidArgumentException"
+            ),
             array("ThisIsAVeryBadClass", "NoWhere", true, null, null),
         );
     }
