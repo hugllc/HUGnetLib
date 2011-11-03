@@ -433,7 +433,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
         }
         if (is_float($time)) {
             $this->assertEquals(
-                $time, $transPacket->time(), "The time is wrong", 0.5
+                $time, $transPacket->time(), "The time is wrong", 3.0
             );
         } else {
             $this->assertSame(
