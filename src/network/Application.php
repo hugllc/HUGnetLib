@@ -123,11 +123,11 @@ final class Application
     /**
     * Calls the callbacks with this packet
     *
-    * @param mixed $packet The packet to send out
+    * @param mixed &$packet The packet to send out
     *
     * @return null
     */
-    public function _unsolicited(&$packet)
+    private function _unsolicited(&$packet)
     {
         if (!is_null($packet)) {
             foreach ($this->_unsolicited as $callback) {
@@ -167,11 +167,12 @@ final class Application
     /**
     * Calls the callbacks with this packet
     *
-    * @param mixed $packet The packet to send out
+    * @param string $token   The token attached to that packet
+    * @param mixed  &$packet The packet to send out
     *
     * @return null
     */
-    public function _receive($token, &$packet)
+    private function _receive($token, &$packet)
     {
         $callback = $this->_receive[$token];
         if (is_callable($callback)) {
@@ -201,11 +202,11 @@ final class Application
     /**
     * Calls the callbacks with this packet
     *
-    * @param mixed $packet The packet to send out
+    * @param mixed &$packet The packet to send out
     *
     * @return null
     */
-    public function _monitor(&$packet)
+    private function _monitor(&$packet)
     {
         foreach ($this->_monitor as $callback) {
             if (is_callable($callback)) {

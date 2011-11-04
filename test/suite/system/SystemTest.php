@@ -128,7 +128,7 @@ class SystemTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param string $msg       The message
-    * @param int    $code      The error code
+    * @param int    $type      The error code
     * @param bool   $condition If true the exception is thrown.  On false it
     *                          is ignored.
     * @param array  $expect    The table to expect
