@@ -140,6 +140,45 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "file" => "/here/there",
                 ),
             ),
+            array(  // #2 Stringing multiple switches together.
+                array(
+                    "test", "-vvvf", TEST_CONFIG_BASE."files/config.ini"
+                ),
+                4,
+                array(),
+                array(
+                    "f" => TEST_CONFIG_BASE."files/config.ini",
+                    "v" => 3,
+                ),
+                array(
+                    "hugnet_database" => "MyDatabase",
+                    "script_gatewaykey" => "2",
+                    "poll_enable" => "1",
+                    "config_enable" => "",
+                    "control_enable" => "",
+                    "check_enable" => "1",
+                    "check_send_daily" => "1",
+                    "analysis_enable" => "0",
+                    "admin_email" => "you@yourdomain.com",
+                    "verbose" => 3,
+                    "servers" => array(
+                        "default" => array(
+                            "driver" => "mysql",
+                            "host" => "10.2.5.23",
+                            "user" => "user",
+                            "password" => "password",
+                        ),
+                    ),
+                    "network" => array(
+                        "default" => array(
+                            "driver" => "Socket",
+                            "location" => "10.2.3.5",
+                            "port" => 2001,
+                        ),
+                    ),
+                    "file" => TEST_CONFIG_BASE."files/config.ini",
+                ),
+            ),
         );
     }
     /**
@@ -162,7 +201,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
-        $this->assertSame($expect, $args->config());
+        $this->assertEquals($expect, $args->config());
     }
 
 }
