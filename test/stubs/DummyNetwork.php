@@ -86,6 +86,36 @@ class DummyNetwork extends \HUGnet\DummyBase
         }
         return (string)$ret;
     }
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function unsolicited()
+    {
+        $ret = parent::__call("unsolicited", func_get_args());
+        if (is_string(self::$ret[$this->class]["unsolicited"])) {
+            self::$ret[$this->class]["unsolicited"] = "";
+        } else if (is_array(self::$ret[$this->class]["unsolicited"])) {
+            return array_shift(self::$ret[$this->class]["unsolicited"]);
+        }
+        return (string)$ret;
+    }
+    /**
+    * Reads from the socket
+    *
+    * @return string on success, False on failure
+    */
+    public function send()
+    {
+        $ret = parent::__call("send", func_get_args());
+        if (is_string(self::$ret[$this->class]["send"])) {
+            self::$ret[$this->class]["send"] = "";
+        } else if (is_array(self::$ret[$this->class]["send"])) {
+            return array_shift(self::$ret[$this->class]["send"]);
+        }
+        return (string)$ret;
+    }
 
 
 

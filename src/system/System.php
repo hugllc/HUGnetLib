@@ -145,6 +145,20 @@ class System
         return $this->_network;
     }
     /**
+    * The main routine should be called periodically (once per loop at least)
+    *
+    * @return null
+    */
+    public function main()
+    {
+        pcntl_signal_dispatch();
+        // Call it this way so we don't create the object just for this
+        if (is_object($this->_network)) {
+            $this->_network->main();
+        }
+    }
+
+    /**
     * Throws an exception
     *
     * @param string $msg       The message

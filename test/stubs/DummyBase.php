@@ -134,6 +134,7 @@ class DummyBase
         $class = $this->class;
         self::$set[$class][$name][] = $args;
         if (is_array(self::$ret[$class][$name])
+            && (is_string($args[0]) || is_numeric($args[0]))
             && isset(self::$ret[$class][$name][$args[0]])
         ) {
             return self::$ret[$class][$name][$args[0]];

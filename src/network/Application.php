@@ -56,6 +56,12 @@ final class Application
 {
     /** This is our network */
     private $_transport;
+    /** These are the monitor callbacks */
+    private $_monitor = array();
+    /** These are the unsolicited callbacks */
+    private $_unsolicited = array();
+    /** These are the callbacks for the outgoing packets */
+    private $_receive = array();
     /** This is our configuration */
     private $_config = array();
     /** This is our default configuration */
@@ -98,24 +104,131 @@ final class Application
         unset($this->_transport);
     }
     /**
-    * Sets the packet to be sent
+    * Sets callbacks for incoming packets
     *
-    * @return Packet Object or null
+    * The function should take 1 argument.  That will be the packet.
+    *
+    * @param mixed $callback the callback function.
+    *
+    * @return bool true on success, fales of failure
     */
-    public function &unsolicited()
+    public function unsolicited($callback)
     {
-        return $this->_transport->unsolicited();
+        $return = is_callable($callback);
+        if ($return) {
+            $this->_unsolicited[] = $callback;
+        }
+        return (bool)$return;
+    }
+    /**
+    * Calls the callbacks with this packet
+    *
+    * @param mixed $packet The packet to send out
+    *
+    * @return null
+    */
+    public function _unsolicited(&$packet)
+    {
+        if (!is_null($packet)) {
+            foreach ($this->_unsolicited as $callback) {
+                if (is_callable($callback)) {
+                    call_user_func($callback, $packet);
+                }
+            }
+            $this->_monitor($packet);
+        }
+    }
+    /**
+    * Sets callbacks for incoming packets
+    *
+    * The function should take 1 argument.  That will be the packet.
+    *
+    * @param mixed &$packet  The packet to send out
+    * @param mixed $callback the callback function.
+    *
+    * @return bool true on success, fales of failure
+    */
+    public function send(&$packet, $callback = null)
+    {
+        $return = false;
+        $config = array();
+        if (!is_callable($callback)) {
+            // We we don't get a callback, they don't expect a reply
+            $config = array("find" => false, "retries" => 1);
+        }
+        $token = $this->_transport->send($packet, $config);
+        if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
+            $this->_receive[$token] = $callback;
+            $this->_monitor($packet);
+            $return = true;
+        }
+        return (bool)$return;
+    }
+    /**
+    * Calls the callbacks with this packet
+    *
+    * @param mixed $packet The packet to send out
+    *
+    * @return null
+    */
+    public function _receive($token, &$packet)
+    {
+        $callback = $this->_receive[$token];
+        if (is_callable($callback)) {
+            call_user_func($callback, $packet);
+        }
+        unset($this->_receive[$token]);
+        $this->_monitor($packet);
     }
 
     /**
-    * Disconnects from the database
+    * Sets callbacks for incoming packets
+    *
+    * The function should take 1 argument.  That will be the packet.
+    *
+    * @param mixed $callback the callback function.
+    *
+    * @return bool true on success, fales of failure
+    */
+    public function monitor($callback)
+    {
+        $return = is_callable($callback);
+        if ($return) {
+            $this->_monitor[] = $callback;
+        }
+        return (bool)$return;
+    }
+    /**
+    * Calls the callbacks with this packet
+    *
+    * @param mixed $packet The packet to send out
+    *
+    * @return null
+    */
+    public function _monitor(&$packet)
+    {
+        foreach ($this->_monitor as $callback) {
+            if (is_callable($callback)) {
+                call_user_func($callback, $packet);
+            }
+        }
+    }
+
+    /**
+    * The main routine should be called periodically (once per loop at least)
     *
     * @return null
     */
     public function main()
     {
-        // Shut down the network
-        unset($this->_transport);
+        pcntl_signal_dispatch();
+        foreach (array_keys($this->_receive) as $token) {
+            $return = $this->_transport->receive($token);
+            if (!is_null($return)) {
+                $this->_receive($token, $return);
+            }
+        }
+        $this->_unsolicited($this->_transport->unsolicited());
     }
 
 

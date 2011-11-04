@@ -392,6 +392,66 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
                 ),
                 1.1,
             ),
+            array(  // #5 No Reply to findping (No extra find ping sent)
+                array(
+                    "ident" => "ABCDEF",
+                    "timeout" => 0.9,
+                ),
+                array(
+                    "To"      => "000ABC",
+                    "From"    => "000020",
+                    "Command" => "FINDPING",
+                    "Data"    => "01020304",
+                ),
+                array(
+                ),
+                0.5,
+                10,
+                array(
+                    Packet::factory(
+                        array(
+                            "To"      => "000ABC",
+                            "From"    => "000020",
+                            "Command" => "FINDPING",
+                            "Data"    => "01020304",
+                        )
+                    ),
+                    "",
+                    Packet::factory(
+                        array(
+                            "To"      => "000ABC",
+                            "From"    => "000020",
+                            "Command" => "FINDPING",
+                            "Data"    => "01020304",
+                        )
+                    ),
+                    "",
+                    Packet::factory(
+                        array(
+                            "To"      => "000ABC",
+                            "From"    => "000020",
+                            "Command" => "FINDPING",
+                            "Data"    => "01020304",
+                        )
+                    ),
+                    false,
+                    false,
+                    false,
+                ),
+                array(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                ),
+                false,
+            ),
         );
     }
     /**

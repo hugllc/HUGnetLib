@@ -106,8 +106,9 @@ final class TransportPacket
         if (empty($this->_config["ident"])) {
             $this->_config["ident"] = sprintf("%06X", mt_rand(0, 0xFFFFFF));
         }
-        $this->_find = (bool)$this->_config["find"];
         $this->_packet = &$this->_fix($pkt);
+        $this->_find = (bool)$this->_config["find"]
+            && ($this->_packet->type() !== "FINDPING");
     }
     /**
     * Creates the object

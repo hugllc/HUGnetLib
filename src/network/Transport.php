@@ -114,11 +114,12 @@ final class Transport
     /**
     * Sets the packet to be sent
     *
-    * @param object &$pkt The packet to send out
+    * @param object &$pkt   The packet to send out
+    * @param array  $config The configuration to use for this packet
     *
     * @return False if no channels are available, int token otherwise
     */
-    public function send(&$pkt)
+    public function send(&$pkt, $config=array())
     {
         $return = false;
         if (is_object($pkt)) {
@@ -126,7 +127,7 @@ final class Transport
                 // Generate a unique token
                 $token = uniqid();
                 $this->_packets[$token] =& TransportPacket::factory(
-                    $this->_config,
+                    array_merge($this->_config, (array)$config),
                     $pkt
                 );
                 $return = $token;
