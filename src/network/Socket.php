@@ -95,6 +95,8 @@ final class Socket
     private function __construct($config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
+        // Connect immediately
+        $this->_connect();
     }
     /**
     * Creates the object
@@ -160,7 +162,9 @@ final class Socket
     {
         $return = "";
         if (in_array($this->_socket, $ready)) {
-            $return = @socket_read($this->_socket, self::MAX_BYTES);
+            $return = \HUGnet\Util::hexify(
+                @socket_read($this->_socket, self::MAX_BYTES)
+            );
         }
         return $return;
     }
@@ -173,7 +177,7 @@ final class Socket
     */
     private function _write($string)
     {
-        return @socket_write($this->_socket, $string);
+        return @socket_write($this->_socket, \HUGnet\Util::binary($string));
     }
 
     /**

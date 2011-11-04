@@ -171,6 +171,18 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Extra" => "5A5A5A01000ABC000020040102030497",
                 ),
             ),
+            array(
+                "5A5A5A5C000181FDE01400D5",
+                array(
+                    "To" => "000181",
+                    "From" => "FDE014",
+                    "Command" => "5C",
+                    "Data" => "",
+                    "Length"  => "00",
+                    "Checksum" => "D5",
+                    "Type" => "CONFIG",
+                ),
+            ),
         );
     }
     /**
@@ -206,9 +218,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "To" => "ABC",
                     "From" => "20",
                     "Command" => "SENSORREAD",
-                    "Length"  => "04",
                     "Data" => "01020304",
-                    "Checksum" => "C3",
                 ),
                 "5A5A5A55000ABC0000200401020304C3",
             ),
@@ -217,9 +227,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "To" => 0xABC,
                     "From" => 0x20,
                     "Command" => 0x55,
-                    "Length"  => 4,
                     "Data" => array(1,2,3,4),
-                    "Checksum" => 0xC3,
                 ),
                 "5A5A5A55000ABC0000200401020304C3",
             ),
@@ -275,7 +283,27 @@ class PacketTest extends \PHPUnit_Framework_TestCase
             array(
                 "",
                 false,
-            )
+            ),
+            array(
+                "5A5A5A5C000181FDE01400D5",
+                true,
+            ),
+            array(
+                "5A5A5A5A01FDE01400018116000000018100392102410039201443000102FFFFFF50A7",
+                true,
+            ),
+            array(
+                "5A5A5A56000181FDE0140100DE",
+                true,
+            ),
+            array(
+                "5A5A5A5A01FDE0140001815A000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000D2",
+                true,
+            ),
+            array(
+                "5A5A5A56000181FDE0140101DF",
+                true,
+            ),
         );
     }
     /**

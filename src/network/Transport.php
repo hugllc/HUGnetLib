@@ -165,6 +165,8 @@ final class Transport
     */
     public function &unsolicited()
     {
+        $this->_receive();
+        $this->_send();
         return array_shift($this->_unsolicited);
     }
     /**

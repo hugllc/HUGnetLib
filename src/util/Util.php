@@ -122,7 +122,40 @@ class Util
         }
     }
 
-
+    /**
+    * Turns a binary string into ascii hex
+    *
+    * @param string $string The binary string
+    *
+    * @return The ascii hex representation of string
+    */
+    public static function hexify($string)
+    {
+        $return = "";
+        if (strlen($string) > 0) {
+            foreach (str_split($string, 1) as $byte) {
+                $return .= sprintf("%02X", ord($byte));
+            }
+        }
+        return $return;
+    }
+    /**
+    * Turns an ascii hex string into binary
+    *
+    * @param string $string The ascii hex string string
+    *
+    * @return The binary representation of the string
+    */
+    public static function binary($string)
+    {
+        $data = "";
+        if (strlen($string) > 0) {
+            foreach (str_split($string, 2) as $byte) {
+                $data .= chr(hexdec($byte));
+            }
+        }
+        return $data;
+    }
 }
 
 

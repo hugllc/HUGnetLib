@@ -160,6 +160,9 @@ class Args
     public function config()
     {
         $return = array();
+        if (file_exists($this->f)) {
+            $return = parse_ini_file($this->f, true);
+        }
         foreach ($this->_config as $key => $conf) {
             if (isset($this->_arguments[$key]) && isset($conf["name"])) {
                 $return[$conf["name"]] = $this->_value($key);

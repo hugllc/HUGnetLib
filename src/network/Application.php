@@ -72,6 +72,7 @@ final class Application
     private function __construct(&$transport, $config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
+        $this->_transport =& $transport;
     }
     /**
     * Creates the object
@@ -95,6 +96,15 @@ final class Application
     {
         // Shut down the network
         unset($this->_transport);
+    }
+    /**
+    * Sets the packet to be sent
+    *
+    * @return Packet Object or null
+    */
+    public function &unsolicited()
+    {
+        return $this->_transport->unsolicited();
     }
 
     /**

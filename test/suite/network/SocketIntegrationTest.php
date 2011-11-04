@@ -136,24 +136,34 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
                 // There must be data from each client before they actually connect
                 // therefore, numbers should be lower in the client array.
                 array(
-                    6 => "Passed",
+                    6 => "070809",
                 ),
                 array(
                     "default" => array(
-                        4 => "Really",
+                        4 => "040506",
+                        5 => "",
+                        6 => "",
+                        7 => "",
                     ),
                     "default2" => array(
-                        3 => "Test",
+                        2 => "010203",
+                        3 => "",
+                        7 => "",
                     ),
                 ),
-                "TestReallyPassedPassed",
+                // The ending is on twice because it is echoed back by each client
+                "010203040506",
+                array(
+                    "default2" => "",
+                    "default" => "070809",
+                ),
                 null,
             ),
             array( // #1
                 array(
                     "type" => AF_UNIX,
                     "location" => $file,
-                    "bus" => false,
+                    "bus" => true,
                 ),
                 array(
                     "default" => array(
@@ -166,20 +176,54 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
                 // There must be data from each client before they actually connect
                 // therefore, numbers should be lower in the client array.
                 array(
-                    2 => "Passed",
-                    4 => "Data",
-                    6 => "And",
+                    2 => "02",
+                    4 => "04",
+                    6 => "06",
                 ),
                 array(
                     "default" => array(
-                        1 => "Test",
-                        3 => "Much",
-                        5 => "Back",
-                        7 => "Forth",
-
+                        0 => "",
+                        1 => "01",
+                        2 => "",
+                        3 => "03",
+                        4 => "",
+                        5 => "05",
+                        6 => "",
+                        7 => "07",
+                        8 => "",
                     ),
                 ),
-                "TestPassedMuchDataBackAndForth",
+                "01030507",
+                array(
+                    "default" => "020406",
+                ),
+                null,
+            ),
+            array( // #2 this should fail silently
+                array(
+                    "type" => AF_INET,
+                    "location" => "127.0.0.1",
+                    "port" => self::findPort(),
+                    "bus" => false,
+                ),
+                array(
+                    "default" => array(
+                        "type" => AF_UNIX,
+                        "location" => sys_get_temp_dir()."/serverInteg".mt_rand(),
+                        "name" => "default",
+                        "quiet" => true,
+                    ),
+                ),
+                1,
+                array(
+                ),
+                array(
+                    "default" => array(""),
+                ),
+                "",
+                array(
+                    "default" => "",
+                ),
                 null,
             ),
         );
@@ -194,6 +238,7 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     * @param array $servWrite   Array of strings to write from the server
     * @param array $clientWrite The string to writ
     * @param array $expect      The expected return
+    * @param array $clientRead  The read from each client
     * @param mixed $exception   Expected exception
     *
     * @return null
@@ -202,30 +247,71 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
     */
     public function testServer(
         $server, $clients, $loops, $servWrite, $clientWrite,
-        $expect, $exception
+        $expect, $clientRead, $exception
     ) {
         if (is_string($exception)) {
             $this->setExpectedException($exception);
         }
-        $serv = SocketServer::factory($server);
-        // Setup clients
-        $clien = array();
-        foreach ($clients as $key => $client) {
-            $clien[$key] = Socket::factory($client);
+        if (!empty($server)) {
+            $serv = SocketServer::factory($server);
         }
+        $clien = array();
         $sread = "";
+        $cread = array();
         for ($i = 0; $i < $loops; $i++) {
-            foreach (array_keys($clien) as $key) {
-                $read = $clien[$key]->read();
-                // We have to do a read between every client.
+            foreach (array_keys($clients) as $key) {
+                if (!is_null($clientWrite[$key][$i]) && !is_object($clien[$key])) {
+                    // Create the client if there is something to write
+                    $clien[$key] = &Socket::factory($clients[$key]);
+                } else if (is_null($clientWrite[$key][$i])) {
+                    // Destroy the client if there is not
+                    unset($clien[$key]);
+                    continue;
+                }
+                // This accepts the client
                 $sread .= $serv->read();
+                // Read from the client
+                $read = $clien[$key]->read();
+                // Save the read
+                $cread[$key] .= $read;
                 // Clients just return what they were given
-                $clien[$key]->write($read);
                 $clien[$key]->write($clientWrite[$key][$i]);
             }
             $serv->write($servWrite[$i]);
         }
-        $this->assertSame($expect, $sread);
+        $this->assertSame($expect, $sread, "Server read wrong");
+        $this->assertSame($clientRead, $cread, "Client read wrong");
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testAvailable()
+    {
+        $sock = sys_get_temp_dir()."/test".md5(mt_rand());
+        // This sets up the server
+        $obj = SocketServer::factory(
+            array(
+                "type" => AF_UNIX,
+                "location" => $sock,
+                "port" => 0,
+                "bus" => false,
+            )
+        );
+        // This sets up the client
+        $obj2 = Socket::factory(
+            array(
+                "type" => AF_UNIX,
+                "location" => $sock,
+                "port" => 0,
+                "bus" => false,
+            )
+        );
+        $this->assertTrue($obj->available());
+        $this->assertTrue($obj2->available());
+        unset($obj);
+        unset($obj2);
     }
 
 }

@@ -123,6 +123,28 @@ class System
         unset($this->_error);
     }
     /**
+    * This sets the configuration array _config
+    *
+    * @return null
+    */
+    public function &network()
+    {
+        if (!is_object($this->_network)) {
+            $net = dirname(__FILE__)."/../network/";
+            include_once $net."Application.php";
+            include_once $net."Transport.php";
+            include_once $net."Network.php";
+            $network = &network\Network::factory($this->_config["network"]);
+            $transport = &network\Transport::factory(
+                $network, $this->_config["network"]
+            );
+            $this->_network = &network\Application::factory(
+                $transport, $this->_config["network"]
+            );
+        }
+        return $this->_network;
+    }
+    /**
     * Throws an exception
     *
     * @param string $msg       The message

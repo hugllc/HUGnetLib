@@ -174,8 +174,8 @@ final class SocketServer
         $return = "";
         for ($key = 0; $key < 10; $key++) {
             if (in_array($this->_clients[$key]['socket'], $ready)) {
-                $input = @socket_read(
-                    $this->_clients[$key]['socket'], 1024
+                $input = \HUGnet\Util::hexify(
+                    @socket_read($this->_clients[$key]['socket'], 1024)
                 );
                 if (strlen($input) === 0) {
                     $this->_disconnect($key);
@@ -192,12 +192,12 @@ final class SocketServer
     /**
     * Sets up the class
     *
-    * @param int    $client The client doing the writing (It won't get the message)
+    * @param int    $skip   The client doing the writing (It won't get the message)
     * @param string $string The string to write
     *
     * @return null
     */
-    private function _write($client, $string)
+    private function _write($skip, $string)
     {
         // Don't write anything if there is no string
         if (!is_string($string) || (strlen($string) < 1)) {
@@ -206,8 +206,8 @@ final class SocketServer
         // Write to everybody who still has a connection
         foreach (array_keys($this->_clients) as $key) {
             $client = &$this->_clients[$key];
-            if (!is_null($client['socket']) && ($client !== $key)) {
-                @socket_write($client['socket'], $string);
+            if (!is_null($client['socket']) && ($skip !== $key)) {
+                @socket_write($client['socket'], \HUGnet\Util::binary($string));
             }
         }
     }
