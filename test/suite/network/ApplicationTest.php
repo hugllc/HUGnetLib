@@ -241,6 +241,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                         "Data"    => "01",
                                     )
                                 ),
+                                Packet::factory(
+                                    array(
+                                        "From"    => "000200",
+                                        "To"      => "000300",
+                                        "Command" => "23",
+                                        "Data"    => "01020304",
+                                    )
+                                ),
                             ),
                         ),
                         "unsolicited" => array(

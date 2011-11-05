@@ -62,6 +62,8 @@ final class Application
     private $_unsolicited = array();
     /** These are the callbacks for the outgoing packets */
     private $_receive = array();
+    /** These are the packets going out */
+    private $_packet = array();
     /** This is our configuration */
     private $_config = array();
     /** This is our default configuration */
@@ -159,6 +161,7 @@ final class Application
         $token = $this->_transport->send($packet, $config);
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_receive[$token] = $callback;
+            $this->_packet[$token] = &$packet;
             $this->_monitor($packet);
             $return = true;
         }
@@ -176,9 +179,10 @@ final class Application
     {
         $callback = $this->_receive[$token];
         if (is_callable($callback)) {
-            call_user_func($callback, $packet);
+            call_user_func($callback, $packet, $this->_packet[$token]);
         }
         unset($this->_receive[$token]);
+        unset($this->_packet[$token]);
         $this->_monitor($packet);
     }
 
