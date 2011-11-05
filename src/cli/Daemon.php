@@ -84,6 +84,7 @@ class Daemon extends CLI
     */
     public function quit()
     {
+        $this->out(get_class($this)." got exit signal", 1);
         $this->_loop = false;
     }
     /**

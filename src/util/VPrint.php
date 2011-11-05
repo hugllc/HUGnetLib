@@ -75,14 +75,14 @@ class VPrint
         self::$_html = isset($config["html"]) ? $config["html"] : PHP_SAPI != "cli";
     }
     /**
-    * This function gives us access to the table class
+    * This function prints out string if level >= verbosity
     *
     * @param string $string The string to print out
     * @param int    $level  The verbosity level to print it at
     *
     * @return none
     */
-    public static function out($string, $level=1)
+    public static function out($string, $level=0)
     {
         if ($level <= self::$_verbose) {
             if (self::$_html && self::$_debug) {
@@ -94,19 +94,20 @@ class VPrint
         }
     }
     /**
-    * This function gives us access to the table class
+    * This function figures out what EOL character to use
     *
     * @return EOL character
     */
     private static function _eol()
     {
+        $return = "";
         if (self::$_html) {
-            return "<br />".PHP_EOL;
+            $return .= "<br />";
         }
-        return PHP_EOL;
+        return $return.PHP_EOL;
     }
     /**
-    * This outputs all of the prints in one go.
+    * This outputs all of our print outs all at once
     *
     * @return none
     */

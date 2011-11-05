@@ -88,6 +88,7 @@ class CLI
     */
     public function __destruct()
     {
+        $this->out(get_class($this)." destroying system", 3);
         // Shut down the network
         unset($this->_system);
     }
@@ -110,6 +111,11 @@ class CLI
         } else if (is_array($config)) {
             $this->_config = $config;
         }
+        // Ratchet up the verbosity one level so more stuff prints
+        $this->_config["verbose"]++;
+        $this->_config["html"] = false;
+        // Set up printing
+        \HUGnet\VPrint::config($this->_config);
         return $this->_config;
     }
     /**
@@ -120,6 +126,7 @@ class CLI
     public function system()
     {
         if (!is_object($this->_system)) {
+            $this->out(get_class($this)." building sytem", 3);
             $this->_system = \HUGnet\System::factory($this->_config);
         }
         return $this->_system;
@@ -135,5 +142,17 @@ class CLI
         $this->system()->main();
     }
 
+    /**
+    * This function prints out string
+    *
+    * @param string $string The string to print out
+    * @param int    $level  The verbosity level to print it at
+    *
+    * @return none
+    */
+    public function out($string, $level=0)
+    {
+        \HUGnet\VPrint($string, $level);
+    }
 }
 ?>
