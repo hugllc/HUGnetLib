@@ -43,8 +43,6 @@ define("_HUGNET", true);
 require_once dirname(__FILE__).'/Error.php';
 /** This is the system utility class.  Everybody needs it also */
 require_once dirname(__FILE__).'/../util/Util.php';
-/** This is the system utility class.  Everybody needs it also */
-require_once dirname(__FILE__).'/../containers/ConfigContainer.php';
 
 
 /**
@@ -74,8 +72,6 @@ class System
     private $_configDefault = array(
         "verbose" => 0,
     );
-    /** @var This is where we store our configuration */
-    protected $myConfig = null;
 
     /**
     * This sets up the basic parts of the object for us when we create it
@@ -86,7 +82,7 @@ class System
     */
     private function __construct($config = array())
     {
-        $this->setConfig($config);
+        $this->config($config);
     }
     /**
     * This function creates the system.
@@ -104,16 +100,20 @@ class System
     *
     * @param array $config The configuration array
     *
-    * @return null
+    * @return array The configuration
     * @todo remove ConfigContainer reference when ConfigContainer goes away
     */
-    public function setConfig($config = array())
+    public function config($config = array())
     {
         $this->_config = array_merge($this->_configDefault, (array)$config);
 
         // This is so that the rest of the system works when we call it through
         // This class.  This should be removed when ConfigContainer is retired.
+        include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
         \ConfigContainer::singleton()->forceConfig($this->_config);
+
+        // Return the configuration
+        return $this->_config;
     }
     /**
     * This is the destructor
@@ -127,20 +127,24 @@ class System
     *
     * @return null
     */
-    public function &network()
+    public function &network(&$application = null)
     {
         if (!is_object($this->_network)) {
-            $net = dirname(__FILE__)."/../network/";
-            include_once $net."Application.php";
-            include_once $net."Transport.php";
-            include_once $net."Network.php";
-            $network = &network\Network::factory($this->_config["network"]);
-            $transport = &network\Transport::factory(
-                $network, $this->_config["network"]
-            );
-            $this->_network = &network\Application::factory(
-                $transport, $this->_config["network"]
-            );
+            if (is_object($application)) {
+                $this->_network = &$application;
+            } else {
+                $net = dirname(__FILE__)."/../network/";
+                include_once $net."Application.php";
+                include_once $net."Transport.php";
+                include_once $net."Network.php";
+                $network = &network\Network::factory($this->_config["network"]);
+                $transport = &network\Transport::factory(
+                    $network, $this->_config["network"]
+                );
+                $this->_network = &network\Application::factory(
+                    $transport, $this->_config["network"]
+                );
+            }
         }
         return $this->_network;
     }

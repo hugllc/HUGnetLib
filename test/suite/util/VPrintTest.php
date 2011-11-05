@@ -86,18 +86,33 @@ class VPrintTest extends \PHPUnit_Framework_TestCase
     public static function dataPrint()
     {
         return array(
-            array(array("verbose" => 3), "This string should not print", 2, ""),
             array(
                 array("verbose" => 1),
-                "This string should print",
-                2,
-                "This string should print".PHP_EOL
+                array("This string should not print"),
+                array(2),
+                "",
+                "",
             ),
             array(
-                array("verbose" => 1, "html" => true),
-                "This string should print",
-                2,
-                "This string should print<br />"
+                array("verbose" => 3),
+                array("This string should print"),
+                array(2),
+                "This string should print".PHP_EOL,
+                "",
+            ),
+            array(
+                array("verbose" => 3, "html" => true),
+                array("This string should print"),
+                array(2),
+                "This string should print<br />".PHP_EOL,
+                "",
+            ),
+            array(
+                array("verbose" => 3, "html" => true, "debug" => true),
+                array("String1", "String2", "String3"),
+                array(2, 5, 2),
+                "",
+                "String1<br />".PHP_EOL."String3<br />".PHP_EOL,
             ),
         );
     }
@@ -105,22 +120,30 @@ class VPrintTest extends \PHPUnit_Framework_TestCase
     * This tests the object creation
     *
     * @param array  $config  The configuration to use
-    * @param string $string  The string to print
-    * @param int    $verbose The verbosity level to use
+    * @param array  $string  The string to print
+    * @param array  $verbose The verbosity level to use
     * @param string $expect  The output we expect
+    * @param string $debug   The output we expect from debug
     *
     * @return null
     *
     * @dataProvider dataPrint
     */
-    public function testPrint($config, $string, $verbose, $expect)
+    public function testPrint($config, $string, $verbose, $expect, $debug)
     {
         VPrint::config($config);
         ob_start();
-        VPrint::out($string, $verbose);
+        foreach ($string as $key => $str) {
+            VPrint::out($str, $verbose[$key]);
+        }
         $ret = ob_get_contents();
         ob_end_clean();
         $this->assertSame($expect, $ret);
+        ob_start();
+        VPrint::debug();
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertSame($debug, $ret);
     }
 
 

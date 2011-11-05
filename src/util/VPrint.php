@@ -53,10 +53,14 @@ namespace HUGnet;
  */
 class VPrint
 {
-    /** This is the polynomial for the CRC  */
+    /** This is the current verbosity level */
     private static $_verbose = 0;
-    /** This is the polynomial for the CRC  */
+    /** This is the flag for HTML mode  */
     private static $_html = false;
+    /** This is the flag for debug mode  */
+    private static $_debug = false;
+    /** This is the string to output for debug mode  */
+    private static $_debugOut = "";
     /**
     * This function gives us access to the table class
     *
@@ -67,6 +71,7 @@ class VPrint
     public static function config($config)
     {
         self::$_verbose = $config["verbose"];
+        self::$_debug = $config["debug"];
         self::$_html = isset($config["html"]) ? $config["html"] : PHP_SAPI != "cli";
     }
     /**
@@ -79,8 +84,13 @@ class VPrint
     */
     public static function out($string, $level=1)
     {
-        if ($level >= self::$_verbose) {
-            print (string)$string.self::_eol();
+        if ($level <= self::$_verbose) {
+            if (self::$_html && self::$_debug) {
+                // Save everything for later
+                self::$_debugOut .= (string)$string.self::_eol();
+            } else {
+                print (string)$string.self::_eol();
+            }
         }
     }
     /**
@@ -91,10 +101,20 @@ class VPrint
     private static function _eol()
     {
         if (self::$_html) {
-            return "<br />";
+            return "<br />".PHP_EOL;
         }
         return PHP_EOL;
     }
+    /**
+    * This outputs all of the prints in one go.
+    *
+    * @return none
+    */
+    public static function debug()
+    {
+        print self::$_debugOut;
+    }
+
 }
 
 

@@ -57,8 +57,6 @@ class Daemon extends CLI
     /** This says if we should loop or not */
     private $_loop = true;
 
-    /** The config we are using */
-    private $_config = array();
     /**
     * Sets our configuration
     *
@@ -77,8 +75,7 @@ class Daemon extends CLI
     */
     public function main()
     {
-        pcntl_signal_dispatch();
-        $this->system()->main();
+        parent::main();
     }
     /**
     * Disconnects from the database

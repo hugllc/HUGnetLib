@@ -54,10 +54,10 @@ require_once dirname(__FILE__)."/../system/System.php";
  */
 class CLI
 {
-    /** This says if we should loop or not */
-    private $_loop = true;
     /** The config we are using */
     private $_config = array();
+    /** The config we are using */
+    private $_system = null;
     /**
     * Sets our configuration
     *
@@ -66,7 +66,6 @@ class CLI
     protected function __construct(&$config)
     {
         $this->setConfig($config);
-        pcntl_signal(SIGINT, array($this, "quit"));
     }
 
     /**
@@ -104,8 +103,14 @@ class CLI
         if (is_object($config)) {
             if (is_a($config, "HUGnet\cli\Args")) {
                 $this->_config = $config->config();
+            } else {
+                // Whatever it is, use it as our system object
+                $this->_system = &$config;
             }
+        } else if (is_array($config)) {
+            $this->_config = $config;
         }
+        return $this->_config;
     }
     /**
     * Disconnects from the database
@@ -127,27 +132,8 @@ class CLI
     public function main()
     {
         pcntl_signal_dispatch();
-        //$this->system()->main();
+        $this->system()->main();
     }
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function quit()
-    {
-        $this->_loop = false;
-    }
-    /**
-    * Disconnects from the database
-    *
-    * @return null
-    */
-    public function loop()
-    {
-        return $this->_loop;
-    }
-
 
 }
 ?>
