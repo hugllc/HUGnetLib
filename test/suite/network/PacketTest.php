@@ -340,15 +340,32 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Command" => "55",
                     "Length"  => 4,
                     "Data" => "01020304",
+                    "Reply" => "04030201",
                     "Checksum" => "C3",
                 ),
                 true,
                 array(1,2,3,4),
+                array(4,3,2,1),
+            ),
+            array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "04030201",
+                    "Checksum" => "C3",
+                ),
+                false,
+                "01020304",
+                "04030201",
             ),
             array(
                 "5A5A5A55000ABC0000200401020304F4",
                 false,
                 "01020304",
+                ""
             ),
         );
     }
@@ -358,15 +375,17 @@ class PacketTest extends \PHPUnit_Framework_TestCase
     * @param string $preload The string to give to the class
     * @param mixed  $raw     Whether to use the raw value or not
     * @param array  $expect  The info to expect returned
+    * @param array  $reply   The expected stuff returned
     *
     * @return null
     *
     * @dataProvider dataData()
     */
-    public function testData($preload, $raw, $expect)
+    public function testData($preload, $raw, $expect, $reply)
     {
         $pkt = Packet::factory($preload);
         $this->assertSame($expect, $pkt->Data(null, $raw));
+        $this->assertSame($reply, $pkt->Reply(null, $raw));
     }
 }
 ?>

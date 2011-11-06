@@ -137,6 +137,7 @@ final class Application
         if ($return) {
             include_once dirname(__FILE__)."/Matcher.php";
             $this->_matcher = Matcher::factory($this->_config, $callback);
+            $this->unsolicited(array($this->_matcher, "match"));
         }
         return (bool)$return;
     }
@@ -156,20 +157,6 @@ final class Application
                 }
             }
             $this->_monitor($packet);
-        }
-        $this->_match($packet);
-    }
-    /**
-    * Calls the callbacks with this packet
-    *
-    * @param mixed &$packet The packet to send out
-    *
-    * @return null
-    */
-    private function _match(&$packet)
-    {
-        if (!is_null($packet) && is_object($this->_matcher)) {
-            $this->_matcher->match($packet);
         }
     }
     /**
@@ -211,7 +198,8 @@ final class Application
     {
         $callback = $this->_receive[$token];
         if (is_callable($callback)) {
-            call_user_func($callback, $packet, $this->_packet[$token]);
+            $this->_packet[$token]->reply($packet->data());
+            call_user_func($callback, $this->_packet[$token]);
         }
         unset($this->_receive[$token]);
         unset($this->_packet[$token]);
@@ -238,11 +226,11 @@ final class Application
     /**
     * Calls the callbacks with this packet
     *
-    * @param mixed &$packet The packet to send out
+    * @param mixed $packet The packet to send out
     *
     * @return null
     */
-    private function _monitor(&$packet)
+    private function _monitor($packet)
     {
         foreach ($this->_monitor as $callback) {
             if (is_callable($callback)) {

@@ -100,6 +100,8 @@ final class Packet
     private $_checksum;
     /** Extra string at the end of the packet  */
     private $_extra;
+    /** This is where we keep our reply  */
+    private $_reply;
     /**
     * This has known types in it
     *
@@ -387,7 +389,24 @@ final class Packet
         return sprintf("%02X", $this->_checksum());
     }
     /**
-    * Checks to see if this packet is valid
+    * Returns the packet reply data if there is any
+    *
+    * @param mixed $value The value to set this to.
+    * @param bool  $raw   Return the raw data as an array if true
+    *
+    * @return string|array Returns the data in an array if $raw is true, a string
+    *                      otherwise
+    */
+    public function reply($value = null, $raw = false)
+    {
+        $this->_setArray("_reply", $value);
+        if ($raw) {
+            return $this->_reply;
+        }
+        return $this->_toStr($this->_reply);
+    }
+    /**
+    * Returns the packet data
     *
     * @param mixed $value The value to set this to.
     * @param bool  $raw   Return the raw data as an array if true
@@ -404,7 +423,7 @@ final class Packet
         return $this->_toStr($this->_data);
     }
     /**
-    * Checks to see if this packet is valid
+    * Returns the packet preamble
     *
     * @param bool $min Return the minimum preamble instead of the normal one
     *
@@ -418,7 +437,7 @@ final class Packet
         return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES);
     }
     /**
-    * Checks to see if this packet is valid
+    * Return the packet type
     *
     * @return string Returns the value it is set to
     */

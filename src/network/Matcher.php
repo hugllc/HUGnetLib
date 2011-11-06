@@ -186,12 +186,15 @@ final class Matcher
     public function _callback($index)
     {
         if (is_callable($this->_callback)) {
+            $this->_packets[$index]->packet()->reply(
+                $this->_packets[$index]->reply()->data()
+            );
             call_user_func(
                 $this->_callback,
-                $this->_packets[$index]->reply(),
                 $this->_packets[$index]->packet()
             );
         }
+        unset($this->_packets[$index]);
     }
 }
 ?>

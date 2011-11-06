@@ -123,6 +123,15 @@ final class TransportPacket
         return new TransportPacket($config, $pkt);
     }
     /**
+    * Returns a link to the original packet
+    *
+    * @return Packet object
+    */
+    public function &packet()
+    {
+        return $this->_packet;
+    }
+    /**
     * Creates the object
     *
     * @return PacketTransport object
@@ -137,15 +146,6 @@ final class TransportPacket
             return $this->_find();
         }
         return "";
-    }
-    /**
-    * Returns a link to the original packet
-    *
-    * @return Packet object
-    */
-    public function &packet()
-    {
-        return $this->_packet;
     }
     /**
     * Creates the object

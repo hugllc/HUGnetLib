@@ -170,6 +170,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                         "To"      => "000300",
                                         "Command" => "23",
                                         "Data"    => "01020304",
+                                        "Reply"   => "01",
                                     )
                                 ),
                                 array(
@@ -196,6 +197,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                                         "To"      => "000300",
                                         "Command" => "23",
                                         "Data"    => "01020304",
+                                        "Reply"   => "01",
                                     )
                                 ),
                             ),
@@ -235,18 +237,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             array(
                                 Packet::factory(
                                     array(
-                                        "From"    => "000100",
-                                        "To"      => "000200",
-                                        "Command" => "23",
-                                        "Data"    => "01",
-                                    )
-                                ),
-                                Packet::factory(
-                                    array(
                                         "From"    => "000200",
                                         "To"      => "000300",
                                         "Command" => "23",
                                         "Data"    => "01020304",
+                                        "Reply"   => "01",
                                     )
                                 ),
                             ),

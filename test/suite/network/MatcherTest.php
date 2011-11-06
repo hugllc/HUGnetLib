@@ -198,34 +198,20 @@ class MatcherTest extends \PHPUnit_Framework_TestCase
                             array(
                                 Packet::factory(
                                     array(
-                                        "To"      => "000001",
-                                        "From"    => "000003",
-                                        "Command" => "01",
-                                        "Data"    => "01020304",
-                                    )
-                                ),
-                                Packet::factory(
-                                    array(
                                         "To"      => "000003",
                                         "From"    => "000001",
                                         "Command" => "55",
+                                        "Reply"    => "01020304",
                                     )
                                 ),
                             ),
                             array(
                                 Packet::factory(
                                     array(
-                                        "To"      => "000001",
-                                        "From"    => "000002",
-                                        "Command" => "01",
-                                        "Data"    => "01020304",
-                                    )
-                                ),
-                                Packet::factory(
-                                    array(
                                         "To"      => "000002",
                                         "From"    => "000001",
                                         "Command" => "55",
+                                        "Reply"    => "01020304",
                                     )
                                 ),
                             ),
