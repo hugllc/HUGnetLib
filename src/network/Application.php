@@ -60,17 +60,15 @@ final class Application
     private $_monitor = array();
     /** These are the unsolicited callbacks */
     private $_unsolicited = array();
-    /** These are the callbacks for the outgoing packets */
-    private $_receive = array();
     /** These are the packets going out */
-    private $_packet = array();
+    private $_queue = array();
     /** This is our configuration */
     private $_config = array();
     /** This is our default configuration */
     private $_defaultConfig = array(
         "quiet" => false,
         "block" => false,
-        "from" => null,
+        "from"  => null,
     );
 
     /**
@@ -191,8 +189,10 @@ final class Application
                     $return = &$packet;
                 }
             } else {
-                $this->_receive[$token] = $callback;
-                $this->_packet[$token] = &$packet;
+                $qid = uniqid();
+                $this->_queue[$qid]["token"] = $token;
+                $this->_queue[$qid]["callback"] = $callback;
+                $this->_queue[$qid]["packet"] = &$packet;
                 $return = true;
             }
         }
@@ -201,22 +201,21 @@ final class Application
     /**
     * Calls the callbacks with this packet
     *
-    * @param string $token   The token attached to that packet
+    * @param string $qid     The token attached to that packet
     * @param mixed  &$packet The packet to send out
     *
     * @return null
     */
-    private function _receive($token, &$packet)
+    private function _receive($qid, &$packet)
     {
-        $callback = $this->_receive[$token];
+        $callback = $this->_queue[$qid]["callback"];
         if (is_callable($callback)) {
             if (is_object($packet)) {
-                $this->_packet[$token]->reply($packet->data());
+                $this->_queue[$qid]["packet"]->reply($packet->data());
             }
-            call_user_func($callback, $this->_packet[$token]);
+            call_user_func($callback, $this->_queue[$qid]["packet"]);
         }
-        unset($this->_receive[$token]);
-        unset($this->_packet[$token]);
+        unset($this->_queue[$qid]);
         $this->_monitor($packet);
     }
 
@@ -263,10 +262,10 @@ final class Application
     public function main()
     {
         $this->_main();
-        foreach (array_keys($this->_receive) as $token) {
-            $return = $this->_transport->receive($token);
+        foreach ($this->_queue as $qid => $pkt) {
+            $return = $this->_transport->receive($pkt["token"]);
             if (!is_null($return)) {
-                $this->_receive($token, $return);
+                $this->_receive($qid, $return);
             }
         }
     }
