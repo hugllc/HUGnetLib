@@ -152,7 +152,7 @@ class CLI
     */
     public function out($string, $level=0)
     {
-        \HUGnet\VPrint($string, $level);
+        \HUGnet\VPrint::out($string, $level);
     }
 }
 ?>
