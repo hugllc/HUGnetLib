@@ -139,6 +139,15 @@ final class TransportPacket
         return "";
     }
     /**
+    * Returns a link to the original packet
+    *
+    * @return Packet object
+    */
+    public function &packet()
+    {
+        return $this->_packet;
+    }
+    /**
     * Creates the object
     *
     * @param mixed &$pkt Array, string or packet object to send out
@@ -258,7 +267,7 @@ final class TransportPacket
     */
     private function _timeout()
     {
-        return bcsub($this->_time(), $this->_time) > $this->_config["timeout"];
+        return bcsub($this->_time(), $this->_time, 3) > $this->_config["timeout"];
     }
 }
 

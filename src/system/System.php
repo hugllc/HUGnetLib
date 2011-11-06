@@ -43,6 +43,8 @@ define("_HUGNET", true);
 require_once dirname(__FILE__).'/Error.php';
 /** This is the system utility class.  Everybody needs it also */
 require_once dirname(__FILE__).'/../util/Util.php';
+/** This is the system utility class.  Everybody needs it also */
+require_once dirname(__FILE__).'/../util/VPrint.php';
 
 
 /**

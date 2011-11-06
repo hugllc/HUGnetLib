@@ -123,6 +123,24 @@ final class Application
         return (bool)$return;
     }
     /**
+    * Sets callbacks for incoming packets
+    *
+    * The function should take 2 arguments.  The reply and the packet.
+    *
+    * @param mixed $callback the callback function.
+    *
+    * @return bool true on success, fales of failure
+    */
+    public function match($callback)
+    {
+        $return = is_callable($callback);
+        if ($return) {
+            include_once dirname(__FILE__)."/Matcher.php";
+            $this->_matcher = Matcher::factory($this->_config, $callback);
+        }
+        return (bool)$return;
+    }
+    /**
     * Calls the callbacks with this packet
     *
     * @param mixed &$packet The packet to send out
@@ -138,6 +156,20 @@ final class Application
                 }
             }
             $this->_monitor($packet);
+        }
+        $this->_match($packet);
+    }
+    /**
+    * Calls the callbacks with this packet
+    *
+    * @param mixed &$packet The packet to send out
+    *
+    * @return null
+    */
+    private function _match(&$packet)
+    {
+        if (!is_null($packet) && is_object($this->_matcher)) {
+            $this->_matcher->match($packet);
         }
     }
     /**
