@@ -69,6 +69,7 @@ final class Application
     /** This is our default configuration */
     private $_defaultConfig = array(
         "quiet" => false,
+        "block" => false,
     );
 
     /**
@@ -136,6 +137,7 @@ final class Application
         $return = is_callable($callback);
         if ($return) {
             include_once dirname(__FILE__)."/Matcher.php";
+            include_once dirname(__FILE__)."/TransportPacket.php";
             $this->_matcher = Matcher::factory($this->_config, $callback);
             $this->unsolicited(array($this->_matcher, "match"));
         }
@@ -165,26 +167,26 @@ final class Application
     * The function should take 1 argument.  That will be the packet.
     *
     * @param mixed &$packet  The packet to send out
-    * @param mixed $callback the callback function.
+    * @param mixed $callback The callback function.
+    * @param array $config   The configuration to use with the packet
     *
-    * @return bool true on success, fales of failure
+    * @return bool true on success, false of failure
     */
-    public function send(&$packet, $callback = null)
+    public function send(&$packet, $callback = null, $config = array())
     {
         $return = false;
-        $config = array();
-        if (!is_callable($callback)) {
-            // We we don't get a callback, they don't expect a reply
-            $config = array("find" => false, "retries" => 1);
-        }
-        $token = $this->_transport->send($packet, $config);
+        $token = $this->_transport->send($packet, (array)$config);
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
-            $this->_receive[$token] = $callback;
-            $this->_packet[$token] = &$packet;
             $this->_monitor($packet);
-            $return = true;
+            if ($this->_config["block"]) {
+                $return = $this->_wait($token);
+            } else {
+                $this->_receive[$token] = $callback;
+                $this->_packet[$token] = &$packet;
+                $return = true;
+            }
         }
-        return (bool)$return;
+        return $return;
     }
     /**
     * Calls the callbacks with this packet
@@ -198,7 +200,9 @@ final class Application
     {
         $callback = $this->_receive[$token];
         if (is_callable($callback)) {
-            $this->_packet[$token]->reply($packet->data());
+            if (is_object($packet)) {
+                $this->_packet[$token]->reply($packet->data());
+            }
             call_user_func($callback, $this->_packet[$token]);
         }
         unset($this->_receive[$token]);
@@ -232,9 +236,11 @@ final class Application
     */
     private function _monitor($packet)
     {
-        foreach ($this->_monitor as $callback) {
-            if (is_callable($callback)) {
-                call_user_func($callback, $packet);
+        if (is_object($packet)) {
+            foreach ($this->_monitor as $callback) {
+                if (is_callable($callback)) {
+                    call_user_func($callback, $packet);
+                }
             }
         }
     }
@@ -246,16 +252,38 @@ final class Application
     */
     public function main()
     {
-        pcntl_signal_dispatch();
+        $this->_main();
         foreach (array_keys($this->_receive) as $token) {
             $return = $this->_transport->receive($token);
             if (!is_null($return)) {
                 $this->_receive($token, $return);
             }
         }
+    }
+    /**
+    * Waits for a certian packet to come in.
+    *
+    * @param string $token The token to wait for
+    *
+    * @return null
+    */
+    private function _wait($token)
+    {
+        while (is_null($ret = $this->_transport->receive($token))) {
+            $this->_main();
+        }
+        return $ret;
+    }
+    /**
+    * This is the stuff that must get done no matter how we are looping
+    *
+    * @return null
+    */
+    private function _main()
+    {
+        pcntl_signal_dispatch();
+        // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
     }
-
-
 }
 ?>

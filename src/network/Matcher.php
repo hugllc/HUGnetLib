@@ -183,7 +183,7 @@ final class Matcher
     *
     * @return null
     */
-    public function _callback($index)
+    private function _callback($index)
     {
         if (is_callable($this->_callback)) {
             $this->_packets[$index]->packet()->reply(
