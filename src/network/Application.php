@@ -181,7 +181,7 @@ final class Application
     {
         $return = false;
         $packet = Packet::factory($packet);
-        $packet->from($this->_from());
+        $packet->from($this->_config["from"]);
         $token = $this->_transport->send($packet, (array)$config);
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_monitor($packet);
@@ -294,17 +294,6 @@ final class Application
         pcntl_signal_dispatch();
         // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
-    }
-    /**
-    * Waits for a certian packet to come in.
-    *
-    * @return null
-    */
-    private function _from()
-    {
-        if (!is_object($this->_device)) {
-            return $this->_config["from"];
-        }
     }
 }
 ?>
