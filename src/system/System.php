@@ -127,6 +127,8 @@ class System
     /**
     * This sets the configuration array _config
     *
+    * @param object &$application The application to use
+    *
     * @return null
     */
     public function &network(&$application = null)
