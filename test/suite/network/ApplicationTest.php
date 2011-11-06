@@ -130,6 +130,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 array(
+                    "from" => "000002",
                 ),
                 10,
                 array(
@@ -365,7 +366,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $transport->retrieve(), "Calls wrong");
     }
 
-        /**
+    /**
     * Data provider for testRemove
     *
     * @return array
@@ -394,6 +395,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 array(
                     "block" => true,
                     "timeout" =>  1,
+                    "from" => "000200",
                 ),
                 Packet::factory(
                     array(
@@ -464,6 +466,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $ret = $application->send($send, null);
         $this->assertEquals($expect, $ret, "The return was wrong");
         $this->assertEquals($calls, $transport->retrieve(), "Calls wrong");
+    }
+    /**
+    * Tests to make sure that the from address is okay
+    *
+    * @return null
+    */
+    public function testFrom()
+    {
+        $transport = new \HUGnet\network\DummyNetwork("Transport");
+        $transport->resetMock($mock);
+        $application = &Application::factory(
+            $transport,
+            array("block" => 1)
+        );
+        $ret = $application->send(
+            Packet::factory(
+                array(
+                    "to" => "123456",
+                    "command" => "55",
+                )
+            ),
+            array(
+                "timeout" => 0.1,
+            )
+        );
+        $this->assertTrue(hexdec($ret->from()) >= 0xFD0000, "Too low!");
+        $this->assertTrue(hexdec($ret->from()) <= 0xFDFFFF, "Too high!");
     }
 
 }

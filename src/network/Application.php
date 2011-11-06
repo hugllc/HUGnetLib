@@ -70,6 +70,7 @@ final class Application
     private $_defaultConfig = array(
         "quiet" => false,
         "block" => false,
+        "from" => null,
     );
 
     /**
@@ -82,6 +83,10 @@ final class Application
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_transport =& $transport;
+        if (empty($this->_config["from"])) {
+            $this->_config["from"] = sprintf("%06X", mt_rand(0xFD0000, 0xFDFFFF));
+        }
+
     }
     /**
     * Creates the object
@@ -175,11 +180,16 @@ final class Application
     public function send(&$packet, $callback = null, $config = array())
     {
         $return = false;
+        $packet = Packet::factory($packet);
+        $packet->from($this->_from());
         $token = $this->_transport->send($packet, (array)$config);
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_monitor($packet);
             if ($this->_config["block"]) {
                 $return = $this->_wait($token);
+                if (!is_object($return)) {
+                    $return = &$packet;
+                }
             } else {
                 $this->_receive[$token] = $callback;
                 $this->_packet[$token] = &$packet;
@@ -284,6 +294,17 @@ final class Application
         pcntl_signal_dispatch();
         // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
+    }
+    /**
+    * Waits for a certian packet to come in.
+    *
+    * @return null
+    */
+    private function _from()
+    {
+        if (!is_object($this->_device)) {
+            return $this->_config["from"];
+        }
     }
 }
 ?>

@@ -387,5 +387,23 @@ class PacketTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $pkt->Data(null, $raw));
         $this->assertSame($reply, $pkt->Reply(null, $raw));
     }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @return null
+    */
+    public function testFactoryWithObject()
+    {
+        $pkt = &Packet::factory(
+            array(
+                "To" => "000012",
+                "From" => "123456",
+                "Command" => "41",
+                "Data" => array(1,2,3,4,5),
+            )
+        );
+        $pkt2 = &Packet::factory($pkt);
+        $this->assertSame($pkt, $pkt2);
+    }
 }
 ?>

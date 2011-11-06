@@ -154,6 +154,9 @@ final class Packet
     */
     public function &factory($data = array())
     {
+        if (is_a($data, "\\HUGnet\\network\\Packet")) {
+            return $data;
+        }
         return new Packet($data);
     }
     /**
