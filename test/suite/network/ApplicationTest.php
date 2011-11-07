@@ -315,6 +315,168 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array(
+                array(
+                    "Transport" => array(
+                        "receive" => array(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            false,
+                            false,
+                            false,
+                            false,
+                        ),
+                        "packet1" => true,
+                        "packet2" => false,
+                        "send" => array(
+                            "one",
+                            "two",
+                            "three",
+                            "four",
+                        ),
+                    ),
+                ),
+                array(
+                    "from" => "000012",
+                    "timeout" => 0.5,
+                ),
+                10,
+                array(),
+                array(),
+                array(),
+                array(
+                    array(
+                        "name" => "packet1",
+                        "packet" => array(
+                            Packet::factory(
+                                array(
+                                    "To" => "000001",
+                                    "From" => "000012",
+                                    "Command" => "5C",
+                                )
+                            ),
+                            Packet::factory(
+                                array(
+                                    "To" => "000001",
+                                    "From" => "000012",
+                                    "Command" => "4C",
+                                )
+                            ),
+                        ),
+                    ),
+                    array(
+                        "name" => "packet2",
+                        "packet" => array(
+                            array(
+                                "To" => "000002",
+                                "From" => "000012",
+                                "Command" => "5C",
+                            ),
+                            array(
+                                "To" => "000002",
+                                "From" => "000012",
+                                "Command" => "4C",
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    "Transport" => array(
+                        "send" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000002",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "4C",
+                                    )
+                                ),
+                                array(),
+                            ),
+                        ),
+                        "unsolicited" => array(
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                            array(),
+                        ),
+                        "receive" => array(
+                            array("one"),
+                            array("one"),
+                            array("two"),
+                            array("one"),
+                            array("two"),
+                            array("one"),
+                            array("two"),
+                            array("one"),
+                            array("three"),
+                        ),
+                        "packet1" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                            ),
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000001",
+                                        "From"    => "000012",
+                                        "Command" => "4C",
+                                    )
+                                ),
+                            ),
+                        ),
+                        "packet2" => array(
+                            array(
+                                Packet::factory(
+                                    array(
+                                        "To"      => "000002",
+                                        "From"    => "000012",
+                                        "Command" => "5C",
+                                    )
+                                ),
+                            ),
+                        ),
+
+                    ),
+                ),
+                null,
+            ),
         );
     }
     /**

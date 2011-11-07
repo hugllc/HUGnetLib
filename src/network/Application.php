@@ -177,10 +177,43 @@ final class Application
     */
     public function send(&$packet, $callback = null, $config = array())
     {
+        $qid = uniqid();
+        $this->_queue[$qid]["callback"] = $callback;
+        $this->_queue[$qid]["config"] = (array)$config;
+        if (is_array($packet)) {
+            $packet = array_change_key_case($packet);
+            if (!isset($packet["to"])) {
+                $this->_queue[$qid]["queue"] = $packet;
+            } else {
+                $this->_queue[$qid]["queue"] = array($packet);
+            }
+        } else {
+            $this->_queue[$qid]["queue"] = array($packet);
+        }
+        return $this->_send($qid);
+    }
+    /**
+    * Sets callbacks for incoming packets
+    *
+    * @param mixed $qid The id of the system to send
+    *
+    * @return bool true on success, false of failure
+    */
+    private function _send($qid)
+    {
         $return = false;
+        $packet = array_shift($this->_queue[$qid]["queue"]);
+        if (empty($packet)) {
+            // No packets left.
+            unset($this->_queue[$qid]);
+            return false;
+        }
         $packet = Packet::factory($packet);
         $packet->from($this->_config["from"]);
-        $token = $this->_transport->send($packet, (array)$config);
+        $token = $this->_transport->send(
+            $packet,
+            $this->_queue[$qid]["config"]
+        );
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_monitor($packet);
             if ($this->_config["block"]) {
@@ -189,9 +222,7 @@ final class Application
                     $return = &$packet;
                 }
             } else {
-                $qid = uniqid();
                 $this->_queue[$qid]["token"] = $token;
-                $this->_queue[$qid]["callback"] = $callback;
                 $this->_queue[$qid]["packet"] = &$packet;
                 $return = true;
             }
@@ -213,9 +244,13 @@ final class Application
             if (is_object($packet)) {
                 $this->_queue[$qid]["packet"]->reply($packet->data());
             }
-            call_user_func($callback, $this->_queue[$qid]["packet"]);
+            if (call_user_func($callback, $this->_queue[$qid]["packet"])) {
+                // Send the next one out
+                $this->_send($qid);
+            } else {
+                unset($this->_queue[$qid]);
+            }
         }
-        unset($this->_queue[$qid]);
         $this->_monitor($packet);
     }
 
