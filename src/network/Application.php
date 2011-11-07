@@ -169,13 +169,13 @@ final class Application
     *
     * The function should take 1 argument.  That will be the packet.
     *
-    * @param mixed &$packet  The packet to send out
+    * @param mixed $packet   The packet to send out
     * @param mixed $callback The callback function.
     * @param array $config   The configuration to use with the packet
     *
     * @return bool true on success, false of failure
     */
-    public function send(&$packet, $callback = null, $config = array())
+    public function send($packet, $callback = null, $config = array())
     {
         $qid = uniqid();
         $this->_queue[$qid]["callback"] = $callback;
@@ -209,7 +209,7 @@ final class Application
             return false;
         }
         $packet = Packet::factory($packet);
-        $packet->from($this->_config["from"]);
+        $packet->from($this->_from());
         $token = $this->_transport->send(
             $packet,
             $this->_queue[$qid]["config"]
@@ -217,9 +217,10 @@ final class Application
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_monitor($packet);
             if ($this->_config["block"]) {
-                $return = $this->_wait($token);
-                if (!is_object($return)) {
-                    $return = &$packet;
+                $return = &$packet;
+                $reply = $this->_wait($token);
+                if (is_object($reply)) {
+                    $return->Reply($reply->Data());
                 }
             } else {
                 $this->_queue[$qid]["token"] = $token;
@@ -328,6 +329,15 @@ final class Application
         pcntl_signal_dispatch();
         // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
+    }
+    /**
+    * This is the stuff that must get done no matter how we are looping
+    *
+    * @return null
+    */
+    private function _from()
+    {
+        return $this->_config["from"];
     }
 }
 ?>

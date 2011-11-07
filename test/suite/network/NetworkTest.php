@@ -104,7 +104,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 "",
                 "RuntimeException",
             ),
-            array(  // #2 Already set up class
+            array(  // #1 Already set up class
                 array(
                     "defaultSocket" => array(
                         "read" => (string)Packet::factory(
@@ -161,7 +161,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
-            array(  // #3 No good read data
+            array(  // #2 No good read data
                 array(
                     "default" => array(
                         "read" => "010203040506",
@@ -203,7 +203,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
-            array(  // #2 Already set up class
+            array(  // #3 Already set up class
                 array(
                     "default" => array(
                         "read" => array(
@@ -242,6 +242,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                     "nondefault" => array(
                         "driver" => "DummySocket"
                     ),
+                    "forward" => 0,
                 ),
                 10,
                 array(
@@ -397,6 +398,118 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                         array(
                             "From" => 0x123458,
                             "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                ),
+                null,
+            ),
+            array(  // #4 forwarding test
+                array(
+                    "default" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123456,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                    ),
+                    "default2" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123457,
+                                "To" => 0x000021,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                    ),
+                ),
+                array(
+                    "default" => array(
+                        "driver" => "DummySocket",
+                    ),
+                    "default2" => array(
+                        "driver" => "DummySocket",
+                    ),
+                    "forward" => true,
+                ),
+                3,
+                array(
+                    Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                ),
+                array(
+                    "default" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "From" => 0x123457,
+                                        "To" => 0x000021,
+                                        "Command" => 0x01,
+                                        "Data" => "0102030405060708090A0B0C0D0E0F",
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array(), array(), array()),
+                    ),
+                    "default2" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "From" => 0x123456,
+                                        "To" => 0x000020,
+                                        "Command" => 0x01,
+                                        "Data" => "0102030405060708090A0B0C0D0E0F",
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array(), array(), array()),
+                    ),
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "From" => 0x123456,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x123457,
+                            "To" => 0x000021,
                             "Command" => 0x01,
                             "Data" => "0102030405060708090A0B0C0D0E0F",
                         )

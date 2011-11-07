@@ -165,6 +165,10 @@ final class Socket
             $return = \HUGnet\Util::hexify(
                 @socket_read($this->_socket, self::MAX_BYTES)
             );
+            \HUGnet\VPrint::out(
+                $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
+                6
+            );
         }
         return $return;
     }
@@ -177,6 +181,10 @@ final class Socket
     */
     private function _write($string)
     {
+        \HUGnet\VPrint::out(
+            $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
+            6
+        );
         return @socket_write($this->_socket, \HUGnet\Util::binary($string));
     }
 

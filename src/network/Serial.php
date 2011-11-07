@@ -189,6 +189,10 @@ final class Serial
             $return = \HUGnet\Util::hexify(
                 @fread($this->_port, self::MAX_BYTES)
             );
+            \HUGnet\VPrint::out(
+                $this->_config["name"]."(".$this->_config["driver"].") -> ".$return,
+                6
+            );
         }
         return $return;
     }
@@ -201,6 +205,10 @@ final class Serial
     */
     private function _write($string)
     {
+        \HUGnet\VPrint::out(
+            $this->_config["name"]."(".$this->_config["driver"].") <- ".$string,
+            6
+        );
         return @fwrite($this->_port, \HUGnet\Util::binary($string));
     }
 

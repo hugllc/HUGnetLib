@@ -64,6 +64,10 @@ final class Network
     private $_read = array();
     /** This is where we store our config */
     private $_config = array();
+    /** This is where we store our config */
+    private $_defaultConfig = array(
+        "forward" => false,
+    );
 
     /**
     * Sets our configuration
@@ -72,7 +76,7 @@ final class Network
     */
     private function __construct($config)
     {
-        $this->_config = $config;
+        $this->_config = array_merge($this->_defaultConfig, $config);
         include_once dirname(__FILE__)."/Packet.php";
     }
     /**
@@ -118,16 +122,47 @@ final class Network
     /**
     * Sends out a packet
     *
-    * @param object &$pkt The packet to send out
+    * @param object $pkt The packet to send out
     *
     * @return bool true on success, false on failure
     */
-    public function send(&$pkt)
+    public function send($pkt)
     {
-        foreach ($this->_getRoute($pkt) as $key) {
+        $this->_send($pkt, $this->_getRoute($pkt));
+        $this->_write();
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param object $pkt    The packet to send out
+    * @param string $routes Routes to send the packet out
+    *
+    * @return bool true on success, false on failure
+    */
+    public function _send($pkt, $routes)
+    {
+        foreach ((array)$routes as $key) {
             $this->_write[$key] .= (string)$pkt;
         }
-        $this->_write();
+
+    }
+    /**
+    * Sends out a packet
+    *
+    * @param object $pkt  The packet to send out
+    * @param string $from The socket this packet is from
+    *
+    * @return null
+    */
+    public function _forward($pkt, $from)
+    {
+        if ((count($this->_config["ifaces"]) > 1) && $this->_config["forward"]) {
+            $this->_send(
+                $pkt,
+                array_diff((array)$this->_config["ifaces"], array($from))
+            );
+        }
+
     }
     /**
     * Sends out a packet
@@ -176,7 +211,9 @@ final class Network
             $this->_config["ifaces"] = array();
             foreach (array_keys($this->_config) as $key) {
                 if (is_object($this->_config[$key])
-                    ||  isset($this->_config[$key]["driver"])
+                    && (strtolower($key) !== "device")
+                    ||  (is_array($this->_config[$key])
+                    && isset($this->_config[$key]["driver"]))
                 ) {
                     $this->_config["ifaces"][$key] = $key;
                 }
@@ -240,6 +277,7 @@ final class Network
                 // This sets the buffer to the left over characters
                 $this->_read[$key] = $pkt->extra();
                 $this->_setRoute($pkt, $key);
+                $this->_forward($pkt, $key);
                 return $pkt;
             }
         }
@@ -273,10 +311,13 @@ final class Network
     */
     private function _findDriver($socket)
     {
+        \HUGnet\VPrint::out("Opening socket ".$socket, 6);
         $class = $this->_config[$socket]["driver"];
         @include_once dirname(__FILE__)."/".$class.".php";
         $class = __NAMESPACE__."\\physical\\".$class;
+
         if (class_exists($class)) {
+            \HUGnet\VPrint::out("Using class ".$class, 6);
             $this->_sockets[$socket] = $class::factory(
                 $this->_config[$socket]
             );

@@ -81,6 +81,7 @@ final class SocketServer
     * This our configuration resides here
     */
     private $_defaultConfig = array(
+        "type" => AF_UNIX,
         "bus" => true,
     );
     /**
@@ -119,12 +120,14 @@ final class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $this->_disconnect($key);
         }
+        \HUGnet\VPrint::out("Closing socket", 3);
         if (is_resource($this->_socket)) {
             socket_close($this->_socket);
         }
-        if (($this->_config["type"] === AF_UNIX)
+        if (($this->_config["type"] == AF_UNIX)
             && file_exists($this->_config["location"])
         ) {
+            \HUGnet\VPrint::out("Removing file ".$this->_config["location"], 3);
             unlink($this->_config["location"]);
         }
     }
@@ -149,6 +152,11 @@ final class SocketServer
     */
     private function _setup()
     {
+        \HUGnet\VPrint::out(
+            $this->_config["name"].": Setting up at "
+            .$this->_config["location"],
+            6
+        );
         $this->_socket = @socket_create($this->_config["type"], SOCK_STREAM, 0);
         $bound = @socket_bind(
             $this->_socket, $this->_config["location"], $this->_config["port"]
@@ -180,6 +188,11 @@ final class SocketServer
                 if (strlen($input) === 0) {
                     $this->_disconnect($key);
                 } else if ($input) {
+                    \HUGnet\VPrint::out(
+                        $this->_config["name"]."(".$this->_config["driver"]."):"
+                        .$key." -> ".$input,
+                        6
+                    );
                     if ($this->_config["bus"]) {
                         $this->_write($key, (string)$input);
                     }
@@ -207,6 +220,10 @@ final class SocketServer
         foreach (array_keys($this->_clients) as $key) {
             $client = &$this->_clients[$key];
             if (!is_null($client['socket']) && ($skip !== $key)) {
+                \HUGnet\VPrint::out(
+                    $this->_config["name"]."(".$this->_config["driver"]."):".$key
+                    ." <- ".$string, 6
+                );
                 @socket_write($client['socket'], \HUGnet\Util::binary($string));
             }
         }
