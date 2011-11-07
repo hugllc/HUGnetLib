@@ -171,7 +171,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Extra" => "5A5A5A01000ABC000020040102030497",
                 ),
             ),
-            array(
+            array( // #6 string with no data
                 "5A5A5A5C000181FDE01400D5",
                 array(
                     "To" => "000181",
@@ -181,6 +181,24 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                     "Length"  => "00",
                     "Checksum" => "D5",
                     "Type" => "CONFIG",
+                ),
+            ),
+            array( // #7 Data given as empty string
+                array(
+                    "To" => "ABC",
+                    "From" => "20",
+                    "Command" => "01",
+                    "Data" => "",
+                ),
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "01",
+                    "Length"  => "00",
+                    "Data" => "",
+                    "Checksum" => "97",
+                    "Type" => "REPLY",
+                    "Extra" => "",
                 ),
             ),
         );

@@ -173,9 +173,7 @@ final class Packet
         $this->to(substr($string, self::TO, 6));
         $this->from(substr($string, self::FROM, 6));
         $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
-        if ($length > 0) {
-            $this->data(substr($string, self::DATA, $length));
-        }
+        $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
         $this->extra(substr($string, (self::DATA + $length + 2)));
     }
@@ -280,7 +278,7 @@ final class Packet
     */
     private function _setArray($field, $value)
     {
-        if (is_string($value)) {
+        if (is_string($value) && (strlen($value) > 0)) {
             // This reference is necessary, otherwise I get the following error:
             // Cannot use [] for reading
             $this->$field = array();
