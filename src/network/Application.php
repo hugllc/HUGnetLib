@@ -56,6 +56,8 @@ final class Application
 {
     /** This is our network */
     private $_transport;
+    /** This is our device */
+    private $_device;
     /** These are the monitor callbacks */
     private $_monitor = array();
     /** These are the unsolicited callbacks */
@@ -97,6 +99,22 @@ final class Application
     public function &factory(&$transport, $config = array())
     {
         return new Application($transport, (array)$config);
+    }
+
+    /**
+    * Creates the object
+    *
+    * @param array $config The configuration to use
+    *
+    * @return null
+    */
+    public function &device($config = array())
+    {
+        if (!is_object($this->_device)) {
+            include_once dirname(__FILE__)."/Device.php";
+            $this->_device = &Device::factory($this, (array)$config);
+        }
+        return $this->_device;
     }
 
     /**
@@ -182,7 +200,7 @@ final class Application
         $this->_queue[$qid]["config"] = (array)$config;
         if (is_array($packet)) {
             $packet = array_change_key_case($packet);
-            if (!isset($packet["to"])) {
+            if (!isset($packet["command"])) {
                 $this->_queue[$qid]["queue"] = $packet;
             } else {
                 $this->_queue[$qid]["queue"] = array($packet);
@@ -209,14 +227,16 @@ final class Application
             return false;
         }
         $packet = Packet::factory($packet);
-        $packet->from($this->_from());
+        if ($packet->type() !== "POWERUP") {
+            $packet->from($this->_from());
+        }
         $token = $this->_transport->send(
             $packet,
             $this->_queue[$qid]["config"]
         );
         if (!is_bool($token) && (is_string($token) || is_numeric($token))) {
             $this->_monitor($packet);
-            if ($this->_config["block"]) {
+            if ($this->_config["block"] || $this->_queue[$qid]["config"]["block"]) {
                 $return = &$packet;
                 $reply = $this->_wait($token);
                 if (is_object($reply)) {
@@ -337,6 +357,9 @@ final class Application
     */
     private function _from()
     {
+        if (is_object($this->_device)) {
+            return $this->_device->getID();
+        }
         return $this->_config["from"];
     }
 }
