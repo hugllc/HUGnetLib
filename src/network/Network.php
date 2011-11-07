@@ -139,7 +139,7 @@ final class Network
     *
     * @return bool true on success, false on failure
     */
-    public function _send($pkt, $routes)
+    private function _send($pkt, $routes)
     {
         foreach ((array)$routes as $key) {
             $this->_write[$key] .= (string)$pkt;
@@ -154,12 +154,13 @@ final class Network
     *
     * @return null
     */
-    public function _forward($pkt, $from)
+    private function _forward($pkt, $from)
     {
-        if ((count($this->_config["ifaces"]) > 1) && $this->_config["forward"]) {
+        $ifaces = &$this->_ifaces();
+        if ((count($ifaces) > 1) && $this->_config["forward"]) {
             $this->_send(
                 $pkt,
-                array_diff((array)$this->_config["ifaces"], array($from))
+                array_diff($ifaces, array($from))
             );
         }
 

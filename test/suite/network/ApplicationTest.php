@@ -145,13 +145,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 array(
                     0 => array(
                         "name" => "bad",
-                        "packet" => Packet::factory(
-                            array(
-                                "From"    => "000002",
-                                "To"      => "000001",
-                                "Command" => "23",
-                                "Data"    => "010203",
-                            )
+                        "packet" => array(
+                            "From"    => "000002",
+                            "To"      => "000001",
+                            "Command" => "23",
+                            "Data"    => "010203",
                         ),
                         "config" => array(),
                     ),
@@ -540,6 +538,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 array(
                     "Transport" => array(
                         "receive" => array(
+                            null,
                             "thisIsAToken" => Packet::factory(
                                 array(
                                     "From"    => "000100",
@@ -597,7 +596,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                             array(
                                 "thisIsAToken",
                             ),
+                            array(
+                                "thisIsAToken",
+                            ),
                         ),
+                        "unsolicited" => array(array()),
                     ),
                 ),
                 null,
