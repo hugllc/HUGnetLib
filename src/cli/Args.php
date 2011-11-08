@@ -84,29 +84,29 @@ class Args
     /**
     * Sets our configuration
     *
-    * @param array $argv   The argument array
-    * @param int   $argc   The argument count
+    * @param array $args   The argument array
+    * @param int   $count  The argument count
     * @param array $config The configuration of command line args
     */
-    private function __construct($argv, $argc, $config)
+    private function __construct($args, $count, $config)
     {
-        $this->_argv = $argv;
-        $this->_argc = $argc;
+        $this->_argv = $args;
+        $this->_argc = $count;
         $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_interpret();
     }
     /**
     * Creates the object
     *
-    * @param array $argv   The argument array
-    * @param int   $argc   The argument count
+    * @param array $args   The argument array
+    * @param int   $count  The argument count
     * @param array $config The configuration of command line args
     *
     * @return Args object
     */
-    public function &factory($argv, $argc, $config = array())
+    public function &factory($args, $count, $config = array())
     {
-        return new Args((array)$argv, (int)$argc, (array)$config);
+        return new Args((array)$args, (int)$count, (array)$config);
     }
 
     /**

@@ -164,8 +164,8 @@ final class Matcher
     */
     private function _matchOther(&$pkt)
     {
-        $id = uniqid();
-        $this->_packets[$id] = TransportPacket::factory(
+        $pid = uniqid();
+        $this->_packets[$pid] = TransportPacket::factory(
             array(
                 "tries" => 1,
                 "find" => false,
@@ -173,7 +173,7 @@ final class Matcher
             ),
             $pkt
         );
-        $this->_packets[$id]->send();
+        $this->_packets[$pid]->send();
     }
 
     /**

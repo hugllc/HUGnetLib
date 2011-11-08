@@ -145,6 +145,7 @@ final class Device
     */
     private function _powerup()
     {
+        $data = "0000".$this->_config["id"];
         $newPacket = &Packet::factory(
             array(
                 "To"      => "000000",

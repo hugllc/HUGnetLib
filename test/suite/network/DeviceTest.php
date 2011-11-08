@@ -150,12 +150,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array  $config The configuration array
-    * @param string $fct    The function to call
-    * @param array  $before Array of packets for before pause
-    * @param float  $pause  The pause in seconds
-    * @param array  $after  Array of packets for after pause
-    * @param array  $expect The expected return from the reply command
+    * @param array $config The configuration array
+    * @param array $mocks  The data to reset the mocks with
+    * @param int   $min    The minimum value the id can be
+    * @param int   $max    The masimum value the id can be
+    * @param int   $send   THe number of times send should be called
     *
     * @return null
     *
@@ -180,6 +179,67 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             count($ret[$name]["send"]) == $send, "Send was not called enough"
         );
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataPacket()
+    {
+        return array(
+            array(
+                array(
+                    "id" => "000001",
+                ),
+                array(
+                ),
+                Packet::factory(
+                    array(
+                        "to"      => "000001",
+                        "from"    => "000002",
+                        "command" => "03",
+                        "data"    => "0102030405",
+                    )
+                ),
+                array(
+                    array(
+                        Packet::factory(
+                            array(
+                                "to"      => "000002",
+                                "command" => "01",
+                                "data"    => "0102030405",
+                            )
+                        ),
+                        null,
+                        array("tries" => 1, "find" => false),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $config The configuration array
+    * @param array $mocks  The data to reset the mocks with
+    * @param mixed $pkt    The packet to send to it
+    * @param array $expect The expected calls in the mock
+    *
+    * @return null
+    *
+    * @dataProvider dataPacket()
+    */
+    public function testPacket($config, $mocks, $pkt, $expect)
+    {
+        $name = "Network";
+        $net = new \HUGnet\network\DummyNetwork($name);
+        $net->resetMock($mocks);
+        $device = &Device::factory($net, $config);
+        $device->packet($pkt);
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret["Network"]["send"]);
 
     }
 }

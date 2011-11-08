@@ -661,6 +661,51 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(hexdec($ret->from()) >= 0xFD0000, "Too low!");
         $this->assertTrue(hexdec($ret->from()) <= 0xFDFFFF, "Too high!");
     }
+    /**
+    * Tests to make sure that the from address is okay
+    *
+    * @return null
+    */
+    public function testDeviceFrom()
+    {
+        $transport = new \HUGnet\network\DummyNetwork("Transport");
+        $transport->resetMock($mock);
+        $application = &Application::factory(
+            $transport,
+            array("block" => 1)
+        );
+        $application->device(array("id" => "000001"));
+        $ret = $application->send(
+            Packet::factory(
+                array(
+                    "to" => "123456",
+                    "command" => "55",
+                )
+            ),
+            array(
+                "timeout" => 0.1,
+            )
+        );
+        $this->assertSame("000001", $ret->from());
+    }
+    /**
+    * Tests to make sure that the from address is okay
+    *
+    * @return null
+    */
+    public function testDevice()
+    {
+        $transport = new \HUGnet\network\DummyNetwork("Transport");
+        $transport->resetMock($mock);
+        $application = &Application::factory(
+            $transport,
+            array("block" => 1)
+        );
+        $ret = &$application->device();
+        $ret2 = &$application->device();
+        $this->assertTrue(is_a($ret, "\\HUGnet\\network\\Device"), "Wrong class");
+        $this->assertSame($ret, $ret2, "Wrong device returned");
+    }
 
 }
 ?>
