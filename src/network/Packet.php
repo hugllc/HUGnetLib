@@ -107,8 +107,10 @@ final class Packet
     *
     * These should not change.  There are other places in the code that these
     * are used.  If they change then things could break.
+    *
+    * These will be added to by the code.  That is why they are static.
     */
-    private $_commands = array(
+    private static $_commands = array(
         "REPLY" => 0x01,
         "PING" => 0x02,
         "FINDPING" => 0x03,
@@ -330,8 +332,8 @@ final class Packet
     */
     public function command($value = null)
     {
-        if (isset($this->_commands[$value])) {
-            $value = $this->_commands[$value];
+        if (isset(self::$_commands[$value])) {
+            $value = self::$_commands[$value];
         }
         return sprintf("%02X", $this->_setField("_command", $value));
     }
@@ -444,7 +446,7 @@ final class Packet
     */
     public function type()
     {
-        $key = array_search($this->_command, $this->_commands);
+        $key = array_search($this->_command, self::$_commands);
         if (!is_bool($key)) {
             return $key;
         }
