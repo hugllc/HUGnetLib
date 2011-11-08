@@ -60,7 +60,7 @@
         <exec executable="phpmd">
             <arg line="${source}
                         xml
-                        codesize,design,naming,unusedcode
+                        ${basedir}/build/ruleset.xml
                         --exclude contrib
                         --reportfile ${basedir}/build/logs/pmd.xml" />
         </exec>
