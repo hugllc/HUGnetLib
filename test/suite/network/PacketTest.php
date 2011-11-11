@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage SuiteBase
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -44,7 +44,7 @@ require_once CODE_BASE.'network/Packet.php';
  *
  * @category   Libraries
  * @package    HUGnetLibTest
- * @subpackage SuiteBase
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2007-2011 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price

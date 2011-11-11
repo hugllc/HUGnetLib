@@ -95,6 +95,9 @@ final class Socket
     private function __construct($config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
+        if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
+            $this->_config["type"] = constant($this->_config["type"]);
+        }
         // Connect immediately
         $this->_connect();
     }

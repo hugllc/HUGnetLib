@@ -92,6 +92,9 @@ final class SocketServer
     private function __construct($config)
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
+        if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
+            $this->_config["type"] = constant($this->_config["type"]);
+        }
         $this->_setup();
         \HUGnet\System::exception(
             "Failed to create socket with\n ".print_r($config, true),

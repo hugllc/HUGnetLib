@@ -113,14 +113,14 @@ class SocketIntegrationTest extends \PHPUnit_Framework_TestCase
         return array(
             array( // #0
                 array(
-                    "type" => AF_INET,
+                    "type" => "AF_INET",
                     "location" => "127.0.0.1",
                     "port" => $port,
                     "bus" => false,
                 ),
                 array(
                     "default" => array(
-                        "type" => AF_INET,
+                        "type" => "AF_INET",
                         "location" => "127.0.0.1",
                         "port" => $port,
                         "name" => "default",
