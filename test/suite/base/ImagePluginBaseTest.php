@@ -260,7 +260,7 @@ class ImagePluginBaseTest extends PHPUnit_Framework_TestCase
                     "fontFile" => CODE_BASE."contrib/fonts/bitstream-vera/Vera.ttf"
                 ),
                 TEST_CONFIG_BASE."files/images/ImagePluginsBaseTestText2.png",
-                400,
+                600,
             ),
         );
     }
