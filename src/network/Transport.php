@@ -66,7 +66,7 @@ final class Transport
     private $_config = array();
     /** These are the packets we are sending */
     private $_defaultConfig = array(
-        "channels" => 5,
+        "channels" => 2,
         "quiet"    => false,
     );
 

@@ -143,6 +143,11 @@ final class Socket
         if (is_resource($this->_socket)) {
             return true;
         }
+        \HUGnet\VPrint::out(
+            $this->_config["name"]."(".$this->_config["driver"].") Opening "
+            ."connection to ".$this->_config["location"],
+            6
+        );
         $this->_socket = @socket_create($this->_config["type"], SOCK_STREAM, 0);
         $bound = @socket_connect(
             $this->_socket, $this->_config["location"], $this->_config["port"]

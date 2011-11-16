@@ -517,6 +517,67 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array(  // #5 Bad packet in the queue
+                array(
+                    "defaultSocket" => array(
+                        "read" => array(
+                            "5A5A5A01000020123456011101",
+                            (string)Packet::factory(
+                                array(
+                                    "From" => 0x123456,
+                                    "To" => 0x000020,
+                                    "Command" => 0x01,
+                                    "Data" => "0102030405060708090A0B0C0D0E0F",
+                                )
+                            ),
+                        ),
+                        //"write" => array(0, 12),
+                    ),
+                ),
+                array(
+                    "default" => new \HUGnet\network\physical\DummySocket(
+                        "defaultSocket"
+                    ),
+                ),
+                2,
+                array(
+                    Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                ),
+                array(
+                    "defaultSocket" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(array(), array()),
+                    ),
+                ),
+                array(
+                    null,
+                    Packet::factory(
+                        array(
+                            "From" => 0x123456,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                        )
+                    ),
+                ),
+                null,
+            ),
         );
     }
     /**
@@ -546,7 +607,7 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < $loops; $i++) {
             $network->send($send[$i]);
             $ret = $network->receive();
-            $this->assertEquals($recv[$i], $ret, "Return wrong");
+            $this->assertEquals($recv[$i], $ret, "Return wrong ($i)");
         }
         $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
     }

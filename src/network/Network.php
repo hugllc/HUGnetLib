@@ -157,11 +157,18 @@ final class Network
     private function _forward($pkt, $from)
     {
         $ifaces = &$this->_ifaces();
+        \HUGnet\VPrint::out(
+            "Got packet on $from... Found ifaces (".implode(", ", $ifaces).")",
+            6
+        );
+
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
-            $this->_send(
-                $pkt,
-                array_diff($ifaces, array($from))
+            $to = array_diff($ifaces, array($from));
+            \HUGnet\VPrint::out(
+                "Forwarding to ".implode(", ", $to)." of (".implode(", ", $ifaces).")",
+                6
             );
+            $this->_send($pkt, $to);
         }
 
     }
@@ -273,13 +280,18 @@ final class Network
         $this->_read();
         // Check for packets
         foreach ($this->_ifaces() as $key) {
-            $pkt = Packet::factory($this->_read[$key]);
-            if ($pkt->isValid()) {
-                // This sets the buffer to the left over characters
-                $this->_read[$key] = $pkt->extra();
-                $this->_setRoute($pkt, $key);
-                $this->_forward($pkt, $key);
-                return $pkt;
+            if (strlen($this->_read[$key])) {
+                $pkt = Packet::factory($this->_read[$key]);
+                if ($pkt->isValid() === true) {
+                    // This sets the buffer to the left over characters
+                    $this->_read[$key] = $pkt->extra();
+                    $this->_setRoute($pkt, $key);
+                    $this->_forward($pkt, $key);
+                    return $pkt;
+                } else if ($pkt->isValid() === false) {
+                    // Bad packet, remove it from the buffer
+                    $this->_read[$key] = $pkt->extra();
+                }
             }
         }
         return null;
