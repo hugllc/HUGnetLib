@@ -300,7 +300,7 @@ class PacketTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 "",
-                false,
+                null,
             ),
             array(
                 "5A5A5A5C000181FDE01400D5",
@@ -325,6 +325,10 @@ class PacketTest extends \PHPUnit_Framework_TestCase
             array(
                 "5A5A5A56000181FDE0140101DF",
                 true,
+            ),
+            array(
+                "5A5A5A5C000181FDE01400",
+                null,
             ),
         );
     }

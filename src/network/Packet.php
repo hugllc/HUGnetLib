@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -59,7 +59,7 @@ namespace HUGnet\network;
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Network
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2011 Hunt Utilities Group, LLC
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -102,6 +102,8 @@ final class Packet
     private $_extra;
     /** This is where we keep our reply  */
     private $_reply;
+    /** This is says if we got a whole packet. Default to true */
+    private $_whole = true;
     /**
     * This has known types in it
     *
@@ -177,6 +179,7 @@ final class Packet
         $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
         $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
+        $this->_whole = strlen($string) >= (self::DATA + $length + 2);
         $this->extra(substr($string, (self::DATA + $length + 2)));
     }
     /**
@@ -321,6 +324,9 @@ final class Packet
     */
     public function isValid()
     {
+        if (!$this->_whole) {
+            return null;
+        }
         return ($this->_checksum == $this->_checksum()) && !empty($this->_command);
     }
     /**
