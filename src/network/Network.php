@@ -157,16 +157,12 @@ final class Network
     private function _forward($pkt, $from)
     {
         $ifaces = &$this->_ifaces();
-        \HUGnet\VPrint::out(
-            "Got packet on $from... Found ifaces (".implode(", ", $ifaces).")",
-            6
-        );
-
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
             $to = array_diff($ifaces, array($from));
             \HUGnet\VPrint::out(
-                "Forwarding to ".implode(", ", $to)." of (".implode(", ", $ifaces).")",
-                6
+                "Forwarding to ".implode(", ", $to)
+                ." of (".implode(", ", $ifaces).")",
+                7
             );
             $this->_send($pkt, $to);
         }
