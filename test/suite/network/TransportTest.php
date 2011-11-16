@@ -151,6 +151,7 @@ class TransportTest extends \PHPUnit_Framework_TestCase
             array(  // #1 more requests than buffers
                 array(
                     "timeout" => 1,
+                    "channels" => 5,
                 ),
                 array(
                     Packet::factory(
