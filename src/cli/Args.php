@@ -79,6 +79,11 @@ class Args
         "d" => array("name" => "debug", "type" => "bool"),
         "t" => array("name" => "test", "type" => "bool"),
         "f" => array("name" => "file", "type" => "string", "args" => true),
+        "n" => array("type" => "bool"),
+    );
+    /** These are the locations we are going to try to find a config, in order */
+    private $_configLocations = array(
+        "./config.ini", "/etc/hugnet/config.ini"
     );
 
     /**
@@ -161,16 +166,34 @@ class Args
     {
         $return = array();
         if (file_exists($this->f)) {
+            \HUGnet\VPrint::out("Using config at ".$this->f);
             $return = parse_ini_file($this->f, true);
+        } else if (!$this->n) {
+            $return = $this->_findConfig();
         }
         foreach ($this->_config as $key => $conf) {
-            if (isset($this->_arguments[$key]) && isset($conf["name"])) {
+            if (isset($conf["name"])) {
                 $return[$conf["name"]] = $this->_value($key);
             }
         }
         return $return;
     }
-
+    /**
+    * Creates the config to go with the command line
+    *
+    * @return Configuration array
+    */
+    private function _findConfig()
+    {
+        foreach ($this->_configLocations as $file) {
+            if (file_exists($file)) {
+                \HUGnet\VPrint::out("Found config at $file");
+                $this->_arguments["f"] = $file;
+                return parse_ini_file($file, true);
+            }
+        }
+        return array();
+    }
     /**
     * Pulls the arguments apart and stores them
     *
