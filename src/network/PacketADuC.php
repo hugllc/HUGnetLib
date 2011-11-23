@@ -37,6 +37,7 @@
 namespace HUGnet\network;
 /** This is our interface */
 require_once dirname(__FILE__)."/PacketInterface.php";
+
 /**
  * This is the packet class.
  *
@@ -72,30 +73,22 @@ require_once dirname(__FILE__)."/PacketInterface.php";
  * @SuppressWarnings(PHPMD.ShortMethodName)
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-final class Packet implements PacketInterface
+final class PacketADuC implements PacketInterface
 {
     /** This is where in the packet this is */
-    const COMMAND = 0;
+    const LENGTH = 0;
     /** This is where in the packet this is */
-    const TO = 2;
+    const COMMAND = 2;
     /** This is where in the packet this is */
-    const FROM = 8;
+    const ADDRESS = 4;
     /** This is where in the packet this is */
-    const LENGTH = 14;
-    /** This is where in the packet this is */
-    const DATA = 16;
+    const DATA = 12;
     /** This is a preamble byte */
-    const PREAMBLE = "5A";
-    /** This is a preamble byte */
-    const PREAMBLE_BYTES = 3;
-    /** This is a preamble byte */
-    const PREAMBLE_BYTES_MIN = 2;
-    /** This is who the packet is to */
-    private $_to;
-    /** This is who the packet is from */
-    private $_from;
+    const PREAMBLE = "070E";
     /** This is the packet command */
     private $_command;
+    /** This is the address of the data operation */
+    private $_address;
     /** This is the packet data */
     private $_data;
     /** This is the packet checksum  */
@@ -103,7 +96,7 @@ final class Packet implements PacketInterface
     /** Extra string at the end of the packet  */
     private $_extra;
     /** This is where we keep our reply  */
-    private $_reply;
+    private $_reply = null;
     /** This is says if we got a whole packet. Default to true */
     private $_whole = true;
     /**
@@ -115,26 +108,11 @@ final class Packet implements PacketInterface
     * These will be added to by the code.  That is why they are static.
     */
     private static $_commands = array(
-        "REPLY" => 0x01,
-        "PING" => 0x02,
-        "FINDPING" => 0x03,
-        "CALIBRATION" => 0x4C,
-        "CAL_NEXT" => 0x4D,
-        "SETCONFIG" => 0x5B,
-        "CONFIG" => 0x5C,
-        "SENSORREAD" => 0x55,
-        "BAD COMMAND" => 0xFF,
-        "READ_E2" => 0x0A,
-        "READ_SRAM" => 0x0B,
-        "READ_FLASH" => 0x0C,
-        "WRITE_E2" => 0x1A,
-        "WRITE_SRAM" => 0x1B,
-        "WRITE_FLASH" => 0x1C,
-        "SET_RTC" => 0x50,
-        "READ_RTC" => 0x51,
-        "POWERUP" => 0x5E,
-        "RECONFIG" => 0x5D,
-        "BOREDOM" => 0x5F,
+        "ERASEPAGE" => 0x45,
+        "WRITE" => 0x57,
+        "VERIFY" => 0x56,
+        "PROTECT" => 0x50,
+        "RUN" => 0x52,
     );
 
     /**
@@ -160,10 +138,10 @@ final class Packet implements PacketInterface
     */
     public function &factory($data = array())
     {
-        if (is_a($data, "\\HUGnet\\network\\Packet")) {
+        if (is_a($data, "\\HUGnet\\network\\PacketADuC")) {
             return $data;
         }
-        return new Packet($data);
+        return new PacketADuC($data);
     }
     /**
     * Builds the packet from a string
@@ -175,10 +153,9 @@ final class Packet implements PacketInterface
     private function _fromString($string)
     {
         $string = $this->_cleanPktStr(strtoupper($string));
+        $length = (hexdec(substr($string, self::LENGTH, 2)) * 2) - 10;
         $this->command(substr($string, self::COMMAND, 2));
-        $this->to(substr($string, self::TO, 6));
-        $this->from(substr($string, self::FROM, 6));
-        $length = hexdec(substr($string, self::LENGTH, 2)) * 2;
+        $this->address(substr($string, self::ADDRESS, 8));
         $this->data(substr($string, self::DATA, $length));
         $this->_setField("_checksum", substr($string, (self::DATA + $length), 2));
         $this->_whole = strlen($string) >= (self::DATA + $length + 2);
@@ -216,15 +193,13 @@ final class Packet implements PacketInterface
     */
     private function _packetStr()
     {
-        // Command (2 chars)
-        $string  = $this->Command();
-        // To (6 chars)
-        $string .= $this->to();
-        // From (6 chars)
-        $string .= $this->from();
         // Length (2 chars)
-        $string .= $this->length();
-        // Data ('Length' chars)
+        $string = $this->length();
+        // Command (2 chars)
+        $string .= $this->command();
+        // To (8 chars)
+        $string .= $this->address();
+        // Data ('Length - 5' chars)
         $string .= $this->data();
         return $string;
     }
@@ -239,9 +214,10 @@ final class Packet implements PacketInterface
         $chksum = 0;
         for ($i = 0; $i < strlen($string); $i+=2) {
             $val     = hexdec(substr($string, $i, 2));
-            $chksum ^= $val;
+            $chksum += $val;
+            $chksum &= 0xFF;
         }
-        return $chksum;
+        return (0 - $chksum) & 0xFF;
     }
     /**
     * Sets and/or returns the from
@@ -314,8 +290,8 @@ final class Packet implements PacketInterface
             return "";
         }
         // This strips off the preamble.
-        while (strtoupper(substr($pkt, 0, 2)) == self::PREAMBLE) {
-            $pkt = substr($pkt, 2);
+        while (strtoupper(substr($pkt, 0, 4)) == self::PREAMBLE) {
+            $pkt = substr($pkt, 4);
         }
         return $pkt;
     }
@@ -350,22 +326,11 @@ final class Packet implements PacketInterface
     *
     * @param mixed $value The value to set this to.
     *
-    * @return string (6 chars) Returns the to value
+    * @return string (8 chars) Returns the to value
     */
-    public function to($value = null)
+    public function address($value = null)
     {
-        return sprintf("%06X", $this->_setField("_to", $value));
-    }
-    /**
-    * Sets and/or returns the from
-    *
-    * @param mixed $value The value to set this to.
-    *
-    * @return string Returns the value it is set to
-    */
-    public function from($value = null)
-    {
-        return sprintf("%06X", $this->_setField("_from", $value));
+        return sprintf("%08X", $this->_setField("_to", $value));
     }
     /**
     * Sets and/or returns the from
@@ -388,7 +353,7 @@ final class Packet implements PacketInterface
     */
     public function length()
     {
-        return sprintf("%02X", count($this->_data));
+        return sprintf("%02X", count($this->_data) + 5);
     }
     /**
     * Returns the packet length
@@ -405,16 +370,20 @@ final class Packet implements PacketInterface
     * @param mixed $value The value to set this to.
     * @param bool  $raw   Return the raw data as an array if true
     *
-    * @return string|array Returns the data in an array if $raw is true, a string
-    *                      otherwise
+    * @return null, true or false.  null if no return yet, true if positive ack,
+    *                       false if negative ack
     */
     public function reply($value = null, $raw = false)
     {
-        $this->_setArray("_reply", $value);
-        if ($raw) {
-            return $this->_reply;
+        if (is_string($value)) {
+            $value = hexdec($value);
         }
-        return $this->_toStr($this->_reply);
+        if ($value == 0x06) {
+            $this->_reply = true;
+        } else if ($value == 0x07) {
+            $this->_reply = false;
+        }
+        return $this->_reply;
     }
     /**
     * Returns the packet data
@@ -442,10 +411,7 @@ final class Packet implements PacketInterface
     */
     public function preamble($min = false)
     {
-        if ($min) {
-            return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES_MIN);
-        }
-        return str_repeat(self::PREAMBLE, self::PREAMBLE_BYTES);
+        return self::PREAMBLE;
     }
     /**
     * Return the packet type
@@ -467,6 +433,10 @@ final class Packet implements PacketInterface
     */
     public function config($config = array())
     {
+        $config["block"] = true;
+        $config["baud"]  = 38400;
+        $config["tries"] = 1;
+        $config["find"] = false;
         return $config;
     }
 }

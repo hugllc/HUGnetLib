@@ -126,6 +126,8 @@ final class Transport
             if (count($this->_packets) < $this->_config["channels"]) {
                 // Generate a unique token
                 $token = uniqid();
+                // Add in the packets special configuration
+                $config = $pkt->config($config);
                 $this->_packets[$token] =& TransportPacket::factory(
                     array_merge($this->_config, (array)$config),
                     $pkt
