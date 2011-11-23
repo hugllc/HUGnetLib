@@ -86,7 +86,13 @@ final class Serial
     */
     private $_defaultConfig = array(
         "quiet" => false,
+        "baud" => 115200,
+        "rtscts" => true,
     );
+    /**
+    * This our configuration resides here
+    */
+    private $_validBaud = array(115200, 38400);
     /**
     * Sets our configuration
     *
@@ -162,10 +168,12 @@ final class Serial
     */
     private function _setupPort()
     {
-        $command = "stty -F ".$this->_config["location"];
+        $command  = "stty -F ".$this->_config["location"];
+        $command .= " ".(int)$this->_config["baud"];
+        $command .= ($this->_config["rtscts"]) ? " crtscts" : " -crtscts" ;
         // 1 Stop bit, 8 databits, no parity
         @exec(
-            $command." 115200 -cstopb cs8 -parenb clocal -crtscts -ixon -ixoff 2>&1",
+            $command." -cstopb cs8 -parenb clocal -ixon -ixoff 2>&1",
             $out, $return
         );
         \HUGnet\System::exception(
@@ -266,6 +274,5 @@ final class Serial
         $this->_ready($read);
         return $this->_read($read);
     }
-
 }
 ?>
