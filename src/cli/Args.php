@@ -74,10 +74,10 @@ class Args
     private $_config = array();
     /** These are pretty standard config changes */
     private $_defaultConfig = array(
-        "q" => array("name" => "quiet", "type" => "bool"),
-        "v" => array("name" => "verbose", "type" => "int"),
-        "d" => array("name" => "debug", "type" => "bool"),
-        "t" => array("name" => "test", "type" => "bool"),
+        "q" => array("name" => "quiet", "type" => "bool", "default" => false),
+        "v" => array("name" => "verbose", "type" => "int", "default" => 0),
+        "d" => array("name" => "debug", "type" => "bool", "default" => false),
+        "t" => array("name" => "test", "type" => "bool", "default" => false),
         "f" => array("name" => "file", "type" => "string", "args" => true),
         "n" => array("type" => "bool"),
     );
@@ -98,6 +98,7 @@ class Args
         $this->_argv = $args;
         $this->_argc = $count;
         $this->_config = array_merge($this->_defaultConfig, $config);
+        $this->_defaults();
         $this->_interpret();
     }
     /**
@@ -193,6 +194,24 @@ class Args
             }
         }
         return array();
+    }
+    /**
+    * Sets the defaults
+    *
+    * @return null
+    */
+    private function _defaults()
+    {
+        foreach ($this->_config as $key => $conf) {
+            if (isset($conf["default"])) {
+                $val = $conf["default"];
+                if (is_bool($val)) {
+                    $val = (int)$val;
+                }
+                $this->_arguments[$key] = $val;
+            }
+        }
+
     }
     /**
     * Pulls the arguments apart and stores them
