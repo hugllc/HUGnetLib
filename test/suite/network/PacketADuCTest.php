@@ -237,7 +237,6 @@ class PacketADuCTest extends \PHPUnit_Framework_TestCase
     * Tests the iteration and preload functions
     *
     * @param string $array  The string to give to the class
-    * @param array  $expect The info to expect returned
     *
     * @return null
     *

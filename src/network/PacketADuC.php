@@ -372,6 +372,7 @@ final class PacketADuC implements PacketInterface
     *
     * @return null, true or false.  null if no return yet, true if positive ack,
     *                       false if negative ack
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function reply($value = null, $raw = false)
     {
@@ -408,6 +409,7 @@ final class PacketADuC implements PacketInterface
     * @param bool $min Return the minimum preamble instead of the normal one
     *
     * @return string Returns the value it is set to
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
     */
     public function preamble($min = false)
     {
@@ -428,6 +430,8 @@ final class PacketADuC implements PacketInterface
     }
     /**
     * Return a modified configuration array
+    *
+    * @param array $config The configuration array to start with
     *
     * @return array The modified confiruation array
     */

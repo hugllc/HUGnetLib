@@ -120,7 +120,8 @@ final class TransportPacket
     */
     public function &factory($config, &$pkt)
     {
-        return new TransportPacket($config, $pkt);
+        $obj = new TransportPacket($config, $pkt);
+        return $obj;
     }
     /**
     * Returns a link to the original packet
@@ -175,7 +176,8 @@ final class TransportPacket
             return $this->_reply;
         }
         if (($this->_retries < 1) && $this->_timeout()) {
-            return false;
+            $return = false;
+            return $return;
         }
         return $return;
     }
