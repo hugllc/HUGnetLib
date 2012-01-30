@@ -90,10 +90,6 @@ final class Serial
         "rtscts" => true,
     );
     /**
-    * This our configuration resides here
-    */
-    private $_validBaud = array(115200, 38400);
-    /**
     * Sets our configuration
     *
     * @param array $config The configuration to use

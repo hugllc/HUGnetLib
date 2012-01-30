@@ -158,13 +158,13 @@ final class Network
     {
         $ifaces = &$this->_ifaces();
         if ((count($ifaces) > 1) && $this->_config["forward"]) {
-            $to = array_diff($ifaces, array($from));
+            $fto = array_diff($ifaces, array($from));
             \HUGnet\VPrint::out(
-                "Forwarding to ".implode(", ", $to)
+                "Forwarding to ".implode(", ", $fto)
                 ." of (".implode(", ", $ifaces).")",
                 7
             );
-            $this->_send($pkt, $to);
+            $this->_send($pkt, $fto);
         }
 
     }
@@ -290,7 +290,8 @@ final class Network
                 }
             }
         }
-        return null;
+        $ret = null;
+        return $ret;
     }
     /**
     * Connects to a database group

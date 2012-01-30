@@ -463,6 +463,8 @@ final class Packet implements PacketInterface
     /**
     * Return a modified configuration array
     *
+    * @param array $config The configuration array to start with
+    *
     * @return array The modified confiruation array
     */
     public function config($config = array())
