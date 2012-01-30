@@ -29,7 +29,7 @@
  * @package    HUGnetLib
  * @subpackage Processes
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -48,7 +48,7 @@ require_once dirname(__FILE__)."/../tables/DevicesTable.php";
  * @package    HUGnetLib
  * @subpackage Processes
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7

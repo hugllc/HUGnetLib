@@ -28,7 +28,7 @@
  * @package    HUGnetLibTest
  * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -53,7 +53,7 @@ require_once TEST_BASE.'plugins/devices/DevicePluginTestBase.php';
  * @package    HUGnetLibTest
  * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
@@ -574,7 +574,7 @@ class E00392600DeviceTest extends DevicePluginTestBase
 * @package    HUGnetLibTest
 * @subpackage SuitePlugins
 * @author     Scott Price <prices@hugllc.com>
-* @copyright  2007-2011 Hunt Utilities Group, LLC
+* @copyright  2012 Hunt Utilities Group, LLC
 * @copyright  2009 Scott Price
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
@@ -621,7 +621,7 @@ class TestE00392600Device extends E00392600Device
  * @package    HUGnetLibTest
  * @subpackage SuitePlugins
  * @author     Scott Price <prices@hugllc.com>
- * @copyright  2007-2011 Hunt Utilities Group, LLC
+ * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
