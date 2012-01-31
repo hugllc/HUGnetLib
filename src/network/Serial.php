@@ -164,6 +164,19 @@ final class Serial
     */
     private function _setupPort()
     {
+        if (stristr($this->_config["location"], "com")) {
+            $this->_setupPortWindows();
+        } else {
+            $this->_setupPortLinux();
+        }
+    }
+    /**
+    * Sets up the connection to the socket
+    *
+    * @return null
+    */
+    private function _setupPortLinux()
+    {
         $command  = "stty -F ".$this->_config["location"];
         $command .= " ".(int)$this->_config["baud"];
         $command .= ($this->_config["rtscts"]) ? " crtscts" : " -crtscts" ;
@@ -174,6 +187,34 @@ final class Serial
         );
         \HUGnet\System::exception(
             "stty failed on ".$this->_config["name"]." (".$return."):  "
+            .implode($out, "\n"),
+            "Runtime",
+            ($return  != 0) && !$this->_config["quiet"]
+        );
+    }
+    /**
+    * Sets up the connection to the socket
+    *
+    * See http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/mode.mspx?mfr=true
+    * for more information.
+    *
+    * Also see
+    * http://stackoverflow.com/questions/627965/serial-comm-with-php-on-windows
+    *
+    * @return null
+    */
+    private function _setupPortWindows()
+    {
+        $command  = "mode ".$this->_config["location"];
+        $command .= " BAUD=".(int)$this->_config["baud"];
+        $command .= ($this->_config["rtscts"]) ? " RTS=on OCTS=on" : " RTS=off OCTS=off";
+        // 1 Stop bit, 8 databits, no parity
+        @exec(
+            $command." DATA=8 STOP=1 PARITY=n TO=on DTR=on XON=off",
+            $out, $return
+        );
+        \HUGnet\System::exception(
+            "mode failed on ".$this->_config["name"]." (".$return."):  "
             .implode($out, "\n"),
             "Runtime",
             ($return  != 0) && !$this->_config["quiet"]
