@@ -38,7 +38,6 @@
 namespace HUGnet;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-
 /**
  * Base system class.
  *

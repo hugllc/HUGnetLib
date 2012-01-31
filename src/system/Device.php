@@ -58,8 +58,22 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Gateway extends SystemTableBase
+class Device extends SystemTableBase
 {
+    /**
+    * This is the cache for the drivers.
+    */
+    private $_driverCache = array();
+    /**
+    * This is the destructor
+    */
+    public function __destruct()
+    {
+        foreach (array_keys($this->_driverCache) as $key) {
+            unset($this->_driverCache[$key]);
+        }
+        parent::__destruct();
+    }
     /**
     * This function creates the system.
     *
@@ -69,10 +83,33 @@ class Gateway extends SystemTableBase
     *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="GatewaysTable")
+    public static function &factory($system, $data=null, $table="DevicesTable")
     {
         $object = &parent::factory($system, $data, $table);
         return $object;
+    }
+
+    /**
+    * This function creates the system.
+    *
+    * @param string $driver The driver to use.  Leave blank for automatic.
+    * @param string $class  The class to instantiate.  It should only be used for
+    *               testing purposes.
+    *
+    * @return null
+    */
+    public function &driver($driver = null, $class = "\HUGnet\devices\Driver")
+    {
+        if (empty($driver)) {
+            $driver = $this->Driver;
+        }
+        if (empty($driver)) {
+            $driver = "EDEFAULT";
+        }
+        if (!is_object($this->_driverCache[$driver])) {
+            $this->_driverCache[$driver] = $class::factory($this, $driver);
+        }
+        return $this->_driverCache[$driver];
     }
 
 }
