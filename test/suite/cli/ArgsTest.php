@@ -114,10 +114,11 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "test" => false,
                     "file" => '',
                 ),
+                "",
             ),
             array(  // #1 // Another Simple example
                 array(
-                    "test", "-i", "000ABC", "123456", "-n"
+                    "test", "-vvvvvvi", "000ABC", "123456", "-n"
                 ),
                 5,
                 array(
@@ -131,21 +132,22 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(
                     "quiet" => false,
-                    "verbose" => 0,
+                    "verbose" => 6,
                     "debug" => false,
                     "test" => false,
                     "file" => '',
                 ),
+                "",
             ),
             array(  // #2 Stringing multiple switches together.
                 array(
-                    "test", "-vvvvvdqtf", "/here/there"
+                    "test", "-dqtf", "/here/there"
                 ),
                 4,
                 array(),
                 array(
                     "f" => "/here/there",
-                    "v" => 5,
+                    "v" => 0,
                     "d" => true,
                     "q" => true,
                     "t"  => true,
@@ -153,21 +155,21 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                 null,
                 array(
                     "quiet" => true,
-                    "verbose" => 5,
+                    "verbose" => 0,
                     "debug" => true,
                     "test"  => true,
                     "file" => "/here/there",
                 ),
+                "",
             ),
-            array(  // #2 Stringing multiple switches together.
+            array(  // #3 File test.
                 array(
-                    "test", "-vvvf", TEST_CONFIG_BASE."files/config.ini"
+                    "test", "-f", TEST_CONFIG_BASE."files/config.ini"
                 ),
                 4,
                 array(),
                 array(
                     "f" => TEST_CONFIG_BASE."files/config.ini",
-                    "v" => 3,
                 ),
                 null,
                 array(
@@ -180,7 +182,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "check_send_daily" => "1",
                     "analysis_enable" => "0",
                     "admin_email" => "you@yourdomain.com",
-                    "verbose" => 3,
+                    "verbose" => 0,
                     "servers" => array(
                         "default" => array(
                             "driver" => "mysql",
@@ -201,8 +203,9 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                 ),
+                "Using config at ".TEST_CONFIG_BASE."files/config.ini",
             ),
-            array(  // #2 Stringing multiple switches together.
+            array(  // #4 another file test
                 array(
                     "test",
                 ),
@@ -242,6 +245,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
                     "debug" => false,
                     "test" => false,
                 ),
+                "Found config at ./config.ini",
             ),
         );
     }
@@ -254,13 +258,14 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     * @param array  $arguments The arguments we expect to be set
     * @param string $file      The file to copy to this directory.  Null for no file
     * @param array  $expect    The config array we are expecting
+    * @param string $output    The expected printout
     *
     * @return null
     *
     * @dataProvider dataArgs()
     */
     public function testArgs(
-        $argv, $argc, $config, $arguments, $file, $expect
+        $argv, $argc, $config, $arguments, $file, $expect, $output
     ) {
         if (!is_null($file)) {
             copy($file, "./".basename($file));
@@ -270,7 +275,11 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
         foreach ($arguments as $key => $value) {
             $this->assertSame($value, $args->$key, "Argument $key wrong");
         }
+        ob_start();
         $this->assertEquals($expect, $args->config());
+        $ret = ob_get_contents();
+        ob_end_clean();
+        $this->assertSame($output, trim($ret));
     }
 
 }
