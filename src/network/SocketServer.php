@@ -111,7 +111,8 @@ final class SocketServer
     */
     public function &factory($config = array())
     {
-        return new SocketServer((array)$config);
+        $obj = new SocketServer((array)$config);
+        return $obj;
     }
 
     /**

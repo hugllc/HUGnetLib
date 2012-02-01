@@ -112,7 +112,8 @@ class Args
     */
     public function &factory($args, $count, $config = array())
     {
-        return new Args((array)$args, (int)$count, (array)$config);
+        $obj = new Args((array)$args, (int)$count, (array)$config);
+        return $obj;
     }
 
     /**
@@ -142,19 +143,22 @@ class Args
     */
     private function _value($name)
     {
-        switch ($this->_config[$name]["type"]) {
-        case "int":
-            $return = (int)$this->_arguments[$name];
-            break;
-        case "string":
-            $return = (string)$this->_arguments[$name];
-            break;
-        case "bool":
-            $return = (bool)$this->_arguments[$name];
-            break;
-        default:
-            $return = $this->_arguments[$name];
-            break;
+        $return = null;
+        if (isset($this->_arguments[$name])) {
+            switch ($this->_config[$name]["type"]) {
+            case "int":
+                $return = (int)$this->_arguments[$name];
+                break;
+            case "string":
+                $return = (string)$this->_arguments[$name];
+                break;
+            case "bool":
+                $return = (bool)$this->_arguments[$name];
+                break;
+            default:
+                $return = $this->_arguments[$name];
+                break;
+            }
         }
         return $return;
     }
@@ -223,7 +227,7 @@ class Args
         $this->_name = trim($this->_argv[0]);
         for ($i = 1; $i < $this->_argc; $i++) {
             $arg = $this->_fixArg($this->_argv[$i]);
-            if ($this->_config[$arg]["args"]
+            if (isset($this->_config[$arg]["args"])
                 && (substr($this->_argv[$i+1], 0, 1) != "-")
                 && (strlen($this->_argv[$i+1]) > 0)
             ) {

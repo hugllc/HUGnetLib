@@ -38,7 +38,9 @@
 namespace HUGnet;
 
 /** This define allows everything else to be included */
-define("_HUGNET", true);
+if (!defined("_HUGNET")) {
+    define("_HUGNET", true);
+}
 /** This is the system error class.  Everybody needs it */
 require_once dirname(__FILE__).'/Error.php';
 /** This is the system utility class.  Everybody needs it also */
@@ -70,6 +72,8 @@ class System
 {
     /** @var array The configuration that we are going to use */
     private $_config = array();
+    /** @var array This is our network configuration */
+    private $_network = null;
     /** @var array The default configuration */
     private $_configDefault = array(
         "verbose" => 0,
@@ -95,7 +99,8 @@ class System
     */
     public static function &factory($config = array())
     {
-        return new System($config);
+        $obj = new System($config);
+        return $obj;
     }
     /**
     * This sets the configuration array _config
@@ -111,8 +116,8 @@ class System
 
         // This is so that the rest of the system works when we call it through
         // This class.  This should be removed when ConfigContainer is retired.
-        include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
-        \ConfigContainer::singleton()->forceConfig($this->_config);
+        //include_once dirname(__FILE__).'/../containers/ConfigContainer.php';
+        //\ConfigContainer::singleton()->forceConfig($this->_config);
 
         // Return the configuration
         return $this->_config;
@@ -159,7 +164,9 @@ class System
     */
     public function main()
     {
-        pcntl_signal_dispatch();
+        if (function_exists("pcntl_signal_dispatch")) {
+            pcntl_signal_dispatch();
+        }
         // Call it this way so we don't create the object just for this
         if (is_object($this->_network)) {
             $this->_network->main();

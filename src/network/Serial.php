@@ -109,7 +109,8 @@ final class Serial
     */
     public function &factory($config = array())
     {
-        return new Serial((array)$config);
+        $obj = new Serial((array)$config);
+        return $obj;
     }
 
     /**
@@ -154,7 +155,6 @@ final class Serial
             "Runtime",
             !is_resource($this->_port) && !$this->_config["quiet"]
         );
-
         @stream_set_blocking($this->_port, 0);
     }
     /**
@@ -207,10 +207,10 @@ final class Serial
     {
         $command  = "mode ".$this->_config["location"];
         $command .= " BAUD=".(int)$this->_config["baud"];
-        $command .= ($this->_config["rtscts"]) ? " RTS=on OCTS=on" : " RTS=off OCTS=off";
+        $command .= ($this->_config["rtscts"]) ? " RTS=hs OCTS=on" : " RTS=on OCTS=off";
         // 1 Stop bit, 8 databits, no parity
         @exec(
-            $command." DATA=8 STOP=1 PARITY=n TO=on DTR=on XON=off",
+            $command." DATA=8 STOP=1 PARITY=n TO=on DTR=off XON=off",
             $out, $return
         );
         \HUGnet\System::exception(
@@ -231,6 +231,7 @@ final class Serial
     {
         $return = "";
         if (in_array($this->_port, $ready)) {
+            $start = time();
             $return = \HUGnet\Util::hexify(
                 @fread($this->_port, self::MAX_BYTES)
             );

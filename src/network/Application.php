@@ -98,7 +98,8 @@ final class Application
     */
     public function &factory(&$transport, $config = array())
     {
-        return new Application($transport, (array)$config);
+        $obj = new Application($transport, (array)$config);
+        return $obj;
     }
 
     /**
@@ -346,7 +347,9 @@ final class Application
     */
     private function _main()
     {
-        pcntl_signal_dispatch();
+        if (function_exists("pcntl_signal_dispatch")) {
+            pcntl_signal_dispatch();
+        }
         // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
     }

@@ -163,7 +163,8 @@ final class Packet implements PacketInterface
         if (is_a($data, "\\HUGnet\\network\\Packet")) {
             return $data;
         }
-        return new Packet($data);
+        $pkt = new Packet($data);
+        return $pkt;
     }
     /**
     * Builds the packet from a string

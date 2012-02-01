@@ -605,9 +605,13 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
         $sys->resetMock($system);
         $network = &Network::factory($config);
         for ($i = 0; $i < $loops; $i++) {
-            $network->send($send[$i]);
+            if (isset($send[$i])) {
+                $network->send($send[$i]);
+            }
             $ret = $network->receive();
-            $this->assertEquals($recv[$i], $ret, "Return wrong ($i)");
+            if (isset($recv[$i])) {
+                $this->assertEquals($recv[$i], $ret, "Return wrong ($i)");
+            }
         }
         $this->assertEquals($expect, $sys->retrieve(), "Calls wrong");
     }

@@ -78,7 +78,8 @@ class CLI
     public function &factory(&$config = array())
     {
         $class = get_called_class();
-        return new $class($config);
+        $obj = new $class($config);
+        return $obj;
     }
 
     /**
@@ -138,7 +139,9 @@ class CLI
     */
     public function main()
     {
-        pcntl_signal_dispatch();
+        if (function_exists("pcntl_signal_dispatch")) {
+            pcntl_signal_dispatch();
+        }
         $this->system()->main();
     }
 

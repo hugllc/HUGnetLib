@@ -69,7 +69,8 @@ class DummySocket extends \HUGnet\DummyBase
     */
     public function &factory($config = array())
     {
-        return new DummySocket($config["name"]);
+        $obj = new DummySocket($config["name"]);
+        return $obj;
     }
     /**
     * Reads from the socket
@@ -97,10 +98,12 @@ class DummySocket extends \HUGnet\DummyBase
     public function write($string)
     {
         $ret = parent::__call("write", func_get_args());
-        if (is_string(self::$ret[$this->class]["write"])) {
-            self::$ret[$this->class]["write"] = "";
-        } else if (is_array(self::$ret[$this->class]["write"])) {
-            return array_shift(self::$ret[$this->class]["write"]);
+        if (isset(self::$ret[$this->class]["write"])) {
+            if (is_string(self::$ret[$this->class]["write"])) {
+                self::$ret[$this->class]["write"] = "";
+            } else if (is_array(self::$ret[$this->class]["write"])) {
+                return array_shift(self::$ret[$this->class]["write"]);
+            }
         }
         if (!is_null($ret)) {
             return (string)$ret;

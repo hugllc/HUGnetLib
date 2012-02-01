@@ -113,7 +113,8 @@ abstract class HUGnetContainer extends HUGnetClass
     public function &factory($data, $class)
     {
         if (self::findClass($class)) {
-            return new $class($data);
+            $obj = new $class($data);
+            return $obj;
         }
         return null;
     }

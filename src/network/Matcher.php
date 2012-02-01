@@ -90,7 +90,8 @@ final class Matcher
     */
     public function &factory($config, $callback)
     {
-        return new Matcher((array)$config, $callback);
+        $obj = new Matcher((array)$config, $callback);
+        return $obj;
     }
 
     /**

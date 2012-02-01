@@ -62,6 +62,8 @@ final class Network
     private $_write = array();
     /** Read buffer */
     private $_read = array();
+    /** Route Buffer */
+    private $_routes = array();
     /** This is where we store our config */
     private $_config = array();
     /** This is where we store our config */
@@ -78,6 +80,11 @@ final class Network
     {
         $this->_config = array_merge($this->_defaultConfig, $config);
         include_once dirname(__FILE__)."/Packet.php";
+        foreach (array_keys($this->_ifaces()) as $key) {
+            $this->_read[$key] = "";
+            $this->_write[$key] = "";
+
+        }
     }
     /**
     * Creates the object
@@ -88,7 +95,8 @@ final class Network
     */
     public function &factory($config = array())
     {
-        return new Network((array)$config);
+        $obj = new Network((array)$config);
+        return $obj;
     }
 
     /**
@@ -115,7 +123,7 @@ final class Network
         \HUGnet\System::exception(
             "No connection available on socket ".$socket,
             "Runtime",
-            !is_object($this->_sockets[$socket])
+            !isset($this->_sockets[$socket]) || !is_object($this->_sockets[$socket])
         );
         return $this->_sockets[$socket];
     }
@@ -192,7 +200,9 @@ final class Network
     */
     private function _getRoute(&$pkt)
     {
-        if (is_object($pkt) && ($pkt->type() != "FINDPING")) {
+        if (is_object($pkt) && ($pkt->type() != "FINDPING")
+            && isset($this->_routes[$pkt->to()])
+        ) {
             if ($this->_routes[$pkt->to()]["ttl"]-- > 0) {
                 // This route still has time to live.  Return it.
                 return array($this->_routes[$pkt->to()]["socket"]);
@@ -211,7 +221,9 @@ final class Network
     */
     private function _ifaces()
     {
-        if (!is_array($this->_config["ifaces"])) {
+        if (!isset($this->_config["ifaces"])
+            || !is_array($this->_config["ifaces"])
+        ) {
             $this->_config["ifaces"] = array();
             foreach (array_keys($this->_config) as $key) {
                 if (is_object($this->_config[$key])
@@ -241,8 +253,10 @@ final class Network
     {
         foreach ($this->_ifaces() as $key) {
             // This dispatches any signals
-            pcntl_signal_dispatch();
-            if (strlen($this->_write[$key]) > 0) {
+            if (function_exists("pcntl_signal_dispatch")) {
+                pcntl_signal_dispatch();
+            }
+            if (isset($this->_write[$key]) && (strlen($this->_write[$key]) > 0)) {
                 $this->_connect($key);
                 $chars = $this->_socket($key)->write($this->_write[$key]);
                 $this->_write[$key] = (string)substr(
@@ -261,7 +275,9 @@ final class Network
         // Check to see if there is anything to receive
         foreach ($this->_ifaces() as $key) {
             // This dispatches any signals
-            pcntl_signal_dispatch();
+            if (function_exists("pcntl_signal_dispatch")) {
+                pcntl_signal_dispatch();
+            }
             $this->_read[$key] .= $this->_socket($key)->read();
         }
     }
@@ -276,7 +292,7 @@ final class Network
         $this->_read();
         // Check for packets
         foreach ($this->_ifaces() as $key) {
-            if (strlen($this->_read[$key])) {
+            if (isset($this->_read[$key]) && (strlen($this->_read[$key]))) {
                 $pkt = Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {
                     // This sets the buffer to the left over characters
@@ -302,10 +318,14 @@ final class Network
     */
     private function _connect($socket)
     {
-        if (is_object($this->_sockets[$socket])) {
+        if (isset($this->_sockets[$socket])
+            && is_object($this->_sockets[$socket])
+        ) {
             return;
         }
-        if (is_object($this->_config[$socket])) {
+        if (isset($this->_config[$socket])
+            && is_object($this->_config[$socket])
+        ) {
             $this->_sockets[$socket] = &$this->_config[$socket];
             return;
         }
@@ -321,23 +341,28 @@ final class Network
     */
     private function _findDriver($socket)
     {
-        \HUGnet\VPrint::out("Opening socket ".$socket, 6);
-        $class = $this->_config[$socket]["driver"];
-        @include_once dirname(__FILE__)."/".$class.".php";
-        $class = __NAMESPACE__."\\physical\\".$class;
+        if (isset($this->_config[$socket])
+            && isset($this->_config[$socket]["driver"])
+        ) {
 
-        if (class_exists($class)) {
-            \HUGnet\VPrint::out("Using class ".$class, 6);
-            $this->_sockets[$socket] = $class::factory(
-                $this->_config[$socket]
+            \HUGnet\VPrint::out("Opening socket ".$socket, 6);
+            $class = $this->_config[$socket]["driver"];
+            @include_once dirname(__FILE__)."/".$class.".php";
+            $class = __NAMESPACE__."\\physical\\".$class;
+
+            if (class_exists($class)) {
+                \HUGnet\VPrint::out("Using class ".$class, 6);
+                $this->_sockets[$socket] = $class::factory(
+                    $this->_config[$socket]
+                );
+                return;
+            }
+            // Last resort include SocketNull
+            include_once dirname(__FILE__)."/SocketNull.php";
+            $this->_sockets[$socket] = physical\SocketNull::factory(
+                $socket, $this->_config[$socket]
             );
-            return;
         }
-        // Last resort include SocketNull
-        include_once dirname(__FILE__)."/SocketNull.php";
-        $this->_sockets[$socket] = physical\SocketNull::factory(
-            $socket, $this->_config[$socket]
-        );
     }
 
 }

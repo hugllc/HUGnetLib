@@ -93,7 +93,8 @@ final class Transport
     */
     public function &factory(&$network, $config = array())
     {
-        return new Transport($network, (array)$config);
+        $obj = new Transport($network, (array)$config);
+        return $obj;
     }
 
     /**
@@ -170,7 +171,8 @@ final class Transport
     {
         $this->_receive();
         $this->_send();
-        return array_shift($this->_unsolicited);
+        $ret = array_shift($this->_unsolicited);
+        return $ret;
     }
     /**
     * Checks for incoming packets and deals with them
@@ -202,6 +204,9 @@ final class Transport
                 if ($reply) {
                     break;
                 }
+            }
+            if (!isset($reply)) {
+                $reply = null;
             }
             // Save this packet if no one claimed it.
             if (is_null($reply)) {

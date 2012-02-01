@@ -146,7 +146,8 @@ final class TransportPacket
         if ($this->_timeout()) {
             return $this->_find();
         }
-        return "";
+        $ret = "";
+        return $ret;
     }
     /**
     * Creates the object
@@ -235,7 +236,8 @@ final class TransportPacket
             // No reply to the findping packet, so we are ending with this packet
             $this->_retries = 0;
         }
-        return false;
+        $ret = false;
+        return $ret;
     }
     /**
     * Gets the current time

@@ -514,7 +514,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $application->match(array($transport, $mat));
         }
         for ($i = 0; $i < $loops; $i++) {
-            if (!is_null($send[$i])) {
+            if (isset($send[$i]) && !is_null($send[$i])) {
                 $application->send(
                     $send[$i]["packet"],
                     array($transport, $send[$i]["name"]),
