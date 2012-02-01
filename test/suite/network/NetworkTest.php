@@ -578,6 +578,145 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array(  // #6 Many packets to read at once
+                array(
+                    "defaultSocket" => array(
+                        "read" => (string)Packet::factory(
+                            array(
+                                "From" => 0x123456,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ).
+                        (string)Packet::factory(
+                            array(
+                                "From" => 0x123457,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ).
+                        (string)Packet::factory(
+                            array(
+                                "From" => 0x123458,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ).
+                        (string)Packet::factory(
+                            array(
+                                "From" => 0x123459,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ).
+                        (string)Packet::factory(
+                            array(
+                                "From" => 0x12345A,
+                                "To" => 0x000020,
+                                "Command" => 0x01,
+                                "Data" => "0102030405060708090A0B0C0D0E0F",
+                            )
+                        ),
+                        "write" => 12,
+                    ),
+                ),
+                array(
+                    "default" => new \HUGnet\network\physical\DummySocket(
+                        "defaultSocket"
+                    ),
+                ),
+                6,
+                array(
+                    Packet::factory(
+                        array(
+                            "To" => 0x123456,
+                            "From" => 0x000020,
+                            "Command" => 0x55,
+                        )
+                    ),
+                ),
+                array(
+                    "defaultSocket" => array(
+                        "write" => array(
+                            array(
+                                (string)Packet::factory(
+                                    array(
+                                        "To" => 0x123456,
+                                        "From" => 0x000020,
+                                        "Command" => 0x55,
+                                    )
+                                ),
+                            ),
+                        ),
+                        "read" => array(
+                            array(), array(), array(), array(), array(), array()
+                        ),
+                    ),
+                ),
+                array(
+                    Packet::factory(
+                        array(
+                            "From" => 0x123456,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Extra" => "5A5A5A010000201234570F0102030405060708090"
+                                ."A0B0C0D0E0F5F5A5A5A010000201234580F0102030405060"
+                                ."708090A0B0C0D0E0F505A5A5A010000201234590F0102030"
+                                ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
+                                ."102030405060708090A0B0C0D0E0F52",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x123457,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Extra" => "5A5A5A010000201234580F0102030405060"
+                                ."708090A0B0C0D0E0F505A5A5A010000201234590F0102030"
+                                ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
+                                ."102030405060708090A0B0C0D0E0F52",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x123458,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Extra" => "5A5A5A010000201234590F0102030"
+                                ."405060708090A0B0C0D0E0F515A5A5A0100002012345A0F0"
+                                ."102030405060708090A0B0C0D0E0F52",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x123459,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Extra" => "5A5A5A0100002012345A0F0"
+                                ."102030405060708090A0B0C0D0E0F52",
+                        )
+                    ),
+                    Packet::factory(
+                        array(
+                            "From" => 0x12345A,
+                            "To" => 0x000020,
+                            "Command" => 0x01,
+                            "Data" => "0102030405060708090A0B0C0D0E0F",
+                            "Extra" => "",
+                        )
+                    ),
+                    false,
+                ),
+                null,
+            ),
         );
     }
     /**

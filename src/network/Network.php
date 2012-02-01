@@ -292,7 +292,7 @@ final class Network
         $this->_read();
         // Check for packets
         foreach ($this->_ifaces() as $key) {
-            if (isset($this->_read[$key]) && (strlen($this->_read[$key]))) {
+            if (isset($this->_read[$key]) && (strlen($this->_read[$key]) > 0)) {
                 $pkt = Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {
                     // This sets the buffer to the left over characters
