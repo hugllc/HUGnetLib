@@ -205,11 +205,8 @@ final class Transport
                     break;
                 }
             }
-            if (!isset($reply)) {
-                $reply = null;
-            }
             // Save this packet if no one claimed it.
-            if (is_null($reply)) {
+            if (!isset($reply) || is_null($reply)) {
                 $this->_unsolicited[] = &$pkt;
             }
         }

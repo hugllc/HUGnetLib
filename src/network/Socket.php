@@ -85,7 +85,10 @@ final class Socket
     * This our configuration resides here
     */
     private $_defaultConfig = array(
-        "quiet" => false,
+        "quiet"    => false,
+        "type"     => AF_INET,
+        "port"     => null,
+        "location" => "",
     );
     /**
     * Sets our configuration
@@ -110,7 +113,8 @@ final class Socket
     */
     public function &factory($config = array())
     {
-        return new Socket((array)$config);
+        $obj = new Socket((array)$config);
+        return $obj;
     }
 
     /**

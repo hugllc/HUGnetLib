@@ -164,9 +164,7 @@ class System
     */
     public function main()
     {
-        if (function_exists("pcntl_signal_dispatch")) {
-            pcntl_signal_dispatch();
-        }
+        \HUGnet\System::loopcheck();
         // Call it this way so we don't create the object just for this
         if (is_object($this->_network)) {
             $this->_network->main();
@@ -192,6 +190,18 @@ class System
             } else {
                 throw new \RuntimeException($msg);
             }
+        }
+    }
+    /**
+    * Throws an exception
+    *
+    * @return null
+    */
+    public static function loopcheck()
+    {
+        // This dispatches any signals
+        if (function_exists("pcntl_signal_dispatch")) {
+            pcntl_signal_dispatch();
         }
     }
 

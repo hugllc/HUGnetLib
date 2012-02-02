@@ -313,7 +313,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
-            array(
+            array( // #1 Normal operation
                 array(
                     "Transport" => array(
                         "receive" => array(

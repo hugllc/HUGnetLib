@@ -149,7 +149,7 @@ final class Serial
             !file_exists($this->_config["location"]) && !$this->_config["quiet"]
         );
         $this->_setupPort();
-        $this->_port = @fopen($this->_config["location"], "r+b");
+        $this->_port = @fopen($this->_config["location"], "rn+b");
         \HUGnet\System::exception(
             "Failed to open port:  ".$this->_config["location"],
             "Runtime",
@@ -209,10 +209,11 @@ final class Serial
         $command .= " BAUD=".(int)$this->_config["baud"];
         $command .= ($this->_config["rtscts"]) ? " RTS=hs OCTS=on" : " RTS=on OCTS=off";
         // 1 Stop bit, 8 databits, no parity
+        /*
         @exec(
             $command." DATA=8 STOP=1 PARITY=n TO=on DTR=off XON=off",
             $out, $return
-        );
+        );*/
         \HUGnet\System::exception(
             "mode failed on ".$this->_config["name"]." (".$return."):  "
             .implode($out, "\n"),
@@ -231,7 +232,6 @@ final class Serial
     {
         $return = "";
         if (in_array($this->_port, $ready)) {
-            $start = time();
             $return = \HUGnet\Util::hexify(
                 @fread($this->_port, self::MAX_BYTES)
             );

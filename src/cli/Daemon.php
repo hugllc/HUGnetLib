@@ -65,9 +65,7 @@ class Daemon extends CLI
     protected function __construct(&$config)
     {
         parent::__construct($config);
-        if (function_exists("pcntl_signal")) {
-            pcntl_signal(SIGINT, array($this, "quit"));
-        }
+        \HUGnet\System::loopcheck();
     }
 
     /**

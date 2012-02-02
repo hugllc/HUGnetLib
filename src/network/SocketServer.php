@@ -81,8 +81,11 @@ final class SocketServer
     * This our configuration resides here
     */
     private $_defaultConfig = array(
-        "type" => AF_UNIX,
-        "bus" => true,
+        "type"     => AF_UNIX,
+        "bus"      => true,
+        "location" => null,
+        "port"     => null,
+        "quiet"    => false,
     );
     /**
     * Sets our configuration
@@ -94,6 +97,10 @@ final class SocketServer
         $this->_config = array_merge($this->_defaultConfig, $config);
         if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
             $this->_config["type"] = constant($this->_config["type"]);
+        }
+        if ($this->_config["force"] && ($this->_config["type"] == AF_UNIX)) {
+            // Remove the old one...
+            unlink($this->_config["location"]);
         }
         $this->_setup();
         \HUGnet\System::exception(

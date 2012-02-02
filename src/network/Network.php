@@ -83,7 +83,6 @@ final class Network
         foreach (array_keys($this->_ifaces()) as $key) {
             $this->_read[$key] = "";
             $this->_write[$key] = "";
-
         }
     }
     /**
@@ -252,10 +251,7 @@ final class Network
     private function _write()
     {
         foreach ($this->_ifaces() as $key) {
-            // This dispatches any signals
-            if (function_exists("pcntl_signal_dispatch")) {
-                pcntl_signal_dispatch();
-            }
+            \HUGnet\System::loopcheck();
             if (isset($this->_write[$key]) && (strlen($this->_write[$key]) > 0)) {
                 $this->_connect($key);
                 $chars = $this->_socket($key)->write($this->_write[$key]);
@@ -274,10 +270,7 @@ final class Network
     {
         // Check to see if there is anything to receive
         foreach ($this->_ifaces() as $key) {
-            // This dispatches any signals
-            if (function_exists("pcntl_signal_dispatch")) {
-                pcntl_signal_dispatch();
-            }
+            \HUGnet\System::loopcheck();
             $this->_read[$key] .= $this->_socket($key)->read();
         }
     }
@@ -292,6 +285,7 @@ final class Network
         $this->_read();
         // Check for packets
         foreach ($this->_ifaces() as $key) {
+            \HUGnet\System::loopcheck();
             if (isset($this->_read[$key]) && (strlen($this->_read[$key]) > 0)) {
                 $pkt = Packet::factory($this->_read[$key]);
                 if ($pkt->isValid() === true) {

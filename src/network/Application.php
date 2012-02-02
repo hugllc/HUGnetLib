@@ -320,6 +320,7 @@ final class Application
     {
         $this->_main();
         foreach ($this->_queue as $qid => $pkt) {
+            \HUGnet\System::loopcheck();
             $return = $this->_transport->receive($pkt["token"]);
             if (!is_null($return)) {
                 $this->_receive($qid, $return);
@@ -347,9 +348,7 @@ final class Application
     */
     private function _main()
     {
-        if (function_exists("pcntl_signal_dispatch")) {
-            pcntl_signal_dispatch();
-        }
+        \HUGnet\System::loopcheck();
         // Continue to do the unsolicited stuff
         $this->_unsolicited($this->_transport->unsolicited());
     }

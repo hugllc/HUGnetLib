@@ -177,8 +177,8 @@ abstract class SystemTableBase
     */
     public function store($replace = false)
     {
-        $id = $this->table()->get($this->table()->sqlId);
-        if (!empty($id)) {
+        $sid = $this->table()->get($this->table()->sqlId);
+        if (!empty($sid)) {
             $ret = $this->table()->updateRow();
         } else {
             $ret = $this->table()->insertRow($replace);

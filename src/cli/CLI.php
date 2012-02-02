@@ -139,9 +139,7 @@ class CLI
     */
     public function main()
     {
-        if (function_exists("pcntl_signal_dispatch")) {
-            pcntl_signal_dispatch();
-        }
+        \HUGnet\System::loopcheck();
         $this->system()->main();
     }
 
