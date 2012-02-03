@@ -171,7 +171,9 @@ class System
         }
     }
     /**
-    * The main routine should be called periodically (once per loop at least)
+    * This returns a device object.
+    *
+    * @param array $data The data to send to the device object
     *
     * @return Reference to a device object
     */

@@ -45,7 +45,6 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * This class will do all of the networking for devices.  It will poll, get configs,
  * update software, and anything else related to talking to devices.
  *
- *
  * @category   Libraries
  * @package    HUGnetLib
  * @subpackage System
@@ -71,8 +70,8 @@ class DevNet
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param object &$system The configuration array
-    * @param string &$table  The table class to use
+    * @param object &$network The network application object
+    * @param string &$table   The table object
     *
     * @return null
     */

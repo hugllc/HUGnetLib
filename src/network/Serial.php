@@ -195,7 +195,8 @@ final class Serial
     /**
     * Sets up the connection to the socket
     *
-    * See http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/mode.mspx?mfr=true
+    * See http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/
+    * en-us/mode.mspx?mfr=true
     * for more information.
     *
     * Also see
@@ -207,13 +208,16 @@ final class Serial
     {
         $command  = "mode ".$this->_config["location"];
         $command .= " BAUD=".(int)$this->_config["baud"];
-        $command .= ($this->_config["rtscts"]) ? " RTS=hs OCTS=on" : " RTS=on OCTS=off";
+        if ($this->_config["rtscts"]) {
+            $command = " RTS=hs OCTS=on";
+        } else {
+            $command = " RTS=on OCTS=off";
+        }
         // 1 Stop bit, 8 databits, no parity
-        /*
         @exec(
             $command." DATA=8 STOP=1 PARITY=n TO=on DTR=off XON=off",
             $out, $return
-        );*/
+        );
         \HUGnet\System::exception(
             "mode failed on ".$this->_config["name"]." (".$return."):  "
             .implode($out, "\n"),

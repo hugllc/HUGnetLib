@@ -206,7 +206,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param string $driver       The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
     *
-    *
     * @return null
     *
     * @dataProvider dataDriver
@@ -245,11 +244,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     /**
     * This tests the object creation
     *
-    * @param array  $config       The configuration to use
-    * @param mixed  $device       The device to set
-    * @param mixed  $class        This is either the name of a class or an object
-    * @param array  $mocks        The mocks to use
-    *
+    * @param array $config The configuration to use
+    * @param mixed $device The device to set
+    * @param mixed $class  This is either the name of a class or an object
+    * @param array $mocks  The mocks to use
     *
     * @return null
     *
@@ -287,8 +285,8 @@ class DeviceTestDriver1
     /**
     * This function creates the system.
     *
-    * @param object $device The device class
-    * @param string $driver The driver to load
+    * @param object &$device The device class
+    * @param string $driver  The driver to load
     *
     * @return null
     */
