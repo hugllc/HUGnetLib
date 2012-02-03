@@ -264,6 +264,50 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($obj->network(), $obj->network(), "Wrong Object Returned");
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataConfig()
+    {
+        return array(
+            array(
+                new DummySystem(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                "DummyTable",
+                array(
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array $config The configuration to use
+    * @param mixed $device The device to set
+    * @param mixed $class  This is either the name of a class or an object
+    * @param array $mocks  The mocks to use
+    *
+    * @return null
+    *
+    * @dataProvider dataConfig
+    */
+    public function testConfig(
+        $config, $device, $class, $mocks
+    ) {
+        $config->resetMock($mocks);
+        $obj = Device::factory($config, $device, $class);
+        $this->assertEquals(
+            "HUGnet\devices\DevConfig", get_class($obj->config()), "Wrong Class"
+        );
+        $this->assertSame($obj->config(), $obj->config(), "Wrong Object Returned");
+        unset($obj);
+    }
 }
 
 /**

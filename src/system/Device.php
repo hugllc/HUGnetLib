@@ -113,6 +113,21 @@ class Device extends SystemTableBase
     /**
     * This function creates the system.
     *
+    * @return Reference to the network object
+    */
+    public function &config()
+    {
+        if (!is_object($this->_config)) {
+            include_once dirname(__FILE__)."/../devices/DevConfig.php";
+            $this->_config = \HUGnet\devices\DevConfig::factory(
+                $this->table()
+            );
+        }
+        return $this->_config;
+    }
+    /**
+    * This function creates the system.
+    *
     * @param string $driver The driver to use.  Leave blank for automatic.
     * @param string $class  The class to instantiate.  It should only be used for
     *               testing purposes.
