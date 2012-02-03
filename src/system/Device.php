@@ -65,6 +65,10 @@ class Device extends SystemTableBase
     */
     private $_driverCache = array();
     /**
+    * This is the cache for the drivers.
+    */
+    private $_network = null;
+    /**
     * This is the destructor
     */
     public function __destruct()
@@ -72,6 +76,7 @@ class Device extends SystemTableBase
         foreach (array_keys($this->_driverCache) as $key) {
             unset($this->_driverCache[$key]);
         }
+        unset($this->_network);
         parent::__destruct();
     }
     /**
@@ -89,6 +94,22 @@ class Device extends SystemTableBase
         return $object;
     }
 
+    /**
+    * This function creates the system.
+    *
+    * @return Reference to the network object
+    */
+    public function &network()
+    {
+        if (!is_object($this->_network)) {
+            include_once dirname(__FILE__)."/../devices/DevNet.php";
+            $this->_network = \HUGnet\devices\DevNet::factory(
+                $this->system()->network(),
+                $this->table()
+            );
+        }
+        return $this->_network;
+    }
     /**
     * This function creates the system.
     *

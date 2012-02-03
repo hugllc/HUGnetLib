@@ -152,6 +152,9 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                         "getRow" => array(
                             array(0 => 2),
                         ),
+                        "set" => array(
+                            array("id", 2),
+                        ),
                     ),
                 ),
             ),
@@ -226,6 +229,9 @@ class SystemTableBaseTest extends \PHPUnit_Framework_TestCase
                     "Table" => array(
                         "getRow" => array(
                             array(0 => 2),
+                        ),
+                        "set" => array(
+                            array("id", 2),
                         ),
                     ),
                 ),

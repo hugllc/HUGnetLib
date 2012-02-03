@@ -170,6 +170,17 @@ class System
             $this->_network->main();
         }
     }
+    /**
+    * The main routine should be called periodically (once per loop at least)
+    *
+    * @return Reference to a device object
+    */
+    public function &device($data = array())
+    {
+        include_once dirname(__FILE__)."/Device.php";
+        $obj = Device::factory($this, $data);
+        return $obj;
+    }
 
     /**
     * Throws an exception

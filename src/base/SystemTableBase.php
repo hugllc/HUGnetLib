@@ -161,6 +161,7 @@ abstract class SystemTableBase
     {
         $ret = false;
         if (is_int($data)) {
+            $this->table()->set($this->table()->sqlId, $data);
             $ret = $this->table()->getRow($data);
         } else if (is_array($data) || is_string($data)) {
             $this->table()->fromAny($data);
