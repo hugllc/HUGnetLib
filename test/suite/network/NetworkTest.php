@@ -717,6 +717,23 @@ class NetworkTest extends \PHPUnit_Framework_TestCase
                 ),
                 null,
             ),
+            array(  // #7 Bad Driver
+                array(
+                ),
+                array(
+                    "default" => array(
+                        "driver" => "ThisIsNotAGoodDriverName",
+                    ),
+                ),
+                1,
+                array(
+                    "asdf",
+                ),
+                array(
+                ),
+                "",
+                "RuntimeException",
+            ),
         );
     }
     /**
