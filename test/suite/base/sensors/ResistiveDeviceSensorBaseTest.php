@@ -157,6 +157,36 @@ class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->getResistance($A, $Bias));
     }
+    /**
+     * Data provider for testGetResistance
+     *
+     * @return array
+     */
+    public static function dataGetResistanceADuC()
+    {
+        return array(
+            array(array(), 0, 1, 0.0),
+            array(array(), 850000, 2.21, 78.50892801),
+            array(array(), 1500000, 2.21, 142.41394428),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param int   $A       The a to d reading
+    * @param float $Bias    The bias resistance
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataGetResistanceADuC
+    */
+    public function testGetResistanceADuC($preload, $A, $Bias, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->getResistanceADuC($A, $Bias));
+    }
 
     /**
     * Data provider for testGetResistance
@@ -224,6 +254,18 @@ class TestResistiveDeviceSensor extends ResistiveDeviceSensorBase
     public function getResistance($A, $Bias)
     {
         return parent::getResistance($A, $Bias);
+    }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * @param int   $A    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function getResistanceADuC($A, $Bias)
+    {
+        return parent::getResistanceADuC($A, $Bias);
     }
 
     /**

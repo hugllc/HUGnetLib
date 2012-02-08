@@ -117,6 +117,28 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
         $R = (float)($A*$Bias)/$Den;
         return round($R, 4);
     }
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * This function takes in the AtoD value and returns the calculated
+    * resistance of the sensor.  It does this using a fairly complex
+    * formula.  This formula and how it was derived is detailed in
+    *
+    * @param int   $A    Integer The AtoD reading
+    * @param float $Bias Float The bias resistance in kOhms
+    *
+    * @return The resistance corresponding to the values given in Ohms
+    */
+    protected function getResistanceADuC($A, $Bias)
+    {
+		$Am = 24777215;
+        $Den = $Am - $A;
+        if (($Den == 0) || !is_numeric($Den)) {
+            $Den = 1.0;
+        }
+        $R = (float)($A*$Bias*1000)/$Den;
+        return round($R, 8);
+    }
 
     /**
     * Converts a raw AtoD reading into resistance
