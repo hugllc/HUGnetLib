@@ -122,6 +122,18 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
                 0,
                 65630,
             ),
+            array(
+                array('extra' => array(10)),
+                0xFFFFFF,
+                0,
+                -1,
+            ),
+            array(
+                array('extra' => array(10)),
+                0x800000,
+                0,
+                -0x800000,
+            ),
         );
     }
     /**
