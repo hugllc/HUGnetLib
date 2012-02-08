@@ -57,10 +57,10 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "EPCOS VishayPTS Thermistor",
+        "Name" => "Vishay Platinum Temperature Sensor RTD",
         "Type" => "sensor",
         "Class" => "VishayPTSDeviceSensor",
-        "Flags" => array("04:VishayPTS"),
+        "Flags" => array("04"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(4);
