@@ -111,7 +111,6 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     {
         $this->default["id"] = 4;
         $this->default["type"] = "VishayPTS";
-        krsort($this->valueTable);
         parent::__construct($data, $device);
         // This takes care of The older sensors with the 100k bias resistor
     }
@@ -168,7 +167,7 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     *
     * @return float The Temperature in degrees C
     */
-    protected function tableInterpolate($R)
+    public function tableInterpolate($R)
     {
         $max = max(array_keys($this->valueTable));
         $min = min(array_keys($this->valueTable));
@@ -177,18 +176,16 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
         }
         $table = &$this->valueTable;
         foreach (array_keys($table) as $ohm) {
-            $ohm  = $ohm;
             $last = $ohm;
-            if ((float)$ohm < $R) {
+            if ((float)$ohm > $R) {
                 break;
             }
-            $next = $ohm;
+            $prev = $ohm;
         }
-        $T     = $table[$last];
-        $fract = ($next - $R) / ($next - $last);
-        $T    += $fract;
-        print $R ." -> ".$T."\n";
-        return $T;
+        $T     = $table[$prev];
+        $fract = ($prev - $R) / ($prev - $last);
+        $diff  = $fract * ($table[$last] - $table[$prev]);
+        return (float)($T + $diff);
     }
     /******************************************************************
      ******************************************************************

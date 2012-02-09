@@ -153,8 +153,52 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $o = new VishayPTSDeviceSensor($preload, $this->d);
-        $ret = $o->getReading($A, $deltaT);
+        $obj = new VishayPTSDeviceSensor($preload, $this->d);
+        $ret = $obj->getReading($A, $deltaT);
+        $this->assertSame($expect, $ret);
+    }
+
+    /**
+    * Data provider for testGetReading
+    *
+    * @return array
+    */
+    public static function dataTableInterpolate()
+    {
+        return array(
+            array(
+                array('extra' => array(2.21)),
+                113.61,
+                0,
+                35.0,
+            ),
+            array(
+                array('extra' => array(2.21)),
+                79.315,
+                0,
+                -52.5,
+            ),
+        );
+    }
+    /**
+    * Generic function for testing sensor routines
+    *
+    * This is called by using parent::sensorTest()
+    *
+    * @param array $preload The data to preload into the class
+    * @param mixed $A       Data for the sensor to work on
+    * @param float $deltaT  The time differenct
+    * @param mixed $expect  The return data to expect
+    *
+    * @return null
+    *
+    * @dataProvider dataTableInterpolate()
+    */
+    public function testTableInterpolate($preload, $A, $deltaT, $expect)
+    {
+
+        $obj = new VishayPTSDeviceSensor($preload, $this->d);
+        $ret = $obj->tableInterpolate($A);
         $this->assertSame($expect, $ret);
     }
 
