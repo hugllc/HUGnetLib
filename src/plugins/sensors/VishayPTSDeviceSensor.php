@@ -81,7 +81,7 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
         // Null    nothing
         "extraValues" => array(5),
         "extraDefault" => array(2.21),
-        "maxDecimals" => 0,
+        "maxDecimals" => 8,
     );
     /** @var array The table for IMC Sensors */
     protected $valueTable = array(
@@ -129,12 +129,15 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
+        $Bias = $this->getExtra(0);
         $A = (int)$A;
         if (($A & 0x800000) == 0x800000) {
             /* This is a negative number */
             $A = -(pow(2, 24) - $A);
         }
-        return $A;
+        $A = abs($A);
+        $ohms = $this->getResistanceRTD($A, $Bias);
+        return $ohms;
     }
     /**
     * Converts a raw AtoD reading into resistance
@@ -150,12 +153,12 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     protected function getResistanceRTD($A, $Bias)
     {
-        $Am = 24777215;
-        if ($A == 0) {
-            return 0;
+        $Am = pow(2,23);
+        if ($A == $Am) {
+            return null;
         }
-        $R = (float)((($Am - $A)*$Bias*1000)/$A);
-        return round($R, 8);
+        $R = (float)(($A * $Bias * 1000) / ($Am - $A));
+        return round($R, $this->maxDecimals);
     }
     /**
     * This function should be called with the values set for the specific
