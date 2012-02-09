@@ -152,7 +152,7 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     protected function getResistanceRTD($A, $Bias)
     {
-        $Am = pow(2,23);
+        $Am = pow(2, 23);
         if ($A == $Am) {
             return null;
         }

@@ -60,12 +60,12 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         "Name" => "ADuC Voltage Sensor",
         "Type" => "sensor",
         "Class" => "ADuCVoltageDeviceSensor",
-        "Flags" => array("41","41:ADuC"),
+        "Flags" => array("41","41:ADuCVoltage"),
     );
     /** @var object These are the valid values for units */
     protected $idValues = array(0x41);
     /** @var object These are the valid values for type */
-    protected $typeValues = array("ADuC");
+    protected $typeValues = array("ADuCVoltage");
     /**
     * This is the array of sensor information.
     */
@@ -84,7 +84,7 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         // Null    nothing
         "extraValues" => array(5, 5, 5),
         "extraDefault" => array(100, 1, 1.2),
-        "maxDecimals" => 4,
+        "maxDecimals" => 8,
     );
     /**
     * Disconnects from the database
@@ -95,7 +95,7 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
     public function __construct($data, &$device)
     {
         $this->default["id"] = 0x40;
-        $this->default["type"] = "ADuC";
+        $this->default["type"] = "ADuCVoltage";
         parent::__construct($data, $device);
     }
     /**
@@ -112,13 +112,16 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
+        $Am = pow(2, 23);
+        $Vref = $this->getExtra(2);
+
         $A = (int)$A;
         if (($A & 0x800000) == 0x800000) {
             /* This is a negative number */
             $A = -(pow(2, 24) - $A);
         }
-        return $A;
-        //return $this->indirect($A);
+        $Va = ($A / $Am) * $Vref;
+        return round($Va, $this->maxDecimals);
     }
 
     /******************************************************************
