@@ -98,7 +98,10 @@ final class SocketServer
         if (is_string($this->_config["type"]) && defined($this->_config["type"])) {
             $this->_config["type"] = constant($this->_config["type"]);
         }
-        if ($this->_config["force"] && ($this->_config["type"] == AF_UNIX)) {
+        if ($this->_config["force"]
+            && ($this->_config["type"] == AF_UNIX)
+            && file_exists($this->_config["location"])
+        ) {
             // Remove the old one...
             unlink($this->_config["location"]);
         }
