@@ -138,8 +138,8 @@ class B57560G0103F000DeviceSensor extends ResistiveDeviceSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $Bias = $this->getExtra(0);
-        $ohms = $this->getResistance($A, $Bias);
-        $T    = $this->tableInterpolate($ohms);
+        $kohms = $this->getResistance($A, $Bias);
+        $T    = $this->tableInterpolate($kohms * 1000);
         if (is_null($T)) {
             return null;
         }

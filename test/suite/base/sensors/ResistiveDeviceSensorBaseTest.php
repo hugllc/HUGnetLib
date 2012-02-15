@@ -229,11 +229,11 @@ class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public static function dataTableInterpolate()
     {
         return array(
-            array(array(), 1, 40.0),
-            array(array(), 2.5, 25.0),
-            array(array(), 1.75, 32.5),
-            array(array(), 0.99, null),
-            array(array(), 4.01, null),
+            array(array(), 1000, 40.0),
+            array(array(), 2500, 25.0),
+            array(array(), 1750, 32.5),
+            array(array(), 999, null),
+            array(array(), 4001, null),
         );
     }
     /**

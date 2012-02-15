@@ -178,13 +178,12 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
     * This function should be called with the values set for the specific
     * thermistor that is used.
     *
-    * @param float $R The current resistance of the thermistor in k ohms
+    * @param float $R The current resistance of the thermistor in ohms
     *
     * @return float The Temperature in degrees C
     */
     protected function tableInterpolate($R)
     {
-        $R *= 1000;
         $max = max(array_keys($this->valueTable));
         $min = min(array_keys($this->valueTable));
         if (($R < $min) || ($R > $max)) {
