@@ -192,17 +192,19 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
         }
         $table = &$this->valueTable;
         foreach (array_keys($table) as $ohm) {
-            $ohm  = $ohm;
             $last = $ohm;
-            if ((float)$ohm < $R) {
+            if ((float)$ohm <= (float)$R) {
                 break;
             }
             $next = $ohm;
         }
-        $T     = $table[$last];
-        $fract = ($next - $R) / ($next - $last);
-        $T    += $fract;
-        return $T;
+        $T = $table[$last];
+        if ((($last - $next) == 0) || ((float)$ohm == (float)$R)) {
+            return $T;
+        }
+        $fract = ($R - $last) / ($last - $next);
+        $diff = $fract * ($table[$last] - $table[$next]);
+        return (float)($T + $diff);
     }
 
 

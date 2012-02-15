@@ -138,7 +138,7 @@ class B57560G0103F000DeviceSensorTest extends DeviceSensorPluginTestBase
                 array('extra' => array(10)),
                 5000,
                 0,
-                110.0645
+                105.3227
             ),
             array(
                 array('extra'=>array(0)),
@@ -150,7 +150,7 @@ class B57560G0103F000DeviceSensorTest extends DeviceSensorPluginTestBase
                 array('dataType'=> DeviceSensorBase::TYPE_IGNORE),
                 5000,
                 0,
-                110.0645
+                105.3227
             ),
         );
     }

@@ -221,6 +221,37 @@ class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->o->fromAny($preload);
         $this->assertSame($expect, $this->o->getSweep($A, $R));
     }
+    /**
+    * Data provider for testGetResistance
+    *
+    * @return array
+    */
+    public static function dataTableInterpolate()
+    {
+        return array(
+            array(array(), 1, 40.0),
+            array(array(), 2.5, 25.0),
+            array(array(), 1.75, 32.5),
+            array(array(), 0.99, null),
+            array(array(), 4.01, null),
+        );
+    }
+    /**
+    * test
+    *
+    * @param array $preload The values to preload into the object
+    * @param float $R       The bias resistance
+    * @param mixed $expect  The expected return value
+    *
+    * @return null
+    *
+    * @dataProvider dataTableInterpolate
+    */
+    public function testTableInterpolate($preload, $R, $expect)
+    {
+        $this->o->fromAny($preload);
+        $this->assertSame($expect, $this->o->tableInterpolate($R));
+    }
 
 }
 /**
@@ -243,6 +274,13 @@ class TestResistiveDeviceSensor extends ResistiveDeviceSensorBase
     protected $unitsValues = array("d");
     /** @var object This is where we store our configuration */
     protected $typeValues = array("j");
+    /** @var array The table for tableInterpolate */
+    protected $valueTable = array(
+        "4000" => 10.0,
+        "3000" => 20.0,
+        "2000" => 30.0,
+        "1000" => 40.0,
+    );
     /**
     * Converts a raw AtoD reading into resistance
     *
@@ -293,6 +331,19 @@ class TestResistiveDeviceSensor extends ResistiveDeviceSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
     }
+
+    /**
+    * Converts a raw AtoD reading into resistance
+    *
+    * @param float $R Float The overall resistance in kOhms
+    *
+    * @return The resistance corresponding to the values given in k Ohms
+    */
+    public function tableInterpolate($R)
+    {
+        return parent::tableInterpolate($R);
+    }
+
 }
 
 ?>

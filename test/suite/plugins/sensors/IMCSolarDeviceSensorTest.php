@@ -138,7 +138,7 @@ class IMCSolarDeviceSensorTest extends DeviceSensorPluginTestBase
                 array('extra'=>array(10)),
                 5000,
                 0,
-                94.0506
+                93.4199
             ),
             array(
                 array('extra'=>array(0)),
@@ -153,7 +153,7 @@ class IMCSolarDeviceSensorTest extends DeviceSensorPluginTestBase
                 ),
                 5000,
                 0,
-                94.0506
+                93.4199
             ),
         );
     }
