@@ -36,7 +36,7 @@
  */
 
 /** Get our classes */
-require_once CODE_BASE.'plugins/sensors/VishayPTSDeviceSensor.php';
+require_once CODE_BASE.'plugins/sensors/ADuCThermocoupleDeviceSensor.php';
 /** This is a required class */
 require_once TEST_CONFIG_BASE.'stubs/DummyDeviceContainer.php';
 /** This is a required class */
@@ -58,7 +58,7 @@ require_once 'DeviceSensorPluginTestBase.php';
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
+class ADuCThermocoupleDeviceSensorTest extends DeviceSensorPluginTestBase
 {
 
     /**
@@ -77,7 +77,7 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
         $this->config->forceConfig($config);
         $this->socket = &$this->config->sockets->getSocket("default");
         $this->d = new DummyDeviceContainer();
-        $this->o = new VishayPTSDeviceSensor(
+        $this->o = new ADuCThermocoupleDeviceSensor(
             array(
             ),
             $this->d
@@ -105,40 +105,28 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
     public static function dataRegisterPlugin()
     {
         return array(
-            array("VishayPTSDeviceSensor"),
+            array("ADuCThermocoupleDeviceSensor"),
         );
     }
     /**
-    * Data provider for testGetReading
-    *
-    * @return array
-    */
+     * Data provider for testGetReading
+     *
+     * @return array
+     */
     public static function dataGetReading()
     {
         return array(
             array(
-                array('extra' => array(2.21)),
-                16485461,
-                0,
-                -51.700429,
-            ),
-            array(
-                array('extra' => array(2.21)),
-                16385461,
-                0,
-                21.223988,
-            ),
-            array(
-                array('extra' => array(2.21)),
-                16285461,
-                0,
-                97.66244,
-            ),
-            array(
-                array('extra' => array(2.21)),
+                array(),
                 0x800000,
-                0,
-                null,
+                1,
+                -1.2
+            ),
+            array(
+                array(),
+                0xFFFFFF,
+                1,
+                -1.4E-7
             ),
         );
     }
@@ -159,52 +147,8 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
     public function testGetReading($preload, $A, $deltaT, $expect)
     {
 
-        $obj = new VishayPTSDeviceSensor($preload, $this->d);
-        $ret = $obj->getReading($A, $deltaT);
-        $this->assertSame($expect, $ret);
-    }
-
-    /**
-    * Data provider for testGetReading
-    *
-    * @return array
-    */
-    public static function dataTableInterpolate()
-    {
-        return array(
-            array(
-                array('extra' => array(2.21)),
-                113.61,
-                0,
-                35.0,
-            ),
-            array(
-                array('extra' => array(2.21)),
-                79.315,
-                0,
-                -52.5,
-            ),
-        );
-    }
-    /**
-    * Generic function for testing sensor routines
-    *
-    * This is called by using parent::sensorTest()
-    *
-    * @param array $preload The data to preload into the class
-    * @param mixed $A       Data for the sensor to work on
-    * @param float $deltaT  The time differenct
-    * @param mixed $expect  The return data to expect
-    *
-    * @return null
-    *
-    * @dataProvider dataTableInterpolate()
-    */
-    public function testTableInterpolate($preload, $A, $deltaT, $expect)
-    {
-
-        $obj = new VishayPTSDeviceSensor($preload, $this->d);
-        $ret = $obj->tableInterpolate($A);
+        $this->o->fromAny($preload);
+        $ret = $this->o->getReading($A, $deltaT);
         $this->assertSame($expect, $ret);
     }
 

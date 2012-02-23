@@ -166,8 +166,8 @@ class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(array(), 0, 1, 0.0),
-            array(array(), 850000, 2.21, 78.50892801),
-            array(array(), 1500000, 2.21, 142.41394428),
+            array(array(), 850000, 2.21, 249.18393422234),
+            array(array(), 1500000, 2.21, 481.22929915594),
         );
     }
     /**
@@ -185,7 +185,9 @@ class ResistiveDeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     public function testGetResistanceADuC($preload, $A, $Bias, $expect)
     {
         $this->o->fromAny($preload);
-        $this->assertSame($expect, $this->o->getResistanceADuC($A, $Bias));
+        $this->assertEquals(
+            $expect, $this->o->getResistanceADuC($A, $Bias), 0.000001
+        );
     }
 
     /**

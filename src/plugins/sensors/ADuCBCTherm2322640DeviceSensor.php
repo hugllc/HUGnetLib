@@ -53,53 +53,38 @@ require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.ph
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
+class ADuCBCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Vishay Platinum Temperature Sensor RTD",
+        "Name" => "BC Components Thermistor #2322640",
         "Type" => "sensor",
-        "Class" => "VishayPTSDeviceSensor",
-        "Flags" => array("04", "04:VishayPTS"),
+        "Class" => "ADuCBCTherm2322640DeviceSensor",
+        "Flags" => array("05", "05:BCTherm2322640"),
     );
     /** @var object These are the valid values for units */
-    protected $idValues = array(4);
+    protected $idValues = array(05);
     /** @var object These are the valid values for type */
-    protected $typeValues = array("VishayPTS");
+    protected $typeValues = array("BCTherm2322640");
 
     /**
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Vishay Platinum Temperature Sensor RTD",
+        "longName" => "BC Components Thermistor #2322640",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "extraText" => array("Bias Resistor (kOhms)"),
+        "extraText" => array(
+            "Bias Resistor (kOhms)",
+            "Value @25&#176;C (kOhms)"
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(2.21),
-        "maxDecimals" => 6,
-    );
-    /** @var array The table for IMC Sensors */
-    protected $valueTable = array(
-        "78.32" => -55, "80.31" => -50, "82.29" => -45,
-        "84.27" => -40, "86.25" => -35, "88.22" => -30,
-        "90.19" => -25, "92.16" => -20, "94.12" => -15,
-        "96.09" => -10, "98.04" => -5, "100.00" => 0,
-        "101.95" => 5, "103.90" => 10, "105.85" => 15,
-        "107.79" => 20, "109.73" => 25, "111.67" => 30,
-        "113.61" => 35, "115.54" => 40, "117.47" => 45,
-        "119.40" => 50, "121.32" => 55, "123.24" => 60,
-        "125.16" => 65, "127.08" => 70, "128.99" => 75,
-        "130.90" => 80, "132.80" => 85, "134.71" => 90,
-        "136.61" => 95, "138.51" => 100, "140.40" => 105,
-        "142.29" => 110, "144.18" => 115, "146.07" => 120,
-        "147.95" => 125, "149.83" => 130, "151.71" => 135,
-        "153.58" => 140, "155.46" => 145, "157.33" => 150,
-        "159.19" => 155,
+        "extraValues" => array(5, 5),
+        "extraDefault" => array(10, 10),
+        "maxDecimals" => 2,
     );
     /**
     * Disconnects from the database
@@ -109,13 +94,34 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function __construct($data, &$device)
     {
-        $this->default["id"] = 4;
-        $this->default["type"] = "VishayPTS";
+        $this->default["id"] = 2;
+        $this->default["type"] = "ADuCBCTherm2322640";
         parent::__construct($data, $device);
         // This takes care of The older sensors with the 100k bias resistor
+        if ($this->id == 0x00) {
+            $this->fixed["extraDefault"] = array(100, 10);
+        }
     }
+
     /**
-    * Changes a raw reading into a output value
+    * Converts resistance to temperature for BC Components #2322 640 66103
+    * 10K thermistor.
+    *
+    * <b>BC Components #2322 640 series</b>
+    *
+    * This function implements the formula in $this->BCThermInterpolate
+    * for a is from BCcomponents PDF file for thermistor
+    * #2322 640 series datasheet on page 6.
+    *
+    * <b>Thermistors available:</b>
+    *
+    * -# 10K Ohm BC Components #2322 640 66103. This is defined as thermistor
+    * 0 in the type code.
+    *     - R0 10
+    *     - A 3.354016e-3
+    *     - B 2.569355e-4
+    *     - C 2.626311e-6
+    *     - D 0.675278e-7
     *
     * @param int   $A      Output of the A to D converter
     * @param float $deltaT The time delta in seconds between this record
@@ -128,43 +134,66 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Bias = $this->getExtra(0);
-        $A = $this->getTwosCompliment($A, 24);
-        $A = abs($A);
-        $ohms = $this->getResistanceADuC($A, $Bias);
-        if (is_null($ohms)) {
+        $Bias      = $this->getExtra(0);
+        $baseTherm = $this->getExtra(1);
+        $A         = abs($this->getTwosCompliment($A, 24));
+        $ohms      = $this->getResistanceADuC($A, $Bias) / 1000;
+        $T         = $this->_BcTherm2322640Interpolate(
+            $ohms,
+            $baseTherm,
+            3.354016e-3,
+            2.569355e-4,
+            2.626311e-6,
+            0.675278e-7
+        );
+
+        if (is_null($T)) {
             return null;
         }
-        $T = $this->tableInterpolate($ohms);
-        return round($T, $this->maxDecimals);
+        if ($T > 150) {
+            return null;
+        }
+        if ($T < -40) {
+            return null;
+        }
+        $T = round($T, 4);
+        return $T;
     }
+
     /**
-    * This function should be called with the values set for the specific
-    * thermistor that is used.
+    * This formula is from BCcomponents PDF file for the
+    * # 2322 640 thermistor series on page 6.  See the data sheet for
+    * more information.
     *
-    * @param float $R The current resistance of the thermistor in k ohms
+    * This function should be called with the values set for the specific
+    * thermistor that is used.  See eDEFAULT::Therm0Interpolate as an example.
+    *
+    * @param float $R  The current resistance of the thermistor in kOhms
+    * @param float $R0 The resistance of the thermistor at 25C in kOhms
+    * @param float $A  Thermistor Constant A (From datasheet)
+    * @param float $B  Thermistor Constant B (From datasheet)
+    * @param float $C  Thermistor Constant C (From datasheet)
+    * @param float $D  Thermistor Constant D (From datasheet)
     *
     * @return float The Temperature in degrees C
     */
-    public function tableInterpolate($R)
+    private function _bcTherm2322640Interpolate($R, $R0, $A, $B, $C, $D)
     {
-        $max = max(array_keys($this->valueTable));
-        $min = min(array_keys($this->valueTable));
-        if (($R < $min) || ($R > $max)) {
+        // This gets out bad values
+        if ($R <= 0) {
             return null;
         }
-        $table = &$this->valueTable;
-        foreach (array_keys($table) as $ohm) {
-            $last = $ohm;
-            if ((float)$ohm > $R) {
-                break;
-            }
-            $prev = $ohm;
+        if ($R0 == 0) {
+            return null;
         }
-        $T     = $table[$prev];
-        $fract = ($prev - $R) / ($prev - $last);
-        $diff  = $fract * ($table[$last] - $table[$prev]);
-        return (float)($T + $diff);
+        $T  = $A;
+        $T += $B * log($R/$R0);
+        $T += $C * pow(log($R/$R0), 2);
+        $T += $D * pow(log($R/$R0), 3);
+        $T  = pow($T, -1);
+
+        $T -= 273.15;
+        return($T);
     }
     /******************************************************************
      ******************************************************************

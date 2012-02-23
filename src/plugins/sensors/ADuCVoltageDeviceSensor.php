@@ -115,11 +115,7 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         $Am = pow(2, 23);
         $Vref = $this->getExtra(2);
 
-        $A = (int)$A;
-        if (($A & 0x800000) == 0x800000) {
-            /* This is a negative number */
-            $A = -(pow(2, 24) - $A);
-        }
+        $A = $this->getTwosCompliment($A, 24);
         $Va = ($A / $Am) * $Vref;
         return round($Va, $this->maxDecimals);
     }

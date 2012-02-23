@@ -35,7 +35,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is for the base class */
-require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.php";
+require_once dirname(__FILE__)."/../../base/sensors/VoltageDeviceSensorBase.php";
 
 /**
  * This class has functions that relate to the manipulation of elements
@@ -53,53 +53,38 @@ require_once dirname(__FILE__)."/../../base/sensors/ResistiveDeviceSensorBase.ph
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
+class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
 {
     /** @var This is to register the class */
     public static $registerPlugin = array(
-        "Name" => "Vishay Platinum Temperature Sensor RTD",
+        "Name" => "ADuC Thermocouple",
         "Type" => "sensor",
-        "Class" => "VishayPTSDeviceSensor",
-        "Flags" => array("04", "04:VishayPTS"),
+        "Class" => "ADuCThermocoupleDeviceSensor",
+        "Flags" => array("42"),
     );
     /** @var object These are the valid values for units */
-    protected $idValues = array(4);
+    protected $idValues = array(0x42);
     /** @var object These are the valid values for type */
-    protected $typeValues = array("VishayPTS");
-
+    protected $typeValues = array("ADuCThermocouple");
     /**
     * This is the array of sensor information.
     */
     protected $fixed = array(
-        "longName" => "Vishay Platinum Temperature Sensor RTD",
+        "longName" => "ADuC Thermocouple",
         "unitType" => "Temperature",
         "storageUnit" => '&#176;C',
         "storageType" => UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "extraText" => array("Bias Resistor (kOhms)"),
+        "extraText" => array(
+            "R1 to Source (kOhms)",
+            "R2 to Ground (kOhms)",
+            "AtoD Ref Voltage"
+        ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
-        "extraValues" => array(5),
-        "extraDefault" => array(2.21),
-        "maxDecimals" => 6,
-    );
-    /** @var array The table for IMC Sensors */
-    protected $valueTable = array(
-        "78.32" => -55, "80.31" => -50, "82.29" => -45,
-        "84.27" => -40, "86.25" => -35, "88.22" => -30,
-        "90.19" => -25, "92.16" => -20, "94.12" => -15,
-        "96.09" => -10, "98.04" => -5, "100.00" => 0,
-        "101.95" => 5, "103.90" => 10, "105.85" => 15,
-        "107.79" => 20, "109.73" => 25, "111.67" => 30,
-        "113.61" => 35, "115.54" => 40, "117.47" => 45,
-        "119.40" => 50, "121.32" => 55, "123.24" => 60,
-        "125.16" => 65, "127.08" => 70, "128.99" => 75,
-        "130.90" => 80, "132.80" => 85, "134.71" => 90,
-        "136.61" => 95, "138.51" => 100, "140.40" => 105,
-        "142.29" => 110, "144.18" => 115, "146.07" => 120,
-        "147.95" => 125, "149.83" => 130, "151.71" => 135,
-        "153.58" => 140, "155.46" => 145, "157.33" => 150,
-        "159.19" => 155,
+        "extraValues" => array(5, 5, 5),
+        "extraDefault" => array(100, 1, 1.2),
+        "maxDecimals" => 8,
     );
     /**
     * Disconnects from the database
@@ -109,10 +94,9 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function __construct($data, &$device)
     {
-        $this->default["id"] = 4;
-        $this->default["type"] = "VishayPTS";
+        $this->default["id"] = 0x42;
+        $this->default["type"] = "ADuCThermocouple";
         parent::__construct($data, $device);
-        // This takes care of The older sensors with the 100k bias resistor
     }
     /**
     * Changes a raw reading into a output value
@@ -128,44 +112,14 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Bias = $this->getExtra(0);
+        $Am = pow(2, 23);
+        $Vref = $this->getExtra(2);
+
         $A = $this->getTwosCompliment($A, 24);
-        $A = abs($A);
-        $ohms = $this->getResistanceADuC($A, $Bias);
-        if (is_null($ohms)) {
-            return null;
-        }
-        $T = $this->tableInterpolate($ohms);
-        return round($T, $this->maxDecimals);
+        $Va = ($A / $Am) * $Vref;
+        return round($Va, $this->maxDecimals);
     }
-    /**
-    * This function should be called with the values set for the specific
-    * thermistor that is used.
-    *
-    * @param float $R The current resistance of the thermistor in k ohms
-    *
-    * @return float The Temperature in degrees C
-    */
-    public function tableInterpolate($R)
-    {
-        $max = max(array_keys($this->valueTable));
-        $min = min(array_keys($this->valueTable));
-        if (($R < $min) || ($R > $max)) {
-            return null;
-        }
-        $table = &$this->valueTable;
-        foreach (array_keys($table) as $ohm) {
-            $last = $ohm;
-            if ((float)$ohm > $R) {
-                break;
-            }
-            $prev = $ohm;
-        }
-        $T     = $table[$prev];
-        $fract = ($prev - $R) / ($prev - $last);
-        $diff  = $fract * ($table[$last] - $table[$prev]);
-        return (float)($T + $diff);
-    }
+
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

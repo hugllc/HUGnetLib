@@ -836,6 +836,63 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
             $obj->numeric($units)
         );
     }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataGetTwosCompliment()
+    {
+        return array(
+            array(
+                array(
+                ),
+                8388608,
+                24,
+                -8388608,
+            ),
+            array(
+                array(
+                ),
+                0xFFFFFF,
+                24,
+                -1,
+            ),
+            array(
+                array(
+                ),
+                0,
+                24,
+                0,
+            ),
+            array(
+                array(
+                ),
+                8388607,
+                24,
+                8388607,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $preload The stuff to give to the constructor
+    * @param int    $A       The integer to feed to the function
+    * @param int    $bits    The number of bits to use
+    * @param int    $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetTwosCompliment
+    */
+    public function testGetTwosCompliment($preload, $A, $bits, $expect)
+    {
+        $obj = new TestDeviceSensor($preload, $this->d);
+        $val = $obj->getTwosCompliment($A, $bits);
+        $this->assertSame($expect, $val);
+    }
 
     /**
     * data provider for testSet
@@ -946,6 +1003,18 @@ class TestDeviceSensor extends DeviceSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         return $A;
+    }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $A    The incoming number
+    * @param float $bits The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    public function getTwosCompliment($A, $bits = 24)
+    {
+        return parent::getTwosCompliment($A, $bits);
     }
 }
 /**
@@ -1115,5 +1184,4 @@ class TestDeviceSensor3 extends DeviceSensorBase
         return (float)($A + $prev + $data[0]["value"]);
     }
 }
-
 ?>

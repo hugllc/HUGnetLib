@@ -131,13 +131,12 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
     */
     protected function getResistanceADuC($A, $Bias)
     {
-		$Am = 24777215;
-        $Den = $Am - $A;
-        if (($Den == 0) || !is_numeric($Den)) {
-            $Den = 1.0;
+        $Am = pow(2, 23);
+        if ($A == $Am) {
+            return null;
         }
-        $R = (float)($A*$Bias*1000)/$Den;
-        return round($R, 8);
+        $R = (float)(($A * $Bias * 1000) / ($Am - $A));
+        return $R;
     }
 
     /**
