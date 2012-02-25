@@ -135,7 +135,7 @@ abstract class ResistiveDeviceSensorBase extends DeviceSensorBase
         if ($A == $Am) {
             return null;
         }
-        $R = (float)(($A * $Bias * 1000) / ($Am - $A));
+        $R = (float)(($A * $Bias) / ($Am - $A));
         return $R;
     }
 

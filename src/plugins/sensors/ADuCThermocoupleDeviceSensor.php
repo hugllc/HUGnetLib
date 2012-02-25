@@ -77,14 +77,32 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         "extraText" => array(
             "R1 to Source (kOhms)",
             "R2 to Ground (kOhms)",
-            "AtoD Ref Voltage"
+            "AtoD Ref Voltage (mV)"
         ),
         // Integer is the size of the field needed to edit
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5),
-        "extraDefault" => array(100, 1, 1.2),
+        "extraDefault" => array(100, 1, 1200),
         "maxDecimals" => 8,
+    );
+    /** These are the coeffients of the thermocouple equasion */
+    protected $coeffients = array(
+        "k" => array(
+            0 => array(
+                0, 2.5173462E1, -1.1662878, -1.0833638, -8.9773540E-1,
+                -3.7342377E-1, -8.6632643E-2, -1.0450598E-2, -5.1920577E-4
+            ),
+            500 => array(
+                0, 2.508355E1, 7.860106E-2, -2.503131E-1, 8.315270E-2,
+                -1.228034E-2, 9.804036E-4, -4.413030E-5, 1.057734E-6,
+                -1.052755E-8
+            ),
+            1372 => array(
+                -1.318058E2, 4.830222E1, -1.646031, 5.464731E-2, -9.650715E-4,
+                8.802193E-6, -3.110810E-8
+            ),
+        ),
     );
     /**
     * Disconnects from the database
@@ -117,9 +135,35 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
 
         $A = $this->getTwosCompliment($A, 24);
         $Va = ($A / $Am) * $Vref;
-        return round($Va, $this->maxDecimals);
+        $T = $this->getThermocouple($Va, $data[0]["value"], "k");
+        return round($T, $this->maxDecimals);
     }
-
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param float $V     Voltage output of thermocouple in milliVolts
+    * @param float $TCold Cold junction temperature in degrees C
+    * @param float $type  Thermocouple type
+    *
+    * @return mixed The temperature
+    */
+    public function getThermocouple($V, $TCold, $type = "k")
+    {
+        bcscale(50);
+        foreach (array_keys($this->coeffients[$type]) as $k) {
+            $T = 0;
+            $c = &$this->coeffients[$type][$k];
+            for ($i = 0; isset($c[$i]); $i++) {
+                $T = bcadd($T, bcmul($c[$i], (float)bcpow($V, $i)));
+            }
+            $T += $TCold;
+            if ($T < $k) {
+                /* We are at the right scale, so break */
+                break;
+            }
+        }
+        return $T;
+    }
     /******************************************************************
      ******************************************************************
      ********  The following are input modification functions  ********

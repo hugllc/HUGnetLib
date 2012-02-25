@@ -135,7 +135,7 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
         if (is_null($ohms)) {
             return null;
         }
-        $T = $this->tableInterpolate($ohms);
+        $T = $this->tableInterpolate($ohms * 1000);
         return round($T, $this->maxDecimals);
     }
     /**

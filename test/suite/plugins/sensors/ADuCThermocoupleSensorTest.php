@@ -118,15 +118,17 @@ class ADuCThermocoupleDeviceSensorTest extends DeviceSensorPluginTestBase
         return array(
             array(
                 array(),
-                0x800000,
+                0x1234,
                 1,
-                -1.2
+                array(0 => array("value" => 10)),
+                26.69682258
             ),
             array(
                 array(),
-                0xFFFFFF,
+                0xFFEEDD,
                 1,
-                -1.4E-7
+                array(0 => array("value" => 10)),
+                -6.0973599
             ),
         );
     }
@@ -137,18 +139,19 @@ class ADuCThermocoupleDeviceSensorTest extends DeviceSensorPluginTestBase
     *
     * @param array $preload The data to preload into the class
     * @param mixed $A       Data for the sensor to work on
-    * @param float $deltaT  The time differenct
+    * @param float $deltaT  The time difference
+    * @param array $data    The array of data that is being built
     * @param mixed $expect  The return data to expect
     *
     * @return null
     *
     * @dataProvider dataGetReading()
     */
-    public function testGetReading($preload, $A, $deltaT, $expect)
+    public function testGetReading($preload, $A, $deltaT, $data, $expect)
     {
 
         $this->o->fromAny($preload);
-        $ret = $this->o->getReading($A, $deltaT);
+        $ret = $this->o->getReading($A, $deltaT, $data);
         $this->assertSame($expect, $ret);
     }
 

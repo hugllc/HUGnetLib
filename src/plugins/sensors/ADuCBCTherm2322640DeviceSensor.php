@@ -137,7 +137,7 @@ class ADuCBCTherm2322640DeviceSensor extends ResistiveDeviceSensorBase
         $Bias      = $this->getExtra(0);
         $baseTherm = $this->getExtra(1);
         $A         = abs($this->getTwosCompliment($A, 24));
-        $ohms      = $this->getResistanceADuC($A, $Bias) / 1000;
+        $ohms      = $this->getResistanceADuC($A, $Bias);
         $T         = $this->_BcTherm2322640Interpolate(
             $ohms,
             $baseTherm,
