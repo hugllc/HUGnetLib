@@ -103,25 +103,6 @@ class E00393700Device extends DeviceDriverBase
 
         return $ret;
     }
-    /**
-    * This always forces the sensors to the same thing (world view)
-    *
-    * Sensor 0 is always the RTD
-    *
-    * @param string $string This is the setup string
-    *
-    * @return null
-    *
-    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-    */
-    public function fromSetupString($string)
-    {
-        $this->myDriver->DriverInfo["TimeConstant"] = hexdec(substr($string, 0, 2));
-        if (is_object($this->myDriver->sensors)) {
-            $this->myDriver->sensors->fromTypeString("04".substr($string, 2));
-        }
-    }
-
 }
 
 ?>
