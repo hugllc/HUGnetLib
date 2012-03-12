@@ -56,10 +56,10 @@ require_once dirname(__FILE__)."/DummyBase.php";
  * @SuppressWarnings(PHPMD.ShortVariable)
  * @SuppressWarnings(PHPMD.UnusedFormalParameter)
  */
-class DummyNetwork extends \HUGnet\DummyBase
+class DummyTransport extends \HUGnet\DummyBase
 {
     /** @var This is our returns */
-    protected $class = "DummyNetwork";
+    protected $class = "Transport";
     /**
     * Creates the object
     *
@@ -67,9 +67,9 @@ class DummyNetwork extends \HUGnet\DummyBase
     *
     * @return null
     */
-    public function &factory($name)
+    public function &factory()
     {
-        return new DummyNetwork($name);
+        return new DummyNetwork("Transport");
     }
     /**
     * Reads from the socket
@@ -84,7 +84,7 @@ class DummyNetwork extends \HUGnet\DummyBase
         } else if (is_array(self::$ret[$this->class]["receive"])) {
             return array_shift(self::$ret[$this->class]["receive"]);
         }
-        return $ret;
+        return (string)$ret;
     }
     /**
     * Reads from the socket
@@ -99,7 +99,7 @@ class DummyNetwork extends \HUGnet\DummyBase
         } else if (is_array(self::$ret[$this->class]["unsolicited"])) {
             return array_shift(self::$ret[$this->class]["unsolicited"]);
         }
-        return $ret;
+        return (string)$ret;
     }
     /**
     * Reads from the socket
@@ -114,7 +114,7 @@ class DummyNetwork extends \HUGnet\DummyBase
         } else if (is_array(self::$ret[$this->class]["send"])) {
             return array_shift(self::$ret[$this->class]["send"]);
         }
-        return $ret;
+        return (string)$ret;
     }
 
 
