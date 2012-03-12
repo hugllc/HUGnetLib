@@ -384,10 +384,24 @@ class PacketTest extends \PHPUnit_Framework_TestCase
                 "04030201",
             ),
             array(
+                array(
+                    "To" => "000ABC",
+                    "From" => "000020",
+                    "Command" => "55",
+                    "Length"  => 4,
+                    "Data" => "01020304",
+                    "Reply" => "",
+                    "Checksum" => "C3",
+                ),
+                false,
+                "01020304",
+                "",
+            ),
+            array(
                 "5A5A5A55000ABC0000200401020304F4",
                 false,
                 "01020304",
-                ""
+                null
             ),
         );
     }

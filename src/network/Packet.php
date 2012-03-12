@@ -103,7 +103,7 @@ final class Packet implements PacketInterface
     /** Extra string at the end of the packet  */
     private $_extra;
     /** This is where we keep our reply  */
-    private $_reply;
+    private $_reply = null;
     /** This is says if we got a whole packet. Default to true */
     private $_whole = true;
     /**
@@ -118,6 +118,10 @@ final class Packet implements PacketInterface
         "REPLY" => 0x01,
         "PING" => 0x02,
         "FINDPING" => 0x03,
+        "GETCRC" => 0x06,
+        "SETCRC" => 0x07,
+        "BOOT" => 0x08,
+        "BOOTLOADER" => 0x09,
         "CALIBRATION" => 0x4C,
         "CAL_NEXT" => 0x4D,
         "SETCONFIG" => 0x5B,
@@ -286,13 +290,15 @@ final class Packet implements PacketInterface
     */
     private function _setArray($field, $value)
     {
-        if (is_string($value) && (strlen($value) > 0)) {
+        if (is_string($value)) {
             // This reference is necessary, otherwise I get the following error:
             // Cannot use [] for reading
             $this->$field = array();
-            $array = &$this->$field;
-            foreach (str_split($value, 2) as $val) {
-                $array[] = hexdec($val);
+            if (strlen($value) > 0) {
+                $array = &$this->$field;
+                foreach (str_split($value, 2) as $val) {
+                    $array[] = hexdec($val);
+                }
             }
         } else if (is_array($value)) {
             $this->$field = $value;
@@ -414,6 +420,8 @@ final class Packet implements PacketInterface
         $this->_setArray("_reply", $value);
         if ($raw) {
             return $this->_reply;
+        } else if (is_null($this->_reply)) {
+            return null;
         }
         return $this->_toStr($this->_reply);
     }
