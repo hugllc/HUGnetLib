@@ -121,7 +121,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => '55',
+                                    "Command" => 'SENSORREAD',
                                 ),
                                 null,
                                 array(
@@ -198,7 +198,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => '5C',
+                                    "Command" => 'GETCONFIG',
                                 ),
                                 null,
                                 array(
@@ -237,6 +237,759 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net->resetMock($mocks);
         $devnet = &DevNet::factory($net, $table);
         $ret = $devnet->config($callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataGetCRC()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "1234",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                "1234",
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                "",
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'GETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetCRC()
+    */
+    public function testGetCRC($mocks, $config, $expect, $return)
+    {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->getCRC($config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataSetCRC()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "1234",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                "1234",
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                "",
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'SETCRC',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataSetCRC()
+    */
+    public function testSetCRC($mocks, $config, $expect, $return)
+    {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->setCRC($config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataRunBootloader()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "To" => 21,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                "",
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOTLOADER',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRunBootloader()
+    */
+    public function testRunBootloader($mocks, $config, $expect, $return)
+    {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->runBootloader($config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataRunApplication()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "",
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "To" => 21,
+                            )
+                        ),
+                    ),
+                ),
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => false,
+                    ),
+                ),
+                "",
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'BOOT',
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataRunApplication()
+    */
+    public function testRunApplication($mocks, $config, $expect, $return)
+    {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->runApplication($config);
+        $this->assertSame($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataWriteFlash()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1234ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "ABCDEF",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1234ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                null,
+                null,
+                array(),
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param int   $address  The address to write to
+    * @param mixed $data     The data to write
+    * @param mixed $callback The function to call on packet reply
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteFlash()
+    */
+    public function testWriteFlash(
+        $mocks, $address, $data, $callback, $config, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->writeFlash($address, $data, $callback, $config);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+
+    }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataWriteE2()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1234ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "ABCDEF",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                "ABCDEF",
+                null,
+                array(),
+                array(
+                    "Table" => array(
+                        "get" => array(array("id")),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1234ABCDEF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => \HUGnet\network\Packet::factory(
+                            array(
+                                "From" => 21,
+                                "Reply" => "123456",
+                            )
+                        ),
+                    ),
+                ),
+                0x1234,
+                null,
+                null,
+                array(),
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array $mocks    The data to reset the mocks with
+    * @param int   $address  The address to write to
+    * @param mixed $data     The data to write
+    * @param mixed $callback The function to call on packet reply
+    * @param array $config   The configuration array
+    * @param array $expect   The expected calls in the mock
+    * @param bool  $return   The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteE2()
+    */
+    public function testWriteE2(
+        $mocks, $address, $data, $callback, $config, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");

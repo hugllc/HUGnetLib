@@ -121,21 +121,10 @@ class DevNet
     */
     public function poll($callback = null, $config = array())
     {
-        if (!is_callable($callback)) {
-            $config["block"] = true;
-        }
-        $ret = $this->_network->send(
-            array(
-                "To" => $this->_table->get("id"),
-                "Command" => "55",
-            ),
-            $callback,
-            $config
-        );
-        return $ret;
+        return $this->_sendPkt("SENSORREAD", $callback, $config);
     }
     /**
-    * Polls the device in question
+    * Gets the configuration for the device in question
     *
     * @param string $callback The name of the function to call when the packet
     *                   arrives.  If this is not callable, it will block until the
@@ -146,18 +135,189 @@ class DevNet
     */
     public function config($callback = null, $config = array())
     {
+        return $this->_sendPkt("GETCONFIG", $callback, $config);
+    }
+    /**
+    * Gets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return The CRC as a string, or false on failure
+    */
+    public function getCRC($config = array())
+    {
+        if (!is_array($config)) {
+            $config = array();
+        }
+        $config["block"] = true;
+        $reply = $this->_sendPkt("GETCRC", null, $config);
+        if (is_object($reply)) {
+            return $reply->Reply();
+        }
+        return false;
+    }
+    /**
+    * Sets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return The CRC as a string, or false on failure
+    */
+    public function setCRC($config = array())
+    {
+        if (!is_array($config)) {
+            $config = array();
+        }
+        $config["block"] = true;
+        $reply = $this->_sendPkt("SETCRC", null, $config);
+        if (is_object($reply)) {
+            return $reply->Reply();
+        }
+        return false;
+    }
+    /**
+    * Sets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function runBootloader($config = array())
+    {
+        if (!is_array($config)) {
+            $config = array();
+        }
+        $config["block"] = true;
+        $reply = $this->_sendPkt("BOOTLOADER", null, $config);
+        if (is_object($reply)) {
+            if (is_string($reply->Reply())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+    * Sets the application CRC for the device in question.
+    *
+    * This only works on devices that have loadable firmware, and only when they are
+    * running the bootloader.
+    *
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function runApplication($config = array())
+    {
+        if (!is_array($config)) {
+            $config = array();
+        }
+        $config["block"] = true;
+        $reply = $this->_sendPkt("BOOT", null, $config);
+        if (is_object($reply)) {
+            if (is_string($reply->Reply())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+    * Writes data to the flash
+    *
+    * @param int    $address  The address to write to
+    * @param string $data     The data to write
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the write
+    */
+    public function writeFlash($address, $data, $callback = null, $config = array())
+    {
+        return $this->_writeMem($address, $data, "WRITE_FLASH", $callback, $config);
+    }
+    /**
+    * Writes data to the E2
+    *
+    * This function does nothing if there is no e2 to write.
+    *
+    * @param int    $address  The address to write to
+    * @param string $data     The data to write
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the packet sending
+    */
+    public function writeE2($address, $data, $callback = null, $config = array())
+    {
+        return $this->_writeMem($address, $data, "WRITE_E2", $callback, $config);
+    }
+    /**
+    * Polls the device in question
+    *
+    * @param string $command  The command to send the packet with
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    * @param mixed  $data     Array|String of data to send out
+    *
+    * @return success or failure of the packet sending
+    */
+    private function _sendPkt(
+        $command, $callback = null, $config = array(), $data = null
+    ) {
         if (!is_callable($callback)) {
             $config["block"] = true;
         }
-        $ret = $this->_network->send(
-            array(
-                "To" => $this->_table->get("id"),
-                "Command" => "5C",
-            ),
-            $callback,
-            $config
+        $pkt = array(
+            "To" => $this->_table->get("id"),
+            "Command" => $command,
         );
+        if (!is_null($data) && (is_array($data) || is_string($data))) {
+            $pkt["Data"] = $data;
+        }
+        $ret = $this->_network->send($pkt, $callback, $config);
         return $ret;
+    }
+    /**
+    * Writes data to the memory
+    *
+    * @param int    $address  The address to write to
+    * @param string $data     The data to write
+    * @param mixed  $command  The command to send out
+    * @param string $callback The name of the function to call when the packet
+    *                   arrives.  If this is not callable, it will block until the
+    *                   packet arrives.
+    * @param array  $config   The network config to use for the packet
+    *
+    * @return success or failure of the write
+    */
+    private function _writeMem(
+        $address, $data, $command, $callback = null, $config = array()
+    ) {
+        if (is_string($data)) {
+            $write = sprintf("%04X", $address);
+            $write .= $data;
+            $reply = $this->_sendPkt($command, $callback, $config, $write);
+            if (is_object($reply)) {
+                if (strtoupper($reply->Reply()) === strtoupper($data)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
