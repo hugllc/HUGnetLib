@@ -369,6 +369,25 @@ abstract class DeviceSensorBase extends HUGnetContainer
         }
         return $A;
     }
+    /**
+    * Compensates for an input and bias resistance.
+    *
+    * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
+    * doesn't matter as long as they are both the same units.
+    *
+    * @param float $A     The incoming number
+    * @param float $Rin   The input resistor.
+    * @param float $Rbias The bias resistor.
+    *
+    * @return float The compensated value
+    */
+    protected function inputBiasCompensation($A, $Rin, $Rbias)
+    {
+        if ($Rbias == 0) {
+            return null;
+        }
+        return (float)(($A * ($Rin + $Rbias)) / $Rbias);
+    }
 
     /******************************************************************
      ******************************************************************

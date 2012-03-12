@@ -878,10 +878,10 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
     /**
     * test the set routine when an extra class exists
     *
-    * @param mixed  $preload The stuff to give to the constructor
-    * @param int    $A       The integer to feed to the function
-    * @param int    $bits    The number of bits to use
-    * @param int    $expect  The expected data
+    * @param mixed $preload The stuff to give to the constructor
+    * @param int   $A       The integer to feed to the function
+    * @param int   $bits    The number of bits to use
+    * @param int   $expect  The expected data
     *
     * @return null
     *
@@ -894,6 +894,68 @@ class DeviceSensorBaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expect, $val);
     }
 
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataInputBiasCompensation()
+    {
+        return array(
+            array(
+                array(
+                ),
+                8388608,
+                10,
+                0,
+                null,
+            ),
+            array(
+                array(
+                ),
+                123456,
+                0,
+                244.252,
+                123456.0,
+            ),
+            array(
+                array(
+                ),
+                0,
+                24,
+                1,
+                0.0,
+            ),
+            array(
+                array(
+                ),
+                1000,
+                1,
+                100,
+                1010.0,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed $preload The stuff to give to the constructor
+    * @param int   $A       The integer to feed to the function
+    * @param float $Rin     The input resistance to use
+    * @param float $Rbias   The bias resistance to use
+    * @param int   $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataInputBiasCompensation
+    */
+    public function testInputBiasComensation($preload, $A, $Rin, $Rbias, $expect)
+    {
+        $obj = new TestDeviceSensor($preload, $this->d);
+        $val = $obj->inputBiasCompensation($A, $Rin, $Rbias);
+        $this->assertEquals($expect, $val, 0.0001);
+    }
     /**
     * data provider for testSet
     *
@@ -1015,6 +1077,22 @@ class TestDeviceSensor extends DeviceSensorBase
     public function getTwosCompliment($A, $bits = 24)
     {
         return parent::getTwosCompliment($A, $bits);
+    }
+    /**
+    * Compensates for an input and bias resistance.
+    *
+    * The bias and input resistance values can be in Ohms, kOhms or even MOhms.  It
+    * doesn't matter as long as they are both the same units.
+    *
+    * @param int   $A     The incoming number
+    * @param float $Rin   The input resistor.
+    * @param float $Rbias The bias resistor.
+    *
+    * @return int A signed integer for PHP to use
+    */
+    public function inputBiasCompensation($A, $Rin, $Rbias)
+    {
+        return parent::inputBiasCompensation($A, $Rin, $Rbias);
     }
 }
 /**
