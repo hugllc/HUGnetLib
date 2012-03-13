@@ -853,7 +853,6 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
         $this->assertEquals($expect, $ret,  "Calls Wrong");
-
     }
     /**
     * Data provider for testMatcher
@@ -995,5 +994,676 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $ret,  "Calls Wrong");
 
     }
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataWriteFlashBuffer()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFE",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0C",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_FLASH',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "",
+                6,
+                "FF",
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                0,
+                "FF",
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks     The data to reset the mocks with
+    * @param int    $address   The address to write to
+    * @param mixed  $data      The data to write
+    * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
+    * @param array  $empty     The 'empty' value of the memory
+    * @param mixed  $callback  The function to call on packet reply
+    * @param array  $config    The configuration array
+    * @param array  $expect    The expected calls in the mock
+    * @param bool   $return    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteFlashBuffer()
+    */
+    public function testWriteFlashBuffer(
+        $mocks, $address, $data, $chunkSize, $empty, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+    }
+
+    /**
+    * Data provider for testMatcher
+    *
+    * @return array
+    */
+    public static function dataWriteE2Buffer()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFE",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "100C0C0D0E0FFFFF",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0C",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                6,
+                "FF",
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            array("id"), array("id"), array("id"),
+                        ),
+                    ),
+                    "Network" => array(
+                        "send" => Array(
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1000000102030405",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                            array(
+                                array(
+                                    "To" => 21,
+                                    "Command" => 'WRITE_E2',
+                                    "Data" => "1006060708090A0B",
+                                ),
+                                null,
+                                array(
+                                    "block" => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "",
+                6,
+                "FF",
+                array(
+                ),
+                false,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => 21,
+                    ),
+                    "Network" => array(
+                        "send" => array(
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "000102030405",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "060708090A0B",
+                                )
+                            ),
+                            \HUGnet\network\Packet::factory(
+                                array(
+                                    "From" => 21,
+                                    "Reply" => "0C0D0E0FFFFF",
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                0x1000,
+                "000102030405060708090A0B0C0D0E0F",
+                0,
+                "FF",
+                array(
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * Tests the iteration and preload functions
+    *
+    * @param array  $mocks     The data to reset the mocks with
+    * @param int    $address   The address to write to
+    * @param mixed  $data      The data to write
+    * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
+    * @param array  $empty     The 'empty' value of the memory
+    * @param mixed  $callback  The function to call on packet reply
+    * @param array  $config    The configuration array
+    * @param array  $expect    The expected calls in the mock
+    * @param bool   $return    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataWriteE2Buffer()
+    */
+    public function testWriteE2Buffer(
+        $mocks, $address, $data, $chunkSize, $empty, $expect, $return
+    ) {
+        $net   = new \HUGnet\network\DummyNetwork("Network");
+        $table = new \HUGnet\DummyTable();
+        $net->resetMock($mocks);
+        $devnet = &DevNet::factory($net, $table);
+        $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
+        $this->assertEquals($return, $ret,  "Return Wrong");
+        $ret = $net->retrieve();
+        $this->assertEquals($expect, $ret,  "Calls Wrong");
+    }
+
+
 }
 ?>

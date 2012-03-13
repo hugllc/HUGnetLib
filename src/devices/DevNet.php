@@ -149,10 +149,6 @@ class DevNet
     */
     public function getCRC($config = array())
     {
-        if (!is_array($config)) {
-            $config = array();
-        }
-        $config["block"] = true;
         $reply = $this->_sendPkt("GETCRC", null, $config);
         if (is_object($reply)) {
             return $reply->Reply();
@@ -171,10 +167,6 @@ class DevNet
     */
     public function setCRC($config = array())
     {
-        if (!is_array($config)) {
-            $config = array();
-        }
-        $config["block"] = true;
         $reply = $this->_sendPkt("SETCRC", null, $config);
         if (is_object($reply)) {
             return $reply->Reply();
@@ -193,10 +185,6 @@ class DevNet
     */
     public function runBootloader($config = array())
     {
-        if (!is_array($config)) {
-            $config = array();
-        }
-        $config["block"] = true;
         $reply = $this->_sendPkt("BOOTLOADER", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
@@ -217,10 +205,6 @@ class DevNet
     */
     public function runApplication($config = array())
     {
-        if (!is_array($config)) {
-            $config = array();
-        }
-        $config["block"] = true;
         $reply = $this->_sendPkt("BOOT", null, $config);
         if (is_object($reply)) {
             if (is_string($reply->Reply())) {
@@ -264,6 +248,40 @@ class DevNet
         return $this->_writeMem($address, $data, "WRITE_E2", $callback, $config);
     }
     /**
+    * Writes a data buffer to the Flash
+    *
+    * @param string $data      The data to write
+    * @param int    $address   The address to start the write at
+    * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
+    * @param array  $empty     The 'empty' value of the memory
+    *
+    * @return success or failure of the packet sending
+    */
+    public function writeFlashBuffer(
+        $data, $address = 0, $chunkSize = 128, $empty = "FF"
+    ) {
+        return $this->_writeMemBuffer(
+            $data, "WRITE_FLASH", $chunkSize, "flash", $address, $empty
+        );
+    }
+    /**
+    * Writes a data buffer to the Flash
+    *
+    * @param string $data      The data to write
+    * @param int    $address   The address to start the write at
+    * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
+    * @param array  $empty     The 'empty' value of the memory
+    *
+    * @return success or failure of the packet sending
+    */
+    public function writeE2Buffer(
+        $data, $address = 0, $chunkSize = 128, $empty = "FF"
+    ) {
+        return $this->_writeMemBuffer(
+            $data, "WRITE_E2", $chunkSize, "EEPROM", $address, $empty
+        );
+    }
+    /**
     * Polls the device in question
     *
     * @param string $command  The command to send the packet with
@@ -278,6 +296,9 @@ class DevNet
     private function _sendPkt(
         $command, $callback = null, $config = array(), $data = null
     ) {
+        if (!is_array($config)) {
+            $config = array();
+        }
         if (!is_callable($callback)) {
             $config["block"] = true;
         }
@@ -319,6 +340,52 @@ class DevNet
         }
         return false;
     }
+    /**
+    * Writes the Memory into the device specified
+    *
+    * @param string $buffer    The data to write
+    * @param mixed  $command   The command to send out
+    * @param int    $chunkSize The size of the chunks to send.
+    * @param string $memName   The name of the memory (for printing purposes)
+    * @param int    $start     The location to start writing
+    * @param string $empty     The value of an 'empty' location
+    *
+    * @return bool True on success, False on failure
+    */
+    private function _writeMemBuffer(
+        $buffer,
+        $command,
+        $chunkSize = 128,
+        $memName = "memory",
+        $start = 0,
+        $empty = "FF"
+    ) {
+        if (($chunkSize > 0) && is_string($buffer) && (strlen($buffer) > 0)) {
+            $buffer = str_split($buffer, $chunkSize*2);
+            $devID = $this->_table->get("id");
+            foreach ($buffer as $page => $data) {
+                $data = str_pad($data, $chunkSize*2, $empty);
+                $addr = $start + ($page * $chunkSize);
+                $ret = $this->_writeMem($addr, $data, $command);
+                if ($ret === false) {
+                    \HUGnet\VPrint::out(
+                        "Writing ".$memName." Page ".$page." in device "
+                        .sprintf("%06X", $devID)." Failed",
+                        1
+                    );
+                    return false;
+                }
+                \HUGnet\VPrint::out(
+                    "Writing ".$memName." Page ".$page." in device "
+                    .sprintf("%06X", $devID)." Succeeded",
+                    1
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
 
 }
 
