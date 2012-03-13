@@ -135,7 +135,7 @@ class DevNet
     */
     public function config($callback = null, $config = array())
     {
-        return $this->_sendPkt("GETCONFIG", $callback, $config);
+        return $this->_sendPkt("CONFIG", $callback, $config);
     }
     /**
     * Gets the application CRC for the device in question.
@@ -360,7 +360,10 @@ class DevNet
         $start = 0,
         $empty = "FF"
     ) {
-        if (($chunkSize > 0) && is_string($buffer) && (strlen($buffer) > 0)) {
+        if (!is_string($buffer) || ($chunkSize <= 0)) {
+            return false;
+        }
+        if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
             $devID = $this->_table->get("id");
             foreach ($buffer as $page => $data) {
@@ -381,9 +384,8 @@ class DevNet
                     1
                 );
             }
-            return true;
         }
-        return false;
+        return true;
     }
 }
 

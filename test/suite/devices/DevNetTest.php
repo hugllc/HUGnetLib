@@ -198,7 +198,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
                             array(
                                 array(
                                     "To" => 21,
-                                    "Command" => 'GETCONFIG',
+                                    "Command" => 'CONFIG',
                                 ),
                                 null,
                                 array(
@@ -1259,7 +1259,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
                 "FF",
                 array(
                 ),
-                false,
+                true,
             ),
             array(
                 array(
@@ -1592,7 +1592,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
                 "FF",
                 array(
                 ),
-                false,
+                true,
             ),
             array(
                 array(
