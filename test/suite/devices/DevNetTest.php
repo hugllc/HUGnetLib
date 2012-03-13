@@ -1307,8 +1307,6 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     * @param mixed  $data      The data to write
     * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
     * @param array  $empty     The 'empty' value of the memory
-    * @param mixed  $callback  The function to call on packet reply
-    * @param array  $config    The configuration array
     * @param array  $expect    The expected calls in the mock
     * @param bool   $return    The expected return
     *
@@ -1642,8 +1640,6 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     * @param mixed  $data      The data to write
     * @param string $chunkSize The size of the chunks to send.  MUST BE LESS THAN 255
     * @param array  $empty     The 'empty' value of the memory
-    * @param mixed  $callback  The function to call on packet reply
-    * @param array  $config    The configuration array
     * @param array  $expect    The expected calls in the mock
     * @param bool   $return    The expected return
     *

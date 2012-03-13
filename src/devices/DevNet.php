@@ -385,8 +385,6 @@ class DevNet
         }
         return false;
     }
-
-
 }
 
 
