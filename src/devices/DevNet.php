@@ -143,7 +143,7 @@ class DevNet
     * This only works on devices that have loadable firmware, and only when they are
     * running the bootloader.
     *
-    * @param array  $config   The network config to use for the packet
+    * @param array $config The network config to use for the packet
     *
     * @return The CRC as a string, or false on failure
     */
@@ -165,7 +165,7 @@ class DevNet
     * This only works on devices that have loadable firmware, and only when they are
     * running the bootloader.
     *
-    * @param array  $config   The network config to use for the packet
+    * @param array $config The network config to use for the packet
     *
     * @return The CRC as a string, or false on failure
     */
@@ -187,7 +187,7 @@ class DevNet
     * This only works on devices that have loadable firmware, and only when they are
     * running the bootloader.
     *
-    * @param array  $config   The network config to use for the packet
+    * @param array $config The network config to use for the packet
     *
     * @return success or failure of the packet sending
     */
@@ -211,7 +211,7 @@ class DevNet
     * This only works on devices that have loadable firmware, and only when they are
     * running the bootloader.
     *
-    * @param array  $config   The network config to use for the packet
+    * @param array $config The network config to use for the packet
     *
     * @return success or failure of the packet sending
     */

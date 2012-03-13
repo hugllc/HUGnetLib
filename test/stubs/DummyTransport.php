@@ -63,8 +63,6 @@ class DummyTransport extends \HUGnet\DummyBase
     /**
     * Creates the object
     *
-    * @param string $name The object name
-    *
     * @return null
     */
     public function &factory()

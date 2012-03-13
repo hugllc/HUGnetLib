@@ -322,10 +322,10 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
     *
     * @return null
     *
@@ -423,10 +423,10 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
     *
     * @return null
     *
@@ -559,10 +559,10 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
     *
     * @return null
     *
@@ -695,10 +695,10 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
     /**
     * Tests the iteration and preload functions
     *
-    * @param array $mocks    The data to reset the mocks with
-    * @param array $config   The configuration array
-    * @param array $expect   The expected calls in the mock
-    * @param bool  $return   The expected return
+    * @param array $mocks  The data to reset the mocks with
+    * @param array $config The configuration array
+    * @param array $expect The expected calls in the mock
+    * @param bool  $return The expected return
     *
     * @return null
     *
