@@ -83,25 +83,26 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5),
-        "extraDefault" => array(100, 1, 1200),
+        "extraDefault" => array(1, 10, 1200),
         "maxDecimals" => 8,
     );
     /** These are the coeffients of the thermocouple equasion */
     protected $coeffients = array(
         "k" => array(
+            /*
             0 => array(
                 0, 2.5173462E1, -1.1662878, -1.0833638, -8.9773540E-1,
                 -3.7342377E-1, -8.6632643E-2, -1.0450598E-2, -5.1920577E-4
-            ),
+            ),*/
             500 => array(
                 0, 2.508355E1, 7.860106E-2, -2.503131E-1, 8.315270E-2,
                 -1.228034E-2, 9.804036E-4, -4.413030E-5, 1.057734E-6,
                 -1.052755E-8
-            ),
+            ),/*
             1372 => array(
                 -1.318058E2, 4.830222E1, -1.646031, 5.464731E-2, -9.650715E-4,
                 8.802193E-6, -3.110810E-8
-            ),
+            ),*/
         ),
     );
     /**
@@ -131,9 +132,12 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $Am = pow(2, 23);
-        $Vref = $this->getExtra(2);
+        $Rin   = $this->getExtra(0);
+        $Rbias = $this->getExtra(1);
+        $Vref  = $this->getExtra(2);
 
         $A = $this->getTwosCompliment($A, 24);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
         $T = $this->getThermocouple($Va, $data[0]["value"], "k");
         return round($T, $this->maxDecimals);
