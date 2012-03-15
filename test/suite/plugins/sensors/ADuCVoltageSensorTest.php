@@ -120,13 +120,13 @@ class ADuCVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
                 array(),
                 0x800000,
                 1,
-                -1.2
+                -121.2
             ),
             array(
                 array(),
                 0xFFFFFF,
                 1,
-                -1.4E-7
+                -1.445E-5
             ),
         );
     }

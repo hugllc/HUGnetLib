@@ -94,7 +94,7 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
     */
     public function __construct($data, &$device)
     {
-        $this->default["id"] = 0x40;
+        $this->default["id"] = 0x41;
         $this->default["type"] = "ADuCVoltage";
         parent::__construct($data, $device);
     }
@@ -112,10 +112,13 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Am = pow(2, 23);
-        $Vref = $this->getExtra(2);
+        $Am    = pow(2, 23);
+        $Rin   = $this->getExtra(0);
+        $Rbias = $this->getExtra(1);
+        $Vref  = $this->getExtra(2);
 
         $A = $this->getTwosCompliment($A, 24);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
         return round($Va, $this->maxDecimals);
     }
