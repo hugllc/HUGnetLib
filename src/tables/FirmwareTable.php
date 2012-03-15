@@ -523,6 +523,16 @@ class FirmwareTable extends HUGnetDBTable
                 $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
                 // Put the data into the buffer
                 $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
+            } else if (substr($rec, 0, 2) == "S2") {
+                // Set up all the stuff to put into the buffer
+                $size  = hexdec(substr($rec, 2, 2));
+                $size -= 3;
+                $addr  = hexdec(substr($rec, 4, 6));
+                $data  = substr($rec, 10, ($size*2));
+                // Make sure the buffer is big enough for the data
+                $buffer = str_pad($buffer, ($addr + $size)*2, $empty, STR_PAD_RIGHT);
+                // Put the data into the buffer
+                $buffer = substr_replace($buffer, $data, $addr*2, $size*2);
             }
         }
         // remove the extra

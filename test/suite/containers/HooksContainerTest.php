@@ -249,7 +249,7 @@ class HooksContainerTest extends PHPUnit_Framework_TestCase
                 array(),
                 "DummyFct",
                 HUGnetClass::VPRINT_VERBOSE,
-                "(HooksContainer) No hook defined\n",
+                "", /*"(HooksContainer) No hook defined\n",*/
             ),
             array(
                 array(),

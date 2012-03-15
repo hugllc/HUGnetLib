@@ -34,6 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  *
  */
+require_once dirname(__FILE__)."/../util/VPrint.php";
 /**
  * Base class for all other classes
  *
@@ -119,6 +120,8 @@ abstract class HUGnetClass
         $val = self::VPRINT_DEBUG,
         $verbose = self::VPRINT_NONE
     ) {
+        \HUGnet\VPrint::out($str, $val);
+        /*
         if (is_object($this) && empty($verbose)) {
             $verbose = $this->verbose;
         }
@@ -131,6 +134,7 @@ abstract class HUGnetClass
         }
         print $str.PHP_EOL;
         flush();
+        */
     }
     /**
     * Logs an error in the database

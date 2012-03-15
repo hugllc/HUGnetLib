@@ -159,7 +159,9 @@ class HUGnetClassTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array("", 3, 10, ""),
-            array("This is a test", 3, 10, "(HUGnetClassTestStub) This is a test\n"),
+            /*array(
+                "This is a test", 3, 10, "(HUGnetClassTestStub) This is a test\n"
+            ),*/
             array("This is a test", 3, 0, ""),
         );
     }

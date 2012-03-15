@@ -365,6 +365,7 @@ class DevNet
         }
         if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
+            $pages = count($buffer);
             $devID = $this->_table->get("id");
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
@@ -372,14 +373,14 @@ class DevNet
                 $ret = $this->_writeMem($addr, $data, $command);
                 if ($ret === false) {
                     \HUGnet\VPrint::out(
-                        "Writing ".$memName." Page ".$page." in device "
+                        "Writing ".$memName." Page $page of $pages in device "
                         .sprintf("%06X", $devID)." Failed",
                         1
                     );
                     return false;
                 }
                 \HUGnet\VPrint::out(
-                    "Writing ".$memName." Page ".$page." in device "
+                    "Writing ".$memName." Page $page of $pages in device "
                     .sprintf("%06X", $devID)." Succeeded",
                     1
                 );
