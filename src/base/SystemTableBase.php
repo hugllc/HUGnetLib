@@ -186,7 +186,28 @@ abstract class SystemTableBase
         }
         return (bool)$ret;
     }
-
+    /**
+    * Gets a value
+    *
+    * @param string $field the field to get
+    *
+    * @return null
+    */
+    public function get($field)
+    {
+        return $this->table()->get($field);
+    }
+    /**
+    * Sets a value
+    *
+    * @param string $field the field to set
+    *
+    * @return null
+    */
+    public function set($field, $value)
+    {
+        return $this->table()->set($field, $value);
+    }
 }
 
 

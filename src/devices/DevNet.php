@@ -373,15 +373,15 @@ class DevNet
                 $ret = $this->_writeMem($addr, $data, $command);
                 if ($ret === false) {
                     \HUGnet\VPrint::out(
-                        "Writing ".$memName." Page $page of $pages in device "
-                        .sprintf("%06X", $devID)." Failed",
+                        "Writing ".$memName." Page ".($page + 1)." of $pages in "
+                        ."device ".sprintf("%06X", $devID)." Failed",
                         1
                     );
                     return false;
                 }
                 \HUGnet\VPrint::out(
-                    "Writing ".$memName." Page $page of $pages in device "
-                    .sprintf("%06X", $devID)." Succeeded",
+                    "Writing ".$memName." Page ".($page + 1)." of $pages in "
+                    ."device ".sprintf("%06X", $devID)." Succeeded",
                     1
                 );
             }
