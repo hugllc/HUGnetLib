@@ -97,6 +97,10 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         $this->default["id"] = 0x41;
         $this->default["type"] = "ADuCVoltage";
         parent::__construct($data, $device);
+        if ($this->id == 0x43) {
+            $this->fixed["inputSize"] = 2;
+        }
+
     }
     /**
     * Changes a raw reading into a output value
