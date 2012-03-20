@@ -60,10 +60,10 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         "Name" => "ADuC Voltage Sensor",
         "Type" => "sensor",
         "Class" => "ADuCVoltageDeviceSensor",
-        "Flags" => array("41","41:ADuCVoltage"),
+        "Flags" => array("41","41:ADuCVoltage", "43", "43:ADuCVoltage"),
     );
     /** @var object These are the valid values for units */
-    protected $idValues = array(0x41);
+    protected $idValues = array(0x41, 0x43);
     /** @var object These are the valid values for type */
     protected $typeValues = array("ADuCVoltage");
     /**
