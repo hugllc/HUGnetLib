@@ -136,7 +136,7 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(2);
 
-        $A = $this->getTwosCompliment($A, 24);
+        $A = $this->getTwosCompliment($A, 32);
         $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
         $T = $this->getThermocouple($Va, $data[0]["value"], "k");

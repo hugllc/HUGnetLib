@@ -118,15 +118,15 @@ class ADuCVoltageDeviceSensorTest extends DeviceSensorPluginTestBase
         return array(
             array(
                 array(),
-                0x800000,
+                0xFF800000,
                 1,
-                -121.2
+                -1.2
             ),
             array(
                 array(),
-                0xFFFFFF,
+                0xFFFFFFFF,
                 1,
-                -1.445E-5
+                -1.4E-7
             ),
         );
     }

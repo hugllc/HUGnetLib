@@ -100,7 +100,20 @@ class E00393700Device extends DeviceDriverBase
         $ret = parent::toOutput($cols);
         $ret["CPU"] = "Analog Devices ADuC7060";
         $ret["SensorConfig"] = "1-9 Analog or Digital";
-
+        return $ret;
+    }
+    /**
+    * Decodes the sensor string
+    *
+    * @param string $string The string of sensor data
+    *
+    * @return null
+    */
+    protected function decodeSensorString($string)
+    {
+        $ret = $this->sensorStringArrayToInts(str_split(substr($string, 6), 8));
+        $ret["DataIndex"] = hexdec(substr($string, 0, 2));
+        $ret["timeConstant"] = hexdec(substr($string, 4, 2));
         return $ret;
     }
 }

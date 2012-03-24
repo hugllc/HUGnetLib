@@ -118,25 +118,25 @@ class VishayPTSDeviceSensorTest extends DeviceSensorPluginTestBase
         return array(
             array(
                 array('extra' => array(2.21)),
-                16485461,
+                0xFFFB8C55,
                 0,
                 -51.700429,
             ),
             array(
                 array('extra' => array(2.21)),
-                16385461,
+                0xFFFA05B5,
                 0,
                 21.223988,
             ),
             array(
                 array('extra' => array(2.21)),
-                16285461,
+                0xFFF87f15,
                 0,
                 97.66244,
             ),
             array(
                 array('extra' => array(2.21)),
-                0x800000,
+                0xFF800000,
                 0,
                 null,
             ),

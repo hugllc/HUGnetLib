@@ -129,7 +129,7 @@ class VishayPTSDeviceSensor extends ResistiveDeviceSensorBase
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
         $Bias = $this->getExtra(0);
-        $A = $this->getTwosCompliment($A, 24);
+        $A = $this->getTwosCompliment($A, 32);
         $A = abs($A);
         $ohms = $this->getResistanceADuC($A, $Bias);
         if (is_null($ohms)) {
