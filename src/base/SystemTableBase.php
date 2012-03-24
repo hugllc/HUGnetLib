@@ -170,6 +170,15 @@ abstract class SystemTableBase
         return (bool)$ret;
     }
     /**
+    * Returns the table as a json string
+    *
+    * @return json string
+    */
+    public function jsonEncode()
+    {
+        return json_encode($this->table()->toArray(true));
+    }
+    /**
     * Stores data into the database
     *
     * @param bool $replace Replace any record that is in the way
