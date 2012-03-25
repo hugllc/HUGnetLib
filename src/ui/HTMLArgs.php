@@ -74,6 +74,7 @@ class HTMLArgs
     private $_config = array();
     /** These are pretty standard config changes */
     private $_defaultConfig = array(
+        "f" => array("name" => "file", "type" => "string", "args" => true),
         "q" => array("name" => "quiet", "type" => "bool", "default" => false),
         "v" => array("name" => "verbose", "type" => "int", "default" => 0),
         "d" => array("name" => "debug", "type" => "bool", "default" => false),
@@ -169,6 +170,22 @@ class HTMLArgs
         return $return;
     }
     /**
+    * Adds an INI file location to the check path.
+    *
+    * @param string $name  The parameter to set
+    * @param mixed  $value The value to set it to
+    *
+    * @return Bool Whether or not it was set
+    */
+    public function set($name, $value)
+    {
+        if (isset($this->_config[$name])) {
+            $this->_arguments[$name] = $value;
+            return true;
+        }
+        return false;
+    }
+    /**
     * Creates the config to go with the command line
     *
     * @param array $config An extra configuration to add
@@ -178,7 +195,7 @@ class HTMLArgs
     public function config($config = array())
     {
         if (file_exists($this->f)) {
-            \HUGnet\VPrint::out("Using config at ".$this->f);
+            \HUGnet\VPrint::out("Using config at ".$this->f, 1);
             $return = parse_ini_file($this->f, true);
         } else if (!$this->n) {
             $return = $this->_findConfig();
@@ -200,7 +217,7 @@ class HTMLArgs
     {
         foreach ($this->_configLocations as $file) {
             if (file_exists($file)) {
-                \HUGnet\VPrint::out("Found config at $file");
+                \HUGnet\VPrint::out("Found config at $file", 1);
                 $this->_arguments["f"] = $file;
                 return parse_ini_file($file, true);
             }
