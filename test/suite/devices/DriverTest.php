@@ -118,7 +118,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testPresent($name, $expect)
     {
-        $this->assertSame($expect, Driver::present($name));
+        $o = &Driver::factory();
+        $this->assertSame($expect, $o->present($name));
     }
     /**
     * data provider for testDeviceID
@@ -154,7 +155,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $expect)
     {
-        $this->assertSame($expect, Driver::get($name));
+        $o = &Driver::factory();
+        $this->assertSame($expect, $o->get($name));
     }
 }
 ?>

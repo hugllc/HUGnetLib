@@ -56,20 +56,20 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-abstract class Driver
+class Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    static protected $info = array(
+    protected $info = array(
         "packetTimeout" => 6, /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
     );
     /**
     * This is where all of the defaults are stored.
     */
-    static private $_default = array(
+    private $_default = array(
         "packetTimeout" => 5,
         "sensors" => 13,
         "physicalSensors" => 9,
@@ -93,8 +93,19 @@ abstract class Driver
     /**
     * This is the destructor
     */
-    private function __destruct()
+    public function __destruct()
     {
+    }
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        $class = get_called_class();
+        $object = new $class();
+        return $object;
     }
     /**
     * Checks to see if a piece of data exists
@@ -103,11 +114,11 @@ abstract class Driver
     *
     * @return true if the property exists, false otherwise
     */
-    public static function present($name)
+    public function present($name)
     {
-        if (isset(static::$info[$name])) {
+        if (isset($this->info[$name])) {
             return true;
-        } else if (isset(static::$_default[$name])) {
+        } else if (isset($this->_default[$name])) {
             return true;
         }
         return false;
@@ -119,12 +130,12 @@ abstract class Driver
     *
     * @return null
     */
-    public static function get($name)
+    public function get($name)
     {
-        if (isset(static::$info[$name])) {
-            return static::$info[$name];
-        } else if (isset(static::$_default[$name])) {
-            return static::$_default[$name];
+        if (isset($this->info[$name])) {
+            return $this->info[$name];
+        } else if (isset($this->_default[$name])) {
+            return $this->_default[$name];
         }
         return null;
     }
