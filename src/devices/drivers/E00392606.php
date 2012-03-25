@@ -62,7 +62,7 @@ class E00392606 extends \HUGnet\devices\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $info = array(
+    protected $params = array(
     );
     /**
     * This function creates the system.

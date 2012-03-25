@@ -99,5 +99,46 @@ class E00392101Test extends \PHPUnit_Framework_TestCase
         $o = &E00392101::factory();
         $this->assertTrue(is_a($o, "\HUGnet\devices\drivers\E00392101"));
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                null,
+            ),
+            array(
+                "packetTimeout",
+                5,
+            ),
+            array(
+                "virtualSensors",
+                0,
+            ),
+            array(
+                "sensors",
+                0,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $expect)
+    {
+        $o = &E00392101::factory();
+        $this->assertSame($expect, $o->get($name));
+    }
 }
 ?>

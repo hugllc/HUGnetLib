@@ -61,7 +61,7 @@ abstract class Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $info = array(
+    protected $params = array(
         "packetTimeout" => 6, /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
     );
@@ -231,7 +231,7 @@ abstract class Driver
     */
     public function present($name)
     {
-        if (isset($this->info[$name])) {
+        if (isset($this->params[$name])) {
             return true;
         } else if (isset($this->_default[$name])) {
             return true;
@@ -247,8 +247,8 @@ abstract class Driver
     */
     public function get($name)
     {
-        if (isset($this->info[$name])) {
-            return $this->info[$name];
+        if (isset($this->params[$name])) {
+            return $this->params[$name];
         } else if (isset($this->_default[$name])) {
             return $this->_default[$name];
         }

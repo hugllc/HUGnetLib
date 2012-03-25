@@ -62,7 +62,12 @@ class E00393700 extends \HUGnet\devices\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $info = array(
+    protected $params = array(
+        "sensors" => 13,
+        "physicalSensors" => 9,
+        "virtualSensors" => 4,
+        "historyTable" => "E00393700HistoryTable",
+        "averageTable" => "E00393700AverageTable",
     );
     /**
     * This function creates the system.

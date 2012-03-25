@@ -62,7 +62,12 @@ class EVIRTUAL extends \HUGnet\devices\Driver
     * This is where the data for the driver is stored.  This array must be
     * put into all derivative classes, even if it is empty.
     */
-    protected $info = array(
+    protected $params = array(
+        "sensors" => 20,
+        "physicalSensors" => 0,
+        "virtualSensors" => 20,
+        "historyTable" => "EVIRTUALHistoryTable",
+        "averageTable" => "EVIRTUALAverageTable",
     );
     /**
     * This function creates the system.
