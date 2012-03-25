@@ -156,6 +156,18 @@ abstract class Driver
         }
         return null;
     }
+    /**
+    * Returns the driver that should be used for a particular device
+    *
+    * @param string $HWPartNum The hardware part number
+    * @param string $FWPartNum The firmware part number
+    * @param string $RWVersion The firmware version
+    *
+    * @return string The driver to use
+    */
+    public static function getDriver($HWPartNum, $FWPartNum, $FWVersion)
+    {
+    }
 }
 
 

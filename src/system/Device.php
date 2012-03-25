@@ -126,24 +126,23 @@ class Device extends SystemTableBase
         return $this->_config;
     }
     /**
-    * This function creates the system.
+    * This creates the driver
     *
     * @param string $driver The driver to use.  Leave blank for automatic.
-    * @param string $class  The class to instantiate.  It should only be used for
-    *               testing purposes.
     *
     * @return null
     */
-    public function &driver($driver = null, $class = "\HUGnet\devices\Driver")
+    public function &driver($driver = null)
     {
         if (empty($driver)) {
-            $driver = $this->Driver;
+            $driver = $this->get("Driver");
         }
         if (empty($driver)) {
-            $driver = "EDEFAULT";
+            $driver == "EDEFAULT";
         }
         if (!is_object($this->_driverCache[$driver])) {
-            $this->_driverCache[$driver] = $class::factory($this, $driver);
+            include_once dirname(__FILE__)."/../devices/Driver.php";
+            $this->_driverCache[$driver] = &devices\Driver::factory($driver);
         }
         return $this->_driverCache[$driver];
     }

@@ -178,9 +178,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "value" => 1,
                 ),
                 "DummyTable",
-                "\HUGnet\DeviceTestDriver1",
                 "asdf",
-                "asdf",
+                "HUGnet\\devices\\drivers\\EDEFAULT",
             ),
             array(
                 new DummySystem(),
@@ -188,11 +187,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                     "id" => 5,
                     "name" => 3,
                     "value" => 1,
+                    "Driver" => "EVIRTUAL",
                 ),
                 "DummyTable",
-                "\HUGnet\DeviceTestDriver1",
-                "",
-                "EDEFAULT",
+                null,
+                "HUGnet\\devices\\drivers\\EDEFAULT",
             ),
         );
     }
@@ -202,7 +201,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @param array  $config       The configuration to use
     * @param mixed  $device       The device to set
     * @param mixed  $class        This is either the name of a class or an object
-    * @param array  $driverClass  The driver class to use
     * @param string $driver       The driver to tell it to load
     * @param string $driverExpect The driver we expect to be loaded
     *
@@ -211,10 +209,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     * @dataProvider dataDriver
     */
     public function testDriver(
-        $config, $device, $class, $driverClass, $driver, $driverExpect
+        $config, $device, $class, $driver, $driverExpect
     ) {
         $obj = Device::factory($config, $device, $class);
-        $this->assertEquals($obj, $obj->driver($driver, $driverClass)->device);
+        $this->assertSame($driverExpect, get_class($obj->driver($driver)));
         unset($obj);
     }
     /**
