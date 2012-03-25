@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DevConfig
+class Config
 {
     /** Where in the config string the hardware part number starts  */
     const HW_START = 10;
@@ -106,7 +106,7 @@ class DevConfig
     */
     public static function &factory(&$table)
     {
-        $obj = new DevConfig($table);
+        $obj = new Config($table);
         return $obj;
     }
     /**

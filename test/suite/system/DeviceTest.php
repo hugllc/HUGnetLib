@@ -259,7 +259,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $config->resetMock($mocks);
         $obj = Device::factory($config, $device, $class);
         $this->assertEquals(
-            "HUGnet\devices\DevNet", get_class($obj->network()), "Wrong Class"
+            "HUGnet\devices\Network", get_class($obj->network()), "Wrong Class"
         );
         $this->assertSame($obj->network(), $obj->network(), "Wrong Object Returned");
         unset($obj);
@@ -303,7 +303,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $config->resetMock($mocks);
         $obj = Device::factory($config, $device, $class);
         $this->assertEquals(
-            "HUGnet\devices\DevConfig", get_class($obj->config()), "Wrong Class"
+            "HUGnet\devices\Config", get_class($obj->config()), "Wrong Class"
         );
         $this->assertSame($obj->config(), $obj->config(), "Wrong Object Returned");
         unset($obj);

@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'devices/DevNet.php';
+require_once CODE_BASE.'devices/Network.php';
 /** This is a required class */
 require_once CODE_BASE.'network/Packet.php';
 /** This is a required class */
@@ -62,7 +62,7 @@ require_once CODE_BASE.'util/VPrint.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DevNetTest extends \PHPUnit_Framework_TestCase
+class NetworkTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -158,7 +158,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->poll($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -235,7 +235,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->config($callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -336,7 +336,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->getCRC($config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -437,7 +437,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->setCRC($config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -573,7 +573,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->runBootloader($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -709,7 +709,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->runApplication($config);
         $this->assertSame($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -848,7 +848,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->writeFlash($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -987,7 +987,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->writeE2($address, $data, $callback, $config);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1320,7 +1320,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->writeFlashBuffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();
@@ -1653,7 +1653,7 @@ class DevNetTest extends \PHPUnit_Framework_TestCase
         $net   = new \HUGnet\network\DummyNetwork("Network");
         $table = new \HUGnet\DummyTable();
         $net->resetMock($mocks);
-        $devnet = &DevNet::factory($net, $table);
+        $devnet = &Network::factory($net, $table);
         $ret = $devnet->writeE2Buffer($data, $address, $chunkSize, $empty);
         $this->assertEquals($return, $ret,  "Return Wrong");
         $ret = $net->retrieve();

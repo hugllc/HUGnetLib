@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'devices/DevDriver.php';
+require_once CODE_BASE.'devices/Driver.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -58,7 +58,7 @@ require_once CODE_BASE.'util/VPrint.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DevDriverTest extends \PHPUnit_Framework_TestCase
+class DriverTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -118,7 +118,7 @@ class DevDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testPresent($name, $expect)
     {
-        $this->assertSame($expect, DevDriver::present($name));
+        $this->assertSame($expect, Driver::present($name));
     }
     /**
     * data provider for testDeviceID
@@ -154,7 +154,7 @@ class DevDriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $expect)
     {
-        $this->assertSame($expect, DevDriver::get($name));
+        $this->assertSame($expect, Driver::get($name));
     }
 }
 ?>

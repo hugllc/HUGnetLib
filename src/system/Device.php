@@ -102,8 +102,8 @@ class Device extends SystemTableBase
     public function &network()
     {
         if (!is_object($this->_network)) {
-            include_once dirname(__FILE__)."/../devices/DevNet.php";
-            $this->_network = \HUGnet\devices\DevNet::factory(
+            include_once dirname(__FILE__)."/../devices/Network.php";
+            $this->_network = \HUGnet\devices\Network::factory(
                 $this->system()->network(),
                 $this->table()
             );
@@ -118,8 +118,8 @@ class Device extends SystemTableBase
     public function &config()
     {
         if (!is_object($this->_config)) {
-            include_once dirname(__FILE__)."/../devices/DevConfig.php";
-            $this->_config = \HUGnet\devices\DevConfig::factory(
+            include_once dirname(__FILE__)."/../devices/Config.php";
+            $this->_config = \HUGnet\devices\Config::factory(
                 $this->table()
             );
         }

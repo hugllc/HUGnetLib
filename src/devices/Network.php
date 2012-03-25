@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class DevNet
+class Network
 {
     /**
     * This is the system object
@@ -106,7 +106,7 @@ class DevNet
     */
     public static function &factory(&$network, &$table)
     {
-        $object = new DevNet($network, $table);
+        $object = new Network($network, $table);
         return $object;
     }
     /**

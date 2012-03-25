@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-abstract class DevDriver
+abstract class Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be

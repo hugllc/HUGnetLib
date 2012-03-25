@@ -36,7 +36,7 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices;
 /** This is a required class */
-require_once CODE_BASE.'devices/DevConfig.php';
+require_once CODE_BASE.'devices/Config.php';
 /** This is a required class */
 require_once CODE_BASE.'system/System.php';
 /** This is a required class */
@@ -58,7 +58,7 @@ require_once CODE_BASE.'util/VPrint.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class DevConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
     * Sets up the fixture, for example, opens a network connection.
@@ -232,7 +232,7 @@ class DevConfigTest extends \PHPUnit_Framework_TestCase
     {
         $table = new \HUGnet\DummyTable();
         $table->resetMock($mocks);
-        $obj = DevConfig::factory($table);
+        $obj = Config::factory($table);
         $obj->decode($string);
         $ret = $table->retrieve();
         $this->assertSame($expect, $ret);
@@ -336,7 +336,7 @@ class DevConfigTest extends \PHPUnit_Framework_TestCase
     {
         $table = new \HUGnet\DummyTable();
         $table->resetMock($mocks);
-        $obj = DevConfig::factory($table);
+        $obj = Config::factory($table);
         $ret = $obj->encode();
         $this->assertSame($expect, $ret);
     }

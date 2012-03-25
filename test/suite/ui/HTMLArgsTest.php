@@ -128,6 +128,7 @@ class HTMLArgsTest extends \PHPUnit_Framework_TestCase
                     "ilong" => "asdf",
                     "jlong" => "1234",
                     "klong" => "wwww",
+                    "file"  => null,
                 ),
                 "",
             ),
