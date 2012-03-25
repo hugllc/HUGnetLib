@@ -203,6 +203,88 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $o = &Driver::factory($name);
         $this->assertSame($expect, get_class($o));
     }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGetDriver()
+    {
+        return array(
+            array(
+                "0039-12-02-C",
+                "0039-38-01-C",
+                "5.6.7",
+                "E00391200",
+            ),
+            array(
+                "0039-11-02-C",
+                "0039-38-01-C",
+                "5.6.7",
+                "EDEFAULT",
+            ),
+            array(
+                "0039-24-02-P",
+                "0039-24-02-P",
+                "5.6.7",
+                "EVIRTUAL",
+            ),
+            array(
+                "0039-12-02-C",
+                "0039-13-01-C",
+                "5.6.7",
+                "E00391200",
+            ),
+            array(
+                "0039-21-01-A",
+                "0039-38-02-C",
+                "5.6.7",
+                "E00392101",
+            ),
+            array(
+                "0039-21-02-A",
+                "0039-38-02-C",
+                "5.6.7",
+                "E00392101",
+            ),
+            array(
+                "0039-21-01-A",
+                "0039-38-01-C",
+                "5.6.7",
+                "E00392100",
+            ),
+            array(
+                "0039-21-02-A",
+                "0039-38-01-C",
+                "5.6.7",
+                "E00392100",
+            ),
+            array(
+                "0039-37-01-A",
+                "0039-38-02-C",
+                "5.6.7",
+                "E00393700",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $HWPartNum The hardware part number
+    * @param string $FWPartNum The firmware part number
+    * @param string $RWVersion The firmware version
+    * @param array  $expect    The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGetDriver
+    */
+    public function testGetDriver($HWPartNum, $FWPartNum, $FWVersion, $expect)
+    {
+        $this->assertSame(
+            $expect, Driver::getDriver($HWPartNum, $FWPartNum, $FWVersion)
+        );
+    }
 }
 /**
  * Base driver class for devices.

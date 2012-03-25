@@ -78,6 +78,102 @@ abstract class Driver
         "loadable" => false,
     );
     /**
+    * This is where all of the driver information is stored.
+    *
+    * Drivers must be registered here, otherwise they will never get loaded.  The
+    * index in the root array is the driver name.  It should be exactly the same
+    * as the driver class name.
+    */
+    private static $_drivers = array(
+        "E00391200" => array(
+            "0039-11-02-B:0039-12-00-A:DEFAULT",
+            "0039-11-02-B:0039-12-01-A:DEFAULT",
+            "0039-11-02-B:0039-12-02-A:DEFAULT",
+            "0039-11-02-B:0039-12-01-B:DEFAULT",
+            "0039-11-02-B:0039-12-02-B:DEFAULT",
+            "0039-11-03-B:0039-12-00-A:DEFAULT",
+            "0039-11-03-B:0039-12-01-A:DEFAULT",
+            "0039-11-03-B:0039-12-02-A:DEFAULT",
+            "0039-11-03-B:0039-12-01-B:DEFAULT",
+            "0039-11-03-B:0039-12-02-B:DEFAULT",
+            "0039-20-02-C:0039-12-02-A:DEFAULT",
+            "0039-20-02-C:0039-12-02-B:DEFAULT",
+            "0039-20-03-C:0039-12-02-A:DEFAULT",
+            "0039-20-03-C:0039-12-02-B:DEFAULT",
+            "0039-20-07-C:0039-12-02-A:DEFAULT",
+            "0039-20-07-C:0039-12-02-B:DEFAULT",
+            "0039-20-17-C:0039-12-02-C:DEFAULT",
+            "0039-38-01-C:0039-12-02-C:DEFAULT",
+            "DEFAULT:0039-12-00-A:DEFAULT",
+            "DEFAULT:0039-12-01-A:DEFAULT",
+            "DEFAULT:0039-12-02-A:DEFAULT",
+            "DEFAULT:0039-12-01-B:DEFAULT",
+            "DEFAULT:0039-12-02-B:DEFAULT",
+            "DEFAULT:0039-12-02-C:DEFAULT",
+        ),
+        "E00391201" => array(
+            "0039-11-06-A:0039-12-01-B:DEFAULT",
+            "0039-11-06-A:0039-12-02-B:DEFAULT",
+            "0039-11-07-A:0039-12-01-B:DEFAULT",
+            "0039-11-07-A:0039-12-02-B:DEFAULT",
+            "0039-11-08-A:0039-12-01-B:DEFAULT",
+            "0039-11-08-A:0039-12-02-B:DEFAULT",
+            "0039-20-04-C:0039-12-02-B:DEFAULT",
+            "0039-20-05-C:0039-12-02-B:DEFAULT",
+        ),
+        "E00392100" => array(
+            "0039-20-01-C:0039-21-01-A:DEFAULT",
+            "0039-20-14-C:0039-21-02-A:DEFAULT",
+            "0039-38-01-C:0039-21-01-A:DEFAULT",
+            "0039-38-01-C:0039-21-02-A:DEFAULT",
+        ),
+        "E00392101" => array(
+            "0039-20-06-C:0039-21-01-A:DEFAULT",
+            "0039-20-15-C:0039-21-02-A:DEFAULT",
+            "0039-20-16-C:0039-21-02-A:DEFAULT",
+            "0039-38-02-C:0039-21-01-A:DEFAULT",
+            "0039-38-02-C:0039-21-02-A:DEFAULT",
+        ),
+        "E00392600" => array(
+            "DEFAULT:0039-26-00-P:DEFAULT",
+            "DEFAULT:0039-26-01-P:DEFAULT",
+            "DEFAULT:0039-26-02-P:DEFAULT",
+            "DEFAULT:0039-26-03-P:DEFAULT",
+            "DEFAULT:0039-26-04-P:DEFAULT",
+            "DEFAULT:0039-26-05-P:DEFAULT",
+            "DEFAULT:0039-26-07-P:DEFAULT",
+        ),
+        "E00392606" => array(
+            "DEFAULT:0039-26-06-P:DEFAULT",
+        ),
+        "E00392800" => array(
+            "0039-20-12-C:0039-28-01-A:DEFAULT",
+            "0039-20-12-C:0039-28-01-B:DEFAULT",
+            "0039-20-12-C:0039-28-01-C:DEFAULT",
+            "0039-20-13-C:0039-28-01-A:DEFAULT",
+            "0039-20-13-C:0039-28-01-B:DEFAULT",
+            "0039-20-13-C:0039-28-01-C:DEFAULT",
+            "0039-38-01-C:0039-28-01-A:DEFAULT",
+            "0039-38-01-C:0039-28-01-B:DEFAULT",
+            "0039-38-01-C:0039-28-01-C:DEFAULT",
+            "DEFAULT:0039-28-01-A:DEFAULT",
+            "DEFAULT:0039-28-01-B:DEFAULT",
+            "DEFAULT:0039-28-01-C:DEFAULT",
+        ),
+        "E00392801" => array(
+            "0039-20-18-C:0039-28-01-A:DEFAULT",
+            "0039-20-18-C:DEFAULT:DEFAULT",
+        ),
+        "E00393700" => array(
+            "0039-38-01-C:0039-37-01-A:DEFAULT",
+            "DEFAULT:0039-37-01-A:DEFAULT",
+        ),
+        "EVIRTUAL" => array(
+            "DEFAULT:VIRTUAL:DEFAULT",
+            "DEFAULT:0039-24-02-P:DEFAULT",
+        ),
+    );
+    /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
@@ -119,7 +215,9 @@ abstract class Driver
         $file = dirname(__FILE__)."/drivers/".$driver.".php";
         if (file_exists($file) || class_exists($class)) {
             include_once $file;
-            return $class::factory();
+            if (class_exists($class)) {
+                return $class::factory();
+            }
         }
         include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
         return \HUGnet\devices\drivers\EDEFAULT::factory();
@@ -167,6 +265,21 @@ abstract class Driver
     */
     public static function getDriver($HWPartNum, $FWPartNum, $FWVersion)
     {
+        $try = array(
+            $FWPartNum.":".$HWPartNum.":".$FWVersion,
+            $FWPartNum.":".$HWPartNum.":DEFAULT",
+            "DEFAULT:".$HWPartNum.":DEFAULT",
+            $FWPartNum.":DEFAULT:".$FWVersion,
+            $FWPartNum.":DEFAULT:DEFAULT",
+        );
+        foreach ($try as $mask) {
+            foreach (self::$_drivers as $driver => $stuff) {
+                if (in_array($mask, $stuff)) {
+                    return $driver;
+                }
+            }
+        }
+        return "EDEFAULT";
     }
 }
 
