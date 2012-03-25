@@ -32,7 +32,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\cli;
+namespace HUGnet\ui;
 /** This is our system class */
 require_once dirname(__FILE__)."/../system/System.php";
 
@@ -103,7 +103,7 @@ class CLI
     protected function setConfig(&$config)
     {
         if (is_object($config)) {
-            if (is_a($config, "HUGnet\cli\Args")) {
+            if (is_a($config, "HUGnet\ui\Args")) {
                 $this->_config = $config->config();
             } else {
                 // Whatever it is, use it as our system object

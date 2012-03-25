@@ -32,7 +32,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\cli;
+namespace HUGnet\ui;
 /** This is our base class */
 require_once dirname(__FILE__)."/CLI.php";
 

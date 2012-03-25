@@ -34,9 +34,9 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\cli;
+namespace HUGnet\ui;
 /** This is a required class */
-require_once CODE_BASE.'cli/Args.php';
+require_once CODE_BASE.'ui/Args.php';
 require_once CODE_BASE.'util/VPrint.php';
 /**
  * Test class for HUGnetDB.

@@ -34,7 +34,7 @@
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
 /** This is the HUGnet namespace */
-namespace HUGnet\cli;
+namespace HUGnet\ui;
 /**
  * This code interprets command line arguments
  *
