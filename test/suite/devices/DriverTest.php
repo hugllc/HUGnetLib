@@ -104,6 +104,10 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "testParam",
                 true,
             ),
+            array(
+                "virtualSensors",
+                true,
+            ),
         );
     }
     /**
@@ -118,7 +122,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testPresent($name, $expect)
     {
-        $o = &Driver::factory();
+        $o = &DriverTestClass::factory();
         $this->assertSame($expect, $o->present($name));
     }
     /**
@@ -141,6 +145,10 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "testParam",
                 "12345",
             ),
+            array(
+                "virtualSensors",
+                4,
+            ),
         );
     }
     /**
@@ -155,8 +163,73 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $expect)
     {
-        $o = &Driver::factory();
+        $o = &DriverTestClass::factory();
         $this->assertSame($expect, $o->get($name));
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataFactory()
+    {
+        return array(
+            array(
+                "asdf",
+                "HUGnet\devices\drivers\EDEFAULT",
+            ),
+            array(
+                "EDEFAULT",
+                "HUGnet\devices\drivers\EDEFAULT",
+            ),
+            array(
+                "EVIRTUAL",
+                "HUGnet\devices\drivers\EVIRTUAL",
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataFactory
+    */
+    public function testFactory($name, $expect)
+    {
+        $o = &Driver::factory($name);
+        $this->assertSame($expect, get_class($o));
+    }
+}
+/**
+ * Base driver class for devices.
+ *
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
+ *
+ * @category   Libraries
+ * @package    HUGnetLib
+ * @subpackage Devices
+ * @author     Scott Price <prices@hugllc.com>
+ * @copyright  2012 Hunt Utilities Group, LLC
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version    Release: 0.9.7
+ * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
+ * @since      0.9.7
+ */
+class DriverTestClass extends Driver
+{
+    /**
+    * This function creates the system.
+    *
+    * @return null
+    */
+    public static function &factory()
+    {
+        return parent::intFactory();
     }
 }
 ?>

@@ -40,23 +40,22 @@ namespace HUGnet\devices;
 defined('_HUGNET') or die('HUGnetSystem not found');
 
 /**
- * Networking for devices.
+ * Base driver class for devices.
  *
- * This class will do all of the networking for devices.  It will poll, get configs,
- * update software, and anything else related to talking to devices.
+ * This class deals with loading the drivers and figuring out what driver needs
+ * to be loaded.
  *
  * @category   Libraries
  * @package    HUGnetLib
  * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
- * @copyright  2009 Scott Price
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Driver
+abstract class Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -101,11 +100,29 @@ class Driver
     *
     * @return null
     */
-    public static function &factory()
+    protected static function &intFactory()
     {
         $class = get_called_class();
         $object = new $class();
         return $object;
+    }
+    /**
+    * This function creates the system.
+    *
+    * @param string $driver The driver to load
+    *
+    * @return null
+    */
+    public static function &factory($driver)
+    {
+        $class = '\\HUGnet\\devices\\drivers\\'.$driver;
+        $file = dirname(__FILE__)."/drivers/".$driver.".php";
+        if (file_exists($file) || class_exists($class)) {
+            include_once $file;
+            return $class::factory();
+        }
+        include_once dirname(__FILE__)."/drivers/EDEFAULT.php";
+        return \HUGnet\devices\drivers\EDEFAULT::factory();
     }
     /**
     * Checks to see if a piece of data exists

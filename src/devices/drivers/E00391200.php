@@ -71,7 +71,7 @@ class E00391200 extends \HUGnet\devices\Driver
     */
     public static function &factory()
     {
-        return parent::factory();
+        return parent::intFactory();
     }
 
 }

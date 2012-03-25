@@ -71,7 +71,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
     */
     public static function &factory()
     {
-        return parent::factory();
+        return parent::intFactory();
     }
 
 }
