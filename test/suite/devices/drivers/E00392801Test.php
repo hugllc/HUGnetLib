@@ -36,15 +36,9 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\drivers;
 /** This is the base class */
-require_once CODE_BASE."/devices/Driver.php";
+require_once dirname(__FILE__)."/DriverTestBase.php";
 /** This is a required class */
 require_once CODE_BASE.'devices/drivers/E00392801.php';
-/** This is a required class */
-require_once CODE_BASE.'system/System.php';
-/** This is a required class */
-require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
-/** This is a required class */
-require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for HUGnetDB.
@@ -60,8 +54,10 @@ require_once CODE_BASE.'util/VPrint.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class E00392801Test extends \PHPUnit_Framework_TestCase
+class E00392801Test extends DriverTestBase
 {
+    /** This is the class we are testing */
+    protected $class = "E00392801";
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -72,6 +68,8 @@ class E00392801Test extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        parent::setUp();
+        $this->o = &E00392801::factory();
     }
 
     /**
@@ -84,21 +82,9 @@ class E00392801Test extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        parent::tearDown();
     }
 
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    */
-    public function testFactory()
-    {
-        $o = &E00392801::factory();
-        $this->assertTrue(is_a($o, "\HUGnet\devices\drivers\E00392801"));
-    }
     /**
     * data provider for testDeviceID
     *
@@ -124,21 +110,6 @@ class E00392801Test extends \PHPUnit_Framework_TestCase
                 20,
             ),
         );
-    }
-    /**
-    * test the set routine when an extra class exists
-    *
-    * @param string $name   The name of the variable to test.
-    * @param array  $expect The expected return
-    *
-    * @return null
-    *
-    * @dataProvider dataGet
-    */
-    public function testGet($name, $expect)
-    {
-        $o = &E00392801::factory();
-        $this->assertSame($expect, $o->get($name));
     }
 }
 ?>

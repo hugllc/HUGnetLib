@@ -36,9 +36,13 @@
 /** This is the HUGnet namespace */
 namespace HUGnet\devices\drivers;
 /** This is the base class */
-require_once dirname(__FILE__)."/DriverTestBase.php";
+require_once CODE_BASE."/devices/Driver.php";
 /** This is a required class */
-require_once CODE_BASE.'devices/drivers/EDEFAULT.php';
+require_once CODE_BASE.'system/System.php';
+/** This is a required class */
+require_once TEST_CONFIG_BASE.'stubs/DummyTable.php';
+/** This is a required class */
+require_once CODE_BASE.'util/VPrint.php';
 
 /**
  * Test class for HUGnetDB.
@@ -54,10 +58,13 @@ require_once CODE_BASE.'devices/drivers/EDEFAULT.php';
  * @version    Release: 0.9.7
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  */
-class EDEFAULTTest extends DriverTestBase
+abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
 {
     /** This is the class we are testing */
-    protected $class = "EDEFAULT";
+    protected $class = "";
+    /** This is the object we are testing */
+    protected $o = null;
+
     /**
     * Sets up the fixture, for example, opens a network connection.
     * This method is called before a test is executed.
@@ -68,8 +75,6 @@ class EDEFAULTTest extends DriverTestBase
     */
     protected function setUp()
     {
-        parent::setUp();
-        $this->o = &EDEFAULT::factory();
     }
 
     /**
@@ -82,8 +87,50 @@ class EDEFAULTTest extends DriverTestBase
     */
     protected function tearDown()
     {
-        parent::tearDown();
+        unset($this->o);
     }
 
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    */
+    public function testFactory()
+    {
+        $this->assertSame(
+            "HUGnet\devices\drivers\\".$this->class, get_class($this->o)
+        );
+    }
+    /**
+    * data provider for testDeviceID
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                "ThisIsABadName",
+                null,
+            ),
+        );
+    }
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param string $name   The name of the variable to test.
+    * @param array  $expect The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet($name, $expect)
+    {
+        $this->assertSame($expect, $this->o->get($name));
+    }
 }
 ?>
