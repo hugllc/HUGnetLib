@@ -93,6 +93,21 @@ class Device extends SystemTableBase
         $object = &parent::factory($system, $data, $table);
         return $object;
     }
+    /**
+    * Gets a value
+    *
+    * @param string $field the field to get
+    *
+    * @return null
+    */
+    public function get($field)
+    {
+        $ret = $this->driver()->get($field);
+        if (is_null($ret)) {
+            $ret = $this->table()->get($field);
+        }
+        return $ret;
+    }
 
     /**
     * This function creates the system.
@@ -135,7 +150,7 @@ class Device extends SystemTableBase
     public function &driver($driver = null)
     {
         if (empty($driver)) {
-            $driver = $this->get("Driver");
+            $driver = $this->table()->get("Driver");
         }
         if (empty($driver)) {
             $driver == "EDEFAULT";
@@ -146,7 +161,17 @@ class Device extends SystemTableBase
         }
         return $this->_driverCache[$driver];
     }
+    /**
+    * This creates the sensor drivers
+    *
+    * @param int $sid The sensor id to get.  They are labaled 0 to sensors
+    *
+    * @return null
+    */
+    public function &sensor($sid)
+    {
 
+    }
 }
 
 

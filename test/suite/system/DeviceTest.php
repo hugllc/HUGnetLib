@@ -306,6 +306,63 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($obj->config(), $obj->config(), "Wrong Object Returned");
         unset($obj);
     }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataGet()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "id",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "packetTimeout",
+                5,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGet
+    */
+    public function testGet(
+        $config, $class, $field, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->get($field));
+        unset($obj);
+    }
 }
 
 /**
