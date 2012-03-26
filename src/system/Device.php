@@ -40,6 +40,8 @@ namespace HUGnet;
 defined('_HUGNET') or die('HUGnetSystem not found');
 /** This is our base class */
 require_once dirname(__FILE__)."/../base/SystemTableBase.php";
+/** This the driver class we use */
+require_once dirname(__FILE__)."/../devices/Driver.php";
 
 /**
  * Base system class.
@@ -115,12 +117,20 @@ class Device extends SystemTableBase
     */
     public function json()
     {
-        return json_encode(
-            array_merge(
-                $this->driver()->toArray(),
-                $this->table()->toArray(true)
-            )
+        $return = array_merge(
+            $this->driver()->toArray(),
+            $this->table()->toArray(true)
         );
+        if (is_string($return["sensors"])) {
+            $return["sensors"] = unserialize(base64_decode($return["sensors"]));
+        }
+        $params = json_decode($return["params"], true);
+        if (!is_array($params)) {
+            $params = unserialize(base64_decode($return["params"]));
+            $params = $params["DriverInfo"];
+        }
+        $return["params"] = $params;
+        return json_encode($return);
     }
 
     /**
@@ -134,7 +144,7 @@ class Device extends SystemTableBase
             include_once dirname(__FILE__)."/../devices/Network.php";
             $this->_network = \HUGnet\devices\Network::factory(
                 $this->system()->network(),
-                $this->table()
+                $this
             );
         }
         return $this->_network;
@@ -164,7 +174,7 @@ class Device extends SystemTableBase
     public function &driver($driver = null)
     {
         if (empty($driver)) {
-            $driver = $this->table()->get("Driver");
+            $driver = strtoupper($this->table()->get("Driver"));
         }
         if (empty($driver)) {
             $driver == "EDEFAULT";
@@ -230,6 +240,29 @@ class Device extends SystemTableBase
         $params = json_decode($params, true);
         $params[$field] = $value;
         return $this->table()->set("params", json_encode($params));
+    }
+    /**
+    * Loads the data into the table class
+    *
+    * @param mixed $data (int)The id of the record,
+    *                    (array) or (string) data info array
+    *
+    * @return null
+    */
+    public function load($data)
+    {
+        $ret = parent::load($data);
+        if ($ret) {
+            $this->table()->set(
+                "Driver",
+                \HUGnet\devices\Driver::getDriver(
+                    $this->table()->get("HWPartNum"),
+                    $this->table()->get("FWPartNum"),
+                    $this->table()->get("FWVersion")
+                )
+            );
+        }
+        return $ret;
     }
 }
 

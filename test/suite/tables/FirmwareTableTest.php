@@ -310,7 +310,7 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
                     "Target" => "mega16",
                 ),
                 sys_get_temp_dir(),
-                "00392001C-1.2.3.gz",
+                "003921-00392001C-1.2.3.gz",
                 true,
             ),
             array(
@@ -371,11 +371,11 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(
                 // Everything works
                 TEST_CONFIG_BASE."files",
-                "MD5 (00392001C-00.01.04.gz) = 84b01697b6fbc32c457d3b9815585fe0",
+                "MD5 (003921-00392001C-00.01.04.gz) = 84b01697b6fbc32c457d3b9815585fe0",
                 true,
                 array(
                     "group" => "default",
-                    "filename" => "00392001C-00.01.04.gz",
+                    "filename" => "003921-00392001C-00.01.04.gz",
                     "id" => "37",
                     "Version" => "0.1.4",
                     "CodeHash" => "14c1839ee1c69da903a49165693d8ff2",
@@ -394,11 +394,11 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(
                 // Everything works
                 TEST_CONFIG_BASE."files",
-                "00392001C-00.01.04.gz",
+                "003921-00392001C-00.01.04.gz",
                 true,
                 array(
                     "group" => "default",
-                    "filename" => "00392001C-00.01.04.gz",
+                    "filename" => "003921-00392001C-00.01.04.gz",
                     "id" => "37",
                     "Version" => "0.1.4",
                     "CodeHash" => "14c1839ee1c69da903a49165693d8ff2",
@@ -417,7 +417,8 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array(
                 // Bad MD5
                 TEST_CONFIG_BASE."files",
-                "MD5 (00392001C-00.01.04.gz) = bd2dd61d3ef24bfab9d40c8791f3b18b",
+                "MD5 (003928-00392001C-00.01.04.gz) = "
+                ."bd2dd61d3ef24bfab9d40c8791f3b18b",
                 false,
                 array(
                 ),
@@ -484,13 +485,14 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
             array("FWPartNum", "34523442350039-21-04-C", "0039-21-04-C"),
             array(
                 "filename",
-                "MD5 (00392001C-00.00.07.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
-                "00392001C-00.00.07.gz"
+                "MD5 (003921-00392001C-00.00.07.gz) = "
+                ."104e9ba35ebb82e6c70a9909e375b8be",
+                "003921-00392001C-00.00.07.gz"
             ),
             array(
                 "filename",
-                "00392001C-00.00.07.gz",
-                "00392001C-00.00.07.gz"
+                "003921-00392001C-00.00.07.gz",
+                "003921-00392001C-00.00.07.gz"
             ),
         );
     }
@@ -561,21 +563,24 @@ class FirmwareTableTest extends HUGnetDBTableTestBase
     public static function dataCheckFile()
     {
         return array(
-            array(array(), "00392001C-01.02.03.gz", true),
+            array(array(), "003921-00392001C-01.02.03.gz", true),
             array(
                 array(),
-                "MD5 (00392001C-00.00.07.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
+                "MD5 (003921-00392001C-00.00.07.gz) = "
+                ."104e9ba35ebb82e6c70a9909e375b8be",
                 false,
             ),
             array(
                 array(),
-                "MD5 (00392001C-01.02.03.gz) = 104e9ba35ebb82e6c70a9909e375b8be",
+                "MD5 (003921-00392001C-01.02.03.gz) = "
+                ."104e9ba35ebb82e6c70a9909e375b8be",
                 true,
             ),
             // Wrong md5
             array(
                 array(),
-                "MD5 (00392001C-01.02.03.gz) = 104e9ba35ebb82e6c70a9909e375b8bf",
+                "MD5 (003921-00392001C-01.02.03.gz) = "
+                ."104e9ba35ebb82e6c70a9909e375b8bf",
                 false,
             ),
         );

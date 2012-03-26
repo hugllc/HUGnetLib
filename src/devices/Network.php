@@ -65,7 +65,7 @@ class Network
     /**
     * This is the cache object
     */
-    private $_table = null;
+    private $_device = null;
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
@@ -75,7 +75,7 @@ class Network
     *
     * @return null
     */
-    private function __construct(&$network, &$table)
+    private function __construct(&$network, &$device)
     {
         \HUGnet\System::exception(
             get_class($this)." needs to be passed a network object",
@@ -83,12 +83,12 @@ class Network
             !is_object($network)
         );
         \HUGnet\System::exception(
-            get_class($this)." needs to be passed a table object",
+            get_class($this)." needs to be passed a device object",
             "InvalidArgument",
-            !is_object($table)
+            !is_object($device)
         );
         $this->_network = &$network;
-        $this->_table   = &$table;
+        $this->_device  = &$device;
     }
     /**
     * This is the destructor
@@ -282,6 +282,54 @@ class Network
         );
     }
     /**
+    * Writes a data buffer to the Flash
+    *
+    * @param FirmwareTable $firmware The data to write
+    *
+    * @return success or failure of the packet sending
+    */
+    public function loadFirmware(FirmwareTable &$firmware)
+    {
+
+        VPrint::out("Running the bootloader...  ", 1);
+        if (!$this->runBootloader()) {
+            return false;
+        }
+        VPrint::out("Getting the bootloader configuration...  ", 1);
+        $bootConfig = $this->config();
+        if (!is_object($bootConfig) || is_null($bootConfig->Reply())) {
+            return false;
+        }
+        VPrint::out("Writing the code...\n", 1);
+        $code = $this->writeFlashBuffer(
+            $firmware->getCode()
+        );
+        if (!$code) {
+            return false;
+        }
+        /* Data is not required */
+        if (strlen($firmware->getData()) > 0) {
+            VPrint::out("Writing the data...\n", 1);
+            $data = $this->writeE2Buffer(
+                $firmware->getData(), 0
+            );
+            if (!$data) {
+                return false;
+            }
+        }
+        VPrint::out("Setting the CRC...  ", 1);
+        $crc = $this->setCRC();
+        if ($crc === false) {
+            return false;
+        }
+
+        VPrint::out("Running the application...  ", 1);
+        if (!$this->runApplication()) {
+            return false;
+        }
+        return true;
+}
+    /**
     * Polls the device in question
     *
     * @param string $command  The command to send the packet with
@@ -303,7 +351,7 @@ class Network
             $config["block"] = true;
         }
         $pkt = array(
-            "To" => $this->_table->get("id"),
+            "To" => $this->_device->get("id"),
             "Command" => $command,
         );
         if (!is_null($data) && (is_array($data) || is_string($data))) {
@@ -366,7 +414,7 @@ class Network
         if (strlen($buffer) > 0) {
             $buffer = str_split($buffer, $chunkSize*2);
             $pages = count($buffer);
-            $devID = $this->_table->get("id");
+            $devID = $this->_device->get("id");
             foreach ($buffer as $page => $data) {
                 $data = str_pad($data, $chunkSize*2, $empty);
                 $addr = $start + ($page * $chunkSize);

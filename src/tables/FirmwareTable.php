@@ -202,7 +202,7 @@ class FirmwareTable extends HUGnetDBTable
         "Version" => array(
             "Name" => "Version",
             "Unique" => true,
-            "Columns" => array("FWPartNum", "Version")
+            "Columns" => array("HWPartNum", "FWPartNum", "Version")
         ),
     );
 
@@ -320,7 +320,9 @@ class FirmwareTable extends HUGnetDBTable
     */
     public function toFile($path = ".")
     {
-        $filename  = str_replace("-", "", $this->FWPartNum)."-".$this->Version.".gz";
+        $filename  = str_replace("-", "", $this->HWPartNum);
+        $filename .= "-".str_replace("-", "", $this->FWPartNum);
+        $filename .= "-".$this->Version.".gz";
         return (bool)file_put_contents(
             $path."/".$filename,
             gzencode((string)$this)
@@ -364,10 +366,15 @@ class FirmwareTable extends HUGnetDBTable
     {
         $this->clearData();
         $this->filename = $filename;
-        $this->FWPartNum = substr($this->filename, 0, 9);
-        $this->Version = substr($this->filename, 10, 8);
-        $where = "`FWPartNum` = ? AND `Version` = ?";
-        $data = array($this->FWPartNum, $this->Version);
+        if (is_null($this->filename)) {
+            return false;
+        }
+        $fname = explode("-", $this->filename);
+        $this->HWPartNum = $fname[0];
+        $this->FWPartNum = $fname[1];
+        $this->Version = $fname[2];
+        $where = "`HWPartNum` = ? AND `FWPartNum` = ? AND `Version` = ?";
+        $data = array($this->HWPartNum, $this->FWPartNum, $this->Version);
         if (!empty($this->md5)) {
             $where .= " AND `md5` = ?";
             $data[] = $this->md5;
@@ -464,7 +471,7 @@ class FirmwareTable extends HUGnetDBTable
     {
         if (substr($value, 0, 3) == "MD5") {
             preg_match(
-                "/[0-9]{8}[A-Z]{1}\-[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}.gz/",
+                "/([0-9]{6,8}\-){1}[0-9]{8}[A-Z]{1}\-[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}.gz/",
                 $value,
                 $match
             );

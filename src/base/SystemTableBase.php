@@ -217,6 +217,18 @@ abstract class SystemTableBase
     {
         return $this->table()->set($field, $value);
     }
+    /**
+    * Lists the ids of the table values
+    *
+    * @param string $where The where clause
+    * @param array  $data  The data to use with the where clause
+    *
+    * @return null
+    */
+    public function ids($where = "1", $data = array())
+    {
+        return $this->table()->selectIDs($where, $data);
+    }
 }
 
 

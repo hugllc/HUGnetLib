@@ -96,7 +96,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(new DummySystem(), null, "DummyTable", null),
-            array(new DummySystem(), null, "DummyTable", null),
             array(
                 new DummySystem(),
                 array(
@@ -115,6 +114,14 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                                     "value" => 1,
                                 ),
                             ),
+                        ),
+                        "get" => array(
+                            array("HWPartNum"),
+                            array("FWPartNum"),
+                            array("FWVersion"),
+                        ),
+                        "set" => array(
+                            array("Driver", "EDEFAULT"),
                         ),
                     ),
                 ),
@@ -382,6 +389,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         "toArray" => array(
                             "id" => 2,
                             "asdf" => 3,
+                            "params" => json_encode(array(1,2,3,4)),
                         ),
                     ),
                 ),
@@ -397,6 +405,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'loadable' => false,
                         'id' => 2,
                         'asdf' => 3,
+                        'params' => array(1,2,3,4),
                     )
                 ),
             ),
@@ -419,7 +428,8 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $sys = new DummySystem("System");
         $sys->resetMock($config);
         $obj = Device::factory($sys, null, $class);
-        $this->assertSame($expect, $obj->json());
+        $json = $obj->json();
+        $this->assertSame($expect, $json);
         unset($obj);
     }
     /**
