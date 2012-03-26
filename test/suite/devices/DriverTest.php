@@ -167,6 +167,26 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $o->get($name));
     }
     /**
+    * test the set routine when an extra class exists
+    *
+    * @return null
+    */
+    public function testToArray()
+    {
+        $expect = array(
+            'packetTimeout' => 6,
+            'sensors' => 13,
+            'physicalSensors' => 9,
+            'virtualSensors' => 4,
+            'historyTable' => 'EDEFAULTHistoryTable',
+            'averageTable' => 'EDEFAULTAverageTable',
+            'loadable' => false,
+            'testParam' => '12345',
+        );
+        $o = &DriverTestClass::factory();
+        $this->assertEquals($expect, $o->toArray());
+    }
+    /**
     * data provider for testDeviceID
     *
     * @return array

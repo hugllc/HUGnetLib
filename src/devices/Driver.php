@@ -255,6 +255,15 @@ abstract class Driver
         return null;
     }
     /**
+    * Returns all of the parameters and defaults in an array
+    *
+    * @return null
+    */
+    public function toArray()
+    {
+        return array_merge($this->_default, (array)$this->params);
+    }
+    /**
     * Returns the driver that should be used for a particular device
     *
     * @param string $HWPartNum The hardware part number

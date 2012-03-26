@@ -108,6 +108,20 @@ class Device extends SystemTableBase
         }
         return $ret;
     }
+    /**
+    * Returns the table as a json string
+    *
+    * @return json string
+    */
+    public function json()
+    {
+        return json_encode(
+            array_merge(
+                $this->driver()->toArray(),
+                $this->table()->toArray(true)
+            )
+        );
+    }
 
     /**
     * This function creates the system.
@@ -171,6 +185,51 @@ class Device extends SystemTableBase
     public function &sensor($sid)
     {
 
+    }
+    /**
+    * Gets one of the parameters
+    *
+    * @param string $field The field to get
+    *
+    * @return The value of the field
+    */
+    public function &getParam($field)
+    {
+        $params = $this->table()->get("params");
+        $array = json_decode($params, true);
+        if (!is_array($array)) {
+            /* This converts the old system */
+            $array = unserialize(base64_decode($params));
+            /* Most of the old stuff is stored in "DriverInfo" */
+            if (is_array($array["DriverInfo"])) {
+                $array = $array["DriverInfo"];
+            }
+            /* Now re encode it properly, or return null if it is empty */
+            if (is_array($array)) {
+                $this->table()->set("params", json_encode($array));
+            } else {
+                $array = array();
+            }
+        }
+        return $array[$field];
+    }
+    /**
+    * Sets one of the parameters
+    *
+    * @param string $field The field to set
+    * @param mixed  $value The value to set the field to
+    *
+    * @return null
+    */
+    public function &setParam($field, $value)
+    {
+        /* This makes sure the field is always in json format */
+        $this->getParam($field);
+        /* get the fields */
+        $params = $this->table()->get("params");
+        $params = json_decode($params, true);
+        $params[$field] = $value;
+        return $this->table()->set("params", json_encode($params));
     }
 }
 

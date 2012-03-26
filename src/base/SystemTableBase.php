@@ -174,7 +174,7 @@ abstract class SystemTableBase
     *
     * @return json string
     */
-    public function jsonEncode()
+    public function json()
     {
         return json_encode($this->table()->toArray(true));
     }

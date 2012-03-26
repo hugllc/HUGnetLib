@@ -363,6 +363,302 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expect, $obj->get($field));
         unset($obj);
     }
+
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataJson()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "Driver" => "EDEFAULT",
+                            "id" => 2,
+                        ),
+                        "toArray" => array(
+                            "id" => 2,
+                            "asdf" => 3,
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                json_encode(
+                    array(
+                        'packetTimeout' => 5,
+                        'sensors' => 13,
+                        'physicalSensors' => 9,
+                        'virtualSensors' => 4,
+                        'historyTable' => 'EDEFAULTHistoryTable',
+                        'averageTable' => 'EDEFAULTAverageTable',
+                        'loadable' => false,
+                        'id' => 2,
+                        'asdf' => 3,
+                    )
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataJson
+    */
+    public function testJson(
+        $config, $class, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->json());
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
+    public static function dataGetParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => base64_encode(serialize(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            )),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => base64_encode(serialize(
+                                array(
+                                    "DriverInfo" => array(
+                                        "A" => 1,
+                                        "B" => 2,
+                                        "C" => 3,
+                                    ),
+                                )
+                            )),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                2,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                null,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                null,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to get
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataGetParam
+    */
+    public function testGetParam(
+        $config, $class, $field, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $this->assertSame($expect, $obj->getParam($field));
+        unset($obj);
+    }
+    /**
+    * Data provider for testGetParam
+    *
+    * @return array
+    */
+    public static function dataSetParam()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                4,
+                array(
+                    'Table' => array(
+                        'get' => array(array("params"), array("params"),),
+                        'set' => array(
+                            array(
+                                'params',
+                                json_encode(
+                                    array("A" => 1, "B" => 4, "C" => 3,)
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "B",
+                5,
+                array(
+                    'Table' => array(
+                        'get' => array(array("params"), array("params"),),
+                        'set' => array(
+                            array(
+                                'params',
+                                json_encode(
+                                    array("B" => 5,)
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "params" => json_encode(
+                                array(
+                                    "A" => 1,
+                                    "B" => 2,
+                                    "C" => 3,
+                                )
+                            ),
+                        ),
+                    ),
+                ),
+                new DummyTable("Table"),
+                "Q",
+                8,
+                array(
+                    'Table' => array(
+                        'get' => array(array("params"), array("params"),),
+                        'set' => array(
+                            array(
+                                'params',
+                                json_encode(
+                                    array("A" => 1, "B" => 2, "C" => 3, "Q" => 8)
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config The configuration to use
+    * @param mixed  $class  This is either the name of a class or an object
+    * @param string $field  The field to set
+    * @param mixed  $value  The value to set the field to
+    * @param mixed  $expect The value we expect back
+    *
+    * @return null
+    *
+    * @dataProvider dataSetParam
+    */
+    public function testSetParam(
+        $config, $class, $field, $value, $expect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $obj->setParam($field, $value);
+        $this->assertSame($expect, $sys->retrieve());
+        unset($obj);
+    }
 }
 
 /**
