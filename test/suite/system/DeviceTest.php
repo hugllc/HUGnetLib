@@ -403,6 +403,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
                         'historyTable' => 'EDEFAULTHistoryTable',
                         'averageTable' => 'EDEFAULTAverageTable',
                         'loadable' => false,
+                        'bootloader' => false,
                         'id' => 2,
                         'asdf' => 3,
                         'params' => array(1,2,3,4),
@@ -667,6 +668,52 @@ class DeviceTest extends \PHPUnit_Framework_TestCase
         $obj = Device::factory($sys, null, $class);
         $obj->setParam($field, $value);
         $this->assertSame($expect, $sys->retrieve());
+        unset($obj);
+    }
+    /**
+    * Data provider for testCreate
+    *
+    * @return array
+    */
+    public static function dataSensor()
+    {
+        return array(
+            array(
+                array(
+                    "Table" => array(
+                        "get" => array(
+                            "id" => 5,
+                        ),
+                    ),
+                ),
+                "DummyTable",
+                0,
+                "DeviceSensorBase",
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param array  $config       The configuration to use
+    * @param mixed  $class        This is either the name of a class or an object
+    * @param string $sensor       The driver to tell it to load
+    * @param string $driverExpect The driver we expect to be loaded
+    *
+    * @return null
+    *
+    * @dataProvider dataSensor
+    */
+    public function testSensor(
+        $config, $class, $sensor, $driverExpect
+    ) {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Device::factory($sys, null, $class);
+        $this->assertTrue(
+            is_a($obj->sensor($sensor), $driverExpect),
+            "Return is not a ".$driverExpect
+        );
         unset($obj);
     }
 }

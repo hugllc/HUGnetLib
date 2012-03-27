@@ -75,6 +75,14 @@ class Device extends SystemTableBase
     */
     private $_firmware = null;
     /**
+    * This is the plugin container
+    */
+    private $_plugins = null;
+    /**
+    * This is the sensor cache
+    */
+    private $_sensorCache = array();
+    /**
     * This is the destructor
     */
     public function __destruct()
@@ -190,7 +198,7 @@ class Device extends SystemTableBase
     public function &driver($driver = null)
     {
         if (empty($driver)) {
-            $driver = strtoupper($this->table()->get("Driver"));
+            $driver = strtoupper((string)$this->table()->get("Driver"));
         }
         if (empty($driver)) {
             $driver == "EDEFAULT";
@@ -210,7 +218,37 @@ class Device extends SystemTableBase
     */
     public function &sensor($sid)
     {
-
+        if (!is_object($this->_plugins)) {
+            include_once "HUGnetLib/containers/PluginsContainer.php";
+            $this->_plugins = new \PluginsContainer(
+                array("dir" => dirname(__FILE__)."/../plugins/")
+            );
+        }
+        $did = $this->get("id");
+        if (!is_object($this->_sensorCache[$did][$sid])) {
+            if (!is_array($this->_sensorCache[$did]["cache"])) {
+                $data = $this->get("sensors");
+                $this->_sensorCache[$did]["cache"] = json_decode($data);
+                if (!is_array($this->_sensorCache[$did]["cache"])) {
+                    $this->_sensorCache[$did]["cache"] = unserialize(base64_decode(
+                        $data
+                    ));
+                }
+                if (!is_array($this->_sensorCache[$did]["cache"])) {
+                    $this->_sensorCache[$did]["cache"] = array();
+                }
+            }
+            $sensor = $this->_sensorCache[$did]["cache"][$sid]["type"];
+            $senId = sprintf("%02X", $sid);
+            $driver = $this->_plugins->getPlugin(
+                "sensor", $senId.":".$sensor
+            );
+            $class = $driver["Class"];
+            $this->_sensorCache[$did][$sid] = new $class(
+                $this->_sensorCache[$did]["cache"][$sid], $this
+            );
+        }
+        return $this->_sensorCache[$did][$sid];
     }
     /**
     * Gets one of the parameters
