@@ -288,19 +288,19 @@ class Network
     *
     * @return success or failure of the packet sending
     */
-    public function loadFirmware(FirmwareTable &$firmware)
+    public function loadFirmware(\FirmwareTable &$firmware)
     {
 
-        VPrint::out("Running the bootloader...  ", 1);
+        \HUGnet\VPrint::out("Running the bootloader...  ", 1);
         if (!$this->runBootloader()) {
             return false;
         }
-        VPrint::out("Getting the bootloader configuration...  ", 1);
+        \HUGnet\VPrint::out("Getting the bootloader configuration...  ", 1);
         $bootConfig = $this->config();
         if (!is_object($bootConfig) || is_null($bootConfig->Reply())) {
             return false;
         }
-        VPrint::out("Writing the code...\n", 1);
+        \HUGnet\VPrint::out("Writing the code...\n", 1);
         $code = $this->writeFlashBuffer(
             $firmware->getCode()
         );
@@ -309,7 +309,7 @@ class Network
         }
         /* Data is not required */
         if (strlen($firmware->getData()) > 0) {
-            VPrint::out("Writing the data...\n", 1);
+            \HUGnet\VPrint::out("Writing the data...\n", 1);
             $data = $this->writeE2Buffer(
                 $firmware->getData(), 0
             );
@@ -317,13 +317,13 @@ class Network
                 return false;
             }
         }
-        VPrint::out("Setting the CRC...  ", 1);
+        \HUGnet\VPrint::out("Setting the CRC...  ", 1);
         $crc = $this->setCRC();
         if ($crc === false) {
             return false;
         }
 
-        VPrint::out("Running the application...  ", 1);
+        \HUGnet\VPrint::out("Running the application...  ", 1);
         if (!$this->runApplication()) {
             return false;
         }

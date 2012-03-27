@@ -71,6 +71,10 @@ class Device extends SystemTableBase
     */
     private $_network = null;
     /**
+    * This is the firmware table
+    */
+    private $_firmware = null;
+    /**
     * This is the destructor
     */
     public function __destruct()
@@ -130,6 +134,18 @@ class Device extends SystemTableBase
             $params = $params["DriverInfo"];
         }
         $return["params"] = $params;
+        if ($this->get("loadable")) {
+            $this->firmware()->set("HWPartNum", $return["HWPartNum"]);
+            $this->firmware()->set("FWPartNum", $return["FWPartNum"]);
+            $this->firmware()->set("RelStatus", \FirmwareTable::DEV);
+            $this->firmware()->getLatest();
+            $new = $this->firmware()->compareVersion(
+                $this->get("FWVersion"), $this->firmware()->Version
+            );
+            if ($new < 0) {
+                $return["update"] = $this->firmware()->Version;
+            }
+        }
         return json_encode($return);
     }
 
@@ -241,6 +257,21 @@ class Device extends SystemTableBase
         $params[$field] = $value;
         return $this->table()->set("params", json_encode($params));
     }
+    /**
+    * This function gives us access to the table class
+    *
+    * @return reference to the table class object
+    */
+    public function &firmware()
+    {
+        if (!is_object($this->_firmware)) {
+            $class = Util::findClass("FirmwareTable", "tables");
+            $system = &$this->system();
+            $this->_firmware = new $class($system);
+        }
+        return $this->_firmware;
+    }
+
     /**
     * Loads the data into the table class
     *
