@@ -182,6 +182,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             'averageTable' => 'EDEFAULTAverageTable',
             'loadable' => false,
             'testParam' => '12345',
+            'bootloader' => false,
         );
         $o = &DriverTestClass::factory();
         $this->assertEquals($expect, $o->toArray());
@@ -259,13 +260,13 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "0039-21-01-A",
                 "0039-38-02-C",
                 "5.6.7",
-                "E00392101",
+                "E00393802",
             ),
             array(
                 "0039-21-02-A",
                 "0039-38-02-C",
                 "5.6.7",
-                "E00392101",
+                "E00393802",
             ),
             array(
                 "0039-21-01-A",
@@ -282,6 +283,12 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             array(
                 "0039-37-01-A",
                 "0039-38-02-C",
+                "5.6.7",
+                "E00393802",
+            ),
+            array(
+                "0039-37-01-A",
+                "0039-38-01-C",
                 "5.6.7",
                 "E00393700",
             ),

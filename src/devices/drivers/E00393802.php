@@ -56,7 +56,7 @@ defined('_HUGNET') or die('HUGnetSystem not found');
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class E00392101 extends \HUGnet\devices\Driver
+class E00393802 extends \HUGnet\devices\Driver
 {
     /**
     * This is where the data for the driver is stored.  This array must be
@@ -66,8 +66,10 @@ class E00392101 extends \HUGnet\devices\Driver
         "sensors" => 0,
         "physicalSensors" => 0,
         "virtualSensors" => 0,
-        "historyTable" => "E00392800HistoryTable",
-        "averageTable" => "E00392800AverageTable",
+        "historyTable" => "EDEFAULTHistoryTable",
+        "averageTable" => "EDEFAULTAverageTable",
+        "loadable" => true,
+        "bootloader" => true,
     );
     /**
     * This function creates the system.

@@ -76,6 +76,7 @@ abstract class Driver
         "historyTable" => "EDEFAULTHistoryTable",
         "averageTable" => "EDEFAULTAverageTable",
         "loadable" => false,
+        "bootloader" => false,
     );
     /**
     * This is where all of the driver information is stored.
@@ -85,6 +86,12 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
+        "E00393802" => array(
+            "0039-20-06-C:0039-21-01-A:DEFAULT",
+            "0039-20-15-C:0039-21-02-A:DEFAULT",
+            "0039-20-16-C:0039-21-02-A:DEFAULT",
+            "0039-38-02-C:DEFAULT:DEFAULT",
+        ),
         "E00391200" => array(
             "0039-11-02-B:0039-12-00-A:DEFAULT",
             "0039-11-02-B:0039-12-01-A:DEFAULT",
@@ -126,13 +133,6 @@ abstract class Driver
             "0039-20-14-C:0039-21-02-A:DEFAULT",
             "0039-38-01-C:0039-21-01-A:DEFAULT",
             "0039-38-01-C:0039-21-02-A:DEFAULT",
-        ),
-        "E00392101" => array(
-            "0039-20-06-C:0039-21-01-A:DEFAULT",
-            "0039-20-15-C:0039-21-02-A:DEFAULT",
-            "0039-20-16-C:0039-21-02-A:DEFAULT",
-            "0039-38-02-C:0039-21-01-A:DEFAULT",
-            "0039-38-02-C:0039-21-02-A:DEFAULT",
         ),
         "E00392600" => array(
             "DEFAULT:0039-26-00-P:DEFAULT",
@@ -277,9 +277,9 @@ abstract class Driver
         $try = array(
             $FWPartNum.":".$HWPartNum.":".$FWVersion,
             $FWPartNum.":".$HWPartNum.":DEFAULT",
+            $FWPartNum.":DEFAULT:DEFAULT",
             "DEFAULT:".$HWPartNum.":DEFAULT",
             $FWPartNum.":DEFAULT:".$FWVersion,
-            $FWPartNum.":DEFAULT:DEFAULT",
         );
         foreach ($try as $mask) {
             foreach (self::$_drivers as $driver => $stuff) {
