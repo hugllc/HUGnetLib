@@ -122,7 +122,7 @@ class ADuCVoltageDeviceSensor extends VoltageDeviceSensorBase
         $Vref  = $this->getExtra(2);
 
         $A = $this->getTwosCompliment($A, 32);
-        //$A = $this->inputBiasCompensation($A, $Rin, $Rbias);
+        $A = $this->inputBiasCompensation($A, $Rin, $Rbias);
         $Va = ($A / $Am) * $Vref;
         return round($Va, $this->maxDecimals);
     }
