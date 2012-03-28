@@ -104,6 +104,160 @@ abstract class DriverTestBase extends \PHPUnit_Framework_TestCase
             "HUGnet\devices\drivers\\".$this->class, get_class($this->o)
         );
     }
+
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    final public static function dataInternalType()
+    {
+        return array(
+            array("packetTimeout", "int"),
+            array("totalSensors", "int"),
+            array("physicalSensors", "int"),
+            array("virtualSensors", "int"),
+            array("historyTable", "string"),
+            array("averageTable", "string"),
+            array("loadable", "boolean"),
+            array("bootloader", "boolean"),
+        );
+    }
+    /**
+    * Check the variable type
+    *
+    * @param string $field The field to check
+    * @param string $type  The type it should be
+    *
+    * @return null
+    *
+    * @dataProvider dataInternalType
+    */
+    final public function testInternalType($field, $type)
+    {
+        $name = $this->o->get($field);
+        $this->assertInternalType($type, $name, "$field must be a $type");
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    final public static function dataStringSize()
+    {
+        return array(
+            array("historyTable", 80, 13),
+            array("averageTable", 80, 13),
+        );
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field    The field to check
+    * @param int    $max      The largest it can be
+    * @param int    $min      The smallest it can be
+    *
+    * @return null
+    *
+    * @dataProvider dataStringSize
+    */
+    final public function testStringMaxSize($field, $max, $min)
+    {
+        $name = (string)$this->o->get($field);
+        $this->assertLessThanOrEqual(
+            $max, strlen($name), "$field must be less than $max chars"
+        );
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field    The field to check
+    * @param int    $max      The largest it can be
+    * @param int    $min      The smallest it can be
+    *
+    * @return null
+    *
+    * @dataProvider dataStringSize
+    */
+    final public function testStringMinSize($field, $max, $min)
+    {
+        $name = (string)$this->o->get($field);
+        $this->assertGreaterThanOrEqual(
+            $min, strlen($name), "$field must be more than $min characters"
+        );
+    }
+    /**
+    * data provider for testType
+    *
+    * @return array
+    */
+    final public static function dataIntSize()
+    {
+        return array(
+            array("packetTimeout", 10, 2),
+            array("totalSensors", 30, 0),
+            array("physicalSensors", 20, 0),
+            array("virtualSensors", 30, 0),
+        );
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field    The field to check
+    * @param int    $max      The largest it can be
+    * @param int    $min      The smallest it can be
+    *
+    * @return null
+    *
+    * @dataProvider dataIntSize
+    */
+    final public function testIntMaxSize($field, $max, $min)
+    {
+        if (!is_null($max)) {
+            $name = (string)$this->o->get($field);
+            $this->assertLessThanOrEqual(
+                $max, $name, "$field must be less than $max chars"
+            );
+        }
+    }
+    /**
+    * Check the string size
+    *
+    * @param string $field    The field to check
+    * @param int    $max      The largest it can be
+    * @param int    $min      The smallest it can be
+    *
+    * @return null
+    *
+    * @dataProvider dataIntSize
+    */
+    final public function testIntMinSize($field, $max, $min)
+    {
+        if (!is_null($min)) {
+            $name = (string)$this->o->get($field);
+            $this->assertGreaterThanOrEqual(
+                $min, $name, "$field must be more than $min characters"
+            );
+        }
+    }
+    /**
+    * Check the number of sensors
+    *
+    * @return null
+    *
+    * @dataProvider dataIntSize
+    */
+    final public function testNumberOfSensors()
+    {
+        $total = (int)$this->o->get("totalSensors");
+        $phy = (int)$this->o->get("physicalSensors");
+        $vir = (int)$this->o->get("virtualSensors");
+        $this->assertEquals(
+            $total, ($phy + $vir),
+            "physicalSensors and virtualSensors must add up to totalSensors"
+        );
+    }
+
     /**
     * data provider for testDeviceID
     *

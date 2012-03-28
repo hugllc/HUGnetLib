@@ -63,7 +63,7 @@ class E00393802 extends \HUGnet\devices\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "sensors" => 0,
+        "totalSensors" => 0,
         "physicalSensors" => 0,
         "virtualSensors" => 0,
         "historyTable" => "EDEFAULTHistoryTable",

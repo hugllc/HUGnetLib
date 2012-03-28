@@ -106,7 +106,7 @@ class E00392800Test extends DriverTestBase
                 4,
             ),
             array(
-                "sensors",
+                "totalSensors",
                 20,
             ),
         );

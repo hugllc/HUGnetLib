@@ -106,7 +106,7 @@ class EVIRTUALTest extends DriverTestBase
                 20,
             ),
             array(
-                "sensors",
+                "totalSensors",
                 20,
             ),
         );

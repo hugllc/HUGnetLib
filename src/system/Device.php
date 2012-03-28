@@ -228,11 +228,15 @@ class Device extends SystemTableBase
         if (!is_object($this->_sensorCache[$did][$sid])) {
             if (!is_array($this->_sensorCache[$did]["cache"])) {
                 $data = $this->get("sensors");
-                $this->_sensorCache[$did]["cache"] = json_decode($data);
-                if (!is_array($this->_sensorCache[$did]["cache"])) {
-                    $this->_sensorCache[$did]["cache"] = unserialize(base64_decode(
-                        $data
-                    ));
+                if (is_string($data)) {
+                    $this->_sensorCache[$did]["cache"] = json_decode($data);
+                    if (!is_array($this->_sensorCache[$did]["cache"])) {
+                        $this->_sensorCache[$did]["cache"] = unserialize(base64_decode(
+                            $data
+                        ));
+                    }
+                } else if (is_array($data)) {
+                    $this->_sensorCache[$did]["cache"] = $data;
                 }
                 if (!is_array($this->_sensorCache[$did]["cache"])) {
                     $this->_sensorCache[$did]["cache"] = array();

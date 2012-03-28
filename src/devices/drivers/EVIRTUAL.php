@@ -63,7 +63,7 @@ class EVIRTUAL extends \HUGnet\devices\Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "sensors" => 20,
+        "totalSensors" => 20,
         "physicalSensors" => 0,
         "virtualSensors" => 20,
         "historyTable" => "EVIRTUALHistoryTable",

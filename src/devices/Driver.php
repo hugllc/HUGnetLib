@@ -70,7 +70,7 @@ abstract class Driver
     */
     private $_default = array(
         "packetTimeout" => 5,
-        "sensors" => 13,
+        "totalSensors" => 13,
         "physicalSensors" => 9,
         "virtualSensors" => 4,
         "historyTable" => "EDEFAULTHistoryTable",
