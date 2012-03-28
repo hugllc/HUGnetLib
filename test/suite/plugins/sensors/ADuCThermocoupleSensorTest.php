@@ -121,14 +121,14 @@ class ADuCThermocoupleDeviceSensorTest extends DeviceSensorPluginTestBase
                 0x1234,
                 1,
                 array(0 => array("value" => 10)),
-                28.35842937
+                10.01839327, //28.35842937
             ),
             array(
                 array(),
                 0xFFFFEEDD,
                 1,
                 array(0 => array("value" => 10)),
-                -7.17500752
+                9.98268428, //-7.17500752
             ),
         );
     }

@@ -83,7 +83,7 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         // Array   is the values that the extra can take
         // Null    nothing
         "extraValues" => array(5, 5, 5),
-        "extraDefault" => array(1, 10, 1200),
+        "extraDefault" => array(1, 10, 1.2),
         "maxDecimals" => 8,
     );
     /** These are the coeffients of the thermocouple equasion */
@@ -116,6 +116,7 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
         $this->default["id"] = 0x42;
         $this->default["type"] = "ADuCThermocouple";
         parent::__construct($data, $device);
+        $this->set("units", '&#176;C');
     }
     /**
     * Changes a raw reading into a output value
@@ -131,7 +132,7 @@ class ADuCThermocoupleDeviceSensor extends VoltageDeviceSensorBase
     */
     public function getReading($A, $deltaT = 0, &$data = array(), $prev = null)
     {
-        $Am = pow(2, 23);
+        $Am    = pow(2, 23);
         $Rin   = $this->getExtra(0);
         $Rbias = $this->getExtra(1);
         $Vref  = $this->getExtra(2);
