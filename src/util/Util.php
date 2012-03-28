@@ -156,6 +156,25 @@ class Util
         }
         return $data;
     }
+    /**
+    * Changes an n-bit twos compliment number into a signed number PHP can use
+    *
+    * @param int   $A    The incoming number
+    * @param float $bits The number of bits the incoming number is
+    *
+    * @return int A signed integer for PHP to use
+    */
+    public static function getTwosCompliment($A, $bits = 24)
+    {
+        $A = (int)$A;
+        $topBit = pow(2, ($bits - 1));
+        /* Check to see if the top bit is set */
+        if (($A & $topBit) == $topBit) {
+            /* This is a negative number */
+            $A = -(pow(2, $bits) - $A);
+        }
+        return $A;
+    }
 }
 
 

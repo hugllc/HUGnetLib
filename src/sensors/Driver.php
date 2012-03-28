@@ -63,24 +63,19 @@ abstract class Driver
     * put into all derivative classes, even if it is empty.
     */
     protected $params = array(
-        "type" => "asdf", /* This is for test value only */
+        "unitType" => "asdf", /* This is for test value only */
         "testParam" => "12345", /* This is for test value only */
+        "extraDefault" => array(2,3,5,7,11),
     );
     /**
     * This is where all of the defaults are stored.
     */
     private $_default = array(
-        "id" => 0x100,                    // The id of the sensor.  This is the value
-                                         // Stored in the device  It will be an int
-        "type" => "unknown",                    // The type of the sensors
-        "location" => "",                // The location of the sensors
-        "dataType" => \UnitsBase::TYPE_RAW,      // The datatype of each sensor
-        "extra" => array(),              // Extra input for crunching numbers
-        "units" => "",                   // The units to put the data into by default
-        "rawCalibration" => "",          // The raw calibration string
         "longName" => "Unknown Sensor",
-        "units" => 'unknown',
+        "shortName" => "Unknown",
+        "unitType" => "unknown",
         "bound" => false,                // This says if this sensor is changeable
+        "virtual" => false,              // This says if we are a virtual sensor
         "extraText" => array(),
         "extraDefault" => array(),
         // Integer is the size of the field needed to edit
@@ -89,9 +84,7 @@ abstract class Driver
         "extraValues" => array(),
         "storageUnit" => "unknown",
         "storageType" => \UnitsBase::TYPE_RAW,  // This is the dataType as stored
-        "decimals" => 2,
         "maxDecimals" => 2,
-        "filter" => array(),             // Information on the output filter
     );
     /**
     * This is where all of the driver information is stored.
@@ -101,19 +94,22 @@ abstract class Driver
     * as the driver class name.
     */
     private static $_drivers = array(
-        "02:DEFAULT" => "DEFAULT",
+        "02:DEFAULT"     => "SDEFAULT",
+        "41"             => "ADuCVoltage",
+        "41:ADuCVoltage" => "ADuCVoltage",
+        "43"             => "ADuCVoltage",
+        "43:ADuCVoltage" => "ADuCVoltage"
     );
     /**
     * This function sets up the driver object, and the database object.  The
     * database object is taken from the driver object.
     *
-    * @param string &$table The table object
+    * @param object &$sensor The sensor object
     *
     * @return null
     */
     private function __construct()
     {
-        /* This class shouldn't be instanciated. */
     }
     /**
     * This is the destructor
@@ -216,6 +212,40 @@ abstract class Driver
         }
         return "SDEFAULT";
     }
+    /**
+    * Gets the extra values
+    *
+    * @param int   $index The extra index to use
+    * @param array $extra The extra array
+    *
+    * @return The extra value (or default if empty)
+    */
+    protected function getExtra($index, $extra)
+    {
+        if (!(is_array($extra) && isset($extra[$index]))) {
+            $extra = $this->get("extraDefault");
+        }
+        return $extra[$index];
+    }
+
+
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    * @param array $extra  The extra setup that is needed.
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    abstract public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null, $extra = array()
+    );
+
 }
 
 

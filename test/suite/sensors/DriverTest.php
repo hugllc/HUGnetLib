@@ -70,6 +70,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     protected function setUp()
     {
+        $this->o = &DriverTestClass::factory();
     }
 
     /**
@@ -82,6 +83,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     protected function tearDown()
     {
+        unset($this->o);
     }
 
     /**
@@ -97,11 +99,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 false,
             ),
             array(
-                "type",
+                "unitType",
                 true,
             ),
             array(
-                "dataType",
+                "storageType",
                 true,
             ),
             array(
@@ -122,8 +124,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testPresent($name, $expect)
     {
-        $o = &DriverTestClass::factory();
-        $this->assertSame($expect, $o->present($name));
+        $this->assertSame($expect, $this->o->present($name));
     }
     /**
     * data provider for testDeviceID
@@ -138,7 +139,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 null,
             ),
             array(
-                "dataType",
+                "storageType",
                 \UnitsBase::TYPE_RAW,
             ),
             array(
@@ -146,7 +147,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 "12345",
             ),
             array(
-                "type",
+                "unitType",
                 'asdf',
             ),
         );
@@ -163,8 +164,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     */
     public function testGet($name, $expect)
     {
-        $o = &DriverTestClass::factory();
-        $this->assertSame($expect, $o->get($name));
+        $this->assertSame($expect, $this->o->get($name));
     }
     /**
     * test the set routine when an extra class exists
@@ -174,27 +174,20 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public function testToArray()
     {
         $expect = array(
-            'id' => 256,
-            'type' => 'asdf',
-            'location' => '',
-            'dataType' => 'raw',
-            'extra' => Array (),
-            'units' => 'unknown',
-            'rawCalibration' => '',
             'longName' => 'Unknown Sensor',
+            'shortName' => 'Unknown',
+            'unitType' => 'asdf',
+            'virtual' => false,
             'bound' => false,
             'extraText' => Array (),
-            'extraDefault' => Array (),
+            'extraDefault' => Array (2,3,5,7,11),
             'extraValues' => Array (),
             'storageUnit' => 'unknown',
             'storageType' => 'raw',
-            'decimals' => 2,
             'maxDecimals' => 2,
-            'filter' => Array (),
             'testParam' => '12345',
         );
-        $o = &DriverTestClass::factory();
-        $this->assertEquals($expect, $o->toArray());
+        $this->assertEquals($expect, $this->o->toArray());
     }
     /**
     * data provider for testDeviceID
@@ -261,6 +254,48 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             $expect, Driver::getDriver($sid, $type, $FWVersion)
         );
     }
+    /**
+    * data provider for testGetExtra
+    *
+    * @return array
+    */
+    public static function dataGetExtra()
+    {
+        return array(
+            array(
+                array(6,5,4),
+                1,
+                5
+            ),
+            array(
+                array(6,5,4),
+                3,
+                7
+            ),
+            array(
+                array(6,5,4),
+                100,
+                null
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param mixed  $extra   The extra array
+    * @param int    $index   The index to use for the extra array
+    * @param string $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetExtra
+    */
+    public function testGetExtra($extra, $index, $expect)
+    {
+        $obj = DriverTestClass::factory();
+        $this->assertSame($expect, $obj->getExtra($index, $extra));
+    }
 }
 /**
  * Base driver class for devices.
@@ -288,6 +323,36 @@ class DriverTestClass extends Driver
     public static function &factory()
     {
         return parent::intFactory();
+    }
+    /**
+    * Gets the extra values
+    *
+    * @param int   $index The extra index to use
+    * @param array $extra The extra array
+    *
+    * @return The extra value (or default if empty)
+    */
+    public function getExtra($index, $extra)
+    {
+        return parent::getExtra($index, $extra);
+    }
+    /**
+    * Changes a raw reading into a output value
+    *
+    * @param int   $A      Output of the A to D converter
+    * @param float $deltaT The time delta in seconds between this record
+    * @param array &$data  The data from the other sensors that were crunched
+    * @param mixed $prev   The previous value for this sensor
+    * @param array $extra  The extra setup that is needed.
+    *
+    * @return mixed The value in whatever the units are in the sensor
+    *
+    * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+    */
+    public function getReading(
+        $A, $deltaT = 0, &$data = array(), $prev = null, $extra = array()
+    ) {
+        return null;
     }
 }
 ?>

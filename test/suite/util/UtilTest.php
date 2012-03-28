@@ -145,6 +145,53 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expect, Util::crc8($preload));
     }
+    /**
+    * data provider for testNumeric
+    *
+    * @return array
+    */
+    public static function dataGetTwosCompliment()
+    {
+        return array(
+            array(
+                8388608,
+                24,
+                -8388608,
+            ),
+            array(
+                0xFFFFFF,
+                24,
+                -1,
+            ),
+            array(
+                0,
+                24,
+                0,
+            ),
+            array(
+                8388607,
+                24,
+                8388607,
+            ),
+        );
+    }
+
+    /**
+    * test the set routine when an extra class exists
+    *
+    * @param int   $A       The integer to feed to the function
+    * @param int   $bits    The number of bits to use
+    * @param int   $expect  The expected data
+    *
+    * @return null
+    *
+    * @dataProvider dataGetTwosCompliment
+    */
+    public function testGetTwosCompliment($A, $bits, $expect)
+    {
+        $val = Util::getTwosCompliment($A, $bits);
+        $this->assertSame($expect, $val);
+    }
 
 
 }
