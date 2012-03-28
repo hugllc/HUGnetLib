@@ -119,15 +119,15 @@ class SensorTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 new DummySystem(),
-                2,
+                array("dev" => 2, "sensor" => 0),
                 new DummyTable(),
                 array(
                     "Table" => array(
-                        "getRow" => array(
-                            array(0 => 2),
-                        ),
-                        "set" => array(
-                            array("id", 2),
+                        "selectOneInto" => array(
+                            array(
+                                "dev = ? AND sensor = ?",
+                                array(2, 0),
+                            ),
                         ),
                     ),
                 ),
@@ -157,6 +157,102 @@ class SensorTest extends \PHPUnit_Framework_TestCase
         if (is_object($table)) {
             $this->assertEquals($expectTable, $table->retrieve(), "Data Wrong");
         }
+    }
+    /**
+    * Data provider for testLoad
+    *
+    * @return array
+    */
+    public static function dataLoad()
+    {
+        return array(
+            array(
+                array(
+                ),
+                new DummyTable(),
+                array(
+                    "id" => 5,
+                    "name" => 3,
+                    "value" => 1,
+                ),
+                array(
+                    "Table" => array(
+                        "fromAny" => array(
+                            array(
+                                array(
+                                    "id" => 5,
+                                    "name" => 3,
+                                    "value" => 1,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => true,
+                    ),
+                ),
+                new DummyTable("Table"),
+                array("dev" => 2, "sensor" => 0),
+                array(
+                    "Table" => array(
+                        "selectOneInto" => array(
+                            array(
+                                "dev = ? AND sensor = ?",
+                                array(2, 0),
+                            ),
+                        ),
+                    ),
+                ),
+                true,
+            ),
+            array(
+                array(
+                    "Table" => array(
+                        "selectOneInto" => false,
+                    ),
+                ),
+                new DummyTable("Table"),
+                array("dev" => 2, "sensor" => 0),
+                array(
+                    "Table" => array(
+                        "selectOneInto" => array(
+                            array(
+                                "dev = ? AND sensor = ?",
+                                array(2, 0),
+                            ),
+                        ),
+                    ),
+                ),
+                false,
+            ),
+        );
+    }
+    /**
+    * This tests the object creation
+    *
+    * @param object $config      The configuration to use
+    * @param object $class       The table class to use
+    * @param mixed  $data        The gateway data to set
+    * @param array  $expectTable The table to expect
+    * @param bool   $return      The expected return
+    *
+    * @return null
+    *
+    * @dataProvider dataLoad
+    */
+    public function testLoad($config, $class, $data, $expectTable, $return)
+    {
+        $sys = new DummySystem("System");
+        $sys->resetMock($config);
+        $obj = Sensor::factory($sys, null, $class);
+        $ret = $obj->load($data);
+        $this->assertSame($return, $ret, "Return Wrong");
+        $this->assertEquals($expectTable, $class->retrieve(), "Data Wrong");
     }
 }
 ?>

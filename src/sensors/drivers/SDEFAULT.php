@@ -26,7 +26,7 @@
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -35,21 +35,19 @@
  *
  */
 /** This is the HUGnet namespace */
-namespace HUGnet;
+namespace HUGnet\sensors\drivers;
 /** This keeps this file from being included unless HUGnetSystem.php is included */
 defined('_HUGNET') or die('HUGnetSystem not found');
-/** This is our base class */
-require_once dirname(__FILE__)."/../base/SystemTableBase.php";
 
 /**
- * Base system class.
+ * Networking for devices.
  *
- * This class is the new API into HUGnetLib.  It controls the config and gives out
- * objects for everything else.  This is the only file that should be
+ * This class will do all of the networking for devices.  It will poll, get configs,
+ * update software, and anything else related to talking to devices.
  *
  * @category   Libraries
  * @package    HUGnetLib
- * @subpackage System
+ * @subpackage Devices
  * @author     Scott Price <prices@hugllc.com>
  * @copyright  2012 Hunt Utilities Group, LLC
  * @copyright  2009 Scott Price
@@ -58,45 +56,22 @@ require_once dirname(__FILE__)."/../base/SystemTableBase.php";
  * @link       https://dev.hugllc.com/index.php/Project:HUGnetLib
  * @since      0.9.7
  */
-class Sensor extends SystemTableBase
+class SDEFAULT extends \HUGnet\sensors\Driver
 {
+    /**
+    * This is where the data for the driver is stored.  This array must be
+    * put into all derivative classes, even if it is empty.
+    */
+    protected $params = array(
+    );
     /**
     * This function creates the system.
     *
-    * @param mixed  $system (object)The system object to use
-    * @param mixed  $data   (int)The id of the item, (array) data info array
-    * @param string $table  The table to use
-    *
     * @return null
     */
-    public static function &factory($system, $data=null, $table="SensorsTable")
+    public static function &factory()
     {
-        $object = &parent::factory($system, $data, $table);
-        return $object;
-    }
-    /**
-    * Loads the data into the table class
-    *
-    * @param mixed $data (int)The id of the record,
-    *                    (array) or (string) data info array
-    *
-    * @return null
-    */
-    public function load($data)
-    {
-        $ret = false;
-        if (is_array($data) && (count($data) == 2)
-            && isset($data["dev"]) && isset($data["sensor"])
-        ) {
-            $ret = $this->table()->selectOneInto(
-                "dev = ? AND sensor = ?",
-                array($data["dev"], $data["sensor"])
-            );
-        } else if (is_array($data) || is_string($data)) {
-            $this->table()->fromAny($data);
-            $ret = true;
-        }
-        return (bool)$ret;
+        return parent::intFactory();
     }
 
 }
